@@ -102,6 +102,9 @@ void S_ClearBuffer (void);
 void S_Update (vec3_t origin, vec3_t v_forward, vec3_t v_right, vec3_t v_up);
 void S_ExtraUpdate (void);
 
+void S_BlockSound (void);
+void S_UnblockSound (void);
+
 sfx_t *S_PrecacheSound (char *sample);
 void S_TouchSound (char *sample);
 void S_ClearPrecache (void);
@@ -124,6 +127,18 @@ int SNDDMA_GetDMAPos(void);
 
 // shutdown the DMA xfer.
 void SNDDMA_Shutdown(void);
+
+/* validates & locks the dma buffer */
+void SNDDMA_LockBuffer(void);
+
+/* unlocks the dma buffer / sends sound to the device */
+void SNDDMA_Submit(void);
+
+/* blocks sound output upon window focus loss */
+void SNDDMA_BlockSound(void);
+
+/* unblocks the output upon window focus gain */
+void SNDDMA_UnblockSound(void);
 
 // ====================================================================
 // User-setable variables
@@ -172,7 +187,6 @@ sfxcache_t *S_LoadSound (sfx_t *s);
 wavinfo_t GetWavinfo (char *name, byte *wav, int wavlength);
 
 void SND_InitScaletable (void);
-void SNDDMA_Submit(void);
 
 void S_AmbientOff (void);
 void S_AmbientOn (void);
