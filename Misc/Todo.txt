@@ -1,0 +1,14 @@
+- Implement TCP networking.
+- Clean up in vidsdl: remove windowed and determine window state from modestate ?
+- Fix Sys_Error behaviour (what is quake double error?)
+- Open Console with Circomflex or Shift-Escape
+
+- Change SDL cursor to resemble the OS cursor (John)
+- Sensitivity is off (SDL related? Or can I try and replicate the original behaviour?) (John)
+- Paste doesn't work (needs to be implemented in platform.h) (John)
+- Keybindings are not loaded correctly upon first start? (spirit)
+- Log everything to the shell as well as to the console (spirit)
+- make esc work after a map tried changeleveling to a non-existant map (like e1m2quoth)
+- Launch Fitzquake, switch to other game via game (I tried Quoth and Marcher), load any map (I tried quoth's startmap and marcher): segfault
+
+- My "toggle r_showtris" bind causes the screen to be filled with the brown hud/viewsize texture. The only way to make the screen visible again was to delete the config. (works fine for me)
