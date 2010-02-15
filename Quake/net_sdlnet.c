@@ -24,11 +24,7 @@ Foundat(&addr->sa_dataion, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-
 #include <winsock2.h>
 #endif
 
-#if defined(LINUX)
-#include <SDL_net.h>
-#else
-#include <SDL_net/SDL_net.h>
-#endif
+#include "SDL_net.h"
 
 #include "net_sdlnet.h"
 
