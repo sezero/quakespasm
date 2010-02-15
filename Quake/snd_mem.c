@@ -194,26 +194,26 @@ void FindNextChunk(char *name)
 {
 	while (1)
 	{
-		data_p=last_chunk;
-
-		if (data_p >= iff_end)
-		{	// didn't find the chunk
-			data_p = NULL;
-			return;
-		}
-
-		data_p += 4;
-		iff_chunk_len = GetLittleLong();
-		if (iff_chunk_len < 0)
+	// Need at least 8 bytes for a chunk
+		if (last_chunk + 8 >= iff_end)
 		{
 			data_p = NULL;
 			return;
 		}
+
+		data_p = last_chunk + 4;
+		iff_chunk_len = GetLittleLong();
+		if (iff_chunk_len < 0 || iff_chunk_len > iff_end - data_p)
+		{
+			data_p = NULL;
+			Con_DPrintf("Bad \"%s\" chunk length (%d) in wav file\n", name, iff_chunk_len);
+			return;
+		}
 //		if (iff_chunk_len > 1024*1024)
 //			Sys_Error ("FindNextChunk: %i length is past the 1 meg sanity limit", iff_chunk_len);
+		last_chunk = data_p + ((iff_chunk_len + 1) & ~1);
 		data_p -= 8;
-		last_chunk = data_p + 8 + ( (iff_chunk_len + 1) & ~1 );
-		if (!Q_strncmp(data_p, name, 4))
+		if (!Q_strncmp((char *)data_p, name, 4))
 			return;
 	}
 }
