@@ -57,11 +57,13 @@ int main(int argc, char *argv[])
     if (!parms.membase)
         Sys_Error ("Not enough memory free; check disk space\n");
 
-	// Sys_PageIn (parms.membase, parms.memsize); don't think this is needed -- kristian
-
     // TODO: dedicated server setup
 
     // S_BlockSound(); do I need this?
+
+    Con_Printf("\nFitzQuake Version %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
+    Con_Printf("SDL port (c) Sleepwalkr, Baker, and OZ\n");
+    Con_Printf("This version hacked by Stevenaaus and OZ\n");
 
     Con_Printf("Host_Init\n");
     Host_Init(&parms);
