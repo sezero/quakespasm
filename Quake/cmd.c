@@ -220,9 +220,9 @@ void Cmd_StuffCmds_f (void)
 	char	cmds[CMDLINE_LENGTH];
 	int		i, j, plus;
 
-	plus = true;
-	j = 0;
-	for (i=0; cmdline.string[i]; i++)
+	plus = false;	// On Unix, argv[0] is command name
+
+	for (i = 0, j = 0; cmdline.string[i]; i++)
 	{
 		if (cmdline.string[i] == '+')
 		{
