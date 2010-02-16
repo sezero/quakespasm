@@ -36,6 +36,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 enum srcformat {SRC_INDEXED, SRC_LIGHTMAP, SRC_RGBA};
 
+typedef size_t src_offset_t; // technically need uintptr_t, but size_t is OK virtually everywhere.
+
 typedef struct gltexture_s {
 //managed by texture manager
 	unsigned int		texnum;
@@ -47,7 +49,7 @@ typedef struct gltexture_s {
 	unsigned int		height; //size of image as it exists in opengl
 	unsigned int		flags;
 	char				source_file[MAX_QPATH]; //relative filepath to data source, or "" if source is in memory
-	unsigned int		source_offset; //byte offset into file, or memory address
+	src_offset_t		source_offset; //byte offset into file, or memory address
 	enum srcformat		source_format; //format of pixel data (indexed, lightmap, or rgba)
 	unsigned int		source_width; //size of image in source data
 	unsigned int		source_height; //size of image in source data
@@ -81,7 +83,7 @@ void TexMgr_Init (void);
 
 // IMAGE LOADING
 gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height, enum srcformat format,
-							   byte *data, char *source_file, unsigned source_offset, unsigned flags);
+			       byte *data, char *source_file, src_offset_t source_offset, unsigned flags);
 void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants);
 void TexMgr_ReloadImages (void);
 void TexMgr_ReloadNobrightImages (void);

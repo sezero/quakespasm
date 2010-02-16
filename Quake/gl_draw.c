@@ -207,7 +207,7 @@ void Scrap_Upload (void)
 	{
 		sprintf (name, "scrap%i", i);
 		scrap_textures[i] = TexMgr_LoadImage (NULL, name, BLOCK_WIDTH, BLOCK_HEIGHT, SRC_INDEXED, scrap_texels[i],
-			"", (unsigned)scrap_texels[i], TEXPREF_ALPHA | TEXPREF_OVERWRITE | TEXPREF_NOPICMIP);
+			"", (src_offset_t)scrap_texels[i], TEXPREF_ALPHA | TEXPREF_OVERWRITE | TEXPREF_NOPICMIP);
 	}
 
 	scrap_dirty = false;
@@ -222,7 +222,7 @@ qpic_t *Draw_PicFromWad (char *name)
 {
 	qpic_t	*p;
 	glpic_t	*gl;
-	unsigned offset; //johnfitz
+	src_offset_t offset; //johnfitz
 
 	p = W_GetLumpName (name);
 	if (!p) return pic_nul; //johnfitz
@@ -253,7 +253,7 @@ qpic_t *Draw_PicFromWad (char *name)
 		char texturename[64]; //johnfitz
 		sprintf (texturename, "%s:%s", WADFILENAME, name); //johnfitz
 
-		offset = (unsigned)p - (unsigned)wad_base + sizeof(int)*2; //johnfitz
+		offset = (src_offset_t)p - (src_offset_t)wad_base + sizeof(int)*2; //johnfitz
 
 		gl->gltexture = TexMgr_LoadImage (NULL, texturename, p->width, p->height, SRC_INDEXED, p->data, WADFILENAME,
 										  offset, TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
@@ -331,7 +331,7 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 	pic->height = height;
 
 	gl = (glpic_t *)pic->data;
-	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_INDEXED, data, "", (unsigned)data, flags);
+	gl->gltexture = TexMgr_LoadImage (NULL, name, width, height, SRC_INDEXED, data, "", (src_offset_t)data, flags);
 	gl->sl = 0;
 	gl->sh = (float)width/(float)TexMgr_PadConditional(width);
 	gl->tl = 0;
@@ -354,11 +354,11 @@ Draw_LoadPics -- johnfitz
 void Draw_LoadPics (void)
 {
 	byte		*data;
-	unsigned	offset;
+	src_offset_t	offset;
 
 	data = W_GetLumpName ("conchars");
 	if (!data) Sys_Error ("Draw_LoadPics: couldn't load conchars");
-	offset = (unsigned)data - (unsigned)wad_base;
+	offset = (src_offset_t)data - (src_offset_t)wad_base;
 	char_texture = TexMgr_LoadImage (NULL, WADFILENAME":conchars", 128, 128, SRC_INDEXED, data,
 		WADFILENAME, offset, TEXPREF_ALPHA | TEXPREF_NEAREST | TEXPREF_NOPICMIP | TEXPREF_CONCHARS);
 

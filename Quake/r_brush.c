@@ -152,7 +152,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 		{
 			for (p = s->polys->next; p; p = p->next)
 			{
-				srand((unsigned int) p);
+				srand((unsigned int) (size_t) p);
 				glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 				DrawGLPoly (p);
 				rs_brushpasses++;
@@ -160,7 +160,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 			return;
 		}
 
-		srand((unsigned int) s->polys);
+		srand((unsigned int) (size_t) s->polys);
 		glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 		DrawGLPoly (s->polys);
 		rs_brushpasses++;
@@ -918,7 +918,7 @@ void GL_BuildLightmaps (void)
 		sprintf(name, "lightmap%03i",i);
 		data = lightmaps+i*BLOCK_WIDTH*BLOCK_HEIGHT*lightmap_bytes;
 		lightmap_textures[i] = TexMgr_LoadImage (cl.worldmodel, name, BLOCK_WIDTH, BLOCK_HEIGHT,
-			 SRC_LIGHTMAP, data, "", (unsigned)data, TEXPREF_LINEAR | TEXPREF_NOPICMIP);
+			 SRC_LIGHTMAP, data, "", (src_offset_t)data, TEXPREF_LINEAR | TEXPREF_NOPICMIP);
 		//johnfitz
 	}
 

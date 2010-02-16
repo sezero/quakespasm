@@ -282,7 +282,7 @@ void R_DrawTextureChains_Drawflat (void)
 				if (!s->culled)
 					for (p = s->polys->next; p; p = p->next)
 					{
-						srand((unsigned int) p);
+						srand((unsigned int) (size_t) p);
 						glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 						DrawGLPoly (p);
 						rs_brushpasses++;
@@ -293,7 +293,7 @@ void R_DrawTextureChains_Drawflat (void)
 			for (s = t->texturechain; s; s = s->texturechain)
 				if (!s->culled)
 				{
-					srand((unsigned int) s->polys);
+					srand((unsigned int) (size_t) s->polys);
 					glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 					DrawGLPoly (s->polys);
 					rs_brushpasses++;

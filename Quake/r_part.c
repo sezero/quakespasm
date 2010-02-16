@@ -85,7 +85,7 @@ void R_InitParticleTextures (void)
 			*dst++ = 255;
 			*dst++ = R_ParticleTextureLookup(x, y, 8);
 		}
-	particletexture1 = TexMgr_LoadImage (NULL, "particle1", 64, 64, SRC_RGBA, particle1_data, "", (unsigned)particle1_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_LINEAR);
+	particletexture1 = TexMgr_LoadImage (NULL, "particle1", 64, 64, SRC_RGBA, particle1_data, "", (src_offset_t)particle1_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_LINEAR);
 
 	// particle texture 2 -- square
 	dst = particle2_data;
@@ -97,7 +97,7 @@ void R_InitParticleTextures (void)
 			*dst++ = 255;
 			*dst++ = x || y ? 0 : 255;
 		}
-	particletexture2 = TexMgr_LoadImage (NULL, "particle2", 2, 2, SRC_RGBA, particle2_data, "", (unsigned)particle2_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_NEAREST);
+	particletexture2 = TexMgr_LoadImage (NULL, "particle2", 2, 2, SRC_RGBA, particle2_data, "", (src_offset_t)particle2_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_NEAREST);
 
 	// particle texture 3 -- blob
 	dst = particle3_data;
@@ -109,7 +109,7 @@ void R_InitParticleTextures (void)
 			*dst++ = 255;
 			*dst++ = R_ParticleTextureLookup(x, y, 2);
 		}
-	particletexture3 = TexMgr_LoadImage (NULL, "particle3", 64, 64, SRC_RGBA, particle3_data, "", (unsigned)particle3_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_LINEAR);
+	particletexture3 = TexMgr_LoadImage (NULL, "particle3", 64, 64, SRC_RGBA, particle3_data, "", (src_offset_t)particle3_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_LINEAR);
 
 
 	//set default

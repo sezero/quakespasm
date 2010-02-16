@@ -106,7 +106,7 @@ void Sky_LoadTexture (texture_t *mt)
 			back_data[(i*128) + j] = src[i*256 + j + 128];
 
 	sprintf(texturename, "%s:%s_back", loadmodel->name, mt->name);
-	solidskytexture = TexMgr_LoadImage (loadmodel, texturename, 128, 128, SRC_INDEXED, back_data, "", (unsigned)back_data, TEXPREF_NONE);
+	solidskytexture = TexMgr_LoadImage (loadmodel, texturename, 128, 128, SRC_INDEXED, back_data, "", (src_offset_t)back_data, TEXPREF_NONE);
 
 // extract front layer and upload
 	for (i=0 ; i<128 ; i++)
@@ -118,7 +118,7 @@ void Sky_LoadTexture (texture_t *mt)
 		}
 
 	sprintf(texturename, "%s:%s_front", loadmodel->name, mt->name);
-	alphaskytexture = TexMgr_LoadImage (loadmodel, texturename, 128, 128, SRC_INDEXED, front_data, "", (unsigned)front_data, TEXPREF_ALPHA);
+	alphaskytexture = TexMgr_LoadImage (loadmodel, texturename, 128, 128, SRC_INDEXED, front_data, "", (src_offset_t)front_data, TEXPREF_ALPHA);
 
 // calculate r_fastsky color based on average of all opaque foreground colors
 	r = g = b = count = 0;

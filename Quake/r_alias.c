@@ -134,7 +134,7 @@ void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 			{
 				if (r_drawflat_cheatsafe)
 				{
-					srand(count * (unsigned int) commands);
+					srand(count * (unsigned int)(src_offset_t)commands);
 					glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 				}
 				else if (lerping)
