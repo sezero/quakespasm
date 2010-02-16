@@ -1052,7 +1052,7 @@ void VID_InitDIB ()
 	if (COM_CheckParm("-width"))
 		modelist[0].width = Q_atoi(com_argv[COM_CheckParm("-width")+1]);
 	else
-		modelist[0].width = 640;
+		modelist[0].width = 800;
 
 	if (modelist[0].width < 320)
 		modelist[0].width = 320;
