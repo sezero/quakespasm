@@ -113,8 +113,8 @@ int main(int argc, char *argv[])
 					break;
 				case SDL_KEYDOWN:
                 case SDL_KEYUP:
-                    // LSHIFT + ESC and circomflex always opens the console no matter what
-                    if ((event.key.keysym.sym == SDLK_ESCAPE && (event.key.keysym.mod & KMOD_LSHIFT) != 0)
+                    // SHIFT + ESC and circomflex always opens the console no matter what
+                    if ((event.key.keysym.sym == SDLK_ESCAPE && (event.key.keysym.mod & KMOD_SHIFT))
                         || (event.key.keysym.sym == SDLK_CARET))
                     {
                         if (event.key.type == SDL_KEYDOWN)
