@@ -1209,13 +1209,18 @@ void	VID_Init (void)
 	basenummodes = nummodes = 1;
 	VID_InitFullDIB();
 
-	if (COM_CheckParm("-window"))
+	// Config file is not read yet, so we don't know vid_fullscreen.value
+	// Changed this to default to -window as otherwise it occasionally forces
+	// two switches of video mode (window->fullscreen->window) which is bad S.A
+	// It's still not perfect but, hell, this ancient code can be a pain
+	if (!COM_CheckParm("-fullscreen") && !COM_CheckParm ("-f"))
 	{
 		windowed = true;
 		vid_default = MODE_WINDOWED;
 	}
 	else
 	{
+		Cvar_Set ("vid_fullscreen", "1");
 		if (nummodes == 1)
 			Sys_Error ("No RGB fullscreen modes available");
 
@@ -1395,11 +1400,17 @@ void	VID_Init (void)
 	//johnfitz -- command line vid settings should override config file settings.
 	//so we have to lock the vid mode from now until after all config files are read.
 	if (COM_CheckParm("-width") || COM_CheckParm("-height") ||
-		COM_CheckParm("-bpp") || COM_CheckParm("-window"))
+		COM_CheckParm("-bpp")				||
+		COM_CheckParm("-window") || COM_CheckParm("-w") ||
+		COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
 	{
 		vid_locked = true;
 	}
 	//johnfitz
+
+	// The problem here is (say) previous video mode is 1024x768 windowed
+	// And we call "fitzquake -w". This disables setting of 1024x768, and when video lock
+	// is removed, we get 800x600.
 }
 
 /*
