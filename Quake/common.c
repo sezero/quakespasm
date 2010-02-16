@@ -1471,7 +1471,7 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 			for (i=0 ; i<pak->numfiles ; i++)
 				if (!strcmp (pak->files[i].name, filename))
 				{       // found it!
-					Sys_Printf ("PackFile: %s : %s\n",pak->filename, filename);
+					Con_DPrintf ("PackFile: %s : %s\n",pak->filename, filename);
 					if (handle)
 					{
 						*handle = pak->handle;
@@ -1523,7 +1523,7 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 				strcpy (netpath, cachepath);
 			}
 
-			Sys_Printf ("FindFile: %s\n",netpath);
+			Con_DPrintf ("FindFile: %s\n",netpath);
 			com_filesize = Sys_FileOpenRead (netpath, &i);
 			if (handle)
 				*handle = i;
@@ -1537,7 +1537,7 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 
 	}
 
-	Sys_Printf ("FindFile: can't find %s\n", filename);
+	Con_DPrintf ("FindFile: can't find %s\n", filename);
 
 	if (handle)
 		*handle = -1;
