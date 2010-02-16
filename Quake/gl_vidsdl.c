@@ -243,8 +243,8 @@ int VID_SetMode (int modenum)
 {
 	int temp;
 	qboolean stat;
-    long int flags = SDL_DEFAULT_FLAGS;
-    char caption[50];
+	Uint32 flags = SDL_DEFAULT_FLAGS;
+	char caption[50];
 
     //TODO: check if video mode is supported using SDL_VideoModeOk
 	if ((windowed && (modenum != 0)) ||
@@ -1092,7 +1092,7 @@ void VID_InitFullDIB ()
 {
     SDL_PixelFormat format;
     SDL_Rect        **modes;
-    long int        flags;
+    Uint32          flags;
 	int             i, j, k, modenum, originalnummodes, existingmode;
     int             bpps[3] = {16, 24, 32}; // enumerate >8 bpp modes
 

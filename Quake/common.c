@@ -150,11 +150,11 @@ void InsertLinkAfter (link_t *l, link_t *after)
 ============================================================================
 */
 
-void Q_memset (void *dest, int fill, int count)
+void Q_memset (void *dest, int fill, size_t count)
 {
-	int             i;
+	size_t		i;
 
-	if ( (((long)dest | count) & 3) == 0)
+	if ( (((size_t)dest | count) & 3) == 0)
 	{
 		count >>= 2;
 		fill = fill | (fill<<8) | (fill<<16) | (fill<<24);
@@ -166,11 +166,11 @@ void Q_memset (void *dest, int fill, int count)
 			((byte *)dest)[i] = fill;
 }
 
-void Q_memcpy (void *dest, const void *src, int count)
+void Q_memcpy (void *dest, const void *src, size_t count)
 {
-	int             i;
+	size_t		i;
 
-	if (( ( (long)dest | (long)src | count) & 3) == 0 )
+	if (( ( (size_t)dest | (size_t)src | count) & 3) == 0 )
 	{
 		count>>=2;
 		for (i=0 ; i<count ; i++)
@@ -181,7 +181,7 @@ void Q_memcpy (void *dest, const void *src, int count)
 			((byte *)dest)[i] = ((byte *)src)[i];
 }
 
-int Q_memcmp (const void *m1, const void *m2, int count)
+int Q_memcmp (const void *m1, const void *m2, size_t count)
 {
 	while(count)
 	{

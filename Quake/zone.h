@@ -88,11 +88,10 @@ void Memory_Init (void *buf, int size);
 
 void Z_Free (void *ptr);
 void *Z_Malloc (int size);			// returns 0 filled memory
+void *Z_Realloc (void *ptr, int size);
 void *Z_TagMalloc (int size, int tag);
 
-void Z_DumpHeap (void);
 void Z_CheckHeap (void);
-int Z_FreeMemory (void);
 
 void *Hunk_Alloc (int size);		// returns 0 filled memory
 void *Hunk_AllocName (int size, char *name);

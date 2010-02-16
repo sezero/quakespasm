@@ -64,33 +64,6 @@ all big things are allocated on the hunk.
 
 memzone_t	*mainzone;
 
-void Z_ClearZone (memzone_t *zone, int size);
-
-
-/*
-========================
-Z_ClearZone
-========================
-*/
-void Z_ClearZone (memzone_t *zone, int size)
-{
-	memblock_t	*block;
-
-// set the entire zone to one free block
-
-	zone->blocklist.next = zone->blocklist.prev = block =
-		(memblock_t *)( (byte *)zone + sizeof(memzone_t) );
-	zone->blocklist.tag = 1;	// in use block
-	zone->blocklist.id = 0;
-	zone->blocklist.size = 0;
-	zone->rover = block;
-
-	block->prev = block->next = &zone->blocklist;
-	block->tag = 0;			// free block
-	block->id = ZONEID;
-	block->size = size - sizeof(memzone_t);
-}
-
 
 /*
 ========================
@@ -152,6 +125,41 @@ Z_CheckHeap ();	// DEBUG
 
 	return buf;
 }
+
+/*
+========================
+Z_Realloc
+========================
+*/
+void *Z_Realloc(void *ptr, int size)
+{
+	int old_size;
+	void *old_ptr;
+	memblock_t *block;
+
+	if (!ptr)
+		return Z_Malloc (size);
+
+	block = (memblock_t *) ((byte *) ptr - sizeof (memblock_t));
+	if (block->id != ZONEID)
+		Sys_Error ("Z_Realloc: realloced a pointer without ZONEID");
+	if (block->tag == 0)
+		Sys_Error ("Z_Realloc: realloced a freed pointer");
+
+	old_size = block->size;
+	old_ptr = ptr;
+
+	Z_Free (ptr);
+	ptr = Z_TagMalloc (size, 1);
+	if (!ptr)
+		Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
+
+	if (ptr != old_ptr)
+		memmove (ptr, old_ptr, min (old_size, size));
+
+	return ptr;
+}
+
 
 void *Z_TagMalloc (int size, int tag)
 {
@@ -299,7 +307,7 @@ void Hunk_Check (void)
 	{
 		if (h->sentinal != HUNK_SENTINAL)
 			Sys_Error ("Hunk_Check: trahsed sentinal");
-		if (h->size < 16 || h->size + (byte *)h - hunk_base > hunk_size)
+		if (h->size < sizeof(hunk_t) || h->size + (byte *)h - hunk_base > hunk_size)
 			Sys_Error ("Hunk_Check: bad size");
 		h = (hunk_t *)((byte *)h+h->size);
 	}
@@ -357,7 +365,7 @@ void Hunk_Print (qboolean all)
 	//
 		if (h->sentinal != HUNK_SENTINAL)
 			Sys_Error ("Hunk_Check: trahsed sentinal");
-		if (h->size < 16 || h->size + (byte *)h - hunk_base > hunk_size)
+		if (h->size < sizeof(hunk_t) || h->size + (byte *)h - hunk_base > hunk_size)
 			Sys_Error ("Hunk_Check: bad size");
 
 		next = (hunk_t *)((byte *)h+h->size);
@@ -922,6 +930,25 @@ void *Cache_Alloc (cache_user_t *c, int size, char *name)
 //============================================================================
 
 
+static void Memory_InitZone (memzone_t *zone, int size)
+{
+	memblock_t	*block;
+
+// set the entire zone to one free block
+
+	zone->blocklist.next = zone->blocklist.prev = block =
+		(memblock_t *)( (byte *)zone + sizeof(memzone_t) );
+	zone->blocklist.tag = 1;	// in use block
+	zone->blocklist.id = 0;
+	zone->blocklist.size = 0;
+	zone->rover = block;
+
+	block->prev = block->next = &zone->blocklist;
+	block->tag = 0;			// free block
+	block->id = ZONEID;
+	block->size = size - sizeof(memzone_t);
+}
+
 /*
 ========================
 Memory_Init
@@ -947,7 +974,7 @@ void Memory_Init (void *buf, int size)
 			Sys_Error ("Memory_Init: you must specify a size in KB after -zone");
 	}
 	mainzone = Hunk_AllocName (zonesize, "zone" );
-	Z_ClearZone (mainzone, zonesize);
+	Memory_InitZone (mainzone, zonesize);
 
 	Cmd_AddCommand ("hunk_print", Hunk_Print_f); //johnfitz
 }

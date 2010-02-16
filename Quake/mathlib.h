@@ -58,7 +58,7 @@ extern	int nanmask;
 	_number = DotProduct(_v, _v);\
 	if (_number != 0.0)\
 	{\
-		*((long *)&_y) = 0x5f3759df - ((* (long *) &_number) >> 1);\
+		*((int *)&_y) = 0x5f3759df - ((* (int *) &_number) >> 1);\
 		_y = _y * (1.5f - (_number * 0.5f * _y * _y));\
 		VectorScale(_v, _y, _v);\
 	}\
