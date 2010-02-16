@@ -1082,7 +1082,7 @@ void Con_DrawConsole (int lines, qboolean drawinput)
 
 //draw version number in bottom right
 	y+=8;
-	sprintf (ver, "FitzQuake %1.2f"/*" beta2"*/, (float)FITZQUAKE_VERSION);
+	sprintf (ver, "FitzQuake %1.2f SDL", (float)FITZQUAKE_VERSION);
 	for (x=0; x<strlen(ver); x++)
 		Draw_Character ((con_linewidth-strlen(ver)+x+2)<<3, y, ver[x] /*+ 128*/);
 }
