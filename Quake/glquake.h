@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void GL_BeginRendering (int *x, int *y, int *width, int *height);
 void GL_EndRendering (void);
+void GL_Set2D (void);
 
 //johnfitz -- removed texture object stuff since they are standard in gl 1.1
 
@@ -162,9 +163,6 @@ extern	const char *gl_renderer;
 extern	const char *gl_version;
 extern	const char *gl_extensions;
 
-void R_TranslatePlayerSkin (int playernum);
-void R_TranslateNewPlayerSkin (int playernum); //johnfitz -- this handles cases when the actual texture changes
-
 // Multitexture
 #define    TEXTURE0_SGIS				0x835E
 #define    TEXTURE1_SGIS				0x835F
@@ -272,3 +270,61 @@ void Fog_SetupFrame (void);
 void Fog_NewMap (void);
 void Fog_Init (void);
 //johnfitz
+
+void R_NewGame (void);
+
+void R_AnimateLight (void);
+void R_MarkSurfaces (void);
+void R_CullSurfaces (void);
+qboolean R_CullBox (vec3_t emins, vec3_t emaxs);
+void R_StoreEfrags (efrag_t **ppefrag);
+qboolean R_CullModelForEntity (entity_t *e);
+void R_RotateForEntity (vec3_t origin, vec3_t angles);
+void R_MarkLights (dlight_t *light, int bit, mnode_t *node);
+
+void R_InitParticles (void);
+void R_DrawParticles (void);
+void CL_RunParticles (void);
+void R_ClearParticles (void);
+
+void R_TranslatePlayerSkin (int playernum);
+void R_TranslateNewPlayerSkin (int playernum); //johnfitz -- this handles cases when the actual texture changes
+void R_UpdateWarpTextures (void);
+
+void R_DrawWorld (void);
+void R_DrawAliasModel (entity_t *e);
+void R_DrawBrushModel (entity_t *e);
+void R_DrawSpriteModel (entity_t *e);
+
+void R_DrawTextureChains_Water (void);
+
+void R_RenderDlights (void);
+void GL_BuildLightmaps (void);
+void R_RebuildAllLightmaps (void);
+
+int R_LightPoint (vec3_t p);
+
+void GL_SubdivideSurface (msurface_t *fa);
+void R_BuildLightMap (msurface_t *surf, byte *dest, int stride);
+void R_RenderDynamicLightmaps (msurface_t *fa);
+void R_UploadLightmap (int lmap);
+
+void R_DrawTextureChains_ShowTris (void);
+void R_DrawBrushModel_ShowTris (entity_t *e);
+void R_DrawAliasModel_ShowTris (entity_t *e);
+void R_DrawParticles_ShowTris (void);
+
+void GL_DrawAliasShadow (entity_t *e);
+void DrawGLTriangleFan (glpoly_t *p);
+void DrawGLPoly (glpoly_t *p);
+void DrawWaterPoly (glpoly_t *p);
+void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr);
+
+void Sky_Init (void);
+void Sky_DrawSky (void);
+void Sky_NewMap (void);
+void Sky_LoadTexture (texture_t *mt);
+void Sky_LoadSkyBox (char *name);
+
+void TexMgr_RecalcWarpImageSize (void);
+

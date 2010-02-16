@@ -149,7 +149,6 @@ char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 void Sky_LoadSkyBox (char *name)
 {
 	int		i, mark, width, height;
-	// FILE	*f; unused -- kristian
 	char	filename[MAX_OSPATH];
 	byte	*data;
 	qboolean nonefound = true;
@@ -494,7 +493,6 @@ Sky_ProcessPoly
 void Sky_ProcessPoly (glpoly_t	*p)
 {
 	int			i;
-	// float		*v; unused -- kristian
 	vec3_t		verts[MAX_CLIP_VERTS];
 
 	//draw it
@@ -676,11 +674,6 @@ FIXME: eliminate cracks by adding an extra vert on tjuncs
 void Sky_DrawSkyBox (void)
 {
 	int		i;
-    /* unused -- kristian
-    , j, k;
-	vec3_t	v;
-	float	s, t;
-    */
 
 	for (i=0 ; i<6 ; i++)
 	{

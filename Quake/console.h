@@ -51,3 +51,8 @@ void Con_NotifyBox (char *text);	// during startup for sound / cd warnings
 
 void Con_Show (void);
 void Con_Hide (void);
+
+char *Con_Quakebar (int len);
+void Con_TabComplete (void);
+void Con_LogCenterPrint (char *str);
+

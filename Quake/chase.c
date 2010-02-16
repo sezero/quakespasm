@@ -83,7 +83,6 @@ TODO: stay at least 8 units away from all walls in this leaf
 void Chase_UpdateForDrawing (void)
 {
 	int		i;
-	//float	dist;
 	vec3_t	forward, up, right;
 	vec3_t	ideal, crosshair, temp;
 

@@ -277,7 +277,7 @@ void Sbar_DrawPic (int x, int y, qpic_t *pic)
 Sbar_DrawPicAlpha -- johnfitz
 =============
 */
-Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha)
+void Sbar_DrawPicAlpha (int x, int y, qpic_t *pic, float alpha)
 {
 	glDisable (GL_ALPHA_TEST);
 	glEnable (GL_BLEND);
@@ -1162,7 +1162,6 @@ void Sbar_MiniDeathmatchOverlay (void)
 	int				i, k, l, top, bottom, x, y, f, numlines;
 	char			num[12];
 	float			scale; //johnfitz
-	qpic_t			*pic;
 	scoreboard_t	*s;
 
 	scale = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0); //johnfitz

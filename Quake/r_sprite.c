@@ -85,9 +85,6 @@ void R_DrawSpriteModel (entity_t *e)
 	mspriteframe_t	*frame;
 	float			*s_up, *s_right;
 	float			angle, sr, cr;
-    /* unused -- kristian
-    float           len;
-    */
 
 	//TODO: frustum cull it?
 

@@ -390,7 +390,6 @@ SV_LinkEdict
 void SV_LinkEdict (edict_t *ent, qboolean touch_triggers)
 {
 	areanode_t	*node;
-	// model_t		*mod = NULL; //johnfitz unused -- kristian
 
 	if (ent->area.prev)
 		SV_UnlinkEdict (ent);	// unlink from old position

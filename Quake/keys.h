@@ -151,4 +151,8 @@ void Key_Init (void);
 void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int keynum, char *binding);
 void Key_ClearStates (void);
+void BuildKeyMaps (void);
+
+int Key_Map (SDL_KeyboardEvent *event);
+
 

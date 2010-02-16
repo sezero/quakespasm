@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
 			switch (event.type) {
                 case SDL_ACTIVEEVENT:
                     if (event.active.state & SDL_APPACTIVE & SDL_APPINPUTFOCUS)
+                    {
                         if (event.active.gain)
                         {
                             IN_Activate();
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
                             // TODO: handle sound
                             IN_Deactivate(vid.type == MODE_WINDOWED);
                         }
+                    }
                     break;
 				case SDL_MOUSEMOTION:
                     IN_MouseMove(event.motion.xrel, event.motion.yrel);
@@ -112,7 +114,8 @@ int main(int argc, char *argv[])
 				case SDL_KEYDOWN:
                 case SDL_KEYUP:
                     // LSHIFT + ESC and circomflex always opens the console no matter what
-                    if ((event.key.keysym.sym == SDLK_ESCAPE && (event.key.keysym.mod & KMOD_LSHIFT != 0)) || (event.key.keysym.sym == SDLK_CARET)) 
+                    if ((event.key.keysym.sym == SDLK_ESCAPE && (event.key.keysym.mod & KMOD_LSHIFT) != 0)
+                        || (event.key.keysym.sym == SDLK_CARET))
                     {
                         if (event.key.type == SDL_KEYDOWN)
                             Con_ToggleConsole_f();

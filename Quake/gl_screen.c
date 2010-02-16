@@ -263,10 +263,7 @@ Internal use only
 static void SCR_CalcRefdef (void)
 {
 	float		size, scale; //johnfitz -- scale
-    /* unused -- kristian
-	vrect_t		vrect;
-	int			h;
-    */
+
 	vid.recalc_refdef = 0;
 
 // force the status bar to redraw
@@ -959,8 +956,6 @@ needs almost the entire 256k of stack space!
 */
 void SCR_UpdateScreen (void)
 {
-	// vrect_t		vrect; unused -- kristian
-
 	if (block_drawing)
 		return;
 

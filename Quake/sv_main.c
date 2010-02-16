@@ -196,15 +196,19 @@ void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (ent >= 8192)
+	{
 		if (sv.protocol == PROTOCOL_NETQUAKE)
 			return; //don't send any info protocol can't support
 		else
 			field_mask |= SND_LARGEENTITY;
+	}
 	if (sound_num >= 256 || channel >= 8)
+	{
 		if (sv.protocol == PROTOCOL_NETQUAKE)
 			return; //don't send any info protocol can't support
 		else
 			field_mask |= SND_LARGESOUND;
+	}
 	//johnfitz
 
 // directed messages go only to the entity the are targeted on
@@ -1218,7 +1222,7 @@ Tell all the clients that the server is changing levels
 */
 void SV_SendReconnect (void)
 {
-	char	data[128];
+	byte	data[128];
 	sizebuf_t	msg;
 
 	msg.data = data;

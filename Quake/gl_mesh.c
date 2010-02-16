@@ -203,14 +203,6 @@ void BuildTris (void)
 {
 	int		i, j, k;
 	int		startv;
-    /* unused -- kristian
-	mtriangle_t	*last, *check;
-	int		m1, m2;
-	int		striplength;
-	trivertx_t	*v;
-	mtriangle_t *tv;
-	int		index;
-    */
 	float	s, t;
 	int		len, bestlen, besttype;
 	int		bestverts[1024];
@@ -230,6 +222,7 @@ void BuildTris (void)
 			continue;
 
 		bestlen = 0;
+		besttype = 0;
 		for (type = 0 ; type < 2 ; type++)
 //	type = 1;
 		{
@@ -298,13 +291,6 @@ void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
 	int		i, j;
 	int			*cmds;
 	trivertx_t	*verts;
-    /* unused -- kristian
-	maliasgroup_t	*paliasgroup;
-	char	cache[MAX_QPATH], fullpath[MAX_OSPATH], *c;
-	FILE	*f;
-	int		len;
-	byte	*data;
-    */
 	float	hscale, vscale; //johnfitz -- padded skins
 	int		count; //johnfitz -- precompute texcoords for padded skins
 	int		*loadcmds; //johnfitz
@@ -319,63 +305,8 @@ void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
 
 //johnfitz -- generate meshes
 
-#if 1 //always regenerate meshes
-
 	Con_DPrintf ("meshing %s...\n",m->name);
 	BuildTris ();
-
-#else //conditional regeneration
-
-	if (gl_alwaysmesh.value) // build it from scratch, and don't bother saving it to disk
-	{
-		Con_DPrintf ("meshing %s...\n",m->name);
-		BuildTris ();
-	}
-	else // check disk cache, and rebuild it and save to disk if necessary
-	{
-	// FITZQUAKE 0.85 CREATES DIRECTORIES HERE
-		//
-		// look for a cached version
-		//
-		strcpy (cache, "glquake/");
-		COM_StripExtension (m->name+strlen("progs/"), cache+strlen("glquake/"));
-		strcat (cache, ".ms2");
-
-		COM_FOpenFile (cache, &f);
-		if (f)
-		{
-			fread (&numcommands, 4, 1, f);
-			fread (&numorder, 4, 1, f);
-			fread (&commands, numcommands * sizeof(commands[0]), 1, f);
-			fread (&vertexorder, numorder * sizeof(vertexorder[0]), 1, f);
-			fclose (f);
-		}
-		else
-		{
-			//
-			// build it from scratch
-			//
-			Con_Printf ("meshing %s...\n",m->name);
-			BuildTris ();
-
-			//
-			// save out the cached version
-			//
-			sprintf (fullpath, "%s/%s", com_gamedir, cache);
-			f = fopen (fullpath, "wb");
-			if (f)
-			{
-				fwrite (&numcommands, 4, 1, f);
-				fwrite (&numorder, 4, 1, f);
-				fwrite (&commands, numcommands * sizeof(commands[0]), 1, f);
-				fwrite (&vertexorder, numorder * sizeof(vertexorder[0]), 1, f);
-				fclose (f);
-			}
-		}
-	}
-#endif
-//johnfitz
-
 
 	// save the data out
 

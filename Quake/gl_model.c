@@ -379,7 +379,6 @@ void Mod_LoadTextures (lump_t *l)
 	int			mark, fwidth, fheight;
 	char		filename[MAX_OSPATH], filename2[MAX_OSPATH], mapname[MAX_OSPATH];
 	byte		*data;
-	FILE		*f;
 	extern byte *hunk_base;
 //johnfitz
 
@@ -900,7 +899,6 @@ void Mod_PolyForUnlitSurface (msurface_t *fa)
 	vec3_t		verts[64];
 	int			numverts, i, lindex;
 	float		*vec;
-	// texture_t	*t; unused -- kristian
 	glpoly_t	*poly;
 	float		texscale;
 
@@ -1643,8 +1641,8 @@ Mod_LoadAliasFrame
 */
 void * Mod_LoadAliasFrame (void * pin, maliasframedesc_t *frame)
 {
-	trivertx_t		*pframe, *pinframe;
-	int				i, j;
+	trivertx_t		*pinframe;
+	int				i;
 	daliasframe_t	*pdaliasframe;
 
 	pdaliasframe = (daliasframe_t *)pin;
@@ -1807,10 +1805,9 @@ void *Mod_LoadAllSkins (int numskins, daliasskintype_t *pskintype)
 {
 	int						i, j, k, size, groupskins;
 	char					name[32];
-	byte					*copy, *skin, *texels;
+	byte					*skin, *texels;
 	daliasskingroup_t		*pinskingroup;
 	daliasskininterval_t	*pinskinintervals;
-	int						padx, pady, ii, jj; //johnfitz -- padded player skin
 	char					fbr_mask_name[64]; //johnfitz -- added for fullbright support
 	unsigned				offset; //johnfitz
 
@@ -2017,7 +2014,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 	mdl_t				*pinmodel;
 	stvert_t			*pinstverts;
 	dtriangle_t			*pintriangles;
-	int					version, numframes;//, numskins; unused -- kristian
+	int					version, numframes;
 	int					size;
 	daliasframetype_t	*pframetype;
 	daliasskintype_t	*pskintype;
@@ -2174,11 +2171,7 @@ void * Mod_LoadSpriteFrame (void * pin, mspriteframe_t **ppframe, int framenum)
 {
 	dspriteframe_t		*pinframe;
 	mspriteframe_t		*pspriteframe;
-	int					width, height, size, origin[2];//, i; unused -- kristian
-    /* unused -- kristian
-	unsigned short		*ppixout;
-	byte				*ppixin;
-    */
+	int					width, height, size, origin[2];
 	char				name[64];
 	unsigned			offset; //johnfitz
 

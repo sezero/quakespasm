@@ -1607,7 +1607,7 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 	char	msg1[40];
 	char	msg2[40];
 	char	msg3[40];
-	int		boxlen, y;
+	int		boxlen;
 
 	if (wasInMenus)
 	{
@@ -1913,16 +1913,20 @@ forward:
 	}
 
 	if (DirectConfig && (serialConfig_cursor == 3 || serialConfig_cursor == 4))
+	{
 		if (key == K_UPARROW)
 			serialConfig_cursor = 2;
 		else
 			serialConfig_cursor = 5;
+	}
 
 	if (SerialConfig && StartingGame && serialConfig_cursor == 4)
+	{
 		if (key == K_UPARROW)
 			serialConfig_cursor = 3;
 		else
 			serialConfig_cursor = 5;
+	}
 }
 
 //=============================================================================
@@ -2289,10 +2293,12 @@ void M_LanConfig_Key (int key)
 	}
 
 	if (StartingGame && lanConfig_cursor == 2)
+	{
 		if (key == K_UPARROW)
 			lanConfig_cursor = 1;
 		else
 			lanConfig_cursor = 0;
+	}
 
 	l =  Q_atoi(lanConfig_portname);
 	if (l > 65535)

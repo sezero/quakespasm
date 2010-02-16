@@ -120,7 +120,6 @@ Grab six views for environment mapping tests
 void R_Envmap_f (void)
 {
 	byte	buffer[256*256*4];
-	// char	name[1024]; unused -- kristian
 
 	glDrawBuffer  (GL_FRONT);
 	glReadBuffer  (GL_FRONT);
@@ -184,7 +183,6 @@ R_Init
 */
 void R_Init (void)
 {
-	// extern byte *hunk_base; unused -- kristian
 	extern cvar_t gl_finish;
 
 	Cmd_AddCommand ("timerefresh", R_TimeRefresh_f);
@@ -376,10 +374,6 @@ void R_TimeRefresh_f (void)
 {
 	int			i;
 	float		start, stop, time;
-    /* unused -- kristian
-	int			startangle;
-	vrect_t		vr;
-    */
 
 	glDrawBuffer  (GL_FRONT);
 	glFinish ();

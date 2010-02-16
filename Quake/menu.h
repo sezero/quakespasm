@@ -36,4 +36,5 @@ void M_Keydown (int key);
 void M_Draw (void);
 void M_ToggleMenu_f (void);
 
+void M_Print (int cx, int cy, char *str);
 

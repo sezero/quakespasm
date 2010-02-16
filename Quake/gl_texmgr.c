@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+extern qboolean	gl_anisotropy_able;
+
 cvar_t		gl_texture_anisotropy = {"gl_texture_anisotropy", "1", true};
 cvar_t		gl_max_size = {"gl_max_size", "0"};
 cvar_t		gl_picmip = {"gl_picmip", "0"};
@@ -173,7 +175,6 @@ FIXME: this is getting called twice (becuase of the recursive Cvar_SetValue call
 */
 void TexMgr_Anisotropy_f (void)
 {
-	// extern qboolean gl_anisotropy_able; unused -- kristian
 	extern float gl_max_anisotropy;
 	gltexture_t	*glt;
 
@@ -228,9 +229,9 @@ void TexMgr_Imagedump_f (void)
 	for (glt=active_gltextures; glt; glt=glt->next)
 	{
 		Q_strcpy(tempname, glt->name);
-		while (c = strchr(tempname, ':')) *c = '_';
-		while (c = strchr(tempname, '/')) *c = '_';
-		while (c = strchr(tempname, '*')) *c = '_';
+		while ( (c = strchr(tempname, ':')) ) *c = '_';
+		while ( (c = strchr(tempname, '/')) ) *c = '_';
+		while ( (c = strchr(tempname, '*')) ) *c = '_';
 		sprintf(tganame, "imagedump/%s.tga", tempname);
 
 		GL_Bind (glt);
@@ -545,7 +546,7 @@ must be called before any texture loading
 */
 void TexMgr_Init (void)
 {
-	int i; //, mark; unused -- kristian
+	int i;
 	static byte notexture_data[16] = {159,91,83,255,0,0,0,255,0,0,0,255,159,91,83,255}; //black and pink checker
 	static byte nulltexture_data[16] = {127,191,255,255,0,0,0,255,0,0,0,255,127,191,255,255}; //black and blue checker
 	extern texture_t *r_notexture_mip, *r_notexture_mip2;
@@ -1121,7 +1122,7 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height
 	extern int lightmap_bytes;
 	unsigned short crc;
 	gltexture_t *glt;
-	int mark; //, bytes; unused -- kristian
+	int mark;
 
 	if (isDedicated)
 		return NULL;

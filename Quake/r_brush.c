@@ -47,9 +47,6 @@ int			allocated[MAX_LIGHTMAPS][BLOCK_WIDTH];
 // main memory so texsubimage can update properly
 byte		lightmaps[4*MAX_LIGHTMAPS*BLOCK_WIDTH*BLOCK_HEIGHT];
 
-void R_RenderDynamicLightmaps (msurface_t *fa);
-void R_BuildLightMap (msurface_t *surf, byte *dest, int stride);
-void R_UploadLightmap (int lmap);
 
 /*
 ===============
@@ -500,8 +497,7 @@ R_DrawBrushModel
 */
 void R_DrawBrushModel (entity_t *e)
 {
-	int			j, k;
-	int			i, numsurfaces;
+	int			i, k;
 	msurface_t	*psurf;
 	float		dot;
 	mplane_t	*pplane;
@@ -582,7 +578,7 @@ R_DrawBrushModel_ShowTris -- johnfitz
 */
 void R_DrawBrushModel_ShowTris (entity_t *e)
 {
-	int			i, j, k, numsurfaces;
+	int			i;
 	msurface_t	*psurf;
 	float		dot;
 	mplane_t	*pplane;
@@ -711,9 +707,6 @@ int AllocBlock (int w, int h, int *x, int *y)
 	int		i, j;
 	int		best, best2;
 	int		texnum;
-    /* unused -- kristian
-	int		bestx;
-    */
 
 	for (texnum=0 ; texnum<MAX_LIGHTMAPS ; texnum++)
 	{
@@ -765,9 +758,6 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 {
 	int		smax, tmax;
 	byte	*base;
-    /* unused -- kristian
-    int      s, t, l, i;
-    */
 
 	smax = (surf->extents[0]>>4)+1;
 	tmax = (surf->extents[1]>>4)+1;
@@ -791,15 +781,6 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 	float		*vec;
 	float		s, t;
 	glpoly_t	*poly;
-    /* unused -- kristian
-    int         s_axis, t_axis;
-	float		dist, lastdist, lzi, scale, u, v, frac;
-    unsigned    mask;
-	vec3_t		local, transformed;
-	mplane_t	*pplane;
-    int          newverts, newpage, lastvert;
-	qboolean	visible;
-    */
 
 // reconstruct the polygon
 	pedges = currentmodel->edges;
@@ -1049,9 +1030,6 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	unsigned	scale;
 	int			maps;
 	unsigned	*bl;
-    /* unused -- kristian
-	int			lightadj[4];
-    */
 
 	surf->cached_dlight = (surf->dlightframe == r_framecount);
 
@@ -1094,7 +1072,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	}
 
 // bound, invert, and shift
-store:
+// store:
 
 	//johnfitz -- only support GL_RGB lightmaps
 	switch (gl_lightmap_format)

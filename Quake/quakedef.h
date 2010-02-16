@@ -229,9 +229,9 @@ typedef struct
 
 
 #include "wad.h"
-#include "draw.h"
 #include "cvar.h"
 #include "screen.h"
+#include "draw.h"
 #include "net.h"
 #include "protocol.h"
 #include "cmd.h"
@@ -309,6 +309,10 @@ void Host_Frame (float time);
 void Host_Quit_f (void);
 void Host_ClientCommands (char *fmt, ...);
 void Host_ShutdownServer (qboolean crash);
+void Host_WriteConfiguration (void);
+
+void ExtraMaps_Init (void);
+void Modlist_Init (void);
 
 extern qboolean		msg_suppress_1;		// suppresses resolution and cache size console output
 										//  an fullscreen DIB focus gain/loss
@@ -326,5 +330,7 @@ extern int			minimum_memory;
 extern	cvar_t	chase_active;
 
 void Chase_Init (void);
+void TraceLine (vec3_t start, vec3_t end, vec3_t impact);
 void Chase_UpdateForClient (void); //johnfitz
 void Chase_UpdateForDrawing (void); //johnfitz
+

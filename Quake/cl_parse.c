@@ -932,6 +932,7 @@ void CL_ParseServerMessage (void)
 //
 	MSG_BeginReading ();
 
+	lastcmd = 0;
 	while (1)
 	{
 		if (msg_badread)

@@ -383,7 +383,6 @@ R_DrawAliasModel -- johnfitz -- almost completely rewritten
 void R_DrawAliasModel (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
-	vec3_t		mins, maxs;
 	int			i, anim;
 	gltexture_t	*tx, *fb;
 	lerpdata_t	lerpdata;
@@ -657,7 +656,6 @@ void GL_DrawAliasShadow (entity_t *e)
 								0,				0,				SHADOW_HEIGHT,	1};
 	float		lheight;
 	aliashdr_t	*paliashdr;
-	vec3_t		mins, maxs;
 	lerpdata_t	lerpdata;
 
 	if (R_CullModelForEntity(e))
@@ -711,7 +709,6 @@ R_DrawAliasModel_ShowTris -- johnfitz
 void R_DrawAliasModel_ShowTris (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
-	vec3_t		mins, maxs;
 	lerpdata_t	lerpdata;
 
 	if (R_CullModelForEntity(e))

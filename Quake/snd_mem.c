@@ -263,7 +263,7 @@ wavinfo_t GetWavinfo (char *name, byte *wav, int wavlength)
 
 // find "RIFF" chunk
 	FindChunk("RIFF");
-	if (!(data_p && !Q_strncmp(data_p+8, "WAVE", 4)))
+	if (!(data_p && !Q_strncmp((char *)data_p + 8, "WAVE", 4)))
 	{
 		Con_Printf("Missing RIFF/WAVE chunks\n");
 		return info;
@@ -303,7 +303,7 @@ wavinfo_t GetWavinfo (char *name, byte *wav, int wavlength)
 		FindNextChunk ("LIST");
 		if (data_p)
 		{
-			if (!strncmp (data_p + 28, "mark", 4))
+			if (!strncmp((char *)data_p + 28, "mark", 4))
 			{	// this is not a proper parse, but it works with cooledit...
 				data_p += 24;
 				i = GetLittleLong ();	// samples in loop

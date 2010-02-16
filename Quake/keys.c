@@ -168,7 +168,7 @@ keyname_t keynames[] =
 										//  dedicated before exiting
 byte key_map[SDLK_LAST];
 
-void BuildKeyMaps()
+void BuildKeyMaps (void)
 {
     int i;
 
@@ -383,7 +383,6 @@ void Key_Console (int key)
 {
 	extern	int con_vislines;
 	extern	char key_tabpartial[MAXCMDLINE];
-	// char	*cmd; unused -- kristian
 
 	switch (key)
 	{
@@ -434,7 +433,6 @@ void Key_Console (int key)
 			char	*line;
 			extern int con_current, con_linewidth;
 			extern char *con_text;
-			//extern float scr_con_current; unused -- kristian
 
 			for (i = con_current - con_totallines + 1 ; i <= con_current ; i++)
 			{

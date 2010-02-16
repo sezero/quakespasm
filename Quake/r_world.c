@@ -473,10 +473,6 @@ void R_DrawTextureChains_Water (void)
 	texture_t	*t;
 	glpoly_t	*p;
 	qboolean	bound;
-    /* unused -- kristian
-    int         j;
-    float       *v;
-    */
 
 	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe || !r_drawworld_cheatsafe)
 		return;

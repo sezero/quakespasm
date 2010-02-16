@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern	int			sb_lines;			// scan lines to draw
 
 void Sbar_Init (void);
+void Sbar_LoadPics (void);
 
 void Sbar_Changed (void);
 // call whenever any of the client stats represented on the sbar changes

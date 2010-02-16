@@ -715,9 +715,6 @@ void CL_RunParticles (void)
 	int				i;
 	float			time1, time2, time3, dvel, frametime, grav;
 	extern	cvar_t	sv_gravity;
-    /* unused -- kristian
-    float           scale;
-    */
 
 	frametime = cl.time - cl.oldtime;
 	time3 = frametime * 15;
@@ -825,9 +822,7 @@ void R_DrawParticles (void)
 	vec3_t			up, right, p_up, p_right, p_upright; //johnfitz -- p_ vectors
 	byte			color[4]; //johnfitz -- particle transparency
 	extern	cvar_t	r_particles; //johnfitz
-    /* unused -- kristian
-	float			alpha; //johnfitz -- particle transparency
-    */
+	//float			alpha; //johnfitz -- particle transparency
 
 	if (!r_particles.value)
 		return;

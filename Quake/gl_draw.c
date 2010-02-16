@@ -149,7 +149,6 @@ int Scrap_AllocBlock (int w, int h, int *x, int *y)
 {
 	int		i, j;
 	int		best, best2;
-	//int		bestx; unused -- kristian
 	int		texnum;
 
 	for (texnum=0 ; texnum<MAX_SCRAPS ; texnum++)
@@ -367,7 +366,6 @@ Draw_NewGame -- johnfitz
 */
 void Draw_NewGame (void)
 {
-	//gltexture_t	*glt; unused -- kristian
 	cachepic_t	*pic;
 	int			i;
 
@@ -719,7 +717,7 @@ GL_SetCanvas -- johnfitz -- support various canvas types
 void GL_SetCanvas (canvastype newcanvas)
 {
 	extern vrect_t scr_vrect;
-	float s, w;
+	float s;
 	int lines;
 
 	if (newcanvas == currentcanvas)

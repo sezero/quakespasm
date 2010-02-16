@@ -102,8 +102,6 @@ S_Startup
 
 void S_Startup (void)
 {
-	int		rc;
-
 	if (!snd_initialized)
 		return;
 

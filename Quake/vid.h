@@ -78,3 +78,8 @@ void	VID_Update (vrect_t *rects);
 int VID_SetMode (int modenum); //johnfitz -- removed palette from argument list
 // sets the mode; only used by the Quake engine for resetting to mode 0 (the
 // base mode) on memory allocation failures
+
+void VID_SyncCvars (void);
+
+void VID_Toggle (void);
+

@@ -150,7 +150,6 @@ void Sys_Error (char *error, ...)
 	char		*text4 = "***********************************\n";
 	char		*text5 = "\n";
 	double		starttime;
-	//static int	in_sys_error0 = 0; unused -- kristian
 	static int	in_sys_error1 = 0;
 	static int	in_sys_error2 = 0;
 	static int	in_sys_error3 = 0;

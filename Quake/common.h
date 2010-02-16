@@ -158,6 +158,7 @@ char *COM_SkipPath (char *pathname);
 void COM_StripExtension (char *in, char *out);
 void COM_FileBase (char *in, char *out);
 void COM_DefaultExtension (char *path, char *extension);
+void COM_CreatePath (char *path);
 
 char	*va(char *format, ...);
 // does a varargs printf into a temp buffer
