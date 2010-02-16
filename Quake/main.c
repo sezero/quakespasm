@@ -117,6 +117,12 @@ int main(int argc, char *argv[])
                         if (event.key.type == SDL_KEYDOWN)
                             Con_ToggleConsole_f();
                     }
+		    else if ((event.key.keysym.sym == SDLK_RETURN) &&
+			    (event.key.keysym.mod & KMOD_ALT))
+		    {
+			if (event.key.type == SDL_KEYDOWN)
+			    VID_Toggle();
+		    }
                     else
                     {
                         Key_Event(Key_Map(&(event.key)), event.key.type == SDL_KEYDOWN);

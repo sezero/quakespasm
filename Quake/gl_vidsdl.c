@@ -1413,6 +1413,27 @@ void	VID_Init (void)
 	// is removed, we get 800x600.
 }
 
+// new proc by S.A., called by alt-return key binding.
+void	VID_Toggle (void)
+{
+	// VID_Restart ();
+
+	S_ClearBuffer ();
+
+	if ( SDL_WM_ToggleFullScreen(draw_context) == 1 )
+	{
+		Sbar_Changed();	// Sbar seems to need refreshing
+		windowed=!windowed;
+		if ((int)vid_fullscreen.value == 0)
+			Cvar_Set ("vid_fullscreen", "1");
+		else
+			Cvar_Set ("vid_fullscreen", "0");
+	} else {
+		Con_Printf ("SDL_WM_ToggleFullScreen failed\n");
+	}
+}
+
+
 /*
 ================
 VID_SyncCvars -- johnfitz -- set vid cvars to match current video mode

@@ -1023,17 +1023,10 @@ void Key_Event (int key, qboolean down)
 	}
 
 // johnfitz -- alt-enter to toggle fullscreen. FIXME -- this does NOT work
-#if 0
-	if (!down && (key == K_ENTER) && keydown[K_ALT])
-	{
-		extern cvar_t vid_fullscreen;
-		if (vid_fullscreen.value)
-			Cvar_Set ("vid_fullscreen", "0");
-		else
-			Cvar_Set ("vid_fullscreen", "1");
-		VID_Restart ();
-	}
-#endif
+// But this hack (from sf.net/uhexen2) for SDLFitz works for me. S.A
+// *** moved to main.c so that it works properly ***
+//	if (!down && (key == K_ENTER) && keydown[K_ALT])
+//		VID_Toggle();
 // johnfitz
 
 //
