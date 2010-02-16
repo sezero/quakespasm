@@ -1003,3 +1003,4 @@ void R_DrawParticles_ShowTris (void)
 		glEnd ();
 	}
 }
+
