@@ -207,6 +207,7 @@ typedef struct
 	struct model_s		*model_precache[MAX_MODELS];
 	struct sfx_s		*sound_precache[MAX_SOUNDS];
 
+	char		mapname[128];
 	char		levelname[128];	// for display on solo scoreboard //johnfitz -- was 40.
 	int			viewentity;		// cl_entitites[cl.viewentity] = player
 	int			maxclients;

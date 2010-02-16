@@ -796,6 +796,26 @@ void Host_Map_f (void)
 	int		i;
 	char	name[MAX_QPATH];
 
+	if (Cmd_Argc() < 2)	//no map name given
+	{
+		if (cls.state == ca_dedicated)
+		{
+			if (sv.active)
+				Con_Printf ("Current map: %s\n", sv.name);
+			else
+				Con_Printf ("Server not active\n");
+		}
+		else if (cls.state == ca_connected)
+		{
+			Con_Printf ("Current map: %s ( %s )\n", cl.levelname, cl.mapname);
+		}
+		else
+		{
+			Con_Printf ("map <levelname>: start a new server\n");
+		}
+		return;
+	}
+
 	if (cmd_source != src_command)
 		return;
 
