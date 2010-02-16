@@ -885,6 +885,7 @@ void Host_Changelevel_f (void)
 		Host_Error ("cannot find map %s", level);
 	//johnfitz
 
+	key_dest = key_game;	// remove console or menu
 	SV_SaveSpawnparms ();
 	strcpy (level, Cmd_Argv(1));
 	SV_SpawnServer (level);
