@@ -125,19 +125,19 @@ float MSG_ReadAngle16 (void); //johnfitz
 //============================================================================
 
 void Q_memset (void *dest, int fill, int count);
-void Q_memcpy (void *dest, void *src, int count);
-int Q_memcmp (void *m1, void *m2, int count);
-void Q_strcpy (char *dest, char *src);
-void Q_strncpy (char *dest, char *src, int count);
-int Q_strlen (char *str);
-char *Q_strrchr (char *s, char c);
-void Q_strcat (char *dest, char *src);
-int Q_strcmp (char *s1, char *s2);
-int Q_strncmp (char *s1, char *s2, int count);
-int Q_strcasecmp (char *s1, char *s2);
-int Q_strncasecmp (char *s1, char *s2, int n);
-int	Q_atoi (char *str);
-float Q_atof (char *str);
+void Q_memcpy (void *dest, const void *src, int count);
+int Q_memcmp (const void *m1, const void *m2, int count);
+void Q_strcpy (char *dest, const char *src);
+void Q_strncpy (char *dest, const char *src, int count);
+int Q_strlen (const char *str);
+char *Q_strrchr (const char *s, char c);
+void Q_strcat (char *dest, const char *src);
+int Q_strcmp (const char *s1, const char *s2);
+int Q_strncmp (const char *s1, const char *s2, int count);
+int Q_strcasecmp (const char *s1, const char *s2);
+int Q_strncasecmp (const char *s1, const char *s2, int n);
+int	Q_atoi (const char *str);
+float Q_atof (const char *str);
 
 //============================================================================
 

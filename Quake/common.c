@@ -166,7 +166,7 @@ void Q_memset (void *dest, int fill, int count)
 			((byte *)dest)[i] = fill;
 }
 
-void Q_memcpy (void *dest, void *src, int count)
+void Q_memcpy (void *dest, const void *src, int count)
 {
 	int             i;
 
@@ -181,7 +181,7 @@ void Q_memcpy (void *dest, void *src, int count)
 			((byte *)dest)[i] = ((byte *)src)[i];
 }
 
-int Q_memcmp (void *m1, void *m2, int count)
+int Q_memcmp (const void *m1, const void *m2, int count)
 {
 	while(count)
 	{
@@ -192,7 +192,7 @@ int Q_memcmp (void *m1, void *m2, int count)
 	return 0;
 }
 
-void Q_strcpy (char *dest, char *src)
+void Q_strcpy (char *dest, const char *src)
 {
 	while (*src)
 	{
@@ -201,7 +201,7 @@ void Q_strcpy (char *dest, char *src)
 	*dest++ = 0;
 }
 
-void Q_strncpy (char *dest, char *src, int count)
+void Q_strncpy (char *dest, const char *src, int count)
 {
 	while (*src && count--)
 	{
@@ -211,7 +211,7 @@ void Q_strncpy (char *dest, char *src, int count)
 		*dest++ = 0;
 }
 
-int Q_strlen (char *str)
+int Q_strlen (const char *str)
 {
 	int             count;
 
@@ -222,22 +222,22 @@ int Q_strlen (char *str)
 	return count;
 }
 
-char *Q_strrchr(char *s, char c)
+char *Q_strrchr(const char *s, char c)
 {
     int len = Q_strlen(s);
     s += len;
     while (len--)
-	if (*--s == c) return s;
-    return 0;
+	if (*--s == c) return (char *)s;
+    return NULL;
 }
 
-void Q_strcat (char *dest, char *src)
+void Q_strcat (char *dest, const char *src)
 {
 	dest += Q_strlen(dest);
 	Q_strcpy (dest, src);
 }
 
-int Q_strcmp (char *s1, char *s2)
+int Q_strcmp (const char *s1, const char *s2)
 {
 	while (1)
 	{
@@ -252,7 +252,7 @@ int Q_strcmp (char *s1, char *s2)
 	return -1;
 }
 
-int Q_strncmp (char *s1, char *s2, int count)
+int Q_strncmp (const char *s1, const char *s2, int count)
 {
 	while (1)
 	{
@@ -269,7 +269,7 @@ int Q_strncmp (char *s1, char *s2, int count)
 	return -1;
 }
 
-int Q_strncasecmp (char *s1, char *s2, int n)
+int Q_strncasecmp (const char *s1, const char *s2, int n)
 {
 	int             c1, c2;
 
@@ -299,12 +299,12 @@ int Q_strncasecmp (char *s1, char *s2, int n)
 	return -1;
 }
 
-int Q_strcasecmp (char *s1, char *s2)
+int Q_strcasecmp (const char *s1, const char *s2)
 {
 	return Q_strncasecmp (s1, s2, 99999);
 }
 
-int Q_atoi (char *str)
+int Q_atoi (const char *str)
 {
 	int             val;
 	int             sign;
@@ -363,7 +363,7 @@ int Q_atoi (char *str)
 }
 
 
-float Q_atof (char *str)
+float Q_atof (const char *str)
 {
 	double			val;
 	int             sign;
