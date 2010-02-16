@@ -129,9 +129,9 @@ void GL_SetupState (void); //johnfitz
 //====================================
 
 //johnfitz -- new cvars
-cvar_t		vid_fullscreen = {"vid_fullscreen", "1", true};
-cvar_t		vid_width = {"vid_width", "640", true};
-cvar_t		vid_height = {"vid_height", "480", true};
+cvar_t		vid_fullscreen = {"vid_fullscreen", "0", true};
+cvar_t		vid_width = {"vid_width", "800", true};
+cvar_t		vid_height = {"vid_height", "600", true};
 cvar_t		vid_bpp = {"vid_bpp", "16", true};
 cvar_t		vid_refreshrate = {"vid_refreshrate", "60", true};
 cvar_t		vid_vsync = {"vid_vsync", "0", true};
