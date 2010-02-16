@@ -1645,7 +1645,9 @@ byte *COM_LoadFile (char *path, int usehunk)
 
 	((byte *)buf)[len] = 0;
 
-	Draw_BeginDisc ();
+	// Draw_BeginDisc causes core dumps when called excessively in big mods S.A.
+	// Draw_BeginDisc ();
+
 	Sys_FileRead (h, buf, len);
 	COM_CloseFile (h);
 
