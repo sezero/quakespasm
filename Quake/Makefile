@@ -1,0 +1,161 @@
+
+# Hacked Makefile for fitzquake_sdl_20100125 by Ozkan & Steven, Jan. 31, 2010
+# Tested on Fedora-7, Fedora-6_amd64, FreeBSD-7.0. Untested on MacOSX, Win32
+#
+# To do it, just move this file to "fitzquake_sdl_20100125/Quake", and "make"
+# You'll need SDL and SDL_net fully installed.
+# "make DEBUG=1" builds debug client
+# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations
+# "make AMD64=1" for a 64 bit binary on 64 bit cpus (disabled by default, broken)
+#
+# Currently build objects are separate from those of codeblocks, but this may change.
+# FreeBSD users may have to mess with include directories and also "-nosound"
+
+# ============================================================================
+
+# ============================================================================
+# Helper functions
+# ============================================================================
+
+check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
+
+# ============================================================================
+
+DEBUG    ?= 0
+BUILDDIR := .
+
+SYSNAME := $(shell uname -s) 
+
+ifneq (,$(findstring MINGW32,$(SYSNAME)))
+HOST_OS = WIN32
+TOPDIR := $(shell pwd -W)
+else
+ifneq (,$(findstring $(SYSNAME),FreeBSD NetBSD OpenBSD))
+HOST_OS = UNIX
+UNIX = bsd
+TOPDIR := $(shell pwd)
+else
+ifneq (,$(findstring Linux,$(SYSNAME)))
+HOST_OS = UNIX
+UNIX = linux
+# currently  only mistakenly(?) used in net_sdlnet.c
+TOPDIR := $(shell pwd)
+else
+$(error OS type not detected.)
+endif
+endif
+endif
+
+# ---------------------------------------
+# Define some build variables
+# ---------------------------------------
+
+CC ?= gcc
+WINDRES ?= windres
+STRIP ?= strip
+
+DFLAGS ?=
+CFLAGS ?= -Wall -Wno-trigraphs
+# CFLAGS += -Werror
+
+ifneq ($(DEBUG),0)
+DFLAGS += -DDEBUG
+CFLAGS += -g
+#STRIP_CMD := @echo "not stripping"
+STRIP_CMD := @/bin/true
+else
+DFLAGS += -DNDEBUG
+CFLAGS += -O2
+CFLAGS += $(call check_gcc,-fweb,)
+CFLAGS += $(call check_gcc,-frename-registers,)
+CFLAGS += $(call check_gcc,-mtune=i686,-mcpu=i686)
+STRIP_CMD := $(STRIP)
+endif
+
+### 64 bit disabled unless AMD64=1
+# FIXME: do a better string searchng here!!
+ifneq (,$(findstring 64,$(shell uname -p)))
+ifeq ($(AMD64),)
+CFLAGS += -m32
+LFLAGS += -m32
+endif
+endif
+
+### X11BASE only gets used if its in an unusual place
+
+X11DIRS := /usr/X11R7 /usr/local/X11R7 /usr/X11R6 /usr/local/X11R6
+X11BASE_GUESS := $(shell \
+	if [ -e /usr/include/X11/Xlib.h ] && \
+		[ -e /usr/lib/libX11.a ]; then exit 0; fi; \
+	if [ -e /usr/local/include/X11/Xlib.h ] && \
+		[ -e /usr/local/lib/libX11.a ]; then exit 0; fi; \
+	for DIR in $(X11DIRS); do \
+            if [ -e $$DIR/include/X11/Xlib.h ] && \
+		[ -e $$DIR/lib/libX11.a ]; then echo $$DIR; break; fi; \
+	done )
+
+X11BASE	?= $(X11BASE_GUESS)
+
+ifneq ($(X11BASE),)
+X11_LFLAGS := -L$(X11BASE)/lib
+X11_CFLAGS := -I$(X11BASE)/include
+endif
+
+SDL_CONFIG ?= sdl-config
+SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
+SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
+
+SDL_LIBS   := SDL_net
+
+COMMON_LIBS:= m GL
+
+LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
+
+# ---------------------------
+# targets
+# ---------------------------
+
+.PHONY:	clean debug release
+
+DEFAULT_TARGET := fitzquake
+
+# ---------------------------
+# rules
+# ---------------------------
+
+%.o:	%.c
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(X11_CFLAGS) $(SDL_CFLAGS) -o $@ $^
+
+# ----------------------------------------------------------------------------
+# FitzQuake SDL objects
+# ----------------------------------------------------------------------------
+
+OBJS := \
+cd_sdl.o    console.o    gl_rmain.o   host.o      net_main.o    r_part.o    sv_move.o \
+chase.o     crc.o        gl_rmisc.o   image.o     net_sdlnet.o  r_sprite.o  sv_phys.o \
+cl_demo.o   cvar.o       gl_screen.o  in_sdl.o    net_sdl.o     r_world.o   sv_user.o \
+cl_input.o  gl_draw.o    gl_sky.o     keys.o      pl_linux.o    sbar.o      sys_sdl.o \
+cl_main.o   gl_fog.o     gl_test.o    main.o      pr_cmds.o     snd_dma.o   view.o \
+cl_parse.o  gl_mesh.o    gl_texmgr.o  mathlib.o   pr_edict.o    snd_mem.o   wad.o \
+cl_tent.o   gl_model.o   gl_vidsdl.o  menu.o      pr_exec.o     snd_mix.o   world.o \
+cmd.o       gl_refrag.o  gl_warp.o    net_dgrm.o  r_alias.o     snd_sdl.o   zone.o \
+common.o    gl_rlight.o  host_cmd.o   net_loop.o  r_brush.o     sv_main.o
+
+# ------------------------
+# build rules for Linux
+# ------------------------
+
+fitzquake:	$(OBJS)
+	$(CC) $(CFLAGS) -o fitzquake $(OBJS) $(X11_LFLAGS) $(SDL_LFLAGS) $(LIBS)
+	$(STRIP_CMD) $@
+
+release:	fitzquake
+debug:
+	$(error Use "make DEBUG=1")
+
+install:	fitzquake
+	mv fitzquake /usr/local/games/quake
+
+clean:
+	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
+
