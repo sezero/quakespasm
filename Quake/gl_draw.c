@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //extern unsigned char d_15to8table[65536]; //johnfitz -- never used
 
-cvar_t		scr_conalpha = {"scr_conalpha", "0.5"}; //johnfitz
+cvar_t		scr_conalpha = {"scr_conalpha", "0.5",true}; //johnfitz
 
 qpic_t		*draw_disc;
 qpic_t		*draw_backtile;
