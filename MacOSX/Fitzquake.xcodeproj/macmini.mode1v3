@@ -517,7 +517,7 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>9ABC4BF80FB733E500F2D53C</string>
-		<string>/Users/macmini/Desktop/MacEngine/fitzquake_sdl_20090510_src_beta_1/fitzquake_sdl_20090510/Mac OS X/Fitzquake.xcodeproj</string>
+		<string>/Users/macmini/Desktop/MacEngine/fitzquake_sdl_20090510_src_beta_1/fitzquake_sdl_20090510/MacOSX/Fitzquake.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>432 185 1052 510 0 0 1600 878 </string>

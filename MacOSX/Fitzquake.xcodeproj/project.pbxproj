@@ -293,7 +293,7 @@
 		29B97314FDCFA39411CA2CEA /* Fitzquake */ = {
 			isa = PBXGroup;
 			children = (
-				48243B060D33ED0A00C29F8F /* Mac OS X */,
+				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -324,7 +324,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		48243B060D33ED0A00C29F8F /* Mac OS X */ = {
+		48243B060D33ED0A00C29F8F /* MacOSX */ = {
 			isa = PBXGroup;
 			children = (
 				48B9E7A50D340BEA0001CACF /* AppController.h */,
@@ -341,7 +341,7 @@
 				48C85E390D3AD10E00797678 /* QuakeArgument.h */,
 				48C85E3A0D3AD10E00797678 /* QuakeArgument.m */,
 			);
-			name = "Mac OS X";
+			name = "MacOSX";
 			sourceTree = "<group>";
 		};
 		483A77D80D2EE8C500CB2E4C /* Quake */ = {
