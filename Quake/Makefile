@@ -6,7 +6,6 @@
 # You'll need SDL and SDL_net fully installed.
 # "make DEBUG=1" builds debug client
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations
-# "make AMD64=1" for a 64 bit binary on 64 bit cpus (disabled by default, broken)
 #
 # Currently build objects are separate from those of codeblocks, but this may change.
 # FreeBSD users may have to mess with include directories and also "-nosound"
@@ -54,9 +53,15 @@ CC ?= gcc
 WINDRES ?= windres
 STRIP ?= strip
 
+#CPUFLAGS= -mtune=i686
+#CPUFLAGS= -march=pentium4
+#CPUFLAGS= -mtune=k8
+#CPUFLAGS= -march=atom
+CPUFLAGS= 
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
 # CFLAGS += -Werror
+CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
@@ -68,17 +73,7 @@ DFLAGS += -DNDEBUG
 CFLAGS += -O2
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
-CFLAGS += $(call check_gcc,-mtune=i686,-mcpu=i686)
 STRIP_CMD := $(STRIP)
-endif
-
-### 64 bit disabled unless AMD64=1
-# FIXME: do a better string searchng here!!
-ifneq (,$(findstring 64,$(shell uname -p)))
-ifeq ($(AMD64),)
-CFLAGS += -m32
-LFLAGS += -m32
-endif
 endif
 
 ### X11BASE only gets used if its in an unusual place

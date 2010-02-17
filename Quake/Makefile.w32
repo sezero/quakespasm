@@ -23,9 +23,13 @@ CC = i686-pc-mingw32-gcc
 WINDRES = i686-pc-mingw32-windres
 STRIP = i686-pc-mingw32-strip
 
+#CPUFLAGS= -mtune=i686
+#CPUFLAGS= -march=pentium4
+CPUFLAGS= 
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
 # CFLAGS += -Werror
+CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
@@ -37,7 +41,6 @@ DFLAGS += -DNDEBUG
 CFLAGS += -O2
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
-CFLAGS += $(call check_gcc,-mtune=i686,-mcpu=i686)
 STRIP_CMD := $(STRIP)
 endif
 
