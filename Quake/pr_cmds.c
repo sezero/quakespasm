@@ -21,6 +21,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+#define	STRINGTEMP_BUFFERS		16
+#define	STRINGTEMP_LENGTH		1024
+static	char	pr_string_temp[STRINGTEMP_BUFFERS][STRINGTEMP_LENGTH];
+static	byte	pr_string_tempindex = 0;
+
+static char *
+PR_GetTempString(void)
+{
+	return pr_string_temp[(STRINGTEMP_BUFFERS-1) & ++pr_string_tempindex];
+}
+
 #define	RETURN_EDICT(e) (((int *)pr_globals)[OFS_RETURN] = EDICT_TO_PROG(e))
 
 /*
@@ -918,18 +929,18 @@ void PF_dprint (void)
 	Con_DPrintf ("%s",PF_VarString(0));
 }
 
-char	pr_string_temp[128];
-
 void PF_ftos (void)
 {
 	float	v;
+	char	*s;
 	v = G_FLOAT(OFS_PARM0);
+	s = PR_GetTempString();
 
 	if (v == (int)v)
-		sprintf (pr_string_temp, "%d",(int)v);
+		sprintf (s, "%d",(int)v);
 	else
-		sprintf (pr_string_temp, "%5.1f",v);
-	G_INT(OFS_RETURN) = pr_string_temp - pr_strings;
+		sprintf (s, "%5.1f",v);
+	G_INT(OFS_RETURN) = s - pr_strings;
 }
 
 void PF_fabs (void)
@@ -941,8 +952,11 @@ void PF_fabs (void)
 
 void PF_vtos (void)
 {
-	sprintf (pr_string_temp, "'%5.1f %5.1f %5.1f'", G_VECTOR(OFS_PARM0)[0], G_VECTOR(OFS_PARM0)[1], G_VECTOR(OFS_PARM0)[2]);
-	G_INT(OFS_RETURN) = pr_string_temp - pr_strings;
+	char	*s;
+
+	s = PR_GetTempString();
+	sprintf (s, "'%5.1f %5.1f %5.1f'", G_VECTOR(OFS_PARM0)[0], G_VECTOR(OFS_PARM0)[1], G_VECTOR(OFS_PARM0)[2]);
+	G_INT(OFS_RETURN) = s - pr_strings;
 }
 
 void PF_Spawn (void)
