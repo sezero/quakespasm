@@ -1787,7 +1787,7 @@ void VID_MenuKey (int key)
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
 		case 4:
-			Cbuf_AddText ("toggle vid_fullscreen\n");
+			Cbuf_AddText ("toggle vid_vsync\n");
 			break;
 		case 5:
 			Cbuf_AddText ("vid_test\n");
