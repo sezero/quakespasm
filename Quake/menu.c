@@ -243,7 +243,7 @@ void M_ToggleMenu_f (void)
 			return;
 		}
 
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 		m_state = m_none;
 		return;
@@ -273,7 +273,7 @@ void M_Menu_Main_f (void)
 		m_save_demonum = cls.demonum;
 		cls.demonum = -1;
 	}
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_main;
 	m_entersound = true;
@@ -301,7 +301,7 @@ void M_Main_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 		m_state = m_none;
 		cls.demonum = m_save_demonum;
@@ -358,7 +358,7 @@ int	m_singleplayer_cursor;
 
 void M_Menu_SinglePlayer_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_singleplayer;
 	m_entersound = true;
@@ -410,7 +410,7 @@ void M_SinglePlayer_Key (int key)
 			if (sv.active)
 				if (!SCR_ModalMessage("Are you sure you want to\nstart a new game?\n", 0.0f))
 					break;
-            IN_Activate();
+			IN_Activate();
 			key_dest = key_game;
 			if (sv.active)
 				Cbuf_AddText ("disconnect\n");
@@ -473,7 +473,7 @@ void M_Menu_Load_f (void)
 	m_entersound = true;
 	m_state = m_load;
 
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	M_ScanSaves ();
 }
@@ -490,7 +490,7 @@ void M_Menu_Save_f (void)
 	m_entersound = true;
 	m_state = m_save;
 
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	M_ScanSaves ();
 }
@@ -541,7 +541,7 @@ void M_Load_Key (int k)
 		if (!loadable[load_cursor])
 			return;
 		m_state = m_none;
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 
 	// Host_Loadgame_f can't bring up the loading plaque because too much
@@ -581,7 +581,7 @@ void M_Save_Key (int k)
 
 	case K_ENTER:
 		m_state = m_none;
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 		Cbuf_AddText (va("save s%i\n", load_cursor));
 		return;
@@ -613,7 +613,7 @@ int	m_multiplayer_cursor;
 
 void M_Menu_MultiPlayer_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_multiplayer;
 	m_entersound = true;
@@ -698,7 +698,7 @@ int		setup_bottom;
 
 void M_Menu_Setup_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_setup;
 	m_entersound = true;
@@ -888,7 +888,7 @@ char *net_helpMessage [] =
 
 void M_Menu_Net_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_net;
 	m_entersound = true;
@@ -1053,7 +1053,7 @@ int		options_cursor;
 
 void M_Menu_Options_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_options;
 	m_entersound = true;
@@ -1318,7 +1318,7 @@ int		bind_grab;
 
 void M_Menu_Keys_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_keys;
 	m_entersound = true;
@@ -1436,7 +1436,7 @@ void M_Keys_Key (int k)
 		}
 
 		bind_grab = false;
-        IN_Deactivate(vid.type == MODE_WINDOWED); // deactivate because we're returning to the menu
+		IN_Deactivate(vid.type == MODE_WINDOWED); // deactivate because we're returning to the menu
 		return;
 	}
 
@@ -1468,7 +1468,7 @@ void M_Keys_Key (int k)
 		if (keys[1] != -1)
 			M_UnbindCommand (bindnames[keys_cursor][0]);
 		bind_grab = true;
-        IN_Activate(); // activate to allow mouse key binding
+		IN_Activate(); // activate to allow mouse key binding
 		break;
 
 	case K_BACKSPACE:		// delete bindings
@@ -1508,7 +1508,7 @@ int		help_page;
 
 void M_Menu_Help_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_help;
 	m_entersound = true;
@@ -1560,7 +1560,7 @@ void M_Menu_Quit_f (void)
 	if (m_state == m_quit)
 		return;
 	wasInMenus = (key_dest == key_menu);
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_quit_prevstate = m_state;
 	m_state = m_quit;
@@ -1583,7 +1583,7 @@ void M_Quit_Key (int key)
 		}
 		else
 		{
-            IN_Activate();
+			IN_Activate();
 			key_dest = key_game;
 			m_state = m_none;
 		}
@@ -1591,7 +1591,7 @@ void M_Quit_Key (int key)
 
 	case 'Y':
 	case 'y':
-        IN_Deactivate(vid.type == MODE_WINDOWED);
+		IN_Deactivate(vid.type == MODE_WINDOWED);
 		key_dest = key_console;
 		Host_Quit_f ();
 		break;
@@ -1658,7 +1658,7 @@ void M_Menu_SerialConfig_f (void)
 	int		baudrate;
 	qboolean	useModem;
 
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_serialconfig;
 	m_entersound = true;
@@ -1880,7 +1880,7 @@ forward:
 
 		m_return_state = m_state;
 		m_return_onerror = true;
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 		m_state = m_none;
 
@@ -1943,7 +1943,7 @@ char	modemConfig_hangup [16];
 
 void M_Menu_ModemConfig_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_modemconfig;
 	m_entersound = true;
@@ -2115,7 +2115,7 @@ char	lanConfig_joinname[22];
 
 void M_Menu_LanConfig_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_lanconfig;
 	m_entersound = true;
@@ -2242,7 +2242,7 @@ void M_LanConfig_Key (int key)
 		{
 			m_return_state = m_state;
 			m_return_onerror = true;
-            IN_Activate();
+			IN_Activate();
 			key_dest = key_game;
 			m_state = m_none;
 			Cbuf_AddText ( va ("connect \"%s\"\n", lanConfig_joinname) );
@@ -2463,7 +2463,7 @@ double m_serverInfoMessageTime;
 
 void M_Menu_GameOptions_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_gameoptions;
 	m_entersound = true;
@@ -2774,7 +2774,7 @@ double		searchCompleteTime;
 
 void M_Menu_Search_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_search;
 	m_entersound = false;
@@ -2835,7 +2835,7 @@ qboolean slist_sorted;
 
 void M_Menu_ServerList_f (void)
 {
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_slist;
 	m_entersound = true;
@@ -2920,7 +2920,7 @@ void M_ServerList_Key (int k)
 		m_return_state = m_state;
 		m_return_onerror = true;
 		slist_sorted = false;
-        IN_Activate();
+		IN_Activate();
 		key_dest = key_game;
 		m_state = m_none;
 		Cbuf_AddText ( va ("connect \"%s\"\n", hostcache[slist_cursor].cname) );

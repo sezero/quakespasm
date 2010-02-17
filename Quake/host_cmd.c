@@ -252,14 +252,14 @@ void ExtraMaps_Add (char *name)
 
 void ExtraMaps_Init (void)
 {
-    DIR             *dir_p;
-    struct dirent   *dir_t;
+	DIR		*dir_p;
+	struct dirent	*dir_t;
 	char			filestring[MAX_OSPATH];
 	char			mapname[32];
 	char			ignorepakdir[32];
-	searchpath_t    *search;
-	pack_t          *pak;
-	int             i;
+	searchpath_t	*search;
+	pack_t		*pak;
+	int		i;
 
 	//we don't want to list the maps in id1 pakfiles, becuase these are not "add-on" levels
 	sprintf (ignorepakdir, "/%s/", GAMENAME);
@@ -269,32 +269,34 @@ void ExtraMaps_Init (void)
 		if (*search->filename) //directory
 		{
 			sprintf (filestring,"%s/maps/",search->filename);
-            dir_p = opendir(filestring);
-            
-            if (dir_p == NULL)
-                continue;
-            
-            while ((dir_t = readdir(dir_p)) != NULL)
-            {
-                if (!strstr(dir_t->d_name, ".bsp") && !strstr(dir_t->d_name, ".BSP"))
-                    continue;
-
+			dir_p = opendir(filestring);
+			if (dir_p == NULL)
+				continue;
+			while ((dir_t = readdir(dir_p)) != NULL)
+			{
+				if (!strstr(dir_t->d_name, ".bsp") && !strstr(dir_t->d_name, ".BSP"))
+					continue;
 				COM_StripExtension(dir_t->d_name, mapname);
 				ExtraMaps_Add (mapname);
-            }
-            
-            closedir(dir_p);
+			}
+			closedir(dir_p);
 		}
 		else //pakfile
 		{
 			if (!strstr(search->pack->filename, ignorepakdir)) //don't list standard id maps
+			{
 				for (i=0, pak=search->pack; i<pak->numfiles ; i++)
+				{
 					if (strstr(pak->files[i].name, ".bsp"))
+					{
 						if (pak->files[i].filelen > 32*1024) // don't list files under 32k (ammo boxes etc)
 						{
 							COM_StripExtension(pak->files[i].name + 5, mapname);
 							ExtraMaps_Add (mapname);
 						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -382,60 +384,51 @@ void Modlist_Add (char *name)
 
 void Modlist_Init (void)
 {
-    DIR             *dir_p, *mod_dir_p;
-    struct dirent   *dir_t, *mod_dir_t;
-    qboolean        progs_found, pak_found;
+	DIR		*dir_p, *mod_dir_p;
+	struct dirent	*dir_t, *mod_dir_t;
+	qboolean	progs_found, pak_found;
 	char			dir_string[MAX_OSPATH], mod_dir_string[MAX_OSPATH];
-    int             i;
+	int		i;
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
-        sprintf (dir_string, "%s/", com_argv[i+1]);
-    else
-        sprintf (dir_string, "%s/", host_parms.basedir);
-    
-    dir_p = opendir(dir_string);
-    if (dir_p == NULL)
-        return;
+		sprintf (dir_string, "%s/", com_argv[i+1]);
+	else
+		sprintf (dir_string, "%s/", host_parms.basedir);
 
-    while ((dir_t = readdir(dir_p)) != NULL)
-    {
-        if ((strcmp(dir_t->d_name, ".") == 0) || (strcmp(dir_t->d_name, "..") == 0))
-            continue;
-    
-        sprintf(mod_dir_string, "%s%s/", dir_string, dir_t->d_name);
-        mod_dir_p = opendir(mod_dir_string);
-        
-        if (mod_dir_p == NULL)
-            continue;
-        
-        progs_found = false;
-        pak_found = false;
-        
-        // find progs.dat and pak file(s)
-        while ((mod_dir_t = readdir(mod_dir_p)) != NULL)
-        {
-            if ((strcmp(mod_dir_t->d_name, ".") == 0) || (strcmp(mod_dir_t->d_name, "..") == 0))
-                continue;
-    
-            if (Q_strcasecmp(mod_dir_t->d_name, "progs.dat") != -1)
-                progs_found = true;
-                
-            if (strstr(mod_dir_t->d_name, ".pak") || strstr(mod_dir_t->d_name, ".PAK"))
-               pak_found = true;
-               
-            if (progs_found || pak_found)
-                break;
-        }
-        closedir(mod_dir_p);
-        
-        if (!progs_found && !pak_found)
-            continue;
-        
-        Modlist_Add(dir_t->d_name);
-    }
-    
-    closedir(dir_p);
+	dir_p = opendir(dir_string);
+	if (dir_p == NULL)
+		return;
+
+	while ((dir_t = readdir(dir_p)) != NULL)
+	{
+		if ((strcmp(dir_t->d_name, ".") == 0) || (strcmp(dir_t->d_name, "..") == 0))
+			continue;
+		sprintf(mod_dir_string, "%s%s/", dir_string, dir_t->d_name);
+		mod_dir_p = opendir(mod_dir_string);
+		if (mod_dir_p == NULL)
+			continue;
+		progs_found = false;
+		pak_found = false;
+		// find progs.dat and pak file(s)
+		while ((mod_dir_t = readdir(mod_dir_p)) != NULL)
+		{
+			if ((strcmp(mod_dir_t->d_name, ".") == 0) || (strcmp(mod_dir_t->d_name, "..") == 0))
+				continue;
+			if (Q_strcasecmp(mod_dir_t->d_name, "progs.dat") != -1)
+				progs_found = true;
+			if (strstr(mod_dir_t->d_name, ".pak") || strstr(mod_dir_t->d_name, ".PAK"))
+				pak_found = true;
+			if (progs_found || pak_found)
+				break;
+		}
+		closedir(mod_dir_p);
+		if (!progs_found && !pak_found)
+			continue;
+		Modlist_Add(dir_t->d_name);
+	}
+
+	closedir(dir_p);
 }
 
 /*
@@ -824,7 +817,7 @@ void Host_Map_f (void)
 	CL_Disconnect ();
 	Host_ShutdownServer(false);
 
-    IN_Activate();
+	IN_Activate();
 	key_dest = key_game;			// remove console or menu
 	SCR_BeginLoadingPlaque ();
 

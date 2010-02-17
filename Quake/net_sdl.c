@@ -84,7 +84,7 @@ int net_numdrivers = 2;
 
 net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
 {
-    {
+	{
 	"UDP",
 	false,
 	0,
@@ -110,3 +110,4 @@ net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
 };
 
 int net_numlandrivers = 1;
+

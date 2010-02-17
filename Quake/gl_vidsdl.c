@@ -24,15 +24,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "resource.h"
 
-#define MAX_MODE_LIST       600 //johnfitz -- was 30
-#define VID_ROW_SIZE        3
-#define WARP_WIDTH          320
-#define WARP_HEIGHT         200
-#define MAXWIDTH            10000
-#define MAXHEIGHT           10000
-#define BASEWIDTH           320
-#define BASEHEIGHT          200
-#define SDL_DEFAULT_FLAGS   SDL_OPENGL
+#define MAX_MODE_LIST	600 //johnfitz -- was 30
+#define VID_ROW_SIZE	3
+#define WARP_WIDTH		320
+#define WARP_HEIGHT		200
+#define MAXWIDTH		10000
+#define MAXHEIGHT		10000
+#define BASEWIDTH		320
+#define BASEHEIGHT		200
+
+#define SDL_DEFAULT_FLAGS	SDL_OPENGL
 
 typedef struct {
 	modestate_t	type;
@@ -75,7 +76,7 @@ static qboolean	windowed, leavecurrentmode;
 static qboolean vid_canalttab = false;
 extern qboolean	mouseactive;  // from in_win.c
 
-SDL_Surface *draw_context;
+SDL_Surface	*draw_context;
 
 int			vid_modenum = NO_MODE;
 int			vid_realmode;
@@ -146,10 +147,6 @@ cvar_t		vid_gamma = {"gamma", "1", true}; //johnfitz -- moved here from view.c
 //
 //==========================================================================
 
-//typedef int (WINAPI * RAMPFUNC)();
-//RAMPFUNC wglGetDeviceGammaRamp3DFX;
-//RAMPFUNC wglSetDeviceGammaRamp3DFX;
-
 unsigned short vid_gamma_red[256];
 unsigned short vid_gamma_green[256];
 unsigned short vid_gamma_blue[256];
@@ -167,9 +164,9 @@ VID_Gamma_SetGamma -- apply gamma correction
 */
 void VID_Gamma_SetGamma (void)
 {
-    if (draw_context && vid_gammaworks)
-        if (SDL_SetGammaRamp(&vid_gamma_red[0], &vid_gamma_green[0], &vid_gamma_blue[0]) == -1)
-            Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
+	if (draw_context && vid_gammaworks)
+		if (SDL_SetGammaRamp(&vid_gamma_red[0], &vid_gamma_green[0], &vid_gamma_blue[0]) == -1)
+			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
 }
 
 /*
@@ -179,9 +176,9 @@ VID_Gamma_Restore -- restore system gamma
 */
 void VID_Gamma_Restore (void)
 {
-    if (draw_context && vid_gammaworks)
-        if (SDL_SetGammaRamp(&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) == -1)
-            Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
+	if (draw_context && vid_gammaworks)
+		if (SDL_SetGammaRamp(&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) == -1)
+			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
 }
 
 /*
@@ -209,11 +206,11 @@ void VID_Gamma_f (void)
 
 	oldgamma = vid_gamma.value;
 
- 	for (i=0; i<256; i++)
-    {
-        vid_gamma_red[i] = CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
-        vid_gamma_green[i] = vid_gamma_red[i];
-        vid_gamma_blue[i] = vid_gamma_red[i];
+	for (i=0; i<256; i++)
+	{
+		vid_gamma_red[i] = CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
+		vid_gamma_green[i] = vid_gamma_red[i];
+		vid_gamma_blue[i] = vid_gamma_red[i];
 	}
 
 	VID_Gamma_SetGamma ();
@@ -246,7 +243,7 @@ int VID_SetMode (int modenum)
 	Uint32 flags = SDL_DEFAULT_FLAGS;
 	char caption[50];
 
-    //TODO: check if video mode is supported using SDL_VideoModeOk
+// TODO: check if video mode is supported using SDL_VideoModeOk
 	if ((windowed && (modenum != 0)) ||
 		(!windowed && (modenum < 1)) ||
 		(!windowed && (modenum >= nummodes)))
@@ -260,7 +257,7 @@ int VID_SetMode (int modenum)
 
 	CDAudio_Pause ();
 
-    // set vertical sync
+	// set vertical sync
 	if (gl_swap_control)
 	{
 		if (vid_vsync.value)
@@ -275,44 +272,49 @@ int VID_SetMode (int modenum)
 		}
 	}
 
-    if (modelist[modenum].type == MODE_WINDOWED)
-    {
+	if (modelist[modenum].type == MODE_WINDOWED)
+	{
 		if (_windowed_mouse.value && key_dest == key_game)
 		{
-            draw_context = SDL_SetVideoMode(modelist[modenum].width,  modelist[modenum].height,  modelist[modenum].bpp, flags);
-            stat = true;
+			draw_context = SDL_SetVideoMode(modelist[modenum].width,
+							modelist[modenum].height,
+							modelist[modenum].bpp, flags);
+			stat = true;
 		}
 		else
 		{
-            draw_context = SDL_SetVideoMode(modelist[modenum].width,  modelist[modenum].height,  modelist[modenum].bpp, flags);
-            stat = true;
+			draw_context = SDL_SetVideoMode(modelist[modenum].width,
+							modelist[modenum].height,
+							modelist[modenum].bpp, flags);
+			stat = true;
 		}
-        modestate = MODE_WINDOWED;
-        // TODO set icon and title
-    }
-    else if (modelist[modenum].type == MODE_FULLSCREEN_DEFAULT)
+		modestate = MODE_WINDOWED;
+		// TODO set icon and title
+	}
+	else if (modelist[modenum].type == MODE_FULLSCREEN_DEFAULT)
 	{
-        flags |= SDL_FULLSCREEN;
-        draw_context = SDL_SetVideoMode(modelist[modenum].width,  modelist[modenum].height,  modelist[modenum].bpp, flags);
-
-        stat = true;
-        modestate = MODE_FULLSCREEN_DEFAULT;
+		flags |= SDL_FULLSCREEN;
+		draw_context = SDL_SetVideoMode(modelist[modenum].width,
+						modelist[modenum].height,
+						modelist[modenum].bpp, flags);
+		stat = true;
+		modestate = MODE_FULLSCREEN_DEFAULT;
 	}
 	else
 	{
 		Sys_Error ("VID_SetMode: Bad mode type in modelist");
 	}
 
-    //kristian -- set window caption
-    sprintf(caption, "FitzQuake (SDL port) Version %1.2f", FITZQUAKE_VERSION);
-    SDL_WM_SetCaption((const char* )&caption, (const char*)&caption);
+	//kristian -- set window caption
+	sprintf(caption, "FitzQuake (SDL port) Version %1.2f", FITZQUAKE_VERSION);
+	SDL_WM_SetCaption((const char* )&caption, (const char*)&caption);
 
 	vid.width = modelist[modenum].width;
 	vid.height = modelist[modenum].height;
-    vid.conwidth = vid.width & 0xFFFFFFF8;
-    vid.conheight = vid.conwidth * vid.height / vid.width;
-    vid.numpages = 2;
-    vid.type = modelist[modenum].type;
+	vid.conwidth = vid.width & 0xFFFFFFF8;
+	vid.conheight = vid.conwidth * vid.height / vid.width;
+	vid.numpages = 2;
+	vid.type = modelist[modenum].type;
 
 	VID_UpdateWindowStatus ();
 
@@ -326,7 +328,7 @@ int VID_SetMode (int modenum)
 
 	vid_modenum = modenum;
 
-    // fix the leftover Alt from any Alt-Tab or the like that switched us away
+// fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
 	if (!msg_suppress_1)
@@ -334,12 +336,12 @@ int VID_SetMode (int modenum)
 
 	vid.recalc_refdef = 1;
 
-     // with SDL, this needs to be done every time the render context is recreated, so I moved it here
+// with SDL, this needs to be done every time the render context is recreated, so I moved it here
 	TexMgr_ReloadImages ();
 	GL_SetupState ();
 
-    // no pending changes
-    vid_changed = false;
+// no pending changes
+	vid_changed = false;
 
 	return true;
 }
@@ -351,7 +353,7 @@ VID_Changed_f -- kristian -- notify us that a value has changed that requires a 
 */
 void VID_Changed_f (void)
 {
-    vid_changed = true;
+	vid_changed = true;
 }
 
 /*
@@ -370,75 +372,75 @@ void VID_Restart (void)
 //
 // decide which mode to set
 //
-    oldmode = modelist[vid_default];
+	oldmode = modelist[vid_default];
 
-    if (vid_fullscreen.value)
-    {
-        for (i=1; i<nummodes; i++)
-        {
-            if (modelist[i].width == (int)vid_width.value &&
-                modelist[i].height == (int)vid_height.value &&
-                modelist[i].bpp == (int)vid_bpp.value)
-            {
-                break;
-            }
-        }
+	if (vid_fullscreen.value)
+	{
+		for (i=1; i<nummodes; i++)
+		{
+			if (modelist[i].width == (int)vid_width.value &&
+			    modelist[i].height == (int)vid_height.value &&
+			    modelist[i].bpp == (int)vid_bpp.value)
+			{
+				break;
+			}
+		}
 
-        if (i == nummodes)
-        {
-            Con_Printf ("%dx%dx%d %dHz is not a valid fullscreen mode\n",
-                        (int)vid_width.value,
-                        (int)vid_height.value,
-                        (int)vid_bpp.value,
-                        (int)vid_refreshrate.value);
-            return;
-        }
+		if (i == nummodes)
+		{
+			Con_Printf ("%dx%dx%d %dHz is not a valid fullscreen mode\n",
+						(int)vid_width.value,
+						(int)vid_height.value,
+						(int)vid_bpp.value,
+						(int)vid_refreshrate.value);
+			return;
+		}
 
-        windowed = false;
-        vid_default = i;
-    }
-    else //not fullscreen
-    {
-        if (vid_width.value < 320)
-        {
-            Con_Printf ("Window width can't be less than 320\n");
-            return;
-        }
+		windowed = false;
+		vid_default = i;
+	}
+	else //not fullscreen
+	{
+		if (vid_width.value < 320)
+		{
+			Con_Printf ("Window width can't be less than 320\n");
+			return;
+		}
 
-        if (vid_height.value < 200)
-        {
-            Con_Printf ("Window height can't be less than 200\n");
-            return;
-        }
+		if (vid_height.value < 200)
+		{
+			Con_Printf ("Window height can't be less than 200\n");
+			return;
+		}
 
-        modelist[0].width = (int)vid_width.value;
-        modelist[0].height = (int)vid_height.value;
-        sprintf (modelist[0].modedesc, "%dx%dx%d",
-                 modelist[0].width,
-                 modelist[0].height,
-                 modelist[0].bpp);
+		modelist[0].width = (int)vid_width.value;
+		modelist[0].height = (int)vid_height.value;
+		sprintf (modelist[0].modedesc, "%dx%dx%d",
+				 modelist[0].width,
+				 modelist[0].height,
+				 modelist[0].bpp);
 
-        windowed = true;
-        vid_default = 0;
-    }
-    //
-    // set new mode
-    //
-    VID_SetMode (vid_default);
+		windowed = true;
+		vid_default = 0;
+	}
+//
+// set new mode
+//
+	VID_SetMode (vid_default);
 
-    vid_canalttab = true;
+	vid_canalttab = true;
 
-    // Clear menu pic cache
-    Draw_ClearMenuPicCache ();
-    //warpimages needs to be recalculated
-    TexMgr_RecalcWarpImageSize ();
+	// Clear menu pic cache
+	Draw_ClearMenuPicCache ();
+	//warpimages needs to be recalculated
+	TexMgr_RecalcWarpImageSize ();
 
-    //conwidth and conheight need to be recalculated
-    vid.conwidth = (scr_conwidth.value > 0) ? (int)scr_conwidth.value : vid.width;
-    vid.conwidth = CLAMP (320, vid.conwidth, vid.width);
-    vid.conwidth &= 0xFFFFFFF8;
-    vid.conheight = vid.conwidth * vid.height / vid.width;
-    //
+	//conwidth and conheight need to be recalculated
+	vid.conwidth = (scr_conwidth.value > 0) ? (int)scr_conwidth.value : vid.width;
+	vid.conwidth = CLAMP (320, vid.conwidth, vid.width);
+	vid.conwidth &= 0xFFFFFFF8;
+	vid.conheight = vid.conwidth * vid.height / vid.width;
+//
 // keep cvars in line with actual mode
 //
 	Cvar_Set ("vid_width", va("%i", modelist[vid_default].width));
@@ -573,9 +575,9 @@ void CheckArrayExtensions (void)
 		if (strncmp((const char*)tmp, "GL_EXT_vertex_array", strlen("GL_EXT_vertex_array")) == 0)
 		{
 			if (((glArrayElementEXT = SDL_GL_GetProcAddress("glArrayElementEXT")) == NULL) ||
-                ((glColorPointerEXT = SDL_GL_GetProcAddress("glColorPointerEXT")) == NULL) ||
-                ((glTexCoordPointerEXT = SDL_GL_GetProcAddress("glTexCoordPointerEXT")) == NULL) ||
-                ((glVertexPointerEXT = SDL_GL_GetProcAddress("glVertexPointerEXT")) == NULL) )
+			    ((glColorPointerEXT = SDL_GL_GetProcAddress("glColorPointerEXT")) == NULL) ||
+			    ((glTexCoordPointerEXT = SDL_GL_GetProcAddress("glTexCoordPointerEXT")) == NULL) ||
+			    ((glVertexPointerEXT = SDL_GL_GetProcAddress("glVertexPointerEXT")) == NULL) )
 			{
 				Sys_Error ("GetProcAddress for vertex extension failed");
 				return;
@@ -595,7 +597,7 @@ GL_CheckExtensions -- johnfitz
 */
 void GL_CheckExtensions (void)
 {
-    int swap_control;
+	int swap_control;
 
 	//
 	// multitexture
@@ -677,28 +679,32 @@ void GL_CheckExtensions (void)
 				Con_Warning ("texture_env_add not supported\n");
 #endif
 
-    //
+	//
 	// swap control
 	//
 	if (strstr(gl_extensions, "GL_EXT_swap_control"))
 	{
-        if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1) {
-            Con_Printf("WARNING: vertical sync not supported (SDL_GL_SetAttribute failed)\n");
-        }
-        else
-        {
-            if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1) {
-                Con_Printf("WARNING: vertical sync not supported (SDL_GL_GetAttribute failed). Make sure you don't have vertical sync disabled in your driver settings.\n");
-            } else if (swap_control == -1) {
-                // TODO: check if this is correct - I don't know what SDL returns if vertical sync is disabled
-                Con_Printf("WARNING: vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
-            }
-            else
-            {
-                Con_Printf("FOUND: WGL_EXT_swap_control\n");
-                gl_swap_control = true;
-            }
-        }
+		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1)
+		{
+			Con_Printf("WARNING: vertical sync not supported (SDL_GL_SetAttribute failed)\n");
+		}
+		else
+		{
+			if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
+			{
+				Con_Printf("WARNING: vertical sync not supported (SDL_GL_GetAttribute failed). Make sure you don't have vertical sync disabled in your driver settings.\n");
+			}
+			else if (swap_control == -1)
+			{
+			// TODO: check if this is correct - I don't know what SDL returns if vertical sync is disabled
+				Con_Printf("WARNING: vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
+			}
+			else
+			{
+				Con_Printf("FOUND: WGL_EXT_swap_control\n");
+				gl_swap_control = true;
+			}
+		}
 	}
 	else
 		Con_Printf ("WARNING: vertical sync not supported (extension not found)\n");
@@ -709,7 +715,7 @@ void GL_CheckExtensions (void)
 	if (strstr(gl_extensions, "GL_EXT_texture_filter_anisotropic"))
 	{
 		float test1,test2;
-        GLuint tex;
+		GLuint tex;
 
 		// test to make sure we really have control over it
 		// 1.0 and 2.0 should always be legal values
@@ -783,11 +789,10 @@ void GL_Init (void)
 
 	Cvar_RegisterVariable (&vid_vsync, VID_Changed_f); //johnfitz
 
-    if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
-         fullsbardraw = true;
-
-    if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
-         isPermedia = true;
+	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
+		fullsbardraw = true;
+	if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
+		isPermedia = true;
 #if 1
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
@@ -830,7 +835,7 @@ GL_EndRendering
 void GL_EndRendering (void)
 {
 	if (!scr_skipupdate || block_drawing)
-        SDL_GL_SwapBuffers();
+		SDL_GL_SwapBuffers();
 
 	if (fullsbardraw)
 		Sbar_Changed();
@@ -848,10 +853,10 @@ void	VID_Shutdown (void)
 		vid_canalttab = false;
 		VID_Gamma_Shutdown (); //johnfitz
 
-        SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        draw_context = NULL;
+		SDL_QuitSubSystem(SDL_INIT_VIDEO);
+		draw_context = NULL;
 
-        PL_VID_Shutdown();
+		PL_VID_Shutdown();
 	}
 }
 
@@ -1006,9 +1011,9 @@ VID_DescribeModes_f -- johnfitz -- changed formatting, and added refresh rates a
 */
 void VID_DescribeModes_f (void)
 {
-	int			i, lnummodes, t;
+	int		i, lnummodes, t;
 	vmode_t		*pv;
-	int			lastwidth=0, lastheight=0, lastbpp=0, count=0;
+	int		lastwidth=0, lastheight=0, lastbpp=0, count=0;
 
 	lnummodes = VID_NumModes ();
 
@@ -1045,9 +1050,9 @@ void VID_DescribeModes_f (void)
 VID_InitDIB
 =================
 */
-void VID_InitDIB ()
+void VID_InitDIB (void)
 {
-    const SDL_VideoInfo *info;
+	const SDL_VideoInfo *info;
 
 	modelist[0].type = MODE_WINDOWED;
 
@@ -1067,8 +1072,8 @@ void VID_InitDIB ()
 	if (modelist[0].height < 200) //johnfitz -- was 240
 		modelist[0].height = 200; //johnfitz -- was 240
 
-    info = SDL_GetVideoInfo();
-    modelist[0].bpp = info->vfmt->BitsPerPixel;
+	info = SDL_GetVideoInfo();
+	modelist[0].bpp = info->vfmt->BitsPerPixel;
 
 	sprintf (modelist[0].modedesc, "%dx%dx%d", //johnfitz -- added bpp
 			 modelist[0].width,
@@ -1088,83 +1093,83 @@ void VID_InitDIB ()
 VID_InitFullDIB
 =================
 */
-void VID_InitFullDIB ()
+void VID_InitFullDIB (void)
 {
-    SDL_PixelFormat format;
-    SDL_Rect        **modes;
-    Uint32          flags;
-	int             i, j, k, modenum, originalnummodes, existingmode;
-    int             bpps[3] = {16, 24, 32}; // enumerate >8 bpp modes
+	SDL_PixelFormat	format;
+	SDL_Rect	**modes;
+	Uint32		flags;
+	int		i, j, k, modenum, originalnummodes, existingmode;
+	int		bpps[3] = {16, 24, 32}; // enumerate >8 bpp modes
 
 	originalnummodes = nummodes;
 	modenum = 0;
-    format.palette = NULL;
+	format.palette = NULL;
 
-    // enumerate fullscreen modes
-    flags = SDL_DEFAULT_FLAGS | SDL_FULLSCREEN;
-    for (i = 0; i < 3; i++)
-    {
-        if (nummodes >= MAX_MODE_LIST)
-            break;
+	// enumerate fullscreen modes
+	flags = SDL_DEFAULT_FLAGS | SDL_FULLSCREEN;
+	for (i = 0; i < 3; i++)
+	{
+		if (nummodes >= MAX_MODE_LIST)
+			break;
 
-        format.BitsPerPixel = bpps[i];
-        modes = SDL_ListModes(&format, flags);
+		format.BitsPerPixel = bpps[i];
+		modes = SDL_ListModes(&format, flags);
 
-        if (modes == (SDL_Rect **)0 || modes == (SDL_Rect **)-1)
-            continue;
+		if (modes == (SDL_Rect **)0 || modes == (SDL_Rect **)-1)
+			continue;
 
-        for (j = 0; modes[j]; j++)
-        {
-            if (modes[j]->w > MAXWIDTH || modes[j]->h > MAXHEIGHT || nummodes >= MAX_MODE_LIST)
-                continue;
+		for (j = 0; modes[j]; j++)
+		{
+			if (modes[j]->w > MAXWIDTH || modes[j]->h > MAXHEIGHT || nummodes >= MAX_MODE_LIST)
+				continue;
 
-            modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
-            modelist[nummodes].width = modes[j]->w;
-            modelist[nummodes].height = modes[j]->h;
-            modelist[nummodes].modenum = 0;
-            modelist[nummodes].halfscreen = 0;
-            modelist[nummodes].dib = 1;
-            modelist[nummodes].fullscreen = 1;
-            modelist[nummodes].bpp = bpps[i];
+			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
+			modelist[nummodes].width = modes[j]->w;
+			modelist[nummodes].height = modes[j]->h;
+			modelist[nummodes].modenum = 0;
+			modelist[nummodes].halfscreen = 0;
+			modelist[nummodes].dib = 1;
+			modelist[nummodes].fullscreen = 1;
+			modelist[nummodes].bpp = bpps[i];
 
-            sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-                modelist[nummodes].width,
-                modelist[nummodes].height,
-                modelist[nummodes].bpp); //johnfitz -- refreshrate
+			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
+					modelist[nummodes].width,
+					modelist[nummodes].height,
+					modelist[nummodes].bpp); //johnfitz -- refreshrate
 
-            // if the width is more than twice the height, reduce it by half because this
-            // is probably a dual-screen monitor
-            if (!COM_CheckParm("-noadjustaspect"))
-            {
-                if (modelist[nummodes].width > (modelist[nummodes].height << 1))
-                {
-                    modelist[nummodes].width >>= 1;
-                    modelist[nummodes].halfscreen = 1;
-                    sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-                        modelist[nummodes].width,
-                        modelist[nummodes].height,
-                        modelist[nummodes].bpp);
-                }
-            }
+			// if the width is more than twice the height, reduce it by half because this
+			// is probably a dual-screen monitor
+			if (!COM_CheckParm("-noadjustaspect"))
+			{
+				if (modelist[nummodes].width > (modelist[nummodes].height << 1))
+				{
+					modelist[nummodes].width >>= 1;
+					modelist[nummodes].halfscreen = 1;
+					sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
+							modelist[nummodes].width,
+							modelist[nummodes].height,
+							modelist[nummodes].bpp);
+				}
+			}
 
-            for (k=originalnummodes, existingmode = 0 ; k < nummodes ; k++)
-            {
-                if ((modelist[nummodes].width == modelist[k].width)   &&
-                    (modelist[nummodes].height == modelist[k].height) &&
-                    (modelist[nummodes].bpp == modelist[k].bpp))
-                {
-                    existingmode = 1;
-                    break;
-                }
-            }
+			for (k=originalnummodes, existingmode = 0 ; k < nummodes ; k++)
+			{
+				if ((modelist[nummodes].width == modelist[k].width)   &&
+				    (modelist[nummodes].height == modelist[k].height) &&
+				    (modelist[nummodes].bpp == modelist[k].bpp))
+				{
+					existingmode = 1;
+					break;
+				}
+			}
 
-            if (!existingmode)
-            {
-                nummodes++;
-            }
-        }
+			if (!existingmode)
+			{
+				nummodes++;
+			}
+		}
 		modenum++;
-    }
+	}
 
 	if (nummodes == originalnummodes)
 		Con_SafePrintf ("No fullscreen DIB modes found\n");
@@ -1177,10 +1182,10 @@ VID_Init
 */
 void	VID_Init (void)
 {
-    const SDL_VideoInfo *info;
-	int                 i, existingmode;
-	int                 basenummodes, width, height, bpp, findbpp, done;
-	char                gldir[MAX_OSPATH];
+	const SDL_VideoInfo *info;
+	int		i, existingmode;
+	int		basenummodes, width, height, bpp, findbpp, done;
+	char		gldir[MAX_OSPATH];
 
 	//johnfitz -- clean up init readouts
 	//Con_Printf("------------- Init Video -------------\n");
@@ -1200,12 +1205,10 @@ void	VID_Init (void)
 	Cmd_AddCommand ("vid_describecurrentmode", VID_DescribeCurrentMode_f);
 	Cmd_AddCommand ("vid_describemodes", VID_DescribeModes_f);
 
-	//InitCommonControls();
+	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
+		Sys_Error("Could not initialize SDL Video");
 
-    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
-        Sys_Error("Could not initialize SDL Video");
-
-    SDL_putenv("SDL_VIDEO_CENTERED=center");
+	SDL_putenv("SDL_VIDEO_CENTERED=center");
 
 	VID_InitDIB();
 	basenummodes = nummodes = 1;
@@ -1236,7 +1239,7 @@ void	VID_Init (void)
 		{
 			if (COM_CheckParm("-current"))
 			{
-                info = SDL_GetVideoInfo();
+				info = SDL_GetVideoInfo();
 				modelist[MODE_FULLSCREEN_DEFAULT].width = info->current_w;
 				modelist[MODE_FULLSCREEN_DEFAULT].height = info->current_h;
 				vid_default = MODE_FULLSCREEN_DEFAULT;
@@ -1375,8 +1378,8 @@ void	VID_Init (void)
 	vid.colormap = host_colormap;
 	vid.fullbright = 256 - LittleLong (*((int *)vid.colormap + 2048));
 
-    // set window icon
-    PL_SetWindowIcon();
+	// set window icon
+	PL_SetWindowIcon();
 
 	VID_SetMode (vid_default);
 	GL_Init ();
@@ -1443,15 +1446,15 @@ VID_SyncCvars -- johnfitz -- set vid cvars to match current video mode
 */
 void VID_SyncCvars (void)
 {
-    int swap_control;
+	int swap_control;
 
 	Cvar_Set ("vid_width", va("%i", modelist[vid_default].width));
 	Cvar_Set ("vid_height", va("%i", modelist[vid_default].height));
 	Cvar_Set ("vid_bpp", va("%i", modelist[vid_default].bpp));
 	Cvar_Set ("vid_fullscreen", (windowed) ? "0" : "1");
 
-    if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
-        Cvar_Set ("vid_vsync", (swap_control) ? "1" : "0");
+	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
+		Cvar_Set ("vid_vsync", (swap_control) ? "1" : "0");
 }
 
 //==========================================================================
@@ -1732,10 +1735,10 @@ void VID_MenuKey (int key)
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
 		case 4:
-            Cbuf_AddText ("toggle vid_vsync\n"); // kristian
-            break;
+			Cbuf_AddText ("toggle vid_vsync\n"); // kristian
+			break;
 		case 5:
-        case 6:
+		case 6:
 		default:
 			break;
 		}
@@ -1758,10 +1761,10 @@ void VID_MenuKey (int key)
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
 		case 4:
-            Cbuf_AddText ("toggle vid_vsync\n");
-            break;
+			Cbuf_AddText ("toggle vid_vsync\n");
+			break;
 		case 5:
-        case 6:
+		case 6:
 		default:
 			break;
 		}
@@ -1791,9 +1794,9 @@ void VID_MenuKey (int key)
 			break;
 		case 6:
 			Cbuf_AddText ("vid_restart\n");
-            key_dest = key_game;
-            m_state = m_none;
-            IN_Activate();
+			key_dest = key_game;
+			m_state = m_none;
+			IN_Activate();
 			break;
 		default:
 			break;
@@ -1844,12 +1847,12 @@ void VID_MenuDraw (void)
 	M_DrawCheckbox (216, video_cursor_table[i], (int)vid_fullscreen.value);
 	i++;
 
-    // added vsync to the video menu -- kristian
+	// added vsync to the video menu -- kristian
 	M_Print (16, video_cursor_table[i], "         Vertical Sync");
-    if (gl_swap_control)
-        M_DrawCheckbox (216, video_cursor_table[i], (int)vid_vsync.value);
-    else
-        M_Print (216, video_cursor_table[i], "N/A");
+	if (gl_swap_control)
+		M_DrawCheckbox (216, video_cursor_table[i], (int)vid_vsync.value);
+	else
+		M_Print (216, video_cursor_table[i], "N/A");
 
 	i++;
 

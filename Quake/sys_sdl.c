@@ -23,36 +23,36 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "errno.h"
 
-#define CONSOLE_ERROR_TIMEOUT	60.0	// # of seconds to wait on Sys_Error running
-qboolean			isDedicated;
+#define CONSOLE_ERROR_TIMEOUT	60.0	/* # of seconds to wait on Sys_Error running */
+qboolean		isDedicated;
 static qboolean		sc_return_on_enter = false;
 
-#define	MAX_HANDLES		32 //johnfitz -- was 10
-FILE	*sys_handles[MAX_HANDLES];
+#define	MAX_HANDLES		32	/* johnfitz -- was 10 */
+FILE			*sys_handles[MAX_HANDLES];
 
 int findhandle (void)
 {
 	int i;
 
-    for (i=1 ; i<MAX_HANDLES ; i++)
-        if (!sys_handles[i])
-            return i;
-    
-    Sys_Error ("out of handles");
+	for (i=1 ; i<MAX_HANDLES ; i++)
+		if (!sys_handles[i])
+			return i;
+
+	Sys_Error ("out of handles");
 	return -1;
 }
 
 int filelength (FILE *f)
 {
-    int pos;
-    int end;
+	int pos;
+	int end;
 
-    pos = ftell (f);
-    fseek (f, 0, SEEK_END);
-    end = ftell (f);
-    fseek (f, pos, SEEK_SET);
+	pos = ftell (f);
+	fseek (f, 0, SEEK_END);
+	end = ftell (f);
+	fseek (f, pos, SEEK_SET);
 
-    return end;
+	return end;
 }
 
 int Sys_FileOpenRead (char *path, int *hndl)
@@ -88,8 +88,8 @@ int Sys_FileOpenWrite (char *path)
 
 	if (!f)
 		Sys_Error ("Error opening %s: %s", path, strerror(errno));
-	
-    sys_handles[i] = f;
+
+	sys_handles[i] = f;
 	return i;
 }
 
@@ -114,19 +114,19 @@ int Sys_FileWrite (int handle, void *data, int count)
 	return fwrite (data, 1, count, sys_handles[handle]);
 }
 
-int	Sys_FileTime (char *path)
+int Sys_FileTime (char *path)
 {
-    FILE	*f;
+	FILE	*f;
 
-    f = fopen(path, "rb");
+	f = fopen(path, "rb");
 
-    if (f)
-    {
-        fclose(f);
-        return 1;
-    }
+	if (f)
+	{
+		fclose(f);
+		return 1;
+	}
 
-    return -1;
+	return -1;
 }
 
 void Sys_mkdir (char *path)
@@ -144,7 +144,7 @@ void Sys_DebugLog(char *file, char *fmt, ...)
 
 void Sys_Error (char *error, ...)
 {
-    va_list		argptr;
+	va_list		argptr;
 	char		text[1024], text2[1024];
 	char		*text3 = "Press Enter to exit\n";
 	char		*text4 = "***********************************\n";
@@ -157,48 +157,50 @@ void Sys_Error (char *error, ...)
 	if (!in_sys_error3)
 	{
 		in_sys_error3 = 1;
-		// VID_ForceUnlockedAndReturnState (); TODO: see what this does
 	}
-    
-    //TODO: use OS messagebox here if possible (windows, os x and linux shouldn't be a problem)
-    //implement this in pl_*, which contains all the platform dependent code
-    
-    va_start (argptr, error);
-    vsprintf (text, error, argptr);
-    va_end (argptr);
-    
-    if (isDedicated) {
-        sprintf (text2, "ERROR: %s\n", text);
-        printf ("%s", text5);
-        printf ("%s", text4);
-        printf ("%s", text2);
-        printf ("%s", text3);
-        printf ("%s", text4);
-        
-        starttime = Sys_FloatTime ();
-        sc_return_on_enter = true;	// so Enter will get us out of here
-        
-        while (!Sys_ConsoleInput () &&
-               ((Sys_FloatTime () - starttime) < CONSOLE_ERROR_TIMEOUT))
-        {
-        }
-        
-        if (!in_sys_error1)
-        {
-            in_sys_error1 = 1;
-            Host_Shutdown ();
-        }
-    }
-    else
-    {
-        PL_ErrorDialog(text);
-    }
+
+	//TODO: use OS messagebox here if possible
+	// (windows, os x and linux shouldn't be a problem)
+	//implement this in pl_*, which contains all the
+	// platform dependent code
+
+	va_start (argptr, error);
+	vsprintf (text, error, argptr);
+	va_end (argptr);
+
+	if (isDedicated)
+	{
+		sprintf (text2, "ERROR: %s\n", text);
+		printf ("%s", text5);
+		printf ("%s", text4);
+		printf ("%s", text2);
+		printf ("%s", text3);
+		printf ("%s", text4);
+
+		starttime = Sys_FloatTime ();
+		sc_return_on_enter = true;	// so Enter will get us out of here
+
+		while (!Sys_ConsoleInput () &&
+			((Sys_FloatTime () - starttime) < CONSOLE_ERROR_TIMEOUT))
+		{
+		}
+
+		if (!in_sys_error1)
+		{
+			in_sys_error1 = 1;
+			Host_Shutdown ();
+		}
+	}
+	else
+	{
+		PL_ErrorDialog(text);
+	}
 
 // shut down QHOST hooks if necessary
 	if (!in_sys_error2)
 	{
 		in_sys_error2 = 1;
-		//DeinitConProc (); TODO: check what this does
+	//	DeinitConProc ();
 	}
 
 	exit (1);
@@ -206,20 +208,19 @@ void Sys_Error (char *error, ...)
 
 void Sys_Printf (char *fmt, ...)
 {
-    va_list argptr;
+	va_list argptr;
 
-    // always print to the console
-//    if (isDedicated)
-//    {
-        va_start(argptr, fmt);
-        vprintf(fmt, argptr);
-        va_end(argptr);
-//    }
+// always print to the console
+//	if (isDedicated)
+//	{
+		va_start(argptr, fmt);
+		vprintf(fmt, argptr);
+		va_end(argptr);
+//	}
 }
 
 void Sys_Quit (void)
 {
-
 	Host_Shutdown();
 
 //	if (isDedicated)
@@ -233,7 +234,7 @@ void Sys_Quit (void)
 
 double Sys_FloatTime (void)
 {
-    return SDL_GetTicks() / 1000.0;
+	return SDL_GetTicks() / 1000.0;
 }
 
 char *Sys_ConsoleInput (void)
@@ -241,31 +242,31 @@ char *Sys_ConsoleInput (void)
 	return 0;
 }
 
-
 void Sys_Sleep (void)
 {
 }
 
 void Sys_SendKeyEvents (void)
 {
-    SDL_Event event;
-    
-    SDL_PumpEvents();
-    while (SDL_PollEvent (&event))
-    {
-        switch (event.type) {
-            case SDL_KEYDOWN:
-            case SDL_KEYUP:
-                Key_Event(Key_Map(&(event.key)), event.key.type == SDL_KEYDOWN);
-                return;
-            case SDL_QUIT:
-                Sys_Quit();
-                break;
-            default:
-                SDL_PumpEvents();
-                break;
-        }
-    }
+	SDL_Event event;
+
+	SDL_PumpEvents();
+	while (SDL_PollEvent (&event))
+	{
+		switch (event.type)
+		{
+		case SDL_KEYDOWN:
+		case SDL_KEYUP:
+			Key_Event(Key_Map(&(event.key)), event.key.type == SDL_KEYDOWN);
+			return;
+		case SDL_QUIT:
+			Sys_Quit();
+			break;
+		default:
+			SDL_PumpEvents();
+			break;
+		}
+	}
 }
 
 void Sys_LowFPPrecision (void)
@@ -279,3 +280,4 @@ void Sys_HighFPPrecision (void)
 void Sys_SetFPCW (void)
 {
 }
+

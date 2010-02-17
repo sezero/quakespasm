@@ -111,7 +111,7 @@ void Con_ToggleConsole_f (void)
 	{
 		if (cls.state == ca_connected)
 		{
-            IN_Activate();
+			IN_Activate();
 			key_dest = key_game;
 			key_lines[edit_line][1] = 0;	// clear any typing
 			key_linepos = 1;
@@ -124,10 +124,10 @@ void Con_ToggleConsole_f (void)
 		}
 	}
 	else
-    {
-        IN_Deactivate(vid.type == MODE_WINDOWED);
+	{
+		IN_Deactivate(vid.type == MODE_WINDOWED);
 		key_dest = key_console;
-    }
+	}
 
 	SCR_EndLoadingPlaque ();
 	memset (con_times, 0, sizeof(con_times));
@@ -1104,7 +1104,7 @@ void Con_NotifyBox (char *text)
 	Con_Printf (Con_Quakebar(40)); //johnfitz
 
 	key_count = -2;		// wait for a key down and up
-    IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(vid.type == MODE_WINDOWED);
 	key_dest = key_console;
 
 	do
@@ -1117,7 +1117,7 @@ void Con_NotifyBox (char *text)
 	} while (key_count < 0);
 
 	Con_Printf ("\n");
-    IN_Activate();
+	IN_Activate();
 	key_dest = key_game;
 	realtime = 0;				// put the cursor back to invisible
 }
