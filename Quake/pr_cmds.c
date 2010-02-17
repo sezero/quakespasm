@@ -72,8 +72,8 @@ void PF_error (void)
 	edict_t	*ed;
 
 	s = PF_VarString(0);
-	Con_Printf ("======SERVER ERROR in %s:\n%s\n"
-	,pr_strings + pr_xfunction->s_name,s);
+	Con_Printf ("======SERVER ERROR in %s:\n%s\n",
+			PR_GetString(pr_xfunction->s_name), s);
 	ed = PROG_TO_EDICT(pr_global_struct->self);
 	ED_Print (ed);
 
@@ -96,8 +96,8 @@ void PF_objerror (void)
 	edict_t	*ed;
 
 	s = PF_VarString(0);
-	Con_Printf ("======OBJECT ERROR in %s:\n%s\n"
-	,pr_strings + pr_xfunction->s_name,s);
+	Con_Printf ("======OBJECT ERROR in %s:\n%s\n",
+			PR_GetString(pr_xfunction->s_name), s);
 	ed = PROG_TO_EDICT(pr_global_struct->self);
 	ED_Print (ed);
 	ED_Free (ed);
@@ -261,7 +261,7 @@ void PF_setmodel (void)
 	if (!*check)
 		PR_RunError ("no precache: %s\n", m);
 
-	e->v.model = m - pr_strings;
+	e->v.model = PR_SetEngineString(*check);
 	e->v.modelindex = i; //SV_ModelIndex (m);
 
 	mod = sv.models[ (int)e->v.modelindex];  // Mod_ForName (m, true);
@@ -940,7 +940,7 @@ void PF_ftos (void)
 		sprintf (s, "%d",(int)v);
 	else
 		sprintf (s, "%5.1f",v);
-	G_INT(OFS_RETURN) = s - pr_strings;
+	G_INT(OFS_RETURN) = PR_SetEngineString(s);
 }
 
 void PF_fabs (void)
@@ -956,7 +956,7 @@ void PF_vtos (void)
 
 	s = PR_GetTempString();
 	sprintf (s, "'%5.1f %5.1f %5.1f'", G_VECTOR(OFS_PARM0)[0], G_VECTOR(OFS_PARM0)[1], G_VECTOR(OFS_PARM0)[2]);
-	G_INT(OFS_RETURN) = s - pr_strings;
+	G_INT(OFS_RETURN) = PR_SetEngineString(s);
 }
 
 void PF_Spawn (void)
@@ -1509,7 +1509,7 @@ void PF_makestatic (void)
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (sv.protocol == PROTOCOL_NETQUAKE)
 	{
-		if (SV_ModelIndex(pr_strings + ent->v.model) & 0xFF00 || (int)(ent->v.frame) & 0xFF00)
+		if (SV_ModelIndex(PR_GetString(ent->v.model)) & 0xFF00 || (int)(ent->v.frame) & 0xFF00)
 		{
 			ED_Free (ent);
 			return; //can't display the correct model & frame, so don't show it at all
@@ -1517,7 +1517,7 @@ void PF_makestatic (void)
 	}
 	else
 	{
-		if (SV_ModelIndex(pr_strings + ent->v.model) & 0xFF00)
+		if (SV_ModelIndex(PR_GetString(ent->v.model)) & 0xFF00)
 			bits |= B_LARGEMODEL;
 		if ((int)(ent->v.frame) & 0xFF00)
 			bits |= B_LARGEFRAME;
@@ -1534,9 +1534,9 @@ void PF_makestatic (void)
 		MSG_WriteByte (&sv.signon, svc_spawnstatic);
 
 	if (bits & B_LARGEMODEL)
-		MSG_WriteShort (&sv.signon, SV_ModelIndex(pr_strings + ent->v.model));
+		MSG_WriteShort (&sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
 	else
-		MSG_WriteByte (&sv.signon, SV_ModelIndex(pr_strings + ent->v.model));
+		MSG_WriteByte (&sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
 
 	if (bits & B_LARGEFRAME)
 		MSG_WriteShort (&sv.signon, ent->v.frame);

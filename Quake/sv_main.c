@@ -272,9 +272,7 @@ void SV_SendServerinfo (client_t *client)
 	else
 		MSG_WriteByte (&client->message, GAME_COOP);
 
-	sprintf (message, pr_strings+sv.edicts->v.message);
-
-	MSG_WriteString (&client->message,message);
+	MSG_WriteString (&client->message, PR_GetString(sv.edicts->v.message));
 
 	//johnfitz -- only send the first 256 model and sound precaches if protocol is 15
 	for (i=0,s = sv.model_precache+1 ; *s; s++,i++)
@@ -534,7 +532,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 		if (ent != clent)	// clent is ALLWAYS sent
 		{
 			// ignore ents without visible models
-			if (!ent->v.modelindex || !pr_strings[ent->v.model])
+			if (!ent->v.modelindex || !PR_GetString(ent->v.model)[0])
 				continue;
 
 			//johnfitz -- don't send model>255 entities if protocol is 15
@@ -806,7 +804,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (sv.protocol != PROTOCOL_NETQUAKE)
 	{
-		if (bits & SU_WEAPON && SV_ModelIndex(pr_strings+ent->v.weaponmodel) & 0xFF00) bits |= SU_WEAPON2;
+		if (bits & SU_WEAPON && SV_ModelIndex(PR_GetString(ent->v.weaponmodel)) & 0xFF00) bits |= SU_WEAPON2;
 		if ((int)ent->v.armorvalue & 0xFF00) bits |= SU_ARMOR2;
 		if ((int)ent->v.currentammo & 0xFF00) bits |= SU_AMMO2;
 		if ((int)ent->v.ammo_shells & 0xFF00) bits |= SU_SHELLS2;
@@ -852,7 +850,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	if (bits & SU_ARMOR)
 		MSG_WriteByte (msg, ent->v.armorvalue);
 	if (bits & SU_WEAPON)
-		MSG_WriteByte (msg, SV_ModelIndex(pr_strings+ent->v.weaponmodel));
+		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)));
 
 	MSG_WriteShort (msg, ent->v.health);
 	MSG_WriteByte (msg, ent->v.currentammo);
@@ -879,7 +877,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & SU_WEAPON2)
-		MSG_WriteByte (msg, SV_ModelIndex(pr_strings+ent->v.weaponmodel) >> 8);
+		MSG_WriteByte (msg, SV_ModelIndex(PR_GetString(ent->v.weaponmodel)) >> 8);
 	if (bits & SU_ARMOR2)
 		MSG_WriteByte (msg, (int)ent->v.armorvalue >> 8);
 	if (bits & SU_AMMO2)
@@ -1145,7 +1143,7 @@ void SV_CreateBaseline (void)
 		else
 		{
 			svent->baseline.colormap = 0;
-			svent->baseline.modelindex = SV_ModelIndex(pr_strings + svent->v.model);
+			svent->baseline.modelindex = SV_ModelIndex(PR_GetString(svent->v.model));
 			svent->baseline.alpha = svent->alpha; //johnfitz -- alpha support
 		}
 
@@ -1368,7 +1366,6 @@ void SV_SpawnServer (char *server)
 	SV_ClearWorld ();
 
 	sv.sound_precache[0] = pr_strings;
-
 	sv.model_precache[0] = pr_strings;
 	sv.model_precache[1] = sv.modelname;
 	for (i=1 ; i<sv.worldmodel->numsubmodels ; i++)
@@ -1383,7 +1380,7 @@ void SV_SpawnServer (char *server)
 	ent = EDICT_NUM(0);
 	memset (&ent->v, 0, progs->entityfields * 4);
 	ent->free = false;
-	ent->v.model = sv.worldmodel->name - pr_strings;
+	ent->v.model = PR_SetEngineString(sv.worldmodel->name);
 	ent->v.modelindex = 1;		// world model
 	ent->v.solid = SOLID_BSP;
 	ent->v.movetype = MOVETYPE_PUSH;
@@ -1393,7 +1390,7 @@ void SV_SpawnServer (char *server)
 	else
 		pr_global_struct->deathmatch = deathmatch.value;
 
-	pr_global_struct->mapname = sv.name - pr_strings;
+	pr_global_struct->mapname = PR_SetEngineString(sv.name);
 
 // serverflags are for cross level information (sigils)
 	pr_global_struct->serverflags = svs.serverflags;
