@@ -76,16 +76,16 @@ int main(int argc, char *argv[])
 			switch (event.type)
 			{
 			case SDL_ACTIVEEVENT:
-				if (event.active.state & SDL_APPACTIVE & SDL_APPINPUTFOCUS)
+				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
 				{
+					// TODO: handle sound
 					if (event.active.gain)
 					{
-						IN_Activate();
+					//	IN_Activate();
 					}
 					else
 					{
-						// TODO: handle sound
-						IN_Deactivate(vid.type == MODE_WINDOWED);
+					//	IN_Deactivate(vid.type == MODE_WINDOWED);
 					}
 				}
 				break;
