@@ -1,14 +1,11 @@
-
-# Hacked Makefile for fitzquake_sdl_20100125 by Ozkan & Steven, Jan. 31, 2010
-# Tested on Fedora-7, Fedora-6_amd64, FreeBSD-7.0. Untested on MacOSX, Win32
+# GNU Makefile for QuakeSpasm, Feb. 18, 2010
 #
-# To do it, just move this file to "fitzquake_sdl_20100125/Quake", and "make"
-# You'll need SDL and SDL_net fully installed.
+# You need SDL and SDL_net fully installed.
 # "make DEBUG=1" builds debug client
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations
 #
-# Currently build objects are separate from those of codeblocks, but this may change.
-# FreeBSD users may have to mess with include directories and also "-nosound"
+# Build objects are separate from those of codeblocks for now
+# (we aren't using codeblocks).
 
 # ============================================================================
 
@@ -112,7 +109,7 @@ LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
 
 .PHONY:	clean debug release
 
-DEFAULT_TARGET := fitzquake
+DEFAULT_TARGET := quakespasm
 
 # ---------------------------
 # rules
@@ -122,7 +119,7 @@ DEFAULT_TARGET := fitzquake
 	$(CC) $(DFLAGS) -c $(CFLAGS) $(X11_CFLAGS) $(SDL_CFLAGS) -o $@ $^
 
 # ----------------------------------------------------------------------------
-# FitzQuake SDL objects
+# objects
 # ----------------------------------------------------------------------------
 
 OBJS := \
@@ -140,16 +137,16 @@ common.o    gl_rlight.o  host_cmd.o   net_loop.o  r_brush.o     sv_main.o
 # build rules for Linux
 # ------------------------
 
-fitzquake:	$(OBJS)
-	$(CC) $(CFLAGS) -o fitzquake $(OBJS) $(X11_LFLAGS) $(SDL_LFLAGS) $(LIBS)
+quakespasm:	$(OBJS)
+	$(CC) $(CFLAGS) -o quakespasm $(OBJS) $(X11_LFLAGS) $(SDL_LFLAGS) $(LIBS)
 	$(STRIP_CMD) $@
 
-release:	fitzquake
+release:	quakespasm
 debug:
 	$(error Use "make DEBUG=1")
 
-install:	fitzquake
-	mv fitzquake /usr/local/games/quake
+install:	quakespasm
+	mv quakespasm /usr/local/games/quake
 
 clean:
 	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)

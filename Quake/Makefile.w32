@@ -1,5 +1,5 @@
-# GNU Makefile for cross-compiling fitzquake.exe (Win32 : MinGW)
-# using cross-toolchains on a linux host	/ Jan. 31, 2010
+# GNU Makefile for cross-compiling quakespasm.exe (Win32 : MinGW)
+# using cross-toolchains on a linux host	/ Feb. 18, 2010.
 # "make DEBUG=1" builds debug client
 # "make SDL_CONFIG=/path/to/sdl-config" for sdl-config from cross-compiled SDL
 
@@ -62,7 +62,7 @@ LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
 
 .PHONY:	clean debug release
 
-DEFAULT_TARGET := fitzquake.exe
+DEFAULT_TARGET := quakespasm.exe
 
 # ---------------------------
 # rules
@@ -74,7 +74,7 @@ DEFAULT_TARGET := fitzquake.exe
 	$(WINDRES) --output-format=coff -I../Windows -o $@ $^
 
 # ----------------------------------------------------------------------------
-# FitzQuake SDL objects
+# objects
 # ----------------------------------------------------------------------------
 
 OBJS := \
@@ -92,11 +92,11 @@ common.o    gl_rlight.o  host_cmd.o   net_loop.o  r_brush.o     sv_main.o   Fitz
 # build rules for mingw :
 # ------------------------
 
-fitzquake.exe:	$(OBJS)
-	$(CC) $(CFLAGS) -o fitzquake.exe $(OBJS) $(SDL_LFLAGS) $(LIBS)
-	$(STRIP_CMD) fitzquake.exe
+quakespasm.exe:	$(OBJS)
+	$(CC) $(CFLAGS) -o quakespasm.exe $(OBJS) $(SDL_LFLAGS) $(LIBS)
+	$(STRIP_CMD) quakespasm.exe
 
-release:	fitzquake.exe
+release:	quakespasm.exe
 debug:
 	$(error Use "make DEBUG=1")
 
