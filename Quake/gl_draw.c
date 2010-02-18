@@ -273,9 +273,10 @@ qpic_t	*Draw_CachePic (char *path)
 	glpic_t		*gl;
 
 	for (pic=menu_cachepics, i=0 ; i<menu_numcachepics ; pic++, i++)
+	{
 		if (!strcmp (path, pic->name))
 			return &pic->pic;
-
+	}
 	if (menu_numcachepics == MAX_CACHED_PICS)
 		Sys_Error ("menu_numcachepics == MAX_CACHED_PICS");
 	menu_numcachepics++;
@@ -307,6 +308,50 @@ qpic_t	*Draw_CachePic (char *path)
 	gl->th = (float)dat->height/(float)TexMgr_PadConditional(dat->height); //johnfitz
 
 	return &pic->pic;
+}
+
+/*
+================
+Draw_ConbackPic -- QuakeSpasm custom conback drawing.
+================
+*/
+extern char *get_conback(void);
+qpic_t *Draw_ConbackPic (void)
+{
+    if (fitzmode) {
+	return Draw_CachePic ("gfx/conback.lmp");
+    } else {
+	/* QuakeSpasm customization: */
+	cachepic_t	*pic;
+	int			i;
+	qpic_t		*dat;
+	glpic_t		*gl;
+
+	for (pic=menu_cachepics, i=0 ; i<menu_numcachepics ; pic++, i++)
+	{
+		if (!strcmp ("gfx/conback.lmp", pic->name))
+			return &pic->pic;
+	}
+	if (menu_numcachepics == MAX_CACHED_PICS)
+		Sys_Error ("menu_numcachepics == MAX_CACHED_PICS");
+	menu_numcachepics++;
+	strcpy (pic->name, "gfx/conback.lmp");
+	/* load custom conback, image in memory */
+	dat = (qpic_t *)get_conback ();
+	SwapPic (dat);
+	pic->pic.width = dat->width;
+	pic->pic.height = dat->height;
+	gl = (glpic_t *)pic->pic.data;
+	gl->gltexture = TexMgr_LoadImage (NULL, "gfx/conback.lmp", dat->width, dat->height, SRC_INDEXED, dat->data,
+					  "", (src_offset_t)dat->data,
+					  TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+	gl->sl = 0;
+	gl->sh = (float)dat->width/(float)TexMgr_PadConditional(dat->width); //johnfitz
+	gl->tl = 0;
+	gl->th = (float)dat->height/(float)TexMgr_PadConditional(dat->height); //johnfitz
+
+	return &pic->pic;
+    }	/* -- QuakeSpasm */
 }
 
 /*
@@ -548,7 +593,7 @@ void Draw_ConsoleBackground (void)
 	qpic_t *pic;
 	float alpha;
 
-	pic = Draw_CachePic ("gfx/conback.lmp");
+	pic = Draw_ConbackPic ();
 	pic->width = vid.conwidth;
 	pic->height = vid.conheight;
 
