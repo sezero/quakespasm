@@ -430,8 +430,6 @@ void VID_Restart (void)
 
 	vid_canalttab = true;
 
-	// Clear menu pic cache
-	Draw_ClearMenuPicCache ();
 	//warpimages needs to be recalculated
 	TexMgr_RecalcWarpImageSize ();
 

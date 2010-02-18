@@ -139,12 +139,6 @@ qboolean	scrap_dirty;
 gltexture_t	*scrap_textures[MAX_SCRAPS]; //johnfitz
 
 
-void Draw_ClearMenuPicCache (void)
-{
-	memset(menu_cachepics, 0, menu_numcachepics * sizeof(cachepic_t));
-	menu_numcachepics = 0;
-}
-
 /*
 ================
 Scrap_AllocBlock

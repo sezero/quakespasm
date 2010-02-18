@@ -39,7 +39,5 @@ qpic_t *Draw_PicFromWad (char *name);
 qpic_t *Draw_CachePic (char *path);
 void Draw_NewGame (void);
 
-void Draw_ClearMenuPicCache (void);
-
 void GL_SetCanvas (canvastype newcanvas); //johnfitz
 
