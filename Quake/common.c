@@ -1204,12 +1204,28 @@ COM_Init
 */
 void COM_Init (char *basedir)
 {
-	byte    swaptest[2] = {1,0};
+	int	i = 0x12345678;
+		/*    U N I X */
 
-// set the byte swapping variables in a portable manner
-	if ( *(short *)swaptest == 1)
-	{
+	/*
+	BE_ORDER:  12 34 56 78
+		   U  N  I  X
+
+	LE_ORDER:  78 56 34 12
+		   X  I  N  U
+
+	PDP_ORDER: 34 12 78 56
+		   N  U  X  I
+	*/
+	if ( *(char *)&i == 0x12 )
+		bigendien = true;
+	else if ( *(char *)&i == 0x78 )
 		bigendien = false;
+	else /* if ( *(char *)&i == 0x34 ) */
+		Sys_Error ("Unsupported endianism.");
+
+	if (bigendien == false)
+	{
 		BigShort = ShortSwap;
 		LittleShort = ShortNoSwap;
 		BigLong = LongSwap;
@@ -1217,9 +1233,8 @@ void COM_Init (char *basedir)
 		BigFloat = FloatSwap;
 		LittleFloat = FloatNoSwap;
 	}
-	else
+	else /* we are big endian: */
 	{
-		bigendien = true;
 		BigShort = ShortNoSwap;
 		LittleShort = ShortSwap;
 		BigLong = LongNoSwap;
