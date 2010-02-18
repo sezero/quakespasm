@@ -22,14 +22,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+static qboolean	no_mouse = false;
+
 // mouse variables
 cvar_t	m_filter = {"m_filter","0"};
 
 // total accumulated mouse movement since last frame
 // this gets updated from the main game loop via IN_MouseMove
-int total_dx, total_dy = 0;
+static int	total_dx, total_dy = 0;
 
-int FilterMouseEvents (const SDL_Event *event)
+static int FilterMouseEvents (const SDL_Event *event)
 {
 	switch (event->type)
 	{
@@ -44,6 +46,9 @@ int FilterMouseEvents (const SDL_Event *event)
 
 void IN_Activate (void)
 {
+	if (no_mouse)
+		return;
+
 	if (SDL_WM_GrabInput(SDL_GRAB_QUERY) != SDL_GRAB_ON)
 	{
 		SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -67,6 +72,9 @@ void IN_Activate (void)
 
 void IN_Deactivate (qboolean free_cursor)
 {
+	if (no_mouse)
+		return;
+
 	if (free_cursor)
 	{
 		if (SDL_WM_GrabInput(SDL_GRAB_QUERY) != SDL_GRAB_OFF)
@@ -95,6 +103,13 @@ void IN_Init (void)
 
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
+
+	if (COM_CheckParm("-nomouse"))
+	{
+		no_mouse = true;
+		// discard all mouse events when input is deactivated
+		SDL_SetEventFilter(FilterMouseEvents);
+	}
 
 	IN_Activate();
 }
