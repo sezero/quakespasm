@@ -19,18 +19,20 @@ Foundat(&addr->sa_dataion, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-
 */
 
 #include "quakedef.h"
-
-#if defined(_WIN32)
-#include <winsock2.h>
-#endif
-
 #include "SDL_net.h"
-
 #include "net_sdlnet.h"
 
-#define MAX_SOCKETS	32
+#ifndef MAXHOSTNAMELEN
 #define MAXHOSTNAMELEN	255
-#define AF_INET		2	/* internet */
+#endif
+#ifndef AF_INET
+#define AF_INET		2		/* internet */
+#endif
+#ifndef INADDR_LOOPBACK
+#define INADDR_LOOPBACK	0x7f000001	/* 127.0.0.1 */
+#endif
+
+#define MAX_SOCKETS	32
 
 static int		net_controlsocket;
 static int		net_broadcastsocket = 0;
@@ -42,14 +44,14 @@ IPaddress		myaddr;
 // contains a map of socket numbers to SDL_net UDP sockets
 UDPsocket		net_sockets[MAX_SOCKETS];
 
-int socket_id (UDPsocket socket)
+int socket_id (UDPsocket socket_p)
 {
 	int		i;
 	int		idx = -1;
 
 	for (i = 0; i < MAX_SOCKETS; i++)
 	{
-		if (net_sockets[i] == socket)
+		if (net_sockets[i] == socket_p)
 			return i;
 
 		if (net_sockets[i] == NULL && idx == -1)
@@ -64,7 +66,7 @@ int socket_id (UDPsocket socket)
 	// todo error
 	}
 
-	net_sockets[idx] = socket;
+	net_sockets[idx] = socket_p;
 
 	return idx;
 }
@@ -91,8 +93,6 @@ char *_IPAddrToString (IPaddress *address)
 int  SDLN_Init (void)
 {
 	int		i;
-	char		buff[MAXHOSTNAMELEN];
-	char		*p;
 	IPaddress	*ipaddress;
 
 	// init SDL
@@ -108,32 +108,6 @@ int  SDLN_Init (void)
 	{
 		Con_DPrintf ("SDL_net initialization failed: Could not create socket set.\n");
 		return -1;
-	}
-
-	// determine my name
-	if (gethostname(buff, MAXHOSTNAMELEN) == -1)
-	{
-		Con_DPrintf ("SDL_net initialization failed: Could not determine host name.\n");
-		return -1;
-	}
-
-	// if the quake hostname isn't set, set it to the machine name
-	if (Q_strcmp(hostname.string, "UNNAMED") == 0)
-	{
-		// see if it's a text IP address (well, close enough)
-		for (p = buff; *p; p++)
-			if ((*p < '0' || *p > '9') && *p != '.')
-				break;
-
-		// if it is a real name, strip off the domain; we only want the host
-		if (*p)
-		{
-			for (i = 0; i < 15; i++)
-				if (buff[i] == '.')
-					break;
-			buff[i] = 0;
-		}
-		Cvar_Set ("hostname", buff);
 	}
 
 	// set my IP address
@@ -221,16 +195,13 @@ int SDLN_OpenSocket (int port)
 {
 	UDPsocket		newsocket;
 	static IPaddress	address;
+	Uint16		_port = port;
 
-	if ((newsocket = SDLNet_UDP_Open(port)) == NULL)
+	if ((newsocket = SDLNet_UDP_Open(_port)) == NULL)
 		return -1;
 
-// todo check what this does
-//	if (pioctlsocket (newsocket, FIONBIO, &_true) == -1)
-//		goto ErrorReturn;
-
 	address.host = myaddr.host;
-	address.port = SDLNet_Read16(&port);
+	address.port = SDLNet_Read16(&_port);
 
 	if (SDLNet_UDP_Bind(newsocket, 0, &address) != -1)
 		return socket_id(newsocket);
@@ -243,23 +214,23 @@ int SDLN_OpenSocket (int port)
 
 int SDLN_CloseSocket (int socketid)
 {
-	UDPsocket	socket;
+	UDPsocket	socket_p;
 
 	if (socketid == net_broadcastsocket)
 		net_broadcastsocket = -1;
 
-	socket = net_sockets[socketid];
+	socket_p = net_sockets[socketid];
 
-	if (socket == NULL)
+	if (socket_p == NULL)
 		return -1;
 
-	SDLNet_UDP_Close(socket);
+	SDLNet_UDP_Close(socket_p);
 
 	net_sockets[socketid] = NULL;
 	return 0;
 }
 
-int SDLN_Connect (int socket, struct qsockaddr *addr)
+int SDLN_Connect (int socketid, struct qsockaddr *addr)
 {
 	return 0;
 }
@@ -291,14 +262,15 @@ int SDLN_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	int			numrecv;
 	static UDPpacket	*packet;
 	IPaddress		*ipaddress;
+	UDPsocket		socket_p;
 
-	UDPsocket socket = net_sockets[socketid];
-	if (socket == NULL)
+	socket_p = net_sockets[socketid];
+	if (socket_p == NULL)
 		return -1;
 
 	packet = init_packet(packet, len);
 
-	numrecv = SDLNet_UDP_Recv(socket, packet);
+	numrecv = SDLNet_UDP_Recv(socket_p, packet);
 	if (numrecv == 1)
 	{
 		memcpy(buf, packet->data, packet->len);
@@ -318,12 +290,11 @@ int SDLN_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 {
 	int			numsent;
 	static UDPpacket	*packet;
-	UDPsocket		socket;
+	UDPsocket		socket_p;
 	IPaddress		*ipaddress;
 
-	socket = net_sockets[socketid];
-
-	if (socket == NULL)
+	socket_p = net_sockets[socketid];
+	if (socket_p == NULL)
 		return -1;
 
 	packet = init_packet(packet, len);
@@ -334,7 +305,7 @@ int SDLN_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	packet->address.host = ipaddress->host;
 	packet->address.port = ipaddress->port;
 
-	numsent = SDLNet_UDP_Send(socket, -1, packet);
+	numsent = SDLNet_UDP_Send(socket_p, -1, packet);
 	if (numsent == 0)
 		return 0;
 
@@ -389,23 +360,24 @@ int  SDLN_StringToAddr (char *string, struct qsockaddr *addr)
 
 int SDLN_GetSocketAddr (int socketid, struct qsockaddr *addr)
 {
-	static UDPsocket	socket;
+	static UDPsocket	socket_p;
 	IPaddress		*peeraddress;
 	IPaddress		*ipaddress;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
 
-	socket = net_sockets[socketid];
-	if (socket == NULL)
+	socket_p = net_sockets[socketid];
+	if (socket_p == NULL)
 		return -1;
 
-	peeraddress = SDLNet_UDP_GetPeerAddress(socket, -1);
+	peeraddress = SDLNet_UDP_GetPeerAddress(socket_p, -1);
 	if (peeraddress == NULL)
 		return -1;
 
 	addr->sa_family = AF_INET;
-	ipaddress = (IPaddress *)&(addr->sa_data);
-	if (peeraddress->host == 0 || peeraddress->host == inet_addr("127.0.0.1"))
+	ipaddress = (IPaddress *) addr->sa_data;
+	if (peeraddress->host == 0 ||
+	    peeraddress->host == SDL_SwapBE32(INADDR_LOOPBACK) /* inet_addr ("127.0.0.1") */)
 	{
 		ipaddress->host = myaddr.host;
 		ipaddress->port = myaddr.port;
