@@ -2138,6 +2138,14 @@ void Host_Startdemos_f (void)
 		return;
 	}
 
+	if (!fitzmode)
+	{ /* QuakeSpasm customization: */
+		cls.demonum = -1;
+		/* go straight to menu */
+		Cbuf_InsertText("menu_main");
+		return;
+	}
+
 	c = Cmd_Argc() - 1;
 	if (c > MAX_DEMOS)
 	{

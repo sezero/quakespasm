@@ -3026,6 +3026,12 @@ void M_Draw (void)
 		break;
 
 	case m_quit:
+		if (!fitzmode)
+		{ /* QuakeSpasm customization: */
+			/* Quit now! S.A. */
+			key_dest = key_console;
+			Host_Quit_f ();
+		}
 		M_Quit_Draw ();
 		break;
 

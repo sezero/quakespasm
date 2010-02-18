@@ -490,7 +490,8 @@ Sbar_SoloScoreboard -- johnfitz -- new layout
 void Sbar_SoloScoreboard (void)
 {
 	char	str[256];
-	int	len;
+	int		minutes, seconds, tens, units;
+	int		len;
 
 	sprintf (str,"Kills: %i/%i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
 	Sbar_DrawString (8, 12, str);
@@ -498,18 +499,34 @@ void Sbar_SoloScoreboard (void)
 	sprintf (str,"Secrets: %i/%i", cl.stats[STAT_SECRETS], cl.stats[STAT_TOTALSECRETS]);
 	Sbar_DrawString (312 - strlen(str)*8, 12, str);
 
-	sprintf (str,"skill %i", (int)(skill.value + 0.5));
+	if (!fitzmode)
+	{ /* QuakeSpasm customization: */
+		sprintf (str,"skill %i", (int)(skill.value + 0.5));
+		Sbar_DrawString (160 - strlen(str)*4, 12, str);
+
+		sprintf (str,cl.levelname);
+		strcat  (str," (");
+		strncat (str,cl.mapname,250-strlen(str));
+		strcat  (str,")");
+		len = strlen (str);
+		if (len > 40)
+			Sbar_DrawScrollString (0, 4, 320, str);
+		else
+			Sbar_DrawString (160 - len*4, 4, str);
+		return;
+	}
+	minutes = cl.time / 60;
+	seconds = cl.time - 60*minutes;
+	tens = seconds / 10;
+	units = seconds - 10*tens;
+	sprintf (str,"%i:%i%i", minutes, tens, units);
 	Sbar_DrawString (160 - strlen(str)*4, 12, str);
 
-	sprintf (str,cl.levelname);
-	strcat  (str," (");
-	strncat (str,cl.mapname,250-strlen(str));
-	strcat  (str,")");
-	len = strlen (str);
+	len = strlen (cl.levelname);
 	if (len > 40)
-		Sbar_DrawScrollString (0, 4, 320, str);
+		Sbar_DrawScrollString (0, 4, 320, cl.levelname);
 	else
-		Sbar_DrawString (160 - len*4, 4, str);
+		Sbar_DrawString (160 - len*4, 4, cl.levelname);
 }
 
 /*
