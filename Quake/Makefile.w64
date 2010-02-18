@@ -49,10 +49,8 @@ SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
 SDL_LIBS   := SDL_net
-# link to what SDL_net.dll already is linked to:
-# win32: wsock32.dll, win64 (mingw-w64): ws2_32.dll
-NET_LIBS   := ws2_32
-COMMON_LIBS:= m opengl32 $(NET_LIBS)
+
+COMMON_LIBS:= m opengl32
 
 LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
 
