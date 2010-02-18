@@ -43,6 +43,8 @@ int             static_registered = 1;  // only for startup check, then set
 
 qboolean		msg_suppress_1 = 0;
 
+qboolean		fitzmode;
+
 void COM_InitFilesystem (void);
 
 // if a packfile directory differs from this, it is assumed to be hacked
@@ -1231,6 +1233,9 @@ void COM_Init (char *basedir)
 	Cmd_AddCommand ("path", COM_Path_f);
 	COM_InitFilesystem ();
 	COM_CheckRegistered ();
+
+	if (COM_CheckParm("-fitz"))
+		fitzmode = true;
 
 #ifdef _DEBUG
 	Cmd_AddCommand ("test", Test_f); //johnfitz

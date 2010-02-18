@@ -185,3 +185,7 @@ void COM_LoadCacheFile (char *path, struct cache_user_s *cu);
 extern	struct cvar_s	registered;
 
 extern qboolean		standard_quake, rogue, hipnotic;
+
+extern qboolean		fitzmode;
+// if true, runs in fitzquake mode and disabling custom quakespasm hacks.
+
