@@ -1433,7 +1433,6 @@ void	VID_Toggle (void)
 	else
 	{
 		vid_toggle_works = false;
-		Con_Printf ("SDL_WM_ToggleFullScreen failed\n");
 		Con_Printf ("ToggleFullScreen failed, attempting VID_Restart\n");
 vrestart:
 		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
