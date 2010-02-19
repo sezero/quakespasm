@@ -1041,11 +1041,11 @@ again:
 //=============================================================================
 /* OPTIONS MENU */
 
-#ifdef _WIN32
-#define	OPTIONS_ITEMS	14
-#else
+//#ifdef _WIN32
+//#define	OPTIONS_ITEMS	14
+//#else
 #define	OPTIONS_ITEMS	13
-#endif
+//#endif
 
 #define	SLIDER_RANGE	10
 
