@@ -2138,14 +2138,6 @@ void Host_Startdemos_f (void)
 		return;
 	}
 
-	if (!fitzmode)
-	{ /* QuakeSpasm customization: */
-		cls.demonum = -1;
-		/* go straight to menu */
-		Cbuf_InsertText("menu_main");
-		return;
-	}
-
 	c = Cmd_Argc() - 1;
 	if (c > MAX_DEMOS)
 	{
@@ -2160,10 +2152,18 @@ void Host_Startdemos_f (void)
 	if (!sv.active && cls.demonum != -1 && !cls.demoplayback)
 	{
 		cls.demonum = 0;
+		if (!fitzmode)
+		{  /* QuakeSpasm customization: */
+			/* go straight to menu, no CL_NextDemo */
+			Cbuf_InsertText("menu_main");
+			return;
+		}
 		CL_NextDemo ();
 	}
 	else
+	{
 		cls.demonum = -1;
+	}
 }
 
 
