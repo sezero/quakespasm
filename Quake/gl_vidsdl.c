@@ -74,6 +74,7 @@ static vmode_t	badmode;
 static qboolean	vid_initialized = false;
 static qboolean	windowed, leavecurrentmode;
 static qboolean vid_canalttab = false;
+static qboolean vid_toggle_works = true;
 extern qboolean	mouseactive;  // from in_win.c
 
 SDL_Surface	*draw_context;
@@ -1419,20 +1420,24 @@ void	VID_Init (void)
 // new proc by S.A., called by alt-return key binding.
 void	VID_Toggle (void)
 {
-	// VID_Restart ();
-
 	S_ClearBuffer ();
 
-	if ( SDL_WM_ToggleFullScreen(draw_context) == 1 )
+	if (!vid_toggle_works)
+		goto vrestart;
+	if (SDL_WM_ToggleFullScreen(draw_context) == 1)
 	{
-		Sbar_Changed();	// Sbar seems to need refreshing
-		windowed=!windowed;
-		if ((int)vid_fullscreen.value == 0)
-			Cvar_Set ("vid_fullscreen", "1");
-		else
-			Cvar_Set ("vid_fullscreen", "0");
-	} else {
+		Sbar_Changed ();	// Sbar seems to need refreshing
+		windowed = !windowed;
+		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
+	}
+	else
+	{
+		vid_toggle_works = false;
 		Con_Printf ("SDL_WM_ToggleFullScreen failed\n");
+		Con_Printf ("ToggleFullScreen failed, attempting VID_Restart\n");
+vrestart:
+		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
+		Cbuf_AddText ("vid_restart\n");
 	}
 }
 
