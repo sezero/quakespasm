@@ -754,6 +754,7 @@ tablist is a doubly-linked loop, alphabetized by name
 // aka Linux Bash shell. -- S.A.
 static char	bash_partial[80];
 static qboolean	bash_singlematch;
+static qboolean	map_singlematch;
 
 void AddToTabList (char *name, char *type)
 {
@@ -812,6 +813,70 @@ void AddToTabList (char *name, char *type)
 		t->next->prev = t;
 		t->prev->next = t;
 	}
+}
+
+// This is redefined from host_cmd.c
+typedef struct extralevel_s
+{
+	char				name[32];
+	struct extralevel_s	*next;
+} extralevel_t;
+
+extern extralevel_t	*extralevels;
+
+/*
+============
+BuildMap -- stevenaaus
+============
+*/
+char *BuildMapList (char *partial)
+{
+	int i , match, plen;
+	static char matched[80];
+	char *i_matched, *i_name;
+	extralevel_t	*level;
+
+	memset(matched, 0, 80);
+	plen = strlen(partial);
+	match = 0;
+
+	for (level = extralevels, i = 0; level; level = level->next, i++)
+	{
+		if (!strncmp(level->name, partial, plen))
+		{
+			if (!*matched)
+			{
+				strncpy (matched, level->name, 79);
+				matched[79] = '\0';
+			}
+			else
+			{ // find max common
+				i_matched = matched;
+				i_name = level->name;
+				while (*i_matched && (*i_matched == *i_name))
+				{
+					i_matched++;
+					i_name++;
+				}
+				*i_matched = 0;
+			}
+			match++;
+		}
+	}
+
+	map_singlematch = (match == 1);
+
+	if (match > 1)
+	{
+		for (level = extralevels, i = 0; level; level = level->next, i++)
+		{
+			if (!strncmp(level->name, partial, plen))
+				Con_SafePrintf ("   %s\n", level->name);
+		}
+		Con_SafePrintf ("\n");
+	}
+
+	return matched;
 }
 
 /*
@@ -874,6 +939,26 @@ void Con_TabComplete (void)
 	for (i = 0; c + i < key_lines[edit_line] + key_linepos; i++)
 		partial[i] = c[i];
 	partial[i] = 0;
+
+// Map autocomplete function -- S.A
+// Since we don't have argument completion, this hack will do for now...
+	if (!strncmp (key_lines[edit_line] + 1, "map ",4) ||
+	    !strncmp (key_lines[edit_line] + 1, "changelevel ", 12))
+	{
+		char *matched_map = BuildMapList(partial);
+		if (!*matched_map)
+			return;
+		Q_strcpy (partial, matched_map);
+		Q_strcpy (c, partial);
+		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_map); //set new cursor position
+		if ((key_lines[edit_line][key_linepos] == 0) && map_singlematch)
+		{
+			key_lines[edit_line][key_linepos] = ' ';
+			key_linepos++;
+			key_lines[edit_line][key_linepos] = 0;
+		}
+		return;
+	}
 
 //if partial is empty, return
 	if (partial[0] == 0)
