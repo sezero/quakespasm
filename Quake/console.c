@@ -749,9 +749,35 @@ AddToTabList -- johnfitz
 tablist is a doubly-linked loop, alphabetized by name
 ============
 */
+
+// bash_partial is the string that can be expanded,
+// aka Linux Bash shell. -- S.A.
+static char	bash_partial[80];
+static qboolean	bash_singlematch;
+
 void AddToTabList (char *name, char *type)
 {
 	tab_t	*t,*insert;
+	char	*i_bash, *i_name;
+
+	if (!*bash_partial)
+	{
+		strncpy (bash_partial, name, 79);
+		bash_partial[79] = '\0';
+	}
+	else
+	{
+		bash_singlematch = 0;
+		// find max common between bash_partial and name
+		i_bash = bash_partial;
+		i_name = name;
+		while (*i_bash && (*i_bash == *i_name))
+		{
+			i_bash++;
+			i_name++;
+		}
+		*i_bash = 0;
+	}
 
 	t = Hunk_Alloc(sizeof(tab_t));
 	t->name = name;
@@ -802,6 +828,9 @@ void BuildTabList (char *partial)
 
 	tablist = NULL;
 	len = strlen(partial);
+
+	bash_partial[0] = 0;
+	bash_singlematch = 1;
 
 	for (cvar=cvar_vars ; cvar ; cvar=cvar->next)
 		if (!Q_strncmp (partial, cvar->name, len))
@@ -864,16 +893,22 @@ void Con_TabComplete (void)
 		if (!tablist)
 			return;
 
-		//print list
-		t = tablist;
-		do
+		// print list if length > 1
+		if (tablist->next != tablist)
 		{
-			Con_SafePrintf("   %s (%s)\n", t->name, t->type);
-			t = t->next;
-		} while (t != tablist);
+			t = tablist;
+			Con_SafePrintf("\n");
+			do
+			{
+				Con_SafePrintf("   %s (%s)\n", t->name, t->type);
+				t = t->next;
+			} while (t != tablist);
+			Con_SafePrintf("\n");
+		}
 
-		//get first match
-		match = tablist->name;
+	//	match = tablist->name;
+	// First time, just show maximum matching chars -- S.A.
+		match = bash_partial;
 	}
 	else
 	{
@@ -903,7 +938,7 @@ void Con_TabComplete (void)
 	key_linepos = c - key_lines[edit_line] + Q_strlen(match); //set new cursor position
 
 // if cursor is at end of string, let's append a space to make life easier
-	if (key_lines[edit_line][key_linepos] == 0)
+	if (key_lines[edit_line][key_linepos] == 0 && bash_singlematch)
 	{
 		key_lines[edit_line][key_linepos] = ' ';
 		key_linepos++;
