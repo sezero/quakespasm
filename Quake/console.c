@@ -834,7 +834,7 @@ void Con_TabComplete (void)
 		return;
 
 // get partial string (space -> cursor)
-	if (!Q_strlen(key_tabpartial)) //first time through, find new insert point. (Otherwise, use previous.)
+	if (!key_tabpartial[0]) //first time through, find new insert point. (Otherwise, use previous.)
 	{
 		//work back from cursor until you find a space, quote, semicolon, or prompt
 		c = key_lines[edit_line] + key_linepos - 1; //start one space left of cursor
@@ -856,7 +856,7 @@ void Con_TabComplete (void)
 
 // find a match
 	mark = Hunk_LowMark();
-	if (!Q_strlen(key_tabpartial)) //first time through
+	if (!key_tabpartial[0]) //first time through
 	{
 		Q_strcpy (key_tabpartial, partial);
 		BuildTabList (key_tabpartial);
