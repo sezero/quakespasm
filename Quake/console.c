@@ -1028,6 +1028,11 @@ void Con_TabComplete (void)
 		key_lines[edit_line][key_linepos] = ' ';
 		key_linepos++;
 		key_lines[edit_line][key_linepos] = 0;
+	// S.A.: the map argument completion (may be in combination with the bash-style
+	// display behavior changes, causes weirdness when completing the arguments for
+	// the changelevel command. the line below "fixes" it, although I'm not sure about
+	// the reason, yet, neither do I know any possible side effects of it:
+		c = key_lines[edit_line] + key_linepos;
 	}
 }
 
