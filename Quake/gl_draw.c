@@ -323,6 +323,10 @@ qpic_t *Draw_ConbackPic (void)
 {
     if (fitzmode) {
 	return Draw_CachePic ("gfx/conback.lmp");
+    } else if (COM_LoadTempFile("gfx/conback.lmp")) {
+	/* even if we are running in custom mode
+	   allow for mod-provided conback images */
+	return Draw_CachePic ("gfx/conback.lmp");
     } else {
 	/* QuakeSpasm customization: */
 	cachepic_t	*pic;

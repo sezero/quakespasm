@@ -1813,6 +1813,29 @@ void COM_AddGameDirectory (char *dir)
 	}
 }
 
+static void kill_id1_conback (void)  /* QuakeSpasm customization: */
+{
+	searchpath_t	*search;
+	int			i;
+
+	for (search = com_searchpaths; search; search = search->next)
+	{
+		if (!search->pack)
+			continue;
+		if (!strstr(search->pack->filename, "/id1/pak0.pak"))
+			continue;
+		for (i = 0 ; i < search->pack->numfiles ; i++)
+		{
+			if (strcmp(search->pack->files[i].name,
+					"gfx/conback.lmp") == 0)
+			{
+				search->pack->files[i].name[0] = '$';
+				return;
+			}
+		}
+	}
+}
+
 /*
 =================
 COM_InitFilesystem
@@ -1853,6 +1876,11 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (va("%s/"GAMENAME, basedir) );
 	strcpy (com_gamedir, va("%s/"GAMENAME, basedir));
+
+	if (!fitzmode)
+	{ /* QuakeSpasm customization: */
+		kill_id1_conback ();
+	}
 
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away
