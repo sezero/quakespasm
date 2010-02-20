@@ -120,7 +120,12 @@ Grab six views for environment mapping tests
 void R_Envmap_f (void)
 {
 	byte	buffer[256*256*4];
+	refdef_t	save_refdef;
 
+	if (cls.state != ca_connected)
+		return;
+
+	memcpy (&save_refdef, &r_refdef, sizeof(refdef_t));
 	glDrawBuffer  (GL_FRONT);
 	glReadBuffer  (GL_FRONT);
 	envmap = true;
@@ -174,6 +179,9 @@ void R_Envmap_f (void)
 	glDrawBuffer  (GL_BACK);
 	glReadBuffer  (GL_BACK);
 	GL_EndRendering ();
+
+	memcpy (&r_refdef, &save_refdef, sizeof(refdef_t));
+	vid.recalc_refdef = 1;
 }
 
 /*
