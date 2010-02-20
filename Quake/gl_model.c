@@ -251,16 +251,15 @@ Loads a model into the cache
 */
 model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 {
-	void	*d;
-	unsigned *buf;
+	byte	*buf;
 	byte	stackbuf[1024];		// avoid dirtying the cache heap
+	int	mod_type;
 
 	if (!mod->needload)
 	{
 		if (mod->type == mod_alias)
 		{
-			d = Cache_Check (&mod->cache);
-			if (d)
+			if (Cache_Check (&mod->cache))
 				return mod;
 		}
 		else
@@ -278,7 +277,7 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 //
 // load the file
 //
-	buf = (unsigned *)COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf));
+	buf = COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf));
 	if (!buf)
 	{
 		if (crash)
@@ -300,7 +299,8 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 // call the apropriate loader
 	mod->needload = false;
 
-	switch (LittleLong(*(unsigned *)buf))
+	mod_type = (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24));
+	switch (mod_type)
 	{
 	case IDPOLYHEADER:
 		Mod_LoadAliasModel (mod, buf);
