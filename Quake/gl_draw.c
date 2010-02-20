@@ -320,6 +320,10 @@ Draw_ConbackPic -- QuakeSpasm custom conback drawing.
 */
 extern char *get_conback(void);
 static qboolean have_mod_conback;
+void Draw_CheckConback (void)
+{
+	have_mod_conback = (COM_LoadTempFile("gfx/conback.lmp") != NULL);
+}
 qpic_t *Draw_ConbackPic (void)
 {
     if (fitzmode) {
@@ -463,7 +467,7 @@ void Draw_Init (void)
 	Draw_LoadPics ();
 
 	/* QuakeSpasm customization: */
-	have_mod_conback = (COM_LoadTempFile("gfx/conback.lmp") != NULL);
+	Draw_CheckConback ();
 }
 
 //==============================================================================
