@@ -231,8 +231,6 @@ void CL_NextDemo (void)
 	if (cls.demonum == -1)
 		return;		// don't play demos
 
-	SCR_BeginLoadingPlaque ();
-
 	if (!cls.demos[cls.demonum][0] || cls.demonum == MAX_DEMOS)
 	{
 		cls.demonum = 0;
@@ -240,9 +238,12 @@ void CL_NextDemo (void)
 		{
 			Con_Printf ("No demos listed with startdemos\n");
 			cls.demonum = -1;
+			CL_Disconnect();
 			return;
 		}
 	}
+
+	SCR_BeginLoadingPlaque ();
 
 	sprintf (str,"playdemo %s\n", cls.demos[cls.demonum]);
 	Cbuf_InsertText (str);
