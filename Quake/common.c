@@ -1243,14 +1243,14 @@ void COM_Init (char *basedir)
 		LittleFloat = FloatSwap;
 	}
 
+	if (COM_CheckParm("-fitz"))
+		fitzmode = true;
+
 	Cvar_RegisterVariable (&registered, NULL);
 	Cvar_RegisterVariable (&cmdline, NULL);
 	Cmd_AddCommand ("path", COM_Path_f);
 	COM_InitFilesystem ();
 	COM_CheckRegistered ();
-
-	if (COM_CheckParm("-fitz"))
-		fitzmode = true;
 
 #ifdef _DEBUG
 	Cmd_AddCommand ("test", Test_f); //johnfitz
