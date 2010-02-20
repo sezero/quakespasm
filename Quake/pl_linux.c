@@ -22,9 +22,25 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+static const Uint8 bmp_bytes[] =
+{
+#include "fitz_bmp.h"
+};
+
 void PL_SetWindowIcon (void)
 {
-    // TODO: implement this
+	SDL_RWops	*rwop;
+	SDL_Surface	*icon;
+
+	/* SDL_RWFromConstMem() requires SDL >= 1.2.7 */
+	rwop = SDL_RWFromConstMem(bmp_bytes, sizeof(bmp_bytes));
+	if (rwop == NULL)
+		return;
+	icon = SDL_LoadBMP_RW(rwop, 1);
+	if (icon == NULL)
+		return;
+	SDL_WM_SetIcon(icon, NULL);
+	SDL_FreeSurface(icon);
 }
 
 void PL_VID_Shutdown (void)
