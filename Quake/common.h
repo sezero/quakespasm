@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _Q_COMMON_H
+#define _Q_COMMON_H
+
 // comndef.h  -- general definitions
 
 #if !defined BYTE_DEFINED
@@ -188,4 +192,6 @@ extern qboolean		standard_quake, rogue, hipnotic;
 
 extern qboolean		fitzmode;
 // if true, runs in fitzquake mode and disabling custom quakespasm hacks.
+
+#endif	/* _Q_COMMON_H */
 

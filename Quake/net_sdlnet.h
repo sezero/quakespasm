@@ -18,6 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef __net_sdlnet_h
+#define __net_sdlnet_h
+
 int  SDLN_Init (void);
 void SDLN_Shutdown (void);
 void SDLN_Listen (qboolean state);
@@ -36,3 +39,6 @@ int  SDLN_GetAddrFromName (char *name, struct qsockaddr *addr);
 int  SDLN_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2);
 int  SDLN_GetSocketPort (struct qsockaddr *addr);
 int  SDLN_SetSocketPort (struct qsockaddr *addr, int port);
+
+#endif	/* __net_sdlnet_h */
+

@@ -19,6 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _QUAKE_INPUT_H
+#define _QUAKE_INPUT_H
+
 // input.h -- external (non-keyboard) input devices
 
 void IN_Init (void);
@@ -42,3 +46,6 @@ void IN_Activate ();
 
 // called when the app becomes inactive
 void IN_Deactivate (qboolean free_cursor);
+
+#endif	/* _QUAKE_INPUT_H */
+

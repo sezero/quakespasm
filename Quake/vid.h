@@ -19,6 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __VID_DEFS_H
+#define __VID_DEFS_H
+
 // vid.h -- video driver defs
 
 #define VID_CBITS	6
@@ -82,4 +86,6 @@ int VID_SetMode (int modenum); //johnfitz -- removed palette from argument list
 void VID_SyncCvars (void);
 
 void VID_Toggle (void);
+
+#endif	/* __VID_DEFS_H */
 

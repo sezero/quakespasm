@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef _QUAKE_DRAW_H
+#define _QUAKE_DRAW_H
+
 // draw.h -- these are the only functions outside the refresh allowed
 // to touch the vid buffer
 
@@ -42,4 +45,6 @@ void Draw_NewGame (void);
 void GL_SetCanvas (canvastype newcanvas); //johnfitz
 
 void Draw_CheckConback (void); // QuakeSpasm customization
+
+#endif	/* _QUAKE_DRAW_H */
 

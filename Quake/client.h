@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _CLIENT_H_
+#define _CLIENT_H_
+
 // client.h
 
 typedef struct
@@ -368,4 +372,6 @@ void V_SetContentsColor (int contents);
 //
 void CL_InitTEnts (void);
 void CL_SignonReply (void);
+
+#endif	/* _CLIENT_H_ */
 

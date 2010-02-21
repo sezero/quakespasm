@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __NET_WINSOCK_H
+#define __NET_WINSOCK_H
+
 // net_wins.h
 
 int  WINS_Init (void);
@@ -38,3 +42,6 @@ int  WINS_GetAddrFromName (char *name, struct qsockaddr *addr);
 int  WINS_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2);
 int  WINS_GetSocketPort (struct qsockaddr *addr);
 int  WINS_SetSocketPort (struct qsockaddr *addr, int port);
+
+#endif	/* __NET_WINSOCK_H */
+

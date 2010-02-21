@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef _QUAKE_RENDER_H
+#define _QUAKE_RENDER_H
+
 // refresh.h -- public interface to refresh functions
 
 #define	MAXCLIPPLANES	11
@@ -172,4 +175,6 @@ void D_FlushCaches (void);
 void D_DeleteSurfaceCache (void);
 void D_InitCaches (void *buffer, int size);
 void R_SetVrect (vrect_t *pvrect, vrect_t *pvrectin, int lineadj);
+
+#endif	/* _QUAKE_RENDER_H */
 

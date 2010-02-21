@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _QUAKE_VIEW_H
+#define _QUAKE_VIEW_H
+
 // view.h
 
 extern	cvar_t		vid_gamma;
@@ -30,4 +34,6 @@ void V_CalcBlend (void);
 void V_UpdateBlend (void);
 float V_CalcRoll (vec3_t angles, vec3_t velocity);
 //void V_UpdatePalette (void); //johnfitz
+
+#endif	/* _QUAKE_VIEW_H */
 

@@ -20,6 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef __CONSOLE_H
+#define __CONSOLE_H
+
 //
 // console
 //
@@ -55,4 +58,6 @@ void Con_Hide (void);
 char *Con_Quakebar (int len);
 void Con_TabComplete (void);
 void Con_LogCenterPrint (char *str);
+
+#endif	/* __CONSOLE_H */
 

@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __NET_LOOP_H
+#define __NET_LOOP_H
+
 // net_loop.h
 
 int			Loop_Init (void);
@@ -32,3 +36,6 @@ qboolean	Loop_CanSendMessage (qsocket_t *sock);
 qboolean	Loop_CanSendUnreliableMessage (qsocket_t *sock);
 void		Loop_Close (qsocket_t *sock);
 void		Loop_Shutdown (void);
+
+#endif	/* __NET_LOOP_H */
+

@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _QUAKE_WORLD_H
+#define _QUAKE_WORLD_H
+
 // world.h
 
 typedef struct
@@ -79,4 +83,6 @@ trace_t SV_Move (vec3_t start, vec3_t mins, vec3_t maxs, vec3_t end, int type, e
 // passedict is explicitly excluded from clipping checks (normally NULL)
 
 qboolean SV_RecursiveHullCheck (hull_t *hull, int num, float p1f, float p2f, vec3_t p1, vec3_t p2, trace_t *trace);
+
+#endif	/* _QUAKE_WORLD_H */
 

@@ -19,6 +19,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef _QUAKE_KEYS_H
+#define _QUAKE_KEYS_H
+
 //
 // these are the key numbers that should be passed to Key_Event
 //
@@ -155,4 +158,5 @@ void BuildKeyMaps (void);
 
 int Key_Map (SDL_KeyboardEvent *event);
 
+#endif	/* _QUAKE_KEYS_H */
 

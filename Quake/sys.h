@@ -18,6 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef _QUAKE_SYS_H
+#define _QUAKE_SYS_H
+
 // sys.h -- non-portable functions
 
 //
@@ -66,4 +70,5 @@ void Sys_Sleep (void);
 void Sys_SendKeyEvents (void);
 // Perform Key_Event () callbacks until the input que is empty
 
+#endif	/* _QUAKE_SYS_H */
 

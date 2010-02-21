@@ -19,6 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef __BSPFILE_H
+#define __BSPFILE_H
 
 // upper design bounds
 
@@ -323,4 +325,7 @@ void 	GetVectorForKey (entity_t *ent, char *key, vec3_t vec);
 
 epair_t *ParseEpair (void);
 
-#endif
+#endif	/* QUAKE_GAME */
+
+#endif	/* __BSPFILE_H */
+

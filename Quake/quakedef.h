@@ -19,6 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __QUAKEDEFS_H
+#define __QUAKEDEFS_H
+
 // quakedef.h -- primary header for client
 
 //#define	GLTEST			// experimental stuff
@@ -335,4 +339,6 @@ void Chase_Init (void);
 void TraceLine (vec3_t start, vec3_t end, vec3_t impact);
 void Chase_UpdateForClient (void); //johnfitz
 void Chase_UpdateForDrawing (void); //johnfitz
+
+#endif	/* __QUAKEDEFS_H */
 

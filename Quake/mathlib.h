@@ -19,6 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __MATHLIB_H
+#define __MATHLIB_H
+
 // mathlib.h
 
 typedef float vec_t;
@@ -120,3 +124,6 @@ float	anglemod(float a);
 	)										\
 	:										\
 		BoxOnPlaneSide( (emins), (emaxs), (p)))
+
+#endif	/* __MATHLIB_H */
+

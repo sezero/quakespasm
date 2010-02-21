@@ -17,6 +17,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
+#ifndef __net_udp_h
+#define __net_udp_h
+
 // net_udp.h
 
 int  UDP_Init (void);
@@ -37,3 +41,6 @@ int  UDP_GetAddrFromName (char *name, struct qsockaddr *addr);
 int  UDP_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2);
 int  UDP_GetSocketPort (struct qsockaddr *addr);
 int  UDP_SetSocketPort (struct qsockaddr *addr, int port);
+
+#endif	/* __net_udp_h */
+

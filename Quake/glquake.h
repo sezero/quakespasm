@@ -19,7 +19,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// disable data conversion warnings
+
+#ifndef __GLQUAKE_H
+#define __GLQUAKE_H
 
 void GL_BeginRendering (int *x, int *y, int *width, int *height);
 void GL_EndRendering (void);
@@ -327,4 +329,6 @@ void Sky_LoadTexture (texture_t *mt);
 void Sky_LoadSkyBox (char *name);
 
 void TexMgr_RecalcWarpImageSize (void);
+
+#endif	/* __GLQUAKE_H */
 

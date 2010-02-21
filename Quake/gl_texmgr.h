@@ -18,6 +18,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
+#ifndef _GL_TEXMAN_H
+#define _GL_TEXMAN_H
+
 //gl_texmgr.h -- fitzquake's texture manager. manages opengl texture images
 
 #define TEXPREF_NONE			0x0000
@@ -99,3 +102,6 @@ extern qboolean gl_mtexable;
 void GL_DisableMultitexture (void); //selects texture unit 0
 void GL_EnableMultitexture (void); //selects texture unit 1
 void GL_Bind (gltexture_t *texture);
+
+#endif	/* _GL_TEXMAN_H */
+

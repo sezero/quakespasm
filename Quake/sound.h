@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // sound.h -- client sound i/o functions
 
-#ifndef __SOUND__
-#define __SOUND__
+#ifndef __QUAKE_SOUND__
+#define __QUAKE_SOUND__
 
 #define DEFAULT_SOUND_PACKET_VOLUME 255
 #define DEFAULT_SOUND_PACKET_ATTENUATION 1.0
@@ -191,4 +191,5 @@ void SND_InitScaletable (void);
 void S_AmbientOff (void);
 void S_AmbientOn (void);
 
-#endif
+#endif	/* __QUAKE_SOUND__ */
+
