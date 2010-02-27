@@ -2214,7 +2214,7 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("maps", Host_Maps_f); //johnfitz
 	Cmd_AddCommand ("game", Host_Game_f); //johnfitz
 	Cmd_AddCommand ("mods", Host_Mods_f); //johnfitz
-	Cmd_AddCommand ("games", Host_Mods_f); // as an alias to "mods" -- S.A.
+	Cmd_AddCommand ("games", Host_Mods_f); // as an alias to "mods" -- S.A. / QuakeSpasm
 	Cmd_AddCommand ("mapname", Host_Mapname_f); //johnfitz
 
 	Cmd_AddCommand ("status", Host_Status_f);
