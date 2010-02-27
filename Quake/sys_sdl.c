@@ -20,8 +20,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "quakedef.h"
+#include <sys/types.h>
+#ifdef _WIN32
+#include <io.h>
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 #include "errno.h"
+
+#include "quakedef.h"
 
 #define CONSOLE_ERROR_TIMEOUT	60.0	/* # of seconds to wait on Sys_Error running */
 qboolean		isDedicated;
@@ -131,6 +139,13 @@ int Sys_FileTime (char *path)
 
 void Sys_mkdir (char *path)
 {
+#ifdef _WIN32
+	int rc = _mkdir (path);
+#else
+	int rc = mkdir (path, 0777);
+#endif
+	if (rc != 0 && errno != EEXIST)
+		Sys_Error("Unable to create directory %s", path);
 }
 
 
