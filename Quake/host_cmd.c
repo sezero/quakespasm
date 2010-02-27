@@ -415,7 +415,7 @@ void Modlist_Init (void)
 		{
 			if ((strcmp(mod_dir_t->d_name, ".") == 0) || (strcmp(mod_dir_t->d_name, "..") == 0))
 				continue;
-			if (Q_strcasecmp(mod_dir_t->d_name, "progs.dat") != -1)
+			if (Q_strcasecmp(mod_dir_t->d_name, "progs.dat") == 0)
 				progs_found = true;
 			if (strstr(mod_dir_t->d_name, ".pak") || strstr(mod_dir_t->d_name, ".PAK"))
 				pak_found = true;
