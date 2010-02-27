@@ -231,7 +231,7 @@ void ExtraMaps_Add (char *name)
 	strcpy (level->name, name);
 
 	//insert each entry in alphabetical order
-    if (extralevels == NULL || Q_strcasecmp(level->name, extralevels->name) > 0) //insert at front
+    if (extralevels == NULL || Q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
 	{
         level->next = extralevels;
         extralevels = level;
@@ -240,7 +240,7 @@ void ExtraMaps_Add (char *name)
 	{
         prev = extralevels;
         cursor = extralevels->next;
-        while (cursor && (Q_strcasecmp(level->name, cursor->name) < 0))
+        while (cursor && (Q_strcasecmp(level->name, cursor->name) > 0))
 		{
             prev = cursor;
             cursor = cursor->next;
@@ -363,7 +363,7 @@ void Modlist_Add (char *name)
 	strcpy (mod->name, name);
 
 	//insert each entry in alphabetical order
-    if (modlist == NULL || Q_strcasecmp(mod->name, modlist->name) > 0) //insert at front
+    if (modlist == NULL || Q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
 	{
         mod->next = modlist;
         modlist = mod;
@@ -372,7 +372,7 @@ void Modlist_Add (char *name)
 	{
         prev = modlist;
         cursor = modlist->next;
-        while (cursor && (Q_strcasecmp(mod->name, cursor->name) < 0))
+        while (cursor && (Q_strcasecmp(mod->name, cursor->name) > 0))
 		{
             prev = cursor;
             cursor = cursor->next;
