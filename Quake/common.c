@@ -275,6 +275,9 @@ int Q_strncasecmp (const char *s1, const char *s2, int n)
 {
 	int             c1, c2;
 
+	if (s1 == s2 || n <= 0)
+		return 0;
+
 	while (1)
 	{
 		c1 = *s1++;
@@ -289,16 +292,14 @@ int Q_strncasecmp (const char *s1, const char *s2, int n)
 				c1 -= ('a' - 'A');
 			if (c2 >= 'a' && c2 <= 'z')
 				c2 -= ('a' - 'A');
-			if (c1 != c2)
-				return -1;              // strings not equal
 		}
 		if (!c1)
-			return 0;               // strings are equal
-//              s1++;
-//              s2++;
+			return (c2 == 0) ? 0 : -1;
+		if (c1 < c2)
+			return -1;
+		if (c1 > c2)
+			return 1;
 	}
-
-	return -1;
 }
 
 int Q_strcasecmp (const char *s1, const char *s2)
