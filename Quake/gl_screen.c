@@ -740,7 +740,7 @@ void SCR_ScreenShot_f (void)
 // find a file name to save it to
 	for (i=0; i<10000; i++)
 	{
-		sprintf (tganame, "fitz%04i.tga", i);
+		sprintf (tganame, "spasm%04i.tga", i);	// "fitz%04i.tga"
 		sprintf (checkname, "%s/%s", com_gamedir, tganame);
 		if (Sys_FileTime(checkname) == -1)
 			break;	// file doesn't exist
