@@ -1354,6 +1354,7 @@ typedef struct
 
 char    com_cachedir[MAX_OSPATH];
 char    com_gamedir[MAX_OSPATH];
+char    com_basedir[MAX_OSPATH];
 
 typedef struct searchpath_s
 {
@@ -1855,23 +1856,22 @@ static void kill_id1_conback (void)  /* QuakeSpasm customization: */
 COM_InitFilesystem
 =================
 */
-void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
+void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 {
 	int i, j;
-	char basedir[MAX_OSPATH];
 	searchpath_t *search;
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
-		strcpy (basedir, com_argv[i+1]);
+		strcpy (com_basedir, com_argv[i + 1]);
 	else
-		strcpy (basedir, host_parms.basedir);
+		strcpy (com_basedir, host_parms.basedir);
 
-	j = strlen (basedir);
+	j = strlen (com_basedir);
 	if (j > 0)
 	{
-		if ((basedir[j-1] == '\\') || (basedir[j-1] == '/'))
-		basedir[j-1] = 0;
+		if ((com_basedir[j-1] == '\\') || (com_basedir[j-1] == '/'))
+			com_basedir[j-1] = 0;
 	}
 
 	i = COM_CheckParm ("-cachedir");
@@ -1888,8 +1888,8 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 		com_cachedir[0] = 0;
 
 	// start up with GAMENAME by default (id1)
-	COM_AddGameDirectory (va("%s/"GAMENAME, basedir) );
-	strcpy (com_gamedir, va("%s/"GAMENAME, basedir));
+	COM_AddGameDirectory (va("%s/"GAMENAME, com_basedir));
+	strcpy (com_gamedir, va("%s/"GAMENAME, com_basedir));
 
 	if (!fitzmode)
 	{ /* QuakeSpasm customization: */
@@ -1901,17 +1901,17 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 	com_nummissionpacks = 0;
 	if (COM_CheckParm ("-rogue"))
 	{
-		COM_AddGameDirectory (va("%s/rogue", basedir) );
+		COM_AddGameDirectory (va("%s/rogue", com_basedir));
 		com_nummissionpacks++;
 	}
 	if (COM_CheckParm ("-hipnotic"))
 	{
-		COM_AddGameDirectory (va("%s/hipnotic", basedir) );
+		COM_AddGameDirectory (va("%s/hipnotic", com_basedir));
 		com_nummissionpacks++;
 	}
 	if (COM_CheckParm ("-quoth"))
 	{
-		COM_AddGameDirectory (va("%s/quoth", basedir) );
+		COM_AddGameDirectory (va("%s/quoth", com_basedir));
 		com_nummissionpacks++;
 	}
 	//johnfitz
@@ -1920,7 +1920,7 @@ void COM_InitFilesystem () //johnfitz -- modified based on topaz's tutorial
 	if (i && i < com_argc-1)
 	{
 		com_modified = true;
-		COM_AddGameDirectory (va("%s/%s", basedir, com_argv[i+1]));
+		COM_AddGameDirectory (va("%s/%s", com_basedir, com_argv[i + 1]));
 	}
 
 	i = COM_CheckParm ("-path");
