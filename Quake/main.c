@@ -77,14 +77,13 @@ int main(int argc, char *argv[])
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
 				{
-					// TODO: handle sound
 					if (event.active.gain)
 					{
-					//	IN_Activate();
+						S_UnblockSound();
 					}
 					else
 					{
-					//	IN_Deactivate(vid.type == MODE_WINDOWED);
+						S_BlockSound();
 					}
 				}
 				break;
