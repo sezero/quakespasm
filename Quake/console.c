@@ -831,21 +831,22 @@ BuildMap -- stevenaaus
 */
 char *BuildMapList (char *partial)
 {
-	int i , match, plen;
 	static char matched[80];
 	char *i_matched, *i_name;
 	extralevel_t	*level;
+	int   init, match, plen;
 
 	memset(matched, 0, 80);
 	plen = strlen(partial);
 	match = 0;
 
-	for (level = extralevels, i = 0; level; level = level->next, i++)
+	for (level = extralevels, init = 0; level; level = level->next)
 	{
 		if (!strncmp(level->name, partial, plen))
 		{
-			if (!*matched)
+			if (init == 0)
 			{
+				init = 1;
 				strncpy (matched, level->name, 79);
 				matched[79] = '\0';
 			}
@@ -868,7 +869,7 @@ char *BuildMapList (char *partial)
 
 	if (match > 1)
 	{
-		for (level = extralevels, i = 0; level; level = level->next, i++)
+		for (level = extralevels; level; level = level->next)
 		{
 			if (!strncmp(level->name, partial, plen))
 				Con_SafePrintf ("   %s\n", level->name);
@@ -951,12 +952,14 @@ void Con_TabComplete (void)
 		Q_strcpy (partial, matched_map);
 		Q_strcpy (c, partial);
 		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_map); //set new cursor position
+		// if only one match, append a space
 		if ((key_lines[edit_line][key_linepos] == 0) && map_singlematch)
 		{
 			key_lines[edit_line][key_linepos] = ' ';
 			key_linepos++;
 			key_lines[edit_line][key_linepos] = 0;
 		}
+		c = key_lines[edit_line] + key_linepos;
 		return;
 	}
 
