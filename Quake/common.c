@@ -1263,21 +1263,34 @@ void COM_Init (char *basedir)
 ============
 va
 
-does a varargs printf into a temp buffer, so I don't need to have
-varargs versions of all text functions.
+does a varargs printf into a temp buffer. cycles between
+4 different static buffers. the number of buffers cycled
+is defined in VA_NUM_BUFFS.
 FIXME: make this buffer size safe someday
 ============
 */
+#define	VA_NUM_BUFFS	4
+#define	VA_BUFFERLEN	1024
+
+static char *get_va_buffer(void)
+{
+	static char va_buffers[VA_NUM_BUFFS][VA_BUFFERLEN];
+	static int buffer_idx = 0;
+	buffer_idx = (buffer_idx + 1) & (VA_NUM_BUFFS - 1);
+	return va_buffers[buffer_idx];
+}
+
 char *va(char *format, ...)
 {
 	va_list		argptr;
-	static char	string[1024];
+	char		*va_buf;
 
+	va_buf = get_va_buffer ();
 	va_start (argptr, format);
-	vsprintf (string, format, argptr);
+	vsprintf (va_buf, format, argptr);
 	va_end (argptr);
 
-	return string;
+	return va_buf;
 }
 
 
