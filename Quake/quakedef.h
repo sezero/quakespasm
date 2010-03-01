@@ -272,7 +272,10 @@ typedef struct
 typedef struct
 {
 	char	*basedir;
-	char	*cachedir;		// for development over ISDN lines
+	char	*userdir;	// user's directory on UNIX platforms.
+				// if user directories are enabled, basedir
+				// and userdir will point to different
+				// memory locations, otherwise to the same.
 	int		argc;
 	char	**argv;
 	void	*membase;

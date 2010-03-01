@@ -33,7 +33,6 @@ int main(int argc, char *argv[])
 	double		time, oldtime, newtime;
 
 	parms.basedir = ".";
-	parms.cachedir = NULL;
 
 	parms.argc = argc;
 	parms.argv = argv;

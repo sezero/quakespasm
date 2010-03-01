@@ -1352,7 +1352,6 @@ typedef struct
 
 #define MAX_FILES_IN_PACK       2048
 
-char    com_cachedir[MAX_OSPATH];
 char    com_gamedir[MAX_OSPATH];
 char    com_basedir[MAX_OSPATH];
 
@@ -1479,10 +1478,9 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 {
 	searchpath_t    *search;
 	char            netpath[MAX_OSPATH];
-	char            cachepath[MAX_OSPATH];
 	pack_t          *pak;
 	int                     i;
-	int                     findtime, cachetime;
+	int              findtime;
 
 	if (file && handle)
 		Sys_Error ("COM_FindFile: both handle and file set");
@@ -1539,27 +1537,6 @@ int COM_FindFile (char *filename, int *handle, FILE **file)
 			findtime = Sys_FileTime (netpath);
 			if (findtime == -1)
 				continue;
-
-		// see if the file needs to be updated in the cache
-			if (!com_cachedir[0])
-				strcpy (cachepath, netpath);
-			else
-			{
-#if defined(_WIN32)
-				if ((strlen(netpath) < 2) || (netpath[1] != ':'))
-					sprintf (cachepath,"%s%s", com_cachedir, netpath);
-				else
-					sprintf (cachepath,"%s%s", com_cachedir, netpath+2);
-#else
-				sprintf (cachepath,"%s%s", com_cachedir, netpath);
-#endif
-
-				cachetime = Sys_FileTime (cachepath);
-
-				if (cachetime < findtime)
-					COM_CopyFile (netpath, cachepath);
-				strcpy (netpath, cachepath);
-			}
 
 		//	Sys_Printf ("FindFile: %s\n",netpath);
 			com_filesize = Sys_FileOpenRead (netpath, &i);
@@ -1873,19 +1850,6 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		if ((com_basedir[j-1] == '\\') || (com_basedir[j-1] == '/'))
 			com_basedir[j-1] = 0;
 	}
-
-	i = COM_CheckParm ("-cachedir");
-	if (i && i < com_argc-1)
-	{
-		if (com_argv[i+1][0] == '-')
-			com_cachedir[0] = 0;
-		else
-			strcpy (com_cachedir, com_argv[i+1]);
-	}
-	else if (host_parms.cachedir)
-		strcpy (com_cachedir, host_parms.cachedir);
-	else
-		com_cachedir[0] = 0;
 
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (va("%s/"GAMENAME, com_basedir));
