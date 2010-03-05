@@ -392,7 +392,11 @@ void Key_Console (int key)
 		Cbuf_AddText (key_lines[edit_line]+1);	// skip the prompt
 		Cbuf_AddText ("\n");
 		Con_Printf ("%s\n",key_lines[edit_line]);
-		edit_line = (edit_line + 1) & 31;
+
+		// If the last two lines are identical, only store one (in history)
+		if (edit_line==0 || strcmp(key_lines[edit_line],key_lines[edit_line-1]))
+			edit_line = (edit_line + 1) & 31;
+
 		history_line = edit_line;
 		key_lines[edit_line][0] = ']';
 		key_lines[edit_line][1] = 0; //johnfitz -- otherwise old history items show up in the new edit line
@@ -497,6 +501,8 @@ void Key_Console (int key)
 		return;
 
 	case K_UPARROW:
+		if (history_line == 0)
+			return;
 		key_tabpartial[0] = 0;
 		do
 		{
@@ -527,6 +533,7 @@ void Key_Console (int key)
 		if (history_line == edit_line)
 		{
 			key_lines[edit_line][0] = ']';
+			key_lines[edit_line][1] = 0;
 			key_linepos = 1;
 		}
 		else
@@ -535,6 +542,17 @@ void Key_Console (int key)
 			key_linepos = Q_strlen(key_lines[edit_line]);
 		}
 		return;
+	case 'c':
+		if (keydown[K_CTRL]) {
+			// Control+C (S.A)
+			//   abort this line.
+			Con_Printf ("%s\n",key_lines[edit_line]);
+			key_lines[edit_line][0] = ']';
+			key_lines[edit_line][1] = 0; //johnfitz -- otherwise old history items show up in the new edit line
+			key_linepos = 1;
+			history_line=edit_line;
+			return;
+		}
 	}
 
 //johnfitz -- clipboard pasting, stolen from zquake
