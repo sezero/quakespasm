@@ -512,21 +512,26 @@ void NET_Stats_f (void)
 
 
 // recognize ip:port (based on ProQuake)
-static void Strip_Port (char *host)
+static char *Strip_Port (char *host)
 {
+	static char	noport[MAX_QPATH];
+			/* array size as in Host_Connect_f() */
+	char		*p;
+	int		port;
+
 	if (!host || !*host)
-		return;
-	if ((host = Q_strrchr(host, ':')) != NULL)
+		return host;
+	strcpy (noport, host);
+	if ((p = Q_strrchr(noport, ':')) == NULL)
+		return host;
+	*p++ = '\0';
+	port = Q_atoi (p);
+	if (port > 0 && port < 65536 && port != net_hostport)
 	{
-		int port;
-		*host++ = '\0';
-		port = Q_atoi(host);
-		if (port > 0 && port < 65536 && port != net_hostport)
-		{
-			net_hostport = port;
-			Con_Printf("Port set to %d\n", net_hostport);
-		}
+		net_hostport = port;
+		Con_Printf("Port set to %d\n", net_hostport);
 	}
+	return noport;
 }
 
 static qboolean testInProgress = false;
@@ -604,8 +609,7 @@ static void Net_Test_f (void)
 	if (testInProgress)
 		return;
 
-	host = Cmd_Argv (1);
-	Strip_Port (host);
+	host = Strip_Port (Cmd_Argv(1));
 
 	if (host && hostCacheCount)
 	{
@@ -736,8 +740,7 @@ static void Test2_f (void)
 	if (test2InProgress)
 		return;
 
-	host = Cmd_Argv (1);
-	Strip_Port (host);
+	host = Strip_Port (Cmd_Argv(1));
 
 	if (host && hostCacheCount)
 	{
@@ -1406,7 +1409,7 @@ qsocket_t *Datagram_Connect (char *host)
 {
 	qsocket_t *ret = NULL;
 
-	Strip_Port (host);
+	host = Strip_Port (host);
 	for (net_landriverlevel = 0; net_landriverlevel < net_numlandrivers; net_landriverlevel++)
 		if (net_landrivers[net_landriverlevel].initialized)
 			if ((ret = _Datagram_Connect (host)) != NULL)
