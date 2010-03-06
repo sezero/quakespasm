@@ -1039,7 +1039,8 @@ skipwhite:
 		data++;
 		len++;
 		c = *data;
-	if (c=='{' || c=='}'|| c==')'|| c=='(' || c=='\'' || c==':')
+		/* commented out the check for ':' so that ip:port works */
+		if (c=='{' || c=='}'|| c==')'|| c=='(' || c=='\'' /* || c==':' */)
 			break;
 	} while (c>32);
 
