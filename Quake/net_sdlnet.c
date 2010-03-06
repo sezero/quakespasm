@@ -482,7 +482,7 @@ int SDLN_GetAddrFromName (char *name, struct qsockaddr *addr)
 		return PartialIPAddress (name, addr);
 
 	ipaddress = (IPaddress *)&(addr->sa_data);
-	if (SDLNet_ResolveHost((IPaddress *)(&addr->sa_data), name, 26000) == -1)
+	if (SDLNet_ResolveHost((IPaddress *)(&addr->sa_data), name, net_hostport) == -1)
 		return -1;
 
 	addr->sa_family = AF_INET;
