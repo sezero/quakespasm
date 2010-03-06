@@ -633,7 +633,10 @@ static void Net_Test_f (void)
 			break;
 	}
 	if (net_landriverlevel == net_numlandrivers)
+	{
+		Con_Printf("Could not resolve %s\n", host);
 		return;
+	}
 
 JustDoIt:
 	testSocket = dfunc.OpenSocket(0);
@@ -761,7 +764,10 @@ static void Test2_f (void)
 			break;
 	}
 	if (net_landriverlevel == net_numlandrivers)
+	{
+		Con_Printf("Could not resolve %s\n", host);
 		return;
+	}
 
 JustDoIt:
 	test2Socket = dfunc.OpenSocket(0);
@@ -1239,7 +1245,10 @@ static qsocket_t *_Datagram_Connect (char *host)
 
 	// see if we can resolve the host name
 	if (dfunc.GetAddrFromName(host, &sendaddr) == -1)
+	{
+		Con_Printf("Could not resolve %s\n", host);
 		return NULL;
+	}
 
 	newsock = dfunc.OpenSocket (0);
 	if (newsock == -1)
