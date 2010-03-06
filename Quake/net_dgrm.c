@@ -511,6 +511,24 @@ void NET_Stats_f (void)
 }
 
 
+// recognize ip:port (based on ProQuake)
+static void Strip_Port (char *host)
+{
+	if (!host || !*host)
+		return;
+	if ((host = Q_strrchr(host, ':')) != NULL)
+	{
+		int port;
+		*host++ = '\0';
+		port = Q_atoi(host);
+		if (port > 0 && port < 65536 && port != net_hostport)
+		{
+			net_hostport = port;
+			Con_Printf("Port set to %d\n", net_hostport);
+		}
+	}
+}
+
 static qboolean testInProgress = false;
 static int		testPollCount;
 static int		testDriver;
@@ -587,6 +605,7 @@ static void Net_Test_f (void)
 		return;
 
 	host = Cmd_Argv (1);
+	Strip_Port (host);
 
 	if (host && hostCacheCount)
 	{
@@ -715,6 +734,7 @@ static void Test2_f (void)
 		return;
 
 	host = Cmd_Argv (1);
+	Strip_Port (host);
 
 	if (host && hostCacheCount)
 	{
@@ -1377,6 +1397,7 @@ qsocket_t *Datagram_Connect (char *host)
 {
 	qsocket_t *ret = NULL;
 
+	Strip_Port (host);
 	for (net_landriverlevel = 0; net_landriverlevel < net_numlandrivers; net_landriverlevel++)
 		if (net_landrivers[net_landriverlevel].initialized)
 			if ((ret = _Datagram_Connect (host)) != NULL)
