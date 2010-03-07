@@ -1383,9 +1383,6 @@ void	VID_Init (void)
 	VID_SetMode (vid_default);
 	GL_Init ();
 
-	sprintf (gldir, "%s/glquake", com_gamedir);
-	Sys_mkdir (gldir);
-
 	vid_realmode = vid_modenum;
 
 	vid_menucmdfn = VID_Menu_f; //johnfitz
