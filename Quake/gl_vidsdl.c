@@ -1184,7 +1184,6 @@ void	VID_Init (void)
 	const SDL_VideoInfo *info;
 	int		i, existingmode;
 	int		basenummodes, width, height, bpp, findbpp, done;
-	char		gldir[MAX_OSPATH];
 
 	//johnfitz -- clean up init readouts
 	//Con_Printf("------------- Init Video -------------\n");
