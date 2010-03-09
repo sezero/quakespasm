@@ -1274,7 +1274,7 @@ This is called at the start of each level
 extern float		scr_centertime_off;
 void SV_SpawnServer (char *server)
 {
-	static char	dummy[4] = { 0, 0, 0, 0 };
+	static char	dummy[8] = { 0,0,0,0,0,0,0,0 };
 	edict_t		*ent;
 	int			i;
 
