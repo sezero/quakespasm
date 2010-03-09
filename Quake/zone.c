@@ -147,6 +147,7 @@ void *Z_Realloc(void *ptr, int size)
 		Sys_Error ("Z_Realloc: realloced a freed pointer");
 
 	old_size = block->size;
+	old_size -= (4 + (int)sizeof(memblock_t));	/* see Z_TagMalloc() */
 	old_ptr = ptr;
 
 	Z_Free (ptr);
