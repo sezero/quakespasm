@@ -1274,6 +1274,7 @@ This is called at the start of each level
 extern float		scr_centertime_off;
 void SV_SpawnServer (char *server)
 {
+	static char	dummy[4] = { 0, 0, 0, 0 };
 	edict_t		*ent;
 	int			i;
 
@@ -1365,8 +1366,8 @@ void SV_SpawnServer (char *server)
 //
 	SV_ClearWorld ();
 
-	sv.sound_precache[0] = pr_strings;
-	sv.model_precache[0] = pr_strings;
+	sv.sound_precache[0] = dummy;
+	sv.model_precache[0] = dummy;
 	sv.model_precache[1] = sv.modelname;
 	for (i=1 ; i<sv.worldmodel->numsubmodels ; i++)
 	{

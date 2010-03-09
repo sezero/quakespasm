@@ -31,8 +31,7 @@ globalvars_t	*pr_global_struct;
 float			*pr_globals;	// same as pr_global_struct
 int			pr_edict_size;	// in bytes
 
-char		*pr_strings;	// no one should access this. not static
-				// only for two stupid sv_main.c uses.
+static char		*pr_strings;
 static int		pr_stringssize;
 static char		**pr_knownstrings;
 static int		pr_maxknownstrings;
