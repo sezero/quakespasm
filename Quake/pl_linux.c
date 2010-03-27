@@ -24,7 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 static const Uint8 bmp_bytes[] =
 {
-#include "fitz_bmp.h"
+/* #include "fitz_bmp.h" */
+#include "qs_bmp.h"
 };
 
 void PL_SetWindowIcon (void)
