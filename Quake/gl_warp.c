@@ -27,6 +27,8 @@ cvar_t r_oldwater = {"r_oldwater", "1"};
 cvar_t r_waterquality = {"r_waterquality", "8"};
 cvar_t r_waterwarp = {"r_waterwarp", "1"};
 
+int gl_warpimagesize;
+
 float load_subdivide_size; //johnfitz -- remember what subdivide_size value was when this map was loaded
 
 float	turbsin[] =

@@ -34,7 +34,15 @@ const int	gl_alpha_format = 4;
 
 #define	MAX_GLTEXTURES	2048
 gltexture_t	*active_gltextures, *free_gltextures;
+gltexture_t	*notexture, *nulltexture;
 int numgltextures;
+
+unsigned int d_8to24table[256];
+unsigned int d_8to24table_fbright[256];
+unsigned int d_8to24table_nobright[256];
+unsigned int d_8to24table_conchars[256];
+unsigned int d_8to24table_shirt[256];
+unsigned int d_8to24table_pants[256];
 
 /*
 ================================================================================

@@ -80,6 +80,9 @@ cvar_t	temp1 = {"temp1","0"};
 
 cvar_t devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
 
+devstats_t dev_stats, dev_peakstats;
+overflowtimes_t dev_overflows; //this stores the last time overflow messages were displayed, not the last time overflows occured
+
 /*
 ================
 Max_Edicts_f -- johnfitz

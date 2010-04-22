@@ -31,6 +31,8 @@ int		lightmap_bytes;
 #define	BLOCK_WIDTH		128 //johnfitz -- was 128
 #define	BLOCK_HEIGHT	128 //johnfitz -- was 128
 
+gltexture_t	*lightmap_textures[MAX_LIGHTMAPS]; //johnfitz -- changed to an array
+
 unsigned	blocklights[BLOCK_WIDTH*BLOCK_HEIGHT*3]; //johnfitz -- was 18*18, added lit support (*3) and loosened surface extents maximum (BLOCK_WIDTH*BLOCK_HEIGHT)
 
 typedef struct glRect_s {

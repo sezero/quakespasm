@@ -1471,28 +1471,6 @@ extern void M_DrawCheckbox (int x, int y, int on);
 
 extern qboolean	m_entersound;
 
-enum {
-	m_none,
-	m_main,
-	m_singleplayer,
-	m_load,
-	m_save,
-	m_multiplayer,
-	m_setup,
-	m_net,
-	m_options,
-	m_video,
-	m_keys,
-	m_help,
-	m_quit,
-	m_serialconfig,
-	m_modemconfig,
-	m_lanconfig,
-	m_gameoptions,
-	m_search,
-	m_slist
-} m_state;
-
 #define VIDEO_OPTIONS_ITEMS 7
 int		video_cursor_table[] = {48, 56, 64, 72, 80, 96, 104};
 int		video_options_cursor = 0;

@@ -103,6 +103,8 @@ cvar_t	r_nolerp_list = {"r_nolerp_list", "progs/flame.mdl,progs/flame2.mdl,progs
 extern cvar_t	r_vfog;
 //johnfitz
 
+qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_drawworld_cheatsafe; //johnfitz
+
 /*
 =================
 R_CullBox -- johnfitz -- replaced with new function from lordhavoc
