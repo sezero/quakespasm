@@ -1619,8 +1619,8 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 		m_state = m_quit;
 	}
 
-	sprintf(msg1, "FitzQuake version %1.2f", (float)FITZQUAKE_VERSION);
-	sprintf(msg2, "by John Fitzgibbons");
+	sprintf(msg1, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
+	sprintf(msg2, "by Fitzgibbons, Oz");
 	sprintf(msg3, "Press y to quit");
 
 	//okay, this is kind of fucked up.  M_DrawTextBox will always act as if

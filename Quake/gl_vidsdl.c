@@ -307,7 +307,7 @@ int VID_SetMode (int modenum)
 	}
 
 	//kristian -- set window caption
-	sprintf(caption, "FitzQuake (SDL port) Version %1.2f", FITZQUAKE_VERSION);
+	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption((const char* )&caption, (const char*)&caption);
 
 	vid.width = modelist[modenum].width;

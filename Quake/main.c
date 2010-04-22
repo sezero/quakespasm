@@ -58,9 +58,9 @@ int main(int argc, char *argv[])
 	if (!parms.membase)
 		Sys_Error ("Not enough memory free; check disk space\n");
 
-	Con_Printf("\nFitzQuake Version %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
-	Con_Printf("SDL port (c) Sleepwalkr, Baker, and OZ\n");
-	Con_Printf("This version hacked by Stevenaaus and OZ\n");
+	Con_Printf("\nFitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
+	Con_Printf("SDL port (c) Sleepwalkr, Baker\n");
+	Con_Printf("QuakeSpasm %1.2f.%d (c) Ozkan Sezer, Stevenaaus\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 
 	Con_Printf("Host_Init\n");
 	Host_Init(&parms);

@@ -1267,7 +1267,7 @@ void Host_Name_f (void)
 void Host_Version_f (void)
 {
 	Con_Printf ("Quake Version %1.2f\n", VERSION); //johnfitz
-	Con_Printf ("FitzQuake (SDL port) Version %1.2f\n", FITZQUAKE_VERSION); //johnfitz
+	Con_Printf ("QuakeSpasm Version %1.2f.%d\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH); //johnfitz
 	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
 }
 
