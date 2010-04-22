@@ -1607,8 +1607,8 @@ void M_Quit_Key (int key)
 void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 {
 	char	msg1[40];
-	char	msg2[40];
-	char	msg3[40];
+	char	msg2[] = "by John Fitzgibbons, OZ & SA."; /* msg2/msg3 are mostly [40] */
+	char	msg3[] = "Press y to quit";
 	int		boxlen;
 
 	if (wasInMenus)
@@ -1620,20 +1620,18 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 	}
 
 	sprintf(msg1, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
-	sprintf(msg2, "by Fitzgibbons, Oz");
-	sprintf(msg3, "Press y to quit");
 
 	//okay, this is kind of fucked up.  M_DrawTextBox will always act as if
 	//width is even. Also, the width and lines values are for the interior of the box,
 	//but the x and y values include the border.
-	boxlen = max(strlen(msg1),max(strlen(msg2),strlen(msg3))) + 1;
+	boxlen = max(strlen(msg1),max((sizeof(msg2)-1),(sizeof(msg3)-1))) + 1;
 	if (boxlen & 1) boxlen++;
 	M_DrawTextBox	(160-4*(boxlen+2), 76, boxlen, 4);
 
 	//now do the text
 	M_Print			(160-4*strlen(msg1), 88, msg1);
-	M_Print			(160-4*strlen(msg2), 96, msg2);
-	M_PrintWhite	(160-4*strlen(msg3), 104, msg3);
+	M_Print			(160-4*(sizeof(msg2)-1), 96, msg2);
+	M_PrintWhite		(160-4*(sizeof(msg3)-1), 104, msg3);
 }
 
 //=============================================================================
