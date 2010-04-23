@@ -91,11 +91,6 @@ viddef_t	vid;				// global video state
 //unsigned short	d_8to16table[256]; //johnfitz -- never used
 //unsigned char		d_15to8table[65536]; //johnfitz -- never used
 
-PFNGLARRAYELEMENTEXTPROC glArrayElementEXT = NULL;
-PFNGLCOLORPOINTEREXTPROC glColorPointerEXT = NULL;
-PFNGLTEXCOORDPOINTEREXTPROC glTexCoordPointerEXT = NULL;
-PFNGLVERTEXPOINTEREXTPROC glVertexPointerEXT = NULL;
-
 modestate_t	modestate = MODE_WINDOWED;
 
 void VID_Menu_Init (void); //johnfitz
@@ -107,6 +102,11 @@ char *VID_GetModeDescription (int mode);
 void ClearAllStates (void);
 void VID_UpdateWindowStatus (void);
 void GL_Init (void);
+
+PFNGLARRAYELEMENTEXTPROC glArrayElementEXT = NULL;
+PFNGLCOLORPOINTEREXTPROC glColorPointerEXT = NULL;
+PFNGLTEXCOORDPOINTEREXTPROC glTexCoordPointerEXT = NULL;
+PFNGLVERTEXPOINTEREXTPROC glVertexPointerEXT = NULL;
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -788,7 +788,6 @@ void GL_Init (void)
 		fullsbardraw = true;
 	if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
 		isPermedia = true;
-#if 1
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
 	{
@@ -796,7 +795,6 @@ void GL_Init (void)
 		isIntelVideo = true;
 	}
 	//johnfitz
-#endif
 
 #if 0
 	//johnfitz -- confirm presence of stencil buffer
