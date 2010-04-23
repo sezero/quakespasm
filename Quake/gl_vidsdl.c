@@ -1556,7 +1556,7 @@ void VID_Menu_RebuildBppList (void)
 			break;
 
 	if (i==vid_menu_numbpps)
-		Cvar_Set ("vid_bpp",va("%i",vid_menu_bpps[0]));
+		Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[0]);
 }
 
 /*
@@ -1591,8 +1591,8 @@ void VID_Menu_ChooseNextMode (int dir)
 			i = vid_menu_nummodes-1;
 	}
 
-	Cvar_Set ("vid_width",va("%i",vid_menu_modes[i].width));
-	Cvar_Set ("vid_height",va("%i",vid_menu_modes[i].height));
+	Cvar_SetValue ("vid_width",(float)vid_menu_modes[i].width);
+	Cvar_SetValue ("vid_height",(float)vid_menu_modes[i].height);
 	VID_Menu_RebuildBppList ();
 }
 
@@ -1626,7 +1626,7 @@ void VID_Menu_ChooseNextBpp (int dir)
 			i = vid_menu_numbpps-1;
 	}
 
-	Cvar_Set ("vid_bpp",va("%i",vid_menu_bpps[i]));
+	Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[i]);
 }
 
 /*
@@ -1659,7 +1659,7 @@ void VID_Menu_ChooseNextRate (int dir)
 			i = vid_menu_numrates-1;
 	}
 
-	Cvar_Set ("vid_refreshrate",va("%i",vid_menu_rates[i]));
+	Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
 }
 
 /*
