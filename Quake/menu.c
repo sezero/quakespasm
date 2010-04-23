@@ -1048,13 +1048,16 @@ void M_AdjustSliders (int dir)
 
 	switch (options_cursor)
 	{
-	case 3:	// screen size
-		scr_viewsize.value += dir * 10;
-		if (scr_viewsize.value < 30)
-			scr_viewsize.value = 30;
-		if (scr_viewsize.value > 120)
-			scr_viewsize.value = 120;
-		Cvar_SetValue ("viewsize", scr_viewsize.value);
+	case 3:	// console and menu scale
+		scr_scale.value += dir * .2;
+
+		if (scr_scale.value < 1)
+			scr_scale.value = 1;
+		if (scr_scale.value > 6)
+			scr_scale.value = 6;
+                Cvar_SetValue ("scr_scale", scr_scale.value);
+                Cvar_SetValue ("scr_conscale", scr_scale.value);
+                Cvar_SetValue ("scr_menuscale", scr_scale.value);
 		break;
 	case 4:	// gamma
 		vid_gamma.value -= dir * 0.05;
@@ -1159,12 +1162,12 @@ void M_Options_Draw (void)
 	p = Draw_CachePic ("gfx/p_option.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	M_Print (16, 32, "    Customize controls");
-	M_Print (16, 40, "         Go to console");
-	M_Print (16, 48, "     Reset to defaults");
+	M_Print (16, 32, "              Controls");
+	M_Print (16, 40, "          Goto console");
+	M_Print (16, 48, "        Reset defaults");
 
-	M_Print (16, 56, "           Screen size");
-	r = (scr_viewsize.value - 30) / (120 - 30);
+	M_Print (16, 56, "                 Scale");
+	r = (scr_scale.value-1)/5 ; // r ranges from 0 to 1, scr_scale from 1 to 6
 	M_DrawSlider (220, 56, r);
 
 	M_Print (16, 64, "            Brightness");
@@ -1175,7 +1178,7 @@ void M_Options_Draw (void)
 	r = (sensitivity.value - 1)/10;
 	M_DrawSlider (220, 72, r);
 
-	M_Print (16, 80, "       CD Music Volume");
+	M_Print (16, 80, "          Music Volume");
 	r = bgmvolume.value;
 	M_DrawSlider (220, 80, r);
 
