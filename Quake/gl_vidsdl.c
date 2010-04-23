@@ -91,7 +91,6 @@ viddef_t	vid;				// global video state
 //unsigned short	d_8to16table[256]; //johnfitz -- never used
 //unsigned char		d_15to8table[65536]; //johnfitz -- never used
 
-
 PFNGLARRAYELEMENTEXTPROC glArrayElementEXT = NULL;
 PFNGLCOLORPOINTEREXTPROC glColorPointerEXT = NULL;
 PFNGLTEXCOORDPOINTEREXTPROC glTexCoordPointerEXT = NULL;
@@ -616,7 +615,7 @@ void GL_CheckExtensions (void)
 				gl_mtexable = true;
 			}
 			else
-				Con_Warning ("multitexture not supported (wglGetProcAddress failed)\n");
+				Con_Warning ("multitexture not supported (SDL_GL_GetProcAddress failed)\n");
 		}
 		else
 			if (strstr(gl_extensions, "GL_SGIS_multitexture"))
