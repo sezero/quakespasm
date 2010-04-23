@@ -1550,6 +1550,13 @@ void VID_Menu_RebuildBppList (void)
 		}
 	}
 
+	//if there are no valid fullscreen bpps for this width/height, just pick one
+	if (vid_menu_numbpps == 0)
+	{
+		Cvar_SetValue ("vid_bpp",(float)modelist[0].bpp);
+		return;
+	}
+
 	//if vid_bpp is not in the new list, change vid_bpp
 	for (i=0;i<vid_menu_numbpps;i++)
 		if (vid_menu_bpps[i] == (int)(vid_bpp.value))
