@@ -131,8 +131,8 @@ PROC glVertexPointerEXT;
 
 typedef void (APIENTRY *lp3DFXFUNC) (int, int, int, int, int, const void*);
 
-extern MTEXCOORDFUNC GL_MTexCoord2fFunc = NULL; //johnfitz
-extern SELECTTEXFUNC GL_SelectTextureFunc = NULL; //johnfitz
+PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
+PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
 
 typedef BOOL (APIENTRY * SETSWAPFUNC) (int); //johnfitz
 typedef int (APIENTRY * GETSWAPFUNC) (void); //johnfitz

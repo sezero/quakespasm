@@ -168,24 +168,11 @@ extern	const char *gl_extensions;
 // Multitexture
 #define    TEXTURE0_SGIS				0x835E
 #define    TEXTURE1_SGIS				0x835F
-
-//#define APIENTRY /* */
-
 //johnfitz -- modified multitexture support
-/*
-typedef void (APIENTRY *SELECTTEXFUNC) (GLenum);
-typedef void (APIENTRY *MTEXCOORDFUNC) (GLenum, GLfloat, GLfloat);
-extern MTEXCOORDFUNC GL_MTexCoord2fFunc;
-extern SELECTTEXFUNC GL_SelectTextureFunc;
-#define	GL_TEXTURE0_ARB	0x84C0
-#define	GL_TEXTURE1_ARB	0x84C1
-*/
-//johnfitz
-
-
 extern PFNGLMULTITEXCOORD2FARBPROC  GL_MTexCoord2fFunc;
 extern PFNGLACTIVETEXTUREARBPROC    GL_SelectTextureFunc;
 extern GLenum TEXTURE0, TEXTURE1;
+//johnfitz
 
 //johnfitz -- anisotropic filtering
 #define	GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
