@@ -602,7 +602,7 @@ void GL_CheckExtensions (void)
 	// multitexture
 	//
 	if (COM_CheckParm("-nomtex"))
-		Con_Printf ("WARNING: Mutitexture disabled at command line\n");
+		Con_Warning ("Mutitexture disabled at command line\n");
 	else
 		if (strstr(gl_extensions, "GL_ARB_multitexture"))
 		{
@@ -616,7 +616,7 @@ void GL_CheckExtensions (void)
 				gl_mtexable = true;
 			}
 			else
-				Con_Printf ("WARNING: multitexture not supported (SDL_GL_GetProcAddress failed)\n");
+				Con_Warning ("multitexture not supported (wglGetProcAddress failed)\n");
 		}
 		else
 			if (strstr(gl_extensions, "GL_SGIS_multitexture"))
@@ -631,16 +631,16 @@ void GL_CheckExtensions (void)
 					gl_mtexable = true;
 				}
 				else
-					Con_Printf ("WARNING: multitexture not supported (SDL_GL_GetProcAddress failed)\n");
+					Con_Warning ("multitexture not supported (SDL_GL_GetProcAddress failed)\n");
 
 			}
 			else
-				Con_Printf ("WARNING: multitexture not supported (extension not found)\n");
+				Con_Warning ("multitexture not supported (extension not found)\n");
 	//
 	// texture_env_combine
 	//
 	if (COM_CheckParm("-nocombine"))
-		Con_Printf ("WARNING: texture_env_combine disabled at command line\n");
+		Con_Warning ("texture_env_combine disabled at command line\n");
 	else
 		if (strstr(gl_extensions, "GL_ARB_texture_env_combine"))
 		{
@@ -654,9 +654,7 @@ void GL_CheckExtensions (void)
 				gl_texture_env_combine = true;
 			}
 			else
-				Con_Printf ("WARNING: texture_env_combine not supported\n");
-
-#if 1
+				Con_Warning ("texture_env_combine not supported\n");
 	//
 	// texture_env_add
 	//
@@ -676,7 +674,6 @@ void GL_CheckExtensions (void)
 			}
 			else
 				Con_Warning ("texture_env_add not supported\n");
-#endif
 
 	//
 	// swap control
@@ -685,18 +682,18 @@ void GL_CheckExtensions (void)
 	{
 		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1)
 		{
-			Con_Printf("WARNING: vertical sync not supported (SDL_GL_SetAttribute failed)\n");
+			Con_Warning ("vertical sync not supported (SDL_GL_SetAttribute failed)\n");
 		}
 		else
 		{
 			if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
 			{
-				Con_Printf("WARNING: vertical sync not supported (SDL_GL_GetAttribute failed). Make sure you don't have vertical sync disabled in your driver settings.\n");
+				Con_Warning ("vertical sync not supported (SDL_GL_GetAttribute failed). Make sure you don't have vertical sync disabled in your driver settings.\n");
 			}
 			else if (swap_control == -1)
 			{
 			// TODO: check if this is correct - I don't know what SDL returns if vertical sync is disabled
-				Con_Printf("WARNING: vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
+				Con_Warning ("vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
 			}
 			else
 			{
@@ -706,7 +703,7 @@ void GL_CheckExtensions (void)
 		}
 	}
 	else
-		Con_Printf ("WARNING: vertical sync not supported (extension not found)\n");
+		Con_Warning ("vertical sync not supported (extension not found)\n");
 
 	//
 	// anisotropic filtering
@@ -732,13 +729,13 @@ void GL_CheckExtensions (void)
 			gl_anisotropy_able = true;
 		}
 		else
-			Con_Printf("WARNING: anisotropic filtering locked by driver. Current driver setting is %f\n", test1);
+			Con_Warning ("anisotropic filtering locked by driver. Current driver setting is %f\n", test1);
 
 		//get max value either way, so the menu and stuff know it
 		glGetFloatv (GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gl_max_anisotropy);
 	}
 	else
-		Con_Printf ("WARNING: texture_filter_anisotropic not supported\n");
+		Con_Warning ("texture_filter_anisotropic not supported\n");
 }
 
 /*
@@ -806,7 +803,7 @@ void GL_Init (void)
 	//johnfitz -- confirm presence of stencil buffer
 	glGetIntegerv(GL_STENCIL_BITS, &gl_stencilbits);
 	if(!gl_stencilbits)
-		Con_Printf ("WARNING: Could not create stencil buffer\n");
+		Con_Warning ("Could not create stencil buffer\n");
 	else
 		Con_Printf ("%i bit stencil buffer\n", gl_stencilbits);
 #endif
