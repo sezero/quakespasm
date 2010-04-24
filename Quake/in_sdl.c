@@ -183,3 +183,206 @@ void IN_ClearStates (void)
 {
 }
 
+
+/* =================================
+   SDL to quake keynum mapping
+   =================================*/
+
+static byte key_map[SDLK_LAST];
+
+void BuildKeyMaps (void)
+{
+	int i;
+
+	for (i = 0; i < SDLK_LAST; i++)
+		key_map[i] = 0;
+
+	key_map[SDLK_BACKSPACE]     = K_BACKSPACE;
+	key_map[SDLK_TAB]           = K_TAB;
+	key_map[SDLK_RETURN]        = K_ENTER;
+	key_map[SDLK_PAUSE]         = K_PAUSE;
+	key_map[SDLK_ESCAPE]        = K_ESCAPE;
+	key_map[SDLK_SPACE]         = K_SPACE;
+	key_map[SDLK_EXCLAIM]       = '!';
+	key_map[SDLK_QUOTEDBL]      = '"';
+	key_map[SDLK_HASH]          = '#';
+	key_map[SDLK_DOLLAR]        = '$';
+	key_map[SDLK_AMPERSAND]     = '&';
+	key_map[SDLK_QUOTE]         = '\'';
+	key_map[SDLK_LEFTPAREN]     = '(';
+	key_map[SDLK_RIGHTPAREN]    = ')';
+	key_map[SDLK_ASTERISK]      = '*';
+	key_map[SDLK_PLUS]          = '+';
+	key_map[SDLK_COMMA]         = ',';
+	key_map[SDLK_MINUS]         = '-';
+	key_map[SDLK_PERIOD]        = '.';
+	key_map[SDLK_SLASH]         = '/';
+
+	key_map[SDLK_0]             = '0';
+	key_map[SDLK_1]             = '1';
+	key_map[SDLK_2]             = '2';
+	key_map[SDLK_3]             = '3';
+	key_map[SDLK_4]             = '4';
+	key_map[SDLK_5]             = '5';
+	key_map[SDLK_6]             = '6';
+	key_map[SDLK_7]             = '7';
+	key_map[SDLK_8]             = '8';
+	key_map[SDLK_9]             = '9';
+
+	key_map[SDLK_COLON]         = ':';
+	key_map[SDLK_SEMICOLON]     = ';';
+	key_map[SDLK_LESS]          = '<';
+	key_map[SDLK_EQUALS]        = '=';
+	key_map[SDLK_GREATER]       = '>';
+	key_map[SDLK_QUESTION]      = '?';
+	key_map[SDLK_AT]            = '@';
+	key_map[SDLK_LEFTBRACKET]   = '[';
+	key_map[SDLK_BACKSLASH]     = '\\';
+	key_map[SDLK_RIGHTBRACKET]  = ']';
+	key_map[SDLK_CARET]         = '^';
+	key_map[SDLK_UNDERSCORE]    = '_';
+	key_map[SDLK_BACKQUOTE]     = '`';
+
+	key_map[SDLK_a]             = 'a';
+	key_map[SDLK_b]             = 'b';
+	key_map[SDLK_c]             = 'c';
+	key_map[SDLK_d]             = 'd';
+	key_map[SDLK_e]             = 'e';
+	key_map[SDLK_f]             = 'f';
+	key_map[SDLK_g]             = 'g';
+	key_map[SDLK_h]             = 'h';
+	key_map[SDLK_i]             = 'i';
+	key_map[SDLK_j]             = 'j';
+	key_map[SDLK_k]             = 'k';
+	key_map[SDLK_l]             = 'l';
+	key_map[SDLK_m]             = 'm';
+	key_map[SDLK_n]             = 'n';
+	key_map[SDLK_o]             = 'o';
+	key_map[SDLK_p]             = 'p';
+	key_map[SDLK_q]             = 'q';
+	key_map[SDLK_r]             = 'r';
+	key_map[SDLK_s]             = 's';
+	key_map[SDLK_t]             = 't';
+	key_map[SDLK_u]             = 'u';
+	key_map[SDLK_v]             = 'v';
+	key_map[SDLK_w]             = 'w';
+	key_map[SDLK_x]             = 'x';
+	key_map[SDLK_y]             = 'y';
+	key_map[SDLK_z]             = 'z';
+
+	key_map[SDLK_DELETE]        = K_DEL;
+
+	key_map[SDLK_KP0]           = KP_INS;
+	key_map[SDLK_KP1]           = KP_END;
+	key_map[SDLK_KP2]           = KP_DOWNARROW;
+	key_map[SDLK_KP3]           = KP_PGDN;
+	key_map[SDLK_KP4]           = KP_LEFTARROW;
+	key_map[SDLK_KP5]           = KP_5;
+	key_map[SDLK_KP6]           = KP_RIGHTARROW;
+	key_map[SDLK_KP7]           = KP_HOME;
+	key_map[SDLK_KP8]           = KP_UPARROW;
+	key_map[SDLK_KP9]           = KP_PGUP;
+	key_map[SDLK_KP_PERIOD]     = KP_DEL;
+	key_map[SDLK_KP_DIVIDE]     = KP_SLASH;
+	key_map[SDLK_KP_MULTIPLY]   = KP_STAR;
+	key_map[SDLK_KP_MINUS]      = KP_MINUS;
+	key_map[SDLK_KP_PLUS]       = KP_PLUS;
+	key_map[SDLK_KP_ENTER]      = KP_ENTER;
+	key_map[SDLK_KP_EQUALS]     = 0;
+
+	key_map[SDLK_UP]            = K_UPARROW;
+	key_map[SDLK_DOWN]          = K_DOWNARROW;
+	key_map[SDLK_RIGHT]         = K_RIGHTARROW;
+	key_map[SDLK_LEFT]          = K_LEFTARROW;
+	key_map[SDLK_INSERT]        = K_INS;
+	key_map[SDLK_HOME]          = K_HOME;
+	key_map[SDLK_END]           = K_END;
+	key_map[SDLK_PAGEUP]        = K_PGUP;
+	key_map[SDLK_PAGEDOWN]      = K_PGDN;
+
+	key_map[SDLK_F1]            = K_F1;
+	key_map[SDLK_F2]            = K_F2;
+	key_map[SDLK_F3]            = K_F3;
+	key_map[SDLK_F4]            = K_F4;
+	key_map[SDLK_F5]            = K_F5;
+	key_map[SDLK_F6]            = K_F6;
+	key_map[SDLK_F7]            = K_F7;
+	key_map[SDLK_F8]            = K_F8;
+	key_map[SDLK_F9]            = K_F9;
+	key_map[SDLK_F10]           = K_F10;
+	key_map[SDLK_F11]           = K_F11;
+	key_map[SDLK_F12]           = K_F12;
+	key_map[SDLK_F13]           = 0;
+	key_map[SDLK_F14]           = 0;
+	key_map[SDLK_F15]           = 0;
+
+	key_map[SDLK_NUMLOCK]       = KP_NUMLOCK;
+	key_map[SDLK_CAPSLOCK]      = 0;
+	key_map[SDLK_SCROLLOCK]     = 0;
+	key_map[SDLK_RSHIFT]        = K_SHIFT;
+	key_map[SDLK_LSHIFT]        = K_SHIFT;
+	key_map[SDLK_RCTRL]         = K_CTRL;
+	key_map[SDLK_LCTRL]         = K_CTRL;
+	key_map[SDLK_RALT]          = K_ALT;
+	key_map[SDLK_LALT]          = K_ALT;
+	key_map[SDLK_RMETA]         = 0;
+	key_map[SDLK_LMETA]         = 0;
+	key_map[SDLK_LSUPER]        = 0;
+	key_map[SDLK_RSUPER]        = 0;
+	key_map[SDLK_MODE]          = 0;
+	key_map[SDLK_COMPOSE]       = 0;
+	key_map[SDLK_HELP]          = 0;
+	key_map[SDLK_PRINT]         = 0;
+	key_map[SDLK_SYSREQ]        = 0;
+	key_map[SDLK_BREAK]         = 0;
+	key_map[SDLK_MENU]          = 0;
+	key_map[SDLK_POWER]         = 0;
+	key_map[SDLK_EURO]          = 0;
+	key_map[SDLK_UNDO]          = 0;
+}
+
+/*
+=======
+MapKey
+
+Map from SDL to quake keynums
+=======
+*/
+int Key_Map (SDL_KeyboardEvent *event)
+{
+	return key_map[(*event).keysym.sym];
+
+	/* TODO: keypad handling
+	if (cl_keypad.value) {
+		if (extended) {
+			switch (key) {
+			case K_ENTER:		return KP_ENTER;
+			case '/':		return KP_SLASH;
+			case K_PAUSE:		return KP_NUMLOCK;
+			};
+		} else {
+			switch (key) {
+			case K_HOME:		return KP_HOME;
+			case K_UPARROW:		return KP_UPARROW;
+			case K_PGUP:		return KP_PGUP;
+			case K_LEFTARROW:	return KP_LEFTARROW;
+			case K_RIGHTARROW:	return KP_RIGHTARROW;
+			case K_END:			return KP_END;
+			case K_DOWNARROW:	return KP_DOWNARROW;
+			case K_PGDN:		return KP_PGDN;
+			case K_INS:			return KP_INS;
+			case K_DEL:			return KP_DEL;
+			}
+		}
+	} else {
+		// cl_keypad 0, compatibility mode
+		switch (key) {
+			case KP_STAR:	return '*';
+			case KP_MINUS:	return '-';
+			case KP_5:		return '5';
+			case KP_PLUS:	return '+';
+		}
+	}
+	*/
+}
+
