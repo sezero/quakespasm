@@ -473,19 +473,11 @@
 			sepNavWindowFrame = "{{193, 140}, {642, 797}}";
 		};
 	};
-	48305B530D8AF8EC00A29C24 /* net_udp.h */ = {
+	48305B530D8AF8EC00A29C24 /* conback.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1359, 714}}";
 			sepNavSelRange = "{742, 920}";
 			sepNavVisRange = "{0, 1662}";
-		};
-	};
-	48305B540D8AF90600A29C24 /* net_udp.c */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1359, 6510}}";
-			sepNavSelRange = "{4277, 2}";
-			sepNavVisRange = "{3656, 1107}";
-			sepNavWindowFrame = "{{235, 154}, {1115, 874}}";
 		};
 	};
 	4830B79D0D464CAE00EF4498 /* Changelog.txt */ = {

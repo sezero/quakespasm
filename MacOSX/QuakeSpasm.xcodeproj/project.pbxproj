@@ -14,7 +14,6 @@
 		002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
 		4824B3360DF5542E0001ED2C /* SDL_net.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48DA393E0D998BC9007C2A77 /* SDL_net.framework */; };
-		48305B550D8AF90600A29C24 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48305B540D8AF90600A29C24 /* net_udp.c */; };
 		4830B79F0D464CAE00EF4498 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79D0D464CAE00EF4498 /* Changelog.txt */; };
 		4830B7A00D464CAE00EF4498 /* Todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79E0D464CAE00EF4498 /* Todo.txt */; };
 		483A780F0D2EEA0F00CB2E4C /* progdefs.q1 in Resources */ = {isa = PBXBuildFile; fileRef = 483A780E0D2EEA0F00CB2E4C /* progdefs.q1 */; };
@@ -118,8 +117,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeSpasm_Prefix.pch; sourceTree = "<group>"; };
 		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
-		48305B530D8AF8EC00A29C24 /* net_udp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_udp.h; path = ../Quake/net_udp.h; sourceTree = SOURCE_ROOT; };
-		48305B540D8AF90600A29C24 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
+		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
 		4830B79D0D464CAE00EF4498 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Misc/Changelog.txt; sourceTree = SOURCE_ROOT; };
 		4830B79E0D464CAE00EF4498 /* Todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Todo.txt; path = ../Misc/Todo.txt; sourceTree = SOURCE_ROOT; };
 		483A77E60D2EE97700CB2E4C /* cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cmd.h; path = ../Quake/cmd.h; sourceTree = SOURCE_ROOT; };
@@ -451,7 +449,6 @@
 				483A783F0D2EEAAB00CB2E4C /* net_main.c */,
 				483A78400D2EEAAB00CB2E4C /* net_sdl.c */,
 				487C0A5B0DA94A0700A49FF5 /* net_sdlnet.c */,
-				48305B540D8AF90600A29C24 /* net_udp.c */,
 				483A78410D2EEAAB00CB2E4C /* sv_main.c */,
 				483A78420D2EEAAB00CB2E4C /* sv_move.c */,
 				483A78430D2EEAAB00CB2E4C /* sv_phys.c */,
@@ -498,11 +495,11 @@
 			isa = PBXGroup;
 			children = (
 				483A77F90D2EE9A900CB2E4C /* client.h */,
+				48305B530D8AF8EC00A29C24 /* conback.h */,
 				483A77FA0D2EE9A900CB2E4C /* net.h */,
 				48728D290D3004A80004D61B /* net_dgrm.h */,
 				48728D2B0D3004A80004D61B /* net_loop.h */,
 				487C0A5C0DA94A0700A49FF5 /* net_sdlnet.h */,
-				48305B530D8AF8EC00A29C24 /* net_udp.h */,
 				483A77FB0D2EE9A900CB2E4C /* protocol.h */,
 				483A77FC0D2EE9A900CB2E4C /* server.h */,
 			);
@@ -667,7 +664,6 @@
 				48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */,
 				48C85E3B0D3AD10E00797678 /* QuakeArgument.m in Sources */,
 				48895DB90D4914A000849ABF /* pl_osx.m in Sources */,
-				48305B550D8AF90600A29C24 /* net_udp.c in Sources */,
 				487C0A5D0DA94A0700A49FF5 /* net_sdlnet.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
