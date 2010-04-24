@@ -3,11 +3,11 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecture = i386;
 		activeBuildConfigurationName = Release;
-		activeExecutable = 9ABC4B480FB729A900F2D53C /* Fitzquake */;
-		activeTarget = 8D1107260486CEB800E47090 /* Fitzquake */;
+		activeExecutable = 9ABC4B480FB729A900F2D53C /* QuakeSpasm */;
+		activeTarget = 8D1107260486CEB800E47090 /* QuakeSpasm */;
 		codeSenseManager = 9ABC4B5A0FB729C800F2D53C /* Code sense */;
 		executables = (
-			9ABC4B480FB729A900F2D53C /* Fitzquake */,
+			9ABC4B480FB729A900F2D53C /* QuakeSpasm */,
 		);
 		perUserDictionary = {
 			PBXConfiguration.PBXFileTableDataSource3.PBXErrorsWarningsDataSource = {
@@ -105,13 +105,13 @@
 			sepNavWindowFrame = "{{61, 273}, {750, 558}}";
 		};
 	};
-	8D1107260486CEB800E47090 /* Fitzquake */ = {
+	8D1107260486CEB800E47090 /* QuakeSpasm */ = {
 		activeExec = 0;
 		executables = (
-			9ABC4B480FB729A900F2D53C /* Fitzquake */,
+			9ABC4B480FB729A900F2D53C /* QuakeSpasm */,
 		);
 	};
-	9ABC4B480FB729A900F2D53C /* Fitzquake */ = {
+	9ABC4B480FB729A900F2D53C /* QuakeSpasm */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
 		);
@@ -131,7 +131,7 @@
 		executableSystemSymbolLevel = 0;
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
-		name = Fitzquake;
+		name = QuakeSpasm;
 		sourceDirectories = (
 		);
 	};

@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="Fitzquake" />
+		<Option title="QuakeSpasm" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
@@ -279,7 +279,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\Quake\zone.h" />
-		<Unit filename="Fitzquake.rc">
+		<Unit filename="QuakeSpasm.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Extensions>

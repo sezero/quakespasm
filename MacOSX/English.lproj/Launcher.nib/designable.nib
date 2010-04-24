@@ -758,7 +758,7 @@
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{772, 548}, {516, 280}}</string>
 				<int key="NSWTFlags">1954022400</int>
-				<string key="NSWindowTitle">Fitzquake</string>
+				<string key="NSWindowTitle">QuakeSpasm</string>
 				<string key="NSWindowClass" id="565021071">NSWindow</string>
 				<nil key="NSViewClass"/>
 				<object class="NSView" key="NSWindowView" id="439893737">
@@ -2848,7 +2848,7 @@
 			</object>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
-		<string key="IBDocument.LastKnownRelativeProjectPath">../../Fitzquake.xcodeproj</string>
+		<string key="IBDocument.LastKnownRelativeProjectPath">../../QuakeSpasm.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableData" key="IBDocument.RunnableNib">
 			<bytes key="NS.bytes">YnBsaXN0MDDUAAEAAgADAAQABQAGAAkAClgkdmVyc2lvblQkdG9wWSRhcmNoaXZlclgkb2JqZWN0cxIA

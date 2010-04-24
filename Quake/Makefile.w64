@@ -85,7 +85,7 @@ cl_parse.o  gl_mesh.o    gl_texmgr.o  mathlib.o   pr_edict.o    snd_mem.o   wad.
 cl_tent.o   gl_model.o   gl_vidsdl.o  menu.o      pr_exec.o     snd_mix.o   world.o \
 cmd.o       gl_refrag.o  gl_warp.o    net_dgrm.o  r_alias.o     snd_sdl.o   zone.o \
 common.o    gl_rlight.o  host_cmd.o   net_loop.o  r_brush.o     sv_main.o   conback.o \
-Fitzquake.res
+QuakeSpasm.res
 
 # ------------------------
 # build rules for mingw-w64 :

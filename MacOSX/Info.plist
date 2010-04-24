@@ -7,9 +7,9 @@
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFile</key>
-	<string>Fitzquake</string>
+	<string>QuakeSpasm</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.celephais.Fitzquake</string>
+	<string>net.sf.quakespasm.QuakeSpasm</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

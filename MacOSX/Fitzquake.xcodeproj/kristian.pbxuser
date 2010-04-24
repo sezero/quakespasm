@@ -26,16 +26,16 @@
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
 		activeArchitecture = i386;
 		activeBuildConfigurationName = Release;
-		activeExecutable = 4802D72D0D2EE86A00DD8D4F /* Fitzquake */;
-		activeTarget = 8D1107260486CEB800E47090 /* Fitzquake */;
+		activeExecutable = 4802D72D0D2EE86A00DD8D4F /* QuakeSpasm */;
+		activeTarget = 8D1107260486CEB800E47090 /* QuakeSpasm */;
 		addToTargets = (
-			8D1107260486CEB800E47090 /* Fitzquake */,
+			8D1107260486CEB800E47090 /* QuakeSpasm */,
 		);
 		breakpoints = (
 		);
 		codeSenseManager = 4802D7440D2EE86D00DD8D4F /* Code sense */;
 		executables = (
-			4802D72D0D2EE86A00DD8D4F /* Fitzquake */,
+			4802D72D0D2EE86A00DD8D4F /* QuakeSpasm */,
 		);
 		perUserDictionary = {
 			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
@@ -190,7 +190,7 @@
 		userBuildSettings = {
 		};
 	};
-	32CA4F630368D1EE00C91783 /* Fitzquake_Prefix.pch */ = {
+	32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1359, 471}}";
 			sepNavSelRange = "{724, 0}";
@@ -198,7 +198,7 @@
 			sepNavWindowFrame = "{{-1402, -252}, {642, 847}}";
 		};
 	};
-	4802D72D0D2EE86A00DD8D4F /* Fitzquake */ = {
+	4802D72D0D2EE86A00DD8D4F /* QuakeSpasm */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
 			YES,
@@ -226,7 +226,7 @@
 		executableSystemSymbolLevel = 0;
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
-		name = Fitzquake;
+		name = QuakeSpasm;
 		savedGlobals = {
 		};
 		sourceDirectories = (
@@ -1373,10 +1373,10 @@
 			sepNavWindowFrame = "{{328, 73}, {642, 805}}";
 		};
 	};
-	8D1107260486CEB800E47090 /* Fitzquake */ = {
+	8D1107260486CEB800E47090 /* QuakeSpasm */ = {
 		activeExec = 0;
 		executables = (
-			4802D72D0D2EE86A00DD8D4F /* Fitzquake */,
+			4802D72D0D2EE86A00DD8D4F /* QuakeSpasm */,
 		);
 	};
 	8D1107310486CEB800E47090 /* Info.plist */ = {
