@@ -1050,20 +1050,19 @@ void M_AdjustSliders (int dir)
 	{
 	case 3:	// console and menu scale
 		scr_scale.value += dir * .2;
-
 		if (scr_scale.value < 1)
 			scr_scale.value = 1;
-		if (scr_scale.value > 6)
+		else if (scr_scale.value > 6)
 			scr_scale.value = 6;
-                Cvar_SetValue ("scr_scale", scr_scale.value);
-                Cvar_SetValue ("scr_conscale", scr_scale.value);
-                Cvar_SetValue ("scr_menuscale", scr_scale.value);
+		Cvar_SetValue ("scr_scale", scr_scale.value);
+		Cvar_SetValue ("scr_conscale", scr_scale.value);
+		Cvar_SetValue ("scr_menuscale", scr_scale.value);
 		break;
 	case 4:	// gamma
 		vid_gamma.value -= dir * 0.05;
 		if (vid_gamma.value < 0.5)
 			vid_gamma.value = 0.5;
-		if (vid_gamma.value > 1)
+		else if (vid_gamma.value > 1)
 			vid_gamma.value = 1;
 		Cvar_SetValue ("gamma", vid_gamma.value);
 		break;
@@ -1071,7 +1070,7 @@ void M_AdjustSliders (int dir)
 		sensitivity.value += dir * 0.5;
 		if (sensitivity.value < 1)
 			sensitivity.value = 1;
-		if (sensitivity.value > 11)
+		else if (sensitivity.value > 11)
 			sensitivity.value = 11;
 		Cvar_SetValue ("sensitivity", sensitivity.value);
 		break;
@@ -1083,7 +1082,7 @@ void M_AdjustSliders (int dir)
 #endif
 		if (bgmvolume.value < 0)
 			bgmvolume.value = 0;
-		if (bgmvolume.value > 1)
+		else if (bgmvolume.value > 1)
 			bgmvolume.value = 1;
 		Cvar_SetValue ("bgmvolume", bgmvolume.value);
 		break;
@@ -1091,12 +1090,12 @@ void M_AdjustSliders (int dir)
 		volume.value += dir * 0.1;
 		if (volume.value < 0)
 			volume.value = 0;
-		if (volume.value > 1)
+		else if (volume.value > 1)
 			volume.value = 1;
 		Cvar_SetValue ("volume", volume.value);
 		break;
 
-	case 8:	// allways run
+	case 8:	// always run
 		if (cl_forwardspeed.value > 200)
 		{
 			Cvar_SetValue ("cl_forwardspeed", 200);
