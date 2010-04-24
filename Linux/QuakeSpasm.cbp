@@ -125,9 +125,6 @@
 		<Unit filename="../Quake/gl_sky.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Quake/gl_test.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../Quake/gl_texmgr.c">
 			<Option compilerVar="CC" />
 		</Unit>

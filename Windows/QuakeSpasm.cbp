@@ -82,6 +82,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\Quake\common.h" />
+		<Unit filename="..\Quake\conback.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\Quake\conback.h" />
 		<Unit filename="..\Quake\console.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -125,9 +129,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\Quake\gl_sky.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\Quake\gl_test.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\Quake\gl_texmgr.c">
