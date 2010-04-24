@@ -1,0 +1,46 @@
+================================================================================
+
+Beta release of an SDL port of Fitzquake version 0.80, July 5, 2008
+
+Author                  : Kristian Duske
+Email Address           : deceive.inveigle.obfuscate@gmail.com
+Author's Homepage       : http://www.kristianduske.com/fitzquake
+Minimum SDL version     : 1.2.10
+
+This is a port of the Fitzquake engine to SDL. The main goal of this port is to
+allow fitzquake to run on all major platforms. Currently there are builds for
+Windows, Linux and Mac OS X.
+
+To run this engine, you need to install the SDL and SDL_net library binaries. For
+Linux, you should probably use the packages for your distribution which should be
+available through your package manager of choice. The minimum SDL version you
+need to run this is 1.2.10. On Windows, you can download the SDL and SDL_net dlls
+from http://www.libsdl.org/. On Mac, the SDL framework is included in the
+application bundle.
+
+The Mac OS X version includes a simple launcher program.
+
+Known issues:
+- Mouse sensitivity is different than in the original Fitzquake (or vanilla Quake,
+  for that matter).
+- Pasting from the clipboard does not work.
+- It is not possible to switch the screen refresh rates from within the engine.
+- On Linux, there are problems with the default sound sampling rate of 11025Hz.
+  This can be fixed by supplying -sndspeed 48000 on the commandline.
+
+Changes since the March 7 beta:
+- discard mouse movement while input is deactivated
+- implement maps and mods commands using POSIX functions and added a POSIX wrapper
+  for Win32
+- activate mouse input when binding a key, otherwise mouse keys cannot be bound
+  through the menu
+- fixed shift key behaviour
+- implemented TCP networking
+- fixed fog command (use fmax instead of max in Fog_FogCommand_f)
+- fixed bug that lead to the screen being set to minimum size when the sizedown
+  command is issued multiple times
+- LSHIFT + ESC and circomflex always opens the console
+- print everything to stdout
+- and more...
+
+Below, you can find the original fitzquake readme.

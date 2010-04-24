@@ -1,9 +1,9 @@
 
 ================================================================================
 
-Fitzquake version 0.80, May 26, 2005 
+Fitzquake version 0.85, Feb 12, 2009
 
-Filename                : fitzquake080.exe
+Filename                : fitzquake085.exe
 Author                  : John Fitzgibbons
 Email Address           : johnfitz@u.washington.edu
 Author's Homepage       : http://www.celephais.net/
@@ -25,20 +25,17 @@ are welcome.
 Acknowlegements
 --------------------------------------------------------------------------------
 
-id Software (quake and quake2 code)
-LordHavoc (code and assistance)
-Bengt Jardrup (feedback, assistance, testing)
-
-additional thanks to: Aardappel, SmallPileOfGibs, FrikaC, Vondur, Topaz, Tomaz,
-Tonik, Radix, EvilTypeGuy, NightBringer, MH, Maddes, Fett, Craig Wills, Heffo, 
-Riot, Gleeb, people in #flipcode, and others for their tutorials, code, testing, 
+id Software, LordHavoc, Bengt Jardrup, Baker, Aardappel, SmallPileOfGibs, FrikaC,
+Vondur, JPL, Negke, preach, Topaz, Tomaz, Tonik, Radix, EvilTypeGuy, NightBringer, 
+MH, Tyrann, Spirit, Fett, Maddes, Craig Wills, Heffo, Riot, Gleeb, Speedy, 
+people in #flipcode, & others for their feedback, tutorials, code, testing, 
 and assistance.
 
 Copyright / Permissions
 --------------------------------------------------------------------------------
 
 Copyright (C) 1996-2001 Id Software, Inc.
-Copyright (C) 2002-2005 John Fitzgibbons and others
+Copyright (C) 2002-2009 John Fitzgibbons and others
 
 This program is free software; you can redistribute it and/or modify it under 
 the terms of the GNU General Public License as published by the Free Software 
@@ -57,6 +54,124 @@ Place - Suite 330, Boston, MA  02111-1307, USA.
 
 History
 ================================================================================
+
+changes in 0.85
+---------------
+	- increased limits		
+		- added a network protocol 666, which supports higher limits, entity alpha, and more (see command "sv_protocol")
+		- can load and play all known limits-breaking maps, including masque, warpspasm, indian summer, sickbase, 768_negke, digs04, omlabx, and bod.
+		- increased MAX_MODELS from 256 to 2048 (and MAX_MOD_KNOWN from 512 to 2048) (requires the new protocol)  Prints a warning if you exceed the old limit.
+		- increased MAX_SOUNDS from 256 to 2048 (requires the new protocol)  Prints a warning if you exceed the old limit.
+		- increased the upper limit for the "max_edicts" cvar to 32000 (requires the new protocol for entities past 8192 to play sounds)
+		- models with more than 256 frames can now actually use those frames (requires the new protocol)
+		- fixed crash when marksurfaces > 32767, raising the effective limit to 65k. Prints a warning if you exceed 32767.
+		- fixed crash or other weird behavior when faces > 32767, raising the effective limit to 65k. Prints a warning if you exceed 32767. 
+		- fixed crash when nodes > 32767, raising the effective limit for leafs+nodes to 65k. Prints a warning if you exceed 32767. 
+		- increased clipnode capacity from 32k to 65k. Prints a warning if you exceed 32767.
+		- increased MAX_MAP_LEAFS from 8192 to 32k (these are visleafs, not total leafs.) Prints a warning if you exceed the old limit.
+		- increased MAX_STATIC_ENTITIES from 128 to 512. Prints a warning if you exceed the old limit. 
+		- increased MAX_VISEDICTS from 256 to 1024, which should fix static entities flickering in large maps. Prints a warning if you exceed the old limit.
+		- increased MAX_EFRAGS from 640 to 2048.  Should reduce the "Too many efrags!" messages.  Prints a warning if you exceed the old limit.
+		- increased MAX_LIGHTMAPS from 64 to 256, meaning you can load 4 times as much lightmap data before getting an "Allocblock:full" error.  Prints a warning if you exceed the old limit.
+		- increased MAX_GLTEXTURES from 1024 to 2048
+		- increased MAX_BEAMS from 24 to 32 and MAX_TEMP_ENTITIES from 64 to 256, so you can have more lightning bolts now
+		- increased increase MAX_DLIGHTS from 32 to 64
+		- eliminated "packet overflow" errors in single-player mode on all known maps, by increasing MAX_DATAGRAM from 1024 to 32000 (NET_MAXMESSAGE and MAX_MSGLEN were also increased accordingly.) In multiplayer (including COOP,) the MAX_DATAGRAM size is 1400 because the MTU on most internet routers is ~1450, and anything above this could get fragmented and lost since datagram packets use UDP.  Prints warning when packetsize exceeds the standard datagram size.
+		- increased signon buffer capacity, should eliminate sz_getspace  errors (example: hard mode coop crash on Travail's qte2m1.bsp.)  Prints a warning when signon buffer is too big for standard servers.
+		- "no free edicts" error now spits you back to the console instead of crashing
+	- visual improvements
+		- added model interpolation for animation and movement.  See cvars r_lerpmodels, r_lerpmove, r_nolerp_list.
+		- added interpolation on the gun kick motion, and ability to disable gun kick entirely (see cvar "v_gunkick")
+		- disabled torches/bolts casting shadows
+	- more content support
+		- added support for per-entity alpha, and it works even without a custom progs.dat, works on static entities too, and both bsp and mdl models.  Set values directly in the map and/or control it with quakec. When setting alpha, a value of "0" is interpreted as "default", which means 1.0 for most things, but for water polygons it t means obey the value of r_waterwarp.  A value greater than 0, up to 1.0, will explicitly set the alpha, and override r_wateralpha for water polygons.  A value of -1 will explictly set the alpha to 0 (invisible), and override r_wateralpha.  (requires the new protocol, except for alpha -1, which makes things invisible even with protocol 15)
+		- can playback protocol 15 demos containing the nonstandard U_TRANS bit, as recorded by nehahra, joequake, and aguirre's engine.  When the server says it is running protocol 15, and the U_TRANS bit is encountered, fitzquake will assume it's the Nehahra protocol and parse it accordingly.
+		- added support for -quoth command line switch. Loads quoth content regardless of current gamedir, and enables hipnotic statusbar layout.  This allows you to load a mod that requires quoth, but is in a separate directory (i.e. fitzquake.exe -quoth -game warp)
+		- fullbrights now use additive blending instead of alpha blending. This allows me to support external glowmaps, and entity transparency with fullbrights/glowmaps.  In some cases, additive fullbrights are rendered using multitexture, but only if GL_EXT_texture_env_add is available.  The command line option -nocombine will disable the use of GL_EXT_texture_env_add.
+		- added support for external glowmaps (names must end in _luma or _glow)
+		- added support for external liquid textures (name your files #water instead of *water)
+		- added support for map-specific texture directories (put textures in /textures/mapname/)
+	- interface improvements
+		- improved crosshair accuracy somewhat for protocol 15, and improved it a lot in protocol 666
+		- rearranged scorebar so that map titles as long as 40 chars can be displayed without scrolling
+		- statusbar displayed values now cap at 999 rather than displaying truncated numbers (1001 will be displayed as 999 instead of 001)
+		- tab completion cycle order now alphabetized as a whole rather than grouped by type
+		- added scr_conscale cvar (see below)
+		- added scr_crosshairscale cvar (see below)
+		- added scr_sbaralpha cvar (see below)
+		- scr_showfps and scr_clock display now use same scale as console (scr_conscale, scr_conwidth)
+		- video menu now shows aspect ratio of selected video mode
+		- added aguirRe's trick of making the window perfectly cover the screen with no titlebar/borders, if you create a windowed mode with height/width equal to the desktop size. (not tested on dual monitors, though.)
+	- developer features
+		- added ability to monitor various stats that change dynamically, such as packet size, temp entities, and visedicts. (see cvar "devstats")
+		- restricted spammy messages "packet overflow", "beam list overflow", and "too many efrags" to repeat at most once every 3 seconds
+		- r_showbboxes now draws point entities too
+		- "mcache" command now gives you a total number of models (note, this is a list of all loaded models, not just the current level's model precaches)
+		- "soundlist" command now gives you a total number of sounds (note, this is a list of all loaded sounds, not just the current level's sound precaches)
+		- "give" command can now give armor values above 200
+		- added imagedump command (see below)
+		- "x is not a field" message is now shown only if developer = 1
+	- bugfixes
+		- added Baker's fixes for Intel display adapters
+		- fixed tab completion cycle never reaching certain commands/cvars in list
+		- fixed -dinput mouse doesn't work after vid_restart
+		- fixed rotated alias models incorrectly culled
+		- fixed sky animation on brush models
+		- fixed "invalid pixel format" error when switching between two video modes with the same bit depth, on certain chipsets (Baker had this problem)
+		- fixed alt-tab fullscreen trashed window on some nvidia, intel cards (from Baker)
+		- fixed some TGAs load upside down
+		- fixed non-square PCX loading appears interlaced
+		- fixed PCX loading from inside pakfiles appears as random noise
+		- fixed player skin corruption bug (thanks aguirRe)
+		- fixed improperly trying to colormap the playermodel before a map is loaded, after switching games (could cause a crash or discolored textures)
+		- fixed too-dark fog on world/brushmodels with -nomtex
+		- fixed overbright models too light with fog and -nocombine
+		- fixed r_wateralpha support on brush entities
+		- fixed grenade shadows spinning wildly instead of staying on the ground
+		- fixed solid fogged sky was not quite the same color as solid fogged geometry, for certain colors of fog
+		- fixed trigger_changelevel with missing map causes apparent hang
+		- fixed hang when r_stereo and r_lightmap are both enabled
+		- fixed "W_GetLumpinfo" crash when a graphic is missing from gfx.wad. Prints a console message instead.  Missing graphics will be drawn as a checkerboard image. Note: conchars is the one graphic that must be in the gfx.wad, since the console won't even function without it.
+		- fixed accidentally stripping -hipnotic and -rogue directories when switching games
+		- fixed give command doesn't update currentammo
+		- fixed changing gamedirs while a skybox is loaded sometimes corrupts textures/lightmaps in the next map loaded
+		- fixed unnecessary creation of "glquake" subdirectory
+		- fixed 0Hz/0bpp showing up in video menu sometimes
+		- fixed -aliases triggered on alt-tab
+		- fixed con_logcenterprint considering identical messages to be duplicates even though the map has changed in between
+		- fixed hang in proxmap2, when going through one of the teleporters (thanks spirit, mh)
+		- fixed lightning bolt memory corruption crash (rare)
+	- source cleanup
+		- removed all ASM code from source, and removed gas2masm project
+		- cleaned up unnecessary library dependencies in source release
+		- renamed local variable "errno" to fix a compiling problem on visual c++ express edition
+		- added dxsdk folder to source release
+
+cvars:
+
+	- devstats. default 0.  If 1, prints various the current and peak values of various stats that change over time, such as packetsize, and edicts. Note: even if devstats is set to 0, fitzquake will keep track of peak values so when you turn it on, the peaks are accurate.  Devstats display scale follows console text scale.
+
+	- r_lerpmodels. default 0. If 1, do interpolation on model animations, with exceptions for torches (r_nolerp_list) & muzzleflares (interpolation is suspended for two frames if EF_MUZZLEFLASH is encountered, on the assumption a muzzleflare happens at the same time.) If 2, lerp all animations, without exception.  If 0, disable interpolation (to mimic standard quake.)
+
+	- r_lerpmove. default 0. If 1, do movement interpolation on MOVETYPE_STEP entities (i.e. monsters.)  If 0, disable interpolation (to mimic standard quake.)  I recommend that you use r_lerpmove and r_lerpmodels together, or turn them both off, otherwise monsters will move strangely.
+
+	- r_nolerp_list. Contains a comma-separated list of filenames of models to exclude from lerping. Filename must include the relative path and extension, for example "progs/flame.mdl".  The default is "progs/flame.mdl,progs/flame2.mdl,progs/braztall.mdl,progs/brazshrt.mdl,progs/longtrch.mdl,progs/flame_pyre.mdl,progs/v_saw.mdl,progs/v_xfist.mdl,progs/h2stuff/newfire.mdl". This should include all torches in id1, quoth, and bastion, which look bad when lerped, and the zerstorer chainsaw and xmen fist, which also look bad lerped.
+
+	- r_skyfog. default 0.5.  Controls how much the sky is obscured by the fog.  0 = sky is completely unfogged, 1 = sky is completely fogged.
+
+	- scr_conscale. default 1.  Scales the console text larger, but only has an effect when scr_conwidth is 0.
+
+	- scr_crosshairscale. default 1. Scales the crosshair larger. 1 = normal, 10 = maximum enlargement
+
+	- scr_sbaralpha. default 1.  Controls the transparency of the statusbar background. 0 = invisible, 1 = opaque (original quake behavior), in-between values give different levels of transparency.  Pro tip: set it to 0.99 and it will still appear opaque, but the 3D view will expand to fill the area on both sides of the statusbar.
+
+	- v_gunkick. default 1.  If 1, standard quake view kick when you fire your gun.  If 2, interpolates the view kick.  If 0, disables view kick entirely.
+
+commands:
+
+	- imagedump. Dumps all loaded textures from opengl into tga files.  This shows the textures as they exist in opengl texture memory. Texture names containing '*' will be renamed with '#' instead.
+
+	- sv_protocol. Sets the network protocol used by the server.  Default is 666.  Possible values are 15 (standard netquake protocol) or 666 (new fitzquake protocol.)  Changes to the protocol will not take effect until the next time you load/reload a level.  When running protocol 666, standard clients won't be able to connect to your server, and they won't be able to play any demos you record.  When running protocol 15, only 256 models and 256 sounds can be sent to the client, which means you would see invisible entities and not hear some sounds, when running a map or mod that has more than 256 models or sounds.  There is also some other data the server will suppress in protocol 15, such as per-entity alpha.  Also note, dzip's special demo compression does not work on demos that use modified protocols, so you will get a compression ratio no better than standard zip compression.
 
 changes in 0.80
 ---------------
