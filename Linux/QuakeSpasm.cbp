@@ -156,7 +156,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Quake/keys.h" />
-		<Unit filename="../Quake/main.c">
+		<Unit filename="../Quake/main_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Quake/mathlib.c">

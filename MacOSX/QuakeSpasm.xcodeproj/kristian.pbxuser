@@ -465,7 +465,7 @@
 		vrLen = 1061;
 		vrLoc = 168;
 	};
-	48243B130D33F01A00C29F8F /* main.c */ = {
+	48243B130D33F01A00C29F8F /* main_sdl.c */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1359, 2030}}";
 			sepNavSelRange = "{3951, 0}";

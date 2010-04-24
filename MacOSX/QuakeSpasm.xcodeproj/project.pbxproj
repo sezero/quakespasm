@@ -12,7 +12,7 @@
 		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
 		002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
 		002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
-		48243B140D33F01A00C29F8F /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main.c */; };
+		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
 		4824B3360DF5542E0001ED2C /* SDL_net.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48DA393E0D998BC9007C2A77 /* SDL_net.framework */; };
 		48305B550D8AF90600A29C24 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48305B540D8AF90600A29C24 /* net_udp.c */; };
 		4830B79F0D464CAE00EF4498 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79D0D464CAE00EF4498 /* Changelog.txt */; };
@@ -117,7 +117,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeSpasm_Prefix.pch; sourceTree = "<group>"; };
-		48243B130D33F01A00C29F8F /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../Quake/main.c; sourceTree = SOURCE_ROOT; };
+		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
 		48305B530D8AF8EC00A29C24 /* net_udp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_udp.h; path = ../Quake/net_udp.h; sourceTree = SOURCE_ROOT; };
 		48305B540D8AF90600A29C24 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
 		4830B79D0D464CAE00EF4498 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Misc/Changelog.txt; sourceTree = SOURCE_ROOT; };
@@ -368,7 +368,7 @@
 				483A78150D2EEA5400CB2E4C /* cvar.c */,
 				483A78170D2EEA5400CB2E4C /* host.c */,
 				483A78160D2EEA5400CB2E4C /* host_cmd.c */,
-				48243B130D33F01A00C29F8F /* main.c */,
+				48243B130D33F01A00C29F8F /* main_sdl.c */,
 				483A78180D2EEA5400CB2E4C /* mathlib.c */,
 				483A78190D2EEA5400CB2E4C /* menu.c */,
 				48895DB80D4914A000849ABF /* pl_osx.m */,
@@ -660,7 +660,7 @@
 				486577CB0D31A22A00E7920A /* snd_dma.c in Sources */,
 				486577CC0D31A22A00E7920A /* snd_mem.c in Sources */,
 				486577CD0D31A22A00E7920A /* snd_mix.c in Sources */,
-				48243B140D33F01A00C29F8F /* main.c in Sources */,
+				48243B140D33F01A00C29F8F /* main_sdl.c in Sources */,
 				48B9E7A70D340BEA0001CACF /* AppController.m in Sources */,
 				48B9E7C00D340EA80001CACF /* SDLApplication.m in Sources */,
 				489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */,

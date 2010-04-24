@@ -43,7 +43,7 @@
 	<File name="..\Quake\in_sdl.c" open="0" top="0" tabpos="4">
 		<Cursor position="1102" topLine="19" />
 	</File>
-	<File name="..\Quake\main.c" open="0" top="0" tabpos="4">
+	<File name="..\Quake\main_sdl.c" open="0" top="0" tabpos="4">
 		<Cursor position="2851" topLine="93" />
 	</File>
 	<File name="..\Quake\mathlib.h" open="0" top="0" tabpos="3">
