@@ -47,11 +47,11 @@ void IN_Activate ();
 // called when the app becomes inactive
 void IN_Deactivate (qboolean free_cursor);
 
-#if defined(SDL_ALL_HOTKEYS)
-/* for SDL builds: */
+#if defined(SDL_MAJOR_VERSION)
+/* for SDL builds only */
 void BuildKeyMaps (void);
 int Key_Map (SDL_KeyboardEvent *event);
-#endif	/* SDL_ALL_HOTKEYS */
+#endif	/* SDL_MAJOR_VERSION */
 
 #endif	/* _QUAKE_INPUT_H */
 
