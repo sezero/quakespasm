@@ -1,7 +1,8 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
-Copyright (C) 2002-2005 John Fitzgibbons and others
+Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2007-2008 Kristian Duske
+Copyright (C) 2010 Ozkan Sezer and Steven Atkinson
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -43,6 +44,7 @@ typedef struct {
 	int			dib;
 	int			fullscreen;
 	int			bpp;
+//	int			refreshrate; //johnfitz
 	int			halfscreen;
 	char		modedesc[17];
 } vmode_t;
@@ -130,9 +132,9 @@ void GL_SetupState (void); //johnfitz
 //====================================
 
 //johnfitz -- new cvars
-cvar_t		vid_fullscreen = {"vid_fullscreen", "0", true};
-cvar_t		vid_width = {"vid_width", "800", true};
-cvar_t		vid_height = {"vid_height", "600", true};
+cvar_t		vid_fullscreen = {"vid_fullscreen", "0", true};	// QuakeSpasm, was "1"
+cvar_t		vid_width = {"vid_width", "800", true};		// QuakeSpasm, was 640
+cvar_t		vid_height = {"vid_height", "600", true};	// QuakeSpasm, was 480
 cvar_t		vid_bpp = {"vid_bpp", "16", true};
 cvar_t		vid_refreshrate = {"vid_refreshrate", "60", true};
 cvar_t		vid_vsync = {"vid_vsync", "0", true};
@@ -208,7 +210,8 @@ void VID_Gamma_f (void)
 
 	for (i=0; i<256; i++)
 	{
-		vid_gamma_red[i] = CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
+		vid_gamma_red[i] =
+			CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
 		vid_gamma_green[i] = vid_gamma_red[i];
 		vid_gamma_blue[i] = vid_gamma_red[i];
 	}
@@ -564,13 +567,12 @@ CheckArrayExtensions
 */
 void CheckArrayExtensions (void)
 {
-	unsigned char *tmp;
+	const char	*tmp;
 
-	/* check for texture extension */
-	tmp = (GLubyte *)glGetString(GL_EXTENSIONS);
+	tmp = (const char *)glGetString(GL_EXTENSIONS);
 	while (*tmp)
 	{
-		if (strncmp((const char*)tmp, "GL_EXT_vertex_array", strlen("GL_EXT_vertex_array")) == 0)
+		if (strncmp(tmp, "GL_EXT_vertex_array", sizeof("GL_EXT_vertex_array") -1) == 0)
 		{
 			if (((glArrayElementEXT = SDL_GL_GetProcAddress("glArrayElementEXT")) == NULL) ||
 			    ((glColorPointerEXT = SDL_GL_GetProcAddress("glColorPointerEXT")) == NULL) ||
@@ -578,7 +580,6 @@ void CheckArrayExtensions (void)
 			    ((glVertexPointerEXT = SDL_GL_GetProcAddress("glVertexPointerEXT")) == NULL) )
 			{
 				Sys_Error ("GetProcAddress for vertex extension failed");
-				return;
 			}
 			return;
 		}
@@ -1052,7 +1053,7 @@ void VID_InitDIB (void)
 	if (COM_CheckParm("-width"))
 		modelist[0].width = Q_atoi(com_argv[COM_CheckParm("-width")+1]);
 	else
-		modelist[0].width = 800;
+		modelist[0].width = 800;	// QuakeSpasm, was 640
 
 	if (modelist[0].width < 320)
 		modelist[0].width = 320;
@@ -1374,7 +1375,10 @@ void	VID_Init (void)
 	PL_SetWindowIcon();
 
 	VID_SetMode (vid_default);
+
 	GL_Init ();
+
+	//johnfitz -- removed code creating "glquake" subdirectory
 
 	vid_realmode = vid_modenum;
 
@@ -1429,7 +1433,6 @@ vrestart:
 		Cbuf_AddText ("vid_restart\n");
 	}
 }
-
 
 /*
 ================
@@ -1807,39 +1810,39 @@ void VID_MenuDraw (void)
 	M_PrintWhite ((320-8*strlen(title))/2, 32, title);
 
 	// options
-	M_Print (16, video_cursor_table[i], "            Video mode");
-	M_Print (216, video_cursor_table[i], va("%ix%i", (int)vid_width.value, (int)vid_height.value));
+	M_Print (16, video_cursor_table[i], "        Video mode");
+	M_Print (184, video_cursor_table[i], va("%ix%i", (int)vid_width.value, (int)vid_height.value));
 	i++;
 
-	M_Print (16, video_cursor_table[i], "           Color depth");
-	M_Print (216, video_cursor_table[i], va("%i", (int)vid_bpp.value));
+	M_Print (16, video_cursor_table[i], "       Color depth");
+	M_Print (184, video_cursor_table[i], va("%i", (int)vid_bpp.value));
 	i++;
 
-	M_Print (16, video_cursor_table[i], "          Refresh rate");
-//	M_Print (216, video_cursor_table[i], va("%i Hz", (int)vid_refreshrate.value)); refresh rates are disabled for now -- kristian
-	M_Print (216, video_cursor_table[i], "N/A");
+	M_Print (16, video_cursor_table[i], "      Refresh rate");
+//	M_Print (184, video_cursor_table[i], va("%i Hz", (int)vid_refreshrate.value)); refresh rates are disabled for now -- kristian
+	M_Print (184, video_cursor_table[i], "N/A");
 	i++;
 
-	M_Print (16, video_cursor_table[i], "            Fullscreen");
-	M_DrawCheckbox (216, video_cursor_table[i], (int)vid_fullscreen.value);
+	M_Print (16, video_cursor_table[i], "        Fullscreen");
+	M_DrawCheckbox (184, video_cursor_table[i], (int)vid_fullscreen.value);
 	i++;
 
 	// added vsync to the video menu -- kristian
-	M_Print (16, video_cursor_table[i], "         Vertical Sync");
+	M_Print (16, video_cursor_table[i], "     Vertical Sync");
 	if (gl_swap_control)
-		M_DrawCheckbox (216, video_cursor_table[i], (int)vid_vsync.value);
+		M_DrawCheckbox (184, video_cursor_table[i], (int)vid_vsync.value);
 	else
-		M_Print (216, video_cursor_table[i], "N/A");
+		M_Print (184, video_cursor_table[i], "N/A");
 
 	i++;
 
-	M_Print (16, video_cursor_table[i], "          Test changes");
+	M_Print (16, video_cursor_table[i], "      Test changes");
 	i++;
 
-	M_Print (16, video_cursor_table[i], "         Apply changes");
+	M_Print (16, video_cursor_table[i], "     Apply changes");
 
 	// cursor
-	M_DrawCharacter (200, video_cursor_table[video_options_cursor], 12+((int)(realtime*4)&1));
+	M_DrawCharacter (168, video_cursor_table[video_options_cursor], 12+((int)(realtime*4)&1));
 
 	// notes          "345678901234567890123456789012345678"
 //	M_Print (16, 172, "Windowed modes always use the desk- ");

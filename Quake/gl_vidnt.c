@@ -251,7 +251,7 @@ void VID_Gamma_f (void)
 
 	oldgamma = vid_gamma.value;
 
- 	for (i=0; i<256; i++)
+	for (i=0; i<256; i++)
 		vid_gammaramp[i] = vid_gammaramp[i+256] = vid_gammaramp[i+512] =
 			CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
 
@@ -973,22 +973,19 @@ CheckArrayExtensions
 */
 void CheckArrayExtensions (void)
 {
-	char		*tmp;
+	const char	*tmp;
 
-	/* check for texture extension */
-	tmp = (unsigned char *)glGetString(GL_EXTENSIONS);
+	tmp = (const char *)glGetString(GL_EXTENSIONS);
 	while (*tmp)
 	{
-		if (strncmp((const char*)tmp, "GL_EXT_vertex_array", strlen("GL_EXT_vertex_array")) == 0)
+		if (strncmp(tmp, "GL_EXT_vertex_array", sizeof("GL_EXT_vertex_array") -1) == 0)
 		{
-			if (
-((glArrayElementEXT = wglGetProcAddress("glArrayElementEXT")) == NULL) ||
-((glColorPointerEXT = wglGetProcAddress("glColorPointerEXT")) == NULL) ||
-((glTexCoordPointerEXT = wglGetProcAddress("glTexCoordPointerEXT")) == NULL) ||
-((glVertexPointerEXT = wglGetProcAddress("glVertexPointerEXT")) == NULL) )
+			if (((glArrayElementEXT = wglGetProcAddress("glArrayElementEXT")) == NULL) ||
+			    ((glColorPointerEXT = wglGetProcAddress("glColorPointerEXT")) == NULL) ||
+			    ((glTexCoordPointerEXT = wglGetProcAddress("glTexCoordPointerEXT")) == NULL) ||
+			    ((glVertexPointerEXT = wglGetProcAddress("glVertexPointerEXT")) == NULL) )
 			{
 				Sys_Error ("GetProcAddress for vertex extension failed");
-				return;
 			}
 			return;
 		}
@@ -1114,7 +1111,7 @@ void GL_CheckExtensions (void)
 	if (strstr(gl_extensions, "GL_EXT_texture_filter_anisotropic"))
 	{
 		float test1,test2;
-		int tex;
+		GLuint tex;
 
 		// test to make sure we really have control over it
 		// 1.0 and 2.0 should always be legal values
@@ -1195,10 +1192,10 @@ GL_Init
 */
 void GL_Init (void)
 {
-	gl_vendor = glGetString (GL_VENDOR);
-	gl_renderer = glGetString (GL_RENDERER);
-	gl_version = glGetString (GL_VERSION);
-	gl_extensions = glGetString (GL_EXTENSIONS);
+	gl_vendor = (const char *) glGetString (GL_VENDOR);
+	gl_renderer = (const char *) glGetString (GL_RENDERER);
+	gl_version = (const char *) glGetString (GL_VERSION);
+	gl_extensions = (const char *) glGetString (GL_EXTENSIONS);
 
 	GetWGLExtensions (); //johnfitz
 	GL_CheckExtensions (); //johnfitz
@@ -1207,11 +1204,11 @@ void GL_Init (void)
 
 	Cvar_RegisterVariable (&vid_vsync, VID_Vsync_f); //johnfitz
 
-    if (strnicmp(gl_renderer,"PowerVR",7)==0)
-         fullsbardraw = true;
+	if (strnicmp(gl_renderer,"PowerVR",7)==0)
+		fullsbardraw = true;
 
-    if (strnicmp(gl_renderer,"Permedia",8)==0)
-         isPermedia = true;
+	if (strnicmp(gl_renderer,"Permedia",8)==0)
+		isPermedia = true;
 
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
@@ -1287,19 +1284,19 @@ void VID_SetDefaultMode (void)
 
 void	VID_Shutdown (void)
 {
-   	HGLRC hRC;
-   	HDC	  hDC;
+	HGLRC	hRC;
+	HDC	hDC;
 
 	if (vid_initialized)
 	{
 		vid_canalttab = false;
 		hRC = wglGetCurrentContext();
-    	hDC = wglGetCurrentDC();
+		hDC = wglGetCurrentDC();
 
-    	wglMakeCurrent(NULL, NULL);
+		wglMakeCurrent(NULL, NULL);
 
-    	if (hRC)
-    	    wglDeleteContext(hRC);
+		if (hRC)
+			wglDeleteContext(hRC);
 
 		VID_Gamma_Shutdown (); //johnfitz
 
@@ -1572,15 +1569,15 @@ LONG WINAPI MainWndProc (
     WPARAM  wParam,
     LPARAM  lParam)
 {
-    LONG    lRet = 1;
+	LONG    lRet = 1;
 	int		fwKeys, xPos, yPos, fActive, fMinimized, temp;
 	extern unsigned int uiWheelMessage;
 
 	if ( uMsg == uiWheelMessage )
 		uMsg = WM_MOUSEWHEEL;
 
-    switch (uMsg)
-    {
+	switch (uMsg)
+	{
 		case WM_KILLFOCUS:
 			if (modestate == MS_FULLDIB)
 				ShowWindow(mainwindow, SW_SHOWMINNOACTIVE);
@@ -1646,17 +1643,17 @@ LONG WINAPI MainWndProc (
 			}
 			break;
 
-    	case WM_SIZE:
-            break;
+		case WM_SIZE:
+			break;
 
-   	    case WM_CLOSE:
+		case WM_CLOSE:
 			if (MessageBox (mainwindow, "Are you sure you want to quit?", "Confirm Exit",
 						MB_YESNO | MB_SETFOREGROUND | MB_ICONQUESTION) == IDYES)
 			{
 				Sys_Quit ();
 			}
 
-	        break;
+			break;
 
 		case WM_ACTIVATE:
 			fActive = LOWORD(wParam);
@@ -1668,27 +1665,27 @@ LONG WINAPI MainWndProc (
 
 			break;
 
-   	    case WM_DESTROY:
-        {
+		case WM_DESTROY:
+			{
 			if (dibwindow)
 				DestroyWindow (dibwindow);
 
-            PostQuitMessage (0);
-        }
-        break;
-
-		case MM_MCINOTIFY:
-            lRet = CDAudio_MessageHandler (hWnd, uMsg, wParam, lParam);
+			PostQuitMessage (0);
+			}
 			break;
 
-    	default:
-            /* pass all unhandled messages to DefWindowProc */
-            lRet = DefWindowProc (hWnd, uMsg, wParam, lParam);
-        break;
-    }
+		case MM_MCINOTIFY:
+			lRet = CDAudio_MessageHandler (hWnd, uMsg, wParam, lParam);
+			break;
 
-    /* return 1 if handled message, 0 if not */
-    return lRet;
+		default:
+			/* pass all unhandled messages to DefWindowProc */
+			lRet = DefWindowProc (hWnd, uMsg, wParam, lParam);
+			break;
+	}
+
+	/* return 1 if handled message, 0 if not */
+	return lRet;
 }
 
 //==========================================================================
@@ -1811,10 +1808,10 @@ VID_DescribeModes_f -- johnfitz -- changed formatting, and added refresh rates a
 */
 void VID_DescribeModes_f (void)
 {
-	int			i, lnummodes, t;
+	int		i, lnummodes, t;
 	char		*pinfo;
 	vmode_t		*pv;
-	int			lastwidth=0, lastheight=0, lastbpp=0, count=0;
+	int		lastwidth=0, lastheight=0, lastbpp=0, count=0;
 
 	lnummodes = VID_NumModes ();
 
@@ -1863,18 +1860,18 @@ void VID_InitDIB (HINSTANCE hInstance)
 	int				i;
 
 	/* Register the frame class */
-    wc.style         = 0;
-    wc.lpfnWndProc   = (WNDPROC)MainWndProc;
-    wc.cbClsExtra    = 0;
-    wc.cbWndExtra    = 0;
-    wc.hInstance     = hInstance;
-    wc.hIcon         = 0;
-    wc.hCursor       = LoadCursor (NULL,IDC_ARROW);
+	wc.style         = 0;
+	wc.lpfnWndProc   = (WNDPROC)MainWndProc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance     = hInstance;
+	wc.hIcon         = 0;
+	wc.hCursor       = LoadCursor (NULL,IDC_ARROW);
 	wc.hbrBackground = NULL;
-    wc.lpszMenuName  = 0;
-    wc.lpszClassName = "FitzQuake"; //johnfitz -- was WinQuake
+	wc.lpszMenuName  = 0;
+	wc.lpszClassName = "FitzQuake"; //johnfitz -- was WinQuake
 
-    if (!RegisterClass (&wc) )
+	if (!RegisterClass (&wc) )
 		Sys_Error ("Couldn't register window class");
 
 	modelist[0].type = MS_WINDOWED;
@@ -2297,18 +2294,18 @@ void	VID_Init (void)
 
 	VID_SetMode (vid_default);
 
-    maindc = GetDC(mainwindow);
+	maindc = GetDC(mainwindow);
 	bSetupPixelFormat(maindc);
 
-    baseRC = wglCreateContext( maindc );
+	baseRC = wglCreateContext( maindc );
 	if (!baseRC)
 		Sys_Error ("Could not initialize GL (wglCreateContext failed).\n\nMake sure you in are 65535 color mode, and try running -window.");
-    if (!wglMakeCurrent( maindc, baseRC ))
+	if (!wglMakeCurrent( maindc, baseRC ))
 		Sys_Error ("VID_Init: wglMakeCurrent failed");
 
 	GL_Init ();
 
-	//johnfitz -- removed code to create "glquake" subdirectory
+	//johnfitz -- removed code creating "glquake" subdirectory
 
 	vid_realmode = vid_modenum;
 
