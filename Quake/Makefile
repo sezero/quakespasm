@@ -63,14 +63,16 @@ CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
 CFLAGS += -g
-#STRIP_CMD := @echo "not stripping"
-STRIP_CMD := @/bin/true
+do_strip=
 else
 DFLAGS += -DNDEBUG
 CFLAGS += -O2
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
-STRIP_CMD := $(STRIP)
+cmd_strip=$(STRIP) $(1)
+define do_strip
+	$(call cmd_strip,$(1));
+endef
 endif
 
 ### X11BASE only gets used if its in an unusual place
@@ -139,7 +141,7 @@ common.o    gl_rlight.o  host_cmd.o   net_loop.o  r_brush.o     sv_main.o   conb
 
 quakespasm:	$(OBJS)
 	$(CC) $(CFLAGS) -o quakespasm $(OBJS) $(X11_LFLAGS) $(SDL_LFLAGS) $(LIBS)
-	$(STRIP_CMD) $@
+	$(call do_strip,$@)
 
 release:	quakespasm
 debug:
