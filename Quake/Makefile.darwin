@@ -1,4 +1,4 @@
-# GNU Makefile for QuakeSpasm, Feb. 18, 2010
+# GNU Makefile for QuakeSpasm, Apr. 24, 2010
 #
 # You need SDL and SDL_net fully installed.
 # "make DEBUG=1" builds debug client
@@ -134,8 +134,8 @@ OBJS := \
 cd_sdl.o    console.o    gl_rmain.o   host.o      net_main.o    r_part.o    sv_move.o \
 chase.o     crc.o        gl_rmisc.o   image.o     net_sdlnet.o  r_sprite.o  sv_phys.o \
 cl_demo.o   cvar.o       gl_screen.o  in_sdl.o    net_sdl.o     r_world.o   sv_user.o \
-cl_input.o  gl_draw.o    gl_sky.o     keys.o      pl_osx.o	sbar.o      sys_sdl.o \
-cl_main.o   gl_fog.o     gl_test.o    main.o      pr_cmds.o     snd_dma.o   view.o \
+cl_input.o  gl_draw.o    gl_sky.o     keys.o      pl_osx.o      sbar.o      sys_sdl.o \
+cl_main.o   gl_fog.o     main.o       pr_cmds.o   snd_dma.o     view.o \
 cl_parse.o  gl_mesh.o    gl_texmgr.o  mathlib.o   pr_edict.o    snd_mem.o   wad.o \
 cl_tent.o   gl_model.o   gl_vidsdl.o  menu.o      pr_exec.o     snd_mix.o   world.o \
 cmd.o       gl_refrag.o  gl_warp.o    net_dgrm.o  r_alias.o     snd_sdl.o   zone.o \
