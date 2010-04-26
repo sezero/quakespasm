@@ -241,10 +241,10 @@ VID_SetMode
 */
 int VID_SetMode (int modenum)
 {
-	int temp;
-	qboolean stat;
-	Uint32 flags = SDL_DEFAULT_FLAGS;
-	char caption[50];
+	int		temp;
+	qboolean	stat = false;
+	Uint32	flags = SDL_DEFAULT_FLAGS;
+	char		caption[50];
 
 // TODO: check if video mode is supported using SDL_VideoModeOk
 	if ((windowed && (modenum != 0)) ||
@@ -366,7 +366,7 @@ VID_Restart -- johnfitz -- change video modes on the fly
 */
 void VID_Restart (void)
 {
-	int			i;
+	int		i;
 	vmode_t		oldmode;
 
 	if (vid_locked || !vid_changed)

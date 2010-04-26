@@ -344,9 +344,9 @@ VID_SetWindowedMode
 */
 qboolean VID_SetWindowedMode (int modenum)
 {
-	HDC				hdc;
-	int				lastmodestate, width, height;
-	RECT			rect;
+	HDC		hdc;
+	int		lastmodestate, width, height;
+	RECT		rect;
 
 	lastmodestate = modestate;
 
@@ -430,9 +430,9 @@ VID_SetFullDIBMode
 */
 qboolean VID_SetFullDIBMode (int modenum)
 {
-	HDC				hdc;
-	int				lastmodestate, width, height;
-	RECT			rect;
+	HDC		hdc;
+	int		lastmodestate, width, height;
+	RECT		rect;
 
 	if (!leavecurrentmode)
 	{
@@ -526,10 +526,10 @@ VID_SetMode
 */
 int VID_SetMode (int modenum)
 {
-	int				original_mode, temp;
-	qboolean		stat;
-    MSG				msg;
-	HDC				hdc;
+	int		original_mode, temp;
+	qboolean	stat = false;
+	MSG		msg;
+	HDC		hdc;
 
 	if ((windowed && (modenum != 0)) ||
 		(!windowed && (modenum < 1)) ||
@@ -604,8 +604,8 @@ int VID_SetMode (int modenum)
 
 	while (PeekMessage (&msg, NULL, 0, 0, PM_REMOVE))
 	{
-      	TranslateMessage (&msg);
-      	DispatchMessage (&msg);
+		TranslateMessage (&msg);
+		DispatchMessage (&msg);
 	}
 
 	Sleep (100);
@@ -656,9 +656,9 @@ VID_Restart -- johnfitz -- change video modes on the fly
 */
 void VID_Restart (void)
 {
-	HDC			hdc;
+	HDC		hdc;
 	HGLRC		hrc;
-	int			i;
+	int		i;
 	qboolean	mode_changed = false;
 	vmode_t		oldmode;
 
