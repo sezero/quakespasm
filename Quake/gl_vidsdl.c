@@ -308,6 +308,11 @@ int VID_SetMode (int modenum)
 		Sys_Error ("VID_SetMode: Bad mode type in modelist");
 	}
 
+	if (!stat)
+	{
+		Sys_Error ("Couldn't set video mode");
+	}
+
 	//kristian -- set window caption
 	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption((const char* )&caption, (const char*)&caption);
@@ -323,11 +328,6 @@ int VID_SetMode (int modenum)
 
 	CDAudio_Resume ();
 	scr_disabled_for_loading = temp;
-
-	if (!stat)
-	{
-		Sys_Error ("Couldn't set video mode");
-	}
 
 	vid_modenum = modenum;
 

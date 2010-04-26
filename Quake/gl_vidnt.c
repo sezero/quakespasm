@@ -576,6 +576,11 @@ int VID_SetMode (int modenum)
 		Sys_Error ("VID_SetMode: Bad mode type in modelist");
 	}
 
+	if (!stat)
+	{
+		Sys_Error ("Couldn't set video mode");
+	}
+
 	//johnfitz -- re-initialize dinput becuase it's tied to the "mainwindow" object
 	if (COM_CheckParm ("-dinput"))
 		IN_InitDInput ();
@@ -587,11 +592,6 @@ int VID_SetMode (int modenum)
 
 	CDAudio_Resume ();
 	scr_disabled_for_loading = temp;
-
-	if (!stat)
-	{
-		Sys_Error ("Couldn't set video mode");
-	}
 
 // now we try to make sure we get the focus on the mode switch, because
 // sometimes in some systems we don't.  We grab the foreground, then
