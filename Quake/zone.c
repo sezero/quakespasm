@@ -29,17 +29,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct memblock_s
 {
-	int		size;           // including the header and possibly tiny fragments
-	int     tag;            // a tag of 0 is a free block
-	int     id;        		// should be ZONEID
-	struct memblock_s       *next, *prev;
-	int		pad;			// pad to 64 bit boundary
+	int	size;		// including the header and possibly tiny fragments
+	int	tag;		// a tag of 0 is a free block
+	int	id;		// should be ZONEID
+	struct	memblock_s	*next, *prev;
+	int	pad;		// pad to 64 bit boundary
 } memblock_t;
 
 typedef struct
 {
 	int		size;		// total bytes malloced, including header
-	memblock_t	blocklist;		// start / end cap for linked list
+	memblock_t	blocklist;	// start / end cap for linked list
 	memblock_t	*rover;
 } memzone_t;
 
@@ -275,11 +275,12 @@ void Z_CheckHeap (void)
 
 #define	HUNK_SENTINAL	0x1df001ed
 
+#define HUNKNAME_LEN	24
 typedef struct
 {
 	int		sentinal;
 	int		size;		// including sizeof(hunk_t), -1 = not allocated
-	char	name[8];
+	char	name[HUNKNAME_LEN];
 } hunk_t;
 
 byte	*hunk_base;
@@ -441,7 +442,7 @@ void *Hunk_AllocName (int size, char *name)
 
 	h->size = size;
 	h->sentinal = HUNK_SENTINAL;
-	Q_strncpy (h->name, name, 8);
+	Q_strncpy (h->name, name, HUNKNAME_LEN - 1);
 
 	return (void *)(h+1);
 }
@@ -532,7 +533,7 @@ void *Hunk_HighAllocName (int size, char *name)
 	memset (h, 0, size);
 	h->size = size;
 	h->sentinal = HUNK_SENTINAL;
-	Q_strncpy (h->name, name, 8);
+	Q_strncpy (h->name, name, sizeof(h->name)-1);
 
 	return (void *)(h+1);
 }
@@ -574,11 +575,12 @@ CACHE MEMORY
 ===============================================================================
 */
 
+#define CACHENAME_LEN	32
 typedef struct cache_system_s
 {
-	int						size;		// including this header
-	cache_user_t			*user;
-	char					name[16];
+	int			size;		// including this header
+	cache_user_t		*user;
+	char			name[CACHENAME_LEN];
 	struct cache_system_s	*prev, *next;
 	struct cache_system_s	*lru_prev, *lru_next;	// for LRU flushing
 } cache_system_t;
@@ -912,7 +914,7 @@ void *Cache_Alloc (cache_user_t *c, int size, char *name)
 		cs = Cache_TryAlloc (size, false);
 		if (cs)
 		{
-			strncpy (cs->name, name, sizeof(cs->name)-1);
+			strncpy (cs->name, name, CACHENAME_LEN - 1);
 			c->data = (void *)(cs+1);
 			cs->user = c;
 			break;
