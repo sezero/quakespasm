@@ -56,7 +56,7 @@ void PL_VID_Shutdown (void)
     DestroyIcon(icon);
 }
 
-void PL_ErrorDialog(char *text)
+void PL_ErrorDialog(const char *text)
 {
     MessageBox(NULL, text, "Quake Error", MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
 }

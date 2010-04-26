@@ -30,7 +30,7 @@ void PL_SetWindowIcon(void);
 void PL_VID_Shutdown (void);
 
 // show an error dialog
-void PL_ErrorDialog(char *text);
+void PL_ErrorDialog(const char *text);
 
 #endif	/* _QUAKE_PLATFORM_H */
 

@@ -49,15 +49,15 @@ void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length);
 //
 // system IO
 //
-void Sys_DebugLog(char *file, char *fmt, ...);
+void Sys_DebugLog(const char *file, const char *fmt, ...) __attribute__((__format__(__printf__,2,3)));
 
-void Sys_Error (char *error, ...);
+void Sys_Error (const char *error, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
 // an error will cause the entire program to exit
 
-void Sys_Printf (char *fmt, ...);
+void Sys_Printf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
 // send text to the console
 
-void Sys_Quit (void);
+void Sys_Quit (void) __attribute__((__noreturn__));
 
 double Sys_FloatTime (void);
 

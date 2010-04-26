@@ -492,7 +492,7 @@ void Host_Status_f (void)
 	int			minutes;
 	int			hours = 0;
 	int			j;
-	void		(*print) (char *fmt, ...);
+	void		(*print_fn) (const char *fmt, ...) __fp_attribute__((__format__(__printf__,1,2)));
 
 	if (cmd_source == src_command)
 	{
@@ -501,19 +501,19 @@ void Host_Status_f (void)
 			Cmd_ForwardToServer ();
 			return;
 		}
-		print = Con_Printf;
+		print_fn = Con_Printf;
 	}
 	else
-		print = SV_ClientPrintf;
+		print_fn = SV_ClientPrintf;
 
-	print ("host:    %s\n", Cvar_VariableString ("hostname"));
-	print ("version: %4.2f\n", VERSION);
+	print_fn ("host:    %s\n", Cvar_VariableString ("hostname"));
+	print_fn ("version: %4.2f\n", VERSION);
 	if (tcpipAvailable)
-		print ("tcp/ip:  %s\n", my_tcpip_address);
+		print_fn ("tcp/ip:  %s\n", my_tcpip_address);
 	if (ipxAvailable)
-		print ("ipx:     %s\n", my_ipx_address);
-	print ("map:     %s\n", sv.name);
-	print ("players: %i active (%i max)\n\n", net_activeconnections, svs.maxclients);
+		print_fn ("ipx:     %s\n", my_ipx_address);
+	print_fn ("map:     %s\n", sv.name);
+	print_fn ("players: %i active (%i max)\n\n", net_activeconnections, svs.maxclients);
 	for (j=0, client = svs.clients ; j<svs.maxclients ; j++, client++)
 	{
 		if (!client->active)
@@ -529,8 +529,8 @@ void Host_Status_f (void)
 		}
 		else
 			hours = 0;
-		print ("#%-2u %-16.16s  %3i  %2i:%02i:%02i\n", j+1, client->name, (int)client->edict->v.frags, hours, minutes, seconds);
-		print ("   %s\n", client->netconnection->address);
+		print_fn ("#%-2u %-16.16s  %3i  %2i:%02i:%02i\n", j+1, client->name, (int)client->edict->v.frags, hours, minutes, seconds);
+		print_fn ("   %s\n", client->netconnection->address);
 	}
 }
 

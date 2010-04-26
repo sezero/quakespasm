@@ -105,7 +105,7 @@ void NET_Ban_f (void)
 {
 	char	addrStr [32];
 	char	maskStr [32];
-	void	(*print) (char *fmt, ...);
+	void	(*print_fn) (const char *fmt, ...) __fp_attribute__((__format__(__printf__,1,2)));
 
 	if (cmd_source == src_command)
 	{
@@ -114,13 +114,13 @@ void NET_Ban_f (void)
 			Cmd_ForwardToServer ();
 			return;
 		}
-		print = Con_Printf;
+		print_fn = Con_Printf;
 	}
 	else
 	{
 		if (pr_global_struct->deathmatch && !host_client->privileged)
 			return;
-		print = SV_ClientPrintf;
+		print_fn = SV_ClientPrintf;
 	}
 
 	switch (Cmd_Argc ())
@@ -130,10 +130,10 @@ void NET_Ban_f (void)
 			{
 				Q_strcpy(addrStr, inet_ntoa(*(struct in_addr *)&banAddr));
 				Q_strcpy(maskStr, inet_ntoa(*(struct in_addr *)&banMask));
-				print("Banning %s [%s]\n", addrStr, maskStr);
+				print_fn("Banning %s [%s]\n", addrStr, maskStr);
 			}
 			else
-				print("Banning not active\n");
+				print_fn("Banning not active\n");
 			break;
 
 		case 2:
@@ -150,7 +150,7 @@ void NET_Ban_f (void)
 			break;
 
 		default:
-			print("BAN ip_address [mask]\n");
+			print_fn("BAN ip_address [mask]\n");
 			break;
 	}
 }

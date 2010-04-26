@@ -32,7 +32,7 @@ void PL_VID_Shutdown (void)
 {
 }
 
-void PL_ErrorDialog(char *text)
+void PL_ErrorDialog(const char *text)
 {
     NSString *msg = [NSString stringWithCString:text encoding:NSASCIIStringEncoding];
     NSRunAlertPanel(nil, msg, nil, nil, nil);

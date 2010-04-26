@@ -24,8 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <math.h>
 #include "quakedef.h"
 
-void Sys_Error (char *error, ...);
-
 vec3_t vec3_origin = {0,0,0};
 int nanmask = 255<<23;
 
@@ -134,6 +132,7 @@ BOPS_Error
 Split out like this for ASM to call.
 ==================
 */
+void BOPS_Error (void) __attribute__((__noreturn__));
 void BOPS_Error (void)
 {
 	Sys_Error ("BoxOnPlaneSide:  Bad signbits");
@@ -477,7 +476,7 @@ void FloorDivMod (double numer, double denom, int *quotient,
 
 #ifndef PARANOID
 	if (denom <= 0.0)
-		Sys_Error ("FloorDivMod: bad denominator %d\n", denom);
+		Sys_Error ("FloorDivMod: bad denominator %f\n", denom);
 
 //	if ((floor(numer) != numer) || (floor(denom) != denom))
 //		Sys_Error ("FloorDivMod: non-integer numer or denom %f %f\n",

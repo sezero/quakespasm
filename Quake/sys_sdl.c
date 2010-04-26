@@ -153,11 +153,11 @@ void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length)
 {
 }
 
-void Sys_DebugLog(char *file, char *fmt, ...)
+void Sys_DebugLog(const char *file, const char *fmt, ...)
 {
 }
 
-void Sys_Error (char *error, ...)
+void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
 	char		text[1024], text2[1024];
@@ -221,7 +221,7 @@ void Sys_Error (char *error, ...)
 	exit (1);
 }
 
-void Sys_Printf (char *fmt, ...)
+void Sys_Printf (const char *fmt, ...)
 {
 	va_list argptr;
 

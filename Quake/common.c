@@ -1281,7 +1281,7 @@ static char *get_va_buffer(void)
 	return va_buffers[buffer_idx];
 }
 
-char *va(char *format, ...)
+char *va (const char *format, ...)
 {
 	va_list		argptr;
 	char		*va_buf;

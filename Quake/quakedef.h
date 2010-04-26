@@ -52,9 +52,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <setjmp.h>
 #include <assert.h> //johnfitz
 
+#if !defined(__GNUC__)
+#define	__attribute__(x)
+#endif	/* __GNUC__ */
+
+/* argument format attributes for function
+ * pointers are supported for gcc >= 3.1
+ */
+#if defined(__GNUC__) && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 0))
+#define	__fp_attribute__	__attribute__
+#else
+#define	__fp_attribute__(x)
+#endif
+
+
 #if defined(_WIN32) && !defined(WINDED)
 
-#if defined(_M_IX86)
+#if defined(_M_IX86) && !defined(__i386__)
 #define __i386__	1
 #endif
 
@@ -312,11 +326,11 @@ void Host_ServerFrame (void);
 void Host_InitCommands (void);
 void Host_Init (quakeparms_t *parms);
 void Host_Shutdown(void);
-void Host_Error (char *error, ...);
-void Host_EndGame (char *message, ...);
+void Host_Error (const char *error, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
+void Host_EndGame (const char *message, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
 void Host_Frame (float time);
 void Host_Quit_f (void);
-void Host_ClientCommands (char *fmt, ...);
+void Host_ClientCommands (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
 void Host_ShutdownServer (qboolean crash);
 void Host_WriteConfiguration (void);
 

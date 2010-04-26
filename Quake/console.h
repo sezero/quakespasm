@@ -39,25 +39,25 @@ void Con_DrawCharacter (int cx, int line, int num);
 void Con_CheckResize (void);
 void Con_Init (void);
 void Con_DrawConsole (int lines, qboolean drawinput);
-void Con_Print (char *txt);
-void Con_Printf (char *fmt, ...);
-void Con_Warning (char *fmt, ...); //johnfitz
-void Con_DPrintf (char *fmt, ...);
-void Con_DPrintf2 (char *fmt, ...); //johnfitz
-void Con_SafePrintf (char *fmt, ...);
+void Con_Print (const char *txt);
+void Con_Printf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
+void Con_Warning (const char *fmt, ...) __attribute__((__format__(__printf__,1,2))); //johnfitz
+void Con_DPrintf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
+void Con_DPrintf2 (const char *fmt, ...) __attribute__((__format__(__printf__,1,2))); //johnfitz
+void Con_SafePrintf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
 void Con_Clear_f (void);
 void Con_DrawNotify (void);
 void Con_ClearNotify (void);
 void Con_ToggleConsole_f (void);
 
-void Con_NotifyBox (char *text);	// during startup for sound / cd warnings
+void Con_NotifyBox (const char *text);	// during startup for sound / cd warnings
 
 void Con_Show (void);
 void Con_Hide (void);
 
 char *Con_Quakebar (int len);
 void Con_TabComplete (void);
-void Con_LogCenterPrint (char *str);
+void Con_LogCenterPrint (const char *str);
 
 #endif	/* __CONSOLE_H */
 

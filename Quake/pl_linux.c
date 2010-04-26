@@ -47,7 +47,7 @@ void PL_VID_Shutdown (void)
 {
 }
 
-void PL_ErrorDialog(char *text)
+void PL_ErrorDialog(const char *text)
 {
 // TODO: we can dlopen gtk for an error
 // dialog window. would it be worth it?
