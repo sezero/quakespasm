@@ -72,8 +72,8 @@ GL_DrawAliasFrame -- johnfitz -- rewritten to support colored light, lerping, en
 */
 void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 {
-	float 	vertcolor[4];
-    trivertx_t *verts1, *verts2;
+	float	vertcolor[4];
+	trivertx_t *verts1, *verts2;
 	int		*commands;
 	int		count;
 	float	u,v;
@@ -95,6 +95,7 @@ void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 		lerping = false;
 		verts1  = (trivertx_t *)((byte *)paliashdr + paliashdr->posedata);
 		verts1 += lerpdata.pose1 * paliashdr->poseverts;
+		blend = iblend = 0; // avoid bogus compiler warning
 	}
 
 	commands = (int *)((byte *)paliashdr + paliashdr->commands);
