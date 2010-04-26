@@ -461,19 +461,15 @@ Host_Mapname_f -- johnfitz
 */
 void Host_Mapname_f (void)
 {
-	char name[MAX_QPATH];
-
 	if (sv.active)
 	{
-		COM_StripExtension (sv.worldmodel->name + 5, name);
-		Con_Printf ("\"mapname\" is \"%s\"\n", name);
+		Con_Printf ("\"mapname\" is \"%s\"\n", sv.name);
 		return;
 	}
 
 	if (cls.state == ca_connected)
 	{
-		COM_StripExtension (cl.worldmodel->name + 5, name);
-		Con_Printf ("\"mapname\" is \"%s\"\n", name);
+		Con_Printf ("\"mapname\" is \"%s\"\n", cl.mapname);
 		return;
 	}
 
