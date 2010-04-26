@@ -56,15 +56,16 @@ extern	int nanmask;
 #define VectorCopy(a,b) {b[0]=a[0];b[1]=a[1];b[2]=a[2];}
 
 //johnfitz -- courtesy of lordhavoc
+// QuakeSpasm: To avoid strict aliasing violations, use a float/int union instead of type punning.
 #define VectorNormalizeFast(_v)\
 {\
-	float _y, _number;\
-	_number = DotProduct(_v, _v);\
-	if (_number != 0.0)\
+	union { float f; int i; } _y, _number;\
+	_number.f = DotProduct(_v, _v);\
+	if (_number.f != 0.0)\
 	{\
-		*((int *)&_y) = 0x5f3759df - ((* (int *) &_number) >> 1);\
-		_y = _y * (1.5f - (_number * 0.5f * _y * _y));\
-		VectorScale(_v, _y, _v);\
+		_y.i = 0x5f3759df - (_number.i >> 1);\
+		_y.f = _y.f * (1.5f - (_number.f * 0.5f * _y.f * _y.f));\
+		VectorScale(_v, _y.f, _v);\
 	}\
 }
 
