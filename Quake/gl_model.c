@@ -371,7 +371,7 @@ void Mod_LoadTextures (lump_t *l)
 	texture_t	*tx, *tx2;
 	texture_t	*anims[10];
 	texture_t	*altanims[10];
-	dmiptexlump_t *m;
+	dmiptexlump_t	*m;
 //johnfitz -- more variables
 	char		texturename[64];
 	int			nummiptex;
@@ -387,6 +387,7 @@ void Mod_LoadTextures (lump_t *l)
 	{
 		Con_Printf ("Mod_LoadTextures: no textures in bsp file\n");
 		nummiptex = 0;
+		m = NULL; // avoid bogus compiler warning
 	}
 	else
 	{
