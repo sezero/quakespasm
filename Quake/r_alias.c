@@ -94,6 +94,7 @@ void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 	{
 		lerping = false;
 		verts1  = (trivertx_t *)((byte *)paliashdr + paliashdr->posedata);
+		verts2  = verts1; // avoid bogus compiler warning
 		verts1 += lerpdata.pose1 * paliashdr->poseverts;
 		blend = iblend = 0; // avoid bogus compiler warning
 	}
