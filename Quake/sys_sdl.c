@@ -161,9 +161,9 @@ void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
 	char		text[1024], text2[1024];
-	char		*text3 = "Press Enter to exit\n";
-	char		*text4 = "***********************************\n";
-	char		*text5 = "\n";
+	const char	text3[] = "Press Enter to exit\n";
+	const char	text4[] = "***********************************\n";
+	const char	text5[] = "\n";
 	double		starttime;
 	static int	in_sys_error1 = 0;
 	static int	in_sys_error2 = 0;
