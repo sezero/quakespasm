@@ -1262,6 +1262,8 @@ void	VID_Init (void)
 
 				if (COM_CheckParm("-height"))
 					height = Q_atoi(com_argv[COM_CheckParm("-height")+1]);
+				else
+					height = width * 3 / 4; // assume 4:3 aspect ratio
 
 			// if they want to force it, add the specified mode to the list
 				if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
