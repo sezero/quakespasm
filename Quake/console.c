@@ -20,13 +20,15 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // console.c
 
-#ifdef NeXT
-#include <libc.h>
-#endif
-#ifndef _MSC_VER
+#include <sys/types.h>
+#include <time.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #endif
-#include <fcntl.h>
 #include "quakedef.h"
 
 int 		con_linewidth;
@@ -56,7 +58,7 @@ float		con_times[NUM_CON_TIMES];	// realtime time the line was generated
 
 int			con_vislines;
 
-qboolean	con_debuglog;
+qboolean	con_debuglog = false;
 
 #define		MAXCMDLINE	256
 extern	char	key_lines[32][MAXCMDLINE];
@@ -328,21 +330,6 @@ Con_Init
 */
 void Con_Init (void)
 {
-#define MAXGAMEDIRLEN	1000
-	char	temp[MAXGAMEDIRLEN+1];
-	char	*t2 = "/qconsole.log";
-
-	con_debuglog = COM_CheckParm("-condebug");
-
-	if (con_debuglog)
-	{
-		if (strlen (com_gamedir) < (MAXGAMEDIRLEN - strlen (t2)))
-		{
-			sprintf (temp, "%s%s", com_gamedir, t2);
-			unlink (temp);
-		}
-	}
-
 	//johnfitz -- user settable console buffer size
 	if (COM_CheckParm("-consize"))
 		con_buffersize = max(CON_MINSIZE,Q_atoi(com_argv[COM_CheckParm("-consize")+1])*1024);
@@ -484,24 +471,22 @@ void Con_Print (const char *txt)
 }
 
 
+// borrowed from uhexen2 by S.A. for new procs, LOG_Init, LOG_Close
+
+static char	logfilename[MAX_OSPATH];	// current logfile name
+static int	log_fd = -1;			// log file descriptor
+
 /*
 ================
 Con_DebugLog
 ================
 */
-void Con_DebugLog(const char *file, const char *fmt, ...) __attribute__((__format__(__printf__,2,3)));
-void Con_DebugLog(const char *file, const char *fmt, ...)
+void Con_DebugLog(const char *msg)
 {
-    va_list argptr;
-    static char data[1024];
-    int fd;
+	if (log_fd == -1)
+		return;
 
-    va_start(argptr, fmt);
-    vsprintf(data, fmt, argptr);
-    va_end(argptr);
-    fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0666);
-    write(fd, data, strlen(data));
-    close(fd);
+	write(log_fd, msg, strlen(msg));
 }
 
 
@@ -529,7 +514,7 @@ void Con_Printf (const char *fmt, ...)
 
 // log all messages to file
 	if (con_debuglog)
-		Con_DebugLog(va("%s/qconsole.log",com_gamedir), "%s", msg);
+		Con_DebugLog(msg);
 
 	if (!con_initialized)
 		return;
@@ -1250,5 +1235,40 @@ void Con_NotifyBox (const char *text)
 	IN_Activate();
 	key_dest = key_game;
 	realtime = 0;				// put the cursor back to invisible
+}
+
+
+void LOG_Init (quakeparms_t *parms)
+{
+	time_t	inittime;
+	char	session[24];
+
+	if (!COM_CheckParm("-condebug"))
+		return;
+
+	inittime = time (NULL);
+	strftime (session, sizeof(session), "%m/%d/%Y %H:%M:%S", localtime(&inittime));
+	snprintf (logfilename, sizeof(logfilename), "%s/qconsole.log", parms->basedir);
+
+	unlink (logfilename);
+
+	log_fd = open (logfilename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	if (log_fd == -1)
+	{
+		fprintf (stderr, "Error: Unable to create log file %s\n", logfilename);
+		return;
+	}
+
+	con_debuglog = true;
+	Con_DebugLog (va("LOG started on: %s \n", session));
+
+}
+
+void LOG_Close (void)
+{
+	if (log_fd == -1)
+		return;
+	close (log_fd);
+	log_fd = -1;
 }
 

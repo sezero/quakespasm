@@ -59,5 +59,11 @@ char *Con_Quakebar (int len);
 void Con_TabComplete (void);
 void Con_LogCenterPrint (const char *str);
 
+//
+// debuglog
+//
+void LOG_Init (quakeparms_t *parms);
+void LOG_Close (void);
+
 #endif	/* __CONSOLE_H */
 

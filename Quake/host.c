@@ -813,6 +813,7 @@ void Host_Init (quakeparms_t *parms)
 	Memory_Init (parms->membase, parms->memsize);
 	Cbuf_Init ();
 	Cmd_Init ();
+	LOG_Init (parms);
 	Cvar_Init (); //johnfitz
 	V_Init ();
 	Chase_Init ();
@@ -895,8 +896,9 @@ void Host_Shutdown(void)
 
 	if (cls.state != ca_dedicated)
 	{
-        IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
+		IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
 		VID_Shutdown();
 	}
+	LOG_Close ();
 }
 

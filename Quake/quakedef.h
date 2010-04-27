@@ -223,6 +223,19 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	SOUND_CHANNELS		8
 
+typedef struct
+{
+	char	*basedir;
+	char	*userdir;	// user's directory on UNIX platforms.
+				// if user directories are enabled, basedir
+				// and userdir will point to different
+				// memory locations, otherwise to the same.
+	int		argc;
+	char	**argv;
+	void	*membase;
+	int		memsize;
+} quakeparms_t;
+
 #include "common.h"
 #include "bspfile.h"
 #include "vid.h"
@@ -283,26 +296,7 @@ typedef struct
 // command line parms passed to the program, and the amount of memory
 // available for the program to use
 
-typedef struct
-{
-	char	*basedir;
-	char	*userdir;	// user's directory on UNIX platforms.
-				// if user directories are enabled, basedir
-				// and userdir will point to different
-				// memory locations, otherwise to the same.
-	int		argc;
-	char	**argv;
-	void	*membase;
-	int		memsize;
-} quakeparms_t;
-
-
-//=============================================================================
-
-
-
 extern qboolean noclip_anglehack;
-
 
 //
 // host
