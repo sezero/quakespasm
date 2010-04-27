@@ -1150,7 +1150,7 @@ void COM_InitArgv (int argc, char **argv)
 	if (n > 0 && com_cmdline[n-1] == ' ')
 		com_cmdline[n-1] = 0; //johnfitz -- kill the trailing space
 
-	Con_Printf("\nCommand line: %s",com_cmdline);
+	Con_Printf("Command line: %s\n", com_cmdline);
 
 	safe = false;
 
