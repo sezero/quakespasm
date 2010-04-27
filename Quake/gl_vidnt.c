@@ -971,6 +971,7 @@ void GL_Info_f (void)
 CheckArrayExtensions
 ===============
 */
+#if 0 /* unused */
 void CheckArrayExtensions (void)
 {
 	const char	*tmp;
@@ -994,6 +995,7 @@ void CheckArrayExtensions (void)
 
 	Sys_Error ("Vertex array extension not present");
 }
+#endif /* #if 0 */
 
 /*
 ===============
