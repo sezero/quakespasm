@@ -149,14 +149,6 @@ void Sys_mkdir (char *path)
 }
 
 
-void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length)
-{
-}
-
-void Sys_DebugLog(const char *file, const char *fmt, ...)
-{
-}
-
 void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;

@@ -42,15 +42,8 @@ int	Sys_FileTime (char *path);
 void Sys_mkdir (char *path);
 
 //
-// memory protection
-//
-void Sys_MakeCodeWriteable (unsigned long startaddr, unsigned long length);
-
-//
 // system IO
 //
-void Sys_DebugLog(const char *file, const char *fmt, ...) __attribute__((__format__(__printf__,2,3)));
-
 void Sys_Error (const char *error, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
 // an error will cause the entire program to exit
 
