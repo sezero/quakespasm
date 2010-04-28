@@ -2152,7 +2152,7 @@ void Host_Startdemos_f (void)
 		if (!fitzmode)
 		{  /* QuakeSpasm customization: */
 			/* go straight to menu, no CL_NextDemo */
-			Cbuf_InsertText("menu_main");
+			Cbuf_InsertText("menu_main\n");
 			return;
 		}
 		CL_NextDemo ();
