@@ -1426,6 +1426,11 @@ void	VID_Toggle (void)
 	{
 		Sbar_Changed ();	// Sbar seems to need refreshing
 		windowed = !windowed;
+		if (vid.type == MODE_FULLSCREEN_DEFAULT)
+		    vid.type = MODE_WINDOWED;
+		else
+		    vid.type = MODE_FULLSCREEN_DEFAULT;
+
 		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
 	}
 	else
