@@ -166,6 +166,8 @@ void Sys_Error (const char *error, ...)
 		in_sys_error3 = 1;
 	}
 
+	Host_Shutdown ();
+
 	//TODO: use OS messagebox here if possible
 	// (windows, os x and linux shouldn't be a problem)
 	//implement this in pl_*, which contains all the
