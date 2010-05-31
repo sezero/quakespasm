@@ -72,7 +72,7 @@ typedef struct cvar_s
 	cvarcallback_t callback; //johnfitz
 } cvar_t;
 
-void 	Cvar_RegisterVariable (cvar_t *variable, void *function); //johnfitz -- cvar callback
+void 	Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function); //johnfitz -- cvar callback
 // registers a cvar that allready has the name, string, and optionally the
 // archive elements set.
 
