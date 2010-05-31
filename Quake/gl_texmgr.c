@@ -245,13 +245,13 @@ void TexMgr_Imagedump_f (void)
 		GL_Bind (glt);
 		if (glt->flags & TEXPREF_ALPHA)
 		{
-			buffer = malloc(glt->width*glt->height*4);
+			buffer = (byte *) malloc(glt->width*glt->height*4);
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 			Image_WriteTGA (tganame, buffer, glt->width, glt->height, 32, true);
 		}
 		else
 		{
-			buffer = malloc(glt->width*glt->height*3);
+			buffer = (byte *) malloc(glt->width*glt->height*3);
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer);
 			Image_WriteTGA (tganame, buffer, glt->width, glt->height, 24, true);
 		}
@@ -438,7 +438,7 @@ void TexMgr_LoadPalette (void)
 		Sys_Error ("Couldn't load gfx/palette.lmp");
 
 	mark = Hunk_LowMark ();
-	pal = Hunk_Alloc (768);
+	pal = (byte *) Hunk_Alloc (768);
 	fread (pal, 1, 768, f);
 	fclose(f);
 
@@ -532,7 +532,7 @@ void TexMgr_RecalcWarpImageSize (void)
 	// resize the textures in opengl
 	//
 	mark = Hunk_LowMark();
-	dummy = Hunk_Alloc (gl_warpimagesize*gl_warpimagesize*4);
+	dummy = (byte *) Hunk_Alloc (gl_warpimagesize*gl_warpimagesize*4);
 
 	for (glt=active_gltextures; glt; glt=glt->next)
 	{
@@ -709,7 +709,7 @@ unsigned *TexMgr_ResampleTexture (unsigned *in, int inwidth, int inheight, qbool
 
 	outwidth = TexMgr_Pad(inwidth);
 	outheight = TexMgr_Pad(inheight);
-	out = Hunk_Alloc(outwidth*outheight*4);
+	out = (unsigned *) Hunk_Alloc(outwidth*outheight*4);
 
 	xfrac = ((inwidth-1) << 16) / (outwidth-1);
 	yfrac = ((inheight-1) << 16) / (outheight-1);
@@ -889,7 +889,7 @@ unsigned *TexMgr_8to32 (byte *in, int pixels, unsigned int *usepal)
 	int i;
 	unsigned *out, *data;
 
-	out = data = Hunk_Alloc(pixels*4);
+	out = data = (unsigned *) Hunk_Alloc(pixels*4);
 
 	for (i=0 ; i<pixels ; i++)
 		*out++ = usepal[*in++];
@@ -912,7 +912,7 @@ byte *TexMgr_PadImageW (byte *in, int width, int height, byte padbyte)
 
 	outwidth = TexMgr_Pad(width);
 
-	out = data = Hunk_Alloc(outwidth*height);
+	out = data = (byte *) Hunk_Alloc(outwidth*height);
 
 	for (i=0; i<height; i++)
 	{
@@ -941,7 +941,7 @@ byte *TexMgr_PadImageH (byte *in, int width, int height, byte padbyte)
 	srcpix = width * height;
 	dstpix = width * TexMgr_Pad(height);
 
-	out = data = Hunk_Alloc(dstpix);
+	out = data = (byte *) Hunk_Alloc(dstpix);
 
 	for (i=0; i<srcpix; i++)
 		*out++ = *in++;
@@ -1279,7 +1279,7 @@ invalid:
 
 		//translate texture
 		size = glt->width * glt->height;
-		dst = translated = Hunk_Alloc (size);
+		dst = translated = (byte *) Hunk_Alloc (size);
 		src = data;
 
 		for (i=0; i<size; i++)

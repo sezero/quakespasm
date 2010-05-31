@@ -334,7 +334,7 @@ void Cvar_Set (char *var_name, char *value)
 
 	Z_Free (var->string);	// free the old value string
 
-	var->string = Z_Malloc (Q_strlen(value)+1);
+	var->string = (char *) Z_Malloc (Q_strlen(value)+1);
 	Q_strcpy (var->string, value);
 	var->value = Q_atof (var->string);
 
@@ -342,7 +342,7 @@ void Cvar_Set (char *var_name, char *value)
 	if (!host_initialized)
 	{
 		Z_Free (var->default_string);
-		var->default_string = Z_Malloc (Q_strlen(value)+1);
+		var->default_string = (char *) Z_Malloc (Q_strlen(value)+1);
 		Q_strcpy (var->default_string, value);
 	}
 	//johnfitz
@@ -400,12 +400,12 @@ void Cvar_RegisterVariable (cvar_t *variable, void *function)
 
 // copy the value off, because future sets will Z_Free it
 	oldstr = variable->string;
-	variable->string = Z_Malloc (Q_strlen(variable->string)+1);
+	variable->string = (char *) Z_Malloc (Q_strlen(variable->string)+1);
 	Q_strcpy (variable->string, oldstr);
 	variable->value = Q_atof (variable->string);
 
 	//johnfitz -- save initial value for "reset" command
-	variable->default_string = Z_Malloc (Q_strlen(variable->string)+1);
+	variable->default_string = (char *) Z_Malloc (Q_strlen(variable->string)+1);
 	Q_strcpy (variable->default_string, oldstr);
 	//johnfitz
 
@@ -431,7 +431,7 @@ void Cvar_RegisterVariable (cvar_t *variable, void *function)
     }
 	//johnfitz
 
-	variable->callback = function; //johnfitz
+	variable->callback = (cvarcallback_t) function; //johnfitz
 }
 
 /*

@@ -300,7 +300,7 @@ void Con_CheckResize (void)
 		numchars = con_linewidth;
 
 	mark = Hunk_LowMark (); //johnfitz
-	tbuf = Hunk_Alloc (con_buffersize); //johnfitz
+	tbuf = (char *) Hunk_Alloc (con_buffersize); //johnfitz
 
 	Q_memcpy (tbuf, con_text, con_buffersize);//johnfitz -- con_buffersize replaces CON_TEXTSIZE
 	Q_memset (con_text, ' ', con_buffersize);//johnfitz -- con_buffersize replaces CON_TEXTSIZE
@@ -337,7 +337,7 @@ void Con_Init (void)
 		con_buffersize = CON_TEXTSIZE;
 	//johnfitz
 
-	con_text = Hunk_AllocName (con_buffersize, "context");//johnfitz -- con_buffersize replaces CON_TEXTSIZE
+	con_text = (char *) Hunk_AllocName (con_buffersize, "context");//johnfitz -- con_buffersize replaces CON_TEXTSIZE
 	Q_memset (con_text, ' ', con_buffersize);//johnfitz -- con_buffersize replaces CON_TEXTSIZE
 	con_linewidth = -1;
 
@@ -767,7 +767,7 @@ void AddToTabList (char *name, char *type)
 		*i_bash = 0;
 	}
 
-	t = Hunk_Alloc(sizeof(tab_t));
+	t = (tab_t *) Hunk_Alloc(sizeof(tab_t));
 	t->name = name;
 	t->type = type;
 

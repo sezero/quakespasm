@@ -474,8 +474,8 @@ void SV_PushMove (edict_t *pusher, float movetime)
 
 	//johnfitz -- dynamically allocate
 	mark = Hunk_LowMark ();
-	moved_edict = Hunk_Alloc (sv.num_edicts*sizeof(edict_t *));
-	moved_from = Hunk_Alloc (sv.num_edicts*sizeof(vec3_t));
+	moved_edict = (edict_t **) Hunk_Alloc (sv.num_edicts*sizeof(edict_t *));
+	moved_from = (vec3_t *) Hunk_Alloc (sv.num_edicts*sizeof(vec3_t));
 	//johnfitz
 
 // see if any solid entities are inside the final position

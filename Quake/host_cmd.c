@@ -170,7 +170,7 @@ void Host_Game_f (void)
 
 		if (Q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
 		{
-			search = Z_Malloc(sizeof(searchpath_t));
+			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 			strcpy (search->filename, pakfile);
 			search->next = com_searchpaths;
 			com_searchpaths = search;
@@ -182,7 +182,7 @@ void Host_Game_f (void)
 				pak = COM_LoadPackFile (pakfile);
 				if (!pak)
 				break;
-				search = Z_Malloc(sizeof(searchpath_t));
+				search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 				search->pack = pak;
 				search->next = com_searchpaths;
 				com_searchpaths = search;
@@ -227,7 +227,7 @@ void ExtraMaps_Add (char *name)
 		if (!Q_strcmp (name, level->name))
 			return;
 
-	level = Z_Malloc(sizeof(extralevel_t));
+	level = (extralevel_t *) Z_Malloc(sizeof(extralevel_t));
 	strcpy (level->name, name);
 
 	//insert each entry in alphabetical order
@@ -359,7 +359,7 @@ void Modlist_Add (char *name)
 		if (!Q_strcmp (name, mod->name))
 			return;
 
-	mod = Z_Malloc(sizeof(mod_t));
+	mod = (mod_t *) Z_Malloc(sizeof(mod_t));
 	strcpy (mod->name, name);
 
 	//insert each entry in alphabetical order
@@ -1149,7 +1149,7 @@ void Host_Loadgame_f (void)
 	for (i=0 ; i<MAX_LIGHTSTYLES ; i++)
 	{
 		fscanf (f, "%s\n", str);
-		sv.lightstyles[i] = Hunk_Alloc (strlen(str)+1);
+		sv.lightstyles[i] = (char *) Hunk_Alloc (strlen(str)+1);
 		strcpy (sv.lightstyles[i], str);
 	}
 

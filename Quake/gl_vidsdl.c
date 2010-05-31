@@ -526,10 +526,10 @@ char *GL_MakeNiceExtensionsList (const char *in)
 	for (i = 0, count = 1; i < strlen(in); i++)
 		if (in[i] == ' ')
 			count++;
-	out = Z_Malloc (strlen(in) + count*3 + 1); //usually about 1-2k
+	out = (char *) Z_Malloc (strlen(in) + count*3 + 1); //usually about 1-2k
 	out[0] = 0;
 
-	copy = Z_Malloc(strlen(in) + 1);
+	copy = (char *) Z_Malloc(strlen(in) + 1);
 	strcpy(copy, in);
 
 	for (token = strtok(copy, " "); token; token = strtok(NULL, " "))
@@ -608,8 +608,10 @@ void GL_CheckExtensions (void)
 	else
 		if (strstr(gl_extensions, "GL_ARB_multitexture"))
 		{
-			GL_MTexCoord2fFunc = SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
-			GL_SelectTextureFunc = SDL_GL_GetProcAddress("glActiveTextureARB");
+			GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC)
+						SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
+			GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC)
+						SDL_GL_GetProcAddress("glActiveTextureARB");
 			if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
 			{
 				Con_Printf("FOUND: ARB_multitexture\n");
@@ -623,8 +625,10 @@ void GL_CheckExtensions (void)
 		else
 			if (strstr(gl_extensions, "GL_SGIS_multitexture"))
 			{
-				GL_MTexCoord2fFunc = SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
-				GL_SelectTextureFunc = SDL_GL_GetProcAddress("glSelectTextureSGIS");
+				GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC)
+							SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
+				GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC)
+							SDL_GL_GetProcAddress("glSelectTextureSGIS");
 				if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
 				{
 					Con_Printf("FOUND: SGIS_multitexture\n");

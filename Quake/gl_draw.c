@@ -218,7 +218,7 @@ qpic_t *Draw_PicFromWad (char *name)
 	glpic_t	gl;
 	src_offset_t offset; //johnfitz
 
-	p = W_GetLumpName (name);
+	p = (qpic_t *) W_GetLumpName (name);
 	if (!p) return pic_nul; //johnfitz
 
 	// load little ones into the scrap
@@ -377,7 +377,7 @@ qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
 	qpic_t		*pic;
 	glpic_t		gl;
 
-	pic = Hunk_Alloc (sizeof(qpic_t) - 4 + sizeof (glpic_t));
+	pic = (qpic_t *) Hunk_Alloc (sizeof(qpic_t) - 4 + sizeof (glpic_t));
 	pic->width = width;
 	pic->height = height;
 
@@ -407,7 +407,7 @@ void Draw_LoadPics (void)
 	byte		*data;
 	src_offset_t	offset;
 
-	data = W_GetLumpName ("conchars");
+	data = (byte *) W_GetLumpName ("conchars");
 	if (!data) Sys_Error ("Draw_LoadPics: couldn't load conchars");
 	offset = (src_offset_t)data - (src_offset_t)wad_base;
 	char_texture = TexMgr_LoadImage (NULL, WADFILENAME":conchars", 128, 128, SRC_INDEXED, data,

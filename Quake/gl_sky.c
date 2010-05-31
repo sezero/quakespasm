@@ -591,7 +591,7 @@ void Sky_ProcessEntities (void)
 				{
 					//copy the polygon and translate manually, since Sky_ProcessPoly needs it to be in world space
 					mark = Hunk_LowMark();
-					p = Hunk_Alloc (sizeof(*s->polys)); //FIXME: don't allocate for each poly
+					p = (glpoly_t *) Hunk_Alloc (sizeof(*s->polys)); //FIXME: don't allocate for each poly
 					p->numverts = s->polys->numverts;
 					for (k=0; k<p->numverts; k++)
 					{
@@ -891,7 +891,7 @@ void Sky_DrawFace (int axis)
 	Sky_SetBoxVert(1.0,  -1.0, axis, verts[3]);
 
 	start = Hunk_LowMark ();
-	p = Hunk_Alloc(sizeof(glpoly_t));
+	p = (glpoly_t *) Hunk_Alloc(sizeof(glpoly_t));
 
 	VectorSubtract(verts[2],verts[3],vup);
 	VectorSubtract(verts[2],verts[1],vright);

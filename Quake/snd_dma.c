@@ -171,7 +171,7 @@ void S_Init (void)
 
 	SND_InitScaletable ();
 
-	known_sfx = Hunk_AllocName (MAX_SFX*sizeof(sfx_t), "sfx_t");
+	known_sfx = (sfx_t *) Hunk_AllocName (MAX_SFX*sizeof(sfx_t), "sfx_t");
 	num_sfx = 0;
 
 	snd_initialized = true;
@@ -885,7 +885,7 @@ void S_SoundList(void)
 	total = 0;
 	for (sfx=known_sfx, i=0 ; i<num_sfx ; i++, sfx++)
 	{
-		sc = Cache_Check (&sfx->cache);
+		sc = (sfxcache_t *) Cache_Check (&sfx->cache);
 		if (!sc)
 			continue;
 		size = sc->length*sc->width*(sc->stereo+1);

@@ -962,7 +962,7 @@ void Memory_Init (void *buf, int size)
 	int p;
 	int zonesize = DYNAMIC_SIZE;
 
-	hunk_base = buf;
+	hunk_base = (byte *) buf;
 	hunk_size = size;
 	hunk_low_used = 0;
 	hunk_high_used = 0;
@@ -976,7 +976,7 @@ void Memory_Init (void *buf, int size)
 		else
 			Sys_Error ("Memory_Init: you must specify a size in KB after -zone");
 	}
-	mainzone = Hunk_AllocName (zonesize, "zone" );
+	mainzone = (memzone_t *) Hunk_AllocName (zonesize, "zone" );
 	Memory_InitZone (mainzone, zonesize);
 
 	Cmd_AddCommand ("hunk_print", Hunk_Print_f); //johnfitz

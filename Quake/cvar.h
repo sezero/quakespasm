@@ -58,6 +58,8 @@ Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
 */
 
+typedef void (*cvarcallback_t) (void);
+
 typedef struct cvar_s
 {
 	char	*name;
@@ -67,7 +69,7 @@ typedef struct cvar_s
 	float	value;
 	struct cvar_s *next;
 	char	*default_string; //johnfitz -- remember defaults for reset function
-	void (*callback) (void); //johnfitz
+	cvarcallback_t callback; //johnfitz
 } cvar_t;
 
 void 	Cvar_RegisterVariable (cvar_t *variable, void *function); //johnfitz -- cvar callback

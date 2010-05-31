@@ -750,7 +750,7 @@ void SCR_ScreenShot_f (void)
  	}
 
 //get data
-	buffer = malloc(glwidth*glheight*3);
+	buffer = (byte *) malloc(glwidth*glheight*3);
 	glReadPixels (glx, gly, glwidth, glheight, GL_RGB, GL_UNSIGNED_BYTE, buffer);
 
 // now write the file

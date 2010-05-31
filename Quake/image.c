@@ -177,7 +177,7 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 	numPixels = columns * rows;
 	upside_down = !(targa_header.attributes & 0x20); //johnfitz -- fix for upside-down targas
 
-	targa_rgba = Hunk_Alloc (numPixels*4);
+	targa_rgba = (byte *) Hunk_Alloc (numPixels*4);
 
 	if (targa_header.id_length != 0)
 		fseek(fin, targa_header.id_length, SEEK_CUR);  // skip TARGA image comment
@@ -378,7 +378,7 @@ byte *Image_LoadPCX (FILE *f, int *width, int *height)
 	w = pcx.xmax - pcx.xmin + 1;
 	h = pcx.ymax - pcx.ymin + 1;
 
-	data = Hunk_Alloc((w*h+1)*4); //+1 to allow reading padding byte on last line
+	data = (byte *) Hunk_Alloc((w*h+1)*4); //+1 to allow reading padding byte on last line
 
 	//load palette
 	fseek (f, start + com_filesize - 768, SEEK_SET);

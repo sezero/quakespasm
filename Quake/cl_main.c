@@ -87,7 +87,7 @@ void CL_ClearState (void)
 
 	//johnfitz -- cl_entities is now dynamically allocated
 	cl_max_edicts = CLAMP (MIN_EDICTS,(int)max_edicts.value,MAX_EDICTS);
-	cl_entities = Hunk_AllocName (cl_max_edicts*sizeof(entity_t), "cl_entities");
+	cl_entities = (entity_t *) Hunk_AllocName (cl_max_edicts*sizeof(entity_t), "cl_entities");
 	//johnfitz
 
 //
