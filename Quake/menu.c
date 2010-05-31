@@ -87,7 +87,7 @@ qboolean	m_entersound;		// play after drawing a frame, so caching
 								// won't disrupt the sound
 qboolean	m_recursiveDraw;
 
-m_state_e	m_return_state;
+enum m_state_e	m_return_state;
 qboolean	m_return_onerror;
 char		m_return_reason [32];
 
@@ -1536,7 +1536,7 @@ void M_Help_Key (int key)
 /* QUIT MENU */
 
 int		msgNumber;
-m_state_e	m_quit_prevstate;
+enum m_state_e	m_quit_prevstate;
 qboolean	wasInMenus;
 
 void M_Menu_Quit_f (void)
