@@ -31,8 +31,17 @@ typedef unsigned char 		byte;
 
 #undef true
 #undef false
-
-typedef enum {false, true}	qboolean;
+#if defined(__cplusplus)
+/* do NOT use the bool of C++ because some structures have boolean and they
+ * expect it to be 4 bytes long. as a hack, typedef it as int. */
+/* DO HOPE that the compiler built-ins for true and false are 1 and 0 ... */
+typedef int	qboolean;
+#else
+typedef enum {
+	false = 0,
+	true  = 1
+} qboolean;
+#endif
 
 //============================================================================
 
@@ -73,7 +82,11 @@ void InsertLinkAfter (link_t *l, link_t *after);
 //============================================================================
 
 #ifndef NULL
+#if defined(__cplusplus)
+#define NULL		0
+#else
 #define NULL ((void *)0)
+#endif
 #endif
 
 #define Q_MAXCHAR ((char)0x7f)
