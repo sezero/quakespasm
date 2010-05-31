@@ -80,7 +80,6 @@ struct
 	byte			data[MAX_DATAGRAM];
 } packetBuffer;
 
-extern int m_return_state;
 extern qboolean m_return_onerror;
 extern char m_return_reason[32];
 
