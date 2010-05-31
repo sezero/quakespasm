@@ -65,6 +65,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	__fp_attribute__(x)
 #endif
 
+#if defined(_MSC_VER) && !defined(__cplusplus)
+#define inline __inline
+#endif	/* _MSC_VER */
+
 
 #if defined(_WIN32) && !defined(WINDED)
 
