@@ -71,10 +71,22 @@ extern	int nanmask;
 
 // kristian - missing math functions
 #if !defined(max)
-inline int max (int x, int y);
+#define max q_max
+static inline int q_max (int x, int y)
+{
+	if (x > y)
+		return x;
+	return y;
+}
 #endif
 #if !defined(min)
-inline int min (int x, int y);
+#define min q_min
+static inline int q_min (int x, int y)
+{
+	if (x < y)
+		return x;
+	return y;
+}
 #endif
 // kristian
 

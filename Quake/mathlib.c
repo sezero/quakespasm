@@ -33,27 +33,6 @@ int nanmask = 255<<23;
 //#define DEG2RAD( a ) ( a * M_PI ) / 180.0F
 #define DEG2RAD( a ) ( (a) * M_PI_DIV_180 ) //johnfitz
 
-// kristian - missing math functions
-#ifndef max
-int max (int x, int y)
-{
-    if (x > y)
-        return x;
-        
-    return y;
-}
-#endif
-#ifndef min
-int min (int x, int y)
-{
-    if (x < y)
-        return x;
-    
-    return y;
-}
-#endif
-// kristian
-
 void ProjectPointOnPlane( vec3_t dst, const vec3_t p, const vec3_t normal )
 {
 	float d;
