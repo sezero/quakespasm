@@ -143,11 +143,7 @@ void CL_ParseTEnt (void)
 		pos[0] = MSG_ReadCoord ();
 		pos[1] = MSG_ReadCoord ();
 		pos[2] = MSG_ReadCoord ();
-#ifdef GLTEST
-		Test_Spawn (pos);
-#else
 		R_RunParticleEffect (pos, vec3_origin, 0, 10);
-#endif
 		if ( rand() % 5 )
 			S_StartSound (-1, 0, cl_sfx_tink1, pos, 1, 1);
 		else

@@ -767,10 +767,6 @@ void R_RenderScene (void)
 	R_ShowTris (); //johnfitz
 
 	R_ShowBoundingBoxes (); //johnfitz
-
-#ifdef GLTEST
-	Test_Draw ();
-#endif
 }
 
 /*

@@ -247,10 +247,6 @@ void R_Init (void)
 
 	Sky_Init (); //johnfitz
 	Fog_Init (); //johnfitz
-
-#ifdef GLTEST
-	Test_Init ();
-#endif
 }
 
 /*
