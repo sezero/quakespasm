@@ -223,7 +223,7 @@ PR_Profile_f
 void PR_Profile_f (void)
 {
 	dfunction_t	*f, *best;
-	int			max;
+	int			pmax;
 	int			num;
 	int			i;
 
@@ -233,14 +233,14 @@ void PR_Profile_f (void)
 	num = 0;
 	do
 	{
-		max = 0;
+		pmax = 0;
 		best = NULL;
 		for (i=0 ; i<progs->numfunctions ; i++)
 		{
 			f = &pr_functions[i];
-			if (f->profile > max)
+			if (f->profile > pmax)
 			{
-				max = f->profile;
+				pmax = f->profile;
 				best = f;
 			}
 		}

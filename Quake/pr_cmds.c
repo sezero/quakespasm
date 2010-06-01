@@ -141,7 +141,7 @@ void PF_setorigin (void)
 }
 
 
-void SetMinMaxSize (edict_t *e, float *min, float *max, qboolean rotate)
+void SetMinMaxSize (edict_t *e, float *minvec, float *maxvec, qboolean rotate)
 {
 	float	*angles;
 	vec3_t	rmin, rmax;
@@ -152,15 +152,15 @@ void SetMinMaxSize (edict_t *e, float *min, float *max, qboolean rotate)
 	int		i, j, k, l;
 
 	for (i=0 ; i<3 ; i++)
-		if (min[i] > max[i])
+		if (minvec[i] > maxvec[i])
 			PR_RunError ("backwards mins/maxs");
 
 	rotate = false;		// FIXME: implement rotation properly again
 
 	if (!rotate)
 	{
-		VectorCopy (min, rmin);
-		VectorCopy (max, rmax);
+		VectorCopy (minvec, rmin);
+		VectorCopy (maxvec, rmax);
 	}
 	else
 	{
@@ -174,8 +174,8 @@ void SetMinMaxSize (edict_t *e, float *min, float *max, qboolean rotate)
 		yvector[0] = -sin(a);
 		yvector[1] = cos(a);
 
-		VectorCopy (min, bounds[0]);
-		VectorCopy (max, bounds[1]);
+		VectorCopy (minvec, bounds[0]);
+		VectorCopy (maxvec, bounds[1]);
 
 		rmin[0] = rmin[1] = rmin[2] = 9999;
 		rmax[0] = rmax[1] = rmax[2] = -9999;
@@ -210,7 +210,7 @@ void SetMinMaxSize (edict_t *e, float *min, float *max, qboolean rotate)
 // set derived values
 	VectorCopy (rmin, e->v.mins);
 	VectorCopy (rmax, e->v.maxs);
-	VectorSubtract (max, min, e->v.size);
+	VectorSubtract (maxvec, minvec, e->v.size);
 
 	SV_LinkEdict (e, false);
 }
@@ -227,12 +227,12 @@ setsize (entity, minvector, maxvector)
 void PF_setsize (void)
 {
 	edict_t	*e;
-	float	*min, *max;
+	float	*minvec, *maxvec;
 
 	e = G_EDICT(OFS_PARM0);
-	min = G_VECTOR(OFS_PARM1);
-	max = G_VECTOR(OFS_PARM2);
-	SetMinMaxSize (e, min, max, false);
+	minvec = G_VECTOR(OFS_PARM1);
+	maxvec = G_VECTOR(OFS_PARM2);
+	SetMinMaxSize (e, minvec, maxvec, false);
 }
 
 

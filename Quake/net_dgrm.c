@@ -601,7 +601,7 @@ static void Net_Test_f (void)
 {
 	char	*host;
 	int		n;
-	int		max = MAX_SCOREBOARD;
+	int		maxusers = MAX_SCOREBOARD;
 	struct qsockaddr sendaddr;
 
 	if (testInProgress)
@@ -617,7 +617,7 @@ static void Net_Test_f (void)
 				if (hostcache[n].driver != myDriverLevel)
 					continue;
 				net_landriverlevel = hostcache[n].ldriver;
-				max = hostcache[n].maxusers;
+				maxusers = hostcache[n].maxusers;
 				Q_memcpy(&sendaddr, &hostcache[n].addr, sizeof(struct qsockaddr));
 				break;
 			}
@@ -649,7 +649,7 @@ JustDoIt:
 	testPollCount = 20;
 	testDriver = net_landriverlevel;
 
-	for (n = 0; n < max; n++)
+	for (n = 0; n < maxusers; n++)
 	{
 		SZ_Clear(&net_message);
 		// save space for the header, filled in later
