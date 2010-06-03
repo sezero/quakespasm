@@ -168,7 +168,7 @@ void S_PaintChannels (int endtime)
 		memset(paintbuffer, 0, (end - paintedtime) * sizeof(portable_samplepair_t));
 
 	// paint in the channels.
-		ch = channels;
+		ch = snd_channels;
 		for (i = 0; i < total_channels; i++, ch++)
 		{
 			if (!ch->sfx)

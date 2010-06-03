@@ -148,7 +148,7 @@ void SNDDMA_UnblockSound(void);
 #define	MAX_DYNAMIC_CHANNELS	128 //johnfitz -- was 8
 
 
-extern	channel_t   channels[MAX_CHANNELS];
+extern	channel_t	snd_channels[MAX_CHANNELS];
 // 0 to MAX_DYNAMIC_CHANNELS-1	= normal entity sounds
 // MAX_DYNAMIC_CHANNELS to MAX_DYNAMIC_CHANNELS + NUM_AMBIENTS -1 = water, etc
 // MAX_DYNAMIC_CHANNELS + NUM_AMBIENTS to total_channels = static sounds
@@ -170,7 +170,6 @@ extern vec3_t listener_right;
 extern vec3_t listener_up;
 extern volatile dma_t *shm;
 extern volatile dma_t sn;
-extern vec_t sound_nominal_clip_dist;
 
 extern	cvar_t loadas8bit;
 extern	cvar_t bgmvolume;
