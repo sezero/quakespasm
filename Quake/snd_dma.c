@@ -62,7 +62,7 @@ sfx_t		*ambient_sfx[NUM_AMBIENTS];
 qboolean	sound_started = false;
 
 cvar_t bgmvolume = {"bgmvolume", "1", true};
-cvar_t volume = {"volume", "0.7", true};
+cvar_t sfxvolume = {"volume", "0.7", true};
 
 cvar_t nosound = {"nosound", "0"};
 cvar_t precache = {"precache", "1"};
@@ -135,7 +135,7 @@ void S_Init (void)
 	}
 
 	Cvar_RegisterVariable(&nosound, NULL);
-	Cvar_RegisterVariable(&volume, NULL);
+	Cvar_RegisterVariable(&sfxvolume, NULL);
 	Cvar_RegisterVariable(&precache, NULL);
 	Cvar_RegisterVariable(&loadas8bit, NULL);
 	Cvar_RegisterVariable(&bgmvolume, NULL);
