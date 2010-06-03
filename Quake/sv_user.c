@@ -228,7 +228,8 @@ void SV_WaterMove (void)
 {
 	int		i;
 	vec3_t	wishvel;
-	float	speed, newspeed, wishspeed, addspeed, accelspeed;
+	float	speed, newspeed, addspeed, accelspeed;
+	//float	wishspeed;
 
 //
 // user intentions
@@ -483,7 +484,7 @@ Returns false if the client should be killed
 qboolean SV_ReadClientMessage (void)
 {
 	int		ret;
-	int		cmd;
+	int		ccmd;
 	char		*s;
 
 	do
@@ -511,9 +512,9 @@ nextmsg:
 				return false;
 			}
 
-			cmd = MSG_ReadChar ();
+			ccmd = MSG_ReadChar ();
 
-			switch (cmd)
+			switch (ccmd)
 			{
 			case -1:
 				goto nextmsg;		// end of message

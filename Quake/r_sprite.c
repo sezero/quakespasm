@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 R_GetSpriteFrame
 ================
 */
-mspriteframe_t *R_GetSpriteFrame (entity_t *currententity)
+mspriteframe_t *R_GetSpriteFrame (entity_t *currentent)
 {
 	msprite_t		*psprite;
 	mspritegroup_t	*pspritegroup;
@@ -35,8 +35,8 @@ mspriteframe_t *R_GetSpriteFrame (entity_t *currententity)
 	int				i, numframes, frame;
 	float			*pintervals, fullinterval, targettime, time;
 
-	psprite = (msprite_t *) currententity->model->cache.data;
-	frame = currententity->frame;
+	psprite = (msprite_t *) currentent->model->cache.data;
+	frame = currentent->frame;
 
 	if ((frame >= psprite->numframes) || (frame < 0))
 	{
@@ -55,7 +55,7 @@ mspriteframe_t *R_GetSpriteFrame (entity_t *currententity)
 		numframes = pspritegroup->numframes;
 		fullinterval = pintervals[numframes-1];
 
-		time = cl.time + currententity->syncbase;
+		time = cl.time + currentent->syncbase;
 
 	// when loading in Mod_LoadSpriteGroup, we guaranteed all interval values
 	// are positive, so we don't have to worry about division by 0
