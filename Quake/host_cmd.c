@@ -813,7 +813,8 @@ void Host_Map_f (void)
 	CL_Disconnect ();
 	Host_ShutdownServer(false);
 
-	IN_Activate();
+	if (cls.state != ca_dedicated)
+		IN_Activate();
 	key_dest = key_game;			// remove console or menu
 	SCR_BeginLoadingPlaque ();
 
@@ -874,7 +875,8 @@ void Host_Changelevel_f (void)
 		Host_Error ("cannot find map %s", level);
 	//johnfitz
 
-	IN_Activate();	// -- S.A.
+	if (cls.state != ca_dedicated)
+		IN_Activate();	// -- S.A.
 	key_dest = key_game;	// remove console or menu
 	SV_SaveSpawnparms ();
 	strcpy (level, Cmd_Argv(1));
