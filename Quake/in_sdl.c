@@ -348,9 +348,9 @@ MapKey
 Map from SDL to quake keynums
 =======
 */
-int Key_Map (SDL_KeyboardEvent *event)
+int Key_Map (void *event) /* SDL_KeyboardEvent *event */
 {
-	return key_map[(*event).keysym.sym];
+	return key_map[(*(SDL_KeyboardEvent *)event).keysym.sym];
 
 	/* TODO: keypad handling
 	if (cl_keypad.value) {

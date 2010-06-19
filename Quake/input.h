@@ -47,11 +47,9 @@ void IN_Activate ();
 // called when the app becomes inactive
 void IN_Deactivate (qboolean free_cursor);
 
-#if defined(SDL_MAJOR_VERSION)
 /* for SDL builds only */
 void BuildKeyMaps (void);
-int Key_Map (SDL_KeyboardEvent *event);
-#endif	/* SDL_MAJOR_VERSION */
+int Key_Map (void *event); /* SDL_KeyboardEvent *event */
 
 #endif	/* _QUAKE_INPUT_H */
 
