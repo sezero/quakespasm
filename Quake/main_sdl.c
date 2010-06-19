@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 	{
 	// TODO: dedicated server loop
 
-		while (!done && SDL_PollEvent (&event))
+		while (!isDedicated && !done && SDL_PollEvent (&event))
 		{
 			switch (event.type)
 			{
@@ -78,13 +78,9 @@ int main(int argc, char *argv[])
 				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
 				{
 					if (event.active.gain)
-					{
 						S_UnblockSound();
-					}
 					else
-					{
 						S_BlockSound();
-					}
 				}
 				break;
 			case SDL_MOUSEMOTION:
@@ -110,7 +106,7 @@ int main(int argc, char *argv[])
 				Key_Event(K_MWHEELDOWN, event.button.type == SDL_MOUSEBUTTONDOWN);
 				break;
 			  }
-			break;
+			  break;
 			case SDL_KEYDOWN:
 			case SDL_KEYUP:
 				// SHIFT + ESC and circomflex always opens the console no matter what
