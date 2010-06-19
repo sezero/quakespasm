@@ -65,7 +65,7 @@ int UDP_Init (void)
 	{
 		Con_Printf ("UDP init failed. Disabling UDP...\n");
 		return -1;
-        }
+	}
 
 	local = gethostbyname(buff);
 	if (local == NULL)
@@ -260,7 +260,7 @@ int UDP_CheckNewConnections (void)
 
 //=============================================================================
 
-void get_qsockaddr(struct sockaddr *saddr, struct qsockaddr *qaddr)
+static void get_qsockaddr(struct sockaddr *saddr, struct qsockaddr *qaddr)
 {
 	qaddr->sa_family = saddr->sa_family;
 	memcpy(&(qaddr->sa_data), &(saddr->sa_data), sizeof(qaddr->sa_data));
@@ -269,11 +269,10 @@ void get_qsockaddr(struct sockaddr *saddr, struct qsockaddr *qaddr)
 int UDP_Read (int socket, byte *buf, int len, struct qsockaddr *addr)
 {
 	static struct sockaddr saddr;
-	unsigned int	addrlen = sizeof (struct sockaddr);
-	int				ret;
+	socklen_t addrlen = sizeof (struct sockaddr);
+	int ret;
 
 	ret = recvfrom (socket, buf, len, 0, &saddr, &addrlen);
-
 	if (ret == -1 && (errno == EWOULDBLOCK || errno == ECONNREFUSED))
 		return 0;
 
@@ -323,7 +322,6 @@ int UDP_Write (int socket, byte *buf, int len, struct qsockaddr *addr)
 	int ret;
 
 	ret = sendto (socket, buf, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
-
 	if (ret == -1 && errno == EWOULDBLOCK)
 		return 0;
 	return ret;
@@ -363,11 +361,10 @@ int UDP_StringToAddr (char *string, struct qsockaddr *addr)
 
 int UDP_GetSocketAddr (int socket, struct qsockaddr *addr)
 {
-	unsigned int addrlen = sizeof(struct qsockaddr);
+	socklen_t addrlen = sizeof(struct qsockaddr);
 	unsigned int a;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
-
 	if (getsockname(socket, (struct sockaddr *)addr, &addrlen) != 0)
 		return -1;
 
