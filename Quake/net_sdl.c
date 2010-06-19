@@ -60,23 +60,6 @@ net_driver_t net_drivers[MAX_NET_DRIVERS] =
 	Datagram_Close,
 	Datagram_Shutdown
 	}
-	,
-	{
-	"Datagram",
-	false,
-	Datagram_Init,
-	Datagram_Listen,
-	Datagram_SearchForHosts,
-	Datagram_Connect,
-	Datagram_CheckNewConnections,
-	Datagram_GetMessage,
-	Datagram_SendMessage,
-	Datagram_SendUnreliableMessage,
-	Datagram_CanSendMessage,
-	Datagram_CanSendUnreliableMessage,
-	Datagram_Close,
-	Datagram_Shutdown
-	}
 };
 
 int net_numdrivers = 2;
