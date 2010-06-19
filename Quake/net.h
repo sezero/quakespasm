@@ -165,8 +165,8 @@ typedef struct
 	int			(*Init) (void);
 	void		(*Shutdown) (void);
 	void		(*Listen) (qboolean state);
-	int 		(*OpenSocket) (int port);
-	int 		(*CloseSocket) (int socket);
+	int 		(*Open_Socket) (int port);
+	int 		(*Close_Socket) (int socket);
 	int 		(*Connect) (int socket, struct qsockaddr *addr);
 	int 		(*CheckNewConnections) (void);
 	int 		(*Read) (int socket, byte *buf, int len, struct qsockaddr *addr);

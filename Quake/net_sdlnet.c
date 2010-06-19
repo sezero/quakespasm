@@ -14,7 +14,7 @@ See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
-Foundat(&addr->sa_dataion, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
@@ -44,7 +44,7 @@ IPaddress		myaddr;
 // contains a map of socket numbers to SDL_net UDP sockets
 UDPsocket		net_sockets[MAX_SOCKETS];
 
-int socket_id (UDPsocket socket_p)
+static int socket_id (UDPsocket socket_p)
 {
 	int		i;
 	int		idx = -1;
@@ -71,7 +71,7 @@ int socket_id (UDPsocket socket_p)
 	return idx;
 }
 
-char *_AddrToString (int ip, int port)
+static char *_AddrToString (int ip, int port)
 {
 	static char buffer[22];
 
@@ -79,7 +79,7 @@ char *_AddrToString (int ip, int port)
 	return buffer;
 }
 
-char *_IPAddrToString (IPaddress *address)
+static char *_IPAddrToString (IPaddress *address)
 {
 	int ip;
 	int port;
@@ -156,7 +156,7 @@ void SDLN_Shutdown (void)
 	SDLN_CloseSocket (net_controlsocket);
 }
 
-void SDLN_GetLocalAddress()
+void SDLN_GetLocalAddress (void)
 {
 	if (myaddr.host != INADDR_ANY)
 		return;
@@ -246,7 +246,7 @@ int SDLN_CheckNewConnections (void)
 	return -1;
 }
 
-UDPpacket *init_packet(UDPpacket *packet, int len)
+static UDPpacket *init_packet(UDPpacket *packet, int len)
 {
 	if (packet == NULL)
 		return SDLNet_AllocPacket(len);

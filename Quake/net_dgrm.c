@@ -592,7 +592,7 @@ static void Test_Poll(void)
 	}
 	else
 	{
-		dfunc.CloseSocket(testSocket);
+		dfunc.Close_Socket(testSocket);
 		testInProgress = false;
 	}
 }
@@ -641,7 +641,7 @@ static void Net_Test_f (void)
 	}
 
 JustDoIt:
-	testSocket = dfunc.OpenSocket(0);
+	testSocket = dfunc.Open_Socket(0);
 	if (testSocket == -1)
 		return;
 
@@ -724,7 +724,7 @@ Reschedule:
 Error:
 	Con_Printf("Unexpected repsonse to Rule Info request\n");
 Done:
-	dfunc.CloseSocket(test2Socket);
+	dfunc.Close_Socket(test2Socket);
 	test2InProgress = false;
 	return;
 }
@@ -771,7 +771,7 @@ static void Test2_f (void)
 	}
 
 JustDoIt:
-	test2Socket = dfunc.OpenSocket(0);
+	test2Socket = dfunc.Open_Socket(0);
 	if (test2Socket == -1)
 		return;
 
@@ -834,7 +834,7 @@ void Datagram_Shutdown (void)
 
 void Datagram_Close (qsocket_t *sock)
 {
-	sfunc.CloseSocket(sock->socket);
+	sfunc.Close_Socket(sock->socket);
 }
 
 
@@ -1073,7 +1073,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	}
 
 	// allocate a network socket
-	newsock = dfunc.OpenSocket(0);
+	newsock = dfunc.Open_Socket(0);
 	if (newsock == -1)
 	{
 		NET_FreeQSocket(sock);
@@ -1083,7 +1083,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	// connect to the client
 	if (dfunc.Connect (newsock, &clientaddr) == -1)
 	{
-		dfunc.CloseSocket(newsock);
+		dfunc.Close_Socket(newsock);
 		NET_FreeQSocket(sock);
 		return NULL;
 	}
@@ -1251,7 +1251,7 @@ static qsocket_t *_Datagram_Connect (char *host)
 		return NULL;
 	}
 
-	newsock = dfunc.OpenSocket (0);
+	newsock = dfunc.Open_Socket (0);
 	if (newsock == -1)
 		return NULL;
 
@@ -1393,7 +1393,7 @@ static qsocket_t *_Datagram_Connect (char *host)
 ErrorReturn:
 	NET_FreeQSocket(sock);
 ErrorReturn2:
-	dfunc.CloseSocket(newsock);
+	dfunc.Close_Socket(newsock);
 	if (m_return_onerror)
 	{
 		key_dest = key_menu;
