@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #include "resource.h"
+#include "SDL.h"
 
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
 #define VID_ROW_SIZE	3

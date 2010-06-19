@@ -36,6 +36,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <time.h>
 #endif
 
+#include "SDL.h"
+
 #define CONSOLE_ERROR_TIMEOUT	60.0	/* # of seconds to wait on Sys_Error running */
 qboolean		isDedicated;
 static qboolean		sc_return_on_enter = false;

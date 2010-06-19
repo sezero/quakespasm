@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #include <windows.h>
+#include "SDL.h"
 #include "SDL_syswm.h"
 
 HICON icon;
@@ -60,3 +61,4 @@ void PL_ErrorDialog(const char *text)
 {
     MessageBox(NULL, text, "Quake Error", MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
 }
+

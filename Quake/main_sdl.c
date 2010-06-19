@@ -19,8 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-#include <stdio.h>
+
 #include "quakedef.h"
+#include "SDL.h"
+#include <stdio.h>
 
 #define DEFAULT_MEMORY 0x4000000
 

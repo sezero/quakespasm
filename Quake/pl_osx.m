@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "quakedef.h"
+#include "SDL.h"
 #import <Cocoa/Cocoa.h>
 
 void PL_SetWindowIcon (void)
@@ -37,3 +38,4 @@ void PL_ErrorDialog(const char *text)
     NSString *msg = [NSString stringWithCString:text encoding:NSASCIIStringEncoding];
     NSRunAlertPanel(nil, msg, nil, nil, nil);
 }
+
