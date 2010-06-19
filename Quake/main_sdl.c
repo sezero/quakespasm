@@ -66,11 +66,30 @@ int main(int argc, char *argv[])
 	Host_Init(&parms);
 
 	oldtime = Sys_FloatTime();
+	if (isDedicated)
+	{
+		while (1)
+		{
+			newtime = Sys_FloatTime ();
+			time = newtime - oldtime;
+
+			while (time < sys_ticrate.value )
+			{
+				SDL_Delay(1);
+				newtime = Sys_FloatTime ();
+				time = newtime - oldtime;
+			}
+
+			Host_Frame (time);
+			oldtime = newtime;
+		}
+	}
+	else
 	while (!done)
 	{
 	// TODO: dedicated server loop
 
-		while (!isDedicated && !done && SDL_PollEvent (&event))
+		while (!done && SDL_PollEvent (&event))
 		{
 			switch (event.type)
 			{
