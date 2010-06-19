@@ -20,16 +20,21 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#include "quakedef.h"
+
 #include <sys/types.h>
 #ifdef _WIN32
 #include <io.h>
 #include <direct.h>
+#include <errno.h>
 #else
+#include <errno.h>
+#include <unistd.h>
 #include <sys/stat.h>
+#include <sys/time.h>
+#include <fcntl.h>
+#include <time.h>
 #endif
-#include "errno.h"
-
-#include "quakedef.h"
 
 #define CONSOLE_ERROR_TIMEOUT	60.0	/* # of seconds to wait on Sys_Error running */
 qboolean		isDedicated;
@@ -248,7 +253,55 @@ double Sys_FloatTime (void)
 
 char *Sys_ConsoleInput (void)
 {
-	return 0;
+#if !defined(_WIN32)
+	static char	con_text[256];
+	static int	textlen;
+	char		c;
+	fd_set		set;
+	struct timeval	timeout;
+
+	if (!isDedicated)
+		return NULL;	// no stdin necessary in graphical mode
+
+	FD_ZERO (&set);
+	FD_SET (0, &set);	// stdin
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 0;
+
+	while (select (1, &set, NULL, NULL, &timeout))
+	{
+		read (0, &c, 1);
+		if (c == '\n' || c == '\r')
+		{
+			con_text[textlen] = '\0';
+			textlen = 0;
+			return con_text;
+		}
+		else if (c == 8)
+		{
+			if (textlen)
+			{
+				textlen--;
+				con_text[textlen] = '\0';
+			}
+			continue;
+		}
+		con_text[textlen] = c;
+		textlen++;
+		if (textlen < sizeof(con_text))
+			con_text[textlen] = '\0';
+		else
+		{
+		// buffer is full
+			textlen = 0;
+			con_text[0] = '\0';
+			Sys_Printf("\nConsole input too long!\n");
+			break;
+		}
+	}
+#endif	/* ! _WIN32 */
+
+	return NULL;
 }
 
 void Sys_Sleep (void)
