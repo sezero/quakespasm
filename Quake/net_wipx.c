@@ -20,9 +20,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // net_wipx.c
 
+#include "winsock.h"
 #include "quakedef.h"
 #include "net_defs.h"
-#include "winquake.h"
 #include <wsipx.h>
 #include "net_wipx.h"
 
@@ -267,12 +267,12 @@ int WIPX_Write (int handle, byte *buf, int len, struct qsockaddr *addr)
 	int ret;
 
 	// build packet with sequence number
-	*(int *)(&packetBuffer[0]) = sequence[handle];
+	memcpy(&packetBuffer[0], &sequence[handle], 4);
 	sequence[handle]++;
 	memcpy(&packetBuffer[4], buf, len);
 	len += 4;
 
-	ret = sendto (socketid, packetBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
+	ret = sendto (socketid, (char *)packetBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
 	if (ret == -1)
 		if (WSAGetLastError() == WSAEWOULDBLOCK)
 			return 0;
@@ -345,12 +345,12 @@ int WIPX_GetSocketAddr (int handle, struct qsockaddr *addr)
 {
 	int socketid = ipxsocket[handle];
 	int addrlen = sizeof(struct qsockaddr);
-	unsigned int a;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
 	if (getsockname(socketid, (struct sockaddr *)addr, &addrlen) != 0)
 	{
-		int err = WSAGetLastError();
+		int err;
+		err = WSAGetLastError();
 		/* FIXME: what action should be taken?... */
 	}
 
