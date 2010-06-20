@@ -629,7 +629,7 @@ int NET_SendToAll (sizebuf_t *data, double blocktime)
 	int			i;
 	int			count = 0;
 	qboolean	msg_init[MAX_SCOREBOARD];	/* can we send */
-	qboolean	state2[MAX_SCOREBOARD];	/* did we send */
+	qboolean	msg_sent[MAX_SCOREBOARD];	/* did we send */
 
 	for (i = 0, host_client = svs.clients; i < svs.maxclients; i++, host_client++)
 	{
