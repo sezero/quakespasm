@@ -184,14 +184,10 @@ the local network components to fill in the rest
 */
 static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
 {
-	char buff[256];
-	char *b;
-	int addr;
-	int num;
-	int mask;
-	int run;
-	int port;
-	
+	char	buff[256];
+	char	*b;
+	int	addr, mask, num, port, run;
+
 	buff[0] = '.';
 	b = buff;
 	strcpy(buff+1, in);
@@ -199,7 +195,7 @@ static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
 		b++;
 
 	addr = 0;
-	mask=-1;
+	mask = -1;
 	while (*b == '.')
 	{
 		b++;
@@ -207,27 +203,28 @@ static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
 		run = 0;
 		while (!( *b < '0' || *b > '9'))
 		{
-		  num = num*10 + *b++ - '0';
-		  if (++run > 3)
-		  	return -1;
+			num = num*10 + *b++ - '0';
+			if (++run > 3)
+				return -1;
 		}
 		if ((*b < '0' || *b > '9') && *b != '.' && *b != ':' && *b != 0)
 			return -1;
 		if (num < 0 || num > 255)
 			return -1;
-		mask<<=8;
+		mask <<= 8;
 		addr = (addr<<8) + num;
 	}
-	
+
 	if (*b++ == ':')
 		port = Q_atoi(b);
 	else
 		port = net_hostport;
 
 	hostaddr->sa_family = AF_INET;
-	((struct sockaddr_in *)hostaddr)->sin_port = htons((short)port);	
-	((struct sockaddr_in *)hostaddr)->sin_addr.s_addr = (myAddr & htonl(mask)) | htonl(addr);
-	
+	((struct sockaddr_in *)hostaddr)->sin_port = htons((unsigned short)port);
+	((struct sockaddr_in *)hostaddr)->sin_addr.s_addr =
+					(myAddr & htonl(mask)) | htonl(addr);
+
 	return 0;
 }
 //=============================================================================
@@ -269,7 +266,7 @@ static void get_qsockaddr(struct sockaddr *saddr, struct qsockaddr *qaddr)
 int UDP_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 {
 	static struct sockaddr saddr;
-	socklen_t addrlen = sizeof (struct sockaddr);
+	socklen_t addrlen = sizeof(struct sockaddr);
 	int ret;
 
 	ret = recvfrom (socketid, buf, len, 0, &saddr, &addrlen);
@@ -284,7 +281,7 @@ int UDP_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 
 int UDP_MakeSocketBroadcastCapable (int socketid)
 {
-	int				i = 1;
+	int	i = 1;
 
 	// make this socket broadcast capable
 	if (setsockopt(socketid, SOL_SOCKET, SO_BROADCAST, (char *)&i, sizeof(i)) < 0)
@@ -298,12 +295,12 @@ int UDP_MakeSocketBroadcastCapable (int socketid)
 
 int UDP_Broadcast (int socketid, byte *buf, int len)
 {
-	int ret;
+	int	ret;
 
 	if (socketid != net_broadcastsocket)
 	{
 		if (net_broadcastsocket != 0)
-			Sys_Error("Attempted to use multiple broadcasts sockets\n");
+			Sys_Error("Attempted to use multiple broadcasts sockets");
 		ret = UDP_MakeSocketBroadcastCapable (socketid);
 		if (ret == -1)
 		{
@@ -319,7 +316,7 @@ int UDP_Broadcast (int socketid, byte *buf, int len)
 
 int UDP_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 {
-	int ret;
+	int	ret;
 
 	ret = sendto (socketid, buf, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
 	if (ret == -1 && errno == EWOULDBLOCK)
@@ -332,7 +329,7 @@ int UDP_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 char *UDP_AddrToString (struct qsockaddr *addr)
 {
 	static char buffer[22];
-	int haddr;
+	int		haddr;
 
 	haddr = ntohl(((struct sockaddr_in *)addr)->sin_addr.s_addr);
 	snprintf (buffer, sizeof(buffer), "%d.%d.%d.%d:%d", (haddr >> 24) & 0xff,
@@ -345,15 +342,14 @@ char *UDP_AddrToString (struct qsockaddr *addr)
 
 int UDP_StringToAddr (char *string, struct qsockaddr *addr)
 {
-	int ha1, ha2, ha3, ha4, hp;
-	int ipaddr;
+	int	ha1, ha2, ha3, ha4, hp, ipaddr;
 
 	sscanf(string, "%d.%d.%d.%d:%d", &ha1, &ha2, &ha3, &ha4, &hp);
 	ipaddr = (ha1 << 24) | (ha2 << 16) | (ha3 << 8) | ha4;
 
 	addr->sa_family = AF_INET;
 	((struct sockaddr_in *)addr)->sin_addr.s_addr = htonl(ipaddr);
-	((struct sockaddr_in *)addr)->sin_port = htons(hp);
+	((struct sockaddr_in *)addr)->sin_port = htons((unsigned short)hp);
 	return 0;
 }
 
@@ -381,7 +377,8 @@ int UDP_GetNameFromAddr (struct qsockaddr *addr, char *name)
 {
 	struct hostent *hostentry;
 
-	hostentry = gethostbyaddr ((char *)&((struct sockaddr_in *)addr)->sin_addr, sizeof(struct in_addr), AF_INET);
+	hostentry = gethostbyaddr ((char *)&((struct sockaddr_in *)addr)->sin_addr,
+						sizeof(struct in_addr), AF_INET);
 	if (hostentry)
 	{
 		Q_strncpy (name, (char *)hostentry->h_name, NET_NAMELEN - 1);
@@ -406,8 +403,9 @@ int UDP_GetAddrFromName(char *name, struct qsockaddr *addr)
 		return -1;
 
 	addr->sa_family = AF_INET;
-	((struct sockaddr_in *)addr)->sin_port = htons(net_hostport);	
-	((struct sockaddr_in *)addr)->sin_addr.s_addr = *(int *)hostentry->h_addr_list[0];
+	((struct sockaddr_in *)addr)->sin_port = htons((unsigned short)net_hostport);
+	((struct sockaddr_in *)addr)->sin_addr.s_addr =
+						*(in_addr_t *)hostentry->h_addr_list[0];
 
 	return 0;
 }
@@ -419,10 +417,12 @@ int UDP_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2)
 	if (addr1->sa_family != addr2->sa_family)
 		return -1;
 
-	if (((struct sockaddr_in *)addr1)->sin_addr.s_addr != ((struct sockaddr_in *)addr2)->sin_addr.s_addr)
+	if (((struct sockaddr_in *)addr1)->sin_addr.s_addr !=
+	    ((struct sockaddr_in *)addr2)->sin_addr.s_addr)
 		return -1;
 
-	if (((struct sockaddr_in *)addr1)->sin_port != ((struct sockaddr_in *)addr2)->sin_port)
+	if (((struct sockaddr_in *)addr1)->sin_port !=
+	    ((struct sockaddr_in *)addr2)->sin_port)
 		return 1;
 
 	return 0;
@@ -438,7 +438,7 @@ int UDP_GetSocketPort (struct qsockaddr *addr)
 
 int UDP_SetSocketPort (struct qsockaddr *addr, int port)
 {
-	((struct sockaddr_in *)addr)->sin_port = htons(port);
+	((struct sockaddr_in *)addr)->sin_port = htons((unsigned short)port);
 	return 0;
 }
 

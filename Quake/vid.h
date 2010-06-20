@@ -31,6 +31,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // moved here for global use -- kristian
 typedef enum { NO_MODE=-1, MODE_WINDOWED, MODE_FULLSCREEN_DEFAULT } modestate_t;
 
+extern modestate_t	modestate;
+
 // a pixel can be one, two, or four bytes
 typedef byte pixel_t;
 

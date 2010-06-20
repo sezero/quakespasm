@@ -98,11 +98,11 @@ SDL_CONFIG ?= sdl-config
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
-SDL_LIBS   := SDL_net
+NET_LIBS   := SDL_net
 
 COMMON_LIBS:= m GL
 
-LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
+LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS))
 
 # ---------------------------
 # targets

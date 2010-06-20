@@ -44,27 +44,18 @@ static int sequence[IPXSOCKETS];
 
 int WIPX_Init (void)
 {
-	int		i;
+	int	i, err;
 	char	buff[MAXHOSTNAMELEN];
-	struct qsockaddr addr;
+	struct qsockaddr	addr;
 	char	*p;
-	int		r;
-	WORD	wVersionRequested;
 
 	if (COM_CheckParm ("-noipx"))
 		return -1;
 
-// make sure LoadLibrary has happened successfully
-	if (!winsock_lib_initialized)
-		return -1;
-
 	if (winsock_initialized == 0)
 	{
-		wVersionRequested = MAKEWORD(1, 1);
-
-		r = pWSAStartup (MAKEWORD(1, 1), &winsockdata);
-
-		if (r)
+		err = WSAStartup(MAKEWORD(1,1), &winsockdata);
+		if (err != 0)
 		{
 			Con_Printf ("Winsock initialization failed.\n");
 			return -1;
@@ -76,7 +67,7 @@ int WIPX_Init (void)
 		ipxsocket[i] = 0;
 
 	// determine my name & address
-	if (pgethostname(buff, MAXHOSTNAMELEN) == 0)
+	if (gethostname(buff, MAXHOSTNAMELEN) == 0)
 	{
 		// if the quake hostname isn't set, set it to the machine name
 		if (Q_strcmp(hostname.string, "UNNAMED") == 0)
@@ -98,11 +89,11 @@ int WIPX_Init (void)
 		}
 	}
 
-	if ((net_controlsocket = WIPX_OpenSocket (0)) == -1)
+	if ((net_controlsocket = WIPX_OpenSocket(0)) == -1)
 	{
 		Con_Printf("WIPX_Init: Unable to open control socket\n");
 		if (--winsock_initialized == 0)
-			pWSACleanup ();
+			WSACleanup ();
 		return -1;
 	}
 
@@ -130,7 +121,7 @@ void WIPX_Shutdown (void)
 	WIPX_Listen (false);
 	WIPX_CloseSocket (net_controlsocket);
 	if (--winsock_initialized == 0)
-		pWSACleanup ();
+		WSACleanup ();
 }
 
 //=============================================================================
@@ -169,13 +160,14 @@ int WIPX_OpenSocket (int port)
 	if (handle == IPXSOCKETS)
 		return -1;
 
-	if ((newsocket = psocket (AF_IPX, SOCK_DGRAM, NSPROTO_IPX)) == INVALID_SOCKET)
+	if ((newsocket = socket (AF_IPX, SOCK_DGRAM, NSPROTO_IPX)) == INVALID_SOCKET)
 		return -1;
 
-	if (pioctlsocket (newsocket, FIONBIO, &_true) == -1)
+	if (ioctlsocket (newsocket, FIONBIO, &_true) == -1)
 		goto ErrorReturn;
 
-	if (psetsockopt(newsocket, SOL_SOCKET, SO_BROADCAST, (char *)&_true, sizeof(_true)) < 0)
+	if (setsockopt(newsocket, SOL_SOCKET, SO_BROADCAST, (char *)&_true, sizeof(_true))
+									 == SOCKET_ERROR)
 		goto ErrorReturn;
 
 	address.sa_family = AF_IPX;
@@ -191,7 +183,7 @@ int WIPX_OpenSocket (int port)
 
 	Sys_Error ("Winsock IPX bind failed\n");
 ErrorReturn:
-	pclosesocket (newsocket);
+	closesocket (newsocket);
 	return -1;
 }
 
@@ -199,10 +191,10 @@ ErrorReturn:
 
 int WIPX_CloseSocket (int handle)
 {
-	int socket = ipxsocket[handle];
+	int socketid = ipxsocket[handle];
 	int ret;
 
-	ret =  pclosesocket (socket);
+	ret =  closesocket (socketid);
 	ipxsocket[handle] = 0;
 	return ret;
 }
@@ -219,12 +211,12 @@ int WIPX_Connect (int handle, struct qsockaddr *addr)
 
 int WIPX_CheckNewConnections (void)
 {
-	unsigned long	available;
+	u_long	available;
 
 	if (net_acceptsocket == -1)
 		return -1;
 
-	if (pioctlsocket (ipxsocket[net_acceptsocket], FIONREAD, &available) == -1)
+	if (ioctlsocket (ipxsocket[net_acceptsocket], FIONREAD, &available) == -1)
 		Sys_Error ("WIPX: ioctlsocket (FIONREAD) failed\n");
 	if (available)
 		return net_acceptsocket;
@@ -237,18 +229,16 @@ static byte packetBuffer[NET_DATAGRAMSIZE + 4];
 
 int WIPX_Read (int handle, byte *buf, int len, struct qsockaddr *addr)
 {
-	int addrlen = sizeof (struct qsockaddr);
-	int socket = ipxsocket[handle];
+	int addrlen = sizeof(struct qsockaddr);
+	int socketid = ipxsocket[handle];
 	int ret;
 
-	ret = precvfrom (socket, packetBuffer, len+4, 0, (struct sockaddr *)addr, &addrlen);
+	ret = recvfrom (socketid, (char *)packetBuffer, len+4, 0, (struct sockaddr *)addr, &addrlen);
 	if (ret == -1)
 	{
-		int err = pWSAGetLastError();
-
+		int err = WSAGetLastError();
 		if (err == WSAEWOULDBLOCK || err == WSAECONNREFUSED)
 			return 0;
-
 	}
 
 	if (ret < 4)
@@ -272,7 +262,7 @@ int WIPX_Broadcast (int handle, byte *buf, int len)
 
 int WIPX_Write (int handle, byte *buf, int len, struct qsockaddr *addr)
 {
-	int socket = ipxsocket[handle];
+	int socketid = ipxsocket[handle];
 	int ret;
 
 	// build packet with sequence number
@@ -281,9 +271,9 @@ int WIPX_Write (int handle, byte *buf, int len, struct qsockaddr *addr)
 	memcpy(&packetBuffer[4], buf, len);
 	len += 4;
 
-	ret = psendto (socket, packetBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
+	ret = sendto (socketid, packetBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
 	if (ret == -1)
-		if (pWSAGetLastError() == WSAEWOULDBLOCK)
+		if (WSAGetLastError() == WSAEWOULDBLOCK)
 			return 0;
 
 	return ret;
@@ -315,19 +305,20 @@ char *WIPX_AddrToString (struct qsockaddr *addr)
 
 int WIPX_StringToAddr (char *string, struct qsockaddr *addr)
 {
-	int  val;
-	char buf[3];
+	int	val;
+	char	buf[3];
 
 	buf[2] = 0;
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
 	addr->sa_family = AF_IPX;
 
-#define DO(src,dest)	\
-	buf[0] = string[src];	\
-	buf[1] = string[src + 1];	\
-	if (sscanf (buf, "%x", &val) != 1)	\
-		return -1;	\
-	((struct sockaddr_ipx *)addr)->dest = val
+#define DO(src,dest) do {				\
+	buf[0] = string[src];				\
+	buf[1] = string[src + 1];			\
+	if (sscanf (buf, "%x", &val) != 1)		\
+		return -1;				\
+	((struct sockaddr_ipx *)addr)->dest = val;	\
+      } while (0)
 
 	DO(0, sa_netnum[0]);
 	DO(2, sa_netnum[1]);
@@ -351,14 +342,15 @@ int WIPX_StringToAddr (char *string, struct qsockaddr *addr)
 
 int WIPX_GetSocketAddr (int handle, struct qsockaddr *addr)
 {
-	int socket = ipxsocket[handle];
+	int socketid = ipxsocket[handle];
 	int addrlen = sizeof(struct qsockaddr);
 	unsigned int a;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
-	if(pgetsockname(socket, (struct sockaddr *)addr, &addrlen) != 0)
+	if (getsockname(socketid, (struct sockaddr *)addr, &addrlen) != 0)
 	{
-		int err = pWSAGetLastError();
+		int err = WSAGetLastError();
+		/* FIXME: what action should be taken?... */
 	}
 
 	return 0;
@@ -376,8 +368,8 @@ int WIPX_GetNameFromAddr (struct qsockaddr *addr, char *name)
 
 int WIPX_GetAddrFromName(char *name, struct qsockaddr *addr)
 {
-	int n;
-	char buf[32];
+	int		n;
+	char	buf[32];
 
 	n = Q_strlen(name);
 
@@ -431,3 +423,4 @@ int WIPX_SetSocketPort (struct qsockaddr *addr, int port)
 }
 
 //=============================================================================
+

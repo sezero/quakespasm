@@ -105,12 +105,12 @@ SDL_CONFIG=/usr/local/bin/sdl-config
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
-SDL_LIBS = -L/usr/local/lib -l SDL_net
+NET_LIBS = -L/usr/local/lib -l SDL_net
 
 COMMON_LIBS = -Wl,-framework,OpenGL
 
-#LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(SDL_LIBS))
-LIBS = $(COMMON_LIBS) $(SDL_LIBS)
+#LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS))
+LIBS = $(COMMON_LIBS) $(NET_LIBS)
 
 # ---------------------------
 # targets
