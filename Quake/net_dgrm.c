@@ -55,6 +55,7 @@ unsigned long inet_addr(const char *cp);
 #endif	// BAN_TEST
 
 #include "quakedef.h"
+#include "net_defs.h"
 #include "net_dgrm.h"
 
 // these two macros are to make the code more readable

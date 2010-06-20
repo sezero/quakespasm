@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // net_loop.c
 
 #include "quakedef.h"
+#include "net_defs.h"
 #include "net_loop.h"
 
 qboolean	localconnectpending = false;
