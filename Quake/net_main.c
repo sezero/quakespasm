@@ -623,35 +623,38 @@ qboolean NET_CanSendMessage (qsocket_t *sock)
 }
 
 
-int NET_SendToAll(sizebuf_t *data, int blocktime)
+int NET_SendToAll (sizebuf_t *data, double blocktime)
 {
 	double		start;
 	int			i;
 	int			count = 0;
-	qboolean	state1 [MAX_SCOREBOARD];
-	qboolean	state2 [MAX_SCOREBOARD];
+	qboolean	msg_init[MAX_SCOREBOARD];	/* can we send */
+	qboolean	state2[MAX_SCOREBOARD];	/* did we send */
 
-	for (i=0, host_client = svs.clients ; i<svs.maxclients ; i++, host_client++)
+	for (i = 0, host_client = svs.clients; i < svs.maxclients; i++, host_client++)
 	{
+		/*
 		if (!host_client->netconnection)
 			continue;
 		if (host_client->active)
+		*/
+		if (host_client->netconnection && host_client->active)
 		{
-			if (host_client->netconnection->driver == 0)
+			if (host_client->netconnection->driver == 0)	/* Loop */
 			{
 				NET_SendMessage(host_client->netconnection, data);
-				state1[i] = true;
-				state2[i] = true;
+				msg_init[i] = true;
+				msg_sent[i] = true;
 				continue;
 			}
 			count++;
-			state1[i] = false;
-			state2[i] = false;
+			msg_init[i] = false;
+			msg_sent[i] = false;
 		}
 		else
 		{
-			state1[i] = true;
-			state2[i] = true;
+			msg_init[i] = true;
+			msg_sent[i] = true;
 		}
 	}
 
@@ -661,11 +664,11 @@ int NET_SendToAll(sizebuf_t *data, int blocktime)
 		count = 0;
 		for (i=0, host_client = svs.clients ; i<svs.maxclients ; i++, host_client++)
 		{
-			if (! state1[i])
+			if (! msg_init[i])
 			{
 				if (NET_CanSendMessage (host_client->netconnection))
 				{
-					state1[i] = true;
+					msg_init[i] = true;
 					NET_SendMessage(host_client->netconnection, data);
 				}
 				else
@@ -676,11 +679,11 @@ int NET_SendToAll(sizebuf_t *data, int blocktime)
 				continue;
 			}
 
-			if (! state2[i])
+			if (! msg_sent[i])
 			{
 				if (NET_CanSendMessage (host_client->netconnection))
 				{
-					state2[i] = true;
+					msg_sent[i] = true;
 				}
 				else
 				{
