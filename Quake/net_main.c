@@ -80,6 +80,13 @@ cvar_t	config_modem_hangup = {"_config_modem_hangup", "AT H", true};
 #define sfunc	net_drivers[sock->driver]
 #define dfunc	net_drivers[net_driverlevel]
 
+/* NOTE: several sock->driver checks in the code serve the
+   purpose of ignoring local connections, because the loop
+   driver always takes number 0: it is the first member in
+   the net_drivers[] array.  If you ever change that, such
+   as by removing the loop driver, you must re-visit those
+   checks and adjust them properly!.			*/
+
 int	net_driverlevel;
 
 
