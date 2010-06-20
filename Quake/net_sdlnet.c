@@ -83,7 +83,8 @@ static char *_AddrToString (int ip, int port)
 {
 	static char buffer[22];
 
-	sprintf(buffer, "%d.%d.%d.%d:%d", (ip >> 24) & 0xff, (ip >> 16) & 0xff, (ip >> 8) & 0xff, ip & 0xff, port);
+	sprintf(buffer, "%d.%d.%d.%d:%d", (ip >> 24) & 0xff, (ip >> 16) & 0xff,
+					  (ip >> 8) & 0xff, ip & 0xff, port);
 	return buffer;
 }
 
@@ -136,12 +137,15 @@ int  SDLN_Init (void)
 	}
 	else
 	{
-		SDLNet_ResolveHost(&myaddr, NULL, 0);
-		strcpy(my_tcpip_address, "INADDR_ANY");
+		/* with SDL_net, there is no way of doing an
+		   equivalent of gethostaddr() / gethostbyname()
+		   so we do this crap as a fallback.  */
+		SDLNet_ResolveHost(&myaddr, "localhost", 0);
+		strcpy(my_tcpip_address, _IPAddrToString(&myaddr));
 	}
 
 	// open the control socket
-	if ((net_controlsocket = SDLN_OpenSocket (0)) == -1)
+	if ((net_controlsocket = SDLN_OpenSocket(0)) == -1)
 	{
 		Con_Printf("SDLN_Init: Unable to open control socket\n");
 		return -1;
@@ -169,7 +173,7 @@ void SDLN_GetLocalAddress (void)
 	if (myaddr.host != INADDR_ANY)
 		return;
 
-	SDLNet_ResolveHost(&myaddr, NULL, 0);
+	SDLNet_ResolveHost(&myaddr, "localhost", 0);
 }
 
 void SDLN_Listen (qboolean state)
