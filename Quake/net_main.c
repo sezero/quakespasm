@@ -726,7 +726,6 @@ void NET_Init (void)
 		i = COM_CheckParm ("-udpport");
 	if (!i)
 		i = COM_CheckParm ("-ipxport");
-
 	if (i)
 	{
 		if (i < com_argc-1)
@@ -772,16 +771,20 @@ void NET_Init (void)
 	Cmd_AddCommand ("port", NET_Port_f);
 
 	// initialize all the drivers
-	for (net_driverlevel=0 ; net_driverlevel<net_numdrivers ; net_driverlevel++)
-		{
+	for (i = net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
+	{
 		controlSocket = net_drivers[net_driverlevel].Init();
 		if (controlSocket == -1)
 			continue;
+		i++;
 		net_drivers[net_driverlevel].initialized = true;
 		net_drivers[net_driverlevel].controlSock = controlSocket;
 		if (listening)
 			net_drivers[net_driverlevel].Listen (true);
-		}
+	}
+
+	if (i == 0 && cls.state == ca_dedicated)
+		Sys_Error("Network not available!");
 
 	if (*my_ipx_address)
 		Con_DPrintf("IPX address %s\n", my_ipx_address);

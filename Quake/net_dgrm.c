@@ -792,8 +792,7 @@ JustDoIt:
 
 int Datagram_Init (void)
 {
-	int i;
-	int csock;
+	int i, csock, num_inited;
 
 	myDriverLevel = net_driverlevel;
 	Cmd_AddCommand ("net_stats", NET_Stats_f);
@@ -801,14 +800,19 @@ int Datagram_Init (void)
 	if (COM_CheckParm("-nolan"))
 		return -1;
 
+	num_inited = 0;
 	for (i = 0; i < net_numlandrivers; i++)
-		{
+	{
 		csock = net_landrivers[i].Init ();
 		if (csock == -1)
 			continue;
 		net_landrivers[i].initialized = true;
 		net_landrivers[i].controlSock = csock;
-		}
+		num_inited++;
+	}
+
+	if (num_inited == 0)
+		return -1;
 
 	return 0;
 }
