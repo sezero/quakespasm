@@ -18,6 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 #include "quakedef.h"
 
 #include "net_loop.h"
@@ -119,3 +120,4 @@ net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
 };
 
 int net_numlandrivers = 2;
+

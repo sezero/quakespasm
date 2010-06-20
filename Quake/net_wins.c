@@ -25,12 +25,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAXHOSTNAMELEN		256
 
-static int net_acceptsocket = -1;		// socket for fielding new connections
-static int net_controlsocket;
-static int net_broadcastsocket = 0;
-static struct qsockaddr broadcastaddr;
+static int		net_acceptsocket = -1;		// socket for fielding new connections
+static int		net_controlsocket;
+static int		net_broadcastsocket = 0;
+static struct qsockaddr	broadcastaddr;
 
-static unsigned long myAddr;
+static u_long		myAddr;
 
 #include "net_wins.h"
 
@@ -70,8 +70,8 @@ static INT_PTR PASCAL FAR BlockingHook (void)
 static void WINS_GetLocalAddress (void)
 {
 	struct hostent	*local = NULL;
-	char			buff[MAXHOSTNAMELEN];
-	unsigned long	addr;
+	char		buff[MAXHOSTNAMELEN];
+	u_long		addr;
 
 	if (myAddr != INADDR_ANY)
 		return;
@@ -86,7 +86,7 @@ static void WINS_GetLocalAddress (void)
 	if (local == NULL)
 		return;
 
-	myAddr = *(int *)local->h_addr_list[0];
+	myAddr = *(u_long *)local->h_addr_list[0];
 
 	addr = ntohl(myAddr);
 	sprintf(my_tcpip_address, "%d.%d.%d.%d", (addr >> 24) & 0xff, (addr >> 16) & 0xff, (addr >> 8) & 0xff, addr & 0xff);

@@ -39,12 +39,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <arpa/inet.h>
 #include <netdb.h>
 
-static int net_acceptsocket = -1;		// socket for fielding new connections
-static int net_controlsocket;
-static int net_broadcastsocket = 0;
-static struct qsockaddr broadcastaddr;
+static int		net_acceptsocket = -1;		// socket for fielding new connections
+static int		net_controlsocket;
+static int		net_broadcastsocket = 0;
+static struct qsockaddr	broadcastaddr;
 
-static unsigned long myAddr;
+static in_addr_t	myAddr;
 
 #include "net_udp.h"
 
@@ -74,7 +74,7 @@ int UDP_Init (void)
 		return -1;
 	}
 
-	myAddr = *(int *)local->h_addr_list[0];
+	myAddr = *(in_addr_t *)local->h_addr_list[0];
 
 	// if the quake hostname isn't set, set it to the machine name
 	if (Q_strcmp(hostname.string, "UNNAMED") == 0)
