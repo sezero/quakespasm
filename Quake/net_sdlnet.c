@@ -35,6 +35,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAX_SOCKETS	32
 
+#if 0	/* enable for paranoid debugging purposes */
+#define ASSERT_SOCKETID(s)						\
+do {									\
+	if ((s) < 0 || (s) >= MAX_SOCKETS)				\
+		Sys_Error("Bad socket ID %d at line %d",(s),__LINE__);	\
+} while (0)
+#else
+#define ASSERT_SOCKETID(s)				do {} while (0)
+#endif
+
 static int		net_controlsocket;
 static int		net_broadcastsocket = 0;
 static int		net_acceptsocket = -1;
@@ -47,25 +57,22 @@ UDPsocket		net_sockets[MAX_SOCKETS];
 
 static int socket_id (UDPsocket socket_p)
 {
-	int		i;
-	int		idx = -1;
+	int		idx;
 
-	for (i = 0; i < MAX_SOCKETS; i++)
+	for (idx = 0; idx < MAX_SOCKETS; idx++)
 	{
-		if (net_sockets[i] == socket_p)
-			return i;
+		if (net_sockets[idx] == socket_p)
+			return idx;
+	}
 
-		if (net_sockets[i] == NULL && idx == -1)
-		{
-			idx = i;
+	for (idx = 0; idx < MAX_SOCKETS; idx++)
+	{
+		if (net_sockets[idx] == NULL)
 			break;
-		}
 	}
 
-	if (idx == -1)
-	{
-	// todo error
-	}
+	if (idx == MAX_SOCKETS)
+		Sys_Error("net_sdlnet: No free sockets.");
 
 	net_sockets[idx] = socket_p;
 
@@ -219,7 +226,7 @@ int SDLN_CloseSocket (int socketid)
 
 	if (socketid == net_broadcastsocket)
 		net_broadcastsocket = -1;
-
+	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 
 	if (socket_p == NULL)
@@ -265,6 +272,7 @@ int SDLN_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	IPaddress		*ipaddress;
 	UDPsocket		socket_p;
 
+	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
@@ -294,6 +302,7 @@ int SDLN_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	UDPsocket		socket_p;
 	IPaddress		*ipaddress;
 
+	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
@@ -366,7 +375,7 @@ int SDLN_GetSocketAddr (int socketid, struct qsockaddr *addr)
 	IPaddress		*ipaddress;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
-
+	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
