@@ -74,7 +74,7 @@ int droppedDatagrams;
 
 static int myDriverLevel;
 
-struct
+static struct
 {
 	unsigned int	length;
 	unsigned int	sequence;
