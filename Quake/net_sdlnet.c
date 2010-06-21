@@ -152,8 +152,8 @@ int  SDLN_Init (void)
 		return -1;
 	}
 
-	broadcastaddr.sa_family = AF_INET;
-	ipaddress = (IPaddress *)&(broadcastaddr.sa_data);
+	broadcastaddr.qsa_family = AF_INET;
+	ipaddress = (IPaddress *)&(broadcastaddr.qsa_data);
 	SDLNet_Write32(INADDR_BROADCAST, &ipaddress->host);
 	SDLNet_Write16(net_hostport, &ipaddress->port);
 
@@ -289,8 +289,8 @@ int SDLN_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	{
 		memcpy(buf, packet->data, packet->len);
 
-		addr->sa_family = AF_INET;
-		ipaddress = (IPaddress *)&(addr->sa_data);
+		addr->qsa_family = AF_INET;
+		ipaddress = (IPaddress *)&(addr->qsa_data);
 		ipaddress->host = packet->address.host;
 		ipaddress->port = packet->address.port;
 
@@ -316,7 +316,7 @@ int SDLN_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	memcpy(packet->data, buf, len);
 	packet->len = len;
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 	packet->address.host = ipaddress->host;
 	packet->address.port = ipaddress->port;
 
@@ -347,7 +347,7 @@ char *SDLN_AddrToString (struct qsockaddr *addr)
 	int		port;
 	IPaddress	*ipaddress;
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 
 	ip = SDLNet_Read32(&ipaddress->host);
 	port = SDLNet_Read16(&ipaddress->port);
@@ -364,8 +364,8 @@ int  SDLN_StringToAddr (char *string, struct qsockaddr *addr)
 	sscanf(string, "%d.%d.%d.%d:%d", &ha1, &ha2, &ha3, &ha4, &hp);
 	hostaddr = (ha1 << 24) | (ha2 << 16) | (ha3 << 8) | ha4;
 
-	addr->sa_family = AF_INET;
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	addr->qsa_family = AF_INET;
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 
 	SDLNet_Write32(hostaddr, &ipaddress->host);
 	SDLNet_Write16(hp, &ipaddress->port);
@@ -389,8 +389,8 @@ int SDLN_GetSocketAddr (int socketid, struct qsockaddr *addr)
 	if (peeraddress == NULL)
 		return -1;
 
-	addr->sa_family = AF_INET;
-	ipaddress = (IPaddress *) addr->sa_data;
+	addr->qsa_family = AF_INET;
+	ipaddress = (IPaddress *) addr->qsa_data;
 	if (peeraddress->host == 0 ||
 	    peeraddress->host == SDL_SwapBE32(INADDR_LOOPBACK) /* inet_addr ("127.0.0.1") */)
 	{
@@ -411,7 +411,7 @@ int SDLN_GetNameFromAddr (struct qsockaddr *addr, char *name)
 	char		*buf;
 	IPaddress	*ipaddress;
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 
 	buf = (char *)SDLNet_ResolveIP(ipaddress);
 	if (buf != NULL)
@@ -480,8 +480,8 @@ static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
 	tmp = SDLNet_Read32(&myaddr.host);
 	tmp = (tmp & mask) | addr;
 
-	hostaddr->sa_family = AF_INET;
-	ipaddress = (IPaddress *)&(hostaddr->sa_data);
+	hostaddr->qsa_family = AF_INET;
+	ipaddress = (IPaddress *)&(hostaddr->qsa_data);
 
 	SDLNet_Write32(tmp, &ipaddress->host);
 	SDLNet_Write16(port, &ipaddress->port);
@@ -496,11 +496,11 @@ int SDLN_GetAddrFromName (char *name, struct qsockaddr *addr)
 	if (name[0] >= '0' && name[0] <= '9')
 		return PartialIPAddress (name, addr);
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
-	if (SDLNet_ResolveHost((IPaddress *)(&addr->sa_data), name, net_hostport) == -1)
+	ipaddress = (IPaddress *)&(addr->qsa_data);
+	if (SDLNet_ResolveHost((IPaddress *)(&addr->qsa_data), name, net_hostport) == -1)
 		return -1;
 
-	addr->sa_family = AF_INET;
+	addr->qsa_family = AF_INET;
 	return 0;
 }
 
@@ -509,11 +509,11 @@ int SDLN_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2)
 	IPaddress *ipaddr1;
 	IPaddress *ipaddr2;
 
-	if (addr1->sa_family != addr2->sa_family)
+	if (addr1->qsa_family != addr2->qsa_family)
 		return -1;
 
-	ipaddr1 = (IPaddress *)&(addr1->sa_data);
-	ipaddr2 = (IPaddress *)&(addr2->sa_data);
+	ipaddr1 = (IPaddress *)&(addr1->qsa_data);
+	ipaddr2 = (IPaddress *)&(addr2->qsa_data);
 
 	if (ipaddr1->host != ipaddr2->host)
 		return -1;
@@ -528,7 +528,7 @@ int SDLN_GetSocketPort (struct qsockaddr *addr)
 {
 	IPaddress *ipaddress;
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 	return SDLNet_Read16(&ipaddress->port);
 }
 
@@ -536,7 +536,7 @@ int SDLN_SetSocketPort (struct qsockaddr *addr, int port)
 {
 	IPaddress *ipaddress;
 
-	ipaddress = (IPaddress *)&(addr->sa_data);
+	ipaddress = (IPaddress *)&(addr->qsa_data);
 	SDLNet_Write16(port, &ipaddress->port);
 
 	return 0;

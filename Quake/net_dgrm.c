@@ -1012,7 +1012,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 
 #ifdef BAN_TEST
 	// check for a ban
-	if (clientaddr.sa_family == AF_INET)
+	if (clientaddr.qsa_family == AF_INET)
 	{
 		unsigned long testAddr;
 		testAddr = ((struct sockaddr_in *)&clientaddr)->sin_addr.s_addr;

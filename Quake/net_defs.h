@@ -31,8 +31,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct qsockaddr
 {
-	short sa_family;
-	unsigned char sa_data[14];
+	short qsa_family;
+	unsigned char qsa_data[14];
 };
 
 #define NET_HEADERSIZE		(2 * sizeof(unsigned int))
