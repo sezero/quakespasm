@@ -18,24 +18,25 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 // net_wipx.h
 
 #ifndef __NET_WINIPX_H
 #define __NET_WINIPX_H
 
-int  WIPX_Init (void);
+sys_socket_t  WIPX_Init (void);
 void WIPX_Shutdown (void);
 void WIPX_Listen (qboolean state);
-int  WIPX_OpenSocket (int port);
-int  WIPX_CloseSocket (int socketid);
-int  WIPX_Connect (int socketid, struct qsockaddr *addr);
-int  WIPX_CheckNewConnections (void);
-int  WIPX_Read (int socketid, byte *buf, int len, struct qsockaddr *addr);
-int  WIPX_Write (int socketid, byte *buf, int len, struct qsockaddr *addr);
-int  WIPX_Broadcast (int socketid, byte *buf, int len);
+sys_socket_t  WIPX_OpenSocket (int port);
+int  WIPX_CloseSocket (sys_socket_t socketid);
+int  WIPX_Connect (sys_socket_t socketid, struct qsockaddr *addr);
+sys_socket_t  WIPX_CheckNewConnections (void);
+int  WIPX_Read (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr);
+int  WIPX_Write (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr);
+int  WIPX_Broadcast (sys_socket_t socketid, byte *buf, int len);
 char *WIPX_AddrToString (struct qsockaddr *addr);
 int  WIPX_StringToAddr (char *string, struct qsockaddr *addr);
-int  WIPX_GetSocketAddr (int socketid, struct qsockaddr *addr);
+int  WIPX_GetSocketAddr (sys_socket_t socketid, struct qsockaddr *addr);
 int  WIPX_GetNameFromAddr (struct qsockaddr *addr, char *name);
 int  WIPX_GetAddrFromName (char *name, struct qsockaddr *addr);
 int  WIPX_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2);

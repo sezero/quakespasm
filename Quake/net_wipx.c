@@ -30,36 +30,37 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t hostname;
 
-static int net_acceptsocket = -1;		// socket for fielding new connections
-static int net_controlsocket;
+static sys_socket_t net_acceptsocket = INVALID_SOCKET;	// socket for fielding new connections
+static sys_socket_t net_controlsocket;
 static struct sockaddr_ipx broadcastaddr;
 
+/* externs from net_wins.c: */
 extern qboolean winsock_initialized;
 extern WSADATA		winsockdata;
 
 #define IPXSOCKETS 18
-static int ipxsocket[IPXSOCKETS];
+static sys_socket_t ipxsocket[IPXSOCKETS];
 static int sequence[IPXSOCKETS];
 
 //=============================================================================
 
-int WIPX_Init (void)
+sys_socket_t WIPX_Init (void)
 {
 	int	i, err;
+	char	*colon;
 	char	buff[MAXHOSTNAMELEN];
 	struct qsockaddr	addr;
-	char	*p;
 
 	if (COM_CheckParm ("-noipx"))
-		return -1;
+		return INVALID_SOCKET;
 
 	if (winsock_initialized == 0)
 	{
 		err = WSAStartup(MAKEWORD(1,1), &winsockdata);
 		if (err != 0)
 		{
-			Con_Printf ("Winsock initialization failed.\n");
-			return -1;
+			Con_SafePrintf("Winsock initialization failed.\n");
+			return INVALID_SOCKET;
 		}
 	}
 	winsock_initialized++;
@@ -68,34 +69,21 @@ int WIPX_Init (void)
 		ipxsocket[i] = 0;
 
 	// determine my name & address
-	if (gethostname(buff, MAXHOSTNAMELEN) == 0)
+	if (gethostname(buff, MAXHOSTNAMELEN) != 0)
 	{
-		// if the quake hostname isn't set, set it to the machine name
-		if (Q_strcmp(hostname.string, "UNNAMED") == 0)
-		{
-			// see if it's a text IP address (well, close enough)
-			for (p = buff; *p; p++)
-				if ((*p < '0' || *p > '9') && *p != '.')
-					break;
-
-			// if it is a real name, strip off the domain; we only want the host
-			if (*p)
-			{
-				for (i = 0; i < 15; i++)
-					if (buff[i] == '.')
-						break;
-				buff[i] = 0;
-			}
-			Cvar_Set ("hostname", buff);
-		}
+		Con_SafePrintf("WIPX_Init: WARNING: gethostname failed\n");
+	}
+	else
+	{
+		buff[MAXHOSTNAMELEN - 1] = 0;
 	}
 
-	if ((net_controlsocket = WIPX_OpenSocket(0)) == -1)
+	if ((net_controlsocket = WIPX_OpenSocket(0)) == INVALID_SOCKET)
 	{
-		Con_Printf("WIPX_Init: Unable to open control socket\n");
+		Con_SafePrintf("WIPX_Init: Unable to open control socket, IPX disabled\n");
 		if (--winsock_initialized == 0)
 			WSACleanup ();
-		return -1;
+		return INVALID_SOCKET;
 	}
 
 	broadcastaddr.sa_family = AF_IPX;
@@ -104,12 +92,12 @@ int WIPX_Init (void)
 	broadcastaddr.sa_socket = htons((unsigned short)net_hostport);
 
 	WIPX_GetSocketAddr (net_controlsocket, &addr);
-	Q_strcpy(my_ipx_address,  WIPX_AddrToString (&addr));
-	p = Q_strrchr (my_ipx_address, ':');
-	if (p)
-		*p = 0;
+	Q_strcpy(my_ipx_address, WIPX_AddrToString (&addr));
+	colon = Q_strrchr (my_ipx_address, ':');
+	if (colon)
+		*colon = 0;
 
-	Con_Printf("Winsock IPX Initialized\n");
+	Con_SafePrintf("IPX Initialized\n");
 	ipxAvailable = true;
 
 	return net_controlsocket;
@@ -132,39 +120,44 @@ void WIPX_Listen (qboolean state)
 	// enable listening
 	if (state)
 	{
-		if (net_acceptsocket != -1)
+		if (net_acceptsocket != INVALID_SOCKET)
 			return;
-		if ((net_acceptsocket = WIPX_OpenSocket (net_hostport)) == -1)
-			Sys_Error ("WIPX_Listen: Unable to open accept socket\n");
+		if ((net_acceptsocket = WIPX_OpenSocket (net_hostport)) == INVALID_SOCKET)
+			Sys_Error ("WIPX_Listen: Unable to open accept socket");
 		return;
 	}
 
 	// disable listening
-	if (net_acceptsocket == -1)
+	if (net_acceptsocket == INVALID_SOCKET)
 		return;
 	WIPX_CloseSocket (net_acceptsocket);
-	net_acceptsocket = -1;
+	net_acceptsocket = INVALID_SOCKET;
 }
 
 //=============================================================================
 
-int WIPX_OpenSocket (int port)
+sys_socket_t WIPX_OpenSocket (int port)
 {
-	int handle;
-	int newsocket;
+	sys_socket_t	handle, newsocket;
 	struct sockaddr_ipx address;
 	u_long _true = 1;
 
 	for (handle = 0; handle < IPXSOCKETS; handle++)
+	{
 		if (ipxsocket[handle] == 0)
 			break;
+	}
 	if (handle == IPXSOCKETS)
-		return -1;
+	{
+		return INVALID_SOCKET;
+	}
 
 	if ((newsocket = socket (AF_IPX, SOCK_DGRAM, NSPROTO_IPX)) == INVALID_SOCKET)
-		return -1;
+	{
+		return INVALID_SOCKET;
+	}
 
-	if (ioctlsocket (newsocket, FIONBIO, &_true) == -1)
+	if (ioctlsocket (newsocket, FIONBIO, &_true) == SOCKET_ERROR)
 		goto ErrorReturn;
 
 	if (setsockopt(newsocket, SOL_SOCKET, SO_BROADCAST, (char *)&_true, sizeof(_true))
@@ -175,24 +168,30 @@ int WIPX_OpenSocket (int port)
 	memset(address.sa_netnum, 0, 4);
 	memset(address.sa_nodenum, 0, 6);;
 	address.sa_socket = htons((unsigned short)port);
-	if( bind (newsocket, (void *)&address, sizeof(address)) == 0)
+	if (bind (newsocket, (struct sockaddr *)&address, sizeof(address)) == 0)
 	{
 		ipxsocket[handle] = newsocket;
 		sequence[handle] = 0;
 		return handle;
 	}
 
-	Sys_Error ("Winsock IPX bind failed\n");
+	if (ipxAvailable)
+	{
+		Sys_Error ("IPX bind failed");
+		return INVALID_SOCKET;	/* not reached */
+	}
+	/* else: we are still in init phase, no need to error */
+
 ErrorReturn:
 	closesocket (newsocket);
-	return -1;
+	return INVALID_SOCKET;
 }
 
 //=============================================================================
 
-int WIPX_CloseSocket (int handle)
+int WIPX_CloseSocket (sys_socket_t handle)
 {
-	int socketid = ipxsocket[handle];
+	sys_socket_t socketid = ipxsocket[handle];
 	int ret;
 
 	ret =  closesocket (socketid);
@@ -200,45 +199,46 @@ int WIPX_CloseSocket (int handle)
 	return ret;
 }
 
-
 //=============================================================================
 
-int WIPX_Connect (int handle, struct qsockaddr *addr)
+int WIPX_Connect (sys_socket_t handle, struct qsockaddr *addr)
 {
 	return 0;
 }
 
 //=============================================================================
 
-int WIPX_CheckNewConnections (void)
+sys_socket_t WIPX_CheckNewConnections (void)
 {
 	u_long	available;
 
-	if (net_acceptsocket == -1)
-		return -1;
+	if (net_acceptsocket == INVALID_SOCKET)
+		return INVALID_SOCKET;
 
-	if (ioctlsocket (ipxsocket[net_acceptsocket], FIONREAD, &available) == -1)
-		Sys_Error ("WIPX: ioctlsocket (FIONREAD) failed\n");
+	if (ioctlsocket (ipxsocket[net_acceptsocket], FIONREAD, &available) == SOCKET_ERROR)
+	{
+		Sys_Error ("WIPX: ioctlsocket (FIONREAD) failed");
+	}
 	if (available)
 		return net_acceptsocket;
-	return -1;
+	return INVALID_SOCKET;
 }
 
 //=============================================================================
 
-static byte packetBuffer[NET_DATAGRAMSIZE + 4];
+static byte netpacketBuffer[NET_DATAGRAMSIZE + 4];
 
-int WIPX_Read (int handle, byte *buf, int len, struct qsockaddr *addr)
+int WIPX_Read (sys_socket_t handle, byte *buf, int len, struct qsockaddr *addr)
 {
-	int addrlen = sizeof(struct qsockaddr);
-	int socketid = ipxsocket[handle];
+	socklen_t addrlen = sizeof(struct qsockaddr);
+	sys_socket_t socketid = ipxsocket[handle];
 	int ret;
 
-	ret = recvfrom (socketid, (char *)packetBuffer, len+4, 0, (struct sockaddr *)addr, &addrlen);
-	if (ret == -1)
+	ret = recvfrom (socketid, (char *)netpacketBuffer, len+4, 0, (struct sockaddr *)addr, &addrlen);
+	if (ret == SOCKET_ERROR)
 	{
-		int err = WSAGetLastError();
-		if (err == WSAEWOULDBLOCK || err == WSAECONNREFUSED)
+		int err = SOCKETERRNO;
+		if (err == EWOULDBLOCK || err == ECONNREFUSED)
 			return 0;
 	}
 
@@ -247,35 +247,38 @@ int WIPX_Read (int handle, byte *buf, int len, struct qsockaddr *addr)
 
 	// remove sequence number, it's only needed for DOS IPX
 	ret -= 4;
-	memcpy(buf, packetBuffer+4, ret);
+	memcpy(buf, netpacketBuffer+4, ret);
 
 	return ret;
 }
 
 //=============================================================================
 
-int WIPX_Broadcast (int handle, byte *buf, int len)
+int WIPX_Broadcast (sys_socket_t handle, byte *buf, int len)
 {
 	return WIPX_Write (handle, buf, len, (struct qsockaddr *)&broadcastaddr);
 }
 
 //=============================================================================
 
-int WIPX_Write (int handle, byte *buf, int len, struct qsockaddr *addr)
+int WIPX_Write (sys_socket_t handle, byte *buf, int len, struct qsockaddr *addr)
 {
-	int socketid = ipxsocket[handle];
+	sys_socket_t socketid = ipxsocket[handle];
 	int ret;
 
 	// build packet with sequence number
-	memcpy(&packetBuffer[0], &sequence[handle], 4);
+	memcpy(&netpacketBuffer[0], &sequence[handle], 4);
 	sequence[handle]++;
-	memcpy(&packetBuffer[4], buf, len);
+	memcpy(&netpacketBuffer[4], buf, len);
 	len += 4;
 
-	ret = sendto (socketid, (char *)packetBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
-	if (ret == -1)
-		if (WSAGetLastError() == WSAEWOULDBLOCK)
+	ret = sendto (socketid, (char *)netpacketBuffer, len, 0, (struct sockaddr *)addr, sizeof(struct qsockaddr));
+	if (ret == SOCKET_ERROR)
+	{
+		int err = SOCKETERRNO;
+		if (err == EWOULDBLOCK)
 			return 0;
+	}
 
 	return ret;
 }
@@ -341,16 +344,16 @@ int WIPX_StringToAddr (char *string, struct qsockaddr *addr)
 
 //=============================================================================
 
-int WIPX_GetSocketAddr (int handle, struct qsockaddr *addr)
+int WIPX_GetSocketAddr (sys_socket_t handle, struct qsockaddr *addr)
 {
-	int socketid = ipxsocket[handle];
-	int addrlen = sizeof(struct qsockaddr);
+	sys_socket_t socketid = ipxsocket[handle];
+	socklen_t addrlen = sizeof(struct qsockaddr);
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
 	if (getsockname(socketid, (struct sockaddr *)addr, &addrlen) != 0)
 	{
 		int err;
-		err = WSAGetLastError();
+		err = SOCKETERRNO;
 		/* FIXME: what action should be taken?... */
 	}
 
@@ -398,13 +401,16 @@ int WIPX_AddrCompare (struct qsockaddr *addr1, struct qsockaddr *addr2)
 		return -1;
 
 	if (*((struct sockaddr_ipx *)addr1)->sa_netnum && *((struct sockaddr_ipx *)addr2)->sa_netnum)
+	{
 		if (memcmp(((struct sockaddr_ipx *)addr1)->sa_netnum, ((struct sockaddr_ipx *)addr2)->sa_netnum, 4) != 0)
 			return -1;
+	}
+
 	if (memcmp(((struct sockaddr_ipx *)addr1)->sa_nodenum, ((struct sockaddr_ipx *)addr2)->sa_nodenum, 6) != 0)
 		return -1;
 
 	if (((struct sockaddr_ipx *)addr1)->sa_socket != ((struct sockaddr_ipx *)addr2)->sa_socket)
-		return 1;
+			return 1;
 
 	return 0;
 }

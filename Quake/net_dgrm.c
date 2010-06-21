@@ -785,7 +785,8 @@ JustDoIt:
 
 int Datagram_Init (void)
 {
-	int i, csock, num_inited;
+	int	i, num_inited;
+	sys_socket_t	csock;
 
 #ifdef BAN_TEST
 	banAddr.s_addr = INADDR_ANY;
@@ -801,7 +802,7 @@ int Datagram_Init (void)
 	for (i = 0; i < net_numlandrivers; i++)
 	{
 		csock = net_landrivers[i].Init ();
-		if (csock == -1)
+		if (csock == INVALID_SOCKET)
 			continue;
 		net_landrivers[i].initialized = true;
 		net_landrivers[i].controlSock = csock;
@@ -861,8 +862,8 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 {
 	struct qsockaddr clientaddr;
 	struct qsockaddr newaddr;
-	int			newsock;
-	int			acceptsock;
+	sys_socket_t		newsock;
+	sys_socket_t		acceptsock;
 	qsocket_t	*sock;
 	qsocket_t	*s;
 	int			len;
@@ -871,7 +872,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	int			ret;
 
 	acceptsock = dfunc.CheckNewConnections();
-	if (acceptsock == -1)
+	if (acceptsock == INVALID_SOCKET)
 		return NULL;
 
 	SZ_Clear(&net_message);
@@ -1084,7 +1085,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 
 	// allocate a network socket
 	newsock = dfunc.Open_Socket(0);
-	if (newsock == -1)
+	if (newsock == INVALID_SOCKET)
 	{
 		NET_FreeQSocket(sock);
 		return NULL;
@@ -1254,7 +1255,7 @@ static qsocket_t *_Datagram_Connect (char *host)
 	struct qsockaddr sendaddr;
 	struct qsockaddr readaddr;
 	qsocket_t	*sock;
-	int			newsock;
+	sys_socket_t		newsock;
 	int			ret;
 	int			reps;
 	double		start_time;
@@ -1269,7 +1270,7 @@ static qsocket_t *_Datagram_Connect (char *host)
 	}
 
 	newsock = dfunc.Open_Socket (0);
-	if (newsock == -1)
+	if (newsock == INVALID_SOCKET)
 		return NULL;
 
 	sock = NET_NewQSocket ();
@@ -1283,7 +1284,8 @@ static qsocket_t *_Datagram_Connect (char *host)
 		goto ErrorReturn;
 
 	// send the connection request
-	Con_Printf("trying...\n"); SCR_UpdateScreen ();
+	Con_Printf("trying...\n");
+	SCR_UpdateScreen ();
 	start_time = net_time;
 
 	for (reps = 0; reps < 3; reps++)
