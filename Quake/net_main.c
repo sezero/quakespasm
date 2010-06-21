@@ -721,7 +721,6 @@ NET_Init
 void NET_Init (void)
 {
 	int			i;
-	int			controlSocket;
 	qsocket_t	*s;
 
 	i = COM_CheckParm ("-port");
@@ -776,12 +775,10 @@ void NET_Init (void)
 	// initialize all the drivers
 	for (i = net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
 	{
-		controlSocket = net_drivers[net_driverlevel].Init();
-		if (controlSocket == -1)
+		if (net_drivers[net_driverlevel].Init() == -1)
 			continue;
 		i++;
 		net_drivers[net_driverlevel].initialized = true;
-		net_drivers[net_driverlevel].controlSock = controlSocket;
 		if (listening)
 			net_drivers[net_driverlevel].Listen (true);
 	}
