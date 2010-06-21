@@ -20,8 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "quakedef.h"
+#include "arch_def.h"
+#include "net_sys.h"	/* for net_defs.h */
 #include <dirent.h>
+#include "quakedef.h"
 #include "net_defs.h"	/* for struct qsocket_s details */
 
 extern cvar_t	pausable;
