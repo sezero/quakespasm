@@ -25,74 +25,74 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "net_defs.h"
 
-#include "net_loop.h"
 #include "net_dgrm.h"
-#include "net_sdlnet.h"
+#include "net_loop.h"
 
 net_driver_t net_drivers[MAX_NET_DRIVERS] =
 {
 	{
-	"Loopback",
-	false,
-	Loop_Init,
-	Loop_Listen,
-	Loop_SearchForHosts,
-	Loop_Connect,
-	Loop_CheckNewConnections,
-	Loop_GetMessage,
-	Loop_SendMessage,
-	Loop_SendUnreliableMessage,
-	Loop_CanSendMessage,
-	Loop_CanSendUnreliableMessage,
-	Loop_Close,
-	Loop_Shutdown
-	}
-	,
+		"Loopback",
+		false,
+		Loop_Init,
+		Loop_Listen,
+		Loop_SearchForHosts,
+		Loop_Connect,
+		Loop_CheckNewConnections,
+		Loop_GetMessage,
+		Loop_SendMessage,
+		Loop_SendUnreliableMessage,
+		Loop_CanSendMessage,
+		Loop_CanSendUnreliableMessage,
+		Loop_Close,
+		Loop_Shutdown
+	},
+
 	{
-	"Datagram",
-	false,
-	Datagram_Init,
-	Datagram_Listen,
-	Datagram_SearchForHosts,
-	Datagram_Connect,
-	Datagram_CheckNewConnections,
-	Datagram_GetMessage,
-	Datagram_SendMessage,
-	Datagram_SendUnreliableMessage,
-	Datagram_CanSendMessage,
-	Datagram_CanSendUnreliableMessage,
-	Datagram_Close,
-	Datagram_Shutdown
+		"Datagram",
+		false,
+		Datagram_Init,
+		Datagram_Listen,
+		Datagram_SearchForHosts,
+		Datagram_Connect,
+		Datagram_CheckNewConnections,
+		Datagram_GetMessage,
+		Datagram_SendMessage,
+		Datagram_SendUnreliableMessage,
+		Datagram_CanSendMessage,
+		Datagram_CanSendUnreliableMessage,
+		Datagram_Close,
+		Datagram_Shutdown
 	}
 };
 
 int net_numdrivers = 2;
 
+#include "net_sdlnet.h"
 
 net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
 {
 	{
-	"UDP",
-	false,
-	0,
-	SDLN_Init,
-	SDLN_Shutdown,
-	SDLN_Listen,
-	SDLN_OpenSocket,
-	SDLN_CloseSocket,
-	SDLN_Connect,
-	SDLN_CheckNewConnections,
-	SDLN_Read,
-	SDLN_Write,
-	SDLN_Broadcast,
-	SDLN_AddrToString,
-	SDLN_StringToAddr,
-	SDLN_GetSocketAddr,
-	SDLN_GetNameFromAddr,
-	SDLN_GetAddrFromName,
-	SDLN_AddrCompare,
-	SDLN_GetSocketPort,
-	SDLN_SetSocketPort
+		"UDP",
+		false,
+		0,
+		SDLN_Init,
+		SDLN_Shutdown,
+		SDLN_Listen,
+		SDLN_OpenSocket,
+		SDLN_CloseSocket,
+		SDLN_Connect,
+		SDLN_CheckNewConnections,
+		SDLN_Read,
+		SDLN_Write,
+		SDLN_Broadcast,
+		SDLN_AddrToString,
+		SDLN_StringToAddr,
+		SDLN_GetSocketAddr,
+		SDLN_GetNameFromAddr,
+		SDLN_GetAddrFromName,
+		SDLN_AddrCompare,
+		SDLN_GetSocketPort,
+		SDLN_SetSocketPort
 	}
 };
 

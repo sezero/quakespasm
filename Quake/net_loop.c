@@ -18,6 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 // net_loop.c
 
 #include "arch_def.h"
@@ -26,9 +27,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "net_defs.h"
 #include "net_loop.h"
 
-qboolean	localconnectpending = false;
-qsocket_t	*loop_client = NULL;
-qsocket_t	*loop_server = NULL;
+static qboolean	localconnectpending = false;
+static qsocket_t	*loop_client = NULL;
+static qsocket_t	*loop_server = NULL;
 
 int Loop_Init (void)
 {
@@ -146,7 +147,7 @@ int Loop_GetMessage (qsocket_t *sock)
 	sock->receiveMessageLength -= length;
 
 	if (sock->receiveMessageLength)
-		memmove(sock->receiveMessage, &sock->receiveMessage[length], sock->receiveMessageLength);
+		memmove (sock->receiveMessage, &sock->receiveMessage[length], sock->receiveMessageLength);
 
 	if (sock->driverdata && ret == 1)
 		((qsocket_t *)sock->driverdata)->canSend = true;
@@ -166,7 +167,7 @@ int Loop_SendMessage (qsocket_t *sock, sizebuf_t *data)
 	bufferLength = &((qsocket_t *)sock->driverdata)->receiveMessageLength;
 
 	if ((*bufferLength + data->cursize + 4) > NET_MAXMESSAGE)
-		Sys_Error("Loop_SendMessage: overflow\n");
+		Sys_Error("Loop_SendMessage: overflow");
 
 	buffer = ((qsocket_t *)sock->driverdata)->receiveMessage + *bufferLength;
 
@@ -247,3 +248,4 @@ void Loop_Close (qsocket_t *sock)
 	else
 		loop_server = NULL;
 }
+
