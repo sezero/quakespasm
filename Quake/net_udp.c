@@ -68,7 +68,7 @@ sys_socket_t UDP_Init (void)
 
 	if ((net_controlsocket = UDP_OpenSocket(0)) == INVALID_SOCKET)
 	{
-		Con_SafePrintf("%s: Unable to open control socket, UDP disabled\n");
+		Con_SafePrintf("UDP_Init: Unable to open control socket, UDP disabled\n");
 		return INVALID_SOCKET;
 	}
 
