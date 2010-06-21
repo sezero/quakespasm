@@ -18,6 +18,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 // net_main.c
 
 #include "arch_def.h"
@@ -168,7 +169,7 @@ void NET_FreeQSocket(qsocket_t *sock)
 		}
 
 		if (!s)
-			Sys_Error ("NET_FreeQSocket: not active\n");
+			Sys_Error ("NET_FreeQSocket: not active");
 	}
 
 	// add it to free list
