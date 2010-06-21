@@ -25,22 +25,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 qsocket_t	*net_activeSockets = NULL;
 qsocket_t	*net_freeSockets = NULL;
-int			net_numsockets = 0;
+int		net_numsockets = 0;
 
 qboolean	serialAvailable = false;
 qboolean	ipxAvailable = false;
 qboolean	tcpipAvailable = false;
 
-int			net_hostport;
-int			DEFAULTnet_hostport = 26000;
+int		net_hostport;
+int		DEFAULTnet_hostport = 26000;
 
 char		my_ipx_address[NET_NAMELEN];
 char		my_tcpip_address[NET_NAMELEN];
-
-void (*GetComPortConfig) (int portNumber, int *port, int *irq, int *baud, qboolean *useModem);
-void (*SetComPortConfig) (int portNumber, int port, int irq, int baud, qboolean useModem);
-void (*GetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
-void (*SetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
 
 static qboolean	listening = false;
 
@@ -50,24 +45,29 @@ qboolean	slistLocal = true;
 static double	slistStartTime;
 static int		slistLastShown;
 
-static void Slist_Send(void);
-static void Slist_Poll(void);
-PollProcedure	slistSendProcedure = {NULL, 0.0, Slist_Send};
-PollProcedure	slistPollProcedure = {NULL, 0.0, Slist_Poll};
+static void Slist_Send (void);
+static void Slist_Poll (void);
+static PollProcedure	slistSendProcedure = {NULL, 0.0, Slist_Send};
+static PollProcedure	slistPollProcedure = {NULL, 0.0, Slist_Poll};
 
+sizebuf_t	net_message;
+int		net_activeconnections		= 0;
 
-sizebuf_t		net_message;
-int				net_activeconnections = 0;
+int		messagesSent			= 0;
+int		messagesReceived		= 0;
+int		unreliableMessagesSent		= 0;
+int		unreliableMessagesReceived	= 0;
 
-int messagesSent = 0;
-int messagesReceived = 0;
-int unreliableMessagesSent = 0;
-int unreliableMessagesReceived = 0;
-
-cvar_t	net_messagetimeout = {"net_messagetimeout","300"};
+static	cvar_t	net_messagetimeout = {"net_messagetimeout","300"};
 cvar_t	hostname = {"hostname", "UNNAMED"};
 
-qboolean	configRestored = false;
+static qboolean	configRestored = false;
+
+void (*GetComPortConfig) (int portNumber, int *port, int *irq, int *baud, qboolean *useModem);
+void (*SetComPortConfig) (int portNumber, int port, int irq, int baud, qboolean useModem);
+void (*GetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
+void (*SetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
+
 cvar_t	config_com_port = {"_config_com_port", "0x3f8", true};
 cvar_t	config_com_irq = {"_config_com_irq", "4", true};
 cvar_t	config_com_baud = {"_config_com_baud", "57600", true};
@@ -88,12 +88,12 @@ cvar_t	config_modem_hangup = {"_config_modem_hangup", "AT H", true};
    as by removing the loop driver, you must re-visit those
    checks and adjust them properly!.			*/
 
-int	net_driverlevel;
+int		net_driverlevel;
+
+double		net_time;
 
 
-double			net_time;
-
-double SetNetTime(void)
+double SetNetTime (void)
 {
 	net_time = Sys_FloatTime();
 	return net_time;
@@ -157,11 +157,14 @@ void NET_FreeQSocket(qsocket_t *sock)
 	else
 	{
 		for (s = net_activeSockets; s; s = s->next)
+		{
 			if (s->next == sock)
 			{
 				s->next = sock->next;
 				break;
 			}
+		}
+
 		if (!s)
 			Sys_Error ("NET_FreeQSocket: not active\n");
 	}
@@ -177,13 +180,13 @@ static void NET_Listen_f (void)
 {
 	if (Cmd_Argc () != 2)
 	{
-		Con_Printf ("\"listen\" is \"%u\"\n", listening ? 1 : 0);
+		Con_Printf ("\"listen\" is \"%d\"\n", listening ? 1 : 0);
 		return;
 	}
 
 	listening = Q_atoi(Cmd_Argv(1)) ? true : false;
 
-	for (net_driverlevel=0 ; net_driverlevel<net_numdrivers; net_driverlevel++)
+	for (net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
 	{
 		if (net_drivers[net_driverlevel].initialized == false)
 			continue;
@@ -194,11 +197,11 @@ static void NET_Listen_f (void)
 
 static void MaxPlayers_f (void)
 {
-	int 	n;
+	int	n;
 
 	if (Cmd_Argc () != 2)
 	{
-		Con_Printf ("\"maxplayers\" is \"%u\"\n", svs.maxclients);
+		Con_Printf ("\"maxplayers\" is \"%d\"\n", svs.maxclients);
 		return;
 	}
 
@@ -214,7 +217,7 @@ static void MaxPlayers_f (void)
 	if (n > svs.maxclientslimit)
 	{
 		n = svs.maxclientslimit;
-		Con_Printf ("\"maxplayers\" set to \"%u\"\n", n);
+		Con_Printf ("\"maxplayers\" set to \"%d\"\n", n);
 	}
 
 	if ((n == 1) && listening)
@@ -225,19 +228,23 @@ static void MaxPlayers_f (void)
 
 	svs.maxclients = n;
 	if (n == 1)
+	{
 		Cvar_Set ("deathmatch", "0");
+	}
 	else
+	{
 		Cvar_Set ("deathmatch", "1");
+	}
 }
 
 
 static void NET_Port_f (void)
 {
-	int 	n;
+	int	n;
 
 	if (Cmd_Argc () != 2)
 	{
-		Con_Printf ("\"port\" is \"%u\"\n", net_hostport);
+		Con_Printf ("\"port\" is \"%d\"\n", net_hostport);
 		return;
 	}
 
@@ -270,7 +277,7 @@ static void PrintSlistHeader(void)
 
 static void PrintSlist(void)
 {
-	int n;
+	int		n;
 
 	for (n = slistLastShown; n < hostCacheCount; n++)
 	{
@@ -313,9 +320,9 @@ void NET_Slist_f (void)
 }
 
 
-static void Slist_Send(void)
+static void Slist_Send (void)
 {
-	for (net_driverlevel=0; net_driverlevel < net_numdrivers; net_driverlevel++)
+	for (net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
 	{
 		if (!slistLocal && net_driverlevel == 0)
 			continue;
@@ -329,9 +336,9 @@ static void Slist_Send(void)
 }
 
 
-static void Slist_Poll(void)
+static void Slist_Poll (void)
 {
-	for (net_driverlevel=0; net_driverlevel < net_numdrivers; net_driverlevel++)
+	for (net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
 	{
 		if (!slistLocal && net_driverlevel == 0)
 			continue;
@@ -401,7 +408,7 @@ qsocket_t *NET_Connect (char *host)
 	slistSilent = host ? true : false;
 	NET_Slist_f ();
 
-	while(slistInProgress)
+	while (slistInProgress)
 		NET_Poll();
 
 	if (host == NULL)
@@ -413,15 +420,19 @@ qsocket_t *NET_Connect (char *host)
 	}
 
 	if (hostCacheCount)
+	{
 		for (n = 0; n < hostCacheCount; n++)
+		{
 			if (Q_strcasecmp (host, hostcache[n].name) == 0)
 			{
 				host = hostcache[n].cname;
 				break;
 			}
+		}
+	}
 
 JustDoIt:
-	for (net_driverlevel=0 ; net_driverlevel<numdrivers; net_driverlevel++)
+	for (net_driverlevel = 0; net_driverlevel < numdrivers; net_driverlevel++)
 	{
 		if (net_drivers[net_driverlevel].initialized == false)
 			continue;
@@ -447,14 +458,13 @@ JustDoIt:
 NET_CheckNewConnections
 ===================
 */
-
 qsocket_t *NET_CheckNewConnections (void)
 {
 	qsocket_t	*ret;
 
 	SetNetTime();
 
-	for (net_driverlevel=0 ; net_driverlevel<net_numdrivers; net_driverlevel++)
+	for (net_driverlevel = 0; net_driverlevel < net_numdrivers; net_driverlevel++)
 	{
 		if (net_drivers[net_driverlevel].initialized == false)
 			continue;
@@ -503,9 +513,6 @@ returns 1 if a message was received
 returns -1 if connection is invalid
 =================
 */
-
-extern void PrintStats(qsocket_t *s);
-
 int	NET_GetMessage (qsocket_t *sock)
 {
 	int ret;
@@ -532,7 +539,6 @@ int	NET_GetMessage (qsocket_t *sock)
 			return -1;
 		}
 	}
-
 
 	if (ret > 0)
 	{
@@ -615,8 +621,6 @@ message to be transmitted.
 */
 qboolean NET_CanSendMessage (qsocket_t *sock)
 {
-	int		r;
-
 	if (!sock)
 		return false;
 
@@ -625,9 +629,7 @@ qboolean NET_CanSendMessage (qsocket_t *sock)
 
 	SetNetTime();
 
-	r = sfunc.CanSendMessage(sock);
-
-	return r;
+	return sfunc.CanSendMessage(sock);
 }
 
 
@@ -636,8 +638,8 @@ int NET_SendToAll (sizebuf_t *data, double blocktime)
 	double		start;
 	int			i;
 	int			count = 0;
-	qboolean	msg_init[MAX_SCOREBOARD];	/* can we send */
-	qboolean	msg_sent[MAX_SCOREBOARD];	/* did we send */
+	qboolean	msg_init[MAX_SCOREBOARD];	/* did we write the message to the client's connection	*/
+	qboolean	msg_sent[MAX_SCOREBOARD];	/* did the msg arrive its destination (canSend state).	*/
 
 	for (i = 0, host_client = svs.clients; i < svs.maxclients; i++, host_client++)
 	{
@@ -670,7 +672,7 @@ int NET_SendToAll (sizebuf_t *data, double blocktime)
 	while (count)
 	{
 		count = 0;
-		for (i=0, host_client = svs.clients ; i<svs.maxclients ; i++, host_client++)
+		for (i = 0, host_client = svs.clients; i < svs.maxclients; i++, host_client++)
 		{
 			if (! msg_init[i])
 			{
@@ -799,7 +801,7 @@ NET_Shutdown
 ====================
 */
 
-void		NET_Shutdown (void)
+void NET_Shutdown (void)
 {
 	qsocket_t	*sock;
 
@@ -827,12 +829,12 @@ static PollProcedure *pollProcedureList = NULL;
 void NET_Poll(void)
 {
 	PollProcedure *pp;
-	qboolean	useModem;
 
 	if (!configRestored)
 	{
 		if (serialAvailable)
 		{
+			qboolean	useModem;
 			if (config_com_modem.value == 1.0)
 				useModem = true;
 			else
@@ -877,3 +879,4 @@ void SchedulePollProcedure(PollProcedure *proc, double timeOffset)
 	proc->next = pp;
 	prev->next = proc;
 }
+
