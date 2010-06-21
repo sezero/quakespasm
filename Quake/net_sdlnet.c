@@ -28,16 +28,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAX_SOCKETS	32
 
-#if 0	/* enable for paranoid debugging purposes */
-#define ASSERT_SOCKETID(s)						\
-do {									\
-	if ((s) < 0 || (s) >= MAX_SOCKETS)				\
-		Sys_Error("Bad socket ID %d at line %d",(s),__LINE__);	\
-} while (0)
-#else
-#define ASSERT_SOCKETID(s)				do {} while (0)
-#endif
-
 static int		net_controlsocket;
 static int		net_broadcastsocket = 0;
 static int		net_acceptsocket = -1;
@@ -131,10 +121,9 @@ int  SDLN_Init (void)
 	else
 	{
 		/* with SDL_net, there is no way of doing an
-		   equivalent of gethostaddr() / gethostbyname()
-		   so we do this crap as a fallback.  */
-		SDLNet_ResolveHost(&myaddr, "localhost", 0);
-		strcpy(my_tcpip_address, _IPAddrToString(&myaddr));
+		equivalent of gethostaddr() / gethostbyname(). */
+		SDLNet_ResolveHost(&myaddr, NULL, 0);
+		strcpy(my_tcpip_address, "INADDR_ANY");
 	}
 
 	// open the control socket
@@ -166,7 +155,7 @@ void SDLN_GetLocalAddress (void)
 	if (myaddr.host != INADDR_ANY)
 		return;
 
-	SDLNet_ResolveHost(&myaddr, "localhost", 0);
+	SDLNet_ResolveHost(&myaddr, NULL, 0);
 }
 
 void SDLN_Listen (qboolean state)
@@ -223,7 +212,7 @@ int SDLN_CloseSocket (int socketid)
 
 	if (socketid == net_broadcastsocket)
 		net_broadcastsocket = -1;
-	ASSERT_SOCKETID(socketid);
+
 	socket_p = net_sockets[socketid];
 
 	if (socket_p == NULL)
@@ -269,7 +258,6 @@ int SDLN_Read (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	IPaddress		*ipaddress;
 	UDPsocket		socket_p;
 
-	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
@@ -299,7 +287,6 @@ int SDLN_Write (int socketid, byte *buf, int len, struct qsockaddr *addr)
 	UDPsocket		socket_p;
 	IPaddress		*ipaddress;
 
-	ASSERT_SOCKETID(socketid);
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
@@ -372,7 +359,7 @@ int SDLN_GetSocketAddr (int socketid, struct qsockaddr *addr)
 	IPaddress		*ipaddress;
 
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
-	ASSERT_SOCKETID(socketid);
+
 	socket_p = net_sockets[socketid];
 	if (socket_p == NULL)
 		return -1;
