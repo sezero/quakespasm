@@ -1194,7 +1194,7 @@ Test_f -- johnfitz
 ================
 */
 #ifdef _DEBUG
-void Test_f (void)
+static void FitzTest_f (void)
 {
 }
 #endif
@@ -1255,7 +1255,7 @@ void COM_Init (char *basedir)
 	COM_CheckRegistered ();
 
 #ifdef _DEBUG
-	Cmd_AddCommand ("test", Test_f); //johnfitz
+	Cmd_AddCommand ("fitztest", FitzTest_f); //johnfitz
 #endif
 }
 

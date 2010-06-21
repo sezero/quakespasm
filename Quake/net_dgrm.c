@@ -155,7 +155,7 @@ void NET_Ban_f (void)
 		break;
 	}
 }
-#endif
+#endif	// BAN_TEST
 
 
 int Datagram_SendMessage (qsocket_t *sock, sizebuf_t *data)
@@ -608,7 +608,7 @@ static void Test_Poll(void)
 	}
 }
 
-static void Net_Test_f (void)
+static void Test_f (void)
 {
 	char	*host;
 	int		n;
@@ -834,6 +834,12 @@ int Datagram_Init (void)
 
 	if (num_inited == 0)
 		return -1;
+
+#ifdef BAN_TEST
+	Cmd_AddCommand ("ban", NET_Ban_f);
+#endif
+	Cmd_AddCommand ("test", Test_f);
+	Cmd_AddCommand ("test2", Test2_f);
 
 	return 0;
 }
