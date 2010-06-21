@@ -1,7 +1,9 @@
-# GNU Makefile for QuakeSpasm, Apr. 24, 2010
+# GNU Makefile for QuakeSpasm unix targets, June 21, 2010
 #
 # You need SDL and SDL_net fully installed.
 # "make DEBUG=1" builds debug client
+# "make SDLNET=1" to enable SDL_net. otherwise the socket api will be
+# used directly.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations
 #
 # Build objects are separate from those of codeblocks for now
@@ -18,6 +20,8 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 # ============================================================================
 
 DEBUG    ?= 0
+SDLNET   ?= 0
+
 BUILDDIR := .
 
 SYSNAME := $(shell uname -s) 
@@ -98,7 +102,12 @@ SDL_CONFIG ?= sdl-config
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
+ifeq ($(SDLNET),1)
 NET_LIBS   := SDL_net
+CFLAGS     +=-D_USE_SDLNET
+else
+NET_LIBS   :=
+endif
 
 COMMON_LIBS:= m GL
 
@@ -128,8 +137,11 @@ SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
 SYSOBJ_INPUT := in_sdl.o
 SYSOBJ_GL_VID:= gl_vidsdl.o
-#SYSOBJ_NET := net_bsd.o net_udp.o
+ifeq ($(SDLNET),1)
 SYSOBJ_NET := net_sdl.o net_sdlnet.o
+else
+SYSOBJ_NET := net_bsd.o net_udp.o
+endif
 SYSOBJ_SYS := pl_linux.o sys_sdl.o
 SYSOBJ_MAIN:= main_sdl.o
 SYSOBJ_RES :=

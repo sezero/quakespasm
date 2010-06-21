@@ -19,41 +19,14 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 // net_dgrm.c
 
 // This is enables a simple IP banning mechanism
-//#define BAN_TEST disabled --kristian
+#define BAN_TEST
 
-#ifdef BAN_TEST
-#if defined(_WIN32)
-#include <windows.h>
-#elif defined (NeXT)
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#else
-#define AF_INET 		2	/* internet */
-struct in_addr
-{
-	union
-	{
-		struct { unsigned char s_b1,s_b2,s_b3,s_b4; } S_un_b;
-		struct { unsigned short s_w1,s_w2; } S_un_w;
-		unsigned long S_addr;
-	} S_un;
-};
-#define	s_addr	S_un.S_addr	/* can be used for most tcp & ip code */
-struct sockaddr_in
-{
-    short			sin_family;
-    unsigned short	sin_port;
-	struct in_addr	sin_addr;
-    char			sin_zero[8];
-};
-char *inet_ntoa(struct in_addr in);
-unsigned long inet_addr(const char *cp);
-#endif
-#endif	// BAN_TEST
-
+#include "arch_def.h"
+#include "net_sys.h"
 #include "quakedef.h"
 #include "net_defs.h"
 #include "net_dgrm.h"

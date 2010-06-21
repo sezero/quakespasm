@@ -18,21 +18,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#include "arch_def.h"
+#include "net_sys.h"
 #include "quakedef.h"
 #include "net_defs.h"
 #include "net_sdlnet.h"
 #include "SDL.h"
 #include "SDL_net.h"
-
-#ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN	255
-#endif
-#ifndef AF_INET
-#define AF_INET		2		/* internet */
-#endif
-#ifndef INADDR_LOOPBACK
-#define INADDR_LOOPBACK	0x7f000001	/* 127.0.0.1 */
-#endif
 
 #define MAX_SOCKETS	32
 
