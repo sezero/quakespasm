@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 static int		net_acceptsocket = -1;		// socket for fielding new connections
 static int		net_controlsocket;
 static int		net_broadcastsocket = 0;
-static struct qsockaddr	broadcastaddr;
+static struct sockaddr_in broadcastaddr;
 
 static in_addr_t	myAddr;
 
@@ -87,9 +87,9 @@ int UDP_Init (void)
 	if ((net_controlsocket = UDP_OpenSocket (0)) == -1)
 		Sys_Error("UDP_Init: Unable to open control socket\n");
 
-	((struct sockaddr_in *)&broadcastaddr)->sin_family = AF_INET;
-	((struct sockaddr_in *)&broadcastaddr)->sin_addr.s_addr = INADDR_BROADCAST;
-	((struct sockaddr_in *)&broadcastaddr)->sin_port = htons(net_hostport);
+	broadcastaddr.sin_family = AF_INET;
+	broadcastaddr.sin_addr.s_addr = INADDR_BROADCAST;
+	broadcastaddr.sin_port = htons((unsigned short)net_hostport);
 
 	if (UDP_GetSocketAddr (net_controlsocket, &addr) != 0)
 	{
@@ -310,7 +310,7 @@ int UDP_Broadcast (int socketid, byte *buf, int len)
 		}
 	}
 
-	return UDP_Write (socketid, buf, len, &broadcastaddr);
+	return UDP_Write (socketid, buf, len, (struct qsockaddr *)&broadcastaddr);
 }
 
 //=============================================================================

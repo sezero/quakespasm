@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 static int		net_acceptsocket = -1;		// socket for fielding new connections
 static int		net_controlsocket;
 static int		net_broadcastsocket = 0;
-static struct qsockaddr	broadcastaddr;
+static struct sockaddr_in broadcastaddr;
 
 static u_long		myAddr;
 
@@ -171,9 +171,9 @@ int WINS_Init (void)
 		return -1;
 	}
 
-	((struct sockaddr_in *)&broadcastaddr)->sin_family = AF_INET;
-	((struct sockaddr_in *)&broadcastaddr)->sin_addr.s_addr = INADDR_BROADCAST;
-	((struct sockaddr_in *)&broadcastaddr)->sin_port = htons((unsigned short)net_hostport);
+	broadcastaddr.sin_family = AF_INET;
+	broadcastaddr.sin_addr.s_addr = INADDR_BROADCAST;
+	broadcastaddr.sin_port = htons((unsigned short)net_hostport);
 
 	Con_Printf("Winsock TCP/IP Initialized\n");
 	tcpipAvailable = true;
@@ -380,7 +380,7 @@ int WINS_Broadcast (int socketid, byte *buf, int len)
 		}
 	}
 
-	return WINS_Write (socketid, buf, len, &broadcastaddr);
+	return WINS_Write (socketid, buf, len, (struct qsockaddr *)&broadcastaddr);
 }
 
 //=============================================================================
