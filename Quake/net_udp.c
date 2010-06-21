@@ -239,27 +239,18 @@ sys_socket_t UDP_CheckNewConnections (void)
 
 //=============================================================================
 
-static void get_qsockaddr(struct sockaddr *saddr, struct qsockaddr *qaddr)
-{
-	qaddr->qsa_family = saddr->sa_family;
-	memcpy(&(qaddr->qsa_data), &(saddr->sa_data), sizeof(qaddr->qsa_data));
-}
-
 int UDP_Read (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr)
 {
-	static struct sockaddr saddr;
-	socklen_t addrlen = sizeof(struct sockaddr);
+	socklen_t addrlen = sizeof(struct qsockaddr);
 	int ret;
 
-	ret = recvfrom (socketid, buf, len, 0, &saddr, &addrlen);
+	ret = recvfrom (socketid, buf, len, 0, (struct sockaddr *)addr, &addrlen);
 	if (ret == SOCKET_ERROR)
 	{
 		int err = SOCKETERRNO;
 		if (err == EWOULDBLOCK || err == ECONNREFUSED)
 			return 0;
 	}
-
-	get_qsockaddr(&saddr, addr);
 	return ret;
 }
 
