@@ -65,12 +65,12 @@ unsigned long inet_addr(const char *cp);
 static int net_landriverlevel;
 
 /* statistic counters */
-int	packetsSent = 0;
-int	packetsReSent = 0;
-int packetsReceived = 0;
-int receivedDuplicateCount = 0;
-int shortPacketCount = 0;
-int droppedDatagrams;
+static int packetsSent = 0;
+static int packetsReSent = 0;
+static int packetsReceived = 0;
+static int receivedDuplicateCount = 0;
+static int shortPacketCount = 0;
+static int droppedDatagrams;
 
 static int myDriverLevel;
 
@@ -85,7 +85,8 @@ extern qboolean m_return_onerror;
 extern char m_return_reason[32];
 
 
-char *StrAddr (struct qsockaddr *addr)
+//#ifdef DEBUG
+static char *StrAddr (struct qsockaddr *addr)
 {
 	static char buf[34];
 	byte *p = (byte *)addr;
@@ -95,6 +96,7 @@ char *StrAddr (struct qsockaddr *addr)
 		sprintf (buf + n * 2, "%02x", *p++);
 	return buf;
 }
+//#endif
 
 
 #ifdef BAN_TEST
@@ -102,7 +104,7 @@ char *StrAddr (struct qsockaddr *addr)
 static struct in_addr	banAddr;
 static struct in_addr	banMask;
 
-void NET_Ban_f (void)
+static void NET_Ban_f (void)
 {
 	char	addrStr [32];
 	char	maskStr [32];
@@ -205,7 +207,7 @@ int Datagram_SendMessage (qsocket_t *sock, sizebuf_t *data)
 }
 
 
-int SendMessageNext (qsocket_t *sock)
+static int SendMessageNext (qsocket_t *sock)
 {
 	unsigned int	packetLen;
 	unsigned int	dataLen;
@@ -238,7 +240,7 @@ int SendMessageNext (qsocket_t *sock)
 }
 
 
-int ReSendMessage (qsocket_t *sock)
+static int ReSendMessage (qsocket_t *sock)
 {
 	unsigned int	packetLen;
 	unsigned int	dataLen;
@@ -463,7 +465,7 @@ int	Datagram_GetMessage (qsocket_t *sock)
 }
 
 
-void PrintStats(qsocket_t *s)
+static void PrintStats(qsocket_t *s)
 {
 	Con_Printf("canSend = %4u   \n", s->canSend);
 	Con_Printf("sendSeq = %4u   ", s->sendSequence);
@@ -471,7 +473,7 @@ void PrintStats(qsocket_t *s)
 	Con_Printf("\n");
 }
 
-void NET_Stats_f (void)
+static void NET_Stats_f (void)
 {
 	qsocket_t	*s;
 
@@ -548,10 +550,10 @@ static int		testPollCount;
 static int		testDriver;
 static int		testSocket;
 
-static void Test_Poll(void);
-PollProcedure	testPollProcedure = {NULL, 0.0, Test_Poll};
+static void Test_Poll (void);
+static PollProcedure	testPollProcedure = {NULL, 0.0, Test_Poll};
 
-static void Test_Poll(void)
+static void Test_Poll (void)
 {
 	struct qsockaddr clientaddr;
 	int		control;
@@ -647,6 +649,7 @@ static void Test_f (void)
 		if (dfunc.GetAddrFromName(host, &sendaddr) != -1)
 			break;
 	}
+
 	if (net_landriverlevel == net_numlandrivers)
 	{
 		Con_Printf("Could not resolve %s\n", host);
@@ -681,10 +684,10 @@ static qboolean test2InProgress = false;
 static int		test2Driver;
 static int		test2Socket;
 
-static void Test2_Poll(void);
-PollProcedure	test2PollProcedure = {NULL, 0.0, Test2_Poll};
+static void Test2_Poll (void);
+static PollProcedure	test2PollProcedure = {NULL, 0.0, Test2_Poll};
 
-static void Test2_Poll(void)
+static void Test2_Poll (void)
 {
 	struct qsockaddr clientaddr;
 	int		control;
@@ -1004,7 +1007,6 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 		}
 
 		// send the response
-
 		SZ_Clear(&net_message);
 		// save space for the header, filled in later
 		MSG_WriteLong(&net_message, 0);
