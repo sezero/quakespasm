@@ -142,7 +142,7 @@ SYSOBJ_NET := net_sdl.o net_sdlnet.o
 else
 SYSOBJ_NET := net_bsd.o net_udp.o
 endif
-SYSOBJ_SYS := pl_linux.o sys_sdl.o
+SYSOBJ_SYS := pl_linux.o sys_sdl_unix.o
 SYSOBJ_MAIN:= main_sdl.o
 SYSOBJ_RES :=
 

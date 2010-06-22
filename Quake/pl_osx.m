@@ -33,9 +33,10 @@ void PL_VID_Shutdown (void)
 {
 }
 
-void PL_ErrorDialog(const char *text)
+void PL_ErrorDialog(const char *errorMsg)
 {
-    NSString *msg = [NSString stringWithCString:text encoding:NSASCIIStringEncoding];
-    NSRunAlertPanel(nil, msg, nil, nil, nil);
+    NSRunCriticalAlertPanel(@"Quake Error",
+			    [NSString stringWithUTF8String:errorMsg],
+			    @"OK", nil, nil);
 }
 

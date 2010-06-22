@@ -25,40 +25,41 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #include "SDL_syswm.h"
 
-HICON icon;
+static HICON icon;
 
 void PL_SetWindowIcon (void)
 {
-    HINSTANCE handle;
-    SDL_SysWMinfo wminfo;
-    HWND hwnd;
+	HINSTANCE handle;
+	SDL_SysWMinfo wminfo;
+	HWND hwnd;
 
-    handle = GetModuleHandle(NULL);
-    icon = LoadIcon(handle, "icon");
+	handle = GetModuleHandle(NULL);
+	icon = LoadIcon(handle, "icon");
 
-    if (!icon)
-        return; // no icon in executable
+	if (!icon)
+		return;	/* no icon in the exe */
 
-    SDL_VERSION(&wminfo.version);
+	SDL_VERSION(&wminfo.version);
 
-    if (SDL_GetWMInfo(&wminfo) != 1)
-        return; // wrong SDL version
+	if (SDL_GetWMInfo(&wminfo) != 1)
+		return;	/* wrong SDL version */
 
-    hwnd = wminfo.window;
+	hwnd = wminfo.window;
 #ifdef _WIN64
-    SetClassLongPtr(hwnd, GCLP_HICON, (LONG_PTR) icon);
+	SetClassLongPtr(hwnd, GCLP_HICON, (LONG_PTR) icon);
 #else
-    SetClassLong(hwnd, GCL_HICON, (LONG) icon);
+	SetClassLong(hwnd, GCL_HICON, (LONG) icon);
 #endif
 }
 
 void PL_VID_Shutdown (void)
 {
-    DestroyIcon(icon);
+	DestroyIcon(icon);
 }
 
-void PL_ErrorDialog(const char *text)
+void PL_ErrorDialog(const char *errorMsg)
 {
-    MessageBox(NULL, text, "Quake Error", MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
+	MessageBox (NULL, errorMsg, "Quake Error",
+			MB_OK | MB_SETFOREGROUND | MB_ICONSTOP);
 }
 

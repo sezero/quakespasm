@@ -20,39 +20,38 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
+#ifndef WIN32_LEAN_AND_MEAN
+#define WIN32_LEAN_AND_MEAN
+#endif
+#include <windows.h>
+
 #include "quakedef.h"
 
 #include <sys/types.h>
-#ifdef _WIN32
+#include <errno.h>
 #include <io.h>
 #include <direct.h>
-#include <errno.h>
-#else
-#include <errno.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/time.h>
-#include <fcntl.h>
-#include <time.h>
-#endif
 
 #include "SDL.h"
 
-#define CONSOLE_ERROR_TIMEOUT	60.0	/* # of seconds to wait on Sys_Error running */
+
 qboolean		isDedicated;
-static qboolean		sc_return_on_enter = false;
+
+static HANDLE		hinput, houtput;
 
 #define	MAX_HANDLES		32	/* johnfitz -- was 10 */
-FILE			*sys_handles[MAX_HANDLES];
+static FILE		*sys_handles[MAX_HANDLES];
 
-int findhandle (void)
+
+static int findhandle (void)
 {
 	int i;
 
-	for (i=1 ; i<MAX_HANDLES ; i++)
+	for (i = 1; i < MAX_HANDLES; i++)
+	{
 		if (!sys_handles[i])
 			return i;
-
+	}
 	Sys_Error ("out of handles");
 	return -1;
 }
@@ -73,7 +72,7 @@ int Sys_filelength (FILE *f)
 int Sys_FileOpenRead (char *path, int *hndl)
 {
 	FILE	*f;
-	int		i, retval;
+	int	i, retval;
 
 	i = findhandle ();
 	f = fopen(path, "rb");
@@ -144,106 +143,94 @@ int Sys_FileTime (char *path)
 	return -1;
 }
 
+void Sys_Init (void)
+{
+	if (isDedicated)
+	{
+		if (!AllocConsole ())
+		{
+			isDedicated = false;	/* so that we have a graphical error dialog */
+			Sys_Error ("Couldn't create dedicated server console");
+		}
+
+		hinput = GetStdHandle (STD_INPUT_HANDLE);
+		houtput = GetStdHandle (STD_OUTPUT_HANDLE);
+	}
+}
+
 void Sys_mkdir (char *path)
 {
-#ifdef _WIN32
 	int rc = _mkdir (path);
-#else
-	int rc = mkdir (path, 0777);
-#endif
 	if (rc != 0 && errno != EEXIST)
 		Sys_Error("Unable to create directory %s", path);
 }
 
+static const char errortxt1[] = "\nERROR-OUT BEGIN\n\n";
+static const char errortxt2[] = "\nQUAKE ERROR: ";
 
 void Sys_Error (const char *error, ...)
 {
 	va_list		argptr;
-	char		text[1024], text2[1024];
-	const char	text3[] = "Press Enter to exit\n";
-	const char	text4[] = "***********************************\n";
-	const char	text5[] = "\n";
-	double		starttime;
-	static int	in_sys_error1 = 0;
-	static int	in_sys_error2 = 0;
-	static int	in_sys_error3 = 0;
-
-	if (!in_sys_error3)
-	{
-		in_sys_error3 = 1;
-	}
-
-	Host_Shutdown ();
-
-	//TODO: use OS messagebox here if possible
-	// (windows, os x and linux shouldn't be a problem)
-	//implement this in pl_*, which contains all the
-	// platform dependent code
+	char		text[1024];
+	DWORD		dummy;
 
 	va_start (argptr, error);
 	vsprintf (text, error, argptr);
 	va_end (argptr);
 
 	if (isDedicated)
-	{
-		sprintf (text2, "ERROR: %s\n", text);
-		printf ("%s", text5);
-		printf ("%s", text4);
-		printf ("%s", text2);
-		printf ("%s", text3);
-		printf ("%s", text4);
-
-		starttime = Sys_FloatTime ();
-		sc_return_on_enter = true;	// so Enter will get us out of here
-
-		while (!Sys_ConsoleInput () &&
-			((Sys_FloatTime () - starttime) < CONSOLE_ERROR_TIMEOUT))
-		{
-		}
-
-		if (!in_sys_error1)
-		{
-			in_sys_error1 = 1;
-			Host_Shutdown ();
-		}
-	}
+		WriteFile (houtput, errortxt1, strlen(errortxt1), &dummy, NULL);
+	/* SDL will put these into its own stderr log,
+	   so print to stderr even in graphical mode. */
+	fputs (errortxt1, stderr);
+	Host_Shutdown ();
+	fputs (errortxt2, stderr);
+	fputs (text, stderr);
+	fputs ("\n\n", stderr);
+	if (!isDedicated)
+		PL_ErrorDialog(text);
 	else
 	{
-		PL_ErrorDialog(text);
+		WriteFile (houtput, errortxt2, strlen(errortxt2), &dummy, NULL);
+		WriteFile (houtput, text,      strlen(text),      &dummy, NULL);
+		WriteFile (houtput, "\r\n",    2,		  &dummy, NULL);
+		SDL_Delay (3000);	/* show the console 3 more seconds */
 	}
 
 // shut down QHOST hooks if necessary
-	if (!in_sys_error2)
-	{
-		in_sys_error2 = 1;
-	//	DeinitConProc ();
-	}
+//	DeinitConProc ();
 
 	exit (1);
 }
 
 void Sys_Printf (const char *fmt, ...)
 {
-	va_list argptr;
+	va_list		argptr;
+	char		text[1024];
+	DWORD		dummy;
 
-// always print to the console
-//	if (isDedicated)
-//	{
-		va_start(argptr, fmt);
-		vprintf(fmt, argptr);
-		va_end(argptr);
-//	}
+	va_start (argptr,fmt);
+	vsprintf (text, fmt, argptr);
+	va_end (argptr);
+
+	if (isDedicated)
+	{
+		WriteFile(houtput, text, strlen(text), &dummy, NULL);
+	}
+	else
+	{
+	/* SDL will put these into its own stdout log,
+	   so print to stdout even in graphical mode. */
+		fputs (text, stdout);
+	}
 }
 
 void Sys_Quit (void)
 {
 	Host_Shutdown();
 
-//	if (isDedicated)
-//		FreeConsole ();
-
-// shut down QHOST hooks if necessary
-//	DeinitConProc ();
+	if (isDedicated)
+		FreeConsole ();
 
 	exit (0);
 }
@@ -255,53 +242,70 @@ double Sys_FloatTime (void)
 
 char *Sys_ConsoleInput (void)
 {
-#if !defined(_WIN32)
 	static char	con_text[256];
-	static int	textlen;
-	char		c;
-	fd_set		set;
-	struct timeval	timeout;
+	static int		textlen;
+	INPUT_RECORD	recs[1024];
+	int		ch;
+	DWORD		dummy, numread, numevents;
 
 	if (!isDedicated)
 		return NULL;	// no stdin necessary in graphical mode
 
-	FD_ZERO (&set);
-	FD_SET (0, &set);	// stdin
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 0;
-
-	while (select (1, &set, NULL, NULL, &timeout))
+	for ( ;; )
 	{
-		read (0, &c, 1);
-		if (c == '\n' || c == '\r')
-		{
-			con_text[textlen] = '\0';
-			textlen = 0;
-			return con_text;
-		}
-		else if (c == 8)
-		{
-			if (textlen)
-			{
-				textlen--;
-				con_text[textlen] = '\0';
-			}
-			continue;
-		}
-		con_text[textlen] = c;
-		textlen++;
-		if (textlen < sizeof(con_text))
-			con_text[textlen] = '\0';
-		else
-		{
-		// buffer is full
-			textlen = 0;
-			con_text[0] = '\0';
-			Sys_Printf("\nConsole input too long!\n");
+		if (!GetNumberOfConsoleInputEvents (hinput, &numevents))
+			Sys_Error ("Error getting # of console events");
+
+		if (numevents <= 0)
 			break;
+
+		if (!ReadConsoleInput(hinput, recs, 1, &numread))
+			Sys_Error ("Error reading console input");
+
+		if (numread != 1)
+			Sys_Error ("Couldn't read console input");
+
+		if (recs[0].EventType == KEY_EVENT)
+		{
+			if (!recs[0].Event.KeyEvent.bKeyDown)
+			{
+				ch = recs[0].Event.KeyEvent.uChar.AsciiChar;
+
+				switch (ch)
+				{
+				case '\r':
+					WriteFile(houtput, "\r\n", 2, &dummy, NULL);
+
+					if (textlen)
+					{
+						con_text[textlen] = 0;
+						textlen = 0;
+						return con_text;
+					}
+
+					break;
+
+				case '\b':
+					WriteFile(houtput, "\b \b", 3, &dummy, NULL);
+					if (textlen)
+					{
+						textlen--;
+					}
+					break;
+
+				default:
+					if (ch >= ' ')
+					{
+						WriteFile(houtput, &ch, 1, &dummy, NULL);
+						con_text[textlen] = ch;
+						textlen = (textlen + 1) & 0xff;
+					}
+
+					break;
+				}
+			}
 		}
 	}
-#endif	/* ! _WIN32 */
 
 	return NULL;
 }

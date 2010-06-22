@@ -43,6 +43,8 @@ int main(int argc, char *argv[])
 
 	isDedicated = (COM_CheckParm("-dedicated") != 0);
 
+	Sys_Init();
+
 	// default memory size
 	parms.memsize = DEFAULT_MEMORY;
 
