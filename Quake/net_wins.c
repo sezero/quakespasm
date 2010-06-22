@@ -108,7 +108,7 @@ sys_socket_t WINS_Init (void)
 		if (err != 0)
 		{
 			Con_SafePrintf ("Winsock initialization failed.\n");
-			return -1;
+			return INVALID_SOCKET;
 		}
 	}
 	winsock_initialized++;
