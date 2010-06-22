@@ -38,6 +38,7 @@ static in_addr_t	myAddr;
 
 sys_socket_t UDP_Init (void)
 {
+	int	err;
 	char	*colon;
 	char	buff[MAXHOSTNAMELEN];
 	struct hostent		*local;
@@ -50,7 +51,9 @@ sys_socket_t UDP_Init (void)
 	myAddr = htonl(INADDR_LOOPBACK);
 	if (gethostname(buff, MAXHOSTNAMELEN) != 0)
 	{
-		Con_SafePrintf("UDP_Init: WARNING: gethostname failed\n");
+		err = SOCKETERRNO;
+		Con_SafePrintf("UDP_Init: gethostname failed (%s)\n",
+							socketerror(err));
 	}
 	else
 	{
@@ -58,7 +61,8 @@ sys_socket_t UDP_Init (void)
 		local = gethostbyname(buff);
 		if (local == NULL)
 		{
-			Con_SafePrintf("UDP_Init: WARNING: gethostbyname failed\n");
+			Con_SafePrintf("UDP_Init: gethostbyname failed (%s)\n",
+							hstrerror(h_errno));
 		}
 		else
 		{
@@ -124,9 +128,14 @@ sys_socket_t UDP_OpenSocket (int port)
 	sys_socket_t newsocket;
 	struct sockaddr_in address;
 	int _true = 1;
+	int err;
 
 	if ((newsocket = socket (PF_INET, SOCK_DGRAM, IPPROTO_UDP)) == INVALID_SOCKET)
+	{
+		err = SOCKETERRNO;
+		Con_SafePrintf("UDP_OpenSocket: %s\n", socketerror(err));
 		return INVALID_SOCKET;
+	}
 
 	if (ioctlsocket (newsocket, FIONBIO, &_true) == SOCKET_ERROR)
 		goto ErrorReturn;
@@ -139,6 +148,8 @@ sys_socket_t UDP_OpenSocket (int port)
 		return newsocket;
 
 ErrorReturn:
+	err = SOCKETERRNO;
+	Con_SafePrintf("UDP_OpenSocket: %s\n", socketerror(err));
 	UDP_CloseSocket (newsocket);
 	return INVALID_SOCKET;
 }
@@ -228,7 +239,8 @@ sys_socket_t UDP_CheckNewConnections (void)
 
 	if (ioctl (net_acceptsocket, FIONREAD, &available) == -1)
 	{
-		Sys_Error ("UDP: ioctlsocket (FIONREAD) failed");
+		int err = SOCKETERRNO;
+		Sys_Error ("UDP: ioctlsocket (FIONREAD) failed (%s)", socketerror(err));
 	}
 	if (available)
 		return net_acceptsocket;
@@ -250,6 +262,7 @@ int UDP_Read (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr)
 		int err = SOCKETERRNO;
 		if (err == EWOULDBLOCK || err == ECONNREFUSED)
 			return 0;
+		Con_SafePrintf ("UDP_Read, recvfrom: %s\n", socketerror(err));
 	}
 	return ret;
 }
@@ -264,6 +277,8 @@ static int UDP_MakeSocketBroadcastCapable (sys_socket_t socketid)
 	if (setsockopt(socketid, SOL_SOCKET, SO_BROADCAST, (char *)&i, sizeof(i))
 								 == SOCKET_ERROR)
 	{
+		int err = SOCKETERRNO;
+		Con_SafePrintf ("UDP, setsockopt: %s\n", socketerror(err));
 		return -1;
 	}
 	net_broadcastsocket = socketid;
@@ -305,6 +320,7 @@ int UDP_Write (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr
 		int err = SOCKETERRNO;
 		if (err == EWOULDBLOCK)
 			return 0;
+		Con_SafePrintf ("UDP_Write, sendto: %s\n", socketerror(err));
 	}
 	return ret;
 }
@@ -376,7 +392,7 @@ int UDP_GetNameFromAddr (struct qsockaddr *addr, char *name)
 
 //=============================================================================
 
-int UDP_GetAddrFromName(char *name, struct qsockaddr *addr)
+int UDP_GetAddrFromName (char *name, struct qsockaddr *addr)
 {
 	struct hostent *hostentry;
 

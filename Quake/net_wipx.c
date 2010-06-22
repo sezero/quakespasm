@@ -37,6 +37,7 @@ static struct sockaddr_ipx broadcastaddr;
 /* externs from net_wins.c: */
 extern qboolean winsock_initialized;
 extern WSADATA		winsockdata;
+extern const char *__WSAE_StrError (int);
 
 #define IPXSOCKETS 18
 static sys_socket_t ipxsocket[IPXSOCKETS];
@@ -59,7 +60,8 @@ sys_socket_t WIPX_Init (void)
 		err = WSAStartup(MAKEWORD(1,1), &winsockdata);
 		if (err != 0)
 		{
-			Con_SafePrintf("Winsock initialization failed.\n");
+			Con_SafePrintf("Winsock initialization failed (%s)\n",
+					socketerror(err));
 			return INVALID_SOCKET;
 		}
 	}
@@ -71,7 +73,9 @@ sys_socket_t WIPX_Init (void)
 	// determine my name & address
 	if (gethostname(buff, MAXHOSTNAMELEN) != 0)
 	{
-		Con_SafePrintf("WIPX_Init: WARNING: gethostname failed\n");
+		err = SOCKETERRNO;
+		Con_SafePrintf("WIPX_Init: gethostname failed (%s)\n",
+							socketerror(err));
 	}
 	else
 	{
@@ -138,6 +142,7 @@ void WIPX_Listen (qboolean state)
 
 sys_socket_t WIPX_OpenSocket (int port)
 {
+	int	err;
 	sys_socket_t	handle, newsocket;
 	struct sockaddr_ipx address;
 	u_long _true = 1;
@@ -149,11 +154,14 @@ sys_socket_t WIPX_OpenSocket (int port)
 	}
 	if (handle == IPXSOCKETS)
 	{
+		Con_SafePrintf("WIPX_OpenSocket: Out of free IPX handles.\n");
 		return INVALID_SOCKET;
 	}
 
 	if ((newsocket = socket (AF_IPX, SOCK_DGRAM, NSPROTO_IPX)) == INVALID_SOCKET)
 	{
+		err = SOCKETERRNO;
+		Con_SafePrintf("WIPX_OpenSocket: %s\n", socketerror(err));
 		return INVALID_SOCKET;
 	}
 
@@ -177,12 +185,15 @@ sys_socket_t WIPX_OpenSocket (int port)
 
 	if (ipxAvailable)
 	{
-		Sys_Error ("IPX bind failed");
+		err = SOCKETERRNO;
+		Sys_Error ("IPX bind failed (%s)", socketerror(err));
 		return INVALID_SOCKET;	/* not reached */
 	}
 	/* else: we are still in init phase, no need to error */
 
 ErrorReturn:
+	err = SOCKETERRNO;
+	Con_SafePrintf("WIPX_OpenSocket: %s\n", socketerror(err));
 	closesocket (newsocket);
 	return INVALID_SOCKET;
 }
@@ -217,7 +228,8 @@ sys_socket_t WIPX_CheckNewConnections (void)
 
 	if (ioctlsocket (ipxsocket[net_acceptsocket], FIONREAD, &available) == SOCKET_ERROR)
 	{
-		Sys_Error ("WIPX: ioctlsocket (FIONREAD) failed");
+		int err = SOCKETERRNO;
+		Sys_Error ("WIPX: ioctlsocket (FIONREAD) failed (%s)", socketerror(err));
 	}
 	if (available)
 		return net_acceptsocket;
@@ -240,6 +252,7 @@ int WIPX_Read (sys_socket_t handle, byte *buf, int len, struct qsockaddr *addr)
 		int err = SOCKETERRNO;
 		if (err == EWOULDBLOCK || err == ECONNREFUSED)
 			return 0;
+		Con_SafePrintf ("WIPX_Read, recvfrom: %s\n", socketerror(err));
 	}
 
 	if (ret < 4)
@@ -278,6 +291,7 @@ int WIPX_Write (sys_socket_t handle, byte *buf, int len, struct qsockaddr *addr)
 		int err = SOCKETERRNO;
 		if (err == EWOULDBLOCK)
 			return 0;
+		Con_SafePrintf ("WIPX_Write, sendto: %s\n", socketerror(err));
 	}
 
 	return ret;
@@ -352,9 +366,9 @@ int WIPX_GetSocketAddr (sys_socket_t handle, struct qsockaddr *addr)
 	Q_memset(addr, 0, sizeof(struct qsockaddr));
 	if (getsockname(socketid, (struct sockaddr *)addr, &addrlen) != 0)
 	{
-		int err;
-		err = SOCKETERRNO;
+		int err = SOCKETERRNO;
 		/* FIXME: what action should be taken?... */
+		Con_SafePrintf ("WIPX, getsockname: %s\n", socketerror(err));
 	}
 
 	return 0;
@@ -370,7 +384,7 @@ int WIPX_GetNameFromAddr (struct qsockaddr *addr, char *name)
 
 //=============================================================================
 
-int WIPX_GetAddrFromName(char *name, struct qsockaddr *addr)
+int WIPX_GetAddrFromName (char *name, struct qsockaddr *addr)
 {
 	int		n;
 	char	buf[32];
