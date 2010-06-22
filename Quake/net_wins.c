@@ -80,6 +80,7 @@ static void WINS_GetLocalAddress (void)
 	if (gethostname(buff, MAXHOSTNAMELEN) == SOCKET_ERROR)
 		return;
 
+	buff[MAXHOSTNAMELEN - 1] = 0;
 	blocktime = Sys_FloatTime();
 	WSASetBlockingHook(BlockingHook);
 	local = gethostbyname(buff);
