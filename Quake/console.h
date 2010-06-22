@@ -64,6 +64,7 @@ void Con_LogCenterPrint (const char *str);
 //
 void LOG_Init (quakeparms_t *parms);
 void LOG_Close (void);
+void Con_DebugLog (const char *msg);
 
 #endif	/* __CONSOLE_H */
 
