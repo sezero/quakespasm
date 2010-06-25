@@ -682,63 +682,66 @@ void Key_WriteBindings (FILE *f)
 				fprintf (f, "bind \"%s\" \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
 }
 
-void History_Init (void)
+
+static void History_Init (void)
 {
-   int i, c;
-   FILE *hf;
+	int i, c;
+	FILE *hf;
 
-   for (i = 0; i < CMDLINES; i++) {
-      key_lines[i][0] = ']';
-      key_lines[i][1] = 0;
-   }
-   key_linepos = 1;
+	for (i = 0; i < CMDLINES; i++)
+	{
+		key_lines[i][0] = ']';
+		key_lines[i][1] = 0;
+	}
+	key_linepos = 1;
 
-//   if (cl_savehistory.value)
-      if ((hf = fopen(HISTORY_FILE_NAME, "rt")))
-      {
-         do
-         {
-            i = 1;
-            do
-            {
-               c = fgetc(hf);
-               key_lines[edit_line][i++] = c;
-            } while (c != '\n' && c != EOF && i < MAXCMDLINE);
-            key_lines[edit_line][i - 1] = 0;
-            edit_line = (edit_line + 1) & (CMDLINES - 1);
-         } while (c != EOF && edit_line < CMDLINES);
-         fclose(hf);
+//	if (cl_savehistory.value)
+	if ((hf = fopen(HISTORY_FILE_NAME, "rt")) != NULL)
+	{
+		do
+		{
+			i = 1;
+			do
+			{
+				c = fgetc(hf);
+				key_lines[edit_line][i++] = c;
+			} while (c != '\n' && c != EOF && i < MAXCMDLINE);
+			key_lines[edit_line][i - 1] = 0;
+			edit_line = (edit_line + 1) & (CMDLINES - 1);
+		} while (c != EOF && edit_line < CMDLINES);
+		fclose(hf);
 
-         history_line = edit_line = (edit_line - 1) & (CMDLINES - 1);
-         key_lines[edit_line][0] = ']';
-         key_lines[edit_line][1] = 0;
-      }
+		history_line = edit_line = (edit_line - 1) & (CMDLINES - 1);
+		key_lines[edit_line][0] = ']';
+		key_lines[edit_line][1] = 0;
+	}
 }
 
-void History_Shutdown (void)
+static void History_Shutdown (void)
 {
-   int i;
-   FILE *hf;
+	int i;
+	FILE *hf;
 
-//   if (cl_savehistory.value)
-      if ((hf = fopen(HISTORY_FILE_NAME, "wt")))
-      {
-         i = edit_line;
-         do
-         {
-            i = (i + 1) & (CMDLINES - 1);
-         } while (i != edit_line && !key_lines[i][1]);
+//	if (cl_savehistory.value)
+	if ((hf = fopen(HISTORY_FILE_NAME, "wt")) != NULL)
+	{
+		i = edit_line;
+		do
+		{
+			i = (i + 1) & (CMDLINES - 1);
+		} while (i != edit_line && !key_lines[i][1]);
 
-         do
-         {
-            // fprintf(hf, "%s\n", wcs2str(key_lines[i] + 1)); // Baker: I commented this line out because byte colored text isn't a feature in most ordinary engines
-            fprintf(hf, "%s\n", key_lines[i] + 1);
-            i = (i + 1) & (CMDLINES - 1);
-         } while (i != edit_line && key_lines[i][1]);
-         fclose(hf);
-      }
+		do
+		{
+		// Baker: I commented this line out because byte colored
+		//	  text isn't a feature in most ordinary engines.
+		//	fprintf(hf, "%s\n", wcs2str(key_lines[i] + 1));
+			fprintf(hf, "%s\n", key_lines[i] + 1);
+			i = (i + 1) & (CMDLINES - 1);
+		} while (i != edit_line && key_lines[i][1]);
+		fclose(hf);
+	}
 }
-
 
 /*
 ===================
@@ -751,10 +754,9 @@ void Key_Init (void)
 
 	BuildKeyMaps();
 
-        History_Init (); 
+	History_Init ();
 
-#if 0 // This section of code is now done in History_Init 
-
+#if 0 /* This section of code is now done in History_Init */
 	for (i=0 ; i<32 ; i++)
 	{
 		key_lines[i][0] = ']';
