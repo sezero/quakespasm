@@ -890,6 +890,9 @@ void Host_Shutdown(void)
 
 	Host_WriteConfiguration ();
 
+	if (con_initialized)
+	History_Shutdown ();
+
 	CDAudio_Shutdown ();
 	NET_Shutdown ();
 	S_Shutdown();
