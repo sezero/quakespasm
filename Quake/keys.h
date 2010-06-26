@@ -155,5 +155,8 @@ void Key_WriteBindings (FILE *f);
 void Key_SetBinding (int keynum, char *binding);
 void Key_ClearStates (void);
 
+void History_Init (void);
+void History_Shutdown (void);
+
 #endif	/* _QUAKE_KEYS_H */
 

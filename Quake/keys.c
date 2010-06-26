@@ -683,7 +683,7 @@ void Key_WriteBindings (FILE *f)
 }
 
 
-static void History_Init (void)
+void History_Init (void)
 {
 	int i, c;
 	FILE *hf;
@@ -717,7 +717,7 @@ static void History_Init (void)
 	}
 }
 
-static void History_Shutdown (void)
+void History_Shutdown (void)
 {
 	int i;
 	FILE *hf;
@@ -757,7 +757,7 @@ void Key_Init (void)
 	History_Init ();
 
 #if 0 /* This section of code is now done in History_Init */
-	for (i=0 ; i<32 ; i++)
+	for (i = 0; i < 32; i++)
 	{
 		key_lines[i][0] = ']';
 		key_lines[i][1] = 0;
