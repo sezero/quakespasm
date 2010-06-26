@@ -890,15 +890,14 @@ void Host_Shutdown(void)
 
 	Host_WriteConfiguration ();
 
-	if (con_initialized)
-	History_Shutdown ();
-
-	CDAudio_Shutdown ();
 	NET_Shutdown ();
-	S_Shutdown();
 
 	if (cls.state != ca_dedicated)
 	{
+		if (con_initialized)
+			History_Shutdown ();
+		CDAudio_Shutdown ();
+		S_Shutdown ();
 		IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
 		VID_Shutdown();
 	}
