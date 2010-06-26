@@ -2134,11 +2134,7 @@ void Host_Startdemos_f (void)
 	int		i, c;
 
 	if (cls.state == ca_dedicated)
-	{
-		if (!sv.active)
-			Cbuf_AddText ("map start\n");
 		return;
-	}
 
 	c = Cmd_Argc() - 1;
 	if (c > MAX_DEMOS)

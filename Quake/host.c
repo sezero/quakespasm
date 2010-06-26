@@ -852,13 +852,14 @@ void Host_Init (quakeparms_t *parms)
 		CDAudio_Init ();
 		Sbar_Init ();
 		CL_Init ();
+
+		Cbuf_InsertText ("exec quake.rc\n");
+	//	Cbuf_InsertText ("exec fitzquake.rc\n"); //johnfitz (inserted second so it'll be executed first)
+
+	// johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
+		// note: two leading newlines because the command buffer swallows one of them.
+		Cbuf_AddText ("\n\nvid_unlock\n");
 	}
-
-	Cbuf_InsertText ("exec quake.rc\n");
-//	Cbuf_InsertText ("exec fitzquake.rc\n"); //johnfitz (inserted second so it'll be executed first)
-
-	Cbuf_AddText ("\n\nvid_unlock\n"); //johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
-	//note: added two newlines to the front becuase the command buffer swallows one of them.
 
 	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
 	host_hunklevel = Hunk_LowMark ();
@@ -866,6 +867,15 @@ void Host_Init (quakeparms_t *parms)
 	host_initialized = true;
 
 	Con_Printf ("\n========= Quake Initialized =========\n\n"); //johnfitz - was Sys_Printf
+
+	if (cls.state == ca_dedicated)
+	{
+		Cbuf_AddText ("exec autoexec.cfg\n");
+		Cbuf_AddText ("stuffcmds");
+		Cbuf_Execute ();
+		if (!sv.active)
+			Cbuf_AddText ("map start\n");
+	}
 }
 
 
