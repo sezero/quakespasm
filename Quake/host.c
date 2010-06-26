@@ -815,20 +815,18 @@ void Host_Init (quakeparms_t *parms)
 	Cmd_Init ();
 	LOG_Init (parms);
 	Cvar_Init (); //johnfitz
-	V_Init ();
-	Chase_Init ();
 	COM_Init (parms->basedir);
 	Host_InitLocal ();
 	W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
-	Key_Init ();
-	Con_Init ();
-	M_Init ();
+	if (cls.state != ca_dedicated)
+	{
+		Key_Init ();
+		Con_Init ();
+	}
 	PR_Init ();
 	Mod_Init ();
 	NET_Init ();
 	SV_Init ();
-	ExtraMaps_Init (); //johnfitz
-	Modlist_Init (); //johnfitz
 
 	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
 	Con_Printf ("%4.1f megabyte heap\n",parms->memsize/ (1024*1024.0));
@@ -839,6 +837,11 @@ void Host_Init (quakeparms_t *parms)
 		if (!host_colormap)
 			Sys_Error ("Couldn't load gfx/colormap.lmp");
 
+		V_Init ();
+		Chase_Init ();
+		M_Init ();
+		ExtraMaps_Init (); //johnfitz
+		Modlist_Init (); //johnfitz
 		VID_Init ();
 		IN_Init (); // moved here, SDL inits the input system with the video system -- kristian
 		TexMgr_Init (); //johnfitz
