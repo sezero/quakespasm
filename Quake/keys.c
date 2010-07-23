@@ -267,14 +267,16 @@ void Key_Console (int key)
 		return;
 
 	case K_PGUP:
-	//case K_MWHEELUP:
+	// Mouse events never reach the console, especially in windowed mode
+	// when mouse is released to the window manager
+	// case K_MWHEELUP:
 		con_backscroll += keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll > con_totallines - (vid.height>>3) - 1)
 			con_backscroll = con_totallines - (vid.height>>3) - 1;
 		return;
 
 	case K_PGDN:
-	//case K_MWHEELDOWN:
+	// case K_MWHEELDOWN:
 		con_backscroll -= keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll < 0)
 			con_backscroll = 0;
@@ -428,7 +430,7 @@ void Key_Console (int key)
 
 //============================================================================
 
-char chat_buffer[32];
+char chat_buffer[MAXCMDLINE];
 qboolean team_message = false;
 
 void Key_Message (int key)
@@ -471,7 +473,7 @@ void Key_Message (int key)
 		return;
 	}
 
-	if (chat_bufferlen == 31)
+	if (chat_bufferlen == sizeof(chat_buffer)-1)
 		return; // all full
 
 	chat_buffer[chat_bufferlen++] = key;
@@ -941,7 +943,7 @@ void Key_Event (int key, qboolean down)
 //
 // during demo playback, most keys bring up the main menu
 //
-	if (cls.demoplayback && down && consolekeys[key] && key_dest == key_game)
+	if (cls.demoplayback && down && consolekeys[key] && key_dest == key_game && key != K_TAB)
 	{
 		M_ToggleMenu_f ();
 		return;

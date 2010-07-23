@@ -1043,11 +1043,11 @@ Draws the last few lines of output transparently over the game top
 */
 void Con_DrawNotify (void)
 {
-	int		x, v;
+	int	x, v;
 	char	*text;
-	int		i;
+	int	i;
 	float	time;
-	extern char chat_buffer[];
+	extern	char chat_buffer[];
 
 	GL_SetCanvas (CANVAS_CONSOLE); //johnfitz
 	v = vid.conheight; //johnfitz
@@ -1077,27 +1077,36 @@ void Con_DrawNotify (void)
 
 	if (key_dest == key_message)
 	{
-		char *say_prompt; //johnfitz
+		// modified by S.A to support longer lines
+
+	   	char	c[MAXCMDLINE+1], *say_prompt; // extra space == +1
+                int	say_length, len;
 
 		clearnotify = 0;
-
 		x = 0;
 
-		//johnfitz -- distinguish say and say_team
 		if (team_message)
 			say_prompt = "say_team:";
 		else
 			say_prompt = "say:";
-		//johnfitz
+
+		say_length = strlen(say_prompt);
 
 		Draw_String (8, v, say_prompt); //johnfitz
 
-		while(chat_buffer[x])
+		text = strcpy(c, chat_buffer);
+		len  = strlen(chat_buffer);
+		text[len] = ' ';
+		text[len+1] = 0;
+		if (len >= con_linewidth - say_length)
+			text += 1 + len + say_length - con_linewidth;
+
+		while(*text)
 		{
-			Draw_Character ( (x+strlen(say_prompt)+2)<<3, v, chat_buffer[x]); //johnfitz
-			x++;
+			Draw_Character ( (x+say_length+2)<<3, v, *text); //johnfitz
+                        x++; text++;
 		}
-		Draw_Character ( (x+strlen(say_prompt)+2)<<3, v, 10+((int)(realtime*con_cursorspeed)&1)); //johnfitz
+		Draw_Character ( (x+say_length+1)<<3, v, 10+((int)(realtime*con_cursorspeed)&1)); 
 		v += 8;
 
 		scr_tileclear_updates = 0; //johnfitz
@@ -1113,11 +1122,11 @@ The input line scrolls horizontally if typing goes beyond the right edge
 */
 void Con_DrawInput (void)
 {
-	extern qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
-	extern double key_blinktime;
-	extern int key_insert;
-	int		i, len;
-	char	c[256], *text;
+	extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
+	extern	double key_blinktime;
+	extern	int key_insert;
+	int	i, len;
+	char	c[MAXCMDLINE], *text;
 
 	if (key_dest != key_console && !con_forcedup)
 		return;		// don't draw anything
