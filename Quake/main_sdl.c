@@ -100,10 +100,12 @@ int main(int argc, char *argv[])
 			case SDL_ACTIVEEVENT:
 				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
 				{
-					if (event.active.gain)
-						S_UnblockSound();
-					else
-						S_BlockSound();
+					if (!COM_CheckParm("-bgsound")) {
+						if (event.active.gain)
+							S_UnblockSound();
+						else 
+							S_BlockSound();
+					}
 				}
 				break;
 			case SDL_MOUSEMOTION:
