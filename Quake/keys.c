@@ -28,7 +28,6 @@ key up events are sent even if in console mode
 */
 
 #define		HISTORY_FILE_NAME "history.txt"
-#define		MAXCMDLINE 256
 #define		CMDLINES 32
 
 char		key_lines[CMDLINES][MAXCMDLINE];

@@ -60,7 +60,6 @@ int			con_vislines;
 
 qboolean	con_debuglog = false;
 
-#define		MAXCMDLINE	256
 extern	char	key_lines[32][MAXCMDLINE];
 extern	int		edit_line;
 extern	int		key_linepos;
@@ -1079,8 +1078,8 @@ void Con_DrawNotify (void)
 	{
 		// modified by S.A to support longer lines
 
-	   	char	c[MAXCMDLINE+1], *say_prompt; // extra space == +1
-                int	say_length, len;
+		char	c[MAXCMDLINE+1], *say_prompt; // extra space == +1
+		int	say_length, len;
 
 		clearnotify = 0;
 		x = 0;
@@ -1104,7 +1103,7 @@ void Con_DrawNotify (void)
 		while(*text)
 		{
 			Draw_Character ( (x+say_length+2)<<3, v, *text); //johnfitz
-                        x++; text++;
+			x++; text++;
 		}
 		Draw_Character ( (x+say_length+1)<<3, v, 10+((int)(realtime*con_cursorspeed)&1)); 
 		v += 8;

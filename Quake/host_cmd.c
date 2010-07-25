@@ -20,8 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#define		MAXCMDLINE	256
-
 #include "arch_def.h"
 #include "net_sys.h"	/* for net_defs.h */
 #include <dirent.h>
