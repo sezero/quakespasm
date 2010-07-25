@@ -801,8 +801,9 @@ void S_BlockSound (void)
 /* FIXME: do we really need the blocking at the
  * driver level?
  */
-	if (sound_started && ++snd_blocked == 1)
+	if (sound_started && snd_blocked == 0)	/* ++snd_blocked == 1 */
 	{
+		snd_blocked  = 1;
 		S_ClearBuffer ();
 		if (shm)
 			SNDDMA_BlockSound();
@@ -813,8 +814,9 @@ void S_UnblockSound (void)
 {
 	if (!sound_started || !snd_blocked)
 		return;
-	if (--snd_blocked == 0)
+	if (snd_blocked == 1)			/* --snd_blocked == 0 */
 	{
+		snd_blocked  = 0;
 		SNDDMA_UnblockSound();
 		S_ClearBuffer ();
 	}
