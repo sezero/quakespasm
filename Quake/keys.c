@@ -721,14 +721,11 @@ void History_Shutdown (void)
 			i = (i + 1) & (CMDLINES - 1);
 		} while (i != edit_line && !key_lines[i][1]);
 
-		do
+		while (i != edit_line && key_lines[i][1])
 		{
-		// Baker: I commented this line out because byte colored
-		//	  text isn't a feature in most ordinary engines.
-		//	fprintf(hf, "%s\n", wcs2str(key_lines[i] + 1));
 			fprintf(hf, "%s\n", key_lines[i] + 1);
 			i = (i + 1) & (CMDLINES - 1);
-		} while (i != edit_line && key_lines[i][1]);
+		}
 		fclose(hf);
 	}
 }
