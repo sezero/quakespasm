@@ -187,6 +187,7 @@ void Key_Console (int key)
 {
 	extern	int con_vislines;
 	extern	char key_tabpartial[MAXCMDLINE];
+	static  char current[MAXCMDLINE]="";
 
 	switch (key)
 	{
@@ -197,8 +198,9 @@ void Key_Console (int key)
 		Cbuf_AddText ("\n");
 		Con_Printf ("%s\n",key_lines[edit_line]);
 
-		// If the last two lines are identical, only store one (in history)
-		if (edit_line==0 || strcmp(key_lines[edit_line],key_lines[edit_line-1]))
+		// If the last two lines are identical, skip storing this line in history 
+		// by not incrementing edit_line
+		if (strcmp(key_lines[edit_line],key_lines[(edit_line-1)&31]))
 			edit_line = (edit_line + 1) & 31;
 
 		history_line = edit_line;
@@ -307,16 +309,15 @@ void Key_Console (int key)
 		return;
 
 	case K_UPARROW:
-		if (history_line == 0)
-			return;
+		// Needs rewriting as we have persistent history
+
+		// if (history_line == 0) return;
+		if (history_line == edit_line) {
+			Q_strcpy(current,key_lines[edit_line]);
+		};
 		key_tabpartial[0] = 0;
-		do
-		{
-			history_line = (history_line - 1) & 31;
-		} while (history_line != edit_line
-				&& !key_lines[history_line][1]);
-		if (history_line == edit_line)
-			history_line = (edit_line+1)&31;
+		history_line = (history_line - 1) & 31;
+
 		Q_strcpy(key_lines[edit_line], key_lines[history_line]);
 		key_linepos = Q_strlen(key_lines[edit_line]);
 		return;
@@ -324,30 +325,18 @@ void Key_Console (int key)
 	case K_DOWNARROW:
 		key_tabpartial[0] = 0;
 
-		if (history_line == edit_line)
-		{
-			//clear editline
-			key_lines[edit_line][1] = 0;
-			key_linepos = 1;
+		if (history_line == edit_line) 
 			return;
-		}
 
-		do {
-			history_line = (history_line + 1) & 31;
-		} while (history_line != edit_line
-			&& !key_lines[history_line][1]);
+		history_line = (history_line + 1) & 31;
+
 		if (history_line == edit_line)
-		{
-			key_lines[edit_line][0] = ']';
-			key_lines[edit_line][1] = 0;
-			key_linepos = 1;
-		}
+			Q_strcpy(key_lines[edit_line], current);
 		else
-		{
 			Q_strcpy(key_lines[edit_line], key_lines[history_line]);
-			key_linepos = Q_strlen(key_lines[edit_line]);
-		}
+		key_linepos = Q_strlen(key_lines[edit_line]);
 		return;
+
 	case 'c':
 		if (keydown[K_CTRL]) {
 			// Control+C (S.A)

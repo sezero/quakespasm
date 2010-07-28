@@ -921,7 +921,7 @@ void Con_TabComplete (void)
 		c = key_lines[edit_line] + key_linepos - 1; //start one space left of cursor
 		while (*c!=' ' && *c!='\"' && *c!=';' && c!=key_lines[edit_line])
 			c--;
-		c++; //start 1 char after the seperator we just found
+		c++; //start 1 char after the separator we just found
 	}
 	for (i = 0; c + i < key_lines[edit_line] + key_linepos; i++)
 		partial[i] = c[i];
@@ -1003,7 +1003,7 @@ void Con_TabComplete (void)
 		//use prev or next to find next match
 		match = keydown[K_SHIFT] ? t->prev->name : t->next->name;
 	}
-	Hunk_FreeToLowMark(mark); //it's okay to free it here becuase match is a pointer to persistent data
+	Hunk_FreeToLowMark(mark); //it's okay to free it here because match is a pointer to persistent data
 
 // insert new match into edit line
 	Q_strcpy (partial, match); //first copy match string
