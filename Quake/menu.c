@@ -1053,12 +1053,16 @@ void M_AdjustSliders (int dir)
 	switch (options_cursor)
 	{
 	case 3:	// console and menu scale
-		scr_scale.value += dir * .2;
+		scr_scale.value += dir * .1; // or .2
 		if (scr_scale.value < 1)
 			scr_scale.value = 1;
 		else if (scr_scale.value > 6)
 			scr_scale.value = 6;
 		Cvar_SetValue ("scr_scale", scr_scale.value);
+
+		// status bar size increases half as fast
+		Cvar_SetValue ("scr_sbarscale", (scr_scale.value - 1)/2 + 1);
+
 		Cvar_SetValue ("scr_conscale", scr_scale.value);
 		Cvar_SetValue ("scr_menuscale", scr_scale.value);
 		break;
