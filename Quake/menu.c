@@ -1030,7 +1030,7 @@ again:
 //#ifdef _WIN32
 //#define	OPTIONS_ITEMS	14
 //#else
-#define	OPTIONS_ITEMS	13
+#define	OPTIONS_ITEMS	14
 //#endif
 
 #define	SLIDER_RANGE	10
@@ -1082,7 +1082,15 @@ void M_AdjustSliders (int dir)
 			sensitivity.value = 11;
 		Cvar_SetValue ("sensitivity", sensitivity.value);
 		break;
-	case 6:	// music volume
+	case 6:	// statusbar alpha
+		scr_sbaralpha.value -= dir * 0.05;
+		if (scr_sbaralpha.value < 0)
+			scr_sbaralpha.value = 0;
+		else if (scr_sbaralpha.value > 1)
+			scr_sbaralpha.value = 1;
+		Cvar_SetValue ("scr_sbaralpha", scr_sbaralpha.value);
+		break;
+	case 7:	// music volume
 #ifdef _WIN32
 		bgmvolume.value += dir * 1.0;
 #else
@@ -1094,7 +1102,7 @@ void M_AdjustSliders (int dir)
 			bgmvolume.value = 1;
 		Cvar_SetValue ("bgmvolume", bgmvolume.value);
 		break;
-	case 7:	// sfx volume
+	case 8:	// sfx volume
 		sfxvolume.value += dir * 0.1;
 		if (sfxvolume.value < 0)
 			sfxvolume.value = 0;
@@ -1103,7 +1111,7 @@ void M_AdjustSliders (int dir)
 		Cvar_SetValue ("volume", sfxvolume.value);
 		break;
 
-	case 8:	// always run
+	case 9:	// always run
 		if (cl_forwardspeed.value > 200)
 		{
 			Cvar_SetValue ("cl_forwardspeed", 200);
@@ -1116,15 +1124,15 @@ void M_AdjustSliders (int dir)
 		}
 		break;
 
-	case 9:	// invert mouse
+	case 10:	// invert mouse
 		Cvar_SetValue ("m_pitch", -m_pitch.value);
 		break;
 
-	case 10:	// lookspring
+	case 11:	// lookspring
 		Cvar_SetValue ("lookspring", !lookspring.value);
 		break;
 
-	case 11:	// lookstrafe
+	case 12:	// lookstrafe
 		Cvar_SetValue ("lookstrafe", !lookstrafe.value);
 		break;
 	}
@@ -1185,28 +1193,32 @@ void M_Options_Draw (void)
 	r = (sensitivity.value - 1)/10;
 	M_DrawSlider (220, 72, r);
 
-	M_Print (16, 80, "          Music Volume");
-	r = bgmvolume.value;
+	M_Print (16, 80, "       Statusbar alpha");
+	r = (1.0 - scr_sbaralpha.value) ; // scr_sbaralpha range is 1.0 to 0.0
 	M_DrawSlider (220, 80, r);
 
-	M_Print (16, 88, "          Sound Volume");
-	r = sfxvolume.value;
+	M_Print (16, 88, "          Music Volume");
+	r = bgmvolume.value;
 	M_DrawSlider (220, 88, r);
 
-	M_Print (16, 96,  "            Always Run");
-	M_DrawCheckbox (220, 96, cl_forwardspeed.value > 200);
+	M_Print (16, 96, "          Sound Volume");
+	r = sfxvolume.value;
+	M_DrawSlider (220, 96, r);
 
-	M_Print (16, 104, "          Invert Mouse");
-	M_DrawCheckbox (220, 104, m_pitch.value < 0);
+	M_Print (16, 104,  "            Always Run");
+	M_DrawCheckbox (220, 104, cl_forwardspeed.value > 200);
 
-	M_Print (16, 112, "            Lookspring");
-	M_DrawCheckbox (220, 112, lookspring.value);
+	M_Print (16, 112, "          Invert Mouse");
+	M_DrawCheckbox (220, 112, m_pitch.value < 0);
 
-	M_Print (16, 120, "            Lookstrafe");
-	M_DrawCheckbox (220, 120, lookstrafe.value);
+	M_Print (16, 120, "            Lookspring");
+	M_DrawCheckbox (220, 120, lookspring.value);
+
+	M_Print (16, 128, "            Lookstrafe");
+	M_DrawCheckbox (220, 128, lookstrafe.value);
 
 	if (vid_menudrawfn)
-		M_Print (16, 128, "         Video Options");
+		M_Print (16, 136, "         Video Options");
 
 // cursor
 	M_DrawCharacter (200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
@@ -1236,7 +1248,7 @@ void M_Options_Key (int k)
 			Cbuf_AddText ("resetall\n"); //johnfitz
 			Cbuf_AddText ("exec default.cfg\n");
 			break;
-		case 12:
+		case 13:
 			M_Menu_Video_f ();
 			break;
 		default:
@@ -1268,10 +1280,10 @@ void M_Options_Key (int k)
 		break;
 	}
 
-	if (options_cursor == 12 && vid_menudrawfn == NULL)
+	if (options_cursor == OPTIONS_ITEMS - 1 && vid_menudrawfn == NULL)
 	{
 		if (k == K_UPARROW)
-			options_cursor = 11;
+			options_cursor = OPTIONS_ITEMS - 2;
 		else
 			options_cursor = 0;
 	}
@@ -2464,8 +2476,8 @@ void M_Menu_GameOptions_f (void)
 }
 
 
-int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
-#define	NUM_GAMEOPTIONS	9
+int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120, 128};
+#define	NUM_GAMEOPTIONS	10
 int		gameoptions_cursor;
 
 void M_GameOptions_Draw (void)

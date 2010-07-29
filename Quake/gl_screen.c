@@ -82,7 +82,7 @@ float		oldscreensize, oldfov, oldsbarscale, oldsbaralpha; //johnfitz -- added ol
 //johnfitz -- new cvars
 cvar_t		scr_menuscale = {"scr_menuscale", "1", true};
 cvar_t		scr_sbarscale = {"scr_sbarscale", "1", true};
-cvar_t		scr_sbaralpha = {"scr_sbaralpha", "1", true};
+cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.95", true};
 cvar_t		scr_conwidth = {"scr_conwidth", "0", true};
 cvar_t		scr_conscale = {"scr_conscale", "1", true};
 cvar_t		scr_scale = {"scr_scale", "1", true};
