@@ -326,7 +326,7 @@ void R_SetupAliasLighting (entity_t	*e)
 		if (cl_dlights[i].die >= cl.time)
 		{
 			VectorSubtract (currententity->origin, cl_dlights[i].origin, dist);
-			add = cl_dlights[i].radius - Length(dist);
+			add = cl_dlights[i].radius - VectorLength(dist);
 			if (add > 0)
 				VectorMA (lightcolor, add, cl_dlights[i].color, lightcolor);
 		}

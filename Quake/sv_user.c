@@ -244,7 +244,7 @@ void SV_WaterMove (void)
 	else
 		wishvel[2] += cmd.upmove;
 
-	wishspeed = Length(wishvel);
+	wishspeed = VectorLength(wishvel);
 	if (wishspeed > sv_maxspeed.value)
 	{
 		VectorScale (wishvel, sv_maxspeed.value/wishspeed, wishvel);
@@ -255,7 +255,7 @@ void SV_WaterMove (void)
 //
 // water friction
 //
-	speed = Length (velocity);
+	speed = VectorLength (velocity);
 	if (speed)
 	{
 		newspeed = speed - host_frametime * speed * sv_friction.value;
@@ -313,7 +313,7 @@ void SV_NoclipMove (void)
 	velocity[2] = forward[2]*cmd.forwardmove + right[2]*cmd.sidemove;
 	velocity[2] += cmd.upmove*2; //doubled to match running speed
 
-	if (Length (velocity) > sv_maxspeed.value)
+	if (VectorLength (velocity) > sv_maxspeed.value)
 	{
 		VectorNormalize (velocity);
 		VectorScale (velocity, sv_maxspeed.value, velocity);

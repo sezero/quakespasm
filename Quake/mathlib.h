@@ -46,7 +46,7 @@ extern	int nanmask;
 
 #define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
 
-#define CLAMP(min, x, max) ((x) < (min) ? (min) : (x) > (max) ? (max) : (x)) //johnfitz
+#define CLAMP(_minval, x, _maxval) ((x) < (_minval) ? (_minval) : (x) > (_maxval) ? (_maxval) : (x))
 
 #define Q_rint(x) ((x) > 0 ? (int)((x) + 0.5) : (int)((x) - 0.5)) //johnfitz -- from joequake
 
@@ -101,7 +101,7 @@ void _VectorAdd (vec3_t veca, vec3_t vecb, vec3_t out);
 void _VectorCopy (vec3_t in, vec3_t out);
 
 int VectorCompare (vec3_t v1, vec3_t v2);
-vec_t Length (vec3_t v);
+vec_t VectorLength (vec3_t v);
 void CrossProduct (vec3_t v1, vec3_t v2, vec3_t cross);
 float VectorNormalize (vec3_t v);		// returns vector length
 void VectorInverse (vec3_t v);
@@ -119,7 +119,6 @@ int GreatestCommonDivisor (int i1, int i2);
 void AngleVectors (vec3_t angles, vec3_t forward, vec3_t right, vec3_t up);
 int BoxOnPlaneSide (vec3_t emins, vec3_t emaxs, struct mplane_s *plane);
 float	anglemod(float a);
-
 
 
 #define BOX_ON_PLANE_SIDE(emins, emaxs, p)	\

@@ -121,7 +121,7 @@ float V_CalcBob (void)
 // (don't count Z, or jumping messes it up)
 
 	bob = sqrt(cl.velocity[0]*cl.velocity[0] + cl.velocity[1]*cl.velocity[1]) * cl_bob.value;
-//Con_Printf ("speed: %5.1f\n", Length(cl.velocity));
+//Con_Printf ("speed: %5.1f\n", VectorLength(cl.velocity));
 	bob = bob*0.3 + bob*0.7*sin(cycle);
 	if (bob > 4)
 		bob = 4;

@@ -98,7 +98,7 @@ void Chase_UpdateForDrawing (void)
 
 	// make sure camera is not in or behind a wall
 	TraceLine(r_refdef.vieworg, ideal, temp);
-	if (Length(temp) != 0)
+	if (VectorLength(temp) != 0)
 		VectorCopy(temp, ideal);
 
 	// place camera
