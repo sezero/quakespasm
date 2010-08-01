@@ -215,7 +215,7 @@ void BuildTris (void)
 	numorder = 0;
 	numcommands = 0;
 	memset (used, 0, sizeof(used));
-	for (i=0 ; i<pheader->numtris ; i++)
+	for (i = 0; i < pheader->numtris; i++)
 	{
 		// pick an unused triangle and start the trifan
 		if (used[i])
@@ -226,7 +226,7 @@ void BuildTris (void)
 		for (type = 0 ; type < 2 ; type++)
 //	type = 1;
 		{
-			for (startv =0 ; startv < 3 ; startv++)
+			for (startv = 0; startv < 3; startv++)
 			{
 				if (type == 1)
 					len = StripLength (i, startv);
@@ -236,16 +236,16 @@ void BuildTris (void)
 				{
 					besttype = type;
 					bestlen = len;
-					for (j=0 ; j<bestlen+2 ; j++)
+					for (j = 0; j < bestlen+2; j++)
 						bestverts[j] = stripverts[j];
-					for (j=0 ; j<bestlen ; j++)
+					for (j = 0; j < bestlen; j++)
 						besttris[j] = striptris[j];
 				}
 			}
 		}
 
 		// mark the tris on the best strip as used
-		for (j=0 ; j<bestlen ; j++)
+		for (j = 0; j < bestlen; j++)
 			used[besttris[j]] = 1;
 
 		if (besttype == 1)
@@ -253,8 +253,10 @@ void BuildTris (void)
 		else
 			commands[numcommands++] = -(bestlen+2);
 
-		for (j=0 ; j<bestlen+2 ; j++)
+		for (j = 0; j < bestlen+2; j++)
 		{
+			int		tmp;
+
 			// emit a vertex into the reorder buffer
 			k = bestverts[j];
 			vertexorder[numorder++] = k;
@@ -267,8 +269,14 @@ void BuildTris (void)
 			s = (s + 0.5) / pheader->skinwidth;
 			t = (t + 0.5) / pheader->skinheight;
 
-			*(float *)&commands[numcommands++] = s;
-			*(float *)&commands[numcommands++] = t;
+		//	*(float *)&commands[numcommands++] = s;
+		//	*(float *)&commands[numcommands++] = t;
+			// NOTE: 4 == sizeof(int)
+			//	   == sizeof(float)
+			memcpy (&tmp, &s, 4);
+			commands[numcommands++] = tmp;
+			memcpy (&tmp, &t, 4);
+			commands[numcommands++] = tmp;
 		}
 	}
 
