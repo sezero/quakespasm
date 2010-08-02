@@ -1027,11 +1027,28 @@ again:
 //=============================================================================
 /* OPTIONS MENU */
 
+enum
+{
+	OPT_CUSTOMIZE = 0,
+	OPT_CONSOLE,	// 1
+	OPT_DEFAULTS,	// 2
+	OPT_SCALE,
+	OPT_GAMMA,
+	OPT_MOUSESPEED,
+	OPT_SBALPHA,
+	OPT_MUSICVOL,
+	OPT_SNDVOL,
+	OPT_ALWAYRUN,
+	OPT_INVMOUSE,
+	OPT_ALWAYSMLOOK,
+	OPT_LOOKSPRING,
+	OPT_LOOKSTRAFE,
 //#ifdef _WIN32
-//#define	OPTIONS_ITEMS	14
-//#else
-#define	OPTIONS_ITEMS	14
+//	OPT_USEMOUSE,
 //#endif
+	OPT_VIDEO,	// This is the last before OPTIONS_ITEMS
+	OPTIONS_ITEMS
+};
 
 #define	SLIDER_RANGE	10
 
@@ -1052,7 +1069,7 @@ void M_AdjustSliders (int dir)
 
 	switch (options_cursor)
 	{
-	case 3:	// console and menu scale
+	case OPT_SCALE:	// console and menu scale
 		scr_scale.value += dir * .1; // or .2
 		if (scr_scale.value < 1)
 			scr_scale.value = 1;
@@ -1066,7 +1083,7 @@ void M_AdjustSliders (int dir)
 		Cvar_SetValue ("scr_conscale", scr_scale.value);
 		Cvar_SetValue ("scr_menuscale", scr_scale.value);
 		break;
-	case 4:	// gamma
+	case OPT_GAMMA:	// gamma
 		vid_gamma.value -= dir * 0.05;
 		if (vid_gamma.value < 0.5)
 			vid_gamma.value = 0.5;
@@ -1074,7 +1091,7 @@ void M_AdjustSliders (int dir)
 			vid_gamma.value = 1;
 		Cvar_SetValue ("gamma", vid_gamma.value);
 		break;
-	case 5:	// mouse speed
+	case OPT_MOUSESPEED:	// mouse speed
 		sensitivity.value += dir * 0.5;
 		if (sensitivity.value < 1)
 			sensitivity.value = 1;
@@ -1082,7 +1099,7 @@ void M_AdjustSliders (int dir)
 			sensitivity.value = 11;
 		Cvar_SetValue ("sensitivity", sensitivity.value);
 		break;
-	case 6:	// statusbar alpha
+	case OPT_SBALPHA:	// statusbar alpha
 		scr_sbaralpha.value -= dir * 0.05;
 		if (scr_sbaralpha.value < 0)
 			scr_sbaralpha.value = 0;
@@ -1090,7 +1107,7 @@ void M_AdjustSliders (int dir)
 			scr_sbaralpha.value = 1;
 		Cvar_SetValue ("scr_sbaralpha", scr_sbaralpha.value);
 		break;
-	case 7:	// music volume
+	case OPT_MUSICVOL:	// music volume
 #ifdef _WIN32
 		bgmvolume.value += dir * 1.0;
 #else
@@ -1102,7 +1119,7 @@ void M_AdjustSliders (int dir)
 			bgmvolume.value = 1;
 		Cvar_SetValue ("bgmvolume", bgmvolume.value);
 		break;
-	case 8:	// sfx volume
+	case OPT_SNDVOL:	// sfx volume
 		sfxvolume.value += dir * 0.1;
 		if (sfxvolume.value < 0)
 			sfxvolume.value = 0;
@@ -1111,7 +1128,7 @@ void M_AdjustSliders (int dir)
 		Cvar_SetValue ("volume", sfxvolume.value);
 		break;
 
-	case 9:	// always run
+	case OPT_ALWAYRUN:	// always run
 		if (cl_forwardspeed.value > 200)
 		{
 			Cvar_SetValue ("cl_forwardspeed", 200);
@@ -1124,15 +1141,22 @@ void M_AdjustSliders (int dir)
 		}
 		break;
 
-	case 10:	// invert mouse
+	case OPT_INVMOUSE:	// invert mouse
 		Cvar_SetValue ("m_pitch", -m_pitch.value);
 		break;
 
-	case 11:	// lookspring
+	case OPT_ALWAYSMLOOK:
+		if (in_mlook.state & 1)
+			Cbuf_AddText("-mlook");
+		else
+			Cbuf_AddText("+mlook");
+		break;
+
+	case OPT_LOOKSPRING:	// lookspring
 		Cvar_SetValue ("lookspring", !lookspring.value);
 		break;
 
-	case 12:	// lookstrafe
+	case OPT_LOOKSTRAFE:	// lookstrafe
 		Cvar_SetValue ("lookstrafe", !lookstrafe.value);
 		break;
 	}
@@ -1177,48 +1201,67 @@ void M_Options_Draw (void)
 	p = Draw_CachePic ("gfx/p_option.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	M_Print (16, 32, "              Controls");
-	M_Print (16, 40, "          Goto console");
-	M_Print (16, 48, "        Reset defaults");
+	// Draw the items in the order of the enum defined above:
+	// OPT_CUSTOMIZE:
+	M_Print (16, 32,			"              Controls");
+	// OPT_CONSOLE:
+	M_Print (16, 32 + 8*OPT_CONSOLE,	"          Goto console");
+	// OPT_DEFAULTS:
+	M_Print (16, 32 + 8*OPT_DEFAULTS,	"        Reset defaults");
 
-	M_Print (16, 56, "                 Scale");
+	// OPT_SCALE:
+	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
 	r = (scr_scale.value-1)/5 ; // r ranges from 0 to 1, scr_scale from 1 to 6
-	M_DrawSlider (220, 56, r);
+	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
 
-	M_Print (16, 64, "            Brightness");
+	// OPT_GAMMA:
+	M_Print (16, 32 + 8*OPT_GAMMA,		"            Brightness");
 	r = (1.0 - vid_gamma.value) / 0.5;
-	M_DrawSlider (220, 64, r);
+	M_DrawSlider (220, 32 + 8*OPT_GAMMA, r);
 
-	M_Print (16, 72, "           Mouse Speed");
+	// OPT_MOUSESPEED:
+	M_Print (16, 32 + 8*OPT_MOUSESPEED,	"           Mouse Speed");
 	r = (sensitivity.value - 1)/10;
-	M_DrawSlider (220, 72, r);
+	M_DrawSlider (220, 32 + 8*OPT_MOUSESPEED, r);
 
-	M_Print (16, 80, "       Statusbar alpha");
+	// OPT_SBALPHA:
+	M_Print (16, 32 + 8*OPT_SBALPHA,	"       Statusbar alpha");
 	r = (1.0 - scr_sbaralpha.value) ; // scr_sbaralpha range is 1.0 to 0.0
-	M_DrawSlider (220, 80, r);
+	M_DrawSlider (220, 32 + 8*OPT_SBALPHA, r);
 
-	M_Print (16, 88, "          Music Volume");
+	// OPT_MUSICVOL:
+	M_Print (16, 32 + 8*OPT_MUSICVOL,	"          Music Volume");
 	r = bgmvolume.value;
-	M_DrawSlider (220, 88, r);
+	M_DrawSlider (220, 32 + 8*OPT_MUSICVOL, r);
 
-	M_Print (16, 96, "          Sound Volume");
+	// OPT_SNDVOL:
+	M_Print (16, 32 + 8*OPT_SNDVOL,		"          Sound Volume");
 	r = sfxvolume.value;
-	M_DrawSlider (220, 96, r);
+	M_DrawSlider (220, 32 + 8*OPT_SNDVOL, r);
 
-	M_Print (16, 104,  "            Always Run");
-	M_DrawCheckbox (220, 104, cl_forwardspeed.value > 200);
+	// OPT_ALWAYRUN:
+	M_Print (16, 32 + 8*OPT_ALWAYRUN,	"            Always Run");
+	M_DrawCheckbox (220, 32 + 8*OPT_ALWAYRUN, cl_forwardspeed.value > 200);
 
-	M_Print (16, 112, "          Invert Mouse");
-	M_DrawCheckbox (220, 112, m_pitch.value < 0);
+	// OPT_INVMOUSE:
+	M_Print (16, 32 + 8*OPT_INVMOUSE,	"          Invert Mouse");
+	M_DrawCheckbox (220, 32 + 8*OPT_INVMOUSE, m_pitch.value < 0);
 
-	M_Print (16, 120, "            Lookspring");
-	M_DrawCheckbox (220, 120, lookspring.value);
+	// OPT_ALWAYSMLOOK:
+	M_Print (16, 32 + 8*OPT_ALWAYSMLOOK,	"            Mouse Look");
+	M_DrawCheckbox (220, 32 + 8*OPT_ALWAYSMLOOK, in_mlook.state & 1);
 
-	M_Print (16, 128, "            Lookstrafe");
-	M_DrawCheckbox (220, 128, lookstrafe.value);
+	// OPT_LOOKSPRING:
+	M_Print (16, 32 + 8*OPT_LOOKSPRING,	"            Lookspring");
+	M_DrawCheckbox (220, 32 + 8*OPT_LOOKSPRING, lookspring.value);
 
+	// OPT_LOOKSTRAFE:
+	M_Print (16, 32 + 8*OPT_LOOKSTRAFE,	"            Lookstrafe");
+	M_DrawCheckbox (220, 32 + 8*OPT_LOOKSTRAFE, lookstrafe.value);
+
+	// OPT_VIDEO:
 	if (vid_menudrawfn)
-		M_Print (16, 136, "         Video Options");
+		M_Print (16, 32 + 8*OPT_VIDEO,	"         Video Options");
 
 // cursor
 	M_DrawCharacter (200, 32 + options_cursor*8, 12+((int)(realtime*4)&1));
@@ -1237,18 +1280,18 @@ void M_Options_Key (int k)
 		m_entersound = true;
 		switch (options_cursor)
 		{
-		case 0:
+		case OPT_CUSTOMIZE:
 			M_Menu_Keys_f ();
 			break;
-		case 1:
+		case OPT_CONSOLE:
 			m_state = m_none;
 			Con_ToggleConsole_f ();
 			break;
-		case 2:
+		case OPT_DEFAULTS:
 			Cbuf_AddText ("resetall\n"); //johnfitz
 			Cbuf_AddText ("exec default.cfg\n");
 			break;
-		case 13:
+		case OPT_VIDEO:
 			M_Menu_Video_f ();
 			break;
 		default:
@@ -1287,7 +1330,6 @@ void M_Options_Key (int k)
 		else
 			options_cursor = 0;
 	}
-
 }
 
 //=============================================================================
