@@ -2476,8 +2476,8 @@ void M_Menu_GameOptions_f (void)
 }
 
 
-int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120, 128};
-#define	NUM_GAMEOPTIONS	10
+int gameoptions_cursor_table[] = {40, 56, 64, 72, 80, 88, 96, 112, 120};
+#define	NUM_GAMEOPTIONS	9
 int		gameoptions_cursor;
 
 void M_GameOptions_Draw (void)
