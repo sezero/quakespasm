@@ -62,22 +62,22 @@ void Host_Quit_f (void)
 // Declarations shared with common.c:
 typedef struct
 {
-	char    name[MAX_QPATH];
-	int             filepos, filelen;
+	char	name[MAX_QPATH];
+	int	filepos, filelen;
 } packfile_t;
 
 typedef struct pack_s
 {
-	char    filename[MAX_OSPATH];
-	int             handle;
-	int             numfiles;
-	packfile_t      *files;
+	char	filename[MAX_OSPATH];
+	int		handle;
+	int		numfiles;
+	packfile_t	*files;
 } pack_t;
 
 typedef struct searchpath_s
 {
-	char    filename[MAX_OSPATH];
-	pack_t  *pack;          // only one of filename / pack will be used
+	char	filename[MAX_OSPATH];
+	pack_t	*pack;		// only one of filename / pack will be used
 	struct searchpath_s *next;
 } searchpath_t;
 
@@ -184,7 +184,7 @@ void Host_Game_f (void)
 				sprintf (pakfile, "%s/pak%i.pak", com_gamedir, i);
 				pak = COM_LoadPackFile (pakfile);
 				if (!pak)
-				break;
+					break;
 				search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 				search->pack = pak;
 				search->next = com_searchpaths;
@@ -215,7 +215,7 @@ void Host_Game_f (void)
 
 typedef struct extralevel_s
 {
-	char				name[32];
+	char			name[32];
 	struct extralevel_s	*next;
 } extralevel_t;
 
@@ -225,49 +225,53 @@ void ExtraMaps_Add (char *name)
 {
 	extralevel_t	*level,*cursor,*prev;
 
-	//ingore duplicate
+	// ignore duplicate
 	for (level = extralevels; level; level = level->next)
+	{
 		if (!Q_strcmp (name, level->name))
 			return;
+	}
 
 	level = (extralevel_t *) Z_Malloc(sizeof(extralevel_t));
 	strcpy (level->name, name);
 
-	//insert each entry in alphabetical order
-    if (extralevels == NULL || Q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
+	// insert each entry in alphabetical order
+	if (extralevels == NULL ||
+	    Q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
 	{
-        level->next = extralevels;
-        extralevels = level;
-    }
-    else //insert later
+		level->next = extralevels;
+		extralevels = level;
+	}
+	else //insert later
 	{
-        prev = extralevels;
-        cursor = extralevels->next;
-        while (cursor && (Q_strcasecmp(level->name, cursor->name) > 0))
+		prev = extralevels;
+		cursor = extralevels->next;
+		while (cursor && (Q_strcasecmp(level->name, cursor->name) > 0))
 		{
-            prev = cursor;
-            cursor = cursor->next;
-        }
-        level->next = prev->next;
-        prev->next = level;
-    }
+			prev = cursor;
+			cursor = cursor->next;
+		}
+		level->next = prev->next;
+		prev->next = level;
+	}
 }
 
 void ExtraMaps_Init (void)
 {
 	DIR		*dir_p;
 	struct dirent	*dir_t;
-	char			filestring[MAX_OSPATH];
-	char			mapname[32];
-	char			ignorepakdir[32];
+	char		filestring[MAX_OSPATH];
+	char		mapname[32];
+	char		ignorepakdir[32];
 	searchpath_t	*search;
 	pack_t		*pak;
 	int		i;
 
-	//we don't want to list the maps in id1 pakfiles, becuase these are not "add-on" levels
+	// we don't want to list the maps in id1 pakfiles,
+	// because these are not "add-on" levels
 	sprintf (ignorepakdir, "/%s/", GAMENAME);
 
-	for (search = com_searchpaths ; search ; search = search->next)
+	for (search = com_searchpaths; search; search = search->next)
 	{
 		if (*search->filename) //directory
 		{
@@ -286,14 +290,14 @@ void ExtraMaps_Init (void)
 		}
 		else //pakfile
 		{
-			if (!strstr(search->pack->filename, ignorepakdir)) //don't list standard id maps
-			{
-				for (i=0, pak=search->pack; i<pak->numfiles ; i++)
+			if (!strstr(search->pack->filename, ignorepakdir))
+			{ //don't list standard id maps
+				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
 					if (strstr(pak->files[i].name, ".bsp"))
 					{
-						if (pak->files[i].filelen > 32*1024) // don't list files under 32k (ammo boxes etc)
-						{
+						if (pak->files[i].filelen > 32*1024)
+						{ // don't list files under 32k (ammo boxes etc)
 							COM_StripExtension(pak->files[i].name + 5, mapname);
 							ExtraMaps_Add (mapname);
 						}
@@ -332,7 +336,7 @@ void Host_Maps_f (void)
 	int i;
 	extralevel_t	*level;
 
-	for (level=extralevels, i=0; level; level=level->next, i++)
+	for (level = extralevels, i = 0; level; level = level->next, i++)
 		Con_SafePrintf ("   %s\n", level->name);
 
 	if (i)
@@ -347,7 +351,7 @@ void Host_Maps_f (void)
 
 typedef struct mod_s
 {
-	char			name[MAX_OSPATH];
+	char	name[MAX_OSPATH];
 	struct mod_s	*next;
 } mod_t;
 
@@ -359,30 +363,33 @@ void Modlist_Add (char *name)
 
 	//ingore duplicate
 	for (mod = modlist; mod; mod = mod->next)
+	{
 		if (!Q_strcmp (name, mod->name))
 			return;
+	}
 
 	mod = (mod_t *) Z_Malloc(sizeof(mod_t));
 	strcpy (mod->name, name);
 
 	//insert each entry in alphabetical order
-    if (modlist == NULL || Q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
+	if (modlist == NULL ||
+	    Q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
 	{
-        mod->next = modlist;
-        modlist = mod;
-    }
-    else //insert later
+		mod->next = modlist;
+		modlist = mod;
+	}
+	else //insert later
 	{
-        prev = modlist;
-        cursor = modlist->next;
-        while (cursor && (Q_strcasecmp(mod->name, cursor->name) > 0))
+		prev = modlist;
+		cursor = modlist->next;
+		while (cursor && (Q_strcasecmp(mod->name, cursor->name) > 0))
 		{
-            prev = cursor;
-            cursor = cursor->next;
-        }
-        mod->next = prev->next;
-        prev->next = mod;
-    }
+			prev = cursor;
+			cursor = cursor->next;
+		}
+		mod->next = prev->next;
+		prev->next = mod;
+	}
 }
 
 void Modlist_Init (void)
@@ -390,7 +397,7 @@ void Modlist_Init (void)
 	DIR		*dir_p, *mod_dir_p;
 	struct dirent	*dir_t, *mod_dir_t;
 	qboolean	progs_found, pak_found;
-	char			dir_string[MAX_OSPATH], mod_dir_string[MAX_OSPATH];
+	char		dir_string[MAX_OSPATH], mod_dir_string[MAX_OSPATH];
 	int		i;
 
 	i = COM_CheckParm ("-basedir");
@@ -513,7 +520,7 @@ void Host_Status_f (void)
 		print_fn ("ipx:     %s\n", my_ipx_address);
 	print_fn ("map:     %s\n", sv.name);
 	print_fn ("players: %i active (%i max)\n\n", net_activeconnections, svs.maxclients);
-	for (j=0, client = svs.clients ; j<svs.maxclients ; j++, client++)
+	for (j = 0, client = svs.clients; j < svs.maxclients; j++, client++)
 	{
 		if (!client->active)
 			continue;
@@ -743,7 +750,7 @@ Host_Ping_f
 void Host_Ping_f (void)
 {
 	int		i, j;
-	float	total;
+	float		total;
 	client_t	*client;
 
 	if (cmd_source == src_command)
@@ -753,12 +760,12 @@ void Host_Ping_f (void)
 	}
 
 	SV_ClientPrintf ("Client ping times:\n");
-	for (i=0, client = svs.clients ; i<svs.maxclients ; i++, client++)
+	for (i = 0, client = svs.clients; i < svs.maxclients; i++, client++)
 	{
 		if (!client->active)
 			continue;
 		total = 0;
-		for (j=0 ; j<NUM_PING_TIMES ; j++)
+		for (j = 0; j < NUM_PING_TIMES; j++)
 			total+=client->ping_times[j];
 		total /= NUM_PING_TIMES;
 		SV_ClientPrintf ("%4i %s\n", (int)(total*1000), client->name);
@@ -822,7 +829,7 @@ void Host_Map_f (void)
 	SCR_BeginLoadingPlaque ();
 
 	cls.mapstring[0] = 0;
-	for (i=0 ; i<Cmd_Argc() ; i++)
+	for (i = 0; i < Cmd_Argc(); i++)
 	{
 		strcat (cls.mapstring, Cmd_Argv(i));
 		strcat (cls.mapstring, " ");
@@ -839,7 +846,7 @@ void Host_Map_f (void)
 	{
 		strcpy (cls.spawnparms, "");
 
-		for (i=2 ; i<Cmd_Argc() ; i++)
+		for (i = 2; i < Cmd_Argc(); i++)
 		{
 			strcat (cls.spawnparms, Cmd_Argv(i));
 			strcat (cls.spawnparms, " ");
@@ -966,15 +973,17 @@ void Host_SavegameComment (char *text)
 	int		i;
 	char	kills[20];
 
-	for (i=0 ; i<SAVEGAME_COMMENT_LENGTH ; i++)
+	for (i = 0; i < SAVEGAME_COMMENT_LENGTH; i++)
 		text[i] = ' ';
 	memcpy (text, cl.levelname, min(strlen(cl.levelname),22)); //johnfitz -- only copy 22 chars.
 	sprintf (kills,"kills:%3i/%3i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
 	memcpy (text+22, kills, strlen(kills));
 // convert space to _ to make stdio happy
-	for (i=0 ; i<SAVEGAME_COMMENT_LENGTH ; i++)
+	for (i = 0; i < SAVEGAME_COMMENT_LENGTH; i++)
+	{
 		if (text[i] == ' ')
 			text[i] = '_';
+	}
 	text[SAVEGAME_COMMENT_LENGTH] = '\0';
 }
 
@@ -988,7 +997,7 @@ void Host_Savegame_f (void)
 {
 	char	name[256];
 	FILE	*f;
-	int		i;
+	int	i;
 	char	comment[SAVEGAME_COMMENT_LENGTH+1];
 
 	if (cmd_source != src_command)
@@ -1047,7 +1056,7 @@ void Host_Savegame_f (void)
 	fprintf (f, "%i\n", SAVEGAME_VERSION);
 	Host_SavegameComment (comment);
 	fprintf (f, "%s\n", comment);
-	for (i=0 ; i<NUM_SPAWN_PARMS ; i++)
+	for (i = 0; i < NUM_SPAWN_PARMS; i++)
 		fprintf (f, "%f\n", svs.clients->spawn_parms[i]);
 	fprintf (f, "%d\n", current_skill);
 	fprintf (f, "%s\n", sv.name);
@@ -1055,7 +1064,7 @@ void Host_Savegame_f (void)
 
 // write the light styles
 
-	for (i=0 ; i<MAX_LIGHTSTYLES ; i++)
+	for (i = 0; i < MAX_LIGHTSTYLES; i++)
 	{
 		if (sv.lightstyles[i])
 			fprintf (f, "%s\n", sv.lightstyles[i]);
@@ -1065,7 +1074,7 @@ void Host_Savegame_f (void)
 
 
 	ED_WriteGlobals (f);
-	for (i=0 ; i<sv.num_edicts ; i++)
+	for (i = 0; i < sv.num_edicts; i++)
 	{
 		ED_Write (f, EDICT_NUM(i));
 		fflush (f);
@@ -1087,11 +1096,11 @@ void Host_Loadgame_f (void)
 	char	mapname[MAX_QPATH];
 	float	time, tfloat;
 	char	str[32768], *start;
-	int		i, r;
+	int	i, r;
 	edict_t	*ent;
-	int		entnum;
-	int		version;
-	float			spawn_parms[NUM_SPAWN_PARMS];
+	int	entnum;
+	int	version;
+	float	spawn_parms[NUM_SPAWN_PARMS];
 
 	if (cmd_source != src_command)
 		return;
@@ -1127,7 +1136,7 @@ void Host_Loadgame_f (void)
 		return;
 	}
 	fscanf (f, "%s\n", str);
-	for (i=0 ; i<NUM_SPAWN_PARMS ; i++)
+	for (i = 0; i < NUM_SPAWN_PARMS; i++)
 		fscanf (f, "%f\n", &spawn_parms[i]);
 // this silliness is so we can load 1.06 save files, which have float skill values
 	fscanf (f, "%f\n", &tfloat);
@@ -1151,7 +1160,7 @@ void Host_Loadgame_f (void)
 
 // load the light styles
 
-	for (i=0 ; i<MAX_LIGHTSTYLES ; i++)
+	for (i = 0; i < MAX_LIGHTSTYLES; i++)
 	{
 		fscanf (f, "%s\n", str);
 		sv.lightstyles[i] = (char *) Hunk_Alloc (strlen(str)+1);
@@ -1162,7 +1171,7 @@ void Host_Loadgame_f (void)
 	entnum = -1;		// -1 is the globals
 	while (!feof(f))
 	{
-		for (i=0 ; i<sizeof(str)-1 ; i++)
+		for (i = 0; i < sizeof(str) - 1; i++)
 		{
 			r = fgetc (f);
 			if (r == EOF || !r)
@@ -1174,7 +1183,7 @@ void Host_Loadgame_f (void)
 				break;
 			}
 		}
-		if (i == sizeof(str)-1)
+		if (i == sizeof(str) - 1)
 			Sys_Error ("Loadgame buffer overflow");
 		str[i] = 0;
 		start = str;
@@ -1209,7 +1218,7 @@ void Host_Loadgame_f (void)
 
 	fclose (f);
 
-	for (i=0 ; i<NUM_SPAWN_PARMS ; i++)
+	for (i = 0; i < NUM_SPAWN_PARMS; i++)
 		svs.clients->spawn_parms[i] = spawn_parms[i];
 
 	if (cls.state != ca_dedicated)
@@ -1252,8 +1261,10 @@ void Host_Name_f (void)
 	}
 
 	if (host_client->name[0] && strcmp(host_client->name, "unconnected") )
+	{
 		if (Q_strcmp(host_client->name, newName) != 0)
 			Con_Printf ("%s renamed to %s\n", host_client->name, newName);
+	}
 	Q_strcpy (host_client->name, newName);
 	host_client->edict->v.netname = PR_SetEngineString(host_client->name);
 
@@ -1353,7 +1364,7 @@ void Host_Tell_f(void)
 {
 	client_t *client;
 	client_t *save;
-	int		j;
+	int	j;
 	char	*p;
 	char	text[MAXCMDLINE];
 
@@ -1603,7 +1614,7 @@ void Host_Spawn_f (void)
 	MSG_WriteByte (&host_client->message, svc_time);
 	MSG_WriteFloat (&host_client->message, sv.time);
 
-	for (i=0, client = svs.clients ; i<svs.maxclients ; i++, client++)
+	for (i = 0, client = svs.clients; i < svs.maxclients; i++, client++)
 	{
 		MSG_WriteByte (&host_client->message, svc_updatename);
 		MSG_WriteByte (&host_client->message, i);
@@ -1617,7 +1628,7 @@ void Host_Spawn_f (void)
 	}
 
 // send all current light styles
-	for (i=0 ; i<MAX_LIGHTSTYLES ; i++)
+	for (i = 0; i < MAX_LIGHTSTYLES; i++)
 	{
 		MSG_WriteByte (&host_client->message, svc_lightstyle);
 		MSG_WriteByte (&host_client->message, (char)i);
@@ -1652,7 +1663,7 @@ void Host_Spawn_f (void)
 // with a permanent head tilt
 	ent = EDICT_NUM( 1 + (host_client - svs.clients) );
 	MSG_WriteByte (&host_client->message, svc_setangle);
-	for (i=0 ; i < 2 ; i++)
+	for (i = 0; i < 2; i++)
 		MSG_WriteAngle (&host_client->message, ent->v.angles[i] );
 	MSG_WriteAngle (&host_client->message, 0 );
 
@@ -1694,7 +1705,7 @@ void Host_Kick_f (void)
 	char		*who;
 	char		*message = NULL;
 	client_t	*save;
-	int			i;
+	int		i;
 	qboolean	byNumber = false;
 
 	if (cmd_source == src_command)
@@ -1784,7 +1795,7 @@ Host_Give_f
 void Host_Give_f (void)
 {
 	char	*t;
-	int		v;
+	int	v;
 	eval_t	*val;
 
 	if (cmd_source == src_command)
@@ -1801,160 +1812,173 @@ void Host_Give_f (void)
 
 	switch (t[0])
 	{
-   case '0':
-   case '1':
-   case '2':
-   case '3':
-   case '4':
-   case '5':
-   case '6':
-   case '7':
-   case '8':
-   case '9':
-      // MED 01/04/97 added hipnotic give stuff
-      if (hipnotic)
-      {
-         if (t[0] == '6')
-         {
-            if (t[1] == 'a')
-               sv_player->v.items = (int)sv_player->v.items | HIT_PROXIMITY_GUN;
-            else
-               sv_player->v.items = (int)sv_player->v.items | IT_GRENADE_LAUNCHER;
-         }
-         else if (t[0] == '9')
-            sv_player->v.items = (int)sv_player->v.items | HIT_LASER_CANNON;
-         else if (t[0] == '0')
-            sv_player->v.items = (int)sv_player->v.items | HIT_MJOLNIR;
-         else if (t[0] >= '2')
-            sv_player->v.items = (int)sv_player->v.items | (IT_SHOTGUN << (t[0] - '2'));
-      }
-      else
-      {
-         if (t[0] >= '2')
-            sv_player->v.items = (int)sv_player->v.items | (IT_SHOTGUN << (t[0] - '2'));
-      }
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9':
+		// MED 01/04/97 added hipnotic give stuff
+		if (hipnotic)
+		{
+		    if (t[0] == '6')
+		    {
+			if (t[1] == 'a')
+			    sv_player->v.items = (int)sv_player->v.items | HIT_PROXIMITY_GUN;
+			else
+			    sv_player->v.items = (int)sv_player->v.items | IT_GRENADE_LAUNCHER;
+		    }
+		    else if (t[0] == '9')
+			sv_player->v.items = (int)sv_player->v.items | HIT_LASER_CANNON;
+		    else if (t[0] == '0')
+			sv_player->v.items = (int)sv_player->v.items | HIT_MJOLNIR;
+		    else if (t[0] >= '2')
+			sv_player->v.items = (int)sv_player->v.items | (IT_SHOTGUN << (t[0] - '2'));
+		}
+		else
+		{
+		    if (t[0] >= '2')
+			sv_player->v.items = (int)sv_player->v.items | (IT_SHOTGUN << (t[0] - '2'));
+		}
 		break;
 
-    case 's':
+	case 's':
 		if (rogue)
 		{
-	        val = GetEdictFieldValue(sv_player, "ammo_shells1");
+		    val = GetEdictFieldValue(sv_player, "ammo_shells1");
 		    if (val)
-			    val->_float = v;
+			val->_float = v;
 		}
+		sv_player->v.ammo_shells = v;
+		break;
 
-        sv_player->v.ammo_shells = v;
-        break;
-    case 'n':
+	case 'n':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_nails1");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon <= IT_LIGHTNING)
-					sv_player->v.ammo_nails = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_nails1");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon <= IT_LIGHTNING)
+			    sv_player->v.ammo_nails = v;
+		    }
 		}
 		else
 		{
-			sv_player->v.ammo_nails = v;
+		    sv_player->v.ammo_nails = v;
 		}
-        break;
-    case 'l':
+		break;
+
+	case 'l':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_lava_nails");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon > IT_LIGHTNING)
-					sv_player->v.ammo_nails = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_lava_nails");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon > IT_LIGHTNING)
+			    sv_player->v.ammo_nails = v;
+		    }
 		}
-        break;
-    case 'r':
+		break;
+
+	case 'r':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_rockets1");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon <= IT_LIGHTNING)
-					sv_player->v.ammo_rockets = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_rockets1");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon <= IT_LIGHTNING)
+			    sv_player->v.ammo_rockets = v;
+		    }
 		}
 		else
 		{
-			sv_player->v.ammo_rockets = v;
+		    sv_player->v.ammo_rockets = v;
 		}
-        break;
-    case 'm':
+		break;
+
+	case 'm':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_multi_rockets");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon > IT_LIGHTNING)
-					sv_player->v.ammo_rockets = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_multi_rockets");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon > IT_LIGHTNING)
+			    sv_player->v.ammo_rockets = v;
+		    }
 		}
-        break;
-    case 'h':
-        sv_player->v.health = v;
-        break;
-    case 'c':
+		break;
+
+	case 'h':
+		sv_player->v.health = v;
+		break;
+
+	case 'c':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_cells1");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon <= IT_LIGHTNING)
-					sv_player->v.ammo_cells = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_cells1");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon <= IT_LIGHTNING)
+			    sv_player->v.ammo_cells = v;
+		    }
 		}
 		else
 		{
-			sv_player->v.ammo_cells = v;
+		    sv_player->v.ammo_cells = v;
 		}
-        break;
-    case 'p':
+		break;
+
+	case 'p':
 		if (rogue)
 		{
-			val = GetEdictFieldValue(sv_player, "ammo_plasma");
-			if (val)
-			{
-				val->_float = v;
-				if (sv_player->v.weapon > IT_LIGHTNING)
-					sv_player->v.ammo_cells = v;
-			}
+		    val = GetEdictFieldValue(sv_player, "ammo_plasma");
+		    if (val)
+		    {
+			val->_float = v;
+			if (sv_player->v.weapon > IT_LIGHTNING)
+			    sv_player->v.ammo_cells = v;
+		    }
 		}
-        break;
+		break;
+
 	//johnfitz -- give armour
-    case 'a':
+	case 'a':
 		if (v > 150)
 		{
-			sv_player->v.armortype = 0.8;
-	        sv_player->v.armorvalue = v;
-			sv_player->v.items = sv_player->v.items - ((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR3;
+		    sv_player->v.armortype = 0.8;
+		    sv_player->v.armorvalue = v;
+		    sv_player->v.items = sv_player->v.items -
+					((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) +
+					IT_ARMOR3;
 		}
 		else if (v > 100)
 		{
-			sv_player->v.armortype = 0.6;
-	        sv_player->v.armorvalue = v;
-			sv_player->v.items = sv_player->v.items - ((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR2;
+		    sv_player->v.armortype = 0.6;
+		    sv_player->v.armorvalue = v;
+		    sv_player->v.items = sv_player->v.items -
+					((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) +
+					IT_ARMOR2;
 		}
 		else if (v >= 0)
 		{
-			sv_player->v.armortype = 0.3;
-	        sv_player->v.armorvalue = v;
-			sv_player->v.items = sv_player->v.items - ((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) + IT_ARMOR1;
+		    sv_player->v.armortype = 0.3;
+		    sv_player->v.armorvalue = v;
+		    sv_player->v.items = sv_player->v.items -
+					((int)(sv_player->v.items) & (int)(IT_ARMOR1 | IT_ARMOR2 | IT_ARMOR3)) +
+					IT_ARMOR1;
 		}
 		break;
-	//johnfitz
-    }
+		//johnfitz
+	}
 
 	//johnfitz -- update currentammo to match new ammo (so statusbar updates correctly)
 	switch ((int)(sv_player->v.weapon))
@@ -2051,7 +2075,7 @@ void Host_Viewframe_f (void)
 
 	f = atoi(Cmd_Argv(1));
 	if (f >= m->numframes)
-		f = m->numframes-1;
+		f = m->numframes - 1;
 
 	e->v.frame = f;
 }
@@ -2144,7 +2168,7 @@ void Host_Startdemos_f (void)
 	}
 	Con_Printf ("%i demo(s) in loop\n", c);
 
-	for (i=1 ; i<c+1 ; i++)
+	for (i = 1; i < c + 1; i++)
 		strncpy (cls.demos[i-1], Cmd_Argv(i), sizeof(cls.demos[0])-1);
 
 	if (!sv.active && cls.demonum != -1 && !cls.demoplayback)
@@ -2254,3 +2278,4 @@ void Host_InitCommands (void)
 
 	Cmd_AddCommand ("mcache", Mod_Print);
 }
+

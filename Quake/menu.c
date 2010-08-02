@@ -422,18 +422,18 @@ void M_SinglePlayer_Key (int key)
 
 int		load_cursor;		// 0 < load_cursor < MAX_SAVEGAMES
 
-#define	MAX_SAVEGAMES		20 //johnfitz -- increased from 12
+#define	MAX_SAVEGAMES		20	/* johnfitz -- increased from 12 */
 char	m_filenames[MAX_SAVEGAMES][SAVEGAME_COMMENT_LENGTH+1];
 int		loadable[MAX_SAVEGAMES];
 
 void M_ScanSaves (void)
 {
-	int		i, j;
+	int	i, j;
 	char	name[MAX_OSPATH];
 	FILE	*f;
-	int		version;
+	int	version;
 
-	for (i=0 ; i<MAX_SAVEGAMES ; i++)
+	for (i = 0; i < MAX_SAVEGAMES; i++)
 	{
 		strcpy (m_filenames[i], "--- UNUSED SLOT ---");
 		loadable[i] = false;
@@ -446,9 +446,11 @@ void M_ScanSaves (void)
 		strncpy (m_filenames[i], name, sizeof(m_filenames[i])-1);
 
 	// change _ back to space
-		for (j=0 ; j<SAVEGAME_COMMENT_LENGTH ; j++)
+		for (j = 0; j < SAVEGAME_COMMENT_LENGTH; j++)
+		{
 			if (m_filenames[i][j] == '_')
 				m_filenames[i][j] = ' ';
+		}
 		loadable[i] = true;
 		fclose (f);
 	}
@@ -490,7 +492,7 @@ void M_Load_Draw (void)
 	p = Draw_CachePic ("gfx/p_load.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	for (i=0 ; i< MAX_SAVEGAMES; i++)
+	for (i = 0; i < MAX_SAVEGAMES; i++)
 		M_Print (16, 32 + 8*i, m_filenames[i]);
 
 // line cursor
@@ -506,7 +508,7 @@ void M_Save_Draw (void)
 	p = Draw_CachePic ("gfx/p_save.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	for (i=0 ; i<MAX_SAVEGAMES ; i++)
+	for (i = 0; i < MAX_SAVEGAMES; i++)
 		M_Print (16, 32 + 8*i, m_filenames[i]);
 
 // line cursor
@@ -1172,7 +1174,7 @@ void M_DrawSlider (int x, int y, float range)
 	if (range > 1)
 		range = 1;
 	M_DrawCharacter (x-8, y, 128);
-	for (i=0 ; i<SLIDER_RANGE ; i++)
+	for (i = 0; i < SLIDER_RANGE; i++)
 		M_DrawCharacter (x + i*8, y, 129);
 	M_DrawCharacter (x+i*8, y, 130);
 	M_DrawCharacter (x + (SLIDER_RANGE-1)*8 * range, y, 131);
@@ -1337,24 +1339,24 @@ void M_Options_Key (int k)
 
 char *bindnames[][2] =
 {
-{"+attack", 		"attack"},
-{"impulse 10", 		"change weapon"},
-{"+jump", 			"jump / swim up"},
-{"+forward", 		"walk forward"},
-{"+back", 			"backpedal"},
-{"+left", 			"turn left"},
-{"+right", 			"turn right"},
-{"+speed", 			"run"},
-{"+moveleft", 		"step left"},
-{"+moveright", 		"step right"},
-{"+strafe", 		"sidestep"},
-{"+lookup", 		"look up"},
-{"+lookdown", 		"look down"},
-{"centerview", 		"center view"},
-{"+mlook", 			"mouse look"},
-{"+klook", 			"keyboard look"},
-{"+moveup",			"swim up"},
-{"+movedown",		"swim down"}
+	{"+attack",		"attack"},
+	{"impulse 10",		"change weapon"},
+	{"+jump",		"jump / swim up"},
+	{"+forward",		"walk forward"},
+	{"+back",		"backpedal"},
+	{"+left",		"turn left"},
+	{"+right",		"turn right"},
+	{"+speed",		"run"},
+	{"+moveleft",		"step left"},
+	{"+moveright",		"step right"},
+	{"+strafe",		"sidestep"},
+	{"+lookup",		"look up"},
+	{"+lookdown",		"look down"},
+	{"centerview",		"center view"},
+	{"+mlook",		"mouse look"},
+	{"+klook",		"keyboard look"},
+	{"+moveup",		"swim up"},
+	{"+movedown",		"swim down"}
 };
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
@@ -1382,7 +1384,7 @@ void M_FindKeysForCommand (char *command, int *twokeys)
 	l = strlen(command);
 	count = 0;
 
-	for (j=0 ; j<256 ; j++)
+	for (j = 0; j < 256; j++)
 	{
 		b = keybindings[j];
 		if (!b)
@@ -1405,7 +1407,7 @@ void M_UnbindCommand (char *command)
 
 	l = strlen(command);
 
-	for (j=0 ; j<256 ; j++)
+	for (j = 0; j < 256; j++)
 	{
 		b = keybindings[j];
 		if (!b)
@@ -1420,7 +1422,7 @@ void M_Keys_Draw (void)
 {
 	int		i, l;
 	int		keys[2];
-	char	*name;
+	char		*name;
 	int		x, y;
 	qpic_t	*p;
 
@@ -1433,7 +1435,7 @@ void M_Keys_Draw (void)
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
 // search for known bindings
-	for (i=0 ; i<NUMCOMMANDS ; i++)
+	for (i = 0; i < NUMCOMMANDS; i++)
 	{
 		y = 48 + 8*i;
 
@@ -1715,8 +1717,10 @@ void M_Menu_SerialConfig_f (void)
 
 	// map uart's port to COMx
 	for (n = 0; n < 4; n++)
+	{
 		if (ISA_uarts[n] == port)
 			break;
+	}
 	if (n == 4)
 	{
 		n = 0;
@@ -1726,8 +1730,10 @@ void M_Menu_SerialConfig_f (void)
 
 	// map baudrate to index
 	for (n = 0; n < 6; n++)
+	{
 		if (serialConfig_baudrate[n] == baudrate)
 			break;
+	}
 	if (n == 6)
 		n = 5;
 	serialConfig_baud = n;
@@ -1740,7 +1746,7 @@ void M_Menu_SerialConfig_f (void)
 void M_SerialConfig_Draw (void)
 {
 	qpic_t	*p;
-	int		basex;
+	int	basex;
 	char	*startJoin;
 	char	*directModem;
 
@@ -2412,29 +2418,29 @@ level_t		levels[] =
 //MED 01/06/97 added hipnotic levels
 level_t     hipnoticlevels[] =
 {
-   {"start", "Command HQ"},  // 0
+	{"start", "Command HQ"},	// 0
 
-   {"hip1m1", "The Pumping Station"},          // 1
-   {"hip1m2", "Storage Facility"},
-   {"hip1m3", "The Lost Mine"},
-   {"hip1m4", "Research Facility"},
-   {"hip1m5", "Military Complex"},
+	{"hip1m1", "The Pumping Station"},			// 1
+	{"hip1m2", "Storage Facility"},
+	{"hip1m3", "The Lost Mine"},
+	{"hip1m4", "Research Facility"},
+	{"hip1m5", "Military Complex"},
 
-   {"hip2m1", "Ancient Realms"},          // 6
-   {"hip2m2", "The Black Cathedral"},
-   {"hip2m3", "The Catacombs"},
-   {"hip2m4", "The Crypt"},
-   {"hip2m5", "Mortum's Keep"},
-   {"hip2m6", "The Gremlin's Domain"},
+	{"hip2m1", "Ancient Realms"},				// 6
+	{"hip2m2", "The Black Cathedral"},
+	{"hip2m3", "The Catacombs"},
+	{"hip2m4", "The Crypt"},
+	{"hip2m5", "Mortum's Keep"},
+	{"hip2m6", "The Gremlin's Domain"},
 
-   {"hip3m1", "Tur Torment"},       // 12
-   {"hip3m2", "Pandemonium"},
-   {"hip3m3", "Limbo"},
-   {"hip3m4", "The Gauntlet"},
+	{"hip3m1", "Tur Torment"},				// 12
+	{"hip3m2", "Pandemonium"},
+	{"hip3m3", "Limbo"},
+	{"hip3m4", "The Gauntlet"},
 
-   {"hipend", "Armagon's Lair"},       // 16
+	{"hipend", "Armagon's Lair"},				// 16
 
-   {"hipdm1", "The Edge of Oblivion"}           // 17
+	{"hipdm1", "The Edge of Oblivion"}			// 17
 };
 
 //PGM 01/07/97 added rogue levels
@@ -2481,12 +2487,12 @@ episode_t	episodes[] =
 //MED 01/06/97  added hipnotic episodes
 episode_t   hipnoticepisodes[] =
 {
-   {"Scourge of Armagon", 0, 1},
-   {"Fortress of the Dead", 1, 5},
-   {"Dominion of Darkness", 6, 6},
-   {"The Rift", 12, 4},
-   {"Final Level", 16, 1},
-   {"Deathmatch Arena", 17, 1}
+	{"Scourge of Armagon", 0, 1},
+	{"Fortress of the Dead", 1, 5},
+	{"Dominion of Darkness", 6, 6},
+	{"The Rift", 12, 4},
+	{"Final Level", 16, 1},
+	{"Deathmatch Arena", 17, 1}
 };
 
 //PGM 01/07/97 added rogue episodes
@@ -2596,33 +2602,33 @@ void M_GameOptions_Draw (void)
 		M_Print (160, 96, va("%i minutes", (int)timelimit.value));
 
 	M_Print (0, 112, "         Episode");
-   //MED 01/06/97 added hipnotic episodes
-   if (hipnotic)
-      M_Print (160, 112, hipnoticepisodes[startepisode].description);
-   //PGM 01/07/97 added rogue episodes
-   else if (rogue)
-      M_Print (160, 112, rogueepisodes[startepisode].description);
-   else
-      M_Print (160, 112, episodes[startepisode].description);
+	// MED 01/06/97 added hipnotic episodes
+	if (hipnotic)
+		M_Print (160, 112, hipnoticepisodes[startepisode].description);
+	// PGM 01/07/97 added rogue episodes
+	else if (rogue)
+		M_Print (160, 112, rogueepisodes[startepisode].description);
+	else
+		M_Print (160, 112, episodes[startepisode].description);
 
 	M_Print (0, 120, "           Level");
-   //MED 01/06/97 added hipnotic episodes
-   if (hipnotic)
-   {
-      M_Print (160, 120, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].name);
-   }
-   //PGM 01/07/97 added rogue episodes
-   else if (rogue)
-   {
-      M_Print (160, 120, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].name);
-   }
-   else
-   {
-      M_Print (160, 120, levels[episodes[startepisode].firstLevel + startlevel].description);
-      M_Print (160, 128, levels[episodes[startepisode].firstLevel + startlevel].name);
-   }
+	// MED 01/06/97 added hipnotic episodes
+	if (hipnotic)
+	{
+		M_Print (160, 120, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].description);
+		M_Print (160, 128, hipnoticlevels[hipnoticepisodes[startepisode].firstLevel + startlevel].name);
+	}
+	// PGM 01/07/97 added rogue episodes
+	else if (rogue)
+	{
+		M_Print (160, 120, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].description);
+		M_Print (160, 128, roguelevels[rogueepisodes[startepisode].firstLevel + startlevel].name);
+	}
+	else
+	{
+		M_Print (160, 120, levels[episodes[startepisode].firstLevel + startlevel].description);
+		M_Print (160, 128, levels[episodes[startepisode].firstLevel + startlevel].name);
+	}
 
 // line cursor
 	M_DrawCharacter (144, gameoptions_cursor_table[gameoptions_cursor], 12+((int)(realtime*4)&1));
@@ -2731,7 +2737,7 @@ void M_NetStart_Change (int dir)
 
 	case 8:
 		startlevel += dir;
-    //MED 01/06/97 added hipnotic episodes
+	//MED 01/06/97 added hipnotic episodes
 		if (hipnotic)
 			count = hipnoticepisodes[startepisode].levels;
 	//PGM 01/06/97 added hipnotic episodes
@@ -2903,13 +2909,17 @@ void M_ServerList_Draw (void)
 			int	i,j;
 			hostcache_t temp;
 			for (i = 0; i < hostCacheCount; i++)
-				for (j = i+1; j < hostCacheCount; j++)
+			{
+				for (j = i + 1; j < hostCacheCount; j++)
+				{
 					if (strcmp(hostcache[j].name, hostcache[i].name) < 0)
 					{
 						Q_memcpy(&temp, &hostcache[j], sizeof(hostcache_t));
 						Q_memcpy(&hostcache[j], &hostcache[i], sizeof(hostcache_t));
 						Q_memcpy(&hostcache[i], &temp, sizeof(hostcache_t));
 					}
+				}
+			}
 		}
 		slist_sorted = true;
 	}
@@ -3199,7 +3209,6 @@ void M_Keydown (int key)
 void M_ConfigureNetSubsystem(void)
 {
 // enable/disable net systems to match desired config
-
 	Cbuf_AddText ("stopdemo\n");
 	if (SerialConfig || DirectConfig)
 	{
@@ -3209,3 +3218,4 @@ void M_ConfigureNetSubsystem(void)
 	if (IPXConfig || TCPIPConfig)
 		net_hostport = lanConfig_port;
 }
+
