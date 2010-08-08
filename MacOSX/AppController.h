@@ -25,14 +25,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 extern NSString *FQPrefCommandLineKey;
 extern NSString *FQPrefFullscreenKey;
 extern NSString *FQPrefScreenModeKey;
-extern NSString *FQPrefShowDialog;
 
 @interface AppController : NSObject {
     IBOutlet NSWindow *launcherWindow;
     IBOutlet NSTextField *paramTextField;
     IBOutlet NSPopUpButton *screenModePopUp;
     IBOutlet NSButton *fullscreenCheckBox;
-    IBOutlet NSButton *showDialogCheckBox;
     
     NSMutableArray *screenModes;
     QuakeArguments *arguments;

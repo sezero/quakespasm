@@ -18,25 +18,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #import "AppController.h"
+#import "SUUpdaterDelegate.h"
 #import "ScreenInfo.h"
 #import "SDL.h"
 #import "SDLMain.h"
+#import <Sparkle/Sparkle.h>
 
 NSString *FQPrefCommandLineKey = @"CommandLine";
 NSString *FQPrefFullscreenKey = @"Fullscreen";
 NSString *FQPrefScreenModeKey = @"ScreenMode";
-NSString *FQPrefShowDialog = @"ShowDialog";
 
 @implementation AppController
 
 +(void) initialize {
-    
     NSMutableDictionary *defaults = [NSMutableDictionary dictionary];
     
     [defaults setObject:@"" forKey:FQPrefCommandLineKey];
     [defaults setObject:[NSNumber numberWithBool:YES] forKey:FQPrefFullscreenKey];
     [defaults setObject:[NSNumber numberWithInt:0] forKey:FQPrefScreenModeKey];
-    [defaults setObject:[NSNumber numberWithBool:YES] forKey:FQPrefShowDialog];
     
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
 }
@@ -83,21 +82,16 @@ NSString *FQPrefShowDialog = @"ShowDialog";
 }
 
 - (NSArray *)screenModes {
-
     return screenModes;
 }
 
 - (void)awakeFromNib {
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL showDialog = [defaults boolForKey:FQPrefShowDialog];
-    [showDialogCheckBox setState:showDialog ? NSOnState : NSOffState];
-
     if ([arguments count] > 0) {
         [paramTextField setStringValue:[arguments description]];
         if ([arguments argument:@"-window"] != nil)
             [fullscreenCheckBox setState:NSOffState];
     } else {
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [paramTextField setStringValue:[defaults stringForKey:FQPrefCommandLineKey]];
         
         BOOL fullscreen = [defaults boolForKey:FQPrefFullscreenKey];
@@ -109,27 +103,15 @@ NSString *FQPrefShowDialog = @"ShowDialog";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    BOOL showDialog = [defaults boolForKey:FQPrefShowDialog];
-
-    CGEventRef event = CGEventCreate(NULL /*default event source*/);
-    CGEventFlags mods = CGEventGetFlags(event);
-
-    if (showDialog || (mods & kCGEventFlagMaskCommand))
-        [launcherWindow makeKeyAndOrderFront:self];
-    else
-        [self launchQuake:self];
+    [launcherWindow makeKeyAndOrderFront:self];
 }
 
 - (IBAction)changeScreenMode:(id)sender {
-
     int index = [screenModePopUp indexOfSelectedItem];
     [fullscreenCheckBox setEnabled:index != 0];
 }
 
 - (IBAction)launchQuake:(id)sender {
-
     [arguments parseArguments:[paramTextField stringValue]];
     
     int index = [screenModePopUp indexOfSelectedItem];
@@ -171,7 +153,6 @@ NSString *FQPrefShowDialog = @"ShowDialog";
     [defaults setObject:[paramTextField stringValue] forKey:FQPrefCommandLineKey];
     [defaults setObject:[NSNumber numberWithBool:[fullscreenCheckBox state] == NSOnState] forKey:FQPrefFullscreenKey];
     [defaults setObject:[NSNumber numberWithInt:index] forKey:FQPrefScreenModeKey];
-    [defaults setObject:[NSNumber numberWithBool:[showDialogCheckBox state] == NSOnState] forKey:FQPrefShowDialog];
     [defaults synchronize];
 
     int status = SDL_main (argc, argv);
@@ -179,12 +160,10 @@ NSString *FQPrefShowDialog = @"ShowDialog";
 }
 
 - (IBAction)cancel:(id)sender {
-
     exit(0);
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
     [screenModes release];
     [super dealloc];
 }

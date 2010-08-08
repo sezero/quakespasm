@@ -19,10 +19,14 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>0.85.2</string>
 	<key>NSMainNibFile</key>
 	<string>Launcher</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
+	<key>SUFeedURL</key>
+	<string>http://www.kristianduske.com/quakespasm/appcast.xml</string>
 </dict>
 </plist>
