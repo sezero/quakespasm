@@ -12,8 +12,9 @@
 		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
 		002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
 		002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
+		48134A1812102F400015BF15 /* net_bsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1412102F400015BF15 /* net_bsd.c */; };
+		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
-		4824B3360DF5542E0001ED2C /* SDL_net.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48DA393E0D998BC9007C2A77 /* SDL_net.framework */; };
 		4830B79F0D464CAE00EF4498 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79D0D464CAE00EF4498 /* Changelog.txt */; };
 		4830B7A00D464CAE00EF4498 /* Todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79E0D464CAE00EF4498 /* Todo.txt */; };
 		48348943120595B1004184BC /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48348942120595B1004184BC /* Sparkle.framework */; };
@@ -47,7 +48,6 @@
 		483A78480D2EEAAB00CB2E4C /* cl_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783D0D2EEAAB00CB2E4C /* cl_parse.c */; };
 		483A78490D2EEAAB00CB2E4C /* cl_tent.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783E0D2EEAAB00CB2E4C /* cl_tent.c */; };
 		483A784A0D2EEAAB00CB2E4C /* net_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783F0D2EEAAB00CB2E4C /* net_main.c */; };
-		483A784B0D2EEAAB00CB2E4C /* net_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78400D2EEAAB00CB2E4C /* net_sdl.c */; };
 		483A784C0D2EEAAB00CB2E4C /* sv_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78410D2EEAAB00CB2E4C /* sv_main.c */; };
 		483A784D0D2EEAAB00CB2E4C /* sv_move.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78420D2EEAAB00CB2E4C /* sv_move.c */; };
 		483A784E0D2EEAAB00CB2E4C /* sv_phys.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78430D2EEAAB00CB2E4C /* sv_phys.c */; };
@@ -81,7 +81,6 @@
 		486577CD0D31A22A00E7920A /* snd_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577CA0D31A22A00E7920A /* snd_mix.c */; };
 		48728D2D0D3004A80004D61B /* net_dgrm.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D280D3004A70004D61B /* net_dgrm.c */; };
 		48728D2E0D3004A80004D61B /* net_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D2A0D3004A80004D61B /* net_loop.c */; };
-		487C0A5D0DA94A0700A49FF5 /* net_sdlnet.c in Sources */ = {isa = PBXBuildFile; fileRef = 487C0A5B0DA94A0700A49FF5 /* net_sdlnet.c */; };
 		48895DB90D4914A000849ABF /* pl_osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 48895DB80D4914A000849ABF /* pl_osx.m */; };
 		4890A4621205A27B00452753 /* SUUpdaterDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A4611205A27B00452753 /* SUUpdaterDelegate.m */; };
 		4890A5D21205D55700452753 /* UpdateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A5D11205D55700452753 /* UpdateButton.m */; };
@@ -92,7 +91,6 @@
 		48B9E7A70D340BEA0001CACF /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7A60D340BEA0001CACF /* AppController.m */; };
 		48B9E7C00D340EA80001CACF /* SDLApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7BF0D340EA80001CACF /* SDLApplication.m */; };
 		48C85E3B0D3AD10E00797678 /* QuakeArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C85E3A0D3AD10E00797678 /* QuakeArgument.m */; };
-		48DA393F0D998BC9007C2A77 /* SDL_net.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48DA393E0D998BC9007C2A77 /* SDL_net.framework */; };
 		48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE585A0D3A82C8006BB491 /* QuakeArguments.m */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -107,7 +105,6 @@
 			files = (
 				4834894F120595E9004184BC /* Sparkle.framework in Copy Frameworks into .app bundle */,
 				002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */,
-				4824B3360DF5542E0001ED2C /* SDL_net.framework in Copy Frameworks into .app bundle */,
 			);
 			name = "Copy Frameworks into .app bundle";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -125,6 +122,10 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeSpasm_Prefix.pch; sourceTree = "<group>"; };
+		48134A1412102F400015BF15 /* net_bsd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_bsd.c; path = ../Quake/net_bsd.c; sourceTree = SOURCE_ROOT; };
+		48134A1512102F400015BF15 /* net_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_defs.h; path = ../Quake/net_defs.h; sourceTree = SOURCE_ROOT; };
+		48134A1612102F400015BF15 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
+		48134A1712102F400015BF15 /* net_udp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_udp.h; path = ../Quake/net_udp.h; sourceTree = SOURCE_ROOT; };
 		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
 		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
 		4830B79D0D464CAE00EF4498 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Misc/Changelog.txt; sourceTree = SOURCE_ROOT; };
@@ -199,7 +200,6 @@
 		483A783D0D2EEAAB00CB2E4C /* cl_parse.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cl_parse.c; path = ../Quake/cl_parse.c; sourceTree = SOURCE_ROOT; };
 		483A783E0D2EEAAB00CB2E4C /* cl_tent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cl_tent.c; path = ../Quake/cl_tent.c; sourceTree = SOURCE_ROOT; };
 		483A783F0D2EEAAB00CB2E4C /* net_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_main.c; path = ../Quake/net_main.c; sourceTree = SOURCE_ROOT; };
-		483A78400D2EEAAB00CB2E4C /* net_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_sdl.c; path = ../Quake/net_sdl.c; sourceTree = SOURCE_ROOT; };
 		483A78410D2EEAAB00CB2E4C /* sv_main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sv_main.c; path = ../Quake/sv_main.c; sourceTree = SOURCE_ROOT; };
 		483A78420D2EEAAB00CB2E4C /* sv_move.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sv_move.c; path = ../Quake/sv_move.c; sourceTree = SOURCE_ROOT; };
 		483A78430D2EEAAB00CB2E4C /* sv_phys.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sv_phys.c; path = ../Quake/sv_phys.c; sourceTree = SOURCE_ROOT; };
@@ -236,8 +236,6 @@
 		48728D290D3004A80004D61B /* net_dgrm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_dgrm.h; path = ../Quake/net_dgrm.h; sourceTree = SOURCE_ROOT; };
 		48728D2A0D3004A80004D61B /* net_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_loop.c; path = ../Quake/net_loop.c; sourceTree = SOURCE_ROOT; };
 		48728D2B0D3004A80004D61B /* net_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_loop.h; path = ../Quake/net_loop.h; sourceTree = SOURCE_ROOT; };
-		487C0A5B0DA94A0700A49FF5 /* net_sdlnet.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_sdlnet.c; path = ../Quake/net_sdlnet.c; sourceTree = SOURCE_ROOT; };
-		487C0A5C0DA94A0700A49FF5 /* net_sdlnet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_sdlnet.h; path = ../Quake/net_sdlnet.h; sourceTree = SOURCE_ROOT; };
 		48895DB80D4914A000849ABF /* pl_osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pl_osx.m; path = ../Quake/pl_osx.m; sourceTree = SOURCE_ROOT; };
 		4890A4601205A27B00452753 /* SUUpdaterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdaterDelegate.h; sourceTree = "<group>"; };
 		4890A4611205A27B00452753 /* SUUpdaterDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUUpdaterDelegate.m; sourceTree = "<group>"; };
@@ -254,7 +252,6 @@
 		48B9E7BF0D340EA80001CACF /* SDLApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDLApplication.m; sourceTree = "<group>"; };
 		48C85E390D3AD10E00797678 /* QuakeArgument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeArgument.h; sourceTree = "<group>"; };
 		48C85E3A0D3AD10E00797678 /* QuakeArgument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuakeArgument.m; sourceTree = "<group>"; };
-		48DA393E0D998BC9007C2A77 /* SDL_net.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL_net.framework; path = /Library/Frameworks/SDL_net.framework; sourceTree = "<absolute>"; };
 		48FE58590D3A82C8006BB491 /* QuakeArguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeArguments.h; sourceTree = "<group>"; };
 		48FE585A0D3A82C8006BB491 /* QuakeArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuakeArguments.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -270,7 +267,6 @@
 				002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */,
-				48DA393F0D998BC9007C2A77 /* SDL_net.framework in Frameworks */,
 				48348943120595B1004184BC /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,7 +279,6 @@
 			children = (
 				48348942120595B1004184BC /* Sparkle.framework */,
 				002F39F909D0881F00EBEB88 /* SDL.framework */,
-				48DA393E0D998BC9007C2A77 /* SDL_net.framework */,
 				002F3C6009D0951E00EBEB88 /* GLUT.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				002F3C0009D093BD00EBEB88 /* OpenGL.framework */,
@@ -469,11 +464,11 @@
 				483A783C0D2EEAAB00CB2E4C /* cl_main.c */,
 				483A783D0D2EEAAB00CB2E4C /* cl_parse.c */,
 				483A783E0D2EEAAB00CB2E4C /* cl_tent.c */,
+				48134A1412102F400015BF15 /* net_bsd.c */,
 				48728D280D3004A70004D61B /* net_dgrm.c */,
 				48728D2A0D3004A80004D61B /* net_loop.c */,
 				483A783F0D2EEAAB00CB2E4C /* net_main.c */,
-				483A78400D2EEAAB00CB2E4C /* net_sdl.c */,
-				487C0A5B0DA94A0700A49FF5 /* net_sdlnet.c */,
+				48134A1612102F400015BF15 /* net_udp.c */,
 				483A78410D2EEAAB00CB2E4C /* sv_main.c */,
 				483A78420D2EEAAB00CB2E4C /* sv_move.c */,
 				483A78430D2EEAAB00CB2E4C /* sv_phys.c */,
@@ -522,9 +517,10 @@
 				483A77F90D2EE9A900CB2E4C /* client.h */,
 				48305B530D8AF8EC00A29C24 /* conback.h */,
 				483A77FA0D2EE9A900CB2E4C /* net.h */,
+				48134A1512102F400015BF15 /* net_defs.h */,
 				48728D290D3004A80004D61B /* net_dgrm.h */,
 				48728D2B0D3004A80004D61B /* net_loop.h */,
-				487C0A5C0DA94A0700A49FF5 /* net_sdlnet.h */,
+				48134A1712102F400015BF15 /* net_udp.h */,
 				483A77FB0D2EE9A900CB2E4C /* protocol.h */,
 				483A77FC0D2EE9A900CB2E4C /* server.h */,
 			);
@@ -664,7 +660,6 @@
 				483A78480D2EEAAB00CB2E4C /* cl_parse.c in Sources */,
 				483A78490D2EEAAB00CB2E4C /* cl_tent.c in Sources */,
 				483A784A0D2EEAAB00CB2E4C /* net_main.c in Sources */,
-				483A784B0D2EEAAB00CB2E4C /* net_sdl.c in Sources */,
 				483A784C0D2EEAAB00CB2E4C /* sv_main.c in Sources */,
 				483A784D0D2EEAAB00CB2E4C /* sv_move.c in Sources */,
 				483A784E0D2EEAAB00CB2E4C /* sv_phys.c in Sources */,
@@ -703,10 +698,11 @@
 				48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */,
 				48C85E3B0D3AD10E00797678 /* QuakeArgument.m in Sources */,
 				48895DB90D4914A000849ABF /* pl_osx.m in Sources */,
-				487C0A5D0DA94A0700A49FF5 /* net_sdlnet.c in Sources */,
 				4847CD5F12057F94000B560F /* sys_sdl_unix.c in Sources */,
 				4890A4621205A27B00452753 /* SUUpdaterDelegate.m in Sources */,
 				4890A5D21205D55700452753 /* UpdateButton.m in Sources */,
+				48134A1812102F400015BF15 /* net_bsd.c in Sources */,
+				48134A1912102F400015BF15 /* net_udp.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
