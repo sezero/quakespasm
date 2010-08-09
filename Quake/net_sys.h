@@ -29,6 +29,8 @@
    limited SDL_net functionality. */
 #undef	BAN_TEST
 
+#undef	HAVE_SA_LEN
+
 #define	sys_socket_t	int
 #define	INVALID_SOCKET	(-1)
 #define	SOCKET_ERROR	(-1)
@@ -53,10 +55,25 @@
 #ifndef __NET_SYS_H__
 #define __NET_SYS_H__
 
+#undef	HAVE_SA_LEN
+
 #include <sys/types.h>
 #include <errno.h>
 #include <stddef.h>
 #include <limits.h>
+
+#if defined(__FreeBSD__) || defined(__DragonFly__)	|| \
+    defined(__OpenBSD__) || defined(__NetBSD__)		|| \
+    defined(__MACOSX__)
+/* struct sockaddr has unsigned char sa_len as the first member in BSD
+ * in BSD variants and the family member is also an unsigned char instead
+ * of (unsigned) short. This should matter only when PLATFORM_UNIX is
+ * defined. */
+#define	HAVE_SA_LEN	1
+#define	SA_FAM_OFFSET	1
+#else
+#define	SA_FAM_OFFSET	0
+#endif	/* BSD, sockaddr */
 
 /* unix includes and compatibility macros */
 #if defined(PLATFORM_UNIX) || defined(PLATFORM_AMIGA)
@@ -95,6 +112,9 @@ typedef int	socklen_t;
 
 #define	socketerror(x)	strerror((x))
 
+/* Verify that we defined HAVE_SA_LEN correctly: */
+typedef char _check_sockaddr[2 * (offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET) - 1];
+
 #endif	/* end of unix stuff */
 
 
@@ -125,6 +145,9 @@ typedef SOCKET	sys_socket_t;
 #define	ECONNREFUSED	WSAECONNREFUSED
 /* must #include "wsaerror.h" for this : */
 #define	socketerror(x)	__WSAE_StrError((x))
+
+/* Verify that we defined HAVE_SA_LEN correctly: */
+typedef char _check_sockaddr[2 * (offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET) - 1];
 
 #endif	/* end of windows stuff */
 

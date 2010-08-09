@@ -24,6 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	net_defs.h
 	functions and data private to the network layer
 
+	net_sys.h and its dependencies must be included
+	before net_defs.h.
 */
 
 #ifndef __NET_DEFS_H
@@ -31,7 +33,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 struct qsockaddr
 {
+#if defined(HAVE_SA_LEN)
+	unsigned char qsa_len;
+	unsigned char qsa_family;
+#else
 	short qsa_family;
+#endif	/* BSD, sockaddr */
 	unsigned char qsa_data[14];
 };
 
