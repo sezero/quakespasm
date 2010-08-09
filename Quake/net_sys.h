@@ -55,8 +55,6 @@
 #ifndef __NET_SYS_H__
 #define __NET_SYS_H__
 
-#undef	HAVE_SA_LEN
-
 #include <sys/types.h>
 #include <errno.h>
 #include <stddef.h>
@@ -66,12 +64,15 @@
     defined(__OpenBSD__) || defined(__NetBSD__)		|| \
     defined(__MACOSX__)
 /* struct sockaddr has unsigned char sa_len as the first member in BSD
- * in BSD variants and the family member is also an unsigned char instead
- * of (unsigned) short. This should matter only when PLATFORM_UNIX is
- * defined. */
+ * variants and the family member is also an unsigned char instead of an
+ * unsigned short. This should matter only when PLATFORM_UNIX is defined,
+ * however, checking for the offset of sa_family in every platform that
+ * provide a struct sockaddr doesn't hurt either (see down below for the
+ * compile time asserts.) */
 #define	HAVE_SA_LEN	1
 #define	SA_FAM_OFFSET	1
 #else
+#undef	HAVE_SA_LEN
 #define	SA_FAM_OFFSET	0
 #endif	/* BSD, sockaddr */
 
