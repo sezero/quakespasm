@@ -42,7 +42,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					1230,
+					1020,
 					20,
 					48,
 					43,
@@ -81,18 +81,18 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 303050468;
-			PBXWorkspaceStateSaveDate = 303050468;
+			PBXPerProjectTemplateStateSaveDate = 303155361;
+			PBXWorkspaceStateSaveDate = 303155361;
 		};
 		perUserProjectItems = {
 			48134A1C12102F680015BF15 /* PBXTextBookmark */ = 48134A1C12102F680015BF15 /* PBXTextBookmark */;
 			48134A1D12102F680015BF15 /* PBXTextBookmark */ = 48134A1D12102F680015BF15 /* PBXTextBookmark */;
 			48134A1E12102F680015BF15 /* PBXTextBookmark */ = 48134A1E12102F680015BF15 /* PBXTextBookmark */;
-			48134A1F12102F680015BF15 /* PBXBookmark */ = 48134A1F12102F680015BF15 /* PBXBookmark */;
 			48134A3312102F7F0015BF15 /* PBXTextBookmark */ = 48134A3312102F7F0015BF15 /* PBXTextBookmark */;
 			48821E14120DF1150008EE50 /* PBXTextBookmark */ = 48821E14120DF1150008EE50 /* PBXTextBookmark */;
 			48821E15120DF1150008EE50 /* PBXTextBookmark */ = 48821E15120DF1150008EE50 /* PBXTextBookmark */;
 			48821E16120DF1150008EE50 /* PBXTextBookmark */ = 48821E16120DF1150008EE50 /* PBXTextBookmark */;
+			488AC38A1211C8DE00A5038A /* PBXTextBookmark */ = 488AC38A1211C8DE00A5038A /* PBXTextBookmark */;
 			4890A5541205C1FF00452753 /* PBXTextBookmark */ = 4890A5541205C1FF00452753 /* PBXTextBookmark */;
 			4890A5751205D04300452753 /* PBXTextBookmark */ = 4890A5751205D04300452753 /* PBXTextBookmark */;
 			4890A5761205D04300452753 /* PBXTextBookmark */ = 4890A5761205D04300452753 /* PBXTextBookmark */;
@@ -125,9 +125,9 @@
 	};
 	48134A1512102F400015BF15 /* net_defs.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1408, 3354}}";
+			sepNavIntBoundsRect = "{{0, 0}, {1198, 3328}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 997}";
+			sepNavVisRange = "{0, 882}";
 		};
 	};
 	48134A1612102F400015BF15 /* net_udp.c */ = {
@@ -166,10 +166,6 @@
 		rType = 0;
 		vrLen = 925;
 		vrLoc = 0;
-	};
-	48134A1F12102F680015BF15 /* PBXBookmark */ = {
-		isa = PBXBookmark;
-		fRef = 48134A1512102F400015BF15 /* net_defs.h */;
 	};
 	48134A3312102F7F0015BF15 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -293,11 +289,6 @@
 		name = net_sdlnet.c;
 		path = /Users/kristian/Documents/Code/XCode/QuakeSpasm/Quake/net_sdlnet.c;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1168, 6630}}";
-			sepNavSelRange = "{7706, 0}";
-			sepNavVisRange = "{7487, 789}";
-		};
 	};
 	48821E14120DF1150008EE50 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -328,6 +319,16 @@
 		rType = 0;
 		vrLen = 481;
 		vrLoc = 33461;
+	};
+	488AC38A1211C8DE00A5038A /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 48134A1512102F400015BF15 /* net_defs.h */;
+		name = "net_defs.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 882;
+		vrLoc = 0;
 	};
 	4890A4601205A27B00452753 /* SUUpdaterDelegate.h */ = {
 		uiCtxt = {
