@@ -103,7 +103,12 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-    [launcherWindow makeKeyAndOrderFront:self];
+	if ([arguments argument:@"-nolauncher"] != nil) {
+		[arguments removeArgument:@"-nolauncher"];
+		[self launchQuake:self];
+	} else {
+		[launcherWindow makeKeyAndOrderFront:self];
+	}
 }
 
 - (IBAction)changeScreenMode:(id)sender {

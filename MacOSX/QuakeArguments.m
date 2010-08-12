@@ -24,7 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 @implementation QuakeArguments
 
 - (id)init {
-    
     self = [super init];
     if (!self)
         return nil;
@@ -34,7 +33,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (id)initWithArguments:(char **)argv count:(int)argc {
-
     int i;
     NSString *next;
     NSString *current;
@@ -68,7 +66,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (void)parseArguments:(NSString *)args {
-
     int i;
     unichar c;
     unichar p = ' ';
@@ -141,7 +138,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (void)addArgument:(NSString *)name {
-
     QuakeArgument *argument = [[QuakeArgument alloc] initWithArgument:name];
     [quakeArgs addObject:argument];
     
@@ -149,15 +145,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (void)addArgument:(NSString *)name withValue:(NSString *)value {
-
     QuakeArgument *argument = [[QuakeArgument alloc] initWithArgument:name andValue:value];
     [quakeArgs addObject:argument];
     
     [argument release];
 }
 
+- (void)removeArgument:(NSString *)arg {
+	[quakeArgs removeObject:arg];
+}
+
 - (QuakeArgument *)argument:(NSString *)name {
-    
     NSEnumerator *enumerator = [quakeArgs objectEnumerator];
     QuakeArgument *argument;
 
@@ -170,7 +168,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (int)count {
-
     int c = 0;
 
     NSEnumerator *enumerator = [quakeArgs objectEnumerator];
@@ -186,7 +183,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (void)setArguments:(char **)args {
-
     int i = 0;
     
     NSEnumerator *enumerator = [quakeArgs objectEnumerator];
@@ -201,7 +197,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 }
 
 - (NSString *)description {
-    
     int i;
     NSMutableString *buffer = [[NSMutableString alloc] init];
 
@@ -221,8 +216,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     return buffer;
 }
 
-- (void) dealloc
-{
+- (void) dealloc {
     [quakeArgs release];
     [super dealloc];
 }
