@@ -42,31 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	GAMENAME	"id1"		// directory to look in by default
 
-#include <math.h>
-#include <string.h>
-#include <stdarg.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <setjmp.h>
-#include <assert.h> //johnfitz
-
-#if !defined(__GNUC__)
-#define	__attribute__(x)
-#endif	/* __GNUC__ */
-
-/* argument format attributes for function
- * pointers are supported for gcc >= 3.1
- */
-#if defined(__GNUC__) && (__GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ > 0))
-#define	__fp_attribute__	__attribute__
-#else
-#define	__fp_attribute__(x)
-#endif
-
-#if defined(_MSC_VER) && !defined(__cplusplus)
-#define inline __inline
-#endif	/* _MSC_VER */
-
+#include "q_stdinc.h"
 
 #if defined(_WIN32) && !defined(WINDED)
 

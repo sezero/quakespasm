@@ -25,13 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // mathlib.h
 
-typedef float vec_t;
-typedef vec_t vec3_t[3];
-typedef vec_t vec5_t[5];
-
-typedef	int	fixed4_t;
-typedef	int	fixed8_t;
-typedef	int	fixed16_t;
+#include <math.h>
 
 #ifndef M_PI
 #define M_PI		3.14159265358979323846	// matches value in gcc v2 math.h

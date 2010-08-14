@@ -113,10 +113,8 @@ typedef int	socklen_t;
 
 #define	socketerror(x)	strerror((x))
 
-/* Verify that we defined HAVE_SA_LEN correctly
-   (Expression inside [] evaluates negative if HAVE_SA_LEN not correctly defined,
-   thowing "error: size of array is negative" at compile time) */
-typedef char _check_sockaddr[2 * (offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET) - 1];
+/* Verify that we defined HAVE_SA_LEN correctly: */
+COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET);
 
 #endif	/* end of unix stuff */
 
@@ -150,7 +148,7 @@ typedef SOCKET	sys_socket_t;
 #define	socketerror(x)	__WSAE_StrError((x))
 
 /* Verify that we defined HAVE_SA_LEN correctly: */
-typedef char _check_sockaddr[2 * (offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET) - 1];
+COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET);
 
 #endif	/* end of windows stuff */
 

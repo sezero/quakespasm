@@ -24,26 +24,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // comndef.h  -- general definitions
 
-#if !defined BYTE_DEFINED
-typedef unsigned char 		byte;
-#define BYTE_DEFINED 1
-#endif
-
-#undef true
-#undef false
-#if defined(__cplusplus)
-/* do NOT use the bool of C++ because some structures have boolean and they
- * expect it to be 4 bytes long. as a hack, typedef it as int. */
-/* DO HOPE that the compiler built-ins for true and false are 1 and 0 ... */
-typedef int	qboolean;
-#else
-typedef enum {
-	false = 0,
-	true  = 1
-} qboolean;
-#endif
-
-//============================================================================
 
 typedef struct sizebuf_s
 {
@@ -78,28 +58,6 @@ void InsertLinkAfter (link_t *l, link_t *after);
 // ent = STRUCT_FROM_LINK(link,entity_t,order)
 // FIXME: remove this mess!
 #define	STRUCT_FROM_LINK(l,t,m) ((t *)((byte *)l - (size_t)&(((t *)0)->m)))
-
-//============================================================================
-
-#ifndef NULL
-#if defined(__cplusplus)
-#define NULL		0
-#else
-#define NULL ((void *)0)
-#endif
-#endif
-
-#define Q_MAXCHAR ((char)0x7f)
-#define Q_MAXSHORT ((short)0x7fff)
-#define Q_MAXINT	((int)0x7fffffff)
-#define Q_MAXLONG ((int)0x7fffffff)
-#define Q_MAXFLOAT ((int)0x7fffffff)
-
-#define Q_MINCHAR ((char)0x80)
-#define Q_MINSHORT ((short)0x8000)
-#define Q_MININT 	((int)0x80000000)
-#define Q_MINLONG ((int)0x80000000)
-#define Q_MINFLOAT ((int)0x7fffffff)
 
 //============================================================================
 
