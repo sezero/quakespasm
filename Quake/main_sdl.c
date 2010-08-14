@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
 		Sys_Error ("Not enough memory free; check disk space\n");
 
 	Con_Printf("FitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
-	Con_Printf("SDL port (c) Sleepwalkr, Baker\n");
+	Con_Printf("SDL port (c) SleepwalkR, Baker\n");
 	Con_Printf("QuakeSpasm %1.2f.%d (c) Ozkan Sezer, Stevenaaus\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 
 	Con_Printf("Host_Init\n");
