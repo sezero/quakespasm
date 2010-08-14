@@ -13,6 +13,15 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 
 <url url="http://quakespasm.sourceforge.net">
 
+<sect> Downloads <p>
+
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download" name="Source">
+<newline>
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
+<newline>
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download" name="Windows">
+<newline>
+
 <sect> Hints <p>
 
 <itemize>
@@ -30,14 +39,7 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 
 </itemize>
 
-<sect> Downloads <p>
-
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download" name="Source">
-<newline>
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
-<newline>
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download" name="Windows">
-<newline>
+<em> Visit the <url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage"> for a full run-down of this engine's features.</em>
 
 <sect> Compiling <p>
 Just extract the source tarball, then
@@ -46,11 +48,16 @@ cd quakespasm-0.85.3
 make
 cp quakespasm /usr/local/games/quake (for eg)
 </code>
-<em>Use <bf>make DEBUG=1</bf> for debugging.</em>
+<newline>
+Compile time options include
+<itemize>
+<item><bf>make DEBUG=1</bf> for debugging
+<item><bf>make SDLNET=1</bf> to enable SDL_net (Otherwise the socket api will be used directly)
+<item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installs
 <newline>
 <newline>
-<em>Optionally, HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf> diff.</em>
-<newline>
+<item>HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf> diff
+</itemize>
 <newline>
 If for any reason this doesn't work, the project can also be built with Codeblocks.
 This is a large, free, integrated development environment that requires wxWidgets and cmake to install.
@@ -62,8 +69,8 @@ The process is not for the faint hearted.
 <item> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) rather than SDL_net
 <item> Much needed OSX framework stuff from Kristian
 <item> Add a persistent history feature (thanks Baker)
-<item> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for nicer status bar)
-<item> Allow for player messages longer than 32 chars
+<item> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for a nicer status bar)
+<item> Allow player messages longer than 32 chars
 <item> Sockaddr fix for FreeBSD/OSX/etc networking
 <item> Connect status bar size to the scale slider
 <item> Include an ISNAN (is not-a-number) fix to catch the occassional quake C bug giving traceline problems
@@ -71,7 +78,6 @@ The process is not for the faint hearted.
 <item> Add a "prev weapon" menu item (from Sander)
 <item> Small fix to Sound Block/Unblock on win32
 <item> Lots of code fixes (some from uhexen2)
-<item> Shift+Escape opens console
 <item> Sys_Error calls Host_Shutdown
 
 </itemize>
