@@ -662,7 +662,7 @@ void PF_traceline (void)
 	  if (IS_NAN(v1[0]) || IS_NAN(v1[1]) || IS_NAN(v1[2]) ||
 	      IS_NAN(v2[0]) || IS_NAN(v2[1]) || IS_NAN(v2[2])) {
 	   Host_Error("NAN in traceline:\nv1(%f %f %f) v2(%f %f %f)\nentity %d",
-		      v1[0], v1[1], v1[2], v2[0], v2[1], v2[2], EDICT_TO_PROG(ent));
+		      v1[0], v1[1], v1[2], v2[0], v2[1], v2[2], NUM_FOR_EDICT(ent));
 	  }
 	} else {
 	  if (IS_NAN(v1[0]) || IS_NAN(v1[1]) || IS_NAN(v1[2]))
