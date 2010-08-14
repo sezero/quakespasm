@@ -658,6 +658,19 @@ void PF_traceline (void)
 	nomonsters = G_FLOAT(OFS_PARM2);
 	ent = G_EDICT(OFS_PARM3);
 
+if (developer.value) {
+	if (isnan(v1[0]) || isnan(v1[1]) || isnan(v1[2]) ||
+	    isnan(v2[0]) || isnan(v2[1]) || isnan(v2[2]))
+	{
+	   Host_Error("NAN in traceline:\nv1(%f %f %f) v2(%f %f %f)\nentity %d",
+		      v1[0], v1[1], v1[2], v2[0], v2[1], v2[2], EDICT_TO_PROG(ent));
+	}
+} else {
+	if (isnan(v1[0]) || isnan(v1[1]) || isnan(v1[2]))
+		v1[0] = v1[1] = v1[2] = 0;
+	if (isnan(v2[0]) || isnan(v2[1]) || isnan(v2[2]))
+		v2[0] = v2[1] = v2[2] = 0;
+}
 	trace = SV_Move (v1, vec3_origin, vec3_origin, v2, nomonsters, ent);
 
 	pr_global_struct->trace_allsolid = trace.allsolid;
