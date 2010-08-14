@@ -42,9 +42,9 @@ typedef	int	fixed16_t;
 struct mplane_s;
 
 extern vec3_t vec3_origin;
-extern	int nanmask;
 
-#define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
+#define	nanmask		(255<<23)	/* 7F800000 */
+#define	IS_NAN(x)	(((*(int *) &x) & nanmask) == nanmask)
 
 #define CLAMP(_minval, x, _maxval) ((x) < (_minval) ? (_minval) : (x) > (_maxval) ? (_maxval) : (x))
 
