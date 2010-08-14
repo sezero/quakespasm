@@ -17,13 +17,8 @@
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
 
 <P>
-<H2><A NAME="toc2">2.</A> <A HREF="README.html#s2">Changes</A></H2>
+<H2><A NAME="toc2">2.</A> <A HREF="README.html#s2">Hints </A></H2>
 
-<UL>
-<LI><A NAME="toc2.1">2.1</A> <A HREF="README.html#ss2.1">0.85.3</A>
-<LI><A NAME="toc2.2">2.2</A> <A HREF="README.html#ss2.2">0.85.2</A>
-<LI><A NAME="toc2.3">2.3</A> <A HREF="README.html#ss2.3">0.85.1</A>
-</UL>
 <P>
 <H2><A NAME="toc3">3.</A> <A HREF="README.html#s3">Downloads </A></H2>
 
@@ -31,10 +26,18 @@
 <H2><A NAME="toc4">4.</A> <A HREF="README.html#s4">Compiling </A></H2>
 
 <P>
-<H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Todo </A></H2>
+<H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Changes</A></H2>
+
+<UL>
+<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1">0.85.3</A>
+<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2">0.85.2</A>
+<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3">0.85.1</A>
+</UL>
+<P>
+<H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Todo </A></H2>
 
 <P>
-<H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Links </A></H2>
+<H2><A NAME="toc7">7.</A> <A HREF="README.html#s7">Links </A></H2>
 
 
 <HR>
@@ -42,84 +45,29 @@
 
 
 <P>QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.
-It includes 64bit CPU cupport, a new sound driver, and a few graphical niceities.
-The main feature is it works on virtually all platforms, and supports large Q1 mods.</P>
+It includes 64bit CPU cupport, a new sound driver, several networking fixes, and a few graphical niceities.</P>
 <P>
-<A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A></P>
-<P>To disable some changes, use <B>quakespasm -fitz</B></P>
-<P>For different sound drivers:<BR>
-<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B><BR>
-Where DRIVER may be alsa, dsp, pulse, esd ...</P>
-<P><B>Shift+Escape</B> now draws the Console.</P>
+<A HREF="http://quakespasm.sourceforge.net">http://quakespasm.sourceforge.net</A></P>
 
+<H2><A NAME="s2">2.</A> <A HREF="#toc2">Hints </A></H2>
 
-<H2><A NAME="s2">2.</A> <A HREF="#toc2">Changes</A></H2>
-
-
-<H2><A NAME="ss2.1">2.1</A> <A HREF="#toc2.1">0.85.3</A>
-</H2>
 
 <P>
 <UL>
-<LI> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) cwrather than SDLnet</LI>
-<LI> Much needed OSX framework stuff from Kristian</LI>
-<LI> Add a persistent history feature (thanks Baker)</LI>
-<LI> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for nicer sbar)</LI>
-<LI> Sockaddr fix for FreeBSD/OSX/etc networking</LI>
-<LI> Connect status bar size to the scale slider</LI>
-<LI> Include an ISNAN (is not-a-number) fix to catch the occassional quake C bug giving traceline problems</LI>
-<LI> Enumerate options menus</LI>
-<LI> Small fix to Sound Block/Unblock on win32</LI>
-<LI> Lots of code fixes (some from uhexen2)</LI>
-<LI> Shift+Escape opens console</LI>
-<LI> Sys_Error calls Host_Shutdown
+<LI>To disable some changes, use "<B>quakespasm -fitz</B>"
+</LI>
+<LI>For different sound drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
+, where DRIVER may be alsa, dsp, pulse, esd ...
+</LI>
+<LI><B>Shift+Escape</B> draws the Console.
+</LI>
+<LI>From the console, use <B>UP</B> to browse the command line history, and
+<B>TAB</B> to autocomplete command and map names.
+</LI>
+<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME</EM>"
 </LI>
 </UL>
 </P>
-
-<H2><A NAME="ss2.2">2.2</A> <A HREF="#toc2.2">0.85.2</A>
-</H2>
-
-<P>
-<UL>
-<LI> Replace the old "Screen size" slider with a "Scale" slider</LI>
-<LI> Don't constantly open and close condebug log</LI>
-<LI> Heap of C clean-ups</LI>
-<LI> Fix mapname sorting</LI>
-<LI> Alias the "mods" command to "games"</LI>
-<LI> Block/Unblock sound upon focus loss/gain</LI>
-<LI> NAT fix (networking protocol fix)</LI>
-<LI> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000</LI>
-<LI> sv_main.c (localmodels) Bumped array size from 5 to 6 in order for it to operate correctly with the raised limits of fitzquake-0.85</LI>
-<LI> Accept commandline options like "+connect ip:port"</LI>
-<LI> Add OSX Makefile (tested?)</LI>
-</UL>
-</P>
-
-<H2><A NAME="ss2.3">2.3</A> <A HREF="#toc2.3">0.85.1</A>
-</H2>
-
-<P>
-<UL>
-<LI>64 bit CPU support</LI>
-<LI>Restructured SDL sound driver</LI>
-<LI>Custom conback </LI>
-<LI>Tweaked the command line completion , and added a map/changelevel autocompletion function</LI>
-<LI>Alt+Enter toggles fullscreen</LI>
-<LI>Disable Draw_BeginDisc which causes core dumps when called excessively</LI>
-<LI>Show helpful info on start-up</LI>
-<LI>Include real map name (sv.name) and skill in the status bar</LI>
-<LI>Remove confirm quit dialog</LI>
-<LI>Don't spam the console with PackFile seek requests</LI>
-<LI>Default to window mode</LI>
-<LI>Withdraw console when playing demos</LI>
-<LI>Don't play demos on program init</LI>
-<LI>Default Heapsize is 64meg</LI>
-<LI>Changes to default console alpha, speed</LI>
-<LI>Changes to cvar persistence gl_flashblend(default 0), r_shadow, r_wateralpha, r_dynamic, r_novis</LI>
-</UL>
-</P>
-
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Downloads </A></H2>
 
@@ -146,7 +94,77 @@ If for any reason this doesn't work, the project can also be built with Codebloc
 This is a large, free, integrated development environment that requires wxWidgets and cmake to install.
 The process is not for the faint hearted.</P>
 
-<H2><A NAME="s5">5.</A> <A HREF="#toc5">Todo </A></H2>
+<H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
+
+
+<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">0.85.3</A>
+</H2>
+
+<P>
+<UL>
+<LI> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) rather than SDL_net</LI>
+<LI> Much needed OSX framework stuff from Kristian</LI>
+<LI> Add a persistent history feature (thanks Baker)</LI>
+<LI> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for nicer status bar)</LI>
+<LI> Allow for player messages longer than 32 chars</LI>
+<LI> Sockaddr fix for FreeBSD/OSX/etc networking</LI>
+<LI> Connect status bar size to the scale slider</LI>
+<LI> Include an ISNAN (is not-a-number) fix to catch the occassional quake C bug giving traceline problems</LI>
+<LI> Enumerate options menus</LI>
+<LI> Add a "prev weapon" menu item (from Sander)</LI>
+<LI> Small fix to Sound Block/Unblock on win32</LI>
+<LI> Lots of code fixes (some from uhexen2)</LI>
+<LI> Shift+Escape opens console</LI>
+<LI> Sys_Error calls Host_Shutdown
+</LI>
+</UL>
+</P>
+
+<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">0.85.2</A>
+</H2>
+
+<P>
+<UL>
+<LI> Replace the old "Screen size" slider with a "Scale" slider</LI>
+<LI> Don't constantly open and close condebug log</LI>
+<LI> Heap of C clean-ups</LI>
+<LI> Fix mapname sorting</LI>
+<LI> Alias the "mods" command to "games"</LI>
+<LI> Block/Unblock sound upon focus loss/gain</LI>
+<LI> NAT fix (networking protocol fix)</LI>
+<LI> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000</LI>
+<LI> sv_main.c (localmodels) Bumped array size from 5 to 6 in order for it to operate correctly with the raised limits of fitzquake-0.85</LI>
+<LI> Accept commandline options like "+connect ip:port"</LI>
+<LI> Add OSX Makefile (tested?)</LI>
+</UL>
+</P>
+
+<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">0.85.1</A>
+</H2>
+
+<P>
+<UL>
+<LI>64 bit CPU support</LI>
+<LI>Restructured SDL sound driver</LI>
+<LI>Custom conback </LI>
+<LI>Tweaked the command line completion , and added a map/changelevel autocompletion function</LI>
+<LI>Alt+Enter toggles fullscreen</LI>
+<LI>Disable Draw_BeginDisc which causes core dumps when called excessively</LI>
+<LI>Show helpful info on start-up</LI>
+<LI>Include real map name (sv.name) and skill in the status bar</LI>
+<LI>Remove confirm quit dialog</LI>
+<LI>Don't spam the console with PackFile seek requests</LI>
+<LI>Default to window mode</LI>
+<LI>Withdraw console when playing demos</LI>
+<LI>Don't play demos on program init</LI>
+<LI>Default Heapsize is 64meg</LI>
+<LI>Changes to default console alpha, speed</LI>
+<LI>Changes to cvar persistence gl_flashblend(default 0), r_shadow, r_wateralpha, r_dynamic, r_novis</LI>
+</UL>
+</P>
+
+
+<H2><A NAME="s6">6.</A> <A HREF="#toc6">Todo </A></H2>
 
 <P>
 <UL>
@@ -158,7 +176,7 @@ The process is not for the faint hearted.</P>
 </UL>
 </P>
 
-<H2><A NAME="s6">6.</A> <A HREF="#toc6">Links </A></H2>
+<H2><A NAME="s7">7.</A> <A HREF="#toc7">Links </A></H2>
 
 
 <P>

@@ -6,15 +6,16 @@
 
 
   1. About
-  2. Changes
-     2.1 0.85.3
-     2.2 0.85.2
-     2.3 0.85.1
-
+  2. Hints
   3. Downloads
   4. Compiling
-  5. Todo
-  6. Links
+  5. Changes
+     5.1 0.85.3
+     5.2 0.85.2
+     5.3 0.85.1
+
+  6. Todo
+  7. Links
 
 
   ______________________________________________________________________
@@ -27,36 +28,75 @@
 
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
-  includes 64bit CPU cupport, a new sound driver, and a few graphical
-  niceities.  The main feature is it works on virtually all platforms,
-  and supports large Q1 mods.
+  includes 64bit CPU cupport, a new sound driver, several networking
+  fixes, and a few graphical niceities.
 
-  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
-
-  To disable some changes, use quakespasm -fitz
-
-  For different sound drivers:
-  SDL_AUDIODRIVER=DRIVER ./quakespasm
-  Where DRIVER may be alsa, dsp, pulse, esd ...
-
-  Shift+Escape now draws the Console.
+  <http://quakespasm.sourceforge.net>
 
 
-  2.  Changes
+  2.  Hints
 
 
-  2.1.  0.85.3
+  o  To disable some changes, use "quakespasm -fitz"
+
+  o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
+     ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
+
+  o  Shift+Escape draws the Console.
+
+  o  From the console, use UP to browse the command line history, and
+     TAB to autocomplete command and map names.
+
+  o  Quakespasm allows loading new games (mods) on the fly with "game
+     GAMENAME"
+
+
+  3.  Downloads
+
+
+  Source
+  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download>
+  Linux binary
+  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download>
+  Windows
+  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download>
+  4.  Compiling
+
+  Just extract the source tarball, then
+
+  ______________________________________________________________________
+  cd quakespasm-0.85.3
+  make
+  cp quakespasm /usr/local/games/quake (for eg)
+  ______________________________________________________________________
+
+
+  Use make DEBUG=1 for debugging.
+  Optionally, HOME directory support can be enabled via the Misc/home-
+  dir_0.patch diff.
+  If for any reason this doesn't work, the project can also be built
+  with Codeblocks.  This is a large, free, integrated development envi-
+  ronment that requires wxWidgets and cmake to install.  The process is
+  not for the faint hearted.
+
+
+  5.  Changes
+
+
+  5.1.  0.85.3
 
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
-     networking code (default) cwrather than SDLnet
+     networking code (default) rather than SDL_net
 
   o  Much needed OSX framework stuff from Kristian
 
   o  Add a persistent history feature (thanks Baker)
 
   o  Add a slider for scr_sbaralpha, which now defaults to 0.95
-     (slightly transparent, allowing for nicer sbar)
+     (slightly transparent, allowing for nicer status bar)
+
+  o  Allow for player messages longer than 32 chars
 
   o  Sockaddr fix for FreeBSD/OSX/etc networking
 
@@ -67,6 +107,8 @@
 
   o  Enumerate options menus
 
+  o  Add a "prev weapon" menu item (from Sander)
+
   o  Small fix to Sound Block/Unblock on win32
 
   o  Lots of code fixes (some from uhexen2)
@@ -76,12 +118,13 @@
   o  Sys_Error calls Host_Shutdown
 
 
-  2.2.  0.85.2
+  5.2.  0.85.2
 
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
   o  Don't constantly open and close condebug log
+
 
   o  Heap of C clean-ups
 
@@ -104,7 +147,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  2.3.  0.85.1
+  5.3.  0.85.1
 
 
   o  64 bit CPU support
@@ -125,7 +168,6 @@
 
   o  Include real map name (sv.name) and skill in the status bar
 
-
   o  Remove confirm quit dialog
 
   o  Don't spam the console with PackFile seek requests
@@ -144,38 +186,7 @@
      r_wateralpha, r_dynamic, r_novis
 
 
-  3.  Downloads
-
-
-  Source
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download>
-  Linux binary
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download>
-  Windows
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download>
-
-
-  4.  Compiling
-
-  Just extract the source tarball, then
-
-  ______________________________________________________________________
-  cd quakespasm-0.85.3
-  make
-  cp quakespasm /usr/local/games/quake (for eg)
-  ______________________________________________________________________
-
-
-  Use make DEBUG=1 for debugging.
-  Optionally, HOME directory support can be enabled via the Misc/home-
-  dir_0.patch diff.
-  If for any reason this doesn't work, the project can also be built
-  with Codeblocks.  This is a large, free, integrated development envi-
-  ronment that requires wxWidgets and cmake to install.  The process is
-  not for the faint hearted.
-
-
-  5.  Todo
+  6.  Todo
 
 
   o  Ogg/Mp3 music file support
@@ -189,7 +200,7 @@
   o  Tie down the "-window/-fullscreen" options / behaviour ?
 
 
-  6.  Links
+  7.  Links
 
 
   QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
