@@ -132,7 +132,9 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
         [arguments addArgument:@"-height" withValue:[NSString stringWithFormat:@"%d", height]];
         [arguments addArgument:@"-bpp" withValue:[NSString stringWithFormat:@"%d", bpp]];
         
-        if (!fullscreen)
+        if (fullscreen)
+			[arguments addArgument:@"-fullscreen"];
+		else
             [arguments addArgument:@"-window"];
     }
     
