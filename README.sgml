@@ -1,0 +1,137 @@
+<!doctype linuxdoc system>
+<article>
+<title>QuakeSpasm 
+<toc>
+<verb></verb>
+
+QuakeSpasm 0.85.3 (unreleased) (18 September 2010)
+
+<sect> About <p>
+
+QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.
+It includes 64bit CPU cupport, a new sound driver, and a few graphical niceities.
+The main feature is it works on virtually all platforms, and supports large Q1 mods.
+
+<url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
+
+To disable some changes, use <bf>quakespasm -fitz</bf>
+
+For different sound drivers:
+<newline>
+<bf>SDL_AUDIODRIVER=</bf><em>DRIVER</em><bf> ./quakespasm</bf>
+<newline>
+Where DRIVER may be alsa, dsp, pulse, esd ...
+
+<bf>Shift+Escape</bf> now draws the Console.
+
+
+<sect> Changes<p>
+<sect1> 0.85.3<p>
+<itemize>
+<item> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) cwrather than SDLnet
+<item> Much needed OSX framework stuff from Kristian
+<item> Add a persistent history feature (thanks Baker)
+<item> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for nicer sbar)
+<item> Sockaddr fix for FreeBSD/OSX/etc networking
+<item> Connect status bar size to the scale slider
+<item> Include an ISNAN (is not-a-number) fix to catch the occassional quake C bug giving traceline problems
+<item> Enumerate options menus
+<item> Small fix to Sound Block/Unblock on win32
+<item> Lots of code fixes (some from uhexen2)
+<item> Shift+Escape opens console
+<item> Sys_Error calls Host_Shutdown
+
+</itemize>
+
+<sect1> 0.85.2<p>
+<itemize>
+<item> Replace the old "Screen size" slider with a "Scale" slider
+<item> Don't constantly open and close condebug log
+<item> Heap of C clean-ups
+<item> Fix mapname sorting
+<item> Alias the "mods" command to "games"
+<item> Block/Unblock sound upon focus loss/gain
+<item> NAT fix (networking protocol fix)
+<item> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000
+<item> sv_main.c (localmodels) Bumped array size from 5 to 6 in order for it to operate correctly with the raised limits of fitzquake-0.85
+<item> Accept commandline options like "+connect ip:port"
+<item> Add OSX Makefile (tested?)
+</itemize>
+
+<sect1> 0.85.1<p>
+<itemize>
+<item>64 bit CPU support
+<item>Restructured SDL sound driver
+<item>Custom conback 
+<item>Tweaked the command line completion , and added a map/changelevel autocompletion function
+<item>Alt+Enter toggles fullscreen
+<item>Disable Draw_BeginDisc which causes core dumps when called excessively
+<item>Show helpful info on start-up
+<item>Include real map name (sv.name) and skill in the status bar
+<item>Remove confirm quit dialog
+<item>Don't spam the console with PackFile seek requests
+<item>Default to window mode
+<item>Withdraw console when playing demos
+<item>Don't play demos on program init
+<item>Default Heapsize is 64meg
+<item>Changes to default console alpha, speed
+<item>Changes to cvar persistence gl_flashblend(default 0), r_shadow, r_wateralpha, r_dynamic, r_novis
+</itemize>
+
+
+<sect> Downloads <p>
+
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download" name="Source">
+<newline>
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
+<newline>
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download" name="Windows">
+<newline>
+
+<sect> Compiling <p>
+Just extract the source tarball, then
+<code>
+cd quakespasm-0.85.3
+make
+cp quakespasm /usr/local/games/quake (for eg)
+</code>
+<em>Use <bf>make DEBUG=1</bf> for debugging.</em>
+<newline>
+<newline>
+<em>Optionally, HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf> diff.</em>
+<newline>
+<newline>
+If for any reason this doesn't work, the project can also be built with Codeblocks.
+This is a large, free, integrated development environment that requires wxWidgets and cmake to install.
+The process is not for the faint hearted.
+
+<sect> Todo <p>
+<itemize>
+<item>Ogg/Mp3 music file support
+<item>Tested HOME directory support
+<item>Fix Centerview (V_StartPitchDrift)
+<item>Fix compiler warnings
+<item>Tie down the "-window/-fullscreen" options / behaviour ?
+</itemize>
+
+<sect> Links <p>
+
+<url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
+<newline>
+<url url="http://sourceforge.net/projects/quakespasm" name="QuakeSpasm Project page">
+<newline>
+<url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage">
+<newline>
+<url url="http://www.kristianduske.com/fitzquake" name="Sleepwalkr's Original SDL Port">
+<newline>
+<url name="Baker's 0.85 Source Code" url="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">
+<newline>
+<url url="http://www.celephais.net/board/view_thread.php?id=60172" name="Func SDL Fitzquake forum">
+<newline>
+<url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan's email">
+<newline>
+<url url="mailto:yahoo - dot - com - username - stevenaaus" name="Stevenaaus email">
+<newline>
+<url url="mailto:gmail - dot - com - username - inveigle" name="Kristian's email">
+
+</article>
