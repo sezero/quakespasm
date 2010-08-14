@@ -2687,13 +2687,13 @@ void VID_MenuKey (int key)
 		switch (video_options_cursor)
 		{
 		case 0:
-			VID_Menu_ChooseNextMode (-1);
+			VID_Menu_ChooseNextMode (1);
 			break;
 		case 1:
-			VID_Menu_ChooseNextBpp (-1);
+			VID_Menu_ChooseNextBpp (1);
 			break;
 		case 2:
-			VID_Menu_ChooseNextRate (-1);
+			VID_Menu_ChooseNextRate (1);
 			break;
 		case 3:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
@@ -2710,13 +2710,13 @@ void VID_MenuKey (int key)
 		switch (video_options_cursor)
 		{
 		case 0:
-			VID_Menu_ChooseNextMode (1);
+			VID_Menu_ChooseNextMode (-1);
 			break;
 		case 1:
-			VID_Menu_ChooseNextBpp (1);
+			VID_Menu_ChooseNextBpp (-1);
 			break;
 		case 2:
-			VID_Menu_ChooseNextRate (1);
+			VID_Menu_ChooseNextRate (-1);
 			break;
 		case 3:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
