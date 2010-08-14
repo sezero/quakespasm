@@ -1,6 +1,6 @@
 support for user directories, based on a patch by Piotr Szymaniak.
 against quakespasm svn revision 97.
-** !! in alpha state, minimally tested !! **
+** !! in alpha state, minimally tested, and certainly outdated !! **
 
 Index: Quake/common.c
 ===================================================================
@@ -102,3 +102,4 @@ Index: Quake/common.c
  	i = COM_CheckParm ("-path");
  	if (i)
  	{
+
