@@ -1,5 +1,5 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win32 : MinGW)
-# using cross-toolchains on a linux host	/ June 21, 2010.
+# using cross-toolchains on a linux host	/ Aug. 17, 2010.
 # "make DEBUG=1" builds debug client
 # "make WINSOCK2=1" to use WinSock2 api when not using SDL_net. otherwise,
 # WinSock 1.1 will be used.
@@ -25,9 +25,19 @@ TOPDIR := $(shell pwd)
 # Define some build variables
 # ---------------------------------------
 
-CC = i686-pc-mingw32-gcc
-WINDRES = i686-pc-mingw32-windres
-STRIP = i686-pc-mingw32-strip
+TARGET=i686-pc-mingw32
+
+CROSS_COMPILE=1
+
+ifeq ($(CROSS_COMPILE),1)
+TOOLCHAIN_PREFIX=$(TARGET)-
+else
+TOOLCHAIN_PREFIX=
+endif
+
+CC = $(TOOLCHAIN_PREFIX)gcc
+WINDRES = $(TOOLCHAIN_PREFIX)windres
+STRIP = $(TOOLCHAIN_PREFIX)strip
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
