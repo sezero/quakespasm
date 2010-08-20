@@ -24,6 +24,30 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // comndef.h  -- general definitions
 
+#if defined(_WIN32)
+#define q_snprintf  _snprintf
+#define q_vsnprintf _vsnprintf
+#ifdef _MSC_VER
+#  pragma warning(disable:4244)
+	/* 'argument'	: conversion from 'type1' to 'type2',
+			  possible loss of data */
+#  pragma warning(disable:4305)
+	/* 'identifier'	: truncation from 'type1' to 'type2' */
+	/*  in our case, truncation from 'double' to 'float' */
+#  pragma warning(disable:4267)
+	/* 'var'	: conversion from 'size_t' to 'type',
+			  possible loss of data (/Wp64 warning) */
+/* MSC doesn't have fmin() / fmax(), use the min/max macros: */
+#define fmax max
+#define fmin min
+#endif	/* _MSC_VER */
+
+#else	/* _WIN32 */
+
+#define q_snprintf  snprintf
+#define q_vsnprintf vsnprintf
+
+#endif	/* _WIN32 */
 
 typedef struct sizebuf_s
 {
