@@ -74,6 +74,10 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 </LI>
 <LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME</EM>"
 </LI>
+<LI>There is currently no music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..
+</LI>
+<LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F:\</B>" (for example)
+</LI>
 </UL>
 </P>
 <P><EM> Visit the 
@@ -122,7 +126,8 @@ The process is not for the faint hearted.</P>
 <LI> Add a "prev weapon" menu item (from Sander)</LI>
 <LI> Small fix to Sound Block/Unblock on win32</LI>
 <LI> Lots of code fixes (some from uhexen2)</LI>
-<LI> Sys_Error calls Host_Shutdown
+<LI> Sys_Error calls Host_Shutdown</LI>
+<LI> Added MS Visual Studio support
 </LI>
 </UL>
 </P>
@@ -176,6 +181,8 @@ The process is not for the faint hearted.</P>
 <P>
 <UL>
 <LI>Ogg/Mp3 music file support</LI>
+<LI>Native CD audio support .... cd_sdl.c doesn't have proper volume controls</LI>
+<LI>Test usb keyboards. Do the keypads work ?</LI>
 <LI>Tested HOME directory support</LI>
 <LI>Fix Centerview (V_StartPitchDrift)</LI>
 <LI>Fix compiler warnings</LI>
@@ -192,6 +199,7 @@ The process is not for the faint hearted.</P>
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A><BR>
 <A HREF="http://www.kristianduske.com/fitzquake">Sleepwalkr's Original SDL Port</A><BR>
 <A HREF="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">Baker's 0.85 Source Code</A><BR>
+<A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A><BR>
 <A HREF="http://www.celephais.net/board/view_thread.php?id=60172">Func SDL Fitzquake forum</A><BR>
 <A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan's email</A><BR>
 <A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus email</A><BR>

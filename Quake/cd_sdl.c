@@ -27,6 +27,7 @@
 
 
 #include "SDL.h"
+#include "SDL_getenv.h"
 
 #ifndef	SDL_INIT_CDROM
 
@@ -393,9 +394,16 @@ void CDAudio_Update(void)
 int CDAudio_Init(void)
 {
 	int	i, x, sdl_num_drives;
+	char sdl_env_dev[] = "SDL_CDROM=";
 
 	if (COM_CheckParm("-nocdaudio"))
 		return -1;
+
+	if ((i = COM_CheckParm("-cddev")) != 0 && i < com_argc - 1)
+	{
+		strcat(sdl_env_dev, com_argv[i+1]);
+		putenv(sdl_env_dev);
+	}
 
 	if (SDL_InitSubSystem(SDL_INIT_CDROM) == -1)
 	{

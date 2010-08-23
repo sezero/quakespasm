@@ -221,7 +221,7 @@ debug:
 	$(error Use "make DEBUG=1")
 
 install:	quakespasm
-	mv quakespasm /usr/local/games/quake
+	cp quakespasm /usr/local/games/quake
 
 clean:
 	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
