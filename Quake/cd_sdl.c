@@ -27,7 +27,6 @@
 
 
 #include "SDL.h"
-#include "SDL_getenv.h"
 
 #ifndef	SDL_INIT_CDROM
 
@@ -163,7 +162,7 @@ void CDAudio_Stop(void)
 	endOfTrack = -1.0;
 }
 
-void CDAudio_Next(void)
+static void CDAudio_Next(void)
 {
 	byte track;
 
@@ -173,17 +172,14 @@ void CDAudio_Next(void)
 	if (!playing)
 		return;
 
-	// track = cd_handle->cur_track;
-	// Seems not implemented
-	track = playTrack;
-	track++;
+	track = playTrack + 1;	/* cd_handle->track[cd_handle->cur_track].id + 1; */
 	if (track > cd_handle->numtracks)
 		track = 1;
 
-	CDAudio_Play (track, playLooping );
+	CDAudio_Play (track, playLooping);
 }
 
-void CDAudio_Prev(void)
+static void CDAudio_Prev(void)
 {
 	byte track;
 
@@ -193,13 +189,11 @@ void CDAudio_Prev(void)
 	if (!playing)
 		return;
 
-	track = playTrack;
-	track--;
-
-	if (track == 0)
+	track = playTrack - 1;
+	if (track < 1)
 		track = cd_handle->numtracks;
 
-	CDAudio_Play (track,playLooping);
+	CDAudio_Play (track, playLooping);
 }
 
 void CDAudio_Pause(void)
@@ -446,19 +440,73 @@ void CDAudio_Update(void)
 	}
 }
 
+static const char *get_cddev_arg (const char *arg)
+{
+#if defined(_WIN32)
+/* arg should be like "D:\", make sure it is so,
+ * but tolerate args like "D" or "D:", as well. */
+	static char drive[4];
+	if (!arg || ! *arg)
+		return NULL;
+	if (arg[1] != '\0')
+	{
+		if (arg[1] != ':')
+			return NULL;
+		if (arg[2] != '\0')
+		{
+			if (arg[2] != '\\' &&
+			    arg[2] != '/')
+				return NULL;
+			if (arg[3] != '\0')
+				return NULL;
+		}
+	}
+	if (*arg >= 'A' && *arg <= 'Z')
+	{
+		drive[0] = *arg;
+		drive[1] = ':';
+		drive[2] = '\\';
+		drive[3] = '\0';
+		return drive;
+	}
+	else if (*arg >= 'a' && *arg <= 'z')
+	{
+	/* make it uppercase for SDL */
+		drive[0] = *arg | ('a' - 'A');
+		drive[1] = ':';
+		drive[2] = '\\';
+		drive[3] = '\0';
+		return drive;
+	}
+	return NULL;
+#else
+	return arg;
+#endif
+}
+
+static void export_cddev_arg (void)
+{
+/* Bad ugly hack to workaround SDL's cdrom device detection.
+ * not needed for windows due to the way SDL_cdrom works. */
+#if !defined(_WIN32)
+	int i = COM_CheckParm("-cddev");
+	if (i != 0 && i < com_argc - 1 && com_argv[i+1][0] != '\0')
+	{
+		char arg[64];
+		q_snprintf("SDL_CDROM=%s", sizeof(arg), com_argv[i+1]);
+		putenv(arg);
+	}
+#endif
+}
+
 int CDAudio_Init(void)
 {
-	int	i, x, sdl_num_drives;
-	char sdl_env_dev[] = "SDL_CDROM=";
+	int	i, sdl_num_drives;
 
 	if (COM_CheckParm("-nocdaudio"))
 		return -1;
 
-	if ((i = COM_CheckParm("-cddev")) != 0 && i < com_argc - 1)
-	{
-		strcat(sdl_env_dev, com_argv[i+1]);
-		putenv(sdl_env_dev);
-	}
+	export_cddev_arg ();
 
 	if (SDL_InitSubSystem(SDL_INIT_CDROM) == -1)
 	{
@@ -475,17 +523,23 @@ int CDAudio_Init(void)
 
 	if ((i = COM_CheckParm("-cddev")) != 0 && i < com_argc - 1)
 	{
-		for (x = 0; x < sdl_num_drives; x++)
+		const char *userdev = get_cddev_arg(com_argv[i+1]);
+		if (!userdev)
 		{
-			if (!Q_strcasecmp(SDL_CDName(x), com_argv[i+1]))
+			Con_Printf("Invalid argument to -cddev\n");
+			return -1;
+		}
+		for (i = 0; i < sdl_num_drives; i++)
+		{
+			if (!Q_strcasecmp(SDL_CDName(i), userdev))
 			{
-				cd_dev = x;
+				cd_dev = i;
 				break;
 			}
 		}
 		if (cd_dev == -1)
 		{
-			Con_Printf("SDL couldn't find cdrom device %s\n", com_argv[i+1]);
+			Con_Printf("SDL couldn't find cdrom device %s\n", userdev);
 			return -1;
 		}
 	}
