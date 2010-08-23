@@ -173,9 +173,9 @@ void CDAudio_Next(void)
 	if (!playing)
 		return;
 
-        // track = cd_handle->cur_track;
-        // Seems not implemented
-        track = playTrack;
+	// track = cd_handle->cur_track;
+	// Seems not implemented
+	track = playTrack;
 	track++;
 	if (track > cd_handle->numtracks)
 		track = 1;
@@ -193,10 +193,10 @@ void CDAudio_Prev(void)
 	if (!playing)
 		return;
 
-        track = playTrack;
+	track = playTrack;
 	track--;
 
-        if (track == 0)
+	if (track == 0)
 		track = cd_handle->numtracks;
 
 	CDAudio_Play (track,playLooping);
@@ -243,10 +243,10 @@ static void CD_f (void)
 
 	if (Cmd_Argc() < 2)
 	{
-		Con_Printf("commands:");
-		Con_Printf("on, off, reset, remap, \n");
-		Con_Printf("play, stop, loop, pause, resume\n");
-		Con_Printf("eject, info\n");
+		Con_Printf("commands:\n");
+		Con_Printf("  on, off, reset, remap, \n");
+		Con_Printf("  play, stop, next, prev, loop,\n");
+		Con_Printf("  pause, resume, eject, info\n");
 		return;
 	}
 
@@ -379,6 +379,7 @@ static void CD_f (void)
 
 		return;
 	}
+	Con_Printf ("cd: no such command. Use \"cd\" for help.\n");
 }
 
 static qboolean CD_GetVolume (void *unused)
