@@ -472,7 +472,7 @@ static const char *get_cddev_arg (const char *arg)
 	else if (*arg >= 'a' && *arg <= 'z')
 	{
 	/* make it uppercase for SDL */
-		drive[0] = *arg | ('a' - 'A');
+		drive[0] = *arg - ('a' - 'A');
 		drive[1] = ':';
 		drive[2] = '\\';
 		drive[3] = '\0';
