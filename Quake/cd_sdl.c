@@ -92,6 +92,9 @@ void CDAudio_Play(byte track, qboolean looping)
 			return;
 	}
 
+	if (track == 0)
+		track = 1;
+
 	track = remap[track];
 
 	if (track < 1 || track > cd_handle->numtracks)
@@ -158,6 +161,45 @@ void CDAudio_Stop(void)
 	playing = false;
 	pausetime = -1.0;
 	endOfTrack = -1.0;
+}
+
+void CDAudio_Next(void)
+{
+	byte track;
+
+	if (!cd_handle || !enabled)
+		return;
+
+	if (!playing)
+		return;
+
+        // track = cd_handle->cur_track;
+        // Seems not implemented
+        track = playTrack;
+	track++;
+	if (track > cd_handle->numtracks)
+		track = 1;
+
+	CDAudio_Play (track, playLooping );
+}
+
+void CDAudio_Prev(void)
+{
+	byte track;
+
+	if (!cd_handle || !enabled)
+		return;
+
+	if (!playing)
+		return;
+
+        track = playTrack;
+	track--;
+
+        if (track == 0)
+		track = cd_handle->numtracks;
+
+	CDAudio_Play (track,playLooping);
 }
 
 void CDAudio_Pause(void)
@@ -287,6 +329,18 @@ static void CD_f (void)
 	if (Q_strcasecmp(command, "resume") == 0)
 	{
 		CDAudio_Resume();
+		return;
+	}
+
+	if (Q_strcasecmp(command, "next") == 0)
+	{
+		CDAudio_Next();
+		return;
+	}
+
+	if (Q_strcasecmp(command, "prev") == 0)
+	{
+		CDAudio_Prev();
 		return;
 	}
 

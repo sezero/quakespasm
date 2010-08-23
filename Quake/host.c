@@ -861,6 +861,13 @@ void Host_Init (quakeparms_t *parms)
 		// note: two leading newlines because the command buffer swallows one of them.
 		Cbuf_AddText ("\n\nvid_unlock\n");
 	}
+	else if (COM_CheckParm ("-cd"))
+	{
+		// Allow "qs -dedicated -cd" to work as a standalone cd player ;>
+		// Useful, because of ubiquitous nature of SDL
+		S_Init ();
+		CDAudio_Init ();
+	}
 
 	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
 	host_hunklevel = Hunk_LowMark ();
@@ -915,6 +922,12 @@ void Host_Shutdown(void)
 		IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
 		VID_Shutdown();
 	}
+	else if (COM_CheckParm ("-cd"))
+	{
+		CDAudio_Shutdown ();
+		S_Shutdown ();
+	}
+
 	LOG_Close ();
 }
 
