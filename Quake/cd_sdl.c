@@ -494,7 +494,7 @@ static void export_cddev_arg (void)
 	if (i != 0 && i < com_argc - 1 && com_argv[i+1][0] != '\0')
 	{
 		char arg[64];
-		q_snprintf("SDL_CDROM=%s", sizeof(arg), com_argv[i+1]);
+		q_snprintf(arg, sizeof(arg), "SDL_CDROM=%s", com_argv[i+1]);
 		putenv(arg);
 	}
 #endif
