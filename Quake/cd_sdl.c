@@ -1,6 +1,5 @@
 /*
 	cd_sdl.c
-	$Id: cd_sdl.c,v 1.19 2010/01/27 16:22:42 sezero Exp $
 
 	Copyright (C) 1996-1997  Id Software, Inc.
 	Taken from the Twilight project with modifications
@@ -508,7 +507,7 @@ int CDAudio_Init(void)
 	if (COM_CheckParm("-nocdaudio"))
 		return -1;
 
-	export_cddev_arg ();
+	export_cddev_arg();
 
 	if (SDL_InitSubSystem(SDL_INIT_CDROM) == -1)
 	{
