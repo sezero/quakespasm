@@ -480,6 +480,8 @@ static const char *get_cddev_arg (const char *arg)
 	}
 	return NULL;
 #else
+	if (!arg || ! *arg)
+		return NULL;
 	return arg;
 #endif
 }
