@@ -90,9 +90,6 @@ void CDAudio_Play(byte track, qboolean looping)
 			return;
 	}
 
-	if (track == 0)
-		track = 1;
-
 	track = remap[track];
 
 	if (track < 1 || track > cd_handle->numtracks)
@@ -231,7 +228,7 @@ void CDAudio_Resume(void)
 
 static void CD_f (void)
 {
-	const char	*command;
+	const char	*command,*arg2;
 	int		ret, n;
 
 	if (Cmd_Argc() < 2)
@@ -297,13 +294,21 @@ static void CD_f (void)
 
 	if (Q_strcasecmp(command, "play") == 0)
 	{
-		CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
+		arg2 = Cmd_Argv (2);
+                if (*arg2) 
+			CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
+		else 
+			CDAudio_Play((byte)1, false);
 		return;
 	}
 
 	if (Q_strcasecmp(command, "loop") == 0)
 	{
-		CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
+		arg2 = Cmd_Argv (2);
+                if (*arg2) 
+			CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
+		else 
+			CDAudio_Play((byte)1, true);
 		return;
 	}
 
@@ -431,10 +436,11 @@ void CDAudio_Update(void)
 		curstat = SDL_CDStatus(cd_handle);
 		if (curstat != CD_PLAYING && curstat != CD_PAUSED)
 		{
-			playing = false;
 			endOfTrack = -1.0;
 			if (playLooping)
 				CDAudio_Play(playTrack, true);
+			else
+				CDAudio_Next();
 		}
 	}
 }

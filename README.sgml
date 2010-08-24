@@ -84,6 +84,7 @@ The process is not for the faint hearted.
 <item> Lots of code fixes (some from uhexen2)
 <item> Sys_Error calls Host_Shutdown
 <item> Added MS Visual Studio support
+<item> Add a "-cd" option to let the CD Player work in dedicated mode, and some other CD tweaks.
 
 </itemize>
 

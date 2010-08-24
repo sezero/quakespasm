@@ -136,6 +136,9 @@
 
   o  Added MS Visual Studio support
 
+  o  Add a "-cd" option to let the CD Player work in dedicated mode, and
+     some other CD tweaks.
+
 
   5.2.  0.85.2
 
@@ -187,6 +190,7 @@
   o  Include real map name (sv.name) and skill in the status bar
 
   o  Remove confirm quit dialog
+
 
   o  Don't spam the console with PackFile seek requests
 

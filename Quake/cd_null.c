@@ -33,6 +33,14 @@ void CDAudio_Stop(void)
 {
 }
 
+void CDAudio_Next(void)
+{
+}
+
+void CDAudio_Prev(void)
+{
+}
+
 void CDAudio_Pause(void)
 {
 }
