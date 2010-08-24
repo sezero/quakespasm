@@ -31,7 +31,6 @@ qsocket_t	*net_activeSockets = NULL;
 qsocket_t	*net_freeSockets = NULL;
 int		net_numsockets = 0;
 
-qboolean	serialAvailable = false;
 qboolean	ipxAvailable = false;
 qboolean	tcpipAvailable = false;
 
@@ -64,22 +63,6 @@ int		unreliableMessagesReceived	= 0;
 
 static	cvar_t	net_messagetimeout = {"net_messagetimeout","300"};
 cvar_t	hostname = {"hostname", "UNNAMED"};
-
-static qboolean	configRestored = false;
-
-void (*GetComPortConfig) (int portNumber, int *port, int *irq, int *baud, qboolean *useModem);
-void (*SetComPortConfig) (int portNumber, int port, int irq, int baud, qboolean useModem);
-void (*GetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
-void (*SetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
-
-cvar_t	config_com_port = {"_config_com_port", "0x3f8", true};
-cvar_t	config_com_irq = {"_config_com_irq", "4", true};
-cvar_t	config_com_baud = {"_config_com_baud", "57600", true};
-cvar_t	config_com_modem = {"_config_com_modem", "1", true};
-cvar_t	config_modem_dialtype = {"_config_modem_dialtype", "T", true};
-cvar_t	config_modem_clear = {"_config_modem_clear", "ATZ", true};
-cvar_t	config_modem_init = {"_config_modem_init", "", true};
-cvar_t	config_modem_hangup = {"_config_modem_hangup", "AT H", true};
 
 // these two macros are to make the code more readable
 #define sfunc	net_drivers[sock->driver]
@@ -762,14 +745,6 @@ void NET_Init (void)
 
 	Cvar_RegisterVariable (&net_messagetimeout, NULL);
 	Cvar_RegisterVariable (&hostname, NULL);
-	Cvar_RegisterVariable (&config_com_port, NULL);
-	Cvar_RegisterVariable (&config_com_irq, NULL);
-	Cvar_RegisterVariable (&config_com_baud, NULL);
-	Cvar_RegisterVariable (&config_com_modem, NULL);
-	Cvar_RegisterVariable (&config_modem_dialtype, NULL);
-	Cvar_RegisterVariable (&config_modem_clear, NULL);
-	Cvar_RegisterVariable (&config_modem_init, NULL);
-	Cvar_RegisterVariable (&config_modem_hangup, NULL);
 
 	Cmd_AddCommand ("slist", NET_Slist_f);
 	Cmd_AddCommand ("listen", NET_Listen_f);
@@ -830,21 +805,6 @@ static PollProcedure *pollProcedureList = NULL;
 void NET_Poll(void)
 {
 	PollProcedure *pp;
-
-	if (!configRestored)
-	{
-		if (serialAvailable)
-		{
-			qboolean	useModem;
-			if (config_com_modem.value == 1.0)
-				useModem = true;
-			else
-				useModem = false;
-			SetComPortConfig (0, (int)config_com_port.value, (int)config_com_irq.value, (int)config_com_baud.value, useModem);
-			SetModemConfig (0, config_modem_dialtype.string, config_modem_clear.string, config_modem_init.string, config_modem_hangup.string);
-		}
-		configRestored = true;
-	}
 
 	SetNetTime();
 

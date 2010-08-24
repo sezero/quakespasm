@@ -97,16 +97,10 @@ void	NET_Slist_f (void);
 
 /* FIXME: driver related, but public:
  */
-extern	qboolean	serialAvailable;
 extern	qboolean	ipxAvailable;
 extern	qboolean	tcpipAvailable;
 extern	char		my_ipx_address[NET_NAMELEN];
 extern	char		my_tcpip_address[NET_NAMELEN];
-
-extern	void (*GetComPortConfig) (int portNumber, int *port, int *irq, int *baud, qboolean *useModem);
-extern	void (*SetComPortConfig) (int portNumber, int port, int irq, int baud, qboolean useModem);
-extern	void (*GetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
-extern	void (*SetModemConfig) (int portNumber, char *dialType, char *clear, char *init, char *hangup);
 
 #endif	/* _QUAKE_NET_H */
 

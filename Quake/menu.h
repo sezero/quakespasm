@@ -45,8 +45,6 @@ enum m_state_e {
 	m_keys,
 	m_help,
 	m_quit,
-	m_serialconfig,
-	m_modemconfig,
 	m_lanconfig,
 	m_gameoptions,
 	m_search,
