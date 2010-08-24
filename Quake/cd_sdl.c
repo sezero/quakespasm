@@ -43,7 +43,6 @@ static qboolean	playing = false;
 static qboolean	wasPlaying = false;
 static qboolean	enabled = true;
 static qboolean playLooping = false;
-static qboolean cdplayer= false; // QuakeSpasm / S.A - cd player facility
 static byte	remap[100];
 static byte	playTrack;
 static double	endOfTrack = -1.0, pausetime = -1.0;
@@ -229,7 +228,7 @@ void CDAudio_Resume(void)
 
 static void CD_f (void)
 {
-	const char	*command;
+	const char	*command,*arg2;
 	int		ret, n;
 
 	if (Cmd_Argc() < 2)
@@ -295,20 +294,20 @@ static void CD_f (void)
 
 	if (Q_strcasecmp(command, "play") == 0)
 	{
-		command = Cmd_Argv (2);
-		if (*command)
-			CDAudio_Play((byte)atoi(command), false);
-		else
+		arg2 = Cmd_Argv (2);
+                if (*arg2) 
+			CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
+		else 
 			CDAudio_Play((byte)1, false);
 		return;
 	}
 
 	if (Q_strcasecmp(command, "loop") == 0)
 	{
-		command = Cmd_Argv (2);
-		if (*command)
-			CDAudio_Play((byte)atoi(command), true);
-		else
+		arg2 = Cmd_Argv (2);
+                if (*arg2) 
+			CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
+		else 
 			CDAudio_Play((byte)1, true);
 		return;
 	}
@@ -437,19 +436,13 @@ void CDAudio_Update(void)
 		curstat = SDL_CDStatus(cd_handle);
 		if (curstat != CD_PLAYING && curstat != CD_PAUSED)
 		{
-		    if (!cdplayer) {
-			playing = false;
-			endOfTrack = -1.0;
-			if (playLooping)
-				CDAudio_Play(playTrack, true);
-		    } else { // QuakeSpasm / S.A
 			endOfTrack = -1.0;
 			if (playLooping) {
 				playing = false;
 				CDAudio_Play(playTrack, true);
 			}
-			else	CDAudio_Next();
-		    }
+			else
+				CDAudio_Next();
 		}
 	}
 }
@@ -585,9 +578,6 @@ int CDAudio_Init(void)
 	}
 
 	Cmd_AddCommand ("cd", CD_f);
-
-	if (COM_CheckParm("-cd"))	// QuakeSpasm / S.A - cd player facility
-		cdplayer = true;
 
 // cd hardware volume: no SDL support at present.
 	hw_vol_works = CD_GetVolume (NULL);
