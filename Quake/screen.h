@@ -69,6 +69,7 @@ typedef enum {
 	CANVAS_BOTTOMLEFT,
 	CANVAS_BOTTOMRIGHT,
 	CANVAS_TOPRIGHT,
+	CANVAS_INVALID = -1
 } canvastype;
 extern	cvar_t		scr_menuscale;
 extern	cvar_t		scr_sbarscale;

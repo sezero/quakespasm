@@ -858,7 +858,7 @@ GL_Set2D -- johnfitz -- rewritten
 */
 void GL_Set2D (void)
 {
-	currentcanvas = -1;
+	currentcanvas = CANVAS_INVALID;
 	GL_SetCanvas (CANVAS_DEFAULT);
 
 	glDisable (GL_DEPTH_TEST);
