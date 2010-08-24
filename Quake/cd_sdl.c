@@ -437,8 +437,10 @@ void CDAudio_Update(void)
 		if (curstat != CD_PLAYING && curstat != CD_PAUSED)
 		{
 			endOfTrack = -1.0;
-			if (playLooping)
+			if (playLooping) {
+				playing = false;
 				CDAudio_Play(playTrack, true);
+			}
 			else
 				CDAudio_Next();
 		}
