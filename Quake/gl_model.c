@@ -2076,7 +2076,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 		Sys_Error ("Mod_LoadAliasModel: Invalid # of frames: %d\n", numframes);
 
 	pheader->size = LittleFloat (pinmodel->size) * ALIAS_BASE_SIZE_RATIO;
-	mod->synctype = LittleLong (pinmodel->synctype);
+	mod->synctype = (synctype_t) LittleLong (pinmodel->synctype);
 	mod->numframes = pheader->numframes;
 
 	for (i=0 ; i<3 ; i++)
@@ -2130,7 +2130,7 @@ void Mod_LoadAliasModel (model_t *mod, void *buffer)
 	for (i=0 ; i<numframes ; i++)
 	{
 		aliasframetype_t	frametype;
-		frametype = LittleLong (pframetype->type);
+		frametype = (aliasframetype_t) LittleLong (pframetype->type);
 		if (frametype == ALIAS_SINGLE)
 			pframetype = (daliasframetype_t *) Mod_LoadAliasFrame (pframetype + 1, &pheader->frames[i]);
 		else
@@ -2303,7 +2303,7 @@ void Mod_LoadSpriteModel (model_t *mod, void *buffer)
 	psprite->maxwidth = LittleLong (pin->width);
 	psprite->maxheight = LittleLong (pin->height);
 	psprite->beamlength = LittleFloat (pin->beamlength);
-	mod->synctype = LittleLong (pin->synctype);
+	mod->synctype = (synctype_t) LittleLong (pin->synctype);
 	psprite->numframes = numframes;
 
 	mod->mins[0] = mod->mins[1] = -psprite->maxwidth/2;
@@ -2325,7 +2325,7 @@ void Mod_LoadSpriteModel (model_t *mod, void *buffer)
 	{
 		spriteframetype_t	frametype;
 
-		frametype = LittleLong (pframetype->type);
+		frametype = (spriteframetype_t) LittleLong (pframetype->type);
 		psprite->frames[i].type = frametype;
 
 		if (frametype == SPR_SINGLE)
