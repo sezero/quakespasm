@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 	Sys_Init();
 
 	// default memory size
+	// TODO: less mem, eg. 16 mb, for dedicated server??
 	parms.memsize = DEFAULT_MEMORY;
 
 	if (COM_CheckParm("-heapsize"))
@@ -54,8 +55,6 @@ int main(int argc, char *argv[])
 		if (t < com_argc)
 			parms.memsize = Q_atoi(com_argv[t]) * 1024;
 	}
-
-	// TODO: dedicated server setup
 
 	parms.membase = malloc (parms.memsize);
 
@@ -91,8 +90,6 @@ int main(int argc, char *argv[])
 	else
 	while (!done)
 	{
-	// TODO: dedicated server loop
-
 		while (!done && SDL_PollEvent (&event))
 		{
 			switch (event.type)
