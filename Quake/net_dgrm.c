@@ -796,7 +796,7 @@ int Datagram_Init (void)
 	myDriverLevel = net_driverlevel;
 	Cmd_AddCommand ("net_stats", NET_Stats_f);
 
-	if (COM_CheckParm("-nolan"))
+	if (safemode || COM_CheckParm("-nolan"))
 		return -1;
 
 	num_inited = 0;

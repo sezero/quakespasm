@@ -105,7 +105,7 @@ void IN_Init (void)
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
 
-	if (COM_CheckParm("-nomouse"))
+	if (safemode || COM_CheckParm("-nomouse"))
 	{
 		no_mouse = true;
 		// discard all mouse events when input is deactivated

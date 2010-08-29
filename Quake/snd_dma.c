@@ -147,7 +147,7 @@ void S_Init (void)
 	Cvar_RegisterVariable(&_snd_mixahead, NULL);
 	Cvar_RegisterVariable(&sndspeed, NULL);
 
-	if (COM_CheckParm("-nosound"))
+	if (safemode || COM_CheckParm("-nosound"))
 		return;
 
 	Con_Printf("Sound Initialization\n");

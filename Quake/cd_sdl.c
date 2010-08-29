@@ -512,7 +512,7 @@ int CDAudio_Init(void)
 {
 	int	i, sdl_num_drives;
 
-	if (COM_CheckParm("-nocdaudio"))
+	if (safemode || COM_CheckParm("-nocdaudio"))
 		return -1;
 
 	export_cddev_arg();

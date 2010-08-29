@@ -149,6 +149,13 @@ const char *COM_Parse (const char *data);
 extern	int		com_argc;
 extern	char	**com_argv;
 
+extern	int		safemode;
+/* safe mode: in true, the engine will behave as if one
+   of these arguments were actually on the command line:
+   -nosound, -nocdaudio, -nomidi, -stdvid, -dibonly,
+   -nomouse, -nojoy, -nolan
+ */
+
 int COM_CheckParm (const char *parm);
 void COM_Init (const char *path);
 void COM_InitArgv (int argc, char **argv);

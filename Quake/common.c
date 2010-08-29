@@ -22,13 +22,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-#define NUM_SAFE_ARGVS  7
+static char     *largv[MAX_NUM_ARGVS + 1];
+static char     argvdummy[] = " ";
 
-static char     *largv[MAX_NUM_ARGVS + NUM_SAFE_ARGVS + 1];
-static char     *argvdummy = " ";
-
-static char     *safeargvs[NUM_SAFE_ARGVS] =
-	{"-stdvid", "-nolan", "-nosound", "-nocdaudio", "-nojoy", "-nomouse", "-dibonly"};
+int             safemode;
 
 cvar_t  registered = {"registered","0"};
 cvar_t  cmdline = {"cmdline","", false, true};
@@ -1126,7 +1123,6 @@ COM_InitArgv
 */
 void COM_InitArgv (int argc, char **argv)
 {
-	qboolean        safe;
 	int             i, j, n;
 
 // reconstitute the command line for the cmdline externally visible cvar
@@ -1152,24 +1148,11 @@ void COM_InitArgv (int argc, char **argv)
 
 	Con_Printf("Command line: %s\n", com_cmdline);
 
-	safe = false;
-
 	for (com_argc=0 ; (com_argc<MAX_NUM_ARGVS) && (com_argc < argc) ; com_argc++)
 	{
 		largv[com_argc] = argv[com_argc];
 		if (!Q_strcmp ("-safe", argv[com_argc]))
-			safe = true;
-	}
-
-	if (safe)
-	{
-	// force all the safe-mode switches. Note that we reserved extra space in
-	// case we need to add these, so we don't need an overflow check
-		for (i=0 ; i<NUM_SAFE_ARGVS ; i++)
-		{
-			largv[com_argc] = safeargvs[i];
-			com_argc++;
-		}
+			safemode = 1;
 	}
 
 	largv[com_argc] = argvdummy;
