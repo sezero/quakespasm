@@ -295,11 +295,12 @@ Done:
 /*
 ============
 PR_ValueString
+(etype_t type, eval_t *val)
 
 Returns a string describing *data in a type specific manner
 =============
 */
-const char *PR_ValueString (etype_t type, eval_t *val)
+const char *PR_ValueString (int type, eval_t *val)
 {
 	static char	line[256];
 	ddef_t		*def;
@@ -346,12 +347,13 @@ const char *PR_ValueString (etype_t type, eval_t *val)
 /*
 ============
 PR_UglyValueString
+(etype_t type, eval_t *val)
 
 Returns a string describing *data in a type specific manner
 Easier to parse than PR_ValueString
 =============
 */
-const char *PR_UglyValueString (etype_t type, eval_t *val)
+const char *PR_UglyValueString (int type, eval_t *val)
 {
 	static char	line[256];
 	ddef_t		*def;
