@@ -1182,6 +1182,7 @@ VID_Init
 */
 void	VID_Init (void)
 {
+	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
 	int		i, existingmode;
 	int		basenummodes, width, height, bpp, findbpp, done;
@@ -1207,7 +1208,7 @@ void	VID_Init (void)
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
 		Sys_Error("Could not initialize SDL Video");
 
-	SDL_putenv("SDL_VIDEO_CENTERED=center");
+	SDL_putenv (vid_center);
 
 	VID_InitDIB();
 	basenummodes = nummodes = 1;
