@@ -1247,7 +1247,7 @@ void Host_Name_f (void)
 		Q_strncpy(newName, Cmd_Argv(1), sizeof(newName)-1);
 	else
 		Q_strncpy(newName, Cmd_Args(), sizeof(newName)-1);
-	newName[15] = 0;
+	newName[15] = 0;	// client_t structure actually says name[32].
 
 	if (cmd_source == src_command)
 	{
