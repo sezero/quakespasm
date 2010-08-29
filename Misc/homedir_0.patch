@@ -4,14 +4,14 @@ against quakespasm svn revision 97.
 
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 97)
+--- Quake/common.c	(revision 301)
 +++ Quake/common.c	(working copy)
-@@ -1776,25 +1776,27 @@
+@@ -1778,25 +1778,27 @@
  COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
  =================
  */
--void COM_AddGameDirectory (char *dir)
-+void COM_AddGameDirectory (char *base, char *dir)
+-void COM_AddGameDirectory (const char *dir)
++void COM_AddGameDirectory (const char *base, const char *dir)
  {
  	int i;
  	searchpath_t *search;
@@ -24,7 +24,7 @@ Index: Quake/common.c
 +	strcpy(com_gamedir, va("%s/%s", base, dir));
  
  	// add the directory to the search path
- 	search = Z_Malloc(sizeof(searchpath_t));
+ 	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 -	strcpy (search->filename, dir);
 +	strcpy (search->filename, com_gamedir);
  	search->next = com_searchpaths;
@@ -38,7 +38,7 @@ Index: Quake/common.c
  		pak = COM_LoadPackFile (pakfile);
  		if (!pak)
  			break;
-@@ -1837,7 +1839,12 @@
+@@ -1839,7 +1841,12 @@
  {
  	int i, j;
  	searchpath_t *search;
@@ -51,7 +51,7 @@ Index: Quake/common.c
  	i = COM_CheckParm ("-basedir");
  	if (i && i < com_argc-1)
  		strcpy (com_basedir, com_argv[i + 1]);
-@@ -1852,8 +1859,8 @@
+@@ -1854,8 +1861,8 @@
  	}
  
  	// start up with GAMENAME by default (id1)
@@ -62,7 +62,7 @@ Index: Quake/common.c
  
  	if (!fitzmode)
  	{ /* QuakeSpasm customization: */
-@@ -1865,17 +1872,20 @@
+@@ -1867,17 +1874,20 @@
  	com_nummissionpacks = 0;
  	if (COM_CheckParm ("-rogue"))
  	{
@@ -86,7 +86,7 @@ Index: Quake/common.c
  		com_nummissionpacks++;
  	}
  	//johnfitz
-@@ -1884,9 +1894,14 @@
+@@ -1886,9 +1896,14 @@
  	if (i && i < com_argc-1)
  	{
  		com_modified = true;
