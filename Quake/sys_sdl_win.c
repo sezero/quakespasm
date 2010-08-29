@@ -69,7 +69,7 @@ int Sys_filelength (FILE *f)
 	return end;
 }
 
-int Sys_FileOpenRead (char *path, int *hndl)
+int Sys_FileOpenRead (const char *path, int *hndl)
 {
 	FILE	*f;
 	int	i, retval;
@@ -92,7 +92,7 @@ int Sys_FileOpenRead (char *path, int *hndl)
 	return retval;
 }
 
-int Sys_FileOpenWrite (char *path)
+int Sys_FileOpenWrite (const char *path)
 {
 	FILE	*f;
 	int		i;
@@ -123,12 +123,12 @@ int Sys_FileRead (int handle, void *dest, int count)
 	return fread (dest, 1, count, sys_handles[handle]);
 }
 
-int Sys_FileWrite (int handle, void *data, int count)
+int Sys_FileWrite (int handle, const void *data, int count)
 {
 	return fwrite (data, 1, count, sys_handles[handle]);
 }
 
-int Sys_FileTime (char *path)
+int Sys_FileTime (const char *path)
 {
 	FILE	*f;
 
@@ -158,7 +158,7 @@ void Sys_Init (void)
 	}
 }
 
-void Sys_mkdir (char *path)
+void Sys_mkdir (const char *path)
 {
 	int rc = _mkdir (path);
 	if (rc != 0 && errno != EEXIST)

@@ -62,7 +62,7 @@ int			in_impulse;
 void KeyDown (kbutton_t *b)
 {
 	int		k;
-	char	*c;
+	const char	*c;
 
 	c = Cmd_Argv(1);
 	if (c[0])
@@ -91,7 +91,7 @@ void KeyDown (kbutton_t *b)
 void KeyUp (kbutton_t *b)
 {
 	int		k;
-	char	*c;
+	const char	*c;
 
 	c = Cmd_Argv(1);
 	if (c[0])

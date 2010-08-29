@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 cvar_t	*cvar_vars;
-char	*cvar_null_string = "";
+static char	cvar_null_string[] = "";
 
 //==============================================================================
 //
@@ -31,7 +31,7 @@ char	*cvar_null_string = "";
 //
 //==============================================================================
 
-void Cvar_Reset (char *name); //johnfitz
+void Cvar_Reset (const char *name); //johnfitz
 
 /*
 ============
@@ -41,7 +41,7 @@ Cvar_List_f -- johnfitz
 void Cvar_List_f (void)
 {
 	cvar_t	*cvar;
-	char 	*partial;
+	const char 	*partial;
 	int		len, count;
 
 	if (Cmd_Argc() > 1)
@@ -231,7 +231,7 @@ void Cvar_Init (void)
 Cvar_FindVar
 ============
 */
-cvar_t *Cvar_FindVar (char *var_name)
+cvar_t *Cvar_FindVar (const char *var_name)
 {
 	cvar_t	*var;
 
@@ -247,7 +247,7 @@ cvar_t *Cvar_FindVar (char *var_name)
 Cvar_VariableValue
 ============
 */
-float	Cvar_VariableValue (char *var_name)
+float	Cvar_VariableValue (const char *var_name)
 {
 	cvar_t	*var;
 
@@ -263,7 +263,7 @@ float	Cvar_VariableValue (char *var_name)
 Cvar_VariableString
 ============
 */
-char *Cvar_VariableString (char *var_name)
+const char *Cvar_VariableString (const char *var_name)
 {
 	cvar_t *var;
 
@@ -279,7 +279,7 @@ char *Cvar_VariableString (char *var_name)
 Cvar_CompleteVariable
 ============
 */
-char *Cvar_CompleteVariable (char *partial)
+const char *Cvar_CompleteVariable (const char *partial)
 {
 	cvar_t		*cvar;
 	int			len;
@@ -302,7 +302,7 @@ char *Cvar_CompleteVariable (char *partial)
 Cvar_Reset -- johnfitz
 ============
 */
-void Cvar_Reset (char *name)
+void Cvar_Reset (const char *name)
 {
 	cvar_t	*var;
 
@@ -318,7 +318,7 @@ void Cvar_Reset (char *name)
 Cvar_Set
 ============
 */
-void Cvar_Set (char *var_name, char *value)
+void Cvar_Set (const char *var_name, const char *value)
 {
 	cvar_t	*var;
 	qboolean changed;
@@ -332,18 +332,16 @@ void Cvar_Set (char *var_name, char *value)
 
 	changed = Q_strcmp(var->string, value);
 
-	Z_Free (var->string);	// free the old value string
+	Z_Free ((void *)var->string);	// free the old value string
 
-	var->string = (char *) Z_Malloc (Q_strlen(value)+1);
-	Q_strcpy (var->string, value);
+	var->string = (const char *) Z_Strdup (value);
 	var->value = Q_atof (var->string);
 
 	//johnfitz -- during initialization, update default too
 	if (!host_initialized)
 	{
-		Z_Free (var->default_string);
-		var->default_string = (char *) Z_Malloc (Q_strlen(value)+1);
-		Q_strcpy (var->default_string, value);
+		Z_Free ((void *)var->default_string);
+		var->default_string = (const char *) Z_Strdup (value);
 	}
 	//johnfitz
 
@@ -364,7 +362,7 @@ void Cvar_Set (char *var_name, char *value)
 Cvar_SetValue
 ============
 */
-void Cvar_SetValue (char *var_name, float value)
+void Cvar_SetValue (const char *var_name, const float value)
 {
 	char	val[32];
 
@@ -381,7 +379,6 @@ Adds a freestanding variable to the variable list.
 */
 void Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function)
 {
-	char	*oldstr;
 	cvar_t	*cursor,*prev; //johnfitz -- sorted list insert
 
 // first check to see if it has allready been defined
@@ -399,36 +396,33 @@ void Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function)
 	}
 
 // copy the value off, because future sets will Z_Free it
-	oldstr = variable->string;
-	variable->string = (char *) Z_Malloc (Q_strlen(variable->string)+1);
-	Q_strcpy (variable->string, oldstr);
+	variable->string = (const char *) Z_Strdup (variable->string);
 	variable->value = Q_atof (variable->string);
 
 	//johnfitz -- save initial value for "reset" command
-	variable->default_string = (char *) Z_Malloc (Q_strlen(variable->string)+1);
-	Q_strcpy (variable->default_string, oldstr);
+	variable->default_string = (const char *) Z_Strdup (variable->string);
 	//johnfitz
 
 // link the variable in
 
 	//johnfitz -- insert each entry in alphabetical order
-    if (cvar_vars == NULL || strcmp(variable->name, cvar_vars->name) < 0) //insert at front
+	if (cvar_vars == NULL || strcmp(variable->name, cvar_vars->name) < 0) //insert at front
 	{
-        variable->next = cvar_vars;
-        cvar_vars = variable;
-    }
-    else //insert later
+		variable->next = cvar_vars;
+		cvar_vars = variable;
+	}
+	else //insert later
 	{
-        prev = cvar_vars;
-        cursor = cvar_vars->next;
-        while (cursor && (strcmp(variable->name, cursor->name) > 0))
+		prev = cvar_vars;
+		cursor = cvar_vars->next;
+		while (cursor && (strcmp(variable->name, cursor->name) > 0))
 		{
-            prev = cursor;
-            cursor = cursor->next;
-        }
-        variable->next = prev->next;
-        prev->next = variable;
-    }
+			prev = cursor;
+			cursor = cursor->next;
+		}
+		variable->next = prev->next;
+		prev->next = variable;
+	}
 	//johnfitz
 
 	variable->callback = function; //johnfitz

@@ -145,8 +145,8 @@ void Sky_LoadTexture (texture_t *mt)
 Sky_LoadSkyBox
 ==================
 */
-char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
-void Sky_LoadSkyBox (char *name)
+const char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
+void Sky_LoadSkyBox (const char *name)
 {
 	int		i, mark, width, height;
 	char	filename[MAX_OSPATH];
@@ -213,7 +213,7 @@ Sky_NewMap
 void Sky_NewMap (void)
 {
 	char	key[128], value[4096];
-	char	*data;
+	const char	*data;
 	int		i;
 
 	//

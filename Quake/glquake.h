@@ -313,7 +313,7 @@ void Sky_Init (void);
 void Sky_DrawSky (void);
 void Sky_NewMap (void);
 void Sky_LoadTexture (texture_t *mt);
-void Sky_LoadSkyBox (char *name);
+void Sky_LoadSkyBox (const char *name);
 
 void TexMgr_RecalcWarpImageSize (void);
 

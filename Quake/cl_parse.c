@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-char *svc_strings[] =
+const char *svc_strings[] =
 {
 	"svc_bad",
 	"svc_nop",
@@ -251,7 +251,7 @@ CL_ParseServerInfo
 */
 void CL_ParseServerInfo (void)
 {
-	char	*str;
+	const char	*str;
 	int		i;
 	int		nummodels, numsounds;
 	char	model_precache[MAX_MODELS][MAX_QPATH];
@@ -915,7 +915,7 @@ void CL_ParseServerMessage (void)
 {
 	int			cmd;
 	int			i;
-	char		*str; //johnfitz
+	const char		*str; //johnfitz
 	int			total, j, lastcmd; //johnfitz
 
 //

@@ -39,7 +39,7 @@ Space padding is so names can be printed nicely in tables.
 Can safely be performed in place.
 ==================
 */
-void W_CleanupName (char *in, char *out)
+void W_CleanupName (const char *in, char *out)
 {
 	int		i;
 	int		c;
@@ -70,7 +70,7 @@ void W_LoadWadFile (void) //johnfitz -- filename is now hard-coded for honesty
 	wadinfo_t		*header;
 	unsigned		i;
 	int				infotableofs;
-	char			*filename = WADFILENAME;
+	const char		*filename = WADFILENAME;
 
 	//johnfitz -- modified to use malloc
 	//TODO: use cache_alloc
@@ -100,7 +100,7 @@ void W_LoadWadFile (void) //johnfitz -- filename is now hard-coded for honesty
 	{
 		lump_p->filepos = LittleLong(lump_p->filepos);
 		lump_p->size = LittleLong(lump_p->size);
-		W_CleanupName (lump_p->name, lump_p->name);
+		W_CleanupName (lump_p->name, lump_p->name);	// CAUTION: in-place editing!!!
 		if (lump_p->type == TYP_QPIC)
 			SwapPic ( (qpic_t *)(wad_base + lump_p->filepos));
 	}
@@ -112,7 +112,7 @@ void W_LoadWadFile (void) //johnfitz -- filename is now hard-coded for honesty
 W_GetLumpinfo
 =============
 */
-lumpinfo_t	*W_GetLumpinfo (char *name)
+lumpinfo_t	*W_GetLumpinfo (const char *name)
 {
 	int		i;
 	lumpinfo_t	*lump_p;
@@ -130,7 +130,7 @@ lumpinfo_t	*W_GetLumpinfo (char *name)
 	return NULL;
 }
 
-void *W_GetLumpName (char *name)
+void *W_GetLumpName (const char *name)
 {
 	lumpinfo_t	*lump;
 

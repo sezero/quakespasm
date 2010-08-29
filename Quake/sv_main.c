@@ -158,13 +158,10 @@ Larger attenuations will drop off.  (max 4 attenuation)
 
 ==================
 */
-void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
-    float attenuation)
+void SV_StartSound (edict_t *entity, int channel, const char *sample, int volume, float attenuation)
 {
-    int         sound_num;
-    int field_mask;
-    int			i;
-	int			ent;
+	int			sound_num, ent;
+	int			i, field_mask;
 
 	if (volume < 0 || volume > 255)
 		Sys_Error ("SV_StartSound: volume = %i", volume);
@@ -179,16 +176,17 @@ void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
 		return;
 
 // find precache number for sound
-    for (sound_num=1 ; sound_num<MAX_SOUNDS
-        && sv.sound_precache[sound_num] ; sound_num++)
-        if (!strcmp(sample, sv.sound_precache[sound_num]))
-            break;
+	for (sound_num = 1; sound_num < MAX_SOUNDS && sv.sound_precache[sound_num]; sound_num++)
+	{
+		if (!strcmp(sample, sv.sound_precache[sound_num]))
+			break;
+	}
 
-    if ( sound_num == MAX_SOUNDS || !sv.sound_precache[sound_num] )
-    {
-        Con_Printf ("SV_StartSound: %s not precacheed\n", sample);
-        return;
-    }
+	if (sound_num == MAX_SOUNDS || !sv.sound_precache[sound_num])
+	{
+		Con_Printf ("SV_StartSound: %s not precacheed\n", sample);
+		return;
+	}
 
 	ent = NUM_FOR_EDICT(entity);
 
@@ -237,7 +235,7 @@ void SV_StartSound (edict_t *entity, int channel, char *sample, int volume,
 		MSG_WriteByte (&sv.datagram, sound_num);
 	//johnfitz
 
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 		MSG_WriteCoord (&sv.datagram, entity->v.origin[i]+0.5*(entity->v.mins[i]+entity->v.maxs[i]));
 }
 
@@ -259,7 +257,7 @@ This will be sent on the initial connection and upon each server load.
 */
 void SV_SendServerinfo (client_t *client)
 {
-	char			**s;
+	const char		**s;
 	char			message[2048];
 	int				i; //johnfitz
 
@@ -1095,7 +1093,7 @@ SV_ModelIndex
 
 ================
 */
-int SV_ModelIndex (char *name)
+int SV_ModelIndex (const char *name)
 {
 	int		i;
 
@@ -1276,7 +1274,7 @@ This is called at the start of each level
 ================
 */
 extern float		scr_centertime_off;
-void SV_SpawnServer (char *server)
+void SV_SpawnServer (const char *server)
 {
 	static char	dummy[8] = { 0,0,0,0,0,0,0,0 };
 	edict_t		*ent;

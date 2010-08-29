@@ -172,7 +172,7 @@ called at map load
 void Fog_ParseWorldspawn (void)
 {
 	char key[128], value[4096];
-	char *data;
+	const char *data;
 
 	//initially no fog
 	fog_density = 0.0;

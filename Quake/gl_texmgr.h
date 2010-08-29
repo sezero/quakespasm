@@ -76,7 +76,7 @@ extern unsigned int d_8to24table_pants[256];
 // TEXTURE MANAGER
 
 float TexMgr_FrameUsage (void);
-gltexture_t *TexMgr_FindTexture (model_t *owner, char *name);
+gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name);
 gltexture_t *TexMgr_NewTexture (void);
 void TexMgr_FreeTexture (gltexture_t *kill);
 void TexMgr_FreeTextures (int flags, int mask);
@@ -85,8 +85,8 @@ void TexMgr_NewGame (void);
 void TexMgr_Init (void);
 
 // IMAGE LOADING
-gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height, enum srcformat format,
-			       byte *data, char *source_file, src_offset_t source_offset, unsigned flags);
+gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int height, enum srcformat format,
+			       byte *data, const char *source_file, src_offset_t source_offset, unsigned flags);
 void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants);
 void TexMgr_ReloadImages (void);
 void TexMgr_ReloadNobrightImages (void);

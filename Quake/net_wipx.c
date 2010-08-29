@@ -300,7 +300,7 @@ int WIPX_Write (sys_socket_t handle, byte *buf, int len, struct qsockaddr *addr)
 
 //=============================================================================
 
-char *WIPX_AddrToString (struct qsockaddr *addr)
+const char *WIPX_AddrToString (struct qsockaddr *addr)
 {
 	static char buf[28];
 
@@ -322,7 +322,7 @@ char *WIPX_AddrToString (struct qsockaddr *addr)
 
 //=============================================================================
 
-int WIPX_StringToAddr (char *string, struct qsockaddr *addr)
+int WIPX_StringToAddr (const char *string, struct qsockaddr *addr)
 {
 	int	val;
 	char	buf[3];
@@ -385,7 +385,7 @@ int WIPX_GetNameFromAddr (struct qsockaddr *addr, char *name)
 
 //=============================================================================
 
-int WIPX_GetAddrFromName (char *name, struct qsockaddr *addr)
+int WIPX_GetAddrFromName (const char *name, struct qsockaddr *addr)
 {
 	int		n;
 	char	buf[32];

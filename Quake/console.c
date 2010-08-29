@@ -45,7 +45,7 @@ int			con_totallines;		// total lines in console scrollback
 int			con_backscroll;		// lines up from bottom to display
 int			con_current;		// where next message will be printed
 int			con_x;				// offset in current line for next print
-char		*con_text=0;
+char		*con_text = NULL;
 
 cvar_t		con_notifytime = {"con_notifytime","3"};		//seconds
 cvar_t		con_logcenterprint = {"con_logcenterprint", "1"}; //johnfitz
@@ -75,7 +75,7 @@ Con_Quakebar -- johnfitz -- returns a bar of the desired length, but never wider
 includes a newline, unless len >= con_linewidth.
 ================
 */
-char *Con_Quakebar (int len)
+const char *Con_Quakebar (int len)
 {
 	static char bar[42];
 	int i;
@@ -154,7 +154,7 @@ Con_Dump_f -- johnfitz -- adapted from quake2 source
 void Con_Dump_f (void)
 {
 	int		l, x;
-	char	*line;
+	const char	*line;
 	FILE	*f;
 	char	buffer[1024];
 	char	name[MAX_OSPATH];
@@ -703,8 +703,8 @@ void Con_LogCenterPrint (const char *str)
 char key_tabpartial[MAXCMDLINE];
 typedef struct tab_s
 {
-	char			*name;
-	char			*type;
+	const char	*name;
+	const char	*type;
 	struct tab_s	*next;
 	struct tab_s	*prev;
 } tab_t;
@@ -715,8 +715,8 @@ extern qboolean	keydown[256];
 typedef struct cmd_function_s
 {
 	struct cmd_function_s	*next;
-	char					*name;
-	xcommand_t				function;
+	const char		*name;
+	xcommand_t		function;
 } cmd_function_t;
 extern	cmd_function_t	*cmd_functions;
 #define	MAX_ALIAS_NAME	32
@@ -742,10 +742,11 @@ static char	bash_partial[80];
 static qboolean	bash_singlematch;
 static qboolean	map_singlematch;
 
-void AddToTabList (char *name, char *type)
+void AddToTabList (const char *name, const char *type)
 {
 	tab_t	*t,*insert;
-	char	*i_bash, *i_name;
+	char	*i_bash;
+	const char *i_name;
 
 	if (!*bash_partial)
 	{
@@ -804,7 +805,7 @@ void AddToTabList (char *name, char *type)
 // This is redefined from host_cmd.c
 typedef struct extralevel_s
 {
-	char				name[32];
+	char			name[32];
 	struct extralevel_s	*next;
 } extralevel_t;
 
@@ -815,7 +816,7 @@ extern extralevel_t	*extralevels;
 BuildMap -- stevenaaus
 ============
 */
-char *BuildMapList (char *partial)
+const char *BuildMapList (const char *partial)
 {
 	static char matched[80];
 	char *i_matched, *i_name;
@@ -871,11 +872,11 @@ char *BuildMapList (char *partial)
 BuildTabList -- johnfitz
 ============
 */
-void BuildTabList (char *partial)
+void BuildTabList (const char *partial)
 {
 	cmdalias_t		*alias;
 	cvar_t			*cvar;
-	cmd_function_t	*cmd;
+	cmd_function_t		*cmd;
 	int				len;
 
 	tablist = NULL;
@@ -905,7 +906,7 @@ Con_TabComplete -- johnfitz
 void Con_TabComplete (void)
 {
 	char		partial[MAXCMDLINE];
-	char		*match;
+	const char	*match;
 	static char	*c;
 	tab_t		*t;
 	int			mark, i;
@@ -932,7 +933,7 @@ void Con_TabComplete (void)
 	if (!strncmp (key_lines[edit_line] + 1, "map ",4) ||
 	    !strncmp (key_lines[edit_line] + 1, "changelevel ", 12))
 	{
-		char *matched_map = BuildMapList(partial);
+		const char *matched_map = BuildMapList(partial);
 		if (!*matched_map)
 			return;
 		Q_strcpy (partial, matched_map);
@@ -1073,12 +1074,12 @@ void Con_DrawNotify (void)
 		scr_tileclear_updates = 0; //johnfitz
 	}
 
-
 	if (key_dest == key_message)
 	{
 		// modified by S.A to support longer lines
 
-		char	c[MAXCMDLINE+1], *say_prompt; // extra space == +1
+		char	c[MAXCMDLINE+1]; // extra space == +1
+		const char	*say_prompt;
 		int	say_length, len;
 
 		clearnotify = 0;

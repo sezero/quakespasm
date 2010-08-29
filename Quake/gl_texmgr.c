@@ -55,8 +55,8 @@ unsigned int d_8to24table_pants[256];
 typedef struct
 {
 	int	magfilter;
-	int minfilter;
-	char *name;
+	int	minfilter;
+	const char  *name;
 } glmode_t;
 glmode_t modes[] = {
 	{GL_NEAREST, GL_NEAREST,				"GL_NEAREST"},
@@ -125,7 +125,7 @@ TexMgr_TextureMode_f
 void TexMgr_TextureMode_f (void)
 {
 	gltexture_t	*glt;
-	char *arg;
+	const char	*arg;
 	int i;
 
 	switch (Cmd_Argc())
@@ -299,7 +299,7 @@ float TexMgr_FrameUsage (void)
 TexMgr_FindTexture
 ================
 */
-gltexture_t *TexMgr_FindTexture (model_t *owner, char *name)
+gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name)
 {
 	gltexture_t	*glt;
 
@@ -1126,8 +1126,8 @@ void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
 TexMgr_LoadImage -- the one entry point for loading all textures
 ================
 */
-gltexture_t *TexMgr_LoadImage (model_t *owner, char *name, int width, int height, enum srcformat format,
-			       byte *data, char *source_file, src_offset_t source_offset, unsigned flags)
+gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int height, enum srcformat format,
+			       byte *data, const char *source_file, src_offset_t source_offset, unsigned flags)
 {
 	extern int lightmap_bytes;
 	unsigned short crc;

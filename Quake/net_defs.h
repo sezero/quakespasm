@@ -169,7 +169,7 @@ extern int		net_numsockets;
 
 typedef struct
 {
-	char		*name;
+	const char	*name;
 	qboolean	initialized;
 	sys_socket_t	controlSock;
 	sys_socket_t	(*Init) (void);
@@ -182,11 +182,11 @@ typedef struct
 	int		(*Read) (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr);
 	int		(*Write) (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr);
 	int		(*Broadcast) (sys_socket_t socketid, byte *buf, int len);
-	char *		(*AddrToString) (struct qsockaddr *addr);
-	int		(*StringToAddr) (char *string, struct qsockaddr *addr);
+	const char *	(*AddrToString) (struct qsockaddr *addr);
+	int		(*StringToAddr) (const char *string, struct qsockaddr *addr);
 	int		(*GetSocketAddr) (sys_socket_t socketid, struct qsockaddr *addr);
 	int		(*GetNameFromAddr) (struct qsockaddr *addr, char *name);
-	int		(*GetAddrFromName) (char *name, struct qsockaddr *addr);
+	int		(*GetAddrFromName) (const char *name, struct qsockaddr *addr);
 	int		(*AddrCompare) (struct qsockaddr *addr1, struct qsockaddr *addr2);
 	int		(*GetSocketPort) (struct qsockaddr *addr);
 	int		(*SetSocketPort) (struct qsockaddr *addr, int port);
@@ -198,12 +198,12 @@ extern int 		net_numlandrivers;
 
 typedef struct
 {
-	char		*name;
+	const char	*name;
 	qboolean	initialized;
 	int		(*Init) (void);
 	void		(*Listen) (qboolean state);
 	void		(*SearchForHosts) (qboolean xmit);
-	qsocket_t	*(*Connect) (char *host);
+	qsocket_t	*(*Connect) (const char *host);
 	qsocket_t	*(*CheckNewConnections) (void);
 	int		(*QGetMessage) (qsocket_t *sock);
 	int		(*QSendMessage) (qsocket_t *sock, sizebuf_t *data);

@@ -497,7 +497,7 @@ static void NET_Stats_f (void)
 
 
 // recognize ip:port (based on ProQuake)
-static char *Strip_Port (char *host)
+static const char *Strip_Port (const char *host)
 {
 	static char	noport[MAX_QPATH];
 			/* array size as in Host_Connect_f() */
@@ -586,7 +586,7 @@ static void Test_Poll (void *unused)
 
 static void Test_f (void)
 {
-	char	*host;
+	const char	*host;
 	int		n;
 	int		maxusers = MAX_SCOREBOARD;
 	struct qsockaddr sendaddr;
@@ -721,7 +721,7 @@ Done:
 
 static void Test2_f (void)
 {
-	char	*host;
+	const char	*host;
 	int		n;
 	struct qsockaddr sendaddr;
 
@@ -958,7 +958,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 
 	if (command == CCREQ_RULE_INFO)
 	{
-		char	*prevCvarName;
+		const char	*prevCvarName;
 		cvar_t	*var;
 
 		// find the search start location
@@ -1251,7 +1251,7 @@ void Datagram_SearchForHosts (qboolean xmit)
 }
 
 
-static qsocket_t *_Datagram_Connect (char *host)
+static qsocket_t *_Datagram_Connect (const char *host)
 {
 	struct qsockaddr sendaddr;
 	struct qsockaddr readaddr;
@@ -1261,7 +1261,7 @@ static qsocket_t *_Datagram_Connect (char *host)
 	int			reps;
 	double		start_time;
 	int			control;
-	char		*reason;
+	const char		*reason;
 
 	// see if we can resolve the host name
 	if (dfunc.GetAddrFromName(host, &sendaddr) == -1)
@@ -1426,7 +1426,7 @@ ErrorReturn2:
 	return NULL;
 }
 
-qsocket_t *Datagram_Connect (char *host)
+qsocket_t *Datagram_Connect (const char *host)
 {
 	qsocket_t *ret = NULL;
 

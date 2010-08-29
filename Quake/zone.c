@@ -108,61 +108,7 @@ void Z_Free (void *ptr)
 }
 
 
-/*
-========================
-Z_Malloc
-========================
-*/
-void *Z_Malloc (int size)
-{
-	void	*buf;
-
-Z_CheckHeap ();	// DEBUG
-	buf = Z_TagMalloc (size, 1);
-	if (!buf)
-		Sys_Error ("Z_Malloc: failed on allocation of %i bytes",size);
-	Q_memset (buf, 0, size);
-
-	return buf;
-}
-
-/*
-========================
-Z_Realloc
-========================
-*/
-void *Z_Realloc(void *ptr, int size)
-{
-	int old_size;
-	void *old_ptr;
-	memblock_t *block;
-
-	if (!ptr)
-		return Z_Malloc (size);
-
-	block = (memblock_t *) ((byte *) ptr - sizeof (memblock_t));
-	if (block->id != ZONEID)
-		Sys_Error ("Z_Realloc: realloced a pointer without ZONEID");
-	if (block->tag == 0)
-		Sys_Error ("Z_Realloc: realloced a freed pointer");
-
-	old_size = block->size;
-	old_size -= (4 + (int)sizeof(memblock_t));	/* see Z_TagMalloc() */
-	old_ptr = ptr;
-
-	Z_Free (ptr);
-	ptr = Z_TagMalloc (size, 1);
-	if (!ptr)
-		Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
-
-	if (ptr != old_ptr)
-		memmove (ptr, old_ptr, min (old_size, size));
-
-	return ptr;
-}
-
-
-void *Z_TagMalloc (int size, int tag)
+static void *Z_TagMalloc (int size, int tag)
 {
 	int		extra;
 	memblock_t	*start, *rover, *newblock, *base;
@@ -220,6 +166,89 @@ void *Z_TagMalloc (int size, int tag)
 	return (void *) ((byte *)base + sizeof(memblock_t));
 }
 
+/*
+========================
+Z_CheckHeap
+========================
+*/
+static void Z_CheckHeap (void)
+{
+	memblock_t	*block;
+
+	for (block = mainzone->blocklist.next ; ; block = block->next)
+	{
+		if (block->next == &mainzone->blocklist)
+			break;			// all blocks have been hit
+		if ( (byte *)block + block->size != (byte *)block->next)
+			Sys_Error ("Z_CheckHeap: block size does not touch the next block\n");
+		if ( block->next->prev != block)
+			Sys_Error ("Z_CheckHeap: next block doesn't have proper back link\n");
+		if (!block->tag && !block->next->tag)
+			Sys_Error ("Z_CheckHeap: two consecutive free blocks\n");
+	}
+}
+
+
+/*
+========================
+Z_Malloc
+========================
+*/
+void *Z_Malloc (int size)
+{
+	void	*buf;
+
+	Z_CheckHeap ();	// DEBUG
+	buf = Z_TagMalloc (size, 1);
+	if (!buf)
+		Sys_Error ("Z_Malloc: failed on allocation of %i bytes",size);
+	Q_memset (buf, 0, size);
+
+	return buf;
+}
+
+/*
+========================
+Z_Realloc
+========================
+*/
+void *Z_Realloc(void *ptr, int size)
+{
+	int old_size;
+	void *old_ptr;
+	memblock_t *block;
+
+	if (!ptr)
+		return Z_Malloc (size);
+
+	block = (memblock_t *) ((byte *) ptr - sizeof (memblock_t));
+	if (block->id != ZONEID)
+		Sys_Error ("Z_Realloc: realloced a pointer without ZONEID");
+	if (block->tag == 0)
+		Sys_Error ("Z_Realloc: realloced a freed pointer");
+
+	old_size = block->size;
+	old_size -= (4 + (int)sizeof(memblock_t));	/* see Z_TagMalloc() */
+	old_ptr = ptr;
+
+	Z_Free (ptr);
+	ptr = Z_TagMalloc (size, 1);
+	if (!ptr)
+		Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
+
+	if (ptr != old_ptr)
+		memmove (ptr, old_ptr, min (old_size, size));
+
+	return ptr;
+}
+
+char *Z_Strdup (const char *s)
+{
+	char *ptr = (char *) Z_Malloc (strlen(s) + 1);
+	strcpy (ptr, s);
+	return ptr;
+}
+
 
 /*
 ========================
@@ -248,28 +277,6 @@ void Z_Print (memzone_t *zone)
 	}
 }
 
-
-/*
-========================
-Z_CheckHeap
-========================
-*/
-void Z_CheckHeap (void)
-{
-	memblock_t	*block;
-
-	for (block = mainzone->blocklist.next ; ; block = block->next)
-	{
-		if (block->next == &mainzone->blocklist)
-			break;			// all blocks have been hit
-		if ( (byte *)block + block->size != (byte *)block->next)
-			Sys_Error ("Z_CheckHeap: block size does not touch the next block\n");
-		if ( block->next->prev != block)
-			Sys_Error ("Z_CheckHeap: next block doesn't have proper back link\n");
-		if (!block->tag && !block->next->tag)
-			Sys_Error ("Z_CheckHeap: two consecutive free blocks\n");
-	}
-}
 
 //============================================================================
 
@@ -417,7 +424,7 @@ void Hunk_Print_f (void)
 Hunk_AllocName
 ===================
 */
-void *Hunk_AllocName (int size, char *name)
+void *Hunk_AllocName (int size, const char *name)
 {
 	hunk_t	*h;
 
@@ -500,7 +507,7 @@ void Hunk_FreeToHighMark (int mark)
 Hunk_HighAllocName
 ===================
 */
-void *Hunk_HighAllocName (int size, char *name)
+void *Hunk_HighAllocName (int size, const char *name)
 {
 	hunk_t	*h;
 
@@ -565,6 +572,13 @@ void *Hunk_TempAlloc (int size)
 	hunk_tempactive = true;
 
 	return buf;
+}
+
+char *Hunk_Strdup (const char *s, const char *name)
+{
+	char *ptr = (char *) Hunk_AllocName (strlen(s) + 1, name);
+	strcpy (ptr, s);
+	return ptr;
 }
 
 /*
@@ -896,7 +910,7 @@ void *Cache_Check (cache_user_t *c)
 Cache_Alloc
 ==============
 */
-void *Cache_Alloc (cache_user_t *c, int size, char *name)
+void *Cache_Alloc (cache_user_t *c, int size, const char *name)
 {
 	cache_system_t	*cs;
 

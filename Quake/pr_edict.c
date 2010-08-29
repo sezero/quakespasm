@@ -33,7 +33,7 @@ int			pr_edict_size;	// in bytes
 
 static char		*pr_strings;
 static int		pr_stringssize;
-static char		**pr_knownstrings;
+static const char	**pr_knownstrings;
 static int		pr_maxknownstrings;
 static int		pr_numknownstrings;
 static ddef_t		*pr_fielddefs;
@@ -53,7 +53,7 @@ int		type_size[8] = {
 };
 
 ddef_t *ED_FieldAtOfs (int ofs);
-qboolean	ED_ParseEpair (void *base, ddef_t *key, char *s);
+qboolean	ED_ParseEpair (void *base, ddef_t *key, const char *s);
 
 cvar_t	nomonsters = {"nomonsters", "0"};
 cvar_t	gamecfg = {"gamecfg", "0"};
@@ -201,7 +201,7 @@ ddef_t *ED_FieldAtOfs (int ofs)
 ED_FindField
 ============
 */
-ddef_t *ED_FindField (char *name)
+ddef_t *ED_FindField (const char *name)
 {
 	ddef_t		*def;
 	int			i;
@@ -221,7 +221,7 @@ ddef_t *ED_FindField (char *name)
 ED_FindGlobal
 ============
 */
-ddef_t *ED_FindGlobal (char *name)
+ddef_t *ED_FindGlobal (const char *name)
 {
 	ddef_t		*def;
 	int			i;
@@ -241,7 +241,7 @@ ddef_t *ED_FindGlobal (char *name)
 ED_FindFunction
 ============
 */
-dfunction_t *ED_FindFunction (char *name)
+dfunction_t *ED_FindFunction (const char *name)
 {
 	dfunction_t		*func;
 	int				i;
@@ -260,7 +260,7 @@ dfunction_t *ED_FindFunction (char *name)
 GetEdictFieldValue
 ============
 */
-eval_t *GetEdictFieldValue(edict_t *ed, char *field)
+eval_t *GetEdictFieldValue(edict_t *ed, const char *field)
 {
 	ddef_t			*def = NULL;
 	int				i;
@@ -299,7 +299,7 @@ PR_ValueString
 Returns a string describing *data in a type specific manner
 =============
 */
-char *PR_ValueString (etype_t type, eval_t *val)
+const char *PR_ValueString (etype_t type, eval_t *val)
 {
 	static char	line[256];
 	ddef_t		*def;
@@ -351,7 +351,7 @@ Returns a string describing *data in a type specific manner
 Easier to parse than PR_ValueString
 =============
 */
-char *PR_UglyValueString (etype_t type, eval_t *val)
+const char *PR_UglyValueString (etype_t type, eval_t *val)
 {
 	static char	line[256];
 	ddef_t		*def;
@@ -400,9 +400,9 @@ Returns a string with a description and the contents of a global,
 padded to 20 field width
 ============
 */
-char *PR_GlobalString (int ofs)
+const char *PR_GlobalString (int ofs)
 {
-	char	*s;
+	const char	*s;
 	int		i;
 	ddef_t	*def;
 	void	*val;
@@ -426,7 +426,7 @@ char *PR_GlobalString (int ofs)
 	return line;
 }
 
-char *PR_GlobalStringNoContents (int ofs)
+const char *PR_GlobalStringNoContents (int ofs)
 {
 	int		i;
 	ddef_t	*def;
@@ -459,7 +459,7 @@ void ED_Print (edict_t *ed)
 	ddef_t	*d;
 	int		*v;
 	int		i, j, l;
-	char	*name;
+	const char	*name;
 	int		type;
 
 	if (ed->free)
@@ -508,7 +508,7 @@ void ED_Write (FILE *f, edict_t *ed)
 	ddef_t	*d;
 	int		*v;
 	int		i, j;
-	char	*name;
+	const char	*name;
 	int		type;
 
 	fprintf (f, "{\n");
@@ -644,7 +644,7 @@ void ED_WriteGlobals (FILE *f)
 {
 	ddef_t		*def;
 	int			i;
-	char		*name;
+	const char		*name;
 	int			type;
 
 	fprintf (f,"{\n");
@@ -656,9 +656,7 @@ void ED_WriteGlobals (FILE *f)
 			continue;
 		type &= ~DEF_SAVEGLOBAL;
 
-		if (type != ev_string
-		&& type != ev_float
-		&& type != ev_entity)
+		if (type != ev_string && type != ev_float && type != ev_entity)
 			continue;
 
 		name = PR_GetString(def->s_name);
@@ -673,7 +671,7 @@ void ED_WriteGlobals (FILE *f)
 ED_ParseGlobals
 =============
 */
-void ED_ParseGlobals (char *data)
+void ED_ParseGlobals (const char *data)
 {
 	char	keyname[64];
 	ddef_t	*key;
@@ -752,7 +750,7 @@ Can parse either fields or globals
 returns false if error
 =============
 */
-qboolean	ED_ParseEpair (void *base, ddef_t *key, char *s)
+qboolean	ED_ParseEpair (void *base, ddef_t *key, const char *s)
 {
 	int		i;
 	char	string[128];
@@ -828,7 +826,7 @@ ed should be a properly initialized empty edict.
 Used for initial level load and for savegames.
 ====================
 */
-char *ED_ParseEdict (char *data, edict_t *ent)
+const char *ED_ParseEdict (const char *data, edict_t *ent)
 {
 	ddef_t		*key;
 	qboolean	anglehack;
@@ -938,7 +936,7 @@ Used for both fresh maps and savegame loads.  A fresh map would also need
 to call ED_CallSpawnFunctions () to let the objects initialize themselves.
 ================
 */
-void ED_LoadFromFile (char *data)
+void ED_LoadFromFile (const char *data)
 {
 	edict_t		*ent = NULL;
 	int		inhibit = 0;
@@ -1168,10 +1166,10 @@ static void PR_AllocStringSlots (void)
 {
 	pr_maxknownstrings += PR_STRING_ALLOCSLOTS;
 	Con_DPrintf("PR_AllocStringSlots: realloc'ing for %d slots\n", pr_maxknownstrings);
-	pr_knownstrings = (char **) Z_Realloc (pr_knownstrings, pr_maxknownstrings * sizeof(char *));
+	pr_knownstrings = (const char **) Z_Realloc ((void *)pr_knownstrings, pr_maxknownstrings * sizeof(char *));
 }
 
-char *PR_GetString (int num)
+const char *PR_GetString (int num)
 {
 	if (num >= 0 && num < pr_stringssize)
 		return pr_strings + num;
@@ -1191,7 +1189,7 @@ char *PR_GetString (int num)
 	}
 }
 
-int PR_SetEngineString (char *s)
+int PR_SetEngineString (const char *s)
 {
 	int		i;
 
@@ -1247,7 +1245,7 @@ int PR_AllocString (int size, char **ptr)
 //	}
 	pr_knownstrings[i] = (char *)Hunk_AllocName(size, "string");
 	if (ptr)
-		*ptr = pr_knownstrings[i];
+		*ptr = (char *) pr_knownstrings[i];
 	return -1 - i;
 }
 

@@ -485,7 +485,7 @@ qboolean SV_ReadClientMessage (void)
 {
 	int		ret;
 	int		ccmd;
-	char		*s;
+	const char	*s;
 
 	do
 	{

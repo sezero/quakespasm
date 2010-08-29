@@ -53,7 +53,7 @@ typedef struct sizebuf_s
 {
 	qboolean	allowoverflow;	// if false, do a Sys_Error
 	qboolean	overflowed;		// set to true if the buffer size failed
-	byte	*data;
+	byte		*data;
 	int		maxsize;
 	int		cursize;
 } sizebuf_t;
@@ -62,8 +62,8 @@ void SZ_Alloc (sizebuf_t *buf, int startsize);
 void SZ_Free (sizebuf_t *buf);
 void SZ_Clear (sizebuf_t *buf);
 void *SZ_GetSpace (sizebuf_t *buf, int length);
-void SZ_Write (sizebuf_t *buf, void *data, int length);
-void SZ_Print (sizebuf_t *buf, char *data);	// strcats onto the sizebuf
+void SZ_Write (sizebuf_t *buf, const void *data, int length);
+void SZ_Print (sizebuf_t *buf, const char *data);	// strcats onto the sizebuf
 
 //============================================================================
 
@@ -101,7 +101,7 @@ void MSG_WriteByte (sizebuf_t *sb, int c);
 void MSG_WriteShort (sizebuf_t *sb, int c);
 void MSG_WriteLong (sizebuf_t *sb, int c);
 void MSG_WriteFloat (sizebuf_t *sb, float f);
-void MSG_WriteString (sizebuf_t *sb, char *s);
+void MSG_WriteString (sizebuf_t *sb, const char *s);
 void MSG_WriteCoord (sizebuf_t *sb, float f);
 void MSG_WriteAngle (sizebuf_t *sb, float f);
 void MSG_WriteAngle16 (sizebuf_t *sb, float f); //johnfitz
@@ -115,7 +115,7 @@ int MSG_ReadByte (void);
 int MSG_ReadShort (void);
 int MSG_ReadLong (void);
 float MSG_ReadFloat (void);
-char *MSG_ReadString (void);
+const char *MSG_ReadString (void);
 
 float MSG_ReadCoord (void);
 float MSG_ReadAngle (void);
@@ -143,20 +143,20 @@ float Q_atof (const char *str);
 extern	char		com_token[1024];
 extern	qboolean	com_eof;
 
-char *COM_Parse (char *data);
+const char *COM_Parse (const char *data);
 
 
 extern	int		com_argc;
 extern	char	**com_argv;
 
-int COM_CheckParm (char *parm);
-void COM_Init (char *path);
+int COM_CheckParm (const char *parm);
+void COM_Init (const char *path);
 void COM_InitArgv (int argc, char **argv);
 
-char *COM_SkipPath (char *pathname);
-void COM_StripExtension (char *in, char *out);
-void COM_FileBase (char *in, char *out);
-void COM_DefaultExtension (char *path, char *extension);
+const char *COM_SkipPath (const char *pathname);
+void COM_StripExtension (const char *in, char *out);
+void COM_FileBase (const char *in, char *out);
+void COM_DefaultExtension (char *path, const char *extension);
 void COM_CreatePath (char *path);
 
 char *va (const char *format, ...) __attribute__((__format__(__printf__,1,2)));
@@ -171,15 +171,15 @@ struct cache_user_s;
 extern	char	com_basedir[MAX_OSPATH];
 extern	char	com_gamedir[MAX_OSPATH];
 
-void COM_WriteFile (char *filename, void *data, int len);
-int COM_OpenFile (char *filename, int *hndl);
-int COM_FOpenFile (char *filename, FILE **file);
+void COM_WriteFile (const char *filename, const void *data, int len);
+int COM_OpenFile (const char *filename, int *hndl);
+int COM_FOpenFile (const char *filename, FILE **file);
 void COM_CloseFile (int h);
 
-byte *COM_LoadStackFile (char *path, void *buffer, int bufsize);
-byte *COM_LoadTempFile (char *path);
-byte *COM_LoadHunkFile (char *path);
-void COM_LoadCacheFile (char *path, struct cache_user_s *cu);
+byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize);
+byte *COM_LoadTempFile (const char *path);
+byte *COM_LoadHunkFile (const char *path);
+void COM_LoadCacheFile (const char *path, struct cache_user_s *cu);
 
 
 extern	struct cvar_s	registered;

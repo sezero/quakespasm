@@ -212,7 +212,7 @@ void Scrap_Upload (void)
 Draw_PicFromWad
 ================
 */
-qpic_t *Draw_PicFromWad (char *name)
+qpic_t *Draw_PicFromWad (const char *name)
 {
 	qpic_t	*p;
 	glpic_t	gl;
@@ -268,7 +268,7 @@ qpic_t *Draw_PicFromWad (char *name)
 Draw_CachePic
 ================
 */
-qpic_t	*Draw_CachePic (char *path)
+qpic_t	*Draw_CachePic (const char *path)
 {
 	cachepic_t	*pic;
 	int			i;
@@ -371,7 +371,7 @@ qpic_t *Draw_ConbackPic (void)
 Draw_MakePic -- johnfitz -- generate pics from internal data
 ================
 */
-qpic_t *Draw_MakePic (char *name, int width, int height, byte *data)
+qpic_t *Draw_MakePic (const char *name, int width, int height, byte *data)
 {
 	int flags = TEXPREF_NEAREST | TEXPREF_ALPHA | TEXPREF_PERSIST | TEXPREF_NOPICMIP | TEXPREF_PAD;
 	qpic_t		*pic;
@@ -531,7 +531,7 @@ void Draw_Character (int x, int y, int num)
 Draw_String -- johnfitz -- modified to call Draw_CharacterQuad
 ================
 */
-void Draw_String (int x, int y, char *str)
+void Draw_String (int x, int y, const char *str)
 {
 	if (y <= -8)
 		return;			// totally off screen

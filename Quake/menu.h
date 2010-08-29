@@ -54,15 +54,25 @@ enum m_state_e {
 extern enum m_state_e m_state;
 extern enum m_state_e m_return_state;
 
+extern qboolean m_entersound;
+
 //
 // menus
 //
 void M_Init (void);
 void M_Keydown (int key);
 void M_Draw (void);
-void M_ToggleMenu_f (void);
 
-void M_Print (int cx, int cy, char *str);
+void M_ToggleMenu_f (void);
+void M_Menu_Options_f (void);
+void M_Menu_Quit_f (void);
+
+void M_Print (int cx, int cy, const char *str);
+void M_PrintWhite (int cx, int cy, const char *str);
+void M_DrawCharacter (int cx, int line, int num);
+void M_DrawTransPic (int x, int y, qpic_t *pic);
+void M_DrawPic (int x, int y, qpic_t *pic);
+void M_DrawCheckbox (int x, int y, int on);
 
 #endif	/* _QUAKE_MENU_H */
 

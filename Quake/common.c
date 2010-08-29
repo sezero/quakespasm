@@ -591,7 +591,7 @@ void MSG_WriteFloat (sizebuf_t *sb, float f)
 	SZ_Write (sb, &dat.l, 4);
 }
 
-void MSG_WriteString (sizebuf_t *sb, char *s)
+void MSG_WriteString (sizebuf_t *sb, const char *s)
 {
 	if (!s)
 		SZ_Write (sb, "", 1);
@@ -738,7 +738,7 @@ float MSG_ReadFloat (void)
 	return dat.f;
 }
 
-char *MSG_ReadString (void)
+const char *MSG_ReadString (void)
 {
 	static char     string[2048];
 	int             l,c;
@@ -843,12 +843,12 @@ void *SZ_GetSpace (sizebuf_t *buf, int length)
 	return data;
 }
 
-void SZ_Write (sizebuf_t *buf, void *data, int length)
+void SZ_Write (sizebuf_t *buf, const void *data, int length)
 {
 	Q_memcpy (SZ_GetSpace(buf,length),data,length);
 }
 
-void SZ_Print (sizebuf_t *buf, char *data)
+void SZ_Print (sizebuf_t *buf, const char *data)
 {
 	int             len;
 
@@ -870,9 +870,9 @@ void SZ_Print (sizebuf_t *buf, char *data)
 COM_SkipPath
 ============
 */
-char *COM_SkipPath (char *pathname)
+const char *COM_SkipPath (const char *pathname)
 {
-	char    *last;
+	const char *last;
 
 	last = pathname;
 	while (*pathname)
@@ -889,7 +889,7 @@ char *COM_SkipPath (char *pathname)
 COM_StripExtension
 ============
 */
-void COM_StripExtension (char *in, char *out)
+void COM_StripExtension (const char *in, char *out)
 {
 	while (*in && *in != '.')
 		*out++ = *in++;
@@ -901,7 +901,7 @@ void COM_StripExtension (char *in, char *out)
 COM_FileExtension
 ============
 */
-char *COM_FileExtension (char *in)
+const char *COM_FileExtension (const char *in)
 {
 	static char exten[8];
 	int             i;
@@ -922,9 +922,9 @@ char *COM_FileExtension (char *in)
 COM_FileBase
 ============
 */
-void COM_FileBase (char *in, char *out)
+void COM_FileBase (const char *in, char *out)
 {
-	char *s, *s2;
+	const char *s, *s2;
 
 	s = in + strlen(in) - 1;
 
@@ -950,7 +950,7 @@ void COM_FileBase (char *in, char *out)
 COM_DefaultExtension
 ==================
 */
-void COM_DefaultExtension (char *path, char *extension)
+void COM_DefaultExtension (char *path, const char *extension)
 {
 	char    *src;
 //
@@ -977,7 +977,7 @@ COM_Parse
 Parse a token out of a string
 ==============
 */
-char *COM_Parse (char *data)
+const char *COM_Parse (const char *data)
 {
 	int             c;
 	int             len;
@@ -1057,7 +1057,7 @@ Returns the position (1 to argc-1) in the program's argument list
 where the given parameter apears, or 0 if not present
 ================
 */
-int COM_CheckParm (char *parm)
+int COM_CheckParm (const char *parm)
 {
 	int             i;
 
@@ -1204,7 +1204,7 @@ static void FitzTest_f (void)
 COM_Init
 ================
 */
-void COM_Init (char *basedir)
+void COM_Init (const char *basedir)
 {
 	int	i = 0x12345678;
 		/*    U N I X */
@@ -1393,7 +1393,7 @@ COM_WriteFile
 The filename will be prefixed by the current game directory
 ============
 */
-void COM_WriteFile (char *filename, void *data, int len)
+void COM_WriteFile (const char *filename, const void *data, int len)
 {
 	int             handle;
 	char    name[MAX_OSPATH];
@@ -1442,14 +1442,15 @@ Copies a file over from the net to the local cache, creating any directories
 needed.  This is for the convenience of developers using ISDN from home.
 ===========
 */
-void COM_CopyFile (char *netpath, char *cachepath)
+void COM_CopyFile (const char *netpath, const char *cachepath)
 {
 	int             in, out;
 	int             remaining, count;
 	char    buf[4096];
 
 	remaining = Sys_FileOpenRead (netpath, &in);
-	COM_CreatePath (cachepath);     // create directories up to the cache file
+	Q_strcpy (buf, cachepath);
+	COM_CreatePath (buf);     // create directories up to the cache file
 	out = Sys_FileOpenWrite (cachepath);
 
 	while (remaining)
@@ -1475,7 +1476,7 @@ Finds the file in the search path.
 Sets com_filesize and one of handle or file
 ===========
 */
-int COM_FindFile (char *filename, int *handle, FILE **file)
+int COM_FindFile (const char *filename, int *handle, FILE **file)
 {
 	searchpath_t    *search;
 	char            netpath[MAX_OSPATH];
@@ -1573,7 +1574,7 @@ returns a handle and a length
 it may actually be inside a pak file
 ===========
 */
-int COM_OpenFile (char *filename, int *handle)
+int COM_OpenFile (const char *filename, int *handle)
 {
 	return COM_FindFile (filename, handle, NULL);
 }
@@ -1586,7 +1587,7 @@ If the requested file is inside a packfile, a new FILE * will be opened
 into the file.
 ===========
 */
-int COM_FOpenFile (char *filename, FILE **file)
+int COM_FOpenFile (const char *filename, FILE **file)
 {
 	return COM_FindFile (filename, NULL, file);
 }
@@ -1621,7 +1622,7 @@ Allways appends a 0 byte.
 cache_user_t *loadcache;
 byte    *loadbuf;
 int             loadsize;
-byte *COM_LoadFile (char *path, int usehunk)
+byte *COM_LoadFile (const char *path, int usehunk)
 {
 	int             h;
 	byte    *buf;
@@ -1670,24 +1671,24 @@ byte *COM_LoadFile (char *path, int usehunk)
 	return buf;
 }
 
-byte *COM_LoadHunkFile (char *path)
+byte *COM_LoadHunkFile (const char *path)
 {
 	return COM_LoadFile (path, 1);
 }
 
-byte *COM_LoadTempFile (char *path)
+byte *COM_LoadTempFile (const char *path)
 {
 	return COM_LoadFile (path, 2);
 }
 
-void COM_LoadCacheFile (char *path, struct cache_user_s *cu)
+void COM_LoadCacheFile (const char *path, struct cache_user_s *cu)
 {
 	loadcache = cu;
 	COM_LoadFile (path, 3);
 }
 
 // uses temp hunk if larger than bufsize
-byte *COM_LoadStackFile (char *path, void *buffer, int bufsize)
+byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize)
 {
 	byte    *buf;
 
@@ -1708,7 +1709,7 @@ Loads the header and directory, adding the files at the beginning
 of the list so they override previous pack files.
 =================
 */
-pack_t *COM_LoadPackFile (char *packfile)
+pack_t *COM_LoadPackFile (const char *packfile)
 {
 	dpackheader_t   header;
 	int                             i;
@@ -1777,7 +1778,7 @@ pack_t *COM_LoadPackFile (char *packfile)
 COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
 =================
 */
-void COM_AddGameDirectory (char *dir)
+void COM_AddGameDirectory (const char *dir)
 {
 	int i;
 	searchpath_t *search;
@@ -1914,5 +1915,4 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	if (COM_CheckParm ("-proghack"))
 		proghack = true;
 }
-
 

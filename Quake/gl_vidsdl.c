@@ -101,7 +101,7 @@ void VID_Menu_f (void); //johnfitz
 void VID_MenuDraw (void);
 void VID_MenuKey (int key);
 
-char *VID_GetModeDescription (int mode);
+const char *VID_GetModeDescription (int mode);
 void ClearAllStates (void);
 void VID_UpdateWindowStatus (void);
 void GL_Init (void);
@@ -316,7 +316,7 @@ int VID_SetMode (int modenum)
 
 	//kristian -- set window caption
 	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
-	SDL_WM_SetCaption((const char* )&caption, (const char*)&caption);
+	SDL_WM_SetCaption(caption, caption);
 
 	vid.width = modelist[modenum].width;
 	vid.height = modelist[modenum].height;
@@ -530,8 +530,7 @@ char *GL_MakeNiceExtensionsList (const char *in)
 	out = (char *) Z_Malloc (strlen(in) + count*3 + 1); //usually about 1-2k
 	out[0] = 0;
 
-	copy = (char *) Z_Malloc(strlen(in) + 1);
-	strcpy(copy, in);
+	copy = (char *) Z_Strdup(in);
 
 	for (token = strtok(copy, " "); token; token = strtok(NULL, " "))
 	{
@@ -929,9 +928,9 @@ vmode_t *VID_GetModePtr (int modenum)
 VID_GetModeDescription
 =================
 */
-char *VID_GetModeDescription (int mode)
+const char *VID_GetModeDescription (int mode)
 {
-	char		*pinfo;
+	const char	*pinfo;
 	vmode_t		*pv;
 	static char	temp[100];
 
@@ -961,7 +960,7 @@ char *VID_GetModeDescription (int mode)
 VID_GetExtModeDescription
 =================
 */
-char *VID_GetExtModeDescription (int mode)
+const char *VID_GetExtModeDescription (int mode)
 {
 	static char	pinfo[40];
 	vmode_t		*pv;
@@ -1472,16 +1471,6 @@ void VID_SyncCvars (void)
 //
 //==========================================================================
 
-extern void M_Menu_Options_f (void);
-extern void M_Print (int cx, int cy, char *str);
-extern void M_PrintWhite (int cx, int cy, char *str);
-extern void M_DrawCharacter (int cx, int line, int num);
-extern void M_DrawTransPic (int x, int y, qpic_t *pic);
-extern void M_DrawPic (int x, int y, qpic_t *pic);
-extern void M_DrawCheckbox (int x, int y, int on);
-
-extern qboolean	m_entersound;
-
 #define VIDEO_OPTIONS_ITEMS 7
 int		video_cursor_table[] = {48, 56, 64, 72, 80, 96, 104};
 int		video_options_cursor = 0;
@@ -1811,7 +1800,7 @@ void VID_MenuDraw (void)
 {
 	int i = 0;
 	qpic_t *p;
-	char *title;
+	const char *title;
 
 	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp"));
 

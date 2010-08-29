@@ -93,14 +93,12 @@ void Memory_Init (void *buf, int size);
 void Z_Free (void *ptr);
 void *Z_Malloc (int size);			// returns 0 filled memory
 void *Z_Realloc (void *ptr, int size);
-void *Z_TagMalloc (int size, int tag);
-
-void Z_CheckHeap (void);
+char *Z_Strdup (const char *s);
 
 void *Hunk_Alloc (int size);		// returns 0 filled memory
-void *Hunk_AllocName (int size, char *name);
-
-void *Hunk_HighAllocName (int size, char *name);
+void *Hunk_AllocName (int size, const char *name);
+void *Hunk_HighAllocName (int size, const char *name);
+char *Hunk_Strdup (const char *s, const char *name);
 
 int	Hunk_LowMark (void);
 void Hunk_FreeToLowMark (int mark);
@@ -125,7 +123,7 @@ void *Cache_Check (cache_user_t *c);
 
 void Cache_Free (cache_user_t *c, qboolean freetextures); //johnfitz -- added second argument
 
-void *Cache_Alloc (cache_user_t *c, int size, char *name);
+void *Cache_Alloc (cache_user_t *c, int size, const char *name);
 // Returns NULL if all purgable data was tossed and there still
 // wasn't enough room.
 

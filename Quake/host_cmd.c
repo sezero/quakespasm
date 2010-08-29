@@ -41,8 +41,6 @@ Host_Quit_f
 ==================
 */
 
-extern void M_Menu_Quit_f (void);
-
 void Host_Quit_f (void)
 {
 	if (key_dest != key_console && cls.state != ca_dedicated)
@@ -84,7 +82,7 @@ typedef struct searchpath_s
 
 extern qboolean com_modified;
 extern searchpath_t *com_searchpaths;
-pack_t *COM_LoadPackFile (char *packfile);
+pack_t *COM_LoadPackFile (const char *packfile);
 
 // Kill all the search packs until the game path is found. Kill it, then return
 // the next path to it.
@@ -222,7 +220,7 @@ typedef struct extralevel_s
 
 extralevel_t	*extralevels;
 
-void ExtraMaps_Add (char *name)
+void ExtraMaps_Add (const char *name)
 {
 	extralevel_t	*level,*cursor,*prev;
 
@@ -358,7 +356,7 @@ typedef struct mod_s
 
 mod_t	*modlist;
 
-void Modlist_Add (char *name)
+void Modlist_Add (const char *name)
 {
 	mod_t	*mod,*cursor,*prev;
 
@@ -1096,7 +1094,8 @@ void Host_Loadgame_f (void)
 	FILE	*f;
 	char	mapname[MAX_QPATH];
 	float	time, tfloat;
-	char	str[32768], *start;
+	char	str[32768];
+	const char  *start;
 	int	i, r;
 	edict_t	*ent;
 	int	entnum;
@@ -1164,8 +1163,7 @@ void Host_Loadgame_f (void)
 	for (i = 0; i < MAX_LIGHTSTYLES; i++)
 	{
 		fscanf (f, "%s\n", str);
-		sv.lightstyles[i] = (char *) Hunk_Alloc (strlen(str)+1);
-		strcpy (sv.lightstyles[i], str);
+		sv.lightstyles[i] = (const char *)Hunk_Strdup (str, "lightstyles");
 	}
 
 // load the edicts out of the savegame file
@@ -1238,7 +1236,7 @@ Host_Name_f
 */
 void Host_Name_f (void)
 {
-	char	*newName;
+	char	newName[32];
 
 	if (Cmd_Argc () == 1)
 	{
@@ -1246,9 +1244,9 @@ void Host_Name_f (void)
 		return;
 	}
 	if (Cmd_Argc () == 2)
-		newName = Cmd_Argv(1);
+		Q_strncpy(newName, Cmd_Argv(1), sizeof(newName)-1);
 	else
-		newName = Cmd_Args();
+		Q_strncpy(newName, Cmd_Args(), sizeof(newName)-1);
 	newName[15] = 0;
 
 	if (cmd_source == src_command)
@@ -1288,8 +1286,8 @@ void Host_Say(qboolean teamonly)
 {
 	client_t *client;
 	client_t *save;
-	int		j;
-	char	*p;
+	int	j, remquot = 0;
+	const char	*p;
     // removed unsigned keyword -- kristian
 	char	text[MAXCMDLINE];
 	qboolean	fromServer = false;
@@ -1318,7 +1316,7 @@ void Host_Say(qboolean teamonly)
 	if (*p == '"')
 	{
 		p++;
-		p[Q_strlen(p)-1] = 0;
+		remquot = 1;
 	}
 
 // turn on color set 1
@@ -1328,10 +1326,9 @@ void Host_Say(qboolean teamonly)
 		sprintf (text, "%c<%s> ", 1, hostname.string);
 
 	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
-	if (Q_strlen(p) > j)
-		p[j] = 0;
-
-	strcat (text, p);
+	strncat (text, p, j);
+	if (remquot)
+		text[Q_strlen(text) - 1] = '\0';
 	strcat (text, "\n");
 
 	for (j = 0, client = svs.clients; j < svs.maxclients; j++, client++)
@@ -1365,8 +1362,8 @@ void Host_Tell_f(void)
 {
 	client_t *client;
 	client_t *save;
-	int	j;
-	char	*p;
+	int	j, remquot = 0;
+	const char	*p;
 	char	text[MAXCMDLINE];
 
 	if (cmd_source == src_command)
@@ -1387,15 +1384,14 @@ void Host_Tell_f(void)
 	if (*p == '"')
 	{
 		p++;
-		p[Q_strlen(p)-1] = 0;
+		remquot = 1;
 	}
 
 // check length & truncate if necessary
 	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
-	if (Q_strlen(p) > j)
-		p[j] = 0;
-
-	strcat (text, p);
+	strncat (text, p, j);
+	if (remquot)
+		text[Q_strlen(text) - 1] = '\0';
 	strcat (text, "\n");
 
 	save = host_client;
@@ -1703,8 +1699,8 @@ Kicks a user off of the server
 */
 void Host_Kick_f (void)
 {
-	char		*who;
-	char		*message = NULL;
+	const char	*who;
+	const char	*message = NULL;
 	client_t	*save;
 	int		i;
 	qboolean	byNumber = false;
@@ -1795,7 +1791,7 @@ Host_Give_f
 */
 void Host_Give_f (void)
 {
-	char	*t;
+	const char	*t;
 	int	v;
 	eval_t	*val;
 

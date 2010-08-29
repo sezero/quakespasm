@@ -48,7 +48,7 @@ int			pr_xstatement;
 
 int		pr_argc;
 
-char *pr_opnames[] =
+const char *pr_opnames[] =
 {
 "DONE",
 
@@ -137,8 +137,8 @@ char *pr_opnames[] =
 "BITOR"
 };
 
-char *PR_GlobalString (int ofs);
-char *PR_GlobalStringNoContents (int ofs);
+const char *PR_GlobalString (int ofs);
+const char *PR_GlobalStringNoContents (int ofs);
 
 
 //=============================================================================

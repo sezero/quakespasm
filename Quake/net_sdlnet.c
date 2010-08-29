@@ -63,7 +63,7 @@ static int socket_id (UDPsocket socket_p)
 	return idx;
 }
 
-static char *_AddrToString (int ip, int port)
+static const char *_AddrToString (int ip, int port)
 {
 	static char buffer[22];
 
@@ -72,7 +72,7 @@ static char *_AddrToString (int ip, int port)
 	return buffer;
 }
 
-static char *_IPAddrToString (IPaddress *address)
+static const char *_IPAddrToString (IPaddress *address)
 {
 	int ip;
 	int port;
@@ -321,7 +321,7 @@ int SDLN_Broadcast (int socketid, byte *buf, int len)
 	return SDLN_Write(socketid, buf, len, &broadcastaddr);
 }
 
-char *SDLN_AddrToString (struct qsockaddr *addr)
+const char *SDLN_AddrToString (struct qsockaddr *addr)
 {
 	int		ip;
 	int		port;
@@ -335,7 +335,7 @@ char *SDLN_AddrToString (struct qsockaddr *addr)
 	return _AddrToString(ip, port);
 }
 
-int  SDLN_StringToAddr (char *string, struct qsockaddr *addr)
+int  SDLN_StringToAddr (const char *string, struct qsockaddr *addr)
 {
 	int ha1, ha2, ha3, ha4, hp;
 	int hostaddr;
@@ -388,12 +388,12 @@ int SDLN_GetSocketAddr (int socketid, struct qsockaddr *addr)
 
 int SDLN_GetNameFromAddr (struct qsockaddr *addr, char *name)
 {
-	char		*buf;
+	const char	*buf;
 	IPaddress	*ipaddress;
 
 	ipaddress = (IPaddress *)&(addr->qsa_data);
 
-	buf = (char *)SDLNet_ResolveIP(ipaddress);
+	buf = SDLNet_ResolveIP(ipaddress);
 	if (buf != NULL)
 	{
 		Q_strncpy(name, buf, NET_NAMELEN - 1);
@@ -413,7 +413,7 @@ this lets you type only as much of the net address as required, using
 the local network components to fill in the rest
 ============
 */
-static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
+static int PartialIPAddress (const char *in, struct qsockaddr *hostaddr)
 {
 	char buff[256];
 	char *b;
@@ -469,7 +469,7 @@ static int PartialIPAddress (char *in, struct qsockaddr *hostaddr)
 	return 0;
 }
 
-int SDLN_GetAddrFromName (char *name, struct qsockaddr *addr)
+int SDLN_GetAddrFromName (const char *name, struct qsockaddr *addr)
 {
 	IPaddress   *ipaddress;
 

@@ -70,8 +70,8 @@ void PR_LoadProgs (void);
 
 void PR_Profile_f (void);
 
-char *PR_GetString (int num);
-int PR_SetEngineString (char *s);
+const char *PR_GetString (int num);
+int PR_SetEngineString (const char *s);
 int PR_AllocString (int bufferlength, char **ptr);
 
 edict_t *ED_Alloc (void);
@@ -79,12 +79,12 @@ void ED_Free (edict_t *ed);
 
 void ED_Print (edict_t *ed);
 void ED_Write (FILE *f, edict_t *ed);
-char *ED_ParseEdict (char *data, edict_t *ent);
+const char *ED_ParseEdict (const char *data, edict_t *ent);
 
 void ED_WriteGlobals (FILE *f);
-void ED_ParseGlobals (char *data);
+void ED_ParseGlobals (const char *data);
 
-void ED_LoadFromFile (char *data);
+void ED_LoadFromFile (const char *data);
 
 //define EDICT_NUM(n) ((edict_t *)(sv.edicts+ (n)*pr_edict_size))
 //define NUM_FOR_EDICT(e) (((byte *)(e) - sv.edicts)/pr_edict_size)
@@ -131,7 +131,7 @@ void PR_RunError (const char *error, ...) __attribute__((__format__(__printf__,1
 void ED_PrintEdicts (void);
 void ED_PrintNum (int ent);
 
-eval_t *GetEdictFieldValue(edict_t *ed, char *field);
+eval_t *GetEdictFieldValue(edict_t *ed, const char *field);
 
 #endif	/* _QUAKE_PROGS_H */
 

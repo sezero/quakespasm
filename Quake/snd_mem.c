@@ -97,7 +97,7 @@ S_LoadSound
 */
 sfxcache_t *S_LoadSound (sfx_t *s)
 {
-    char	namebuffer[256];
+	char	namebuffer[256];
 	byte	*data;
 	wavinfo_t	info;
 	int		len;
@@ -190,7 +190,7 @@ int GetLittleLong(void)
 	return val;
 }
 
-void FindNextChunk(char *name)
+void FindNextChunk(const char *name)
 {
 	while (1)
 	{
@@ -218,7 +218,7 @@ void FindNextChunk(char *name)
 	}
 }
 
-void FindChunk(char *name)
+void FindChunk(const char *name)
 {
 	last_chunk = iff_data;
 	FindNextChunk (name);
@@ -246,7 +246,7 @@ void DumpChunks(void)
 GetWavinfo
 ============
 */
-wavinfo_t GetWavinfo (char *name, byte *wav, int wavlength)
+wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 {
 	wavinfo_t	info;
 	int     i;

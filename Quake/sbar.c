@@ -303,7 +303,7 @@ void Sbar_DrawCharacter (int x, int y, int num)
 Sbar_DrawString -- johnfitz -- rewritten now that GL_SetCanvas is doing the work
 ================
 */
-void Sbar_DrawString (int x, int y, char *str)
+void Sbar_DrawString (int x, int y, const char *str)
 {
 	Draw_String (x, y + 24, str);
 }
@@ -315,7 +315,7 @@ Sbar_DrawScrollString -- johnfitz
 scroll the string inside a glscissor region
 ===============
 */
-void Sbar_DrawScrollString (int x, int y, int width, char* str)
+void Sbar_DrawScrollString (int x, int y, int width, const char *str)
 {
 	float scale;
 	int len, ofs, left;
