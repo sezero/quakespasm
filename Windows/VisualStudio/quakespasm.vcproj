@@ -43,7 +43,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\SDL\include;..\Quake;."
+				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -90,9 +90,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -121,7 +118,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\SDL\include;..\Quake;."
+				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -170,9 +167,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -202,7 +196,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\SDL\include;..\Quake;."
+				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -249,9 +243,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -281,7 +272,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\SDL\include;..\Quake;."
+				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -330,9 +321,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -346,55 +334,55 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath="..\Quake\cd_sdl.c"
+				RelativePath="..\..\Quake\cd_sdl.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\chase.c"
+				RelativePath="..\..\Quake\chase.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cl_demo.c"
+				RelativePath="..\..\Quake\cl_demo.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cl_input.c"
+				RelativePath="..\..\Quake\cl_input.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cl_main.c"
+				RelativePath="..\..\Quake\cl_main.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cl_parse.c"
+				RelativePath="..\..\Quake\cl_parse.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cl_tent.c"
+				RelativePath="..\..\Quake\cl_tent.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cmd.c"
+				RelativePath="..\..\Quake\cmd.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\common.c"
+				RelativePath="..\..\Quake\common.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\conback.c"
+				RelativePath="..\..\Quake\conback.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\console.c"
+				RelativePath="..\..\Quake\console.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\crc.c"
+				RelativePath="..\..\Quake\crc.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cvar.c"
+				RelativePath="..\..\Quake\cvar.c"
 				>
 			</File>
 			<File
@@ -402,203 +390,203 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_draw.c"
+				RelativePath="..\..\Quake\gl_draw.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_fog.c"
+				RelativePath="..\..\Quake\gl_fog.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_mesh.c"
+				RelativePath="..\..\Quake\gl_mesh.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_model.c"
+				RelativePath="..\..\Quake\gl_model.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_refrag.c"
+				RelativePath="..\..\Quake\gl_refrag.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_rlight.c"
+				RelativePath="..\..\Quake\gl_rlight.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_rmain.c"
+				RelativePath="..\..\Quake\gl_rmain.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_rmisc.c"
+				RelativePath="..\..\Quake\gl_rmisc.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_screen.c"
+				RelativePath="..\..\Quake\gl_screen.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_sky.c"
+				RelativePath="..\..\Quake\gl_sky.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_texmgr.c"
+				RelativePath="..\..\Quake\gl_texmgr.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_vidsdl.c"
+				RelativePath="..\..\Quake\gl_vidsdl.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_warp.c"
+				RelativePath="..\..\Quake\gl_warp.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\host.c"
+				RelativePath="..\..\Quake\host.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\host_cmd.c"
+				RelativePath="..\..\Quake\host_cmd.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\image.c"
+				RelativePath="..\..\Quake\image.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\in_sdl.c"
+				RelativePath="..\..\Quake\in_sdl.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\keys.c"
+				RelativePath="..\..\Quake\keys.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\main_sdl.c"
+				RelativePath="..\..\Quake\main_sdl.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\mathlib.c"
+				RelativePath="..\..\Quake\mathlib.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\menu.c"
+				RelativePath="..\..\Quake\menu.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_dgrm.c"
+				RelativePath="..\..\Quake\net_dgrm.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_loop.c"
+				RelativePath="..\..\Quake\net_loop.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_main.c"
+				RelativePath="..\..\Quake\net_main.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_win.c"
+				RelativePath="..\..\Quake\net_win.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_wins.c"
+				RelativePath="..\..\Quake\net_wins.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_wipx.c"
+				RelativePath="..\..\Quake\net_wipx.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\pl_win.c"
+				RelativePath="..\..\Quake\pl_win.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\pr_cmds.c"
+				RelativePath="..\..\Quake\pr_cmds.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\pr_edict.c"
+				RelativePath="..\..\Quake\pr_edict.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\pr_exec.c"
+				RelativePath="..\..\Quake\pr_exec.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\r_alias.c"
+				RelativePath="..\..\Quake\r_alias.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\r_brush.c"
+				RelativePath="..\..\Quake\r_brush.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\r_part.c"
+				RelativePath="..\..\Quake\r_part.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\r_sprite.c"
+				RelativePath="..\..\Quake\r_sprite.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\r_world.c"
+				RelativePath="..\..\Quake\r_world.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sbar.c"
+				RelativePath="..\..\Quake\sbar.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\snd_dma.c"
+				RelativePath="..\..\Quake\snd_dma.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\snd_mem.c"
+				RelativePath="..\..\Quake\snd_mem.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\snd_mix.c"
+				RelativePath="..\..\Quake\snd_mix.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\snd_sdl.c"
+				RelativePath="..\..\Quake\snd_sdl.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sv_main.c"
+				RelativePath="..\..\Quake\sv_main.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sv_move.c"
+				RelativePath="..\..\Quake\sv_move.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sv_phys.c"
+				RelativePath="..\..\Quake\sv_phys.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sv_user.c"
+				RelativePath="..\..\Quake\sv_user.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sys_sdl_win.c"
+				RelativePath="..\..\Quake\sys_sdl_win.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\view.c"
+				RelativePath="..\..\Quake\view.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\wad.c"
+				RelativePath="..\..\Quake\wad.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\world.c"
+				RelativePath="..\..\Quake\world.c"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\zone.c"
+				RelativePath="..\..\Quake\zone.c"
 				>
 			</File>
 		</Filter>
@@ -608,55 +596,51 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\Quake\anorm_dots.h"
+				RelativePath="..\..\Quake\anorm_dots.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\anorms.h"
+				RelativePath="..\..\Quake\anorms.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\arch_def.h"
+				RelativePath="..\..\Quake\arch_def.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\bspfile.h"
+				RelativePath="..\..\Quake\bspfile.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cdaudio.h"
+				RelativePath="..\..\Quake\cdaudio.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\client.h"
+				RelativePath="..\..\Quake\client.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cmd.h"
+				RelativePath="..\..\Quake\cmd.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\common.h"
+				RelativePath="..\..\Quake\common.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\conback.h"
+				RelativePath="..\..\Quake\conback.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\console.h"
+				RelativePath="..\..\Quake\console.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\crc.h"
+				RelativePath="..\..\Quake\crc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\cvar.h"
-				>
-			</File>
-			<File
-				RelativePath="..\Quake\d_ifacea.h"
+				RelativePath="..\..\Quake\cvar.h"
 				>
 			</File>
 			<File
@@ -664,167 +648,167 @@
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\draw.h"
+				RelativePath="..\..\Quake\draw.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_model.h"
+				RelativePath="..\..\Quake\gl_model.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_texmgr.h"
+				RelativePath="..\..\Quake\gl_texmgr.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\gl_warp_sin.h"
+				RelativePath="..\..\Quake\gl_warp_sin.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\glquake.h"
+				RelativePath="..\..\Quake\glquake.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\image.h"
+				RelativePath="..\..\Quake\image.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\input.h"
+				RelativePath="..\..\Quake\input.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\keys.h"
+				RelativePath="..\..\Quake\keys.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\mathlib.h"
+				RelativePath="..\..\Quake\mathlib.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\menu.h"
+				RelativePath="..\..\Quake\menu.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\modelgen.h"
+				RelativePath="..\..\Quake\modelgen.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net.h"
+				RelativePath="..\..\Quake\net.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_defs.h"
+				RelativePath="..\..\Quake\net_defs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_dgrm.h"
+				RelativePath="..\..\Quake\net_dgrm.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_loop.h"
+				RelativePath="..\..\Quake\net_loop.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_sys.h"
+				RelativePath="..\..\Quake\net_sys.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_wins.h"
+				RelativePath="..\..\Quake\net_wins.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\net_wipx.h"
+				RelativePath="..\..\Quake\net_wipx.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\platform.h"
+				RelativePath="..\..\Quake\platform.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\pr_comp.h"
+				RelativePath="..\..\Quake\pr_comp.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\progdefs.h"
+				RelativePath="..\..\Quake\progdefs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\progs.h"
+				RelativePath="..\..\Quake\progs.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\protocol.h"
+				RelativePath="..\..\Quake\protocol.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\q_stdinc.h"
+				RelativePath="..\..\Quake\q_stdinc.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\qs_bmp.h"
+				RelativePath="..\..\Quake\qs_bmp.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\quakedef.h"
+				RelativePath="..\..\Quake\quakedef.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\render.h"
+				RelativePath="..\..\Quake\render.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\resource.h"
+				RelativePath="..\..\Quake\resource.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sbar.h"
+				RelativePath="..\..\Quake\sbar.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\screen.h"
+				RelativePath="..\..\Quake\screen.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\server.h"
+				RelativePath="..\..\Quake\server.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sound.h"
+				RelativePath="..\..\Quake\sound.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\spritegn.h"
+				RelativePath="..\..\Quake\spritegn.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\sys.h"
+				RelativePath="..\..\Quake\sys.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\vid.h"
+				RelativePath="..\..\Quake\vid.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\view.h"
+				RelativePath="..\..\Quake\view.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\wad.h"
+				RelativePath="..\..\Quake\wad.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\winquake.h"
+				RelativePath="..\..\Quake\winquake.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\world.h"
+				RelativePath="..\..\Quake\world.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\wsaerror.h"
+				RelativePath="..\..\Quake\wsaerror.h"
 				>
 			</File>
 			<File
-				RelativePath="..\Quake\zone.h"
+				RelativePath="..\..\Quake\zone.h"
 				>
 			</File>
 		</Filter>
@@ -834,7 +818,7 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
-				RelativePath=".\QuakeSpasm.rc"
+				RelativePath="..\QuakeSpasm.rc"
 				>
 			</File>
 		</Filter>
