@@ -64,7 +64,7 @@
      replacing with cd_linux.c, cd_bsd.c etc..
 
   o  In windows, alternative CD drives are accessible by "quakespasm
-     -cddev F:\" (for example)
+     -cddev F" (for example)
 
    Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of this engine's features.
@@ -77,7 +77,7 @@
   ______________________________________________________________________
   cd quakespasm-0.85.3
   make
-  cp quakespasm /usr/local/games/quake (for eg)
+  cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
 
 

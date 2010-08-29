@@ -1288,7 +1288,7 @@ void Host_Say(qboolean teamonly)
 	client_t *save;
 	int	j, remquot = 0;
 	const char	*p;
-    // removed unsigned keyword -- kristian
+	// removed unsigned keyword -- kristian
 	char	text[MAXCMDLINE];
 	qboolean	fromServer = false;
 
@@ -1327,8 +1327,9 @@ void Host_Say(qboolean teamonly)
 
 	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
 	strncat (text, p, j);
-	if (remquot)
-		text[Q_strlen(text) - 1] = '\0';
+	j = Q_strlen(text) - 1;
+	if (remquot && text[j] == '"')
+		text[j] = '\0';
 	strcat (text, "\n");
 
 	for (j = 0, client = svs.clients; j < svs.maxclients; j++, client++)
@@ -1390,8 +1391,9 @@ void Host_Tell_f(void)
 // check length & truncate if necessary
 	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
 	strncat (text, p, j);
-	if (remquot)
-		text[Q_strlen(text) - 1] = '\0';
+	j = Q_strlen(text) - 1;
+	if (remquot && text[j] == '"')
+		text[j] = '\0';
 	strcat (text, "\n");
 
 	save = host_client;
