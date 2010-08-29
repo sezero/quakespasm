@@ -827,6 +827,7 @@ void Host_Map_f (void)
 	key_dest = key_game;			// remove console or menu
 	SCR_BeginLoadingPlaque ();
 
+// mapstring isn't used anywhere!
 	cls.mapstring[0] = 0;
 	for (i = 0; i < Cmd_Argc(); i++)
 	{
@@ -836,7 +837,17 @@ void Host_Map_f (void)
 	strcat (cls.mapstring, "\n");
 
 	svs.serverflags = 0;			// haven't completed an episode yet
-	strcpy (name, Cmd_Argv(1));
+
+	// remove (any) trailing ".bsp" from mapname S.A.
+
+	char mapname[64], *needle;
+	strcpy (mapname, Cmd_Argv(1));
+
+	needle = strstr(mapname,".bsp");
+	if (needle && (needle + 4 == mapname + Q_strlen(mapname))) 
+		needle[0] = '\0';
+
+	strcpy (name, mapname);
 	SV_SpawnServer (name);
 	if (!sv.active)
 		return;
