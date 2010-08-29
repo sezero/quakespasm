@@ -94,7 +94,7 @@
 	<File name="../Quake/snd_sdl.c" open="1" top="0" tabpos="3">
 		<Cursor position="1435" topLine="20" />
 	</File>
-	<File name="../Quake/sys_sdl.c" open="0" top="0" tabpos="4">
+	<File name="../Quake/sys_sdl_unix.c" open="0" top="0" tabpos="4">
 		<Cursor position="3415" topLine="137" />
 	</File>
 	<File name="../Quake/wad.c" open="0" top="0" tabpos="3">

@@ -55,7 +55,7 @@
 	<File name="..\Quake\net_dgrm.c" open="0" top="0" tabpos="3">
 		<Cursor position="905" topLine="21" />
 	</File>
-	<File name="..\Quake\net_sdlnet.c" open="1" top="1" tabpos="2">
+	<File name="..\Quake\net_wins.c" open="1" top="1" tabpos="2">
 		<Cursor position="766" topLine="0" />
 	</File>
 	<File name="..\Quake\pl_win.c" open="0" top="0" tabpos="2">
@@ -85,7 +85,7 @@
 	<File name="..\Quake\snd_mix.c" open="0" top="0" tabpos="0">
 		<Cursor position="3595" topLine="145" />
 	</File>
-	<File name="..\Quake\sys_sdl.c" open="0" top="0" tabpos="6">
+	<File name="..\Quake\sys_sdl_win.c" open="0" top="0" tabpos="6">
 		<Cursor position="3415" topLine="137" />
 	</File>
 	<File name="..\Quake\wad.c" open="0" top="0" tabpos="5">

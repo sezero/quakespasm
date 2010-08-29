@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin/Debug/fitzquake" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Debug/quakespasm" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -17,7 +17,7 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="bin/Release/fitzquake" prefix_auto="1" extension_auto="1" />
+				<Option output="bin/Release/quakespasm" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -37,13 +37,10 @@
 		<Linker>
 			<Add option="`sdl-config --libs`" />
 			<Add option="-lGL" />
-			<Add option="-lGLU" />
-			<Add option="-lSDL_net" />
-			<Add directory="C:/Programme/SDL/lib" />
 		</Linker>
-		<Unit filename="cb.bmp" />
 		<Unit filename="../Quake/anorm_dots.h" />
 		<Unit filename="../Quake/anorms.h" />
+		<Unit filename="../Quake/arch_def.h" />
 		<Unit filename="../Quake/bspfile.h" />
 		<Unit filename="../Quake/cd_sdl.c">
 			<Option compilerVar="CC" />
@@ -92,7 +89,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Quake/cvar.h" />
-		<Unit filename="../Quake/d_ifacea.h" />
 		<Unit filename="../Quake/draw.h" />
 		<Unit filename="../Quake/gl_draw.c">
 			<Option compilerVar="CC" />
@@ -169,6 +165,7 @@
 		<Unit filename="../Quake/menu.h" />
 		<Unit filename="../Quake/modelgen.h" />
 		<Unit filename="../Quake/net.h" />
+		<Unit filename="../Quake/net_defs.h" />
 		<Unit filename="../Quake/net_dgrm.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -180,14 +177,14 @@
 		<Unit filename="../Quake/net_main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Quake/net_sdl.c">
+		<Unit filename="../Quake/net_bsd.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Quake/net_sdlnet.c">
+		<Unit filename="../Quake/net_udp.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Quake/net_sdlnet.h" />
-		<Unit filename="../Quake/net_ser.h" />
+		<Unit filename="../Quake/net_udp.h" />
+		<Unit filename="../Quake/net_sys.h" />
 		<Unit filename="../Quake/pl_linux.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -206,6 +203,8 @@
 		<Unit filename="../Quake/progdefs.q1" />
 		<Unit filename="../Quake/progs.h" />
 		<Unit filename="../Quake/protocol.h" />
+		<Unit filename="../Quake/q_stdinc.h" />
+		<Unit filename="../Quake/qs_bmp.h" />
 		<Unit filename="../Quake/quakedef.h" />
 		<Unit filename="../Quake/r_alias.c">
 			<Option compilerVar="CC" />
@@ -257,7 +256,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Quake/sys.h" />
-		<Unit filename="../Quake/sys_sdl.c">
+		<Unit filename="../Quake/sys_sdl_unix.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../Quake/vid.h" />
