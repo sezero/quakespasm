@@ -130,7 +130,7 @@ typedef struct statement_s
 
 typedef struct
 {
-	unsigned short	type;		// if DEF_SAVEGLOBGAL bit is set
+	unsigned short	type;		// if DEF_SAVEGLOBAL bit is set
 								// the variable needs to be saved in savegames
 	unsigned short	ofs;
 	int			s_name;
