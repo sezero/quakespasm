@@ -827,15 +827,6 @@ void Host_Map_f (void)
 	key_dest = key_game;			// remove console or menu
 	SCR_BeginLoadingPlaque ();
 
-// mapstring isn't used anywhere!
-	cls.mapstring[0] = 0;
-	for (i = 0; i < Cmd_Argc(); i++)
-	{
-		strcat (cls.mapstring, Cmd_Argv(i));
-		strcat (cls.mapstring, " ");
-	}
-	strcat (cls.mapstring, "\n");
-
 	svs.serverflags = 0;			// haven't completed an episode yet
 
 	// remove (any) trailing ".bsp" from mapname S.A.

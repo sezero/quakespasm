@@ -115,7 +115,6 @@ typedef struct
 	cactive_t	state;
 
 // personalization data sent to server
-	char		mapstring[MAX_QPATH];
 	char		spawnparms[MAX_MAPSTRING];	// to restart a level
 
 // demo loop control
