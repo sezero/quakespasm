@@ -792,7 +792,7 @@ command from the console.  Active clients are kicked off.
 void Host_Map_f (void)
 {
 	int		i;
-	char	name[MAX_QPATH];
+	char	name[MAX_QPATH], *p;
 
 	if (Cmd_Argc() < 2)	//no map name given
 	{
@@ -828,17 +828,11 @@ void Host_Map_f (void)
 	SCR_BeginLoadingPlaque ();
 
 	svs.serverflags = 0;			// haven't completed an episode yet
-
+	strcpy (name, Cmd_Argv(1));
 	// remove (any) trailing ".bsp" from mapname S.A.
-
-	char mapname[64], *needle;
-	strcpy (mapname, Cmd_Argv(1));
-
-	needle = strstr(mapname,".bsp");
-	if (needle && (needle + 4 == mapname + Q_strlen(mapname))) 
-		needle[0] = '\0';
-
-	strcpy (name, mapname);
+	p = strstr(name, ".bsp");
+	if (p && p[4] == '\0')
+		*p = '\0';
 	SV_SpawnServer (name);
 	if (!sv.active)
 		return;
@@ -1290,7 +1284,6 @@ void Host_Say(qboolean teamonly)
 	client_t *save;
 	int	j, remquot = 0;
 	const char	*p;
-	// removed unsigned keyword -- kristian
 	char	text[MAXCMDLINE];
 	qboolean	fromServer = false;
 
