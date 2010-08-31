@@ -1282,9 +1282,10 @@ void Host_Say(qboolean teamonly)
 {
 	client_t *client;
 	client_t *save;
-	int	j, remquot = 0;
+	int		j;
 	const char	*p;
-	char	text[MAXCMDLINE];
+	char		text[MAXCMDLINE], *p2;
+	qboolean	quoted;
 	qboolean	fromServer = false;
 
 	if (cmd_source == src_command)
@@ -1308,24 +1309,39 @@ void Host_Say(qboolean teamonly)
 
 	p = Cmd_Args();
 // remove quotes if present
+	quoted = false;
 	if (*p == '"')
 	{
 		p++;
-		remquot = 1;
+		quoted = true;
 	}
-
 // turn on color set 1
 	if (!fromServer)
-		sprintf (text, "%c%s: ", 1, save->name);
+		q_snprintf (text, sizeof(text), "\001%s: %s", save->name, p);
 	else
-		sprintf (text, "%c<%s> ", 1, hostname.string);
+		q_snprintf (text, sizeof(text), "\001<%s> %s", hostname.string, p);
 
-	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
-	strncat (text, p, j);
-	j = Q_strlen(text) - 1;
-	if (remquot && text[j] == '"')
-		text[j] = '\0';
-	strcat (text, "\n");
+// check length & truncate if necessary
+	j = Q_strlen(text);
+	if (j >= sizeof(text) - 1)
+	{
+		text[sizeof(text) - 2] = '\n';
+		text[sizeof(text) - 1] = '\0';
+	}
+	else
+	{
+		p2 = text + j;
+		while ((const char *)p2 > (const char *)text &&
+			(p2[-1] == '\r' || p2[-1] == '\n' || (p2[-1] == '\"' && quoted)) )
+		{
+			if (p2[-1] == '\"' && quoted)
+				quoted = false;
+			p2[-1] = '\0';
+			p2--;
+		}
+		p2[0] = '\n';
+		p2[1] = '\0';
+	}
 
 	for (j = 0, client = svs.clients; j < svs.maxclients; j++, client++)
 	{
@@ -1338,7 +1354,8 @@ void Host_Say(qboolean teamonly)
 	}
 	host_client = save;
 
-	Sys_Printf("%s", &text[1]);
+	if (cls.state == ca_dedicated)
+		Sys_Printf("%s", &text[1]);
 }
 
 
@@ -1358,9 +1375,10 @@ void Host_Tell_f(void)
 {
 	client_t *client;
 	client_t *save;
-	int	j, remquot = 0;
+	int		j;
 	const char	*p;
-	char	text[MAXCMDLINE];
+	char	text[MAXCMDLINE], *p2;
+	qboolean	quoted;
 
 	if (cmd_source == src_command)
 	{
@@ -1371,25 +1389,37 @@ void Host_Tell_f(void)
 	if (Cmd_Argc () < 3)
 		return;
 
-	Q_strcpy(text, host_client->name);
-	Q_strcat(text, ": ");
-
 	p = Cmd_Args();
-
 // remove quotes if present
+	quoted = false;
 	if (*p == '"')
 	{
 		p++;
-		remquot = 1;
+		quoted = true;
 	}
+	q_snprintf (text, sizeof(text), "%s: %s", host_client->name, p);
 
 // check length & truncate if necessary
-	j = sizeof(text) - 2 - Q_strlen(text);  // -2 for /n and null terminator
-	strncat (text, p, j);
-	j = Q_strlen(text) - 1;
-	if (remquot && text[j] == '"')
-		text[j] = '\0';
-	strcat (text, "\n");
+	j = Q_strlen(text);
+	if (j >= sizeof(text) - 1)
+	{
+		text[sizeof(text) - 2] = '\n';
+		text[sizeof(text) - 1] = '\0';
+	}
+	else
+	{
+		p2 = text + j;
+		while ((const char *)p2 > (const char *)text &&
+			(p2[-1] == '\r' || p2[-1] == '\n' || (p2[-1] == '\"' && quoted)) )
+		{
+			if (p2[-1] == '\"' && quoted)
+				quoted = false;
+			p2[-1] = '\0';
+			p2--;
+		}
+		p2[0] = '\n';
+		p2[1] = '\0';
+	}
 
 	save = host_client;
 	for (j = 0, client = svs.clients; j < svs.maxclients; j++, client++)
