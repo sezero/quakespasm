@@ -25,8 +25,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // comndef.h  -- general definitions
 
 #if defined(_WIN32)
-#define q_snprintf  _snprintf
-#define q_vsnprintf _vsnprintf
 #ifdef _MSC_VER
 #  pragma warning(disable:4244)
 	/* 'argument'	: conversion from 'type1' to 'type2',
@@ -41,12 +39,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define fmax max
 #define fmin min
 #endif	/* _MSC_VER */
-
-#else	/* _WIN32 */
-
-#define q_snprintf  snprintf
-#define q_vsnprintf vsnprintf
-
 #endif	/* _WIN32 */
 
 typedef struct sizebuf_s
@@ -137,6 +129,20 @@ int Q_strcasecmp (const char *s1, const char *s2);
 int Q_strncasecmp (const char *s1, const char *s2, int n);
 int	Q_atoi (const char *str);
 float Q_atof (const char *str);
+
+/* snprintf, vsnprintf : always use our versions. */
+/* platform dependant (v)snprintf function names: */
+#if defined(_WIN32)
+#define	snprintf_func		_snprintf
+#define	vsnprintf_func		_vsnprintf
+#else
+#define	snprintf_func		snprintf
+#define	vsnprintf_func		vsnprintf
+#endif
+
+extern int q_snprintf (char *str, size_t size, const char *format, ...) __attribute__((__format__(__printf__,3,4)));
+extern int q_vsnprintf(char *str, size_t size, const char *format, va_list args)
+									__attribute__((__format__(__printf__,3,0)));
 
 //============================================================================
 
