@@ -175,7 +175,7 @@ void Sys_Error (const char *error, ...)
 	DWORD		dummy;
 
 	va_start (argptr, error);
-	vsprintf (text, error, argptr);
+	q_vsnprintf (text, sizeof(text), error, argptr);
 	va_end (argptr);
 
 	if (isDedicated)
@@ -210,7 +210,7 @@ void Sys_Printf (const char *fmt, ...)
 	DWORD		dummy;
 
 	va_start (argptr,fmt);
-	vsprintf (text, fmt, argptr);
+	q_vsnprintf (text, sizeof(text), fmt, argptr);
 	va_end (argptr);
 
 	if (isDedicated)

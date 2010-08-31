@@ -1298,7 +1298,7 @@ char *va (const char *format, ...)
 
 	va_buf = get_va_buffer ();
 	va_start (argptr, format);
-	vsprintf (va_buf, format, argptr);
+	q_vsnprintf (va_buf, VA_BUFFERLEN, format, argptr);
 	va_end (argptr);
 
 	return va_buf;

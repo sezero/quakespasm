@@ -497,7 +497,6 @@ Handles cursor positioning, line wrapping, etc
 ================
 */
 #define	MAXPRINTMSG	4096
-// FIXME: make a buffer size safe vsprintf?
 void Con_Printf (const char *fmt, ...)
 {
 	va_list		argptr;
@@ -505,7 +504,7 @@ void Con_Printf (const char *fmt, ...)
 	static qboolean	inupdate;
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
 // also echo to debugging console
@@ -549,7 +548,7 @@ void Con_Warning (const char *fmt, ...)
 	char		msg[MAXPRINTMSG];
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
 	Con_SafePrintf ("\x02Warning: ");
@@ -572,7 +571,7 @@ void Con_DPrintf (const char *fmt, ...)
 		return;			// don't confuse non-developers with techie stuff...
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
 	Con_SafePrintf ("%s", msg); //johnfitz -- was Con_Printf
@@ -593,7 +592,7 @@ void Con_DPrintf2 (const char *fmt, ...)
 	if (developer.value >= 2)
 	{
 		va_start (argptr,fmt);
-		vsprintf (msg,fmt,argptr);
+		q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 		va_end (argptr);
 
 		Con_Printf ("%s", msg);
@@ -615,7 +614,7 @@ void Con_SafePrintf (const char *fmt, ...)
 	int			temp;
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
 	temp = scr_disabled_for_loading;
@@ -640,7 +639,7 @@ void Con_CenterPrintf (int linewidth, const char *fmt, ...)
 	int		len, s;
 
 	va_start (argptr,fmt);
-	vsprintf (msg,fmt,argptr);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
 	linewidth = min (linewidth, con_linewidth);

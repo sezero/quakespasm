@@ -163,7 +163,7 @@ void Sys_Error (const char *error, ...)
 	Host_Shutdown ();
 
 	va_start (argptr, error);
-	vsprintf (text, error, argptr);
+	q_vsnprintf (text, sizeof(text), error, argptr);
 	va_end (argptr);
 
 	fputs (errortxt2, stderr);
