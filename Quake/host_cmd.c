@@ -1280,9 +1280,9 @@ void Host_Version_f (void)
 
 void Host_Say(qboolean teamonly)
 {
-	client_t *client;
-	client_t *save;
 	int		j;
+	client_t	*client;
+	client_t	*save;
 	const char	*p;
 	char		text[MAXCMDLINE], *p2;
 	qboolean	quoted;
@@ -1310,7 +1310,7 @@ void Host_Say(qboolean teamonly)
 	p = Cmd_Args();
 // remove quotes if present
 	quoted = false;
-	if (*p == '"')
+	if (*p == '\"')
 	{
 		p++;
 		quoted = true;
@@ -1322,7 +1322,7 @@ void Host_Say(qboolean teamonly)
 		q_snprintf (text, sizeof(text), "\001<%s> %s", hostname.string, p);
 
 // check length & truncate if necessary
-	j = Q_strlen(text);
+	j = strlen(text);
 	if (j >= sizeof(text) - 1)
 	{
 		text[sizeof(text) - 2] = '\n';
@@ -1373,11 +1373,11 @@ void Host_Say_Team_f(void)
 
 void Host_Tell_f(void)
 {
-	client_t *client;
-	client_t *save;
 	int		j;
+	client_t	*client;
+	client_t	*save;
 	const char	*p;
-	char	text[MAXCMDLINE], *p2;
+	char		text[MAXCMDLINE], *p2;
 	qboolean	quoted;
 
 	if (cmd_source == src_command)
@@ -1392,7 +1392,7 @@ void Host_Tell_f(void)
 	p = Cmd_Args();
 // remove quotes if present
 	quoted = false;
-	if (*p == '"')
+	if (*p == '\"')
 	{
 		p++;
 		quoted = true;
@@ -1400,7 +1400,7 @@ void Host_Tell_f(void)
 	q_snprintf (text, sizeof(text), "%s: %s", host_client->name, p);
 
 // check length & truncate if necessary
-	j = Q_strlen(text);
+	j = strlen(text);
 	if (j >= sizeof(text) - 1)
 	{
 		text[sizeof(text) - 2] = '\n';
