@@ -1,10 +1,10 @@
-# GNU Makefile for QuakeSpasm unix targets, June 21, 2010
+# GNU Makefile for QuakeSpasm unix targets, Aug. 31, 2010
 #
-# You need SDL (and optionally SDL_net) fully installed.
-# "make DEBUG=1" builds debug client
-# "make SDLNET=1" to enable SDL_net. otherwise the socket api will be
-# used directly.
-# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations
+# You need the SDL library fully installed.
+# "make DEBUG=1" to build a debug client.
+# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
+# "make SDLNET=1" to use SDL_net (not recommended) instead of platform
+# specific code.
 #
 # Build objects are separate from those of codeblocks for now
 # (we aren't using codeblocks).

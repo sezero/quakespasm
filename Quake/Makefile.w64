@@ -1,11 +1,10 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win64 : MinGW-w64)
-# using cross-toolchains on a linux host	/ Aug. 17, 2010.
-# "make DEBUG=1" builds debug client
-# "make WINSOCK2=0" to use the old WinSock 1.1 api when not using SDL_net.
-# otherwise, WinSock2 api will be used.
-# "make SDLNET=1" to enable SDL_net. otherwise, the WinSock api will be
-# used directly.
-# "make SDL_CONFIG=/path/to/sdl-config" for sdl-config from cross-compiled SDL
+# using cross-toolchains on a linux host	/ Aug. 31, 2010.
+# "make DEBUG=1" to build a debug client.
+# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
+# "make WINSOCK2=0" to use the old WinSock 1.1 api (not recommended).
+# "make SDLNET=1" to use SDL_net (not recommended) instead of platform
+# specific code.
 
 # ============================================================================
 # Helper functions
