@@ -6,12 +6,10 @@
       <description>Most recent changes with links to updates.</description>
       <language>en</language>
          <item>
-            <title>Version 0.85.3 (1 new feature)</title>
-						<sparkle:releaseNotesLink>
-							http://www.kristianduske.com/quakespasm/rnotes.html
-						</sparkle:releaseNotesLink>
-            <pubDate>Sun, 01 Aug 2010 13:58:00 CEST</pubDate>
-            <enclosure url="http://fov120.com/QuakeSpasm/QuakeSpasm_0.85.3.zip" sparkle:version="0.85.3" length="1623481" type="application/octet-stream" sparkle:dsaSignature="BAFJW4B6B1K1JyW30nbkBwainOzrN6EQuAh" />
+            <title>Version 0.85.3</title>
+            <sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html</sparkle:releaseNotesLink>
+            <pubDate>Sun, 19 Sep 2010 18:00:00 CEST</pubDate>
+            <enclosure url="http://quakespasm.sourceforge.net/QuakeSpasm_0.85.3.zip" sparkle:version="0.85.3" length="1962565" type="application/octet-stream" sparkle:dsaSignature="MEUCIEp8R4yubj5KxQr7jOUD7tHlmTGQtKEPbxJpxoHCGtNQAiEAvX56Cb3wb8IMLlil2Oa1yh+NnZ/n5rtjHc8NUwrb5lE=" />
          </item>
    </channel>
 </rss>

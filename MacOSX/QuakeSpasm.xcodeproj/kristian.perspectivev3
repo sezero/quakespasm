@@ -214,7 +214,8 @@
 				<string>action</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
 				<string>debugger-enable-breakpoints</string>
-				<string>build-and-go</string>
+				<string>build</string>
+				<string>go</string>
 				<string>com.apple.ide.PBXToolbarStopButton</string>
 				<string>get-info</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
@@ -255,7 +256,7 @@
 						<dict>
 							<key>PBXSmartGroupTreeModuleColumnWidthsKey</key>
 							<array>
-								<real>189</real>
+								<real>220</real>
 							</array>
 							<key>PBXSmartGroupTreeModuleColumnsKey_v4</key>
 							<array>
@@ -270,6 +271,8 @@
 								<string>48243B060D33ED0A00C29F8F</string>
 								<string>483A77D80D2EE8C500CB2E4C</string>
 								<string>483A77DC0D2EE8ED00CB2E4C</string>
+								<string>29B97317FDCFA39411CA2CEA</string>
+								<string>4890A5EA1205D6ED00452753</string>
 								<string>19C28FACFE9D520D11CA2CBB</string>
 								<string>1C37FAAC04509CD000000102</string>
 							</array>
@@ -277,11 +280,12 @@
 							<array>
 								<array>
 									<integer>39</integer>
-									<integer>38</integer>
+									<integer>31</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
-							<string>{{0, 0}, {189, 847}}</string>
+							<string>{{0, 0}, {220, 869}}</string>
 						</dict>
 						<key>PBXTopSmartGroupGIDs</key>
 						<array/>
@@ -291,32 +295,30 @@
 					<key>GeometryConfiguration</key>
 					<dict>
 						<key>Frame</key>
-						<string>{{0, 0}, {206, 865}}</string>
+						<string>{{0, 0}, {237, 887}}</string>
 						<key>GroupTreeTableConfiguration</key>
 						<array>
 							<string>MainColumn</string>
-							<real>189</real>
+							<real>220</real>
 						</array>
 						<key>RubberWindowFrame</key>
-						<string>0 122 1680 906 0 0 1680 1028 </string>
+						<string>0 130 964 928 0 0 1920 1058 </string>
 					</dict>
 					<key>Module</key>
 					<string>PBXSmartGroupTreeModule</string>
 					<key>Proportion</key>
-					<string>206pt</string>
+					<string>237pt</string>
 				</dict>
 				<dict>
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>4890A4C11205A7AE00452753</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>AppController.m</string>
+								<string>Info.plist</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -324,11 +326,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>4890A4C21205A7AE00452753</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>AppController.m</string>
+										<string>Info.plist</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>480BB3B4121750BB00939117</string>
+										<string>48A3103412439B10008F2B35</string>
 										<key>history</key>
 										<array>
 											<string>4890A5541205C1FF00452753</string>
@@ -337,8 +339,6 @@
 											<string>4890A5D41205D58300452753</string>
 											<string>4890A5D51205D58300452753</string>
 											<string>4890A5DC1205D59F00452753</string>
-											<string>4890A5FD1205EA8A00452753</string>
-											<string>48821E15120DF1150008EE50</string>
 											<string>48821E16120DF1150008EE50</string>
 											<string>48134A1C12102F680015BF15</string>
 											<string>48134A1D12102F680015BF15</string>
@@ -351,7 +351,10 @@
 											<string>487EA7431217260D00315F97</string>
 											<string>480BB3A212174CA900939117</string>
 											<string>480BB3A312174CA900939117</string>
-											<string>480BB3A412174CA900939117</string>
+											<string>48FA259F12437B9B00667668</string>
+											<string>48A3103112439B10008F2B35</string>
+											<string>48A3103212439B10008F2B35</string>
+											<string>48A3103312439B10008F2B35</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -365,18 +368,18 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {1469, 663}}</string>
+								<string>{{0, 0}, {722, 674}}</string>
 								<key>RubberWindowFrame</key>
-								<string>0 122 1680 906 0 0 1680 1028 </string>
+								<string>0 130 964 928 0 0 1920 1058 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>663pt</string>
+							<string>674pt</string>
 						</dict>
 						<dict>
 							<key>Proportion</key>
-							<string>197pt</string>
+							<string>208pt</string>
 							<key>Tabs</key>
 							<array>
 								<dict>
@@ -390,9 +393,7 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1469, 170}}</string>
-										<key>RubberWindowFrame</key>
-										<string>0 122 1680 906 0 0 1680 1028 </string>
+										<string>{{10, 27}, {722, 181}}</string>
 									</dict>
 									<key>Module</key>
 									<string>XCDetailModule</string>
@@ -446,7 +447,9 @@
 									<key>GeometryConfiguration</key>
 									<dict>
 										<key>Frame</key>
-										<string>{{10, 27}, {1229, 359}}</string>
+										<string>{{10, 27}, {722, 181}}</string>
+										<key>RubberWindowFrame</key>
+										<string>0 130 964 928 0 0 1920 1058 </string>
 									</dict>
 									<key>Module</key>
 									<string>PBXBuildResultsModule</string>
@@ -455,7 +458,7 @@
 						</dict>
 					</array>
 					<key>Proportion</key>
-					<string>1469pt</string>
+					<string>722pt</string>
 				</dict>
 			</array>
 			<key>Name</key>
@@ -474,11 +477,11 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>480BB3A612174CA900939117</string>
+				<string>48A31028124397BF008F2B35</string>
 				<string>1CA23ED40692098700951B8B</string>
-				<string>480BB3A712174CA900939117</string>
+				<string>48A31029124397BF008F2B35</string>
 				<string>4890A4C11205A7AE00452753</string>
-				<string>480BB3A812174CA900939117</string>
+				<string>48A3102A124397BF008F2B35</string>
 				<string>1CA23EDF0692099D00951B8B</string>
 				<string>1CA23EE00692099D00951B8B</string>
 				<string>1CA23EE10692099D00951B8B</string>
@@ -497,7 +500,8 @@
 				<string>active-combo-popup</string>
 				<string>NSToolbarFlexibleSpaceItem</string>
 				<string>debugger-enable-breakpoints</string>
-				<string>build-and-go</string>
+				<string>build</string>
+				<string>go</string>
 				<string>com.apple.ide.PBXToolbarStopButton</string>
 				<string>debugger-restart-executable</string>
 				<string>debugger-pause</string>
@@ -627,14 +631,14 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>480BB3A912174CA900939117</string>
+				<string>48A3103512439B10008F2B35</string>
 				<string>1CCC7628064C1048000F2A68</string>
 				<string>1CCC7629064C1048000F2A68</string>
-				<string>480BB3AA12174CA900939117</string>
-				<string>480BB3AB12174CA900939117</string>
-				<string>480BB3AC12174CA900939117</string>
-				<string>480BB3AD12174CA900939117</string>
-				<string>480BB3AE12174CA900939117</string>
+				<string>48A3103612439B10008F2B35</string>
+				<string>48A3103712439B10008F2B35</string>
+				<string>48A3103812439B10008F2B35</string>
+				<string>48A3103912439B10008F2B35</string>
+				<string>48A3103A12439B10008F2B35</string>
 			</array>
 			<key>ToolbarConfigUserDefaultsMinorVersion</key>
 			<string>2</string>
@@ -668,12 +672,10 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>480BB3B012174CA900939117</string>
-		<string>480BB3B112174CA900939117</string>
-		<string>/Users/kristian/Documents/Code/XCode/QuakeSpasm/MacOSX/QuakeSpasm.xcodeproj</string>
+		<string>/Users/kristian/Dropbox/Dokumente/Code/XCode/QuakeSpasm/MacOSX/QuakeSpasm.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
-	<string>0 122 1680 906 0 0 1680 1028 </string>
+	<string>0 130 964 928 0 0 1920 1058 </string>
 	<key>WindowToolsV3</key>
 	<array>
 		<dict>
