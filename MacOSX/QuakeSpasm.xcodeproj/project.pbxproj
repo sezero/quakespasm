@@ -6,6 +6,21 @@
 	objectVersion = 42;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		48ADEC8E1243D946000AF19C /* Distribution */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 48ADEC921243D94A000AF19C /* Build configuration list for PBXAggregateTarget "Distribution" */;
+			buildPhases = (
+				48ADEC8D1243D946000AF19C /* ShellScript */,
+			);
+			dependencies = (
+				48ADECD61243E933000AF19C /* PBXTargetDependency */,
+			);
+			name = Distribution;
+			productName = Distribution;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
@@ -15,12 +30,8 @@
 		48134A1812102F400015BF15 /* net_bsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1412102F400015BF15 /* net_bsd.c */; };
 		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
-		4830B79F0D464CAE00EF4498 /* Changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79D0D464CAE00EF4498 /* Changelog.txt */; };
-		4830B7A00D464CAE00EF4498 /* Todo.txt in Resources */ = {isa = PBXBuildFile; fileRef = 4830B79E0D464CAE00EF4498 /* Todo.txt */; };
 		48348943120595B1004184BC /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48348942120595B1004184BC /* Sparkle.framework */; };
 		4834894F120595E9004184BC /* Sparkle.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48348942120595B1004184BC /* Sparkle.framework */; };
-		48348960120598A7004184BC /* appcast.xml in Resources */ = {isa = PBXBuildFile; fileRef = 4834895F120598A7004184BC /* appcast.xml */; };
-		483A780F0D2EEA0F00CB2E4C /* progdefs.q1 in Resources */ = {isa = PBXBuildFile; fileRef = 483A780E0D2EEA0F00CB2E4C /* progdefs.q1 */; };
 		483A78230D2EEA5400CB2E4C /* chase.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78100D2EEA5400CB2E4C /* chase.c */; };
 		483A78240D2EEA5400CB2E4C /* cmd.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78110D2EEA5400CB2E4C /* cmd.c */; };
 		483A78250D2EEA5400CB2E4C /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78120D2EEA5400CB2E4C /* common.c */; };
@@ -83,8 +94,6 @@
 		48895DB90D4914A000849ABF /* pl_osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 48895DB80D4914A000849ABF /* pl_osx.m */; };
 		4890A4621205A27B00452753 /* SUUpdaterDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A4611205A27B00452753 /* SUUpdaterDelegate.m */; };
 		4890A5D21205D55700452753 /* UpdateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A5D11205D55700452753 /* UpdateButton.m */; };
-		4890A5E81205D6D400452753 /* rnotes.css in Resources */ = {isa = PBXBuildFile; fileRef = 4890A5E61205D6D400452753 /* rnotes.css */; };
-		4890A5E91205D6D400452753 /* rnotes.html in Resources */ = {isa = PBXBuildFile; fileRef = 4890A5E71205D6D400452753 /* rnotes.html */; };
 		489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 489D8D2E0D3A630D00AA4471 /* ScreenInfo.m */; };
 		48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */ = {isa = PBXBuildFile; fileRef = 48B9E7860D340B1E0001CACF /* Launcher.nib */; };
 		48B9E7A70D340BEA0001CACF /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7A60D340BEA0001CACF /* AppController.m */; };
@@ -95,6 +104,16 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		48ADECD51243E933000AF19C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = QuakeSpasm;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		002F39FD09D0883400EBEB88 /* Copy Frameworks into .app bundle */ = {
@@ -309,6 +328,7 @@
 				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
+				4890A5EA1205D6ED00452753 /* Sparkle */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 				4830B79D0D464CAE00EF4498 /* Changelog.txt */,
@@ -321,7 +341,6 @@
 			isa = PBXGroup;
 			children = (
 				48FA25B612437EAB00667668 /* dsa_pub.pem */,
-				4890A5EA1205D6ED00452753 /* Sparkle */,
 				484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */,
 				48B9E7860D340B1E0001CACF /* Launcher.nib */,
 				8D1107310486CEB800E47090 /* Info.plist */,
@@ -604,6 +623,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* QuakeSpasm */,
+				48ADEC8E1243D946000AF19C /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -614,19 +634,29 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				483A780F0D2EEA0F00CB2E4C /* progdefs.q1 in Resources */,
 				48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */,
 				484AA4B40D3FF6C0005D917A /* QuakeSpasm.icns in Resources */,
-				4830B79F0D464CAE00EF4498 /* Changelog.txt in Resources */,
-				4830B7A00D464CAE00EF4498 /* Todo.txt in Resources */,
-				48348960120598A7004184BC /* appcast.xml in Resources */,
-				4890A5E81205D6D400452753 /* rnotes.css in Resources */,
-				4890A5E91205D6D400452753 /* rnotes.html in Resources */,
 				48FA25B712437EAB00667668 /* dsa_pub.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		48ADEC8D1243D946000AF19C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "set -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://quakespasm.sourceforge.net/sparkle/\"\nRELEASENOTES_URL=\"http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-$VERSION\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME $VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"QuakeSpasm Sparkle Private Key\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nditto -ck --keepParent \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\topenssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| openssl enc -base64 -A\n)\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\necho scp \"'$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME'\" www.example.com:download/\necho scp \"'$WD/appcast.xml'\" www.example.com:web/software/my-cool-app/appcast.xml";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -708,6 +738,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		48ADECD61243E933000AF19C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* QuakeSpasm */;
+			targetProxy = 48ADECD51243E933000AF19C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -728,6 +766,27 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		48ADEC8F1243D946000AF19C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = Distribution;
+			};
+			name = Debug;
+		};
+		48ADEC901243D946000AF19C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = Distribution;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -833,6 +892,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		48ADEC921243D94A000AF19C /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48ADEC8F1243D946000AF19C /* Debug */,
+				48ADEC901243D946000AF19C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

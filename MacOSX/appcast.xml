@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
-   <channel>
-      <title>QuakeSpasm Changelog</title>
-      <link>http://www.kristianduske.com/quakespasm/appcast.xml</link>
-      <description>Most recent changes with links to updates.</description>
-      <language>en</language>
-         <item>
-            <title>Version 0.85.3</title>
-            <sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html</sparkle:releaseNotesLink>
-            <pubDate>Sun, 19 Sep 2010 18:00:00 CEST</pubDate>
-            <enclosure url="http://quakespasm.sourceforge.net/QuakeSpasm_0.85.3.zip" sparkle:version="0.85.3" length="1962565" type="application/octet-stream" sparkle:dsaSignature="MEUCIEp8R4yubj5KxQr7jOUD7tHlmTGQtKEPbxJpxoHCGtNQAiEAvX56Cb3wb8IMLlil2Oa1yh+NnZ/n5rtjHc8NUwrb5lE=" />
-         </item>
+    <channel>
+        <title>QuakeSpasm Changelog</title>
+        <link>http://quakespasm.sourceforge.net/sparkle/appcast.xml</link>
+        <description>Most recent changes with links to updates.</description>
+        <language>en</language>
+        <item>
+			<title>Version 0.85.3</title>
+			<sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-0.85.3</sparkle:releaseNotesLink>
+			<pubDate>Sun, 19 Sep 2010 14:00:00 +0200</pubDate>
+			<enclosure
+				url="http://quakespasm.sourceforge.net/sparkle/QuakeSpasm.zip"
+				sparkle:version="0.85.3"
+				type="application/octet-stream"
+				length="2794647"
+				sparkle:dsaSignature="MEQCIHGzFg48WcpygkEUufAJjdyK/SyltYGb3ySkIl+WdpucAiBMrDN+ciZoLo15
+NfMndWWhKtCHO3GZIz5AouxP+oUy2A=="
+			/>
+		</item>
    </channel>
 </rss>
