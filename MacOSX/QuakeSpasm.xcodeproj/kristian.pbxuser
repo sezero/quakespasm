@@ -9,7 +9,7 @@
 		};
 	};
 	29B97313FDCFA39411CA2CEA /* Project object */ = {
-		activeArchitecturePreference = i386;
+		activeArchitecturePreference = x86_64;
 		activeBuildConfigurationName = Release;
 		activeExecutable = 4847CD3D12057F05000B560F /* QuakeSpasm */;
 		activeSDKPreference = macosx10.5;
@@ -67,7 +67,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					1125,
+					924,
 					60,
 					20,
 					48,
@@ -84,11 +84,14 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 306480785;
-			PBXWorkspaceStateSaveDate = 306480785;
+			PBXPerProjectTemplateStateSaveDate = 306493576;
+			PBXWorkspaceStateSaveDate = 306493576;
 		};
 		perUserProjectItems = {
 			48028D3E12156C670018F743 /* PBXTextBookmark */ = 48028D3E12156C670018F743 /* PBXTextBookmark */;
+			480714F11244B8BE0003D51F /* PBXTextBookmark */ = 480714F11244B8BE0003D51F /* PBXTextBookmark */;
+			480714F21244B8BE0003D51F /* PBXTextBookmark */ = 480714F21244B8BE0003D51F /* PBXTextBookmark */;
+			480715011244B9630003D51F /* PBXTextBookmark */ = 480715011244B9630003D51F /* PBXTextBookmark */;
 			480BB3A212174CA900939117 /* PBXTextBookmark */ = 480BB3A212174CA900939117 /* PBXTextBookmark */;
 			480BB3A312174CA900939117 /* PBXTextBookmark */ = 480BB3A312174CA900939117 /* PBXTextBookmark */;
 			48134A1C12102F680015BF15 /* PBXTextBookmark */ = 48134A1C12102F680015BF15 /* PBXTextBookmark */;
@@ -120,11 +123,8 @@
 			48ADA3EB12449C30008DB120 /* PBXTextBookmark */ = 48ADA3EB12449C30008DB120 /* PBXTextBookmark */;
 			48ADA3EC12449C30008DB120 /* PBXTextBookmark */ = 48ADA3EC12449C30008DB120 /* PBXTextBookmark */;
 			48ADA3ED12449C30008DB120 /* PBXTextBookmark */ = 48ADA3ED12449C30008DB120 /* PBXTextBookmark */;
-			48ADA3F812449CA0008DB120 /* PBXTextBookmark */ = 48ADA3F812449CA0008DB120 /* PBXTextBookmark */;
-			48ADA40112449D39008DB120 /* PBXTextBookmark */ = 48ADA40112449D39008DB120 /* PBXTextBookmark */;
-			48ADA40C12449DAE008DB120 /* PlistBookmark */ = 48ADA40C12449DAE008DB120 /* PlistBookmark */;
-			48ADA40D12449DAE008DB120 /* PlistBookmark */ = 48ADA40D12449DAE008DB120 /* PlistBookmark */;
 			48ADECCB1243E81B000AF19C /* PBXTextBookmark */ = 48ADECCB1243E81B000AF19C /* PBXTextBookmark */;
+			48BFC9B61244B86B0018434F /* PlistBookmark */ = 48BFC9B61244B86B0018434F /* PlistBookmark */;
 			48F89F411243A3BA00EB68FB /* PBXTextBookmark */ = 48F89F411243A3BA00EB68FB /* PBXTextBookmark */;
 			48F89F611243AD1E00EB68FB /* PBXTextBookmark */ = 48F89F611243AD1E00EB68FB /* PBXTextBookmark */;
 		};
@@ -148,6 +148,36 @@
 		rType = 0;
 		vrLen = 1410;
 		vrLoc = 0;
+	};
+	480714F11244B8BE0003D51F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 48B9E7A60D340BEA0001CACF /* AppController.m */;
+		name = "AppController.m: 137";
+		rLen = 0;
+		rLoc = 4429;
+		rType = 0;
+		vrLen = 949;
+		vrLoc = 4423;
+	};
+	480714F21244B8BE0003D51F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 48B9E7A50D340BEA0001CACF /* AppController.h */;
+		name = "AppController.h: 42";
+		rLen = 0;
+		rLoc = 1308;
+		rType = 0;
+		vrLen = 619;
+		vrLoc = 722;
+	};
+	480715011244B9630003D51F /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 48B9E7A50D340BEA0001CACF /* AppController.h */;
+		name = "AppController.h: 42";
+		rLen = 0;
+		rLoc = 1308;
+		rType = 0;
+		vrLen = 619;
+		vrLoc = 722;
 	};
 	480BB3A212174CA900939117 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -486,20 +516,17 @@
 	};
 	48ADA34E12448DC4008DB120 /* SUAppcast.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = SUAppcast.h;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/build/Debug/Sparkle.framework/Headers/SUAppcast.h";
 		sourceTree = "<absolute>";
 	};
 	48ADA35112448DC4008DB120 /* SUUpdater.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = SUUpdater.h;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/build/Debug/Sparkle.framework/Headers/SUUpdater.h";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1608, 1690}}";
-			sepNavSelRange = "{1227, 0}";
-			sepNavVisRange = "{0, 561}";
-		};
 	};
 	48ADA38012448FF7008DB120 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -517,11 +544,6 @@
 		name = SUUpdateDriver.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUUpdateDriver.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1379, 546}}";
-			sepNavSelRange = "{557, 0}";
-			sepNavVisRange = "{0, 628}";
-		};
 	};
 	48ADA38312448FF7008DB120 /* SUUpdater.m */ = {
 		isa = PBXFileReference;
@@ -529,11 +551,6 @@
 		name = SUUpdater.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUUpdater.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1475, 5252}}";
-			sepNavSelRange = "{6323, 0}";
-			sepNavVisRange = "{5744, 1198}";
-		};
 	};
 	48ADA38612448FF7008DB120 /* SUUserInitiatedUpdateDriver.m */ = {
 		isa = PBXFileReference;
@@ -541,11 +558,6 @@
 		name = SUUserInitiatedUpdateDriver.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUUserInitiatedUpdateDriver.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1142, 1014}}";
-			sepNavSelRange = "{388, 0}";
-			sepNavVisRange = "{194, 997}";
-		};
 	};
 	48ADA38A124490B6008DB120 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -559,6 +571,7 @@
 	};
 	48ADA38B124490B6008DB120 /* SUStatusController.m */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
 		name = SUStatusController.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUStatusController.m";
 		sourceTree = "<absolute>";
@@ -590,11 +603,6 @@
 		name = SUDebugUpdateDriver.m;
 		path = /Users/kristian/Dropbox/Dokumente/Code/XCode/QuakeSpasm/MacOSX/SUDebugUpdateDriver.m;
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1142, 364}}";
-			sepNavSelRange = "{298, 0}";
-			sepNavVisRange = "{0, 306}";
-		};
 	};
 	48ADA3991244932E008DB120 /* SUDebugUpdateDriver.m:15 */ = {
 		isa = PBXFileBreakpoint;
@@ -609,7 +617,7 @@
 		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 15;
-		modificationTime = 306486552.016536;
+		modificationTime = 306486552.0165361;
 		originalNumberOfMultipleMatches = 0;
 		state = 1;
 	};
@@ -665,6 +673,7 @@
 	};
 	48ADA3AA12449534008DB120 /* Sparkle.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = Sparkle.h;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/build/Debug/Sparkle.framework/Headers/Sparkle.h";
 		sourceTree = "<absolute>";
@@ -683,7 +692,7 @@
 		ignoreCount = 0;
 		lineNumber = 25;
 		location = Sparkle;
-		modificationTime = 306486552.017102;
+		modificationTime = 306486552.0171019;
 		originalNumberOfMultipleMatches = 1;
 		state = 0;
 	};
@@ -703,11 +712,6 @@
 		name = SUBasicUpdateDriver.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUBasicUpdateDriver.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {3120, 4043}}";
-			sepNavSelRange = "{6948, 0}";
-			sepNavVisRange = "{6297, 1967}";
-		};
 	};
 	48ADA3CA12449625008DB120 /* SUHost.m */ = {
 		isa = PBXFileReference;
@@ -715,11 +719,6 @@
 		name = SUHost.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUHost.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1379, 3081}}";
-			sepNavSelRange = "{3067, 0}";
-			sepNavVisRange = "{2482, 999}";
-		};
 	};
 	48ADA3CC12449638008DB120 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -743,6 +742,7 @@
 	};
 	48ADA3D612449A40008DB120 /* SUDSAVerifier.h */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
 		name = SUDSAVerifier.h;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUDSAVerifier.h";
 		sourceTree = "<absolute>";
@@ -759,20 +759,17 @@
 	};
 	48ADA3DB12449A40008DB120 /* SUAppcastItem.m */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
 		name = SUAppcastItem.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUAppcastItem.m";
 		sourceTree = "<absolute>";
 	};
 	48ADA3DE12449A40008DB120 /* SUDSAVerifier.m */ = {
 		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
 		name = SUDSAVerifier.m;
 		path = "/Users/kristian/Downloads/Sparkle 1.5b6/Extras/Source Code/SUDSAVerifier.m";
 		sourceTree = "<absolute>";
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1379, 2015}}";
-			sepNavSelRange = "{4376, 15}";
-			sepNavVisRange = "{3536, 959}";
-		};
 	};
 	48ADA3EB12449C30008DB120 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -804,50 +801,6 @@
 		vrLen = 970;
 		vrLoc = 0;
 	};
-	48ADA3F812449CA0008DB120 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 48B9E7A50D340BEA0001CACF /* AppController.h */;
-		name = "AppController.h: 42";
-		rLen = 0;
-		rLoc = 1308;
-		rType = 0;
-		vrLen = 620;
-		vrLoc = 721;
-	};
-	48ADA40112449D39008DB120 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 48B9E7A60D340BEA0001CACF /* AppController.m */;
-		name = "AppController.m: 118";
-		rLen = 0;
-		rLoc = 3648;
-		rType = 0;
-		vrLen = 1011;
-		vrLoc = 2487;
-	};
-	48ADA40C12449DAE008DB120 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			NSMainNibFile,
-		);
-		name = /Users/kristian/Dropbox/Dokumente/Code/XCode/QuakeSpasm/MacOSX/Info.plist;
-		rLen = 8;
-		rLoc = 0;
-	};
-	48ADA40D12449DAE008DB120 /* PlistBookmark */ = {
-		isa = PlistBookmark;
-		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
-		fallbackIsa = PBXBookmark;
-		isK = 0;
-		kPath = (
-			NSMainNibFile,
-		);
-		name = /Users/kristian/Dropbox/Dokumente/Code/XCode/QuakeSpasm/MacOSX/Info.plist;
-		rLen = 0;
-		rLoc = 9223372036854775807;
-	};
 	48ADEC8E1243D946000AF19C /* Distribution */ = {
 		activeExec = 0;
 	};
@@ -865,14 +818,14 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1142, 598}}";
 			sepNavSelRange = "{1308, 0}";
-			sepNavVisRange = "{721, 620}";
+			sepNavVisRange = "{722, 619}";
 		};
 	};
 	48B9E7A60D340BEA0001CACF /* AppController.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1142, 2353}}";
-			sepNavSelRange = "{3648, 0}";
-			sepNavVisRange = "{2487, 1011}";
+			sepNavIntBoundsRect = "{{0, 0}, {1142, 2171}}";
+			sepNavSelRange = "{4429, 0}";
+			sepNavVisRange = "{4423, 949}";
 		};
 	};
 	48B9E7BE0D340EA80001CACF /* SDLApplication.h */ = {
@@ -881,6 +834,18 @@
 			sepNavSelRange = "{0, 0}";
 			sepNavVisRange = "{0, 805}";
 		};
+	};
+	48BFC9B61244B86B0018434F /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = 8D1107310486CEB800E47090 /* Info.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			NSMainNibFile,
+		);
+		name = /Users/kristian/Dropbox/Dokumente/Code/XCode/QuakeSpasm/MacOSX/Info.plist;
+		rLen = 0;
+		rLoc = 9223372036854775808;
 	};
 	48C85E3A0D3AD10E00797678 /* QuakeArgument.m */ = {
 		uiCtxt = {
