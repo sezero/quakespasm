@@ -31,6 +31,9 @@ extern NSString *FQPrefScreenModeKey;
     IBOutlet NSTextField *paramTextField;
     IBOutlet NSPopUpButton *screenModePopUp;
     IBOutlet NSButton *fullscreenCheckBox;
+    IBOutlet NSTabView *updateTabView;
+    IBOutlet NSProgressIndicator *updateProgressIndicator;
+    IBOutlet NSButton *updateButton;
     
     NSMutableArray *screenModes;
     QuakeArguments *arguments;

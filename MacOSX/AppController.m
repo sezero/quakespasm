@@ -108,6 +108,12 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
 		[self launchQuake:self];
 	} else {
 		[launcherWindow makeKeyAndOrderFront:self];
+
+        SUUpdater* updater = [SUUpdater sharedUpdater];
+        SUUpdaterDelegate* delegate = [[SUUpdaterDelegate alloc] initWithTabView:updateTabView indicator:updateProgressIndicator button:updateButton];
+        [updater setDelegate:delegate];
+        
+        [updater checkForUpdateInformation];
 	}
 }
 
