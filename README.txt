@@ -38,13 +38,13 @@
 
 
   Source
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3.tgz/download>
   Linux binary
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_linux.tgz/download>
   Windows
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_windows.zip/download>
   OSX universal binary
-  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_osx.zip/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_osx.zip/download>
 
 
   3.  Hints

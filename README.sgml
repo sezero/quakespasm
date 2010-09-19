@@ -15,13 +15,13 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 
 <sect> Downloads <p>
 
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3.tgz/download" name="Source">
+<url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3.tgz/download" name="Source">
 <newline>
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
+<url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
 <newline>
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download" name="Windows">
+<url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_windows.zip/download" name="Windows">
 <newline>
-<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_osx.zip/download" name="OSX universal binary">
+<url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_osx.zip/download" name="OSX universal binary">
 <newline>
 
 <sect> Hints <p>
