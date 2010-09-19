@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-QuakeSpasm 0.85.3 (unreleased) (18 September 2010)
+QuakeSpasm 0.85.3 (19 September 2010)
 
 <sect> About <p>
 
@@ -20,6 +20,8 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 <url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download" name="Linux binary">
 <newline>
 <url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download" name="Windows">
+<newline>
+<url url="http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_osx.zip/download" name="OSX universal binary">
 <newline>
 
 <sect> Hints <p>
@@ -127,9 +129,11 @@ The process is not for the faint hearted.
 <sect> Todo <p>
 <itemize>
 <item>Ogg/Mp3 music file support
+<item>Add HoT's first person camera (and menu item)
 <item>Native CD audio support .... cd_sdl.c doesn't have proper volume controls
 <item>Test usb keyboards. Do the keypads work ?
 <item>Tested HOME directory support
+<item>Finalize OSX automatic updating feature
 <item>Fix Centerview (V_StartPitchDrift)
 <item>Fix compiler warnings
 <item>Tie down the "-window/-fullscreen" options / behaviour ?

@@ -21,7 +21,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.3 (unreleased) (18 September 2010)
+  QuakeSpasm 0.85.3 (19 September 2010)
 
 
   1.  About
@@ -43,6 +43,8 @@
   <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_linux.tgz/download>
   Windows
   <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_windows.zip/download>
+  OSX universal binary
+  <http://prdownloads.sourceforge.net/quakespasm/quakespasm-0.85.3_osx.zip/download>
 
 
   3.  Hints
@@ -60,6 +62,7 @@
 
   o  Quakespasm allows loading new games (mods) on the fly with "game
      GAMENAME"
+
   o  There is currently no music volume support. cd_sdl.c needs
      replacing with cd_linux.c, cd_bsd.c etc..
 
@@ -125,7 +128,6 @@
 
   o  Enumerate options menus
 
-
   o  Add a "prev weapon" menu item (from Sander)
 
   o  Small fix to Sound Block/Unblock on win32
@@ -189,8 +191,8 @@
 
   o  Include real map name (sv.name) and skill in the status bar
 
-  o  Remove confirm quit dialog
 
+  o  Remove confirm quit dialog
 
   o  Don't spam the console with PackFile seek requests
 
@@ -213,12 +215,16 @@
 
   o  Ogg/Mp3 music file support
 
+  o  Add HoT's first person camera (and menu item)
+
   o  Native CD audio support .... cd_sdl.c doesn't have proper volume
      controls
 
   o  Test usb keyboards. Do the keypads work ?
 
   o  Tested HOME directory support
+
+  o  Finalize OSX automatic updating feature
 
   o  Fix Centerview (V_StartPitchDrift)
 
