@@ -504,10 +504,10 @@ void Sbar_SoloScoreboard (void)
 		sprintf (str,"skill %i", (int)(skill.value + 0.5));
 		Sbar_DrawString (160 - strlen(str)*4, 12, str);
 
-		sprintf (str,cl.levelname);
-		strcat  (str," (");
-		strncat (str,cl.mapname,250-strlen(str));
-		strcat  (str,")");
+		strcpy (str,cl.levelname);
+		strcat (str," (");
+		strncat(str,cl.mapname,250-strlen(str));
+		strcat (str,")");
 		len = strlen (str);
 		if (len > 40)
 			Sbar_DrawScrollString (0, 4, 320, str);

@@ -682,9 +682,9 @@ void Con_LogCenterPrint (const char *str)
 
 	if (con_logcenterprint.value)
 	{
-		Con_Printf (Con_Quakebar(40));
+		Con_Printf ("%s", Con_Quakebar(40));
 		Con_CenterPrintf (40, "%s\n", str);
-		Con_Printf (Con_Quakebar(40));
+		Con_Printf ("%s", Con_Quakebar(40));
 		Con_ClearNotify ();
 	}
 }
@@ -1222,9 +1222,9 @@ void Con_NotifyBox (const char *text)
 
 // during startup for sound / cd warnings
 	Con_Printf ("\n\n%s", Con_Quakebar(40)); //johnfitz
-	Con_Printf (text);
+	Con_Printf ("%s", text);
 	Con_Printf ("Press a key.\n");
-	Con_Printf (Con_Quakebar(40)); //johnfitz
+	Con_Printf ("%s", Con_Quakebar(40)); //johnfitz
 
 	key_count = -2;		// wait for a key down and up
 	IN_Deactivate(vid.type == MODE_WINDOWED);
