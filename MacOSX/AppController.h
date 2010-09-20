@@ -34,6 +34,7 @@ extern NSString *FQPrefScreenModeKey;
     IBOutlet NSTabView *updateTabView;
     IBOutlet NSProgressIndicator *updateProgressIndicator;
     IBOutlet NSButton *updateButton;
+    IBOutlet NSTextField *versionLabel;
     
     NSMutableArray *screenModes;
     QuakeArguments *arguments;

@@ -22,8 +22,11 @@
 
 @implementation SUUpdaterDelegate
 
-- (id)initWithTabView:(NSTabView *)tabView indicator:(NSProgressIndicator *)indicator button:(NSButton *)button {
-	if (tabView == nil || indicator == nil || button == nil) {
+- (id)initWithTabView:(NSTabView *)tabView 
+            indicator:(NSProgressIndicator *)indicator 
+               button:(NSButton *)button 
+                label:(NSTextField *)label{
+	if (tabView == nil || indicator == nil || button == nil || label == nil) {
 		[self release];
 		return nil;
 	}
@@ -32,6 +35,7 @@
 		updateTabView = [tabView retain];
 		updateProgressIndicator = [indicator retain];
 		updateButton = [button retain];
+        versionLabel = [label retain];
 	}
 	
 	return self;
@@ -52,6 +56,11 @@
 }
 
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater {
+    NSBundle* bundle = [NSBundle mainBundle];
+    NSString* version = [NSString stringWithFormat:@"Version %@", [bundle objectForInfoDictionaryKey:@"CFBundleVersion"], nil];
+    [versionLabel setStringValue:version];
+    [versionLabel sizeToFit];
+    
 	[updateProgressIndicator stopAnimation:updater];
 	[updateTabView selectTabViewItemAtIndex:2];
 }
@@ -61,6 +70,7 @@
 	[updateTabView release];
 	[updateProgressIndicator release];
 	[updateButton release];
+    [versionLabel release];
 	[super dealloc];
 }
 

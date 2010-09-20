@@ -24,9 +24,10 @@
 	NSTabView *updateTabView;
 	NSProgressIndicator *updateProgressIndicator;
 	NSButton *updateButton;
+    NSTextField *versionLabel;
 }
 
-- (id)initWithTabView:(NSTabView *)tabView indicator:(NSProgressIndicator *)indicator button:(NSButton *)button;
+- (id)initWithTabView:(NSTabView *)tabView indicator:(NSProgressIndicator *)indicator button:(NSButton *)button label:(NSTextField *)label;
 
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update;
 - (void)updaterDidNotFindUpdate:(SUUpdater *)updater;
