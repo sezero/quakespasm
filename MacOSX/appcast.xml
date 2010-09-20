@@ -6,16 +6,15 @@
         <description>Most recent changes with links to updates.</description>
         <language>en</language>
         <item>
-			<title>Version 0.85.3</title>
-			<sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-0.85.3</sparkle:releaseNotesLink>
+			<title>Version 0.85.4</title>
+			<sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-0.85.4</sparkle:releaseNotesLink>
 			<pubDate>Sun, 19 Sep 2010 14:00:00 +0200</pubDate>
 			<enclosure
-				url="http://quakespasm.sourceforge.net/sparkle/QuakeSpasm.zip"
-				sparkle:version="0.85.3"
+				url="http://quakespasm.sourceforge.net/sparkle/QuakeSpasm 0.85.4.zip"
+				sparkle:version="0.85.4"
 				type="application/octet-stream"
-				length="2794647"
-				sparkle:dsaSignature="MEQCIHGzFg48WcpygkEUufAJjdyK/SyltYGb3ySkIl+WdpucAiBMrDN+ciZoLo15
-NfMndWWhKtCHO3GZIz5AouxP+oUy2A=="
+				length="2286412"
+				sparkle:dsaSignature="MC4CFQDtSI8T8itHrvQoLTVG8XE4/qPa3wIVAN9qYIEN8LMpFdoIvLVZl6SxSH3m"
 			/>
 		</item>
    </channel>
