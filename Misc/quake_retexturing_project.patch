@@ -1,0 +1,119 @@
+diff -rupN ../quakespasm-svn-clean/Quake/gl_model.c ./Quake/gl_model.c
+--- ../quakespasm-svn-clean/Quake/gl_model.c	2010-09-21 17:58:12.000000000 +0200
++++ ./Quake/gl_model.c	2010-09-21 18:02:42.000000000 +0200
+@@ -382,6 +382,8 @@ void Mod_LoadTextures (lump_t *l)
+ 	extern byte *hunk_base;
+ //johnfitz
+ 
++	extern cvar_t r_externaltexture_fix; //mk
++
+ 	//johnfitz -- don't return early if no textures; still need to create dummy texture
+ 	if (!l->filelen)
+ 	{
+@@ -433,7 +435,18 @@ void Mod_LoadTextures (lump_t *l)
+ 		if (!isDedicated) //no texture uploading for dedicated server
+ 		{
+ 			if (!Q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
++			//mk -- begin
++			{
++                                if (r_externaltexture_fix.value) {
++					if (strstr(tx->name,"sky4")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==13039)
++							sprintf(tx->name,"sky1");
++						Con_Printf("  using %s\n", tx->name);
++					}
++				}
++			//mk -- end
+ 				Sky_LoadTexture (tx);
++			} // mk
+ 			else if (tx->name[0] == '*') //warping texture
+ 			{
+ 				//external textures -- first look in "textures/mapname/" then look in "textures/"
+@@ -475,6 +488,53 @@ void Mod_LoadTextures (lump_t *l)
+ 				//external textures -- first look in "textures/mapname/" then look in "textures/"
+ 				mark = Hunk_LowMark ();
+ 				COM_StripExtension (loadmodel->name + 5, mapname);
++				//mk begin
++				if (r_externaltexture_fix.value) {
++					if (strstr(tx->name,"plat_top1")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==24428)
++							sprintf(tx->name,"plat_top1_cable");
++						else
++							sprintf(tx->name,"plat_top1_bolt");
++						Con_Printf("  using %s\n", tx->name);
++					}
++
++					if (strstr(tx->name,"metal5_2")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==49173)
++							sprintf(tx->name,"metal5_2_x");
++						else
++							sprintf(tx->name,"metal5_2_arc");
++						Con_Printf("  using %s\n", tx->name);
++					}
++
++					if (strstr(tx->name,"metal5_4")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==20977)
++							sprintf(tx->name,"metal5_4_double");
++						else
++							sprintf(tx->name,"metal5_4_arc");
++						Con_Printf("  using %s\n", tx->name);
++					}
++					if (strstr(tx->name,"metal5_8")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==48444)
++							sprintf(tx->name,"metal5_8_rune");
++						else
++							sprintf(tx->name,"metal5_8_back");
++						Con_Printf("  using %s\n", tx->name);
++					}
++					if (strstr(tx->name,"metal5_8")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==48444)
++							sprintf(tx->name,"metal5_8_rune");
++						else
++							sprintf(tx->name,"metal5_8_back");
++						Con_Printf("  using %s\n", tx->name);
++					}
++					if (strstr(tx->name,"window03")) {
++						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==63697) // e4m2 variant
++							sprintf(tx->name,"window03_e4m2");
++						Con_Printf("  using %s\n", tx->name);
++					}
++				}
++				//mk end
++
+ 				sprintf (filename, "textures/%s/%s", mapname, tx->name);
+ 				data = Image_LoadImage (filename, &fwidth, &fheight);
+ 				if (!data)
+diff -rupN ../quakespasm-svn-clean/Quake/gl_rmain.c ./Quake/gl_rmain.c
+--- ../quakespasm-svn-clean/Quake/gl_rmain.c	2010-09-21 17:58:12.000000000 +0200
++++ ./Quake/gl_rmain.c	2010-09-21 17:59:44.000000000 +0200
+@@ -103,6 +103,8 @@ cvar_t	r_nolerp_list = {"r_nolerp_list",
+ extern cvar_t	r_vfog;
+ //johnfitz
+ 
++cvar_t  r_externaltexture_fix = {"r_externaltexture_fix","0", true}; //mk
++
+ qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_drawworld_cheatsafe; //johnfitz
+ 
+ /*
+Binärdateien ../quakespasm-svn-clean/Quake/gl_rmain.o and ./Quake/gl_rmain.o sind verschieden.
+diff -rupN ../quakespasm-svn-clean/Quake/gl_rmisc.c ./Quake/gl_rmisc.c
+--- ../quakespasm-svn-clean/Quake/gl_rmisc.c	2010-09-21 17:58:12.000000000 +0200
++++ ./Quake/gl_rmisc.c	2010-09-21 17:59:54.000000000 +0200
+@@ -45,6 +45,8 @@ extern cvar_t r_lerpmove;
+ extern cvar_t r_nolerp_list;
+ //johnfitz
+ 
++extern cvar_t r_externaltexture_fix; //mk
++
+ extern float load_subdivide_size; //johnfitz -- remember what subdivide_size value was when this map was loaded
+ 
+ extern cvar_t gl_subdivide_size; //johnfitz -- moved here from gl_model.c
+@@ -240,6 +242,8 @@ void R_Init (void)
+ 	Cvar_RegisterVariable (&r_nolerp_list, R_NoLerpList_f);
+ 	//johnfitz
+ 
++	Cvar_RegisterVariable (&r_externaltexture_fix, NULL);//mk
++
+ 	Cvar_RegisterVariable (&gl_subdivide_size, NULL); //johnfitz -- moved here from gl_model.c
+ 
+ 	R_InitParticles ();
