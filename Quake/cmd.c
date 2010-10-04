@@ -355,8 +355,7 @@ void Cmd_Alias_f (void)
 		}
 		strcat (cmd, "\n");
 
-		a->value = (char *) Z_Malloc (strlen(cmd)+1);
-		strcpy (a->value, cmd);
+		a->value = Z_Strdup (cmd);
 		break;
 	}
 }
