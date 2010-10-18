@@ -22,10 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-int			cache_full_cycle;
-
-byte *S_Alloc (int size);
-
 /*
 ================
 ResampleSfx
@@ -110,12 +106,13 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	if (sc)
 		return sc;
 
-//Con_Printf ("S_LoadSound: %x\n", (int)stackbuf);
-// load it in
-    Q_strcpy(namebuffer, "sound/");
-    Q_strcat(namebuffer, s->name);
+//	Con_Printf ("S_LoadSound: %x\n", (int)stackbuf);
 
-//	Con_Printf ("loading %s\n",namebuffer);
+// load it in
+	Q_strcpy(namebuffer, "sound/");
+	Q_strcat(namebuffer, s->name);
+
+//	Con_Printf ("loading %s\n", namebuffer);
 
 	data = COM_LoadStackFile(namebuffer, stackbuf, sizeof(stackbuf));
 
@@ -224,13 +221,13 @@ void FindChunk(const char *name)
 	FindNextChunk (name);
 }
 
-
+#if 0
 void DumpChunks(void)
 {
 	char	str[5];
 
 	str[4] = 0;
-	data_p=iff_data;
+	data_p = iff_data;
 	do
 	{
 		memcpy (str, data_p, 4);
@@ -240,6 +237,7 @@ void DumpChunks(void)
 		data_p += (iff_chunk_len + 1) & ~1;
 	} while (data_p < iff_end);
 }
+#endif
 
 /*
 ============
@@ -271,7 +269,9 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 
 // get "fmt " chunk
 	iff_data = data_p + 12;
-// DumpChunks ();
+#if 0
+	DumpChunks ();
+#endif
 
 	FindChunk("fmt ");
 	if (!data_p)
