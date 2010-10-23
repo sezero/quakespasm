@@ -59,7 +59,7 @@ cvar_t	host_framerate = {"host_framerate","0"};	// set for slow motion
 cvar_t	host_speeds = {"host_speeds","0"};			// set for running times
 cvar_t	host_maxfps = {"host_maxfps", "72", true}; //johnfitz
 cvar_t	host_timescale = {"host_timescale", "0"}; //johnfitz
-cvar_t	max_edicts = {"max_edicts", "1024", true}; //johnfitz
+cvar_t	max_edicts = {"max_edicts", "2048", true}; //johnfitz
 
 cvar_t	sys_ticrate = {"sys_ticrate","0.05"}; // dedicated server
 cvar_t	serverprofile = {"serverprofile","0"};
