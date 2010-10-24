@@ -376,18 +376,23 @@ void Cmd_Unalias_f (void)
 		Con_Printf("unalias <name> : delete alias\n");
 		break;
 	case 2:
-		for (prev = a = cmd_alias; a; a = a->next)
+		prev = NULL;
+		for (a = cmd_alias; a; a = a->next)
 		{
 			if (!strcmp(Cmd_Argv(1), a->name))
 			{
-				prev->next = a->next;
+				if (prev)
+					prev->next = a->next;
+				else
+					cmd_alias  = a->next;
+
 				Z_Free (a->value);
 				Z_Free (a);
-				prev = a;
 				return;
 			}
 			prev = a;
 		}
+		Con_Printf ("No alias named %s\n", Cmd_Argv(1));
 		break;
 	}
 }
