@@ -23,6 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __QUAKEDEFS_H
 #define __QUAKEDEFS_H
 
+// numeric macro to string conversion
+#define STR_(x) #x
+#define STR(x) STR_(x)
+
 // quakedef.h -- primary header for client
 
 #define	QUAKE_GAME			// as opposed to utilities
@@ -101,6 +105,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MIN_EDICTS		256			// johnfitz -- lowest allowed value for max_edicts cvar
 #define MAX_EDICTS		32000		// johnfitz -- highest allowed value for max_edicts cvar
 									// ents past 8192 can't play sounds in the standard protocol
+#define DEF_EDICTS		2048
+
 #define	MAX_LIGHTSTYLES	64
 #define	MAX_MODELS		2048		// johnfitz -- was 256
 #define	MAX_SOUNDS		2048		// johnfitz -- was 256
