@@ -950,6 +950,7 @@ enum
 	OPT_CONSOLE,	// 1
 	OPT_DEFAULTS,	// 2
 	OPT_SCALE,
+	OPT_SCRSIZE,
 	OPT_GAMMA,
 	OPT_MOUSESPEED,
 	OPT_SBALPHA,
@@ -999,6 +1000,14 @@ void M_AdjustSliders (int dir)
 
 		Cvar_SetValue ("scr_conscale", scr_scale.value);
 		Cvar_SetValue ("scr_menuscale", scr_scale.value);
+		break;
+	case OPT_SCRSIZE:	// screen size
+		scr_viewsize.value += dir * 10;
+		if (scr_viewsize.value < 30)
+			scr_viewsize.value = 30;
+		if (scr_viewsize.value > 120)
+			scr_viewsize.value = 120;
+		Cvar_SetValue ("viewsize", scr_viewsize.value);
 		break;
 	case OPT_GAMMA:	// gamma
 		vid_gamma.value -= dir * 0.05;
@@ -1130,6 +1139,11 @@ void M_Options_Draw (void)
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
 	r = (scr_scale.value-1)/5 ; // r ranges from 0 to 1, scr_scale from 1 to 6
 	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
+
+	// OPT_SCRSIZE:
+	M_Print (16, 32 + 8*OPT_SCRSIZE,	"           Screen size");
+	r = (scr_viewsize.value - 30) / (120 - 30);
+	M_DrawSlider (220, 32 + 8*OPT_SCRSIZE, r);
 
 	// OPT_GAMMA:
 	M_Print (16, 32 + 8*OPT_GAMMA,		"            Brightness");
