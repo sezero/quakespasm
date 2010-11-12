@@ -1208,7 +1208,7 @@ void	VID_Init (void)
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
 		Sys_Error("Could not initialize SDL Video");
 
-	SDL_putenv (vid_center);
+	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
 	VID_InitDIB();
 	basenummodes = nummodes = 1;
