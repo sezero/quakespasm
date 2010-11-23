@@ -538,7 +538,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 				continue;
 
 			//johnfitz -- don't send model>255 entities if protocol is 15
-			if (sv_protocol == PROTOCOL_NETQUAKE && (int)ent->v.modelindex & 0xFF00)
+			if (sv.protocol == PROTOCOL_NETQUAKE && (int)ent->v.modelindex & 0xFF00)
 				continue;
 
 			// ignore if not touching a PV leaf
