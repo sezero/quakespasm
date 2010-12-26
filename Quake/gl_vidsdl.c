@@ -562,37 +562,6 @@ void GL_Info_f (void)
 
 /*
 ===============
-CheckArrayExtensions
-===============
-*/
-#if 0 /* unused */
-void CheckArrayExtensions (void)
-{
-	const char	*tmp;
-
-	tmp = (const char *)glGetString(GL_EXTENSIONS);
-	while (*tmp)
-	{
-		if (strncmp(tmp, "GL_EXT_vertex_array", sizeof("GL_EXT_vertex_array") -1) == 0)
-		{
-			if (((glArrayElementEXT = SDL_GL_GetProcAddress("glArrayElementEXT")) == NULL) ||
-			    ((glColorPointerEXT = SDL_GL_GetProcAddress("glColorPointerEXT")) == NULL) ||
-			    ((glTexCoordPointerEXT = SDL_GL_GetProcAddress("glTexCoordPointerEXT")) == NULL) ||
-			    ((glVertexPointerEXT = SDL_GL_GetProcAddress("glVertexPointerEXT")) == NULL) )
-			{
-				Sys_Error ("GetProcAddress for vertex extension failed");
-			}
-			return;
-		}
-		tmp++;
-	}
-
-	Sys_Error ("Vertex array extension not present");
-}
-#endif /* #if 0 */
-
-/*
-===============
 GL_CheckExtensions -- johnfitz
 ===============
 */
@@ -605,81 +574,82 @@ void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-nomtex"))
 		Con_Warning ("Mutitexture disabled at command line\n");
-	else
-		if (strstr(gl_extensions, "GL_ARB_multitexture"))
+	else if (strstr(gl_extensions, "GL_ARB_multitexture"))
+	{
+		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
+		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glActiveTextureARB");
+		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
 		{
-			GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC)
-						SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
-			GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC)
-						SDL_GL_GetProcAddress("glActiveTextureARB");
-			if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
-			{
-				Con_Printf("FOUND: ARB_multitexture\n");
-				TEXTURE0 = GL_TEXTURE0_ARB;
-				TEXTURE1 = GL_TEXTURE1_ARB;
-				gl_mtexable = true;
-			}
-			else
-				Con_Warning ("multitexture not supported (SDL_GL_GetProcAddress failed)\n");
+			Con_Printf("FOUND: ARB_multitexture\n");
+			TEXTURE0 = GL_TEXTURE0_ARB;
+			TEXTURE1 = GL_TEXTURE1_ARB;
+			gl_mtexable = true;
 		}
 		else
-			if (strstr(gl_extensions, "GL_SGIS_multitexture"))
-			{
-				GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC)
-							SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
-				GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC)
-							SDL_GL_GetProcAddress("glSelectTextureSGIS");
-				if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
-				{
-					Con_Printf("FOUND: SGIS_multitexture\n");
-					TEXTURE0 = TEXTURE0_SGIS;
-					TEXTURE1 = TEXTURE1_SGIS;
-					gl_mtexable = true;
-				}
-				else
-					Con_Warning ("multitexture not supported (SDL_GL_GetProcAddress failed)\n");
+		{
+			Con_Warning ("Couldn't link to multitexture functions\n");
+		}
+	}
+	else if (strstr(gl_extensions, "GL_SGIS_multitexture"))
+	{
+		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
+		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glSelectTextureSGIS");
+		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
+		{
+			Con_Printf("FOUND: SGIS_multitexture\n");
+			TEXTURE0 = TEXTURE0_SGIS;
+			TEXTURE1 = TEXTURE1_SGIS;
+			gl_mtexable = true;
+		}
+		else
+		{
+			Con_Warning ("Couldn't link to multitexture functions\n");
+		}
+	}
+	else
+	{
+		Con_Warning ("multitexture not supported (extension not found)\n");
+	}
 
-			}
-			else
-				Con_Warning ("multitexture not supported (extension not found)\n");
 	//
 	// texture_env_combine
 	//
 	if (COM_CheckParm("-nocombine"))
 		Con_Warning ("texture_env_combine disabled at command line\n");
+	else if (strstr(gl_extensions, "GL_ARB_texture_env_combine"))
+	{
+		Con_Printf("FOUND: ARB_texture_env_combine\n");
+		gl_texture_env_combine = true;
+	}
+	else if (strstr(gl_extensions, "GL_EXT_texture_env_combine"))
+	{
+		Con_Printf("FOUND: EXT_texture_env_combine\n");
+		gl_texture_env_combine = true;
+	}
 	else
-		if (strstr(gl_extensions, "GL_ARB_texture_env_combine"))
-		{
-			Con_Printf("FOUND: ARB_texture_env_combine\n");
-			gl_texture_env_combine = true;
-		}
-		else
-			if (strstr(gl_extensions, "GL_EXT_texture_env_combine"))
-			{
-				Con_Printf("FOUND: EXT_texture_env_combine\n");
-				gl_texture_env_combine = true;
-			}
-			else
-				Con_Warning ("texture_env_combine not supported\n");
+	{
+		Con_Warning ("texture_env_combine not supported\n");
+	}
+
 	//
 	// texture_env_add
 	//
 	if (COM_CheckParm("-noadd"))
 		Con_Warning ("texture_env_add disabled at command line\n");
+	else if (strstr(gl_extensions, "GL_ARB_texture_env_add"))
+	{
+		Con_Printf("FOUND: ARB_texture_env_add\n");
+		gl_texture_env_add = true;
+	}
+	else if (strstr(gl_extensions, "GL_EXT_texture_env_add"))
+	{
+		Con_Printf("FOUND: EXT_texture_env_add\n");
+		gl_texture_env_add = true;
+	}
 	else
-		if (strstr(gl_extensions, "GL_ARB_texture_env_add"))
-		{
-			Con_Printf("FOUND: ARB_texture_env_add\n");
-			gl_texture_env_add = true;
-		}
-		else
-			if (strstr(gl_extensions, "GL_EXT_texture_env_add"))
-			{
-				Con_Printf("FOUND: EXT_texture_env_add\n");
-				gl_texture_env_add = true;
-			}
-			else
-				Con_Warning ("texture_env_add not supported\n");
+	{
+		Con_Warning ("texture_env_add not supported\n");
+	}
 
 	//
 	// swap control
@@ -709,7 +679,9 @@ void GL_CheckExtensions (void)
 		}
 	}
 	else
+	{
 		Con_Warning ("vertical sync not supported (extension not found)\n");
+	}
 
 	//
 	// anisotropic filtering
@@ -735,13 +707,17 @@ void GL_CheckExtensions (void)
 			gl_anisotropy_able = true;
 		}
 		else
+		{
 			Con_Warning ("anisotropic filtering locked by driver. Current driver setting is %f\n", test1);
+		}
 
 		//get max value either way, so the menu and stuff know it
 		glGetFloatv (GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gl_max_anisotropy);
 	}
 	else
+	{
 		Con_Warning ("texture_filter_anisotropic not supported\n");
+	}
 }
 
 /*
