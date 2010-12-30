@@ -36,6 +36,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 qboolean		isDedicated;
+qboolean	Win95, Win95old, WinNT, WinVista;
 
 static HANDLE		hinput, houtput;
 
@@ -145,6 +146,37 @@ int Sys_FileTime (const char *path)
 
 void Sys_Init (void)
 {
+	OSVERSIONINFO	vinfo;
+
+	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
+
+	if (!GetVersionEx (&vinfo))
+		Sys_Error ("Couldn't get OS info");
+
+	if ((vinfo.dwMajorVersion < 4) ||
+		(vinfo.dwPlatformId == VER_PLATFORM_WIN32s))
+	{
+		Sys_Error ("QuakeSpasm requires at least Win95 or NT 4.0");
+	}
+
+	if (vinfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
+	{
+		WinNT = true;
+		if (vinfo.dwMajorVersion >= 6)
+			WinVista = true;
+	}
+	else
+	{
+		WinNT = false; /* Win9x or WinME */
+		if ((vinfo.dwMajorVersion == 4) && (vinfo.dwMinorVersion == 0))
+		{
+			Win95 = true;
+			/* Win95-gold or Win95A can't switch bpp automatically */
+			if (vinfo.szCSDVersion[1] != 'C' && vinfo.szCSDVersion[1] != 'B')
+				Win95old = true;
+		}
+	}
+
 	if (isDedicated)
 	{
 		if (!AllocConsole ())

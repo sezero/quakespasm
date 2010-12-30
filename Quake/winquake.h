@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define WM_MOUSEWHEEL	0x020A
 #endif
 
-extern qboolean		WinNT;
+extern qboolean		Win95, Win95old, WinNT, WinVista;
 
 extern	HINSTANCE	global_hInstance;
 extern	int			global_nCmdShow;
