@@ -81,6 +81,8 @@ typedef struct
 	int		master_vol;		// 0-255 master volume
 } channel_t;
 
+#define WAV_FORMAT_PCM	1
+
 typedef struct
 {
 	int		rate;

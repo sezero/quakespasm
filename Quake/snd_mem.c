@@ -129,10 +129,22 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 		return NULL;
 	}
 
+	if (info.width != 1 && info.width != 2)
+	{
+		Con_Printf("%s is not 8 or 16 bit\n", s->name);
+		return NULL;
+	}
+
 	stepscale = (float)info.rate / shm->speed;
 	len = info.samples / stepscale;
 
 	len = len * info.width * info.channels;
+
+	if (info.samples == 0 || len == 0)
+	{
+		Con_Printf("%s has zero samples\n", s->name);
+		return NULL;
+	}
 
 	sc = (sfxcache_t *) Cache_Alloc ( &s->cache, len + sizeof(sfxcache_t), s->name);
 	if (!sc)
@@ -203,11 +215,9 @@ void FindNextChunk(const char *name)
 		if (iff_chunk_len < 0 || iff_chunk_len > iff_end - data_p)
 		{
 			data_p = NULL;
-			Con_DPrintf("Bad \"%s\" chunk length (%d) in wav file\n", name, iff_chunk_len);
+			Con_DPrintf("bad \"%s\" chunk length (%d)\n", name, iff_chunk_len);
 			return;
 		}
-//		if (iff_chunk_len > 1024*1024)
-//			Sys_Error ("FindNextChunk: %i length is past the 1 meg sanity limit", iff_chunk_len);
 		last_chunk = data_p + ((iff_chunk_len + 1) & ~1);
 		data_p -= 8;
 		if (!Q_strncmp((char *)data_p, name, 4))
@@ -263,7 +273,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	FindChunk("RIFF");
 	if (!(data_p && !Q_strncmp((char *)data_p + 8, "WAVE", 4)))
 	{
-		Con_Printf("Missing RIFF/WAVE chunks\n");
+		Con_Printf("%s missing RIFF/WAVE chunks\n", name);
 		return info;
 	}
 
@@ -276,14 +286,14 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	FindChunk("fmt ");
 	if (!data_p)
 	{
-		Con_Printf("Missing fmt chunk\n");
+		Con_Printf("%s is missing fmt chunk\n", name);
 		return info;
 	}
 	data_p += 8;
 	format = GetLittleShort();
-	if (format != 1)
+	if (format != WAV_FORMAT_PCM)
 	{
-		Con_Printf("Microsoft PCM format only\n");
+		Con_Printf("%s is not Microsoft PCM format\n", name);
 		return info;
 	}
 
@@ -319,7 +329,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	FindChunk("data");
 	if (!data_p)
 	{
-		Con_Printf("Missing data chunk\n");
+		Con_Printf("%s is missing data chunk\n", name);
 		return info;
 	}
 
@@ -329,7 +339,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	if (info.samples)
 	{
 		if (samples < info.samples)
-			Sys_Error ("Sound %s has a bad loop length", name);
+			Sys_Error ("%s has a bad loop length", name);
 	}
 	else
 		info.samples = samples;
