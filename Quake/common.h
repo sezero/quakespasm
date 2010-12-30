@@ -195,13 +195,36 @@ byte *COM_LoadTempFile (const char *path);
 byte *COM_LoadHunkFile (const char *path);
 void COM_LoadCacheFile (const char *path, struct cache_user_s *cu);
 
+/* The following FS_*() stdio replacements are necessary if one is
+ * to perform non-sequential reads on files reopened on pak files
+ * because we need the bookkeeping about file start/end positions.
+ * Allocating and filling in the fshandle_t structure is the users'
+ * responsibility when the file is initially opened. */
+
+typedef struct _fshandle_t
+{
+	FILE *file;
+	qboolean pak;	/* is the file read from a pak */
+	long start;	/* file or data start position */
+	long length;	/* file or data size */
+	long pos;	/* current position relative to start */
+} fshandle_t;
+
+size_t FS_fread(void *ptr, size_t size, size_t nmemb, fshandle_t *fh);
+int FS_fseek(fshandle_t *fh, long offset, int whence);
+long FS_ftell(fshandle_t *fh);
+void FS_rewind(fshandle_t *fh);
+int FS_feof(fshandle_t *fh);
+int FS_ferror(fshandle_t *fh);
+int FS_fclose(fshandle_t *fh);
+
 
 extern	struct cvar_s	registered;
 
 extern qboolean		standard_quake, rogue, hipnotic;
 
 extern qboolean		fitzmode;
-// if true, runs in fitzquake mode and disabling custom quakespasm hacks.
+/* if true, runs in fitzquake mode disabling custom quakespasm hacks. */
 
 #endif	/* _Q_COMMON_H */
 

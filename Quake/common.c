@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // common.c -- misc functions used in client and server
 
 #include "quakedef.h"
+#include <errno.h>
 
 static char     *largv[MAX_NUM_ARGVS + 1];
 static char     argvdummy[] = " ";
@@ -1928,5 +1929,144 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 
 	if (COM_CheckParm ("-proghack"))
 		proghack = true;
+}
+
+
+/* The following FS_*() stdio replacements are necessary if one is
+ * to perform non-sequential reads on files reopened on pak files
+ * because we need the bookkeeping about file start/end positions.
+ * Allocating and filling in the fshandle_t structure is the users'
+ * responsibility when the file is initially opened. */
+
+size_t FS_fread(void *ptr, size_t size, size_t nmemb, fshandle_t *fh)
+{
+	long byteSize;
+	long bytesRead;
+	size_t nMembRead;
+
+	if (!ptr)
+	{
+		errno = EFAULT;
+		return 0;
+	}
+
+	if (!(size && nmemb))	/* not an error, just zero bytes wanted */
+	{
+		errno = 0;
+		return 0;
+	}
+
+	if (!fh)
+	{
+		errno = EBADF;
+		return 0;
+	}
+
+	byteSize = nmemb * size;
+	if (byteSize > fh->length - fh->pos) /* just read to end */
+		byteSize = fh->length - fh->pos;
+	bytesRead = fread(ptr, 1, byteSize, fh->file);
+	fh->pos += bytesRead;
+
+	/* return the number of elements read not the number of bytes */
+	nMembRead = bytesRead / size;
+
+	/* even if the last member is only read partially
+	 * it is counted as a whole in the return value */
+	if (bytesRead % size)
+		nMembRead++;
+
+	return nMembRead;
+}
+
+int FS_fseek(fshandle_t *fh, long offset, int whence)
+{
+/* I don't care about 64 bit off_t or fseeko() here.
+ * the quake/hexen2 file system is 32 bits, anyway. */
+	int ret;
+
+	if (!fh)
+	{
+		errno = EBADF;
+		return -1;
+	}
+
+	/* the relative file position shouldn't be smaller
+	 * than zero or bigger than the filesize. */
+	switch (whence)
+	{
+	case SEEK_SET:
+		break;
+	case SEEK_CUR:
+		offset += fh->pos;
+		break;
+	case SEEK_END:
+		offset = fh->length + offset;
+		break;
+	default:
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (offset < 0)
+	{
+		errno = EINVAL;
+		return -1;
+	}
+
+	if (offset > fh->length)	/* just seek to end */
+		offset = fh->length;
+
+	ret = fseek(fh->file, fh->start + offset, SEEK_SET);
+	if (ret < 0)
+		return ret;
+
+	fh->pos = offset;
+	return 0;
+}
+
+int FS_fclose(fshandle_t *fh)
+{
+	if (!fh)
+	{
+		errno = EBADF;
+		return -1;
+	}
+
+	return fclose(fh->file);
+}
+
+long FS_ftell(fshandle_t *fh)
+{
+	if (!fh)
+	{
+		errno = EBADF;
+		return -1;
+	}
+
+	/* send the relative file position */
+	return fh->pos;
+}
+
+void FS_rewind(fshandle_t *fh)
+{
+	if (!fh)
+		return;
+
+	clearerr(fh->file);
+	fseek(fh->file, fh->start, SEEK_SET);
+	fh->pos = 0;
+}
+
+int FS_feof(fshandle_t *fh)
+{
+	if (fh->pos >= fh->length)
+		return -1;
+	return 0;
+}
+
+int FS_ferror(fshandle_t *fh)
+{
+	return ferror(fh->file);
 }
 
