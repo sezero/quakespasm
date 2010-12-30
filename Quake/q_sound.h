@@ -121,6 +121,12 @@ channel_t *SND_PickChannel(int entnum, int entchannel);
 // spatializes a channel
 void SND_Spatialize(channel_t *ch);
 
+// music stream support
+void S_RawSamples(int samples, int rate, int width, int channels, byte * data, float volume);
+
+// returns file's extension including the dot, or NULL
+const char *S_FileExtension (const char *name);
+
 // initializes cycling through a DMA buffer and returns information on it
 qboolean SNDDMA_Init(void);
 
@@ -166,12 +172,16 @@ extern	int			total_channels;
 extern qboolean 		fakedma;
 extern int 			fakedma_updates;
 extern int		paintedtime;
+extern int		s_rawend;
 extern vec3_t listener_origin;
 extern vec3_t listener_forward;
 extern vec3_t listener_right;
 extern vec3_t listener_up;
 extern volatile dma_t *shm;
 extern volatile dma_t sn;
+
+#define	MAX_RAW_SAMPLES	8192
+extern	portable_samplepair_t	s_rawsamples[MAX_RAW_SAMPLES];
 
 extern	cvar_t loadas8bit;
 extern	cvar_t bgmvolume;
