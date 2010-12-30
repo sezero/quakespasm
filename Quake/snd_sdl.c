@@ -71,7 +71,7 @@ static void paint_audio (void *unused, Uint8 *stream, int len)
 		shm->samplepos = 0;
 }
 
-qboolean SNDDMA_Init (void)
+qboolean SNDDMA_Init (dma_t *dma)
 {
 	SDL_AudioSpec desired, obtained;
 	int		tmp, val;
@@ -120,8 +120,8 @@ qboolean SNDDMA_Init (void)
 		return false;
 	}
 
-	memset ((void *) &sn, 0, sizeof(dma_t));
-	shm = &sn;
+	memset ((void *) dma, 0, sizeof(dma_t));
+	shm = dma;
 
 	/* Fill the audio DMA information block */
 	shm->samplebits = (obtained.format & 0xFF); /* first byte of format is bits */

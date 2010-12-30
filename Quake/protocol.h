@@ -98,8 +98,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // a sound with no channel is a local only sound
 #define	SND_VOLUME		(1<<0)	// a byte
-#define	SND_ATTENUATION	(1<<1)	// a byte
+#define	SND_ATTENUATION		(1<<1)	// a byte
 #define	SND_LOOPING		(1<<2)	// a long
+
+#define DEFAULT_SOUND_PACKET_VOLUME		255
+#define DEFAULT_SOUND_PACKET_ATTENUATION	1.0
+
 //johnfitz -- PROTOCOL_FITZQUAKE -- new bits
 #define	SND_LARGEENTITY	(1<<3)	// a short + byte (instead of just a short)
 #define	SND_LARGESOUND	(1<<4)	// a short soundindex (instead of a byte)

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ResampleSfx
 ================
 */
-void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
+static void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
 {
 	int		outcount;
 	int		srcsample;
@@ -59,16 +59,15 @@ void ResampleSfx (sfx_t *sfx, int inrate, int inwidth, byte *data)
 	if (stepscale == 1 && inwidth == 1 && sc->width == 1)
 	{
 // fast special case
-		for (i=0 ; i<outcount ; i++)
-			((signed char *)sc->data)[i]
-			= (int)( (unsigned char)(data[i]) - 128);
+		for (i = 0; i < outcount; i++)
+			((signed char *)sc->data)[i] = (int)( (unsigned char)(data[i]) - 128);
 	}
 	else
 	{
 // general case
 		samplefrac = 0;
 		fracstep = stepscale*256;
-		for (i=0 ; i<outcount ; i++)
+		for (i = 0; i < outcount; i++)
 		{
 			srcsample = samplefrac >> 8;
 			samplefrac += fracstep;
@@ -112,7 +111,7 @@ sfxcache_t *S_LoadSound (sfx_t *s)
 	Q_strcpy(namebuffer, "sound/");
 	Q_strcat(namebuffer, s->name);
 
-//	Con_Printf ("loading %s\n", namebuffer);
+//	Con_Printf ("loading %s\n",namebuffer);
 
 	data = COM_LoadStackFile(namebuffer, stackbuf, sizeof(stackbuf));
 
@@ -171,15 +170,13 @@ WAV loading
 ===============================================================================
 */
 
+static byte	*data_p;
+static byte	*iff_end;
+static byte	*last_chunk;
+static byte	*iff_data;
+static int	iff_chunk_len;
 
-byte	*data_p;
-byte 	*iff_end;
-byte 	*last_chunk;
-byte 	*iff_data;
-int 	iff_chunk_len;
-
-
-short GetLittleShort(void)
+static short GetLittleShort (void)
 {
 	short val = 0;
 	val = *data_p;
@@ -188,7 +185,7 @@ short GetLittleShort(void)
 	return val;
 }
 
-int GetLittleLong(void)
+static int GetLittleLong (void)
 {
 	int val = 0;
 	val = *data_p;
@@ -199,7 +196,7 @@ int GetLittleLong(void)
 	return val;
 }
 
-void FindNextChunk(const char *name)
+static void FindNextChunk (const char *name)
 {
 	while (1)
 	{
@@ -225,14 +222,14 @@ void FindNextChunk(const char *name)
 	}
 }
 
-void FindChunk(const char *name)
+static void FindChunk (const char *name)
 {
 	last_chunk = iff_data;
 	FindNextChunk (name);
 }
 
 #if 0
-void DumpChunks(void)
+static void DumpChunks (void)
 {
 	char	str[5];
 
@@ -243,7 +240,7 @@ void DumpChunks(void)
 		memcpy (str, data_p, 4);
 		data_p += 4;
 		iff_chunk_len = GetLittleLong();
-		Con_Printf ("%p : %s (%d)\n", (data_p - 4), str, iff_chunk_len);
+		Con_Printf ("0x%x : %s (%d)\n", (int)(data_p - 4), str, iff_chunk_len);
 		data_p += (iff_chunk_len + 1) & ~1;
 	} while (data_p < iff_end);
 }
@@ -257,9 +254,9 @@ GetWavinfo
 wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 {
 	wavinfo_t	info;
-	int     i;
-	int     format;
-	int		samples;
+	int	i;
+	int	format;
+	int	samples;
 
 	memset (&info, 0, sizeof(info));
 
@@ -299,7 +296,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 
 	info.channels = GetLittleShort();
 	info.rate = GetLittleLong();
-	data_p += 4+2;
+	data_p += 4 + 2;
 	info.width = GetLittleShort() / 8;
 
 // get cue chunk
@@ -308,6 +305,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	{
 		data_p += 32;
 		info.loopstart = GetLittleLong();
+	//	Con_Printf("loopstart=%d\n", sfx->loopstart);
 
 	// if the next chunk is a LIST chunk, look for a cue length marker
 		FindNextChunk ("LIST");
@@ -316,9 +314,9 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 			if (!strncmp((char *)data_p + 28, "mark", 4))
 			{	// this is not a proper parse, but it works with cooledit...
 				data_p += 24;
-				i = GetLittleLong ();	// samples in loop
+				i = GetLittleLong();	// samples in loop
 				info.samples = info.loopstart + i;
-//				Con_Printf("looped length: %i\n", i);
+		//		Con_Printf("looped length: %i\n", i);
 			}
 		}
 	}
@@ -334,7 +332,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	}
 
 	data_p += 4;
-	samples = GetLittleLong () / info.width;
+	samples = GetLittleLong() / info.width;
 
 	if (info.samples)
 	{
