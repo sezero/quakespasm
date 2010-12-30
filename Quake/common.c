@@ -1365,6 +1365,7 @@ typedef struct
 
 char    com_gamedir[MAX_OSPATH];
 char    com_basedir[MAX_OSPATH];
+int     file_from_pak;		// ZOID: global indicating that file came from a pak
 
 typedef struct searchpath_s
 {
@@ -1499,6 +1500,8 @@ int COM_FindFile (const char *filename, int *handle, FILE **file)
 	if (!file && !handle)
 		Sys_Error ("COM_FindFile: neither handle or file set");
 
+	file_from_pak = 0;
+
 //
 // search through the path, one element at a time
 //
@@ -1531,6 +1534,7 @@ int COM_FindFile (const char *filename, int *handle, FILE **file)
 						if (*file)
 							fseek (*file, pak->files[i].filepos, SEEK_SET);
 					}
+					file_from_pak = 1;
 					com_filesize = pak->files[i].filelen;
 					return com_filesize;
 				}
