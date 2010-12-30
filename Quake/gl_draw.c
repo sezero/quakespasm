@@ -727,51 +727,6 @@ void Draw_FadeScreen (void)
 
 /*
 ================
-Draw_BeginDisc
-
-Draws the little blue disc in the corner of the screen.
-Call before beginning any disc IO.
-================
-*/
-void Draw_BeginDisc (void)
-{
-	int viewport[4]; //johnfitz
-	canvastype oldcanvas; //johnfitz
-
-	if (!draw_disc)
-		return;
-
-	//johnfitz -- intel video workarounds from Baker
-	if (isIntelVideo)
-		return;
-	//johnfitz
-
-	//johnfitz -- canvas and matrix stuff
-	glGetIntegerv (GL_VIEWPORT, viewport);
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix ();
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix ();
-	oldcanvas = currentcanvas;
-	GL_SetCanvas (CANVAS_TOPRIGHT);
-	currentcanvas = oldcanvas; // a bit of a hack, since GL_SetCanvas doesn't know we are going to pop the stack
-	//johnfitz
-
-	glDrawBuffer  (GL_FRONT);
-	Draw_Pic (320 - 24, 0, draw_disc);
-	glDrawBuffer  (GL_BACK);
-
-	//johnfitz -- restore everything so that 3d rendering isn't fucked up
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix ();
-	glMatrixMode(GL_MODELVIEW);
-	glPopMatrix ();
-	glViewport (viewport[0], viewport[1], viewport[2], viewport[3]);
-	//johnfitz
-}
-
-/*
-================
 GL_SetCanvas -- johnfitz -- support various canvas types
 ================
 */

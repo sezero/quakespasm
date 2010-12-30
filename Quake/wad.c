@@ -76,7 +76,6 @@ void W_LoadWadFile (void) //johnfitz -- filename is now hard-coded for honesty
 	//TODO: use cache_alloc
 	int		h, len;
 
-	Draw_BeginDisc ();
 	free (wad_base);
 	len = COM_OpenFile (filename, &h);
 	if (h == -1)
