@@ -251,7 +251,7 @@
 		<Unit filename="..\..\Quake\snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\..\Quake\sound.h" />
+		<Unit filename="..\..\Quake\q_sound.h" />
 		<Unit filename="..\..\Quake\spritegn.h" />
 		<Unit filename="..\..\Quake\sv_main.c">
 			<Option compilerVar="CC" />

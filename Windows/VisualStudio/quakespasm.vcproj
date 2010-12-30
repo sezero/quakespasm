@@ -772,7 +772,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Quake\sound.h"
+				RelativePath="..\..\Quake\q_sound.h"
 				>
 			</File>
 			<File

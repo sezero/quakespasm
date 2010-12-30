@@ -175,7 +175,7 @@
 		483A77FB0D2EE9A900CB2E4C /* protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = protocol.h; path = ../Quake/protocol.h; sourceTree = SOURCE_ROOT; };
 		483A77FC0D2EE9A900CB2E4C /* server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = server.h; path = ../Quake/server.h; sourceTree = SOURCE_ROOT; };
 		483A77FD0D2EE9BD00CB2E4C /* cdaudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cdaudio.h; path = ../Quake/cdaudio.h; sourceTree = SOURCE_ROOT; };
-		483A77FE0D2EE9BD00CB2E4C /* sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sound.h; path = ../Quake/sound.h; sourceTree = SOURCE_ROOT; };
+		483A77FE0D2EE9BD00CB2E4C /* q_sound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = q_sound.h; path = ../Quake/q_sound.h; sourceTree = SOURCE_ROOT; };
 		483A77FF0D2EE9F300CB2E4C /* anorm_dots.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = anorm_dots.h; path = ../Quake/anorm_dots.h; sourceTree = SOURCE_ROOT; };
 		483A78000D2EE9F300CB2E4C /* anorms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = anorms.h; path = ../Quake/anorms.h; sourceTree = SOURCE_ROOT; };
 		483A78010D2EE9F300CB2E4C /* bspfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bspfile.h; path = ../Quake/bspfile.h; sourceTree = SOURCE_ROOT; };
@@ -551,7 +551,7 @@
 			isa = PBXGroup;
 			children = (
 				483A77FD0D2EE9BD00CB2E4C /* cdaudio.h */,
-				483A77FE0D2EE9BD00CB2E4C /* sound.h */,
+				483A77FE0D2EE9BD00CB2E4C /* q_sound.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
