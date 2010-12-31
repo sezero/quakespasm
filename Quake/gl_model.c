@@ -630,7 +630,7 @@ Mod_LoadLighting -- johnfitz -- replaced with lit support code via lordhavoc
 */
 void Mod_LoadLighting (lump_t *l)
 {
-	int i;
+	int i, mark;
 	byte *in, *out, *data;
 	byte d;
 	char litfilename[1024];
@@ -639,6 +639,7 @@ void Mod_LoadLighting (lump_t *l)
 	strcpy(litfilename, loadmodel->name);
 	COM_StripExtension(litfilename, litfilename);
 	strcat(litfilename, ".lit");
+	mark = Hunk_LowMark();
 	data = (byte*) COM_LoadHunkFile (litfilename);
 	if (data)
 	{
@@ -652,10 +653,16 @@ void Mod_LoadLighting (lump_t *l)
 				return;
 			}
 			else
+			{
+				Hunk_FreeToLowMark(mark);
 				Con_Printf("Unknown .lit file version (%d)\n", i);
+			}
 		}
 		else
+		{
+			Hunk_FreeToLowMark(mark);
 			Con_Printf("Corrupt .lit file (old version?), ignoring\n");
+		}
 	}
 	// LordHavoc: no .lit found, expand the white lighting data to color
 	if (!l->filelen)
