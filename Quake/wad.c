@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 int				wad_numlumps;
 lumpinfo_t		*wad_lumps;
-byte			*wad_base = NULL; //johnfitz -- set to null
+byte			*wad_base = NULL;
 
 void SwapPic (qpic_t *pic);
 
@@ -68,28 +68,22 @@ void W_LoadWadFile (void) //johnfitz -- filename is now hard-coded for honesty
 {
 	lumpinfo_t		*lump_p;
 	wadinfo_t		*header;
-	unsigned		i;
-	int				infotableofs;
+	int			i;
+	int			infotableofs;
 	const char		*filename = WADFILENAME;
 
 	//johnfitz -- modified to use malloc
 	//TODO: use cache_alloc
-	int		h, len;
-
 	if (wad_base)
 		free (wad_base);
-	len = COM_OpenFile (filename, &h);
-	if (h == -1)
+	wad_base = COM_LoadMallocFile (filename);
+	if (!wad_base)
 		Sys_Error ("W_LoadWadFile: couldn't load %s", filename);
-	wad_base = (unsigned char *)malloc (len);
-	Sys_FileRead (h, wad_base, len);
-	COM_CloseFile (h);
-	//johnfitz
 
 	header = (wadinfo_t *)wad_base;
 
 	if (header->identification[0] != 'W' || header->identification[1] != 'A'
-	|| header->identification[2] != 'D' || header->identification[3] != '2')
+	 || header->identification[2] != 'D' || header->identification[3] != '2')
 		Sys_Error ("Wad file %s doesn't have WAD2 id\n",filename);
 
 	wad_numlumps = LittleLong(header->numlumps);
