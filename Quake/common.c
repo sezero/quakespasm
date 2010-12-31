@@ -1634,9 +1634,18 @@ Filename are reletive to the quake directory.
 Allways appends a 0 byte.
 ============
 */
-cache_user_t *loadcache;
-byte    *loadbuf;
-int             loadsize;
+#define	LOADFILE_ZONE		0
+#define	LOADFILE_HUNK		1
+#define	LOADFILE_TEMPHUNK	2
+#define	LOADFILE_CACHE		3
+#define	LOADFILE_STACK		4
+#define	LOADFILE_BUF		5
+#define	LOADFILE_MALLOC		6
+
+static byte	*loadbuf;
+static cache_user_t *loadcache;
+static int	loadsize;
+
 byte *COM_LoadFile (const char *path, int usehunk)
 {
 	int             h;
@@ -1654,23 +1663,38 @@ byte *COM_LoadFile (const char *path, int usehunk)
 // extract the filename base name for hunk tag
 	COM_FileBase (path, base);
 
-	if (usehunk == 1)
-		buf = (byte *) Hunk_AllocName (len+1, base);
-	else if (usehunk == 2)
-		buf = (byte *) Hunk_TempAlloc (len+1);
-	else if (usehunk == 0)
-		buf = (byte *) Z_Malloc (len+1);
-	else if (usehunk == 3)
-		buf = (byte *) Cache_Alloc (loadcache, len+1, base);
-	else if (usehunk == 4)
+	switch (usehunk)
 	{
-		if (len+1 > loadsize)
-			buf = (byte *) Hunk_TempAlloc (len+1);
-		else
+	case LOADFILE_HUNK:
+		buf = (byte *) Hunk_AllocName (len+1, base);
+		break;
+	case LOADFILE_TEMPHUNK:
+		buf = (byte *) Hunk_TempAlloc (len+1);
+		break;
+	case LOADFILE_ZONE:
+		buf = (byte *) Z_Malloc (len+1);
+		break;
+	case LOADFILE_CACHE:
+		buf = (byte *) Cache_Alloc (loadcache, len+1, base);
+		break;
+	case LOADFILE_STACK:
+		if (len < loadsize)
 			buf = loadbuf;
-	}
-	else
+		else
+			buf = (byte *) Hunk_TempAlloc (len+1);
+		break;
+	case LOADFILE_BUF:
+		if (len < loadsize && loadbuf != NULL)
+			buf = loadbuf;
+		else
+			buf = (byte *) Hunk_AllocName(len + 1, base);
+		break;
+	case LOADFILE_MALLOC:
+		buf = (byte *) malloc (len+1);
+		break;
+	default:
 		Sys_Error ("COM_LoadFile: bad usehunk");
+	}
 
 	if (!buf)
 		Sys_Error ("COM_LoadFile: not enough space for %s", path);
@@ -1685,18 +1709,23 @@ byte *COM_LoadFile (const char *path, int usehunk)
 
 byte *COM_LoadHunkFile (const char *path)
 {
-	return COM_LoadFile (path, 1);
+	return COM_LoadFile (path, LOADFILE_HUNK);
+}
+
+byte *COM_LoadZoneFile (const char *path)
+{
+	return COM_LoadFile (path, LOADFILE_ZONE);
 }
 
 byte *COM_LoadTempFile (const char *path)
 {
-	return COM_LoadFile (path, 2);
+	return COM_LoadFile (path, LOADFILE_TEMPHUNK);
 }
 
 void COM_LoadCacheFile (const char *path, struct cache_user_s *cu)
 {
 	loadcache = cu;
-	COM_LoadFile (path, 3);
+	COM_LoadFile (path, LOADFILE_CACHE);
 }
 
 // uses temp hunk if larger than bufsize
@@ -1706,10 +1735,34 @@ byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize)
 
 	loadbuf = (byte *)buffer;
 	loadsize = bufsize;
-	buf = COM_LoadFile (path, 4);
+	buf = COM_LoadFile (path, LOADFILE_STACK);
 
 	return buf;
 }
+
+// loads into a previously allocated buffer. if space is insufficient
+// or the buffer is NULL, loads onto the hunk.  bufsize is the actual
+// size (without the +1).
+byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize)
+{
+	byte	*buf;
+
+	loadbuf = (byte *)buffer;
+	loadsize = (*bufsize) + 1;
+	buf = COM_LoadFile (path, LOADFILE_BUF);
+	*bufsize = (buf == NULL) ? 0 : com_filesize;
+	if (loadbuf && buf && buf != loadbuf)
+		Sys_Printf("LoadBufFile: insufficient buffer for %s not used.\n", path);
+
+	return buf;
+}
+
+// returns malloc'd memory
+byte *COM_LoadMallocFile (const char *path)
+{
+	return COM_LoadFile (path, LOADFILE_MALLOC);
+}
+
 
 /*
 =================

@@ -190,10 +190,28 @@ int COM_OpenFile (const char *filename, int *hndl);
 int COM_FOpenFile (const char *filename, FILE **file);
 void COM_CloseFile (int h);
 
+// these procedures open a file using COM_FindFile and loads it into a proper
+// buffer. the buffer is allocated with a total size of com_filesize + 1. the
+// procedures differ by their buffer allocation method.
 byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize);
+	// uses the specified stack stack buffer with the specified size
+	// of bufsize. if bufsize is too short, uses temp hunk. the bufsize
+	// must include the +1
 byte *COM_LoadTempFile (const char *path);
+	// allocates the buffer on the temp hunk.
 byte *COM_LoadHunkFile (const char *path);
+	// allocates the buffer on the hunk.
+byte *COM_LoadZoneFile (const char *path);
+	// allocates the buffer on the zone.
 void COM_LoadCacheFile (const char *path, struct cache_user_s *cu);
+	// uses cache mem for allocating the buffer.
+byte *COM_LoadMallocFile (const char *path);
+	// allocates the buffer on the system mem (malloc).
+byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize);
+	// uses the specified pre-allocated buffer with bufsize + 1 size.
+	// bufsize is the actual expected size (without the + 1).  if the
+	// space is too short or the buffer is NULL, loads onto the hunk.
+	// sets bufsize to com_filesize for success, or to 0 for failure.
 
 /* The following FS_*() stdio replacements are necessary if one is
  * to perform non-sequential reads on files reopened on pak files
