@@ -39,8 +39,6 @@ qboolean		proghack;
 
 int             static_registered = 1;  // only for startup check, then set
 
-qboolean		msg_suppress_1 = 0;
-
 qboolean		fitzmode;
 
 void COM_InitFilesystem (void);
