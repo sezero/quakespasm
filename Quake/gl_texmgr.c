@@ -427,8 +427,6 @@ TexMgr_LoadPalette -- johnfitz -- was VID_SetPalette, moved here, renamed, rewri
 */
 void TexMgr_LoadPalette (void)
 {
-	byte mask[] = {255,255,255,0};
-	byte black[] = {0,0,0,255};
 	byte *pal, *src, *dst;
 	int i, mark;
 	FILE *f;
@@ -452,7 +450,7 @@ void TexMgr_LoadPalette (void)
 		*dst++ = *src++;
 		*dst++ = 255;
 	}
-	d_8to24table[255] &= *(int *)mask;
+	((byte *) &d_8to24table[255]) [3] = 0;
 
 	//fullbright palette, 0-223 are black (for additive blending)
 	src = pal + 224*3;
@@ -465,7 +463,11 @@ void TexMgr_LoadPalette (void)
 		*dst++ = 255;
 	}
 	for (i=0; i<224; i++)
-		d_8to24table_fbright[i] = *(int *)black;
+	{
+		dst = (byte *) &d_8to24table_fbright[i];
+		dst[3] = 255;
+		dst[2] = dst[1] = dst[0] = 0;
+	}
 
 	//nobright palette, 224-255 are black (for additive blending)
 	dst = (byte *)d_8to24table_nobright;
@@ -478,11 +480,15 @@ void TexMgr_LoadPalette (void)
 		*dst++ = 255;
 	}
 	for (i=224; i<256; i++)
-		d_8to24table_nobright[i] = *(int *)black;
+	{
+		dst = (byte *) &d_8to24table_nobright[i];
+		dst[3] = 255;
+		dst[2] = dst[1] = dst[0] = 0;
+	}
 
 	//conchars palette, 0 and 255 are transparent
 	memcpy(d_8to24table_conchars, d_8to24table, 256*4);
-	d_8to24table_conchars[0] &= *(int *)mask;
+	((byte *) &d_8to24table_conchars[0]) [3] = 0;
 
 	Hunk_FreeToLowMark (mark);
 }
@@ -1149,6 +1155,8 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int 
 		case SRC_RGBA:
 			crc = CRC_Block(data, width * height * 4);
 			break;
+		default: /* not reachable but avoids compiler warnings */
+			crc = 0;
 	}
 	if ((flags & TEXPREF_OVERWRITE) && (glt = TexMgr_FindTexture (owner, name)))
 	{

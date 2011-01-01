@@ -784,6 +784,7 @@ void R_RenderView (void)
 	if (!cl.worldmodel)
 		Sys_Error ("R_RenderView: NULL worldmodel");
 
+	time1 = 0; /* avoid compiler warning */
 	if (r_speeds.value)
 	{
 		glFinish ();

@@ -586,13 +586,13 @@ void Draw_TransPicTranslate (int x, int y, qpic_t *pic, int top, int bottom)
 {
 	static int oldtop = -2;
 	static int oldbottom = -2;
-	gltexture_t *glt;
 
 	if (top != oldtop || bottom != oldbottom)
 	{
+		glpic_t *p = (glpic_t *)pic->data;
+		gltexture_t *glt = p->gltexture;
 		oldtop = top;
 		oldbottom = bottom;
-		glt = ((glpic_t *)pic->data)->gltexture;
 		TexMgr_ReloadImage (glt, top, bottom);
 	}
 	Draw_Pic (x, y, pic);

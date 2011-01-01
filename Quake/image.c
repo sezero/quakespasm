@@ -196,24 +196,24 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 				switch (targa_header.pixel_size)
 				{
 				case 24:
-						blue = getc(fin);
-						green = getc(fin);
-						red = getc(fin);
-						*pixbuf++ = red;
-						*pixbuf++ = green;
-						*pixbuf++ = blue;
-						*pixbuf++ = 255;
-						break;
+					blue = getc(fin);
+					green = getc(fin);
+					red = getc(fin);
+					*pixbuf++ = red;
+					*pixbuf++ = green;
+					*pixbuf++ = blue;
+					*pixbuf++ = 255;
+					break;
 				case 32:
-						blue = getc(fin);
-						green = getc(fin);
-						red = getc(fin);
-						alphabyte = getc(fin);
-						*pixbuf++ = red;
-						*pixbuf++ = green;
-						*pixbuf++ = blue;
-						*pixbuf++ = alphabyte;
-						break;
+					blue = getc(fin);
+					green = getc(fin);
+					red = getc(fin);
+					alphabyte = getc(fin);
+					*pixbuf++ = red;
+					*pixbuf++ = green;
+					*pixbuf++ = blue;
+					*pixbuf++ = alphabyte;
+					break;
 				}
 			}
 		}
@@ -236,17 +236,19 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 					switch (targa_header.pixel_size)
 					{
 					case 24:
-							blue = getc(fin);
-							green = getc(fin);
-							red = getc(fin);
-							alphabyte = 255;
-							break;
+						blue = getc(fin);
+						green = getc(fin);
+						red = getc(fin);
+						alphabyte = 255;
+						break;
 					case 32:
-							blue = getc(fin);
-							green = getc(fin);
-							red = getc(fin);
-							alphabyte = getc(fin);
-							break;
+						blue = getc(fin);
+						green = getc(fin);
+						red = getc(fin);
+						alphabyte = getc(fin);
+						break;
+					default: /* avoid compiler warnings */
+						blue = red = green = alphabyte = 0;
 					}
 
 					for(j=0;j<packetSize;j++)
@@ -277,24 +279,26 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 						switch (targa_header.pixel_size)
 						{
 						case 24:
-								blue = getc(fin);
-								green = getc(fin);
-								red = getc(fin);
-								*pixbuf++ = red;
-								*pixbuf++ = green;
-								*pixbuf++ = blue;
-								*pixbuf++ = 255;
-								break;
+							blue = getc(fin);
+							green = getc(fin);
+							red = getc(fin);
+							*pixbuf++ = red;
+							*pixbuf++ = green;
+							*pixbuf++ = blue;
+							*pixbuf++ = 255;
+							break;
 						case 32:
-								blue = getc(fin);
-								green = getc(fin);
-								red = getc(fin);
-								alphabyte = getc(fin);
-								*pixbuf++ = red;
-								*pixbuf++ = green;
-								*pixbuf++ = blue;
-								*pixbuf++ = alphabyte;
-								break;
+							blue = getc(fin);
+							green = getc(fin);
+							red = getc(fin);
+							alphabyte = getc(fin);
+							*pixbuf++ = red;
+							*pixbuf++ = green;
+							*pixbuf++ = blue;
+							*pixbuf++ = alphabyte;
+							break;
+						default: /* avoid compiler warnings */
+							blue = red = green = alphabyte = 0;
 						}
 						column++;
 						if (column==columns) // pixel packet run spans across rows

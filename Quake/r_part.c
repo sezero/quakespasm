@@ -820,7 +820,7 @@ void R_DrawParticles (void)
 	particle_t		*p;
 	float			scale;
 	vec3_t			up, right, p_up, p_right, p_upright; //johnfitz -- p_ vectors
-	byte			color[4]; //johnfitz -- particle transparency
+	GLubyte			color[4], *c; //johnfitz -- particle transparency
 	extern	cvar_t	r_particles; //johnfitz
 	//float			alpha; //johnfitz -- particle transparency
 
@@ -854,7 +854,10 @@ void R_DrawParticles (void)
 			scale *= texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
 
 			//johnfitz -- particle transparency and fade out
-			*(int *)color = d_8to24table[(int)p->color];
+			c = (GLubyte *) &d_8to24table[(int)p->color];
+			color[0] = c[0];
+			color[1] = c[1];
+			color[2] = c[2];
 			//alpha = CLAMP(0, p->die + 0.5 - cl.time, 1);
 			color[3] = 255; //(int)(alpha * 255);
 			glColor4ubv(color);
@@ -896,7 +899,10 @@ void R_DrawParticles (void)
 			scale *= texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
 
 			//johnfitz -- particle transparency and fade out
-			*(int *)color = d_8to24table[(int)p->color];
+			c = (GLubyte *) &d_8to24table[(int)p->color];
+			color[0] = c[0];
+			color[1] = c[1];
+			color[2] = c[2];
 			//alpha = CLAMP(0, p->die + 0.5 - cl.time, 1);
 			color[3] = 255; //(int)(alpha * 255);
 			glColor4ubv(color);
