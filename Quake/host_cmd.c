@@ -59,6 +59,7 @@ void Host_Quit_f (void)
 //==============================================================================
 
 // Declarations shared with common.c:
+// FIXME: **** CLEAN THIS MESS!!! ***
 typedef struct
 {
 	char	name[MAX_QPATH];
@@ -75,6 +76,9 @@ typedef struct pack_s
 
 typedef struct searchpath_s
 {
+	unsigned int path_id;	// identifier assigned to the game directory
+					// Note that <install_dir>/game1 and
+					// <userdir>/game1 have the same id.
 	char	filename[MAX_OSPATH];
 	pack_t	*pack;		// only one of filename / pack will be used
 	struct searchpath_s *next;
@@ -129,6 +133,7 @@ Host_Game_f
 void Host_Game_f (void)
 {
 	int i;
+	unsigned int path_id;
 	searchpath_t *search = com_searchpaths;
 	pack_t *pak;
 	char   pakfile[MAX_OSPATH]; //FIXME: it's confusing to use this string for two different things
@@ -172,7 +177,12 @@ void Host_Game_f (void)
 
 		if (Q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
 		{
+			// assign a path_id to this game directory
+			if (com_searchpaths)
+				path_id = com_searchpaths->path_id << 1;
+			else	path_id = 1U;
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+			search->path_id = path_id;
 			strcpy (search->filename, pakfile);
 			search->next = com_searchpaths;
 			com_searchpaths = search;
@@ -185,6 +195,7 @@ void Host_Game_f (void)
 				if (!pak)
 					break;
 				search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+				search->path_id = path_id;
 				search->pack = pak;
 				search->next = com_searchpaths;
 				com_searchpaths = search;
@@ -876,7 +887,7 @@ void Host_Changelevel_f (void)
 
 	//johnfitz -- check for client having map before anything else
 	sprintf (level, "maps/%s.bsp", Cmd_Argv(1));
-	if (COM_OpenFile (level, &i) == -1)
+	if (COM_OpenFile (level, &i, NULL) == -1)
 		Host_Error ("cannot find map %s", level);
 	//johnfitz
 

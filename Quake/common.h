@@ -186,28 +186,31 @@ extern	char	com_gamedir[MAX_OSPATH];
 extern	int	file_from_pak;	// global indicating that file came from a pak
 
 void COM_WriteFile (const char *filename, const void *data, int len);
-int COM_OpenFile (const char *filename, int *hndl);
-int COM_FOpenFile (const char *filename, FILE **file);
+int COM_OpenFile (const char *filename, int *handle, unsigned int *path_id);
+int COM_FOpenFile (const char *filename, FILE **file, unsigned int *path_id);
 void COM_CloseFile (int h);
 
 // these procedures open a file using COM_FindFile and loads it into a proper
 // buffer. the buffer is allocated with a total size of com_filesize + 1. the
 // procedures differ by their buffer allocation method.
-byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize);
+byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize,
+						unsigned int *path_id);
 	// uses the specified stack stack buffer with the specified size
 	// of bufsize. if bufsize is too short, uses temp hunk. the bufsize
 	// must include the +1
-byte *COM_LoadTempFile (const char *path);
+byte *COM_LoadTempFile (const char *path, unsigned int *path_id);
 	// allocates the buffer on the temp hunk.
-byte *COM_LoadHunkFile (const char *path);
+byte *COM_LoadHunkFile (const char *path, unsigned int *path_id);
 	// allocates the buffer on the hunk.
-byte *COM_LoadZoneFile (const char *path);
+byte *COM_LoadZoneFile (const char *path, unsigned int *path_id);
 	// allocates the buffer on the zone.
-void COM_LoadCacheFile (const char *path, struct cache_user_s *cu);
+void COM_LoadCacheFile (const char *path, struct cache_user_s *cu,
+						unsigned int *path_id);
 	// uses cache mem for allocating the buffer.
-byte *COM_LoadMallocFile (const char *path);
+byte *COM_LoadMallocFile (const char *path, unsigned int *path_id);
 	// allocates the buffer on the system mem (malloc).
-byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize);
+byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize,
+						unsigned int *path_id);
 	// uses the specified pre-allocated buffer with bufsize + 1 size.
 	// bufsize is the actual expected size (without the + 1).  if the
 	// space is too short or the buffer is NULL, loads onto the hunk.

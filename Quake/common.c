@@ -1109,7 +1109,7 @@ void COM_CheckRegistered (void)
 	unsigned short  check[128];
 	int                     i;
 
-	COM_OpenFile("gfx/pop.lmp", &h);
+	COM_OpenFile("gfx/pop.lmp", &h, NULL);
 	static_registered = 0;
 
 	if (h == -1)
@@ -1366,6 +1366,9 @@ int     file_from_pak;		// ZOID: global indicating that file came from a pak
 
 typedef struct searchpath_s
 {
+	unsigned int path_id;	// identifier assigned to the game directory
+					// Note that <install_dir>/game1 and
+					// <userdir>/game1 have the same id.
 	char    filename[MAX_OSPATH];
 	pack_t  *pack;          // only one of filename / pack will be used
 	struct searchpath_s *next;
@@ -1450,7 +1453,8 @@ Finds the file in the search path.
 Sets com_filesize and one of handle or file
 ===========
 */
-static int COM_FindFile (const char *filename, int *handle, FILE **file)
+static int COM_FindFile (const char *filename, int *handle, FILE **file,
+							unsigned int *path_id)
 {
 	searchpath_t    *search;
 	char            netpath[MAX_OSPATH];
@@ -1492,6 +1496,8 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file)
 					}
 					file_from_pak = 1;
 					com_filesize = pak->files[i].filelen;
+					if (path_id)
+						*path_id = search->path_id;
 					return com_filesize;
 				}
 		}
@@ -1512,6 +1518,8 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file)
 
 		//	Sys_Printf ("FindFile: %s\n",netpath);
 			com_filesize = Sys_FileOpenRead (netpath, &i);
+			if (path_id)
+				*path_id = search->path_id;
 			if (handle)
 				*handle = i;
 			else
@@ -1544,9 +1552,9 @@ returns a handle and a length
 it may actually be inside a pak file
 ===========
 */
-int COM_OpenFile (const char *filename, int *handle)
+int COM_OpenFile (const char *filename, int *handle, unsigned int *path_id)
 {
-	return COM_FindFile (filename, handle, NULL);
+	return COM_FindFile (filename, handle, NULL, path_id);
 }
 
 /*
@@ -1557,9 +1565,9 @@ If the requested file is inside a packfile, a new FILE * will be opened
 into the file.
 ===========
 */
-int COM_FOpenFile (const char *filename, FILE **file)
+int COM_FOpenFile (const char *filename, FILE **file, unsigned int *path_id)
 {
-	return COM_FindFile (filename, NULL, file);
+	return COM_FindFile (filename, NULL, file, path_id);
 }
 
 /*
@@ -1601,7 +1609,7 @@ static byte	*loadbuf;
 static cache_user_t *loadcache;
 static int	loadsize;
 
-byte *COM_LoadFile (const char *path, int usehunk)
+byte *COM_LoadFile (const char *path, int usehunk, unsigned int *path_id)
 {
 	int             h;
 	byte    *buf;
@@ -1611,7 +1619,7 @@ byte *COM_LoadFile (const char *path, int usehunk)
 	buf = NULL;     // quiet compiler warning
 
 // look for it in the filesystem or pack files
-	len = COM_OpenFile (path, &h);
+	len = COM_OpenFile (path, &h, path_id);
 	if (h == -1)
 		return NULL;
 
@@ -1662,35 +1670,35 @@ byte *COM_LoadFile (const char *path, int usehunk)
 	return buf;
 }
 
-byte *COM_LoadHunkFile (const char *path)
+byte *COM_LoadHunkFile (const char *path, unsigned int *path_id)
 {
-	return COM_LoadFile (path, LOADFILE_HUNK);
+	return COM_LoadFile (path, LOADFILE_HUNK, path_id);
 }
 
-byte *COM_LoadZoneFile (const char *path)
+byte *COM_LoadZoneFile (const char *path, unsigned int *path_id)
 {
-	return COM_LoadFile (path, LOADFILE_ZONE);
+	return COM_LoadFile (path, LOADFILE_ZONE, path_id);
 }
 
-byte *COM_LoadTempFile (const char *path)
+byte *COM_LoadTempFile (const char *path, unsigned int *path_id)
 {
-	return COM_LoadFile (path, LOADFILE_TEMPHUNK);
+	return COM_LoadFile (path, LOADFILE_TEMPHUNK, path_id);
 }
 
-void COM_LoadCacheFile (const char *path, struct cache_user_s *cu)
+void COM_LoadCacheFile (const char *path, struct cache_user_s *cu, unsigned int *path_id)
 {
 	loadcache = cu;
-	COM_LoadFile (path, LOADFILE_CACHE);
+	COM_LoadFile (path, LOADFILE_CACHE, path_id);
 }
 
 // uses temp hunk if larger than bufsize
-byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize)
+byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize, unsigned int *path_id)
 {
 	byte    *buf;
 
 	loadbuf = (byte *)buffer;
 	loadsize = bufsize;
-	buf = COM_LoadFile (path, LOADFILE_STACK);
+	buf = COM_LoadFile (path, LOADFILE_STACK, path_id);
 
 	return buf;
 }
@@ -1698,13 +1706,13 @@ byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize)
 // loads into a previously allocated buffer. if space is insufficient
 // or the buffer is NULL, loads onto the hunk.  bufsize is the actual
 // size (without the +1).
-byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize)
+byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize, unsigned int *path_id)
 {
 	byte	*buf;
 
 	loadbuf = (byte *)buffer;
 	loadsize = (*bufsize) + 1;
-	buf = COM_LoadFile (path, LOADFILE_BUF);
+	buf = COM_LoadFile (path, LOADFILE_BUF, path_id);
 	*bufsize = (buf == NULL) ? 0 : com_filesize;
 	if (loadbuf && buf && buf != loadbuf)
 		Sys_Printf("LoadBufFile: insufficient buffer for %s not used.\n", path);
@@ -1713,9 +1721,9 @@ byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize)
 }
 
 // returns malloc'd memory
-byte *COM_LoadMallocFile (const char *path)
+byte *COM_LoadMallocFile (const char *path, unsigned int *path_id)
 {
-	return COM_LoadFile (path, LOADFILE_MALLOC);
+	return COM_LoadFile (path, LOADFILE_MALLOC, path_id);
 }
 
 
@@ -1801,14 +1809,21 @@ COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
 void COM_AddGameDirectory (const char *dir)
 {
 	int i;
+	unsigned int path_id;
 	searchpath_t *search;
 	pack_t *pak;
 	char pakfile[MAX_OSPATH];
 
 	strcpy (com_gamedir, dir);
 
+	// assign a path_id to this game directory
+	if (com_searchpaths)
+		path_id = com_searchpaths->path_id << 1;
+	else	path_id = 1U;
+
 	// add the directory to the search path
 	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+	search->path_id = path_id;
 	strcpy (search->filename, dir);
 	search->next = com_searchpaths;
 	com_searchpaths = search;
@@ -1821,6 +1836,7 @@ void COM_AddGameDirectory (const char *dir)
 		if (!pak)
 			break;
 		search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+		search->path_id = path_id;
 		search->pack = pak;
 		search->next = com_searchpaths;
 		com_searchpaths = search;

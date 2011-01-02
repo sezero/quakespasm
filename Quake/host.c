@@ -834,7 +834,7 @@ void Host_Init (quakeparms_t *parms)
 
 	if (cls.state != ca_dedicated)
 	{
-		host_colormap = (byte *)COM_LoadHunkFile ("gfx/colormap.lmp");
+		host_colormap = (byte *)COM_LoadHunkFile ("gfx/colormap.lmp", NULL);
 		if (!host_colormap)
 			Sys_Error ("Couldn't load gfx/colormap.lmp");
 

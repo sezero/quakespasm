@@ -270,7 +270,7 @@ void R_ReadPointFile_f (void)
 
 	sprintf (name,"maps/%s.pts", sv.name);
 
-	COM_FOpenFile (name, &f);
+	COM_FOpenFile (name, &f, NULL);
 	if (!f)
 	{
 		Con_Printf ("couldn't open %s\n", name);

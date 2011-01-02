@@ -431,7 +431,7 @@ void TexMgr_LoadPalette (void)
 	int i, mark;
 	FILE *f;
 
-	COM_FOpenFile ("gfx/palette.lmp", &f);
+	COM_FOpenFile ("gfx/palette.lmp", &f, NULL);
 	if (!f)
 		Sys_Error ("Couldn't load gfx/palette.lmp");
 
@@ -1228,7 +1228,7 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 	if (glt->source_file[0] && glt->source_offset)
 	{
 		//lump inside file
-		data = COM_LoadHunkFile (glt->source_file);
+		data = COM_LoadHunkFile (glt->source_file, NULL);
 		if (!data)
 			goto invalid;
 		data += glt->source_offset;

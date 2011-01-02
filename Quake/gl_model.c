@@ -277,7 +277,7 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 //
 // load the file
 //
-	buf = COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf));
+	buf = COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf), NULL);
 	if (!buf)
 	{
 		if (crash)
@@ -640,7 +640,7 @@ void Mod_LoadLighting (lump_t *l)
 	COM_StripExtension(litfilename, litfilename);
 	strcat(litfilename, ".lit");
 	mark = Hunk_LowMark();
-	data = (byte*) COM_LoadHunkFile (litfilename);
+	data = (byte*) COM_LoadHunkFile (litfilename, NULL);
 	if (data)
 	{
 		if (data[0] == 'Q' && data[1] == 'L' && data[2] == 'I' && data[3] == 'T')

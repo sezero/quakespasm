@@ -38,12 +38,12 @@ byte *Image_LoadImage (char *name, int *width, int *height)
 	FILE	*f;
 
 	sprintf (loadfilename, "%s.tga", name);
-	COM_FOpenFile (loadfilename, &f);
+	COM_FOpenFile (loadfilename, &f, NULL);
 	if (f)
 		return Image_LoadTGA (f, width, height);
 
 	sprintf (loadfilename, "%s.pcx", name);
-	COM_FOpenFile (loadfilename, &f);
+	COM_FOpenFile (loadfilename, &f, NULL);
 	if (f)
 		return Image_LoadPCX (f, width, height);
 

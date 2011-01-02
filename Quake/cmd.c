@@ -259,7 +259,7 @@ void Cmd_Exec_f (void)
 	}
 
 	mark = Hunk_LowMark ();
-	f = (char *)COM_LoadHunkFile (Cmd_Argv(1));
+	f = (char *)COM_LoadHunkFile (Cmd_Argv(1), NULL);
 	if (!f)
 	{
 		Con_Printf ("couldn't exec %s\n",Cmd_Argv(1));

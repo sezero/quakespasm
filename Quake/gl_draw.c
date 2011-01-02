@@ -288,7 +288,7 @@ qpic_t	*Draw_CachePic (const char *path)
 //
 // load the pic from disk
 //
-	dat = (qpic_t *)COM_LoadTempFile (path);
+	dat = (qpic_t *)COM_LoadTempFile (path, NULL);
 	if (!dat)
 		Sys_Error ("Draw_CachePic: failed to load %s", path);
 	SwapPic (dat);
@@ -322,7 +322,7 @@ extern char *get_conback(void);
 static qboolean have_mod_conback;
 void Draw_CheckConback (void)
 {
-	have_mod_conback = (COM_LoadTempFile("gfx/conback.lmp") != NULL);
+	have_mod_conback = (COM_LoadTempFile("gfx/conback.lmp", NULL) != NULL);
 }
 qpic_t *Draw_ConbackPic (void)
 {
