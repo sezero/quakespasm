@@ -634,15 +634,24 @@ void Mod_LoadLighting (lump_t *l)
 	byte *in, *out, *data;
 	byte d;
 	char litfilename[1024];
+	unsigned int path_id;
+
 	loadmodel->lightdata = NULL;
 	// LordHavoc: check for a .lit file
 	strcpy(litfilename, loadmodel->name);
 	COM_StripExtension(litfilename, litfilename);
 	strcat(litfilename, ".lit");
 	mark = Hunk_LowMark();
-	data = (byte*) COM_LoadHunkFile (litfilename, NULL);
+	data = (byte*) COM_LoadHunkFile (litfilename, &path_id);
 	if (data)
 	{
+		// use lit file only from the same gamedir as the map itself
+		if (path_id != loadmodel->path_id)
+		{
+			Hunk_FreeToLowMark(mark);
+			Con_DPrintf("%s ignored (not from the same gamedir)\n", litfilename);
+		}
+		else
 		if (data[0] == 'Q' && data[1] == 'L' && data[2] == 'I' && data[3] == 'T')
 		{
 			i = LittleLong(((int *)data)[1]);
