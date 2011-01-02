@@ -35,8 +35,6 @@ qboolean        com_modified;   // set true if using non-id files
 
 int com_nummissionpacks; //johnfitz
 
-qboolean		proghack;
-
 int             static_registered = 1;  // only for startup check, then set
 
 qboolean		fitzmode;
@@ -1446,47 +1444,13 @@ void    COM_CreatePath (char *path)
 
 /*
 ===========
-COM_CopyFile
-
-Copies a file over from the net to the local cache, creating any directories
-needed.  This is for the convenience of developers using ISDN from home.
-===========
-*/
-void COM_CopyFile (const char *netpath, const char *cachepath)
-{
-	int             in, out;
-	int             remaining, count;
-	char    buf[4096];
-
-	remaining = Sys_FileOpenRead (netpath, &in);
-	Q_strcpy (buf, cachepath);
-	COM_CreatePath (buf);     // create directories up to the cache file
-	out = Sys_FileOpenWrite (cachepath);
-
-	while (remaining)
-	{
-		if (remaining < sizeof(buf))
-			count = remaining;
-		else
-			count = sizeof(buf);
-		Sys_FileRead (in, buf, count);
-		Sys_FileWrite (out, buf, count);
-		remaining -= count;
-	}
-
-	Sys_FileClose (in);
-	Sys_FileClose (out);
-}
-
-/*
-===========
 COM_FindFile
 
 Finds the file in the search path.
 Sets com_filesize and one of handle or file
 ===========
 */
-int COM_FindFile (const char *filename, int *handle, FILE **file)
+static int COM_FindFile (const char *filename, int *handle, FILE **file)
 {
 	searchpath_t    *search;
 	char            netpath[MAX_OSPATH];
@@ -1504,14 +1468,7 @@ int COM_FindFile (const char *filename, int *handle, FILE **file)
 //
 // search through the path, one element at a time
 //
-	search = com_searchpaths;
-	if (proghack)
-	{	// gross hack to use quake 1 progs with quake 2 maps
-		if (!strcmp(filename, "progs.dat"))
-			search = search->next;
-	}
-
-	for ( ; search ; search = search->next)
+	for (search = com_searchpaths; search; search = search->next)
 	{
 	// is the element a pak file?
 		if (search->pack)
@@ -1901,7 +1858,6 @@ COM_InitFilesystem
 void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 {
 	int i, j;
-	searchpath_t *search;
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
@@ -1951,32 +1907,6 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		com_modified = true;
 		COM_AddGameDirectory (va("%s/%s", com_basedir, com_argv[i + 1]));
 	}
-
-	i = COM_CheckParm ("-path");
-	if (i)
-	{
-		com_modified = true;
-		com_searchpaths = NULL;
-		while (++i < com_argc)
-		{
-			if (!com_argv[i] || com_argv[i][0] == '+' || com_argv[i][0] == '-')
-				break;
-			search = (searchpath_t *) Hunk_Alloc (sizeof(searchpath_t));
-			if (!strcmp(COM_FileExtension(com_argv[i]), "pak") )
-			{
-				search->pack = COM_LoadPackFile (com_argv[i]);
-				if (!search->pack)
-					Sys_Error ("Couldn't load packfile: %s", com_argv[i]);
-			}
-			else
-				strcpy (search->filename, com_argv[i]);
-			search->next = com_searchpaths;
-			com_searchpaths = search;
-		}
-	}
-
-	if (COM_CheckParm ("-proghack"))
-		proghack = true;
 }
 
 
