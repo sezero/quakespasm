@@ -25,8 +25,9 @@
 
 #include "quakedef.h"
 
-void CDAudio_Play(byte track, qboolean looping)
+int CDAudio_Play(byte track, qboolean looping)
 {
+	return -1;
 }
 
 void CDAudio_Stop(void)
