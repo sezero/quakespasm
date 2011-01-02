@@ -364,6 +364,8 @@ typedef enum {mod_brush, mod_sprite, mod_alias} modtype_t;
 typedef struct model_s
 {
 	char		name[MAX_QPATH];
+	unsigned int	path_id;		// path id of the game directory
+							// that this model came from
 	qboolean	needload;		// bmodels and sprites don't cache normally
 
 	modtype_t	type;

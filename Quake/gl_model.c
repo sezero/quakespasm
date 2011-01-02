@@ -277,7 +277,7 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 //
 // load the file
 //
-	buf = COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf), NULL);
+	buf = COM_LoadStackFile (mod->name, stackbuf, sizeof(stackbuf), & mod->path_id);
 	if (!buf)
 	{
 		if (crash)
