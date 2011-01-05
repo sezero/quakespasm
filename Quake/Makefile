@@ -19,6 +19,11 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 
 # ============================================================================
 
+# Enable/disable codecs for streaming music support:
+USE_CODEC_WAVE=yes
+USE_CODEC_MP3=yes
+USE_CODEC_VORBIS=yes
+
 DEBUG    ?= 0
 SDLNET   ?= 0
 
@@ -109,9 +114,22 @@ else
 NET_LIBS   :=
 endif
 
+CODECLIBS  :=
+ifeq ($(USE_CODEC_WAVE),yes)
+CFLAGS+= -DUSE_CODEC_WAVE
+endif
+ifeq ($(USE_CODEC_VORBIS),yes)
+CFLAGS+= -DUSE_CODEC_VORBIS
+CODECLIBS+= vorbis vorbisfile ogg
+endif
+ifeq ($(USE_CODEC_MP3),yes)
+CFLAGS+= -DUSE_CODEC_MP3
+CODECLIBS+= mad
+endif
+
 COMMON_LIBS:= m GL
 
-LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS))
+LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS))
 
 # ---------------------------
 # targets
@@ -132,7 +150,12 @@ DEFAULT_TARGET := quakespasm
 # objects
 # ----------------------------------------------------------------------------
 
-COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o
+MUSIC_OBJS:= bgmusic.o \
+	snd_codec.o \
+	snd_wave.o \
+	snd_vorbis.o \
+	snd_mp3.o
+COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
 SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
 SYSOBJ_INPUT := in_sdl.o

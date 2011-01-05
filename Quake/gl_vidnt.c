@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // gl_vidnt.c -- NT GL vid component
 
 #include "quakedef.h"
+#include "bgmusic.h"
 #include "winquake.h"
 #include "resource.h"
 #include <commctrl.h>
@@ -543,6 +544,7 @@ int VID_SetMode (int modenum)
 	scr_disabled_for_loading = true;
 
 	CDAudio_Pause ();
+	BGM_Pause ();
 
 	if (vid_modenum == NO_MODE)
 		original_mode = windowed_default;
@@ -591,6 +593,7 @@ int VID_SetMode (int modenum)
 	VID_UpdateWindowStatus ();
 
 	CDAudio_Resume ();
+	BGM_Resume ();
 	scr_disabled_for_loading = temp;
 
 // now we try to make sure we get the focus on the mode switch, because

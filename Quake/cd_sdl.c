@@ -426,13 +426,7 @@ void CDAudio_Update(void)
 		return;
 
 	if (old_cdvolume != bgmvolume.value)
-	{
-		if (bgmvolume.value < 0)
-			Cvar_Set ("bgmvolume", "0.0");
-		else if (bgmvolume.value > 1)
-			Cvar_Set ("bgmvolume", "1.0");
 		CDAudio_SetVolume (bgmvolume.value);
-	}
 
 	if (playing && realtime > endOfTrack)
 	{

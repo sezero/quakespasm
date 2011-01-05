@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // gl_vidnt.c -- NT GL vid component
 
 #include "quakedef.h"
+#include "bgmusic.h"
 #include "resource.h"
 #include "SDL.h"
 
@@ -260,6 +261,7 @@ int VID_SetMode (int modenum)
 	scr_disabled_for_loading = true;
 
 	CDAudio_Pause ();
+	BGM_Pause ();
 
 	// set vertical sync
 	if (gl_swap_control)
@@ -328,6 +330,7 @@ int VID_SetMode (int modenum)
 	VID_UpdateWindowStatus ();
 
 	CDAudio_Resume ();
+	BGM_Resume ();
 	scr_disabled_for_loading = temp;
 
 	vid_modenum = modenum;

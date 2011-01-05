@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // host.c -- coordinates spawning and killing of local servers
 
 #include "quakedef.h"
+#include "bgmusic.h"
 #include <setjmp.h>
 
 /*
@@ -728,6 +729,7 @@ void _Host_Frame (float time)
 		time2 = Sys_FloatTime ();
 
 // update audio
+	BGM_Update();	// adds music raw samples and/or advances midi driver
 	if (cls.signon == SIGNONS)
 	{
 		S_Update (r_origin, vpn, vright, vup);
@@ -851,6 +853,7 @@ void Host_Init (quakeparms_t *parms)
 		R_Init ();
 		S_Init ();
 		CDAudio_Init ();
+		BGM_Init();
 		Sbar_Init ();
 		CL_Init ();
 
@@ -917,6 +920,7 @@ void Host_Shutdown(void)
 	{
 		if (con_initialized)
 			History_Shutdown ();
+		BGM_Shutdown();
 		CDAudio_Shutdown ();
 		S_Shutdown ();
 		IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
