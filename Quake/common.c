@@ -1451,6 +1451,8 @@ COM_FindFile
 
 Finds the file in the search path.
 Sets com_filesize and one of handle or file
+If neither of file or handle is set, this
+can be used for detecting a file's presence.
 ===========
 */
 static int COM_FindFile (const char *filename, int *handle, FILE **file,
@@ -1464,8 +1466,6 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 
 	if (file && handle)
 		Sys_Error ("COM_FindFile: both handle and file set");
-	if (!file && !handle)
-		Sys_Error ("COM_FindFile: neither handle or file set");
 
 	file_from_pak = 0;
 
@@ -1483,21 +1483,21 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 				if (!strcmp (pak->files[i].name, filename))
 				{	// found it!
 				//	Sys_Printf ("PackFile: %s : %s\n",pak->filename, filename);
+					file_from_pak = 1;
+					com_filesize = pak->files[i].filelen;
+					if (path_id)
+						*path_id = search->path_id;
 					if (handle)
 					{
 						*handle = pak->handle;
 						Sys_FileSeek (pak->handle, pak->files[i].filepos);
 					}
-					else
+					else if (file)
 					{       // open a new file on the pakfile
 						*file = fopen (pak->filename, "rb");
 						if (*file)
 							fseek (*file, pak->files[i].filepos, SEEK_SET);
 					}
-					file_from_pak = 1;
-					com_filesize = pak->files[i].filelen;
-					if (path_id)
-						*path_id = search->path_id;
 					return com_filesize;
 				}
 		}
@@ -1521,11 +1521,17 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 			if (path_id)
 				*path_id = search->path_id;
 			if (handle)
+			{
 				*handle = i;
-			else
+			}
+			else if (file)
 			{
 				Sys_FileClose (i);
 				*file = fopen (netpath, "rb");
+			}
+			else
+			{
+				Sys_FileClose (i);
 			}
 			return com_filesize;
 		}
@@ -1536,12 +1542,25 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 
 	if (handle)
 		*handle = -1;
-	else
+	else if (file)
 		*file = NULL;
 	com_filesize = -1;
 	return -1;
 }
 
+
+/*
+===========
+COM_FileExists
+
+Returns com_filesize if file is found in the quake filesystem,
+-1 if not. Closes the files it opens, if any.
+===========
+*/
+int COM_FileExists (const char *filename, unsigned int *path_id)
+{
+	return COM_FindFile (filename, NULL, NULL, path_id);
+}
 
 /*
 ===========

@@ -188,6 +188,7 @@ extern	int	file_from_pak;	// global indicating that file came from a pak
 void COM_WriteFile (const char *filename, const void *data, int len);
 int COM_OpenFile (const char *filename, int *handle, unsigned int *path_id);
 int COM_FOpenFile (const char *filename, FILE **file, unsigned int *path_id);
+int COM_FileExists (const char *filename, unsigned int *path_id);
 void COM_CloseFile (int h);
 
 // these procedures open a file using COM_FindFile and loads it into a proper
