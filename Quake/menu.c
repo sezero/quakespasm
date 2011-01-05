@@ -1034,11 +1034,7 @@ void M_AdjustSliders (int dir)
 		Cvar_SetValue ("scr_sbaralpha", scr_sbaralpha.value);
 		break;
 	case OPT_MUSICVOL:	// music volume
-#ifdef _WIN32
-		bgmvolume.value += dir * 1.0;
-#else
 		bgmvolume.value += dir * 0.1;
-#endif
 		if (bgmvolume.value < 0)
 			bgmvolume.value = 0;
 		else if (bgmvolume.value > 1)
