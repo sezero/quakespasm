@@ -11,7 +11,7 @@
 				<Option object_output="obj\Debug\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters="-window -basedir C:\Programme\Quake" />
+				<Option parameters="-window -basedir C:\QuakeSpasm" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -21,7 +21,7 @@
 				<Option object_output="obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters="-window -basedir C:\Programme\Quake" />
+				<Option parameters="-window -basedir C:\QuakeSpasm" />
 				<Compiler>
 					<Add option="-O2" />
 				</Compiler>
@@ -32,23 +32,32 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="C:\Programme\SDL\include" />
+			<Add option="-DUSE_CODEC_MP3" />
+			<Add option="-DUSE_CODEC_VORBIS" />
+			<Add option="-DUSE_CODEC_WAVE" />
+			<Add directory="..\codecs\include" />
+			<Add directory="C:\SDL\include" />
 		</Compiler>
 		<Linker>
-			<Add library="mingw32" />
 			<Add library="SDLmain" />
-			<Add library="SDL.dll" />
-			<Add library="user32" />
-			<Add library="gdi32" />
+			<Add library="SDL" />
+			<Add library="vorbis" />
+			<Add library="vorbisfile" />
+			<Add library="ogg" />
+			<Add library="mad" />
 			<Add library="winmm" />
-			<Add library="dxguid" />
 			<Add library="opengl32" />
-			<Add library="ws2_32" />
-			<Add directory="C:\Programme\SDL\lib" />
+			<Add library="wsock32" />
+			<Add directory="..\codecs\x86" />
+			<Add directory="C:\SDL\lib" />
 		</Linker>
 		<Unit filename="..\..\Quake\anorm_dots.h" />
 		<Unit filename="..\..\Quake\anorms.h" />
 		<Unit filename="..\..\Quake\arch_def.h" />
+		<Unit filename="..\..\Quake\bgmusic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\bgmusic.h" />
 		<Unit filename="..\..\Quake\bspfile.h" />
 		<Unit filename="..\..\Quake\cd_sdl.c">
 			<Option compilerVar="CC" />
@@ -184,10 +193,10 @@
 		<Unit filename="..\..\Quake\net_main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\..\Quake\net_sys.h" />
 		<Unit filename="..\..\Quake\net_win.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\..\Quake\net_sys.h" />
 		<Unit filename="..\..\Quake\net_wins.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -213,6 +222,7 @@
 		<Unit filename="..\..\Quake\progdefs.h" />
 		<Unit filename="..\..\Quake\progs.h" />
 		<Unit filename="..\..\Quake\protocol.h" />
+		<Unit filename="..\..\Quake\q_sound.h" />
 		<Unit filename="..\..\Quake\q_stdinc.h" />
 		<Unit filename="..\..\Quake\qs_bmp.h" />
 		<Unit filename="..\..\Quake\quakedef.h" />
@@ -239,6 +249,11 @@
 		<Unit filename="..\..\Quake\sbar.h" />
 		<Unit filename="..\..\Quake\screen.h" />
 		<Unit filename="..\..\Quake\server.h" />
+		<Unit filename="..\..\Quake\snd_codec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_codec.h" />
+		<Unit filename="..\..\Quake\snd_codeci.h" />
 		<Unit filename="..\..\Quake\snd_dma.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -248,10 +263,21 @@
 		<Unit filename="..\..\Quake\snd_mix.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\..\Quake\snd_mp3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_mp3.h" />
 		<Unit filename="..\..\Quake\snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="..\..\Quake\q_sound.h" />
+		<Unit filename="..\..\Quake\snd_vorbis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_vorbis.h" />
+		<Unit filename="..\..\Quake\snd_wave.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_wave.h" />
 		<Unit filename="..\..\Quake\spritegn.h" />
 		<Unit filename="..\..\Quake\sv_main.c">
 			<Option compilerVar="CC" />

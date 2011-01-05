@@ -33,14 +33,25 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="`sdl-config --cflags`" />
+			<Add option="-DUSE_CODEC_MP3" />
+			<Add option="-DUSE_CODEC_VORBIS" />
+			<Add option="-DUSE_CODEC_WAVE" />
 		</Compiler>
 		<Linker>
 			<Add option="`sdl-config --libs`" />
 			<Add option="-lGL" />
+			<Add option="-lvorbis" />
+			<Add option="-lvorbisfile" />
+			<Add option="-logg" />
+			<Add option="-lmad" />
 		</Linker>
 		<Unit filename="../../Quake/anorm_dots.h" />
 		<Unit filename="../../Quake/anorms.h" />
 		<Unit filename="../../Quake/arch_def.h" />
+		<Unit filename="../../Quake/bgmusic.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/bgmusic.h" />
 		<Unit filename="../../Quake/bspfile.h" />
 		<Unit filename="../../Quake/cd_sdl.c">
 			<Option compilerVar="CC" />
@@ -164,6 +175,9 @@
 		<Unit filename="../../Quake/menu.h" />
 		<Unit filename="../../Quake/modelgen.h" />
 		<Unit filename="../../Quake/net.h" />
+		<Unit filename="../../Quake/net_bsd.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="../../Quake/net_defs.h" />
 		<Unit filename="../../Quake/net_dgrm.c">
 			<Option compilerVar="CC" />
@@ -176,14 +190,11 @@
 		<Unit filename="../../Quake/net_main.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../Quake/net_bsd.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="../../Quake/net_sys.h" />
 		<Unit filename="../../Quake/net_udp.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Quake/net_udp.h" />
-		<Unit filename="../../Quake/net_sys.h" />
 		<Unit filename="../../Quake/pl_linux.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -202,6 +213,7 @@
 		<Unit filename="../../Quake/progdefs.q1" />
 		<Unit filename="../../Quake/progs.h" />
 		<Unit filename="../../Quake/protocol.h" />
+		<Unit filename="../../Quake/q_sound.h" />
 		<Unit filename="../../Quake/q_stdinc.h" />
 		<Unit filename="../../Quake/qs_bmp.h" />
 		<Unit filename="../../Quake/quakedef.h" />
@@ -228,6 +240,11 @@
 		<Unit filename="../../Quake/sbar.h" />
 		<Unit filename="../../Quake/screen.h" />
 		<Unit filename="../../Quake/server.h" />
+		<Unit filename="../../Quake/snd_codec.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_codec.h" />
+		<Unit filename="../../Quake/snd_codeci.h" />
 		<Unit filename="../../Quake/snd_dma.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -237,10 +254,21 @@
 		<Unit filename="../../Quake/snd_mix.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../Quake/snd_mp3.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_mp3.h" />
 		<Unit filename="../../Quake/snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../../Quake/q_sound.h" />
+		<Unit filename="../../Quake/snd_vorbis.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_vorbis.h" />
+		<Unit filename="../../Quake/snd_wave.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_wave.h" />
 		<Unit filename="../../Quake/spritegn.h" />
 		<Unit filename="../../Quake/sv_main.c">
 			<Option compilerVar="CC" />
