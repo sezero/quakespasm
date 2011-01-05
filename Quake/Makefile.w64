@@ -14,6 +14,11 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 
 # ============================================================================
 
+# Enable/disable codecs for streaming music support:
+USE_CODEC_WAVE=yes
+USE_CODEC_MP3=yes
+USE_CODEC_VORBIS=yes
+
 DEBUG    ?= 0
 WINSOCK2 ?= 1
 SDLNET   ?= 0
@@ -67,23 +72,43 @@ SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(WINSOCK2),1)
 DEFWINSOCK :=-D_USE_WINSOCK2
-LIBWINSOCK := ws2_32
+LIBWINSOCK := -lws2_32
 else
 DEFWINSOCK :=
-LIBWINSOCK := wsock32
+LIBWINSOCK := -lwsock32
 endif
 
 ifeq ($(SDLNET),1)
-NET_LIBS   := SDL_net
+NET_LIBS   := -lSDL_net
 CFLAGS     +=-D_USE_SDLNET
 else
 CFLAGS     += $(DEFWINSOCK)
 NET_LIBS   := $(LIBWINSOCK)
 endif
 
-COMMON_LIBS:= m opengl32
+CODECLIBS  :=
+ifeq ($(USE_CODEC_WAVE),yes)
+CFLAGS+= -DUSE_CODEC_WAVE
+CODEC_INC = -I../Windows/codecs/include
+CODEC_LINK= -L../Windows/codecs/x64
+endif
+ifeq ($(USE_CODEC_VORBIS),yes)
+CFLAGS+= -DUSE_CODEC_VORBIS
+CODEC_INC = -I../Windows/codecs/include
+CODEC_LINK= -L../Windows/codecs/x64
+CODECLIBS+= -lvorbis -lvorbisfile -logg
+endif
+ifeq ($(USE_CODEC_MP3),yes)
+CFLAGS+= -DUSE_CODEC_MP3
+CODEC_INC = -I../Windows/codecs/include
+CODEC_LINK= -L../Windows/codecs/x64
+CODECLIBS+= -lmad
+endif
+CFLAGS+= $(CODEC_INC)
 
-LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS))
+COMMON_LIBS:= -lm -lopengl32
+
+LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
 
 # ---------------------------
 # targets
@@ -106,7 +131,12 @@ DEFAULT_TARGET := quakespasm.exe
 # objects
 # ----------------------------------------------------------------------------
 
-COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o
+MUSIC_OBJS:= bgmusic.o \
+	snd_codec.o \
+	snd_wave.o \
+	snd_vorbis.o \
+	snd_mp3.o
+COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
 SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
 SYSOBJ_INPUT := in_sdl.o

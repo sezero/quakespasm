@@ -43,8 +43,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -64,9 +64,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\SDL\lib"
+				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -118,8 +118,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -138,9 +138,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\SDL\lib"
+				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -196,8 +196,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -217,9 +217,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="C:\SDL\lib64"
+				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
@@ -272,8 +272,8 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="C:\SDL\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS"
+				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
@@ -292,9 +292,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="C:\SDL\lib64"
+				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
@@ -333,6 +333,10 @@
 			Filter="cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
+			<File
+				RelativePath="..\..\Quake\bgmusic.c"
+				>
+			</File>
 			<File
 				RelativePath="..\..\Quake\cd_sdl.c"
 				>
@@ -538,6 +542,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_codec.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_dma.c"
 				>
 			</File>
@@ -550,7 +558,19 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_mp3.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_sdl.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_vorbis.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_wave.c"
 				>
 			</File>
 			<File
@@ -605,6 +625,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\arch_def.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\bgmusic.h"
 				>
 			</File>
 			<File
@@ -773,6 +797,26 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\q_sound.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_codec.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_codeci.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_mp3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_vorbis.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_wave.h"
 				>
 			</File>
 			<File
