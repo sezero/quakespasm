@@ -1579,7 +1579,7 @@ void M_Quit_Key (int key)
 void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 {
 	char	msg1[40];
-	char	msg2[] = "by Ozkan Sezer & Steven Atkinson"; /* msg2/msg3 are mostly [40] */
+	char	msg2[] = "by Ozkan Sezer & Stevenaaus"; /* msg2/msg3 are mostly [40] */
 	char	msg3[] = "Press y to quit";
 	int		boxlen;
 
