@@ -61,11 +61,14 @@ int main(int argc, char *argv[])
 	if (!parms.membase)
 		Sys_Error ("Not enough memory free; check disk space\n");
 
-	Con_Printf("FitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
-	Con_Printf("SDL port (c) SleepwalkR, Baker\n");
-	Con_Printf("QuakeSpasm %1.2f.%d (c) Ozkan Sezer, Stevenaaus\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
+	Sys_Printf("Quake %1.2f (c) id Software\n", VERSION);
+	Sys_Printf("GLQuake %1.2f (c) id Software\n", GLQUAKE_VERSION);
+	Sys_Printf("FitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
+	Sys_Printf("FitzQuake SDL port (c) SleepwalkR, Baker\n");
+	Sys_Printf("QuakeSpasm %1.2f.%d (c) Ozkan Sezer, Steven Atkinson\n",
+					FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 
-	Con_Printf("Host_Init\n");
+	Sys_Printf("Host_Init\n");
 	Host_Init(&parms);
 
 	oldtime = Sys_FloatTime();
