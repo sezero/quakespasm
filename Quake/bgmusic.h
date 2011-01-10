@@ -3,7 +3,7 @@
  * Handles streaming music as raw sound samples and runs the midi driver
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
- * Copyright (C) 2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
  *
  * $Id: bgmusic.h 3818 2010-12-19 09:04:17Z sezero $
  *
