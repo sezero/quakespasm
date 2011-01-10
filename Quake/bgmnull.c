@@ -27,11 +27,13 @@
 #include "bgmusic.h"
 
 qboolean	bgmloop = true;
+cvar_t		bgm_extmusic = {"bgm_extmusic", "1", true};
 
 static float	old_volume = -1.0f;
 
 qboolean BGM_Init (void)
 {
+	Cvar_RegisterVariable(&bgm_extmusic, NULL);
 	return false;
 }
 
