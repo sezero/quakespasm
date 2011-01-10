@@ -37,7 +37,9 @@
 #define MUSIC_DIRNAME	"music"
 
 qboolean	bgmloop;
+cvar_t		bgm_extmusic = {"bgm_extmusic", "1", true};
 
+static qboolean	no_extmusic= false;
 static float	old_volume = -1.0f;
 
 typedef enum _bgm_player
@@ -127,11 +129,15 @@ qboolean BGM_Init (void)
 	music_handler_t *handlers = NULL;
 	int i;
 
+	Cvar_RegisterVariable(&bgm_extmusic, NULL);
 	Cmd_AddCommand("music", BGM_Play_f);
 	Cmd_AddCommand("music_pause", BGM_Pause_f);
 	Cmd_AddCommand("music_resume", BGM_Resume_f);
 	Cmd_AddCommand("music_loop", BGM_Loop_f);
 	Cmd_AddCommand("music_stop", BGM_Stop_f);
+
+	if (COM_CheckParm("-nomusic") != 0)
+		no_extmusic = true;
 
 	bgmloop = true;
 
@@ -303,6 +309,9 @@ void BGM_PlayCDtrack (byte track, qboolean looping)
 	BGM_Stop();
 	if (CDAudio_Play(track, looping) == 0)
 		return;			/* success */
+
+	if (no_extmusic || !bgm_extmusic.value)
+		return;
 
 	prev_id = 0;
 	type = 0;

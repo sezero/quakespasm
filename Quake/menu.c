@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "net_sys.h"	/* FIXME */
 #include "quakedef.h"
 #include "net_defs.h"	/* FIXME */
+#include "bgmusic.h"
 
 void (*vid_menucmdfn)(void); //johnfitz
 void (*vid_menudrawfn)(void);
@@ -954,8 +955,9 @@ enum
 	OPT_GAMMA,
 	OPT_MOUSESPEED,
 	OPT_SBALPHA,
-	OPT_MUSICVOL,
 	OPT_SNDVOL,
+	OPT_MUSICVOL,
+	OPT_MUSICEXT,
 	OPT_ALWAYRUN,
 	OPT_INVMOUSE,
 	OPT_ALWAYSMLOOK,
@@ -1040,6 +1042,9 @@ void M_AdjustSliders (int dir)
 		else if (bgmvolume.value > 1)
 			bgmvolume.value = 1;
 		Cvar_SetValue ("bgmvolume", bgmvolume.value);
+		break;
+	case OPT_MUSICEXT:	// enable external music vs cdaudio
+		Cvar_SetValue ("bgm_extmusic", !bgm_extmusic.value);
 		break;
 	case OPT_SNDVOL:	// sfx volume
 		sfxvolume.value += dir * 0.1;
@@ -1156,15 +1161,19 @@ void M_Options_Draw (void)
 	r = (1.0 - scr_sbaralpha.value) ; // scr_sbaralpha range is 1.0 to 0.0
 	M_DrawSlider (220, 32 + 8*OPT_SBALPHA, r);
 
+	// OPT_SNDVOL:
+	M_Print (16, 32 + 8*OPT_SNDVOL,		"          Sound Volume");
+	r = sfxvolume.value;
+	M_DrawSlider (220, 32 + 8*OPT_SNDVOL, r);
+
 	// OPT_MUSICVOL:
 	M_Print (16, 32 + 8*OPT_MUSICVOL,	"          Music Volume");
 	r = bgmvolume.value;
 	M_DrawSlider (220, 32 + 8*OPT_MUSICVOL, r);
 
-	// OPT_SNDVOL:
-	M_Print (16, 32 + 8*OPT_SNDVOL,		"          Sound Volume");
-	r = sfxvolume.value;
-	M_DrawSlider (220, 32 + 8*OPT_SNDVOL, r);
+	// OPT_MUSICEXT:
+	M_Print (16, 32 + 8*OPT_MUSICEXT,	"        External Music");
+	M_DrawCheckbox (220, 32 + 8*OPT_MUSICEXT, bgm_extmusic.value);
 
 	// OPT_ALWAYRUN:
 	M_Print (16, 32 + 8*OPT_ALWAYRUN,	"            Always Run");
