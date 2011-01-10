@@ -694,7 +694,7 @@ stats:
 	if (msg->cursize > 1024 && dev_peakstats.packetsize <= 1024)
 		Con_Warning ("%i byte packet exceeds standard limit of 1024.\n", msg->cursize);
 	dev_stats.packetsize = msg->cursize;
-	dev_peakstats.packetsize = max(msg->cursize, dev_peakstats.packetsize);
+	dev_peakstats.packetsize = q_max(msg->cursize, dev_peakstats.packetsize);
 	//johnfitz
 }
 

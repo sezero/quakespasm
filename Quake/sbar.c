@@ -386,7 +386,7 @@ void Sbar_DrawNum (int x, int y, int num, int digits, int color)
 	char			*ptr;
 	int				l, frame;
 
-	num = min(999,num); //johnfitz -- cap high values rather than truncating number
+	num = q_min(999,num); //johnfitz -- cap high values rather than truncating number
 
 	l = Sbar_itoa (num, str);
 	ptr = str;
@@ -666,7 +666,7 @@ void Sbar_DrawInventory (void)
 // ammo counts
 	for (i=0 ; i<4 ; i++)
 	{
-		sprintf (num, "%3i", min(999,cl.stats[STAT_SHELLS+i])); //johnfitz -- cap displayed value to 999
+		sprintf (num, "%3i", q_min(999,cl.stats[STAT_SHELLS+i])); //johnfitz -- cap displayed value to 999
 		if (num[0] != ' ')
 			Sbar_DrawCharacter ( (6*i+1)*8 + 2, -24, 18 + num[0] - '0');
 		if (num[1] != ' ')
@@ -777,7 +777,7 @@ void Sbar_DrawFrags (void)
 	Sbar_SortFrags ();
 
 // draw the text
-	numscores = min (scoreboardlines, 4);
+	numscores = q_min(scoreboardlines, 4);
 
 	for (i=0, x=184; i<numscores; i++, x+=32)
 	{

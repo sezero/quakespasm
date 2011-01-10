@@ -36,10 +36,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 	/* 'var'	: conversion from 'size_t' to 'type',
 			  possible loss of data (/Wp64 warning) */
 /* MSC doesn't have fmin() / fmax(), use the min/max macros: */
-#define fmax max
-#define fmin min
+#define fmax q_max
+#define fmin q_min
 #endif	/* _MSC_VER */
 #endif	/* _WIN32 */
+
+#undef	min
+#undef	max
+#define	q_min(a, b)	(((a) < (b)) ? (a) : (b))
+#define	q_max(a, b)	(((a) > (b)) ? (a) : (b))
+#define	CLAMP(_minval, x, _maxval)		\
+	((x) < (_minval) ? (_minval) :		\
+	 (x) > (_maxval) ? (_maxval) : (x))
 
 typedef struct sizebuf_s
 {

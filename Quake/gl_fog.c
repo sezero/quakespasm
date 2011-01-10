@@ -96,7 +96,7 @@ void Fog_ParseServerMessage (void)
 	red = MSG_ReadByte() / 255.0;
 	green = MSG_ReadByte() / 255.0;
 	blue = MSG_ReadByte() / 255.0;
-	time = max(0.0, MSG_ReadShort() / 100.0);
+	time = q_max(0.0, MSG_ReadShort() / 100.0);
 
 	Fog_Update (density, red, green, blue, time);
 }
@@ -125,14 +125,14 @@ void Fog_FogCommand_f (void)
 		Con_Printf("   \"blue\" is \"%f\"\n", fog_blue);
 		break;
 	case 2:
-		Fog_Update(max(0.0, atof(Cmd_Argv(1))),
+		Fog_Update(q_max(0.0, atof(Cmd_Argv(1))),
 				   fog_red,
 				   fog_green,
 				   fog_blue,
 				   0.0);
 		break;
 	case 3: //TEST
-		Fog_Update(max(0.0, atof(Cmd_Argv(1))),
+		Fog_Update(q_max(0.0, atof(Cmd_Argv(1))),
 				   fog_red,
 				   fog_green,
 				   fog_blue,

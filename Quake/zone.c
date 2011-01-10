@@ -237,7 +237,7 @@ void *Z_Realloc(void *ptr, int size)
 		Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
 
 	if (ptr != old_ptr)
-		memmove (ptr, old_ptr, min (old_size, size));
+		memmove (ptr, old_ptr, q_min(old_size, size));
 
 	return ptr;
 }

@@ -58,7 +58,7 @@ int R_ParticleTextureLookup (int x, int y, int sharpness)
 	r = x * x + y * y;
 	r = r > 255 ? 255 : r;
 	a = sharpness * (255 - r);
-	a = min(a,255);
+	a = q_min(a,255);
 	return a;
 }
 

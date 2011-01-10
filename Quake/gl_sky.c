@@ -896,7 +896,7 @@ void Sky_DrawFace (int axis)
 	VectorSubtract(verts[2],verts[3],vup);
 	VectorSubtract(verts[2],verts[1],vright);
 
-	di = max((int)r_sky_quality.value, 1);
+	di = q_max((int)r_sky_quality.value, 1);
 	qi = 1.0 / di;
 	dj = (axis < 4) ? di*2 : di; //subdivide vertically more than horizontally on skybox sides
 	qj = 1.0 / dj;

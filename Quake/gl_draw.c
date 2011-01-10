@@ -756,7 +756,7 @@ void GL_SetCanvas (canvastype newcanvas)
 		glViewport (glx, gly, glwidth, glheight);
 		break;
 	case CANVAS_MENU:
-		s = min ((float)glwidth / 320.0, (float)glheight / 200.0);
+		s = q_min((float)glwidth / 320.0, (float)glheight / 200.0);
 		s = CLAMP (1.0, scr_menuscale.value, s);
 		glOrtho (0, 320, 200, 0, -99999, 99999);
 		glViewport (glx + (glwidth - 320*s) / 2, gly + (glheight - 200*s) / 2, 320*s, 200*s);

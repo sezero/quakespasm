@@ -40,8 +40,6 @@ extern vec3_t vec3_origin;
 #define	nanmask		(255<<23)	/* 7F800000 */
 #define	IS_NAN(x)	(((*(int *) &x) & nanmask) == nanmask)
 
-#define CLAMP(_minval, x, _maxval) ((x) < (_minval) ? (_minval) : (x) > (_maxval) ? (_maxval) : (x))
-
 #define Q_rint(x) ((x) > 0 ? (int)((x) + 0.5) : (int)((x) - 0.5)) //johnfitz -- from joequake
 
 #define DotProduct(x,y) (x[0]*y[0]+x[1]*y[1]+x[2]*y[2])
@@ -62,27 +60,6 @@ extern vec3_t vec3_origin;
 		VectorScale(_v, _y.f, _v);\
 	}\
 }
-
-// kristian - missing math functions
-#if !defined(max)
-#define max q_max
-static inline int q_max (int x, int y)
-{
-	if (x > y)
-		return x;
-	return y;
-}
-#endif
-#if !defined(min)
-#define min q_min
-static inline int q_min (int x, int y)
-{
-	if (x < y)
-		return x;
-	return y;
-}
-#endif
-// kristian
 
 void TurnVector (vec3_t out, const vec3_t forward, const vec3_t side, float angle); //johnfitz
 void VectorAngles (const vec3_t forward, vec3_t angles); //johnfitz
