@@ -197,8 +197,6 @@ static void BGM_Play_noext (const char *filename, unsigned int allowed_types)
 		}
 		if (!handler->is_available)
 		{
-		/* skip handlers which failed to initialize */
-		/* TODO: implement re-init, make BGM aware of it */
 			handler = handler->next;
 			continue;
 		}
@@ -230,13 +228,16 @@ void BGM_Play (const char *filename)
 	const char *ext;
 	music_handler_t *handler;
 
+	BGM_Stop();
+
+	if (music_handlers == NULL)
+		return;
+
 	if (!filename || !*filename)
 	{
 		Con_DPrintf("null music file name\n");
 		return;
 	}
-
-	BGM_Stop();
 
 	ext = S_FileExtension(filename);
 	if (!ext)	/* try all things */
@@ -248,8 +249,6 @@ void BGM_Play (const char *filename)
 	handler = music_handlers;
 	while (handler)
 	{
-		/* skip handlers which failed to initialize */
-		/* TODO: implement re-init, make BGM aware of it */
 		if (handler->is_available &&
 		    !Q_strcasecmp(ext, handler->ext))
 			break;
@@ -281,19 +280,6 @@ void BGM_Play (const char *filename)
 
 void BGM_PlayCDtrack (byte track, qboolean looping)
 {
-#if 0 /* see below */
-	char tmp[MAX_QPATH];
-
-	BGM_Stop();
-
-	bgmloop = looping;
-
-	if (CDAudio_Play(track, looping) == 0)
-		return;			/* success */
-
-	q_snprintf(tmp, sizeof(tmp), "track%02d", (int)track);
-	BGM_Play_noext(tmp, CDRIP_TYPES);
-#endif
 /* instead of searching by the order of music_handlers, do so by
  * the order of searchpath priority: the file from the searchpath
  * with the highest path_id is most likely from our own gamedir
@@ -309,6 +295,9 @@ void BGM_PlayCDtrack (byte track, qboolean looping)
 	BGM_Stop();
 	if (CDAudio_Play(track, looping) == 0)
 		return;			/* success */
+
+	if (music_handlers == NULL)
+		return;
 
 	if (no_extmusic || !bgm_extmusic.value)
 		return;
