@@ -1,15 +1,21 @@
-# GNU Makefile for QuakeSpasm unix targets, Aug. 31, 2010
+### GNU Makefile for QuakeSpasm unix targets, Aug. 31, 2010
 #
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
-# "make SDLNET=1" to use SDL_net (not recommended) instead of platform
-# specific code.
-#
-# Build objects are separate from those of codeblocks for now
-# (we aren't using codeblocks).
+# "make SDLNET=1" to use SDL_net (not recommended)
+#                 instead of platform specific code.
+# Build objects are separate from those of codeblocks
 
-# ============================================================================
+### Enable/Disable codecs for streaming music support
+#
+# OGG (vorbis) playback requires libvorbis and libogg
+# MP3 playback requires libmad
+
+USE_CODEC_WAVE=yes
+USE_CODEC_MP3=yes
+USE_CODEC_VORBIS=yes
+
 
 # ============================================================================
 # Helper functions
@@ -17,12 +23,6 @@
 
 check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
 
-# ============================================================================
-
-# Enable/disable codecs for streaming music support:
-USE_CODEC_WAVE=yes
-USE_CODEC_MP3=yes
-USE_CODEC_VORBIS=yes
 
 DEBUG    ?= 0
 SDLNET   ?= 0

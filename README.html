@@ -11,7 +11,7 @@
 <PRE>
 </PRE>
 </P>
-<P>QuakeSpasm 0.85.3 (19 September 2010)</P>
+<P>QuakeSpasm 0.85.4 (19 February 2011)</P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
@@ -29,9 +29,10 @@
 <H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1">0.85.3</A>
-<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2">0.85.2</A>
-<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3">0.85.1</A>
+<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1">0.85.4</A>
+<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2">0.85.3</A>
+<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3">0.85.2</A>
+<LI><A NAME="toc5.4">5.4</A> <A HREF="README.html#ss5.4">0.85.1</A>
 </UL>
 <P>
 <H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Todo </A></H2>
@@ -53,14 +54,16 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 
 
 <P>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3.tgz/download">Source</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_linux.tgz/download">Linux binary</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_windows.zip/download">Windows</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_osx.zip/download">OSX universal binary</A><BR></P>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download">Source</A><BR>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download">Linux binary</A><BR>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download">Windows</A><BR>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download">OSX universal binary</A><BR></P>
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
 
 
+<P><EM> Visit the 
+<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A> for a full run-down of engine's commands and variables.</EM></P>
 <P>
 <UL>
 <LI>To disable some changes, use "<B>quakespasm -fitz</B>"
@@ -68,28 +71,32 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 <LI>For different sound drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
 , where DRIVER may be alsa, dsp, pulse, esd ...
 </LI>
-<LI><B>Shift+Escape</B> draws the Console.
-</LI>
+<LI><B>Shift+Escape</B> draws the Console.</LI>
 <LI>From the console, use <B>UP</B> to browse the command line history, and
-<B>TAB</B> to autocomplete command and map names.
-</LI>
-<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME</EM>"
-</LI>
-<LI>There is currently no music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..
-</LI>
+<B>TAB</B> to autocomplete command and map names.</LI>
+<LI>There currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
 </LI>
+<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME</EM>"</LI>
 </UL>
 </P>
-<P><EM> Visit the 
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A> for a full run-down of this engine's features.</EM></P>
+<H3>Music Playback</H3>
+
+<P>From 0.85.4 Quakespasm can play back external MP3, OGG and Wave music files.
+<UL>
+<LI>Tracks should be named "track01.ogg, track02.ogg" ... (for example), and placed into "Quake/id1/music".</LI>
+<LI>Linux users may need some extra libraries installed : libmad  for MP3, and libogg and libvorbis for OGG.</LI>
+<LI>Use the "-nomusic" option to disable this feature.</LI>
+</UL>
+</P>
+
+
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling </A></H2>
 
-<P>Just extract the source tarball, then
+<P>After extracting the source tarball, browse the Makefile and edit the music streaming options, then
 <HR>
 <PRE>
-cd quakespasm-0.85.3
 make
 cp quakespasm /usr/local/games/quake (for example)
 </PRE>
@@ -99,18 +106,28 @@ Compile time options include
 <UL>
 <LI><B>make DEBUG=1</B> for debugging</LI>
 <LI><B>make SDLNET=1</B> to enable SDL_net (Otherwise the socket api will be used directly)</LI>
-<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installs<BR><BR></LI>
-<LI>HOME directory support can be enabled via the <B>Misc/homedir_0.patch</B> diff</LI>
+<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installs</LI>
 </UL>
-<BR>
-If for any reason this doesn't work, the project can also be built with Codeblocks.
+</P>
+<P>Streaming music playback requires "libmad" for MP3, and "libogg", "libvorbis" for OGG files.</P>
+<P>HOME directory support can be enabled via the <B>Misc/homedir_0.patch</B> diff</P>
+<P><EM>If for any reason this doesn't work, the project can also be built with Codeblocks.
 This is a large, free, integrated development environment that requires wxWidgets and cmake to install.
-The process is not for the faint hearted.</P>
-
+The process is not for the faint hearted</EM></P>
+.
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
 
 
-<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">0.85.3</A>
+<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">0.85.4</A>
+</H2>
+
+<P>
+<UL>
+<LI> Implement music (ogg, mp3, wav) playback</LI>
+<LI> A better fix for the infamous "SV_TouchLinks: next != l->next" problem</LI>
+</UL>
+</P>
+<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">0.85.3</A>
 </H2>
 
 <P>
@@ -134,7 +151,7 @@ The process is not for the faint hearted.</P>
 </UL>
 </P>
 
-<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">0.85.2</A>
+<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">0.85.2</A>
 </H2>
 
 <P>
@@ -153,7 +170,7 @@ The process is not for the faint hearted.</P>
 </UL>
 </P>
 
-<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">0.85.1</A>
+<H2><A NAME="ss5.4">5.4</A> <A HREF="#toc5.4">0.85.1</A>
 </H2>
 
 <P>

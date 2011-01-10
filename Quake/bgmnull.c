@@ -1,5 +1,5 @@
 /*
- * Background music handling for Hexen II: Hammer of Thyrion (uHexen2)
+ * Background music handling for Quakespasm
  * Handle cases when we are configured for no sound and no midi driver,
  * nada...
  *

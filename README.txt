@@ -8,11 +8,14 @@
   1. About
   2. Downloads
   3. Hints
+        3..1 Music Playback
+
   4. Compiling
   5. Changes
-     5.1 0.85.3
-     5.2 0.85.2
-     5.3 0.85.1
+     5.1 0.85.4
+     5.2 0.85.3
+     5.3 0.85.2
+     5.4 0.85.1
 
   6. Todo
   7. Links
@@ -21,7 +24,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.3 (19 September 2010)
+  QuakeSpasm 0.85.4 (19 February 2011)
 
 
   1.  About
@@ -38,47 +41,60 @@
 
 
   Source
-  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3.tgz/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download>
   Linux binary
-  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_linux.tgz/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download>
   Windows
-  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_windows.zip/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
   OSX universal binary
-  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.3_osx.zip/download>
+  <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download>
 
 
   3.  Hints
+
+
+   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  a full run-down of engine's commands and variables.
 
 
   o  To disable some changes, use "quakespasm -fitz"
 
   o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
      ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
-
   o  Shift+Escape draws the Console.
 
   o  From the console, use UP to browse the command line history, and
      TAB to autocomplete command and map names.
 
-  o  Quakespasm allows loading new games (mods) on the fly with "game
-     GAMENAME"
-
-  o  There is currently no music volume support. cd_sdl.c needs
+  o  There currently no CD Music volume support. cd_sdl.c needs
      replacing with cd_linux.c, cd_bsd.c etc..
 
   o  In windows, alternative CD drives are accessible by "quakespasm
      -cddev F" (for example)
 
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
-  a full run-down of this engine's features.
+  o  Quakespasm allows loading new games (mods) on the fly with "game
+     GAMENAME"
+
+  3.0.1.  Music Playback
+
+  From 0.85.4 Quakespasm can play back external MP3, OGG and Wave music
+  files.
+
+  o  Tracks should be named "track01.ogg, track02.ogg" ... (for
+     example), and placed into "Quake/id1/music".
+
+  o  Linux users may need some extra libraries installed : libmad  for
+     MP3, and libogg and libvorbis for OGG.
+
+  o  Use the "-nomusic" option to disable this feature.
 
 
   4.  Compiling
 
-  Just extract the source tarball, then
+  After extracting the source tarball, browse the Makefile and edit the
+  music streaming options, then
 
   ______________________________________________________________________
-  cd quakespasm-0.85.3
   make
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
@@ -93,18 +109,29 @@
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installs
 
-  o  HOME directory support can be enabled via the Misc/homedir_0.patch
-     diff
-     If for any reason this doesn't work, the project can also be built
-     with Codeblocks.  This is a large, free, integrated development
-     environment that requires wxWidgets and cmake to install.  The
-     process is not for the faint hearted.
+  Streaming music playback requires "libmad" for MP3, and "libogg",
+  "libvorbis" for OGG files.
 
+  HOME directory support can be enabled via the Misc/homedir_0.patch
+  diff
+
+  If for any reason this doesn't work, the project can also be built
+  with Codeblocks.  This is a large, free, integrated development
+  environment that requires wxWidgets and cmake to install.  The process
+  is not for the faint hearted.
 
   5.  Changes
 
 
-  5.1.  0.85.3
+  5.1.  0.85.4
+
+
+  o  Implement music (ogg, mp3, wav) playback
+
+  o  A better fix for the infamous "SV_TouchLinks: next != l->next"
+     problem
+
+  5.2.  0.85.3
 
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
@@ -142,7 +169,7 @@
      some other CD tweaks.
 
 
-  5.2.  0.85.2
+  5.3.  0.85.2
 
 
   o  Replace the old "Screen size" slider with a "Scale" slider
@@ -170,7 +197,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.3.  0.85.1
+  5.4.  0.85.1
 
 
   o  64 bit CPU support
@@ -190,7 +217,6 @@
   o  Show helpful info on start-up
 
   o  Include real map name (sv.name) and skill in the status bar
-
 
   o  Remove confirm quit dialog
 
