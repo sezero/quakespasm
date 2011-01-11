@@ -8,7 +8,7 @@
   1. About
   2. Downloads
   3. Hints
-        3..1 Music Playback
+     3.1 Music Playback
 
   4. Compiling
   5. Changes
@@ -54,7 +54,7 @@
 
 
    Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
-  a full run-down of engine's commands and variables.
+  a full run-down of the engine's commands and variables.
 
 
   o  To disable some changes, use "quakespasm -fitz"
@@ -66,7 +66,7 @@
   o  From the console, use UP to browse the command line history, and
      TAB to autocomplete command and map names.
 
-  o  There currently no CD Music volume support. cd_sdl.c needs
+  o  There is currently no CD Music volume support. cd_sdl.c needs
      replacing with cd_linux.c, cd_bsd.c etc..
 
   o  In windows, alternative CD drives are accessible by "quakespasm
@@ -75,16 +75,16 @@
   o  Quakespasm allows loading new games (mods) on the fly with "game
      GAMENAME"
 
-  3.0.1.  Music Playback
+  3.1.  Music Playback
 
   From 0.85.4 Quakespasm can play back external MP3, OGG and Wave music
   files.
 
-  o  Tracks should be named "track01.ogg, track02.ogg" ... (for
-     example), and placed into "Quake/id1/music".
+  o  Tracks should be named "track02.ogg, track03.ogg" ... (for example.
+     There is no track01), and placed into "Quake/id1/music".
 
-  o  Linux users may need some extra libraries installed : libmad  for
-     MP3, and libogg and libvorbis for OGG.
+  o  Linux users may need some extra libraries installed: libmad-0.15.1b
+     for MP3, and libogg-1.2.2 and libvorbis-1.3.2 for OGG.
 
   o  Use the "-nomusic" option to disable this feature.
 
