@@ -158,40 +158,6 @@ void CDAudio_Stop(void)
 	endOfTrack = -1.0;
 }
 
-static void CDAudio_Next(void)
-{
-	byte track;
-
-	if (!cd_handle || !enabled)
-		return;
-
-	if (!playing)
-		return;
-
-	track = playTrack + 1;	/* cd_handle->track[cd_handle->cur_track].id + 1; */
-	if (track > cd_handle->numtracks)
-		track = 1;
-
-	CDAudio_Play (track, playLooping);
-}
-
-static void CDAudio_Prev(void)
-{
-	byte track;
-
-	if (!cd_handle || !enabled)
-		return;
-
-	if (!playing)
-		return;
-
-	track = playTrack - 1;
-	if (track < 1)
-		track = cd_handle->numtracks;
-
-	CDAudio_Play (track, playLooping);
-}
-
 void CDAudio_Pause(void)
 {
 	if (!cd_handle || !enabled)
@@ -228,15 +194,15 @@ void CDAudio_Resume(void)
 
 static void CD_f (void)
 {
-	const char	*command,*arg2;
+	const char	*command;
 	int		ret, n;
 
 	if (Cmd_Argc() < 2)
 	{
-		Con_Printf("commands:\n");
-		Con_Printf("  on, off, reset, remap, \n");
-		Con_Printf("  play, stop, next, prev, loop,\n");
-		Con_Printf("  pause, resume, eject, info\n");
+		Con_Printf("commands:");
+		Con_Printf("on, off, reset, remap, \n");
+		Con_Printf("play, stop, loop, pause, resume\n");
+		Con_Printf("eject, info\n");
 		return;
 	}
 
@@ -294,21 +260,13 @@ static void CD_f (void)
 
 	if (Q_strcasecmp(command, "play") == 0)
 	{
-		arg2 = Cmd_Argv (2);
-                if (*arg2) 
-			CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
-		else 
-			CDAudio_Play((byte)1, false);
+		CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
 		return;
 	}
 
 	if (Q_strcasecmp(command, "loop") == 0)
 	{
-		arg2 = Cmd_Argv (2);
-                if (*arg2) 
-			CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
-		else 
-			CDAudio_Play((byte)1, true);
+		CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
 		return;
 	}
 
@@ -327,18 +285,6 @@ static void CD_f (void)
 	if (Q_strcasecmp(command, "resume") == 0)
 	{
 		CDAudio_Resume();
-		return;
-	}
-
-	if (Q_strcasecmp(command, "next") == 0)
-	{
-		CDAudio_Next();
-		return;
-	}
-
-	if (Q_strcasecmp(command, "prev") == 0)
-	{
-		CDAudio_Prev();
 		return;
 	}
 
@@ -377,7 +323,6 @@ static void CD_f (void)
 
 		return;
 	}
-	Con_Printf ("cd: no such command. Use \"cd\" for help.\n");
 }
 
 static qboolean CD_GetVolume (void *unused)
@@ -434,13 +379,10 @@ void CDAudio_Update(void)
 		curstat = SDL_CDStatus(cd_handle);
 		if (curstat != CD_PLAYING && curstat != CD_PAUSED)
 		{
+			playing = false;
 			endOfTrack = -1.0;
-			if (playLooping) {
-				playing = false;
+			if (playLooping)
 				CDAudio_Play(playTrack, true);
-			}
-			else
-				CDAudio_Next();
 		}
 	}
 }
