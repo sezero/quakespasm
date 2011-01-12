@@ -1,10 +1,18 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win64 : MinGW-w64)
-# using cross-toolchains on a linux host	/ Aug. 31, 2010.
+# using cross-toolchains on a linux host	/ Jan. 12, 2011.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=0" to use the old WinSock 1.1 api (not recommended).
 # "make SDLNET=1" to use SDL_net (not recommended) instead of platform
 # specific code.
+
+### Embed custom Quakespasm console background picture
+USE_QS_CONBACK=1
+
+### Enable/disable codecs for streaming music support
+USE_CODEC_WAVE=1
+USE_CODEC_MP3=1
+USE_CODEC_VORBIS=1
 
 # ============================================================================
 # Helper functions
@@ -13,11 +21,6 @@
 check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
 
 # ============================================================================
-
-# Enable/disable codecs for streaming music support:
-USE_CODEC_WAVE=yes
-USE_CODEC_MP3=yes
-USE_CODEC_VORBIS=yes
 
 DEBUG    ?= 0
 WINSOCK2 ?= 1
@@ -86,19 +89,23 @@ CFLAGS     += $(DEFWINSOCK)
 NET_LIBS   := $(LIBWINSOCK)
 endif
 
+ifeq ($(USE_QS_CONBACK),1)
+CFLAGS+= -DUSE_QS_CONBACK
+endif
+
 CODECLIBS  :=
-ifeq ($(USE_CODEC_WAVE),yes)
+ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64
 endif
-ifeq ($(USE_CODEC_VORBIS),yes)
+ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS
 CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64
 CODECLIBS+= -lvorbis -lvorbisfile -logg
 endif
-ifeq ($(USE_CODEC_MP3),yes)
+ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
 CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64

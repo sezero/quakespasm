@@ -1,4 +1,4 @@
-### GNU Makefile for QuakeSpasm unix targets, Aug. 31, 2010
+### GNU Makefile for QuakeSpasm unix targets, Jan. 12, 2011
 #
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
@@ -7,15 +7,17 @@
 #                 instead of platform specific code.
 # Build objects are separate from those of codeblocks
 
+### Embed custom Quakespasm console background picture
+USE_QS_CONBACK=1
+
 ### Enable/Disable codecs for streaming music support
 #
 # OGG (vorbis) playback requires libvorbis and libogg
 # MP3 playback requires libmad
 
-USE_CODEC_WAVE=yes
-USE_CODEC_MP3=yes
-USE_CODEC_VORBIS=yes
-
+USE_CODEC_WAVE=1
+USE_CODEC_MP3=1
+USE_CODEC_VORBIS=1
 
 # ============================================================================
 # Helper functions
@@ -23,6 +25,7 @@ USE_CODEC_VORBIS=yes
 
 check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
 
+# ============================================================================
 
 DEBUG    ?= 0
 SDLNET   ?= 0
@@ -114,15 +117,19 @@ else
 NET_LIBS   :=
 endif
 
+ifeq ($(USE_QS_CONBACK),1)
+CFLAGS+= -DUSE_QS_CONBACK
+endif
+
 CODECLIBS  :=
-ifeq ($(USE_CODEC_WAVE),yes)
+ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
-ifeq ($(USE_CODEC_VORBIS),yes)
+ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS
 CODECLIBS+= vorbis vorbisfile ogg
 endif
-ifeq ($(USE_CODEC_MP3),yes)
+ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
 CODECLIBS+= mad
 endif

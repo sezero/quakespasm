@@ -1862,6 +1862,7 @@ void COM_AddGameDirectory (const char *dir)
 	}
 }
 
+#if defined(USE_QS_CONBACK)
 static void kill_id1_conback (void)  /* QuakeSpasm customization: */
 {
 	searchpath_t	*search;
@@ -1884,6 +1885,7 @@ static void kill_id1_conback (void)  /* QuakeSpasm customization: */
 		}
 	}
 }
+#endif	/* USE_QS_CONBACK */
 
 /*
 =================
@@ -1911,10 +1913,12 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	COM_AddGameDirectory (va("%s/"GAMENAME, com_basedir));
 	strcpy (com_gamedir, va("%s/"GAMENAME, com_basedir));
 
+#if defined(USE_QS_CONBACK)
 	if (!fitzmode)
 	{ /* QuakeSpasm customization: */
 		kill_id1_conback ();
 	}
+#endif	/* USE_QS_CONBACK */
 
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away

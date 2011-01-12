@@ -4,6 +4,7 @@
 
 #include "quakedef.h"
 
+#if defined(USE_QS_CONBACK)
 static const byte conback_byte[] =
 {
 #  include "conback.h"
@@ -28,4 +29,6 @@ char *get_conback (void)
   memcpy (size_data, custom_conback, 2 * sizeof(int));
   return custom_conback;
 }
+
+#endif	/* USE_QS_CONBACK */
 

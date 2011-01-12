@@ -318,6 +318,12 @@ qpic_t	*Draw_CachePic (const char *path)
 Draw_ConbackPic -- QuakeSpasm custom conback drawing.
 ================
 */
+#if !defined(USE_QS_CONBACK)
+static inline qpic_t *Draw_ConbackPic (void)
+{
+	return Draw_CachePic ("gfx/conback.lmp");
+}
+#else
 extern char *get_conback(void);
 static qboolean have_mod_conback;
 void Draw_CheckConback (void)
@@ -365,6 +371,7 @@ qpic_t *Draw_ConbackPic (void)
 	return &pic->pic;
     }	/* -- QuakeSpasm */
 }
+#endif	/* USE_QS_CONBACK */
 
 /*
 ================
@@ -466,8 +473,10 @@ void Draw_Init (void)
 	// load game pics
 	Draw_LoadPics ();
 
+#if defined(USE_QS_CONBACK)
 	/* QuakeSpasm customization: */
 	Draw_CheckConback ();
+#endif	/* USE_QS_CONBACK */
 }
 
 //==============================================================================

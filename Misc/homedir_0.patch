@@ -1,14 +1,14 @@
 support for user directories, based on a patch by Piotr Szymaniak.
-** against quakespasm svn revision 390.
+** against quakespasm svn revision 392.
 ** in alpha state, minimally tested.
 ** on-the-fly game directory changes not supported yet.
 ** needs more work.
 
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 390)
+--- Quake/common.c	(revision 392)
 +++ Quake/common.c	(working copy)
-@@ -1825,32 +1825,36 @@
+@@ -1825,32 +1825,36 @@ pack_t *COM_LoadPackFile (const char *pa
  COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
  =================
  */
@@ -49,7 +49,7 @@ Index: Quake/common.c
  		pak = COM_LoadPackFile (pakfile);
  		if (!pak)
  			break;
-@@ -1860,6 +1864,14 @@
+@@ -1860,6 +1864,14 @@ void COM_AddGameDirectory (const char *d
  		search->next = com_searchpaths;
  		com_searchpaths = search;
  	}
@@ -63,8 +63,8 @@ Index: Quake/common.c
 +	}
  }
  
- static void kill_id1_conback (void)  /* QuakeSpasm customization: */
-@@ -1894,6 +1906,10 @@
+ #if defined(USE_QS_CONBACK)
+@@ -1896,6 +1908,10 @@ void COM_InitFilesystem (void) //johnfit
  {
  	int i, j;
  
@@ -75,7 +75,7 @@ Index: Quake/common.c
  	i = COM_CheckParm ("-basedir");
  	if (i && i < com_argc-1)
  		strcpy (com_basedir, com_argv[i + 1]);
-@@ -1908,8 +1924,7 @@
+@@ -1910,8 +1926,7 @@ void COM_InitFilesystem (void) //johnfit
  	}
  
  	// start up with GAMENAME by default (id1)
@@ -83,9 +83,9 @@ Index: Quake/common.c
 -	strcpy (com_gamedir, va("%s/"GAMENAME, com_basedir));
 +	COM_AddGameDirectory (com_basedir, GAMENAME);
  
+ #if defined(USE_QS_CONBACK)
  	if (!fitzmode)
- 	{ /* QuakeSpasm customization: */
-@@ -1921,17 +1936,17 @@
+@@ -1925,17 +1940,17 @@ void COM_InitFilesystem (void) //johnfit
  	com_nummissionpacks = 0;
  	if (COM_CheckParm ("-rogue"))
  	{
@@ -106,7 +106,7 @@ Index: Quake/common.c
  		com_nummissionpacks++;
  	}
  	//johnfitz
-@@ -1940,7 +1955,7 @@
+@@ -1944,7 +1959,7 @@ void COM_InitFilesystem (void) //johnfit
  	if (i && i < com_argc-1)
  	{
  		com_modified = true;
