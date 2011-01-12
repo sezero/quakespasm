@@ -266,13 +266,6 @@
 			sepNavVisRange = "{1109, 1050}";
 		};
 	};
-	4830B79E0D464CAE00EF4498 /* Todo.txt */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1335, 445}}";
-			sepNavSelRange = "{980, 0}";
-			sepNavVisRange = "{0, 980}";
-		};
-	};
 	4834895F120598A7004184BC /* appcast.xml */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {1142, 445}}";
@@ -818,16 +811,6 @@
 		rType = 0;
 		vrLen = 462;
 		vrLoc = 2781;
-	};
-	48BB6B22124731BE001239EF /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 4830B79E0D464CAE00EF4498 /* Todo.txt */;
-		name = "Todo.txt: 15";
-		rLen = 0;
-		rLoc = 980;
-		rType = 0;
-		vrLen = 980;
-		vrLoc = 0;
 	};
 	48BB6B4D12473484001239EF /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;

@@ -147,8 +147,6 @@
 		48134A1712102F400015BF15 /* net_udp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_udp.h; path = ../Quake/net_udp.h; sourceTree = SOURCE_ROOT; };
 		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
 		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
-		4830B79D0D464CAE00EF4498 /* Changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Changelog.txt; path = ../Misc/Changelog.txt; sourceTree = SOURCE_ROOT; };
-		4830B79E0D464CAE00EF4498 /* Todo.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = Todo.txt; path = ../Misc/Todo.txt; sourceTree = SOURCE_ROOT; };
 		48348942120595B1004184BC /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		4834895F120598A7004184BC /* appcast.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = appcast.xml; sourceTree = "<group>"; };
 		483A77E60D2EE97700CB2E4C /* cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cmd.h; path = ../Quake/cmd.h; sourceTree = SOURCE_ROOT; };
@@ -331,8 +329,6 @@
 				4890A5EA1205D6ED00452753 /* Sparkle */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				4830B79D0D464CAE00EF4498 /* Changelog.txt */,
-				4830B79E0D464CAE00EF4498 /* Todo.txt */,
 			);
 			name = QuakeSpasm;
 			sourceTree = "<group>";
