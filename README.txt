@@ -239,14 +239,13 @@
   6.  Todo
 
 
-  o  Ogg/Mp3 music file support
-
   o  Add HoT's first person camera (and menu item)
 
-  o  Native CD audio support .... cd_sdl.c doesn't have proper volume
-     controls
+  o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
+     volume controls
 
-  o  Test usb keyboards. Do the keypads work ?
+  o  Test usb keyboards. Do the keypads work ? Make the OSX apple key
+     work.
 
   o  Tested HOME directory support
 
@@ -254,9 +253,9 @@
 
   o  Fix Centerview (V_StartPitchDrift)
 
-  o  Fix compiler warnings
 
-  o  Tie down the "-window/-fullscreen" options / behaviour ?
+  o  There is still an unecessary screen render on program init under
+     some conditions, when using the "-window/-fullscreen" options.
 
 
   7.  Links

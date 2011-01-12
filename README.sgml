@@ -137,15 +137,13 @@ The process is not for the faint hearted</em></p>.
 
 <sect> Todo <p>
 <itemize>
-<item>Ogg/Mp3 music file support
 <item>Add HoT's first person camera (and menu item)
-<item>Native CD audio support .... cd_sdl.c doesn't have proper volume controls
-<item>Test usb keyboards. Do the keypads work ?
+<item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls
+<item>Test usb keyboards. Do the keypads work ? Make the OSX apple key work.
 <item>Tested HOME directory support
 <item>Finalize OSX automatic updating feature
 <item>Fix Centerview (V_StartPitchDrift)
-<item>Fix compiler warnings
-<item>Tie down the "-window/-fullscreen" options / behaviour ?
+<item>There is still an unecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.
 </itemize>
 
 <sect> Links <p>
