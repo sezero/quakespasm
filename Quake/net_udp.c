@@ -261,7 +261,7 @@ int UDP_Read (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr)
 	if (ret == SOCKET_ERROR)
 	{
 		int err = SOCKETERRNO;
-		if (err == EWOULDBLOCK || err == ECONNREFUSED)
+		if (err == NET_EWOULDBLOCK || err == NET_ECONNREFUSED)
 			return 0;
 		Con_SafePrintf ("UDP_Read, recvfrom: %s\n", socketerror(err));
 	}
@@ -319,7 +319,7 @@ int UDP_Write (sys_socket_t socketid, byte *buf, int len, struct qsockaddr *addr
 	if (ret == SOCKET_ERROR)
 	{
 		int err = SOCKETERRNO;
-		if (err == EWOULDBLOCK)
+		if (err == NET_EWOULDBLOCK)
 			return 0;
 		Con_SafePrintf ("UDP_Write, sendto: %s\n", socketerror(err));
 	}

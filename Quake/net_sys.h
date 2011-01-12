@@ -111,6 +111,9 @@ typedef int	socklen_t;
 #define	closesocket	close
 #endif
 
+#define	NET_EWOULDBLOCK		EWOULDBLOCK
+#define	NET_ECONNREFUSED	ECONNREFUSED
+
 #define	socketerror(x)	strerror((x))
 
 /* Verify that we defined HAVE_SA_LEN correctly: */
@@ -142,12 +145,8 @@ typedef int	socklen_t;
 typedef SOCKET	sys_socket_t;
 
 #define	SOCKETERRNO	WSAGetLastError()
-/* the new MS SDKs define the following two,
- * so we must undefine them before redefining. */
-#undef	EWOULDBLOCK
-#define	EWOULDBLOCK	WSAEWOULDBLOCK
-#undef	ECONNREFUSED
-#define	ECONNREFUSED	WSAECONNREFUSED
+#define	NET_EWOULDBLOCK		WSAEWOULDBLOCK
+#define	NET_ECONNREFUSED	WSAECONNREFUSED
 /* must #include "wsaerror.h" for this : */
 #define	socketerror(x)	__WSAE_StrError((x))
 
