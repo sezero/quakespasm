@@ -35,9 +35,6 @@
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
 				Name="VCMIDLTool"
 			/>
 			<Tool
@@ -50,8 +47,8 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="4"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -67,6 +64,7 @@
 				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -111,19 +109,18 @@
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
 				Name="VCMIDLTool"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -141,7 +138,6 @@
 				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
-				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -187,9 +183,6 @@
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
 				Name="VCMIDLTool"
 				TargetEnvironment="3"
 			/>
@@ -203,8 +196,8 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
+				CompileAs="1"
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -220,6 +213,7 @@
 				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
+				IgnoreDefaultLibraryNames="msvcrt.lib"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="17"
@@ -264,20 +258,19 @@
 				Name="VCXMLDataGeneratorTool"
 			/>
 			<Tool
-				Name="VCWebServiceProxyGeneratorTool"
-			/>
-			<Tool
 				Name="VCMIDLTool"
 				TargetEnvironment="3"
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="2"
+				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
 				RuntimeLibrary="2"
+				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
 				DebugInformationFormat="3"
 				CompileAs="1"
 			/>
@@ -295,7 +288,6 @@
 				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
-				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
