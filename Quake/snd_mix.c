@@ -302,13 +302,19 @@ static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int count)
 
 	leftvol = ch->leftvol * snd_vol;
 	rightvol = ch->rightvol * snd_vol;
+	leftvol >>= 8;
+	rightvol >>= 8;
 	sfx = (signed short *)sc->data + ch->pos;
 
 	for (i = 0; i < count; i++)
 	{
 		data = sfx[i];
-		left = (data * leftvol) >> 8;
-		right = (data * rightvol) >> 8;
+	// this was causing integer overflow as observed in quakespasm
+	// with the warpspasm mod moved <<8 to left/right volume above.
+	//	left = (data * leftvol) >> 8;
+	//	right = (data * rightvol) >> 8;
+		left = data * leftvol;
+		right = data * rightvol;
 		paintbuffer[i].left += left;
 		paintbuffer[i].right += right;
 	}
