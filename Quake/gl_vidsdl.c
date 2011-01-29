@@ -1627,6 +1627,7 @@ chooses next refresh rate in order, then updates vid_refreshrate cvar
 */
 void VID_Menu_ChooseNextRate (int dir)
 {
+#if 0	/* not implemented for SDL */
 	int i;
 
 	for (i=0;i<vid_menu_numrates;i++)
@@ -1649,6 +1650,7 @@ void VID_Menu_ChooseNextRate (int dir)
 	}
 
 	Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
+#endif
 }
 
 /*
@@ -1801,7 +1803,8 @@ void VID_MenuDraw (void)
 	i++;
 
 	M_Print (16, video_cursor_table[i], "      Refresh rate");
-//	M_Print (184, video_cursor_table[i], va("%i Hz", (int)vid_refreshrate.value)); refresh rates are disabled for now -- kristian
+// refresh rates not implemented -- kristian
+//	M_Print (184, video_cursor_table[i], va("%i Hz", (int)vid_refreshrate.value));
 	M_Print (184, video_cursor_table[i], "N/A");
 	i++;
 
