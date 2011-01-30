@@ -364,6 +364,128 @@ static int mp3_stopread(snd_stream_t *stream)
 	return 0;
 }
 
+static int mp3_madseek(snd_stream_t *stream, unsigned long offset)
+{
+	mp3_priv_t *p = (mp3_priv_t *) stream->priv;
+	size_t   initial_bitrate = p->Frame.header.bitrate;
+	size_t   tagsize = 0, consumed = 0;
+	int vbr = 0;		/* Variable Bit Rate, bool */
+	qboolean depadded = false;
+	unsigned long to_skip_samples = 0;
+
+	/* Reset all */
+	FS_rewind(&stream->fh);
+	mad_timer_reset(&p->Timer);
+	p->FrameCount = 0;
+
+	/* They where opened in startread */
+	mad_synth_finish(&p->Synth);
+	mad_frame_finish(&p->Frame);
+	mad_stream_finish(&p->Stream);
+
+	mad_stream_init(&p->Stream);
+	mad_frame_init(&p->Frame);
+	mad_synth_init(&p->Synth);
+
+	offset /= stream->info.channels;
+	to_skip_samples = offset;
+
+	while (1)	/* Read data from the MP3 file */
+	{
+		int bytes_read, padding = 0;
+		size_t leftover = p->Stream.bufend - p->Stream.next_frame;
+
+		memcpy(p->mp3_buffer, p->Stream.this_frame, leftover);
+		bytes_read = FS_fread(p->mp3_buffer + leftover, (size_t) 1,
+					MP3_BUFFER_SIZE - leftover, &stream->fh);
+		if (bytes_read <= 0)
+		{
+			Con_DPrintf("seek failure. unexpected EOF (frames=%lu leftover=%lu)\n",
+					(unsigned long)p->FrameCount, (unsigned long)leftover);
+			break;
+		}
+		for ( ; !depadded && padding < bytes_read && !p->mp3_buffer[padding]; ++padding)
+			;
+		depadded = true;
+		mad_stream_buffer(&p->Stream, p->mp3_buffer + padding, leftover + bytes_read - padding);
+
+		while (to_skip_samples >= 0)	/* Decode frame headers */
+		{
+			static unsigned short samples;
+			p->Stream.error = MAD_ERROR_NONE;
+
+			/* Not an audio frame */
+			if (mad_header_decode(&p->Frame.header, &p->Stream) == -1)
+			{
+				if (p->Stream.error == MAD_ERROR_BUFLEN)
+					break;	/* Normal behaviour; get some more data from the file */
+				if (!MAD_RECOVERABLE(p->Stream.error))
+				{
+					Con_DPrintf("unrecoverable MAD error\n");
+					break;
+				}
+				if (p->Stream.error == MAD_ERROR_LOSTSYNC)
+				{
+					unsigned long available = (p->Stream.bufend - p->Stream.this_frame);
+					tagsize = mp3_tagsize(p->Stream.this_frame, (size_t) available);
+					if (tagsize)
+					{	/* It's some ID3 tags, so just skip */
+						if (tagsize >= available)
+						{
+							FS_fseek(&stream->fh, (long)(tagsize - available), SEEK_CUR);
+							depadded = false;
+						}
+						mad_stream_skip(&p->Stream, q_min(tagsize, available));
+					}
+					else
+					{
+						Con_DPrintf("MAD lost sync\n");
+					}
+				}
+				else
+				{
+					Con_DPrintf("recoverable MAD error\n");
+				}
+				continue;
+			}
+
+			consumed +=  p->Stream.next_frame - p->Stream.this_frame;
+			vbr      |= (p->Frame.header.bitrate != initial_bitrate);
+
+			samples = 32 * MAD_NSBSAMPLES(&p->Frame.header);
+
+			p->FrameCount++;
+			mad_timer_add(&p->Timer, p->Frame.header.duration);
+
+			if (to_skip_samples <= samples)
+			{
+				mad_frame_decode(&p->Frame,&p->Stream);
+				mad_synth_frame(&p->Synth, &p->Frame);
+				p->cursamp = to_skip_samples;
+				return 0;
+			}
+			else	to_skip_samples -= samples;
+
+			/* If not VBR, we can extrapolate frame size */
+			if (p->FrameCount == 64 && !vbr)
+			{
+				p->FrameCount = offset / samples;
+				to_skip_samples = offset % samples;
+
+				if (0 != FS_fseek(&stream->fh, (p->FrameCount * consumed / 64) + tagsize, SEEK_SET))
+					return -1;
+
+				/* Reset Stream for refilling buffer */
+				mad_stream_finish(&p->Stream);
+				mad_stream_init(&p->Stream);
+				break;
+			}
+		}
+	};
+
+	return -1;
+}
+
 static qboolean S_MP3_CodecInitialize (void)
 {
 	return true;
@@ -442,10 +564,13 @@ static void S_MP3_CodecCloseStream (snd_stream_t *stream)
 
 static int S_MP3_CodecRewindStream (snd_stream_t *stream)
 {
-	/* FIXME: do this better */
+#if 0
 	mp3_stopread(stream);
 	FS_rewind(&stream->fh);
 	return mp3_startread(stream);
+#else
+	return mp3_madseek(stream, 0);
+#endif
 }
 
 snd_codec_t mp3_codec =
