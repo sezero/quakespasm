@@ -1,6 +1,8 @@
 /*
- * Ogg/Vorbis streaming music support, adapted from several open source
+ * Ogg/Vorbis streaming music support, loosely based on several open source
  * Quake engine based projects with many modifications.
+ *
+ * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

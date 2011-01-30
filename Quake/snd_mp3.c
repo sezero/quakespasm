@@ -6,7 +6,9 @@
  * written by Bertrand Petit <madlld@phoe.fmug.org> (BSD license, see at
  * http://www.bsd-dk.dk/~elrond/audio/madlld/).  The tag identification
  * functions were adapted from the GPL-licensed libid3tag library, see at
- * http://www.underbit.com/products/mad/.
+ * http://www.underbit.com/products/mad/.  Adapted to Quake and Hexen II
+ * game engines by O.Sezer :
+ * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -495,25 +497,6 @@ static void S_MP3_CodecShutdown (void)
 {
 }
 
-static int MP3_check_file (snd_stream_t *stream)
-{
-	unsigned char magic[16];
-
-	if (FS_fread(magic, 1, 16, &stream->fh) != 16)
-		return -1;
-	if ((magic[0] == 0xFF && (magic[1] & 0xF0) == 0xF0) ||
-	    tag_is_id3v2(magic, 16))
-		return 0;
-	if (FS_fseek(&stream->fh, -128, SEEK_END) < 0)
-		return -1;
-	if (FS_fread(magic, 1, 16, &stream->fh) != 16)
-		return -1;
-	if (tag_is_id3v1(magic, 16))
-		return 0;
-
-	return -1;
-}
-
 static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 {
 	snd_stream_t *stream;
@@ -523,20 +506,6 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 		return NULL;
 
 	stream->priv = Z_Malloc(sizeof(mp3_priv_t));
-
-	/* check some rudimentary info before feeding it to libmad. */
-	if (MP3_check_file(stream) < 0)
-	{
-		/*
-		Con_Printf("%s format couldn't be identified.\n", filename);
-		Z_Free(stream->priv);
-		S_CodecUtilClose(&stream);
-		return NULL;
-		*/
-		Con_DPrintf("%s has no identifier tags.\n", filename);
-	}
-
-	FS_rewind(&stream->fh);
 
 	if (mp3_startread(stream) < 0)
 	{

@@ -1,10 +1,11 @@
 /*
-	snd_sdl2.c
+	snd_sdl.c
 	SDL audio driver for Hexen II: Hammer of Thyrion, based on the
 	implementations found in the quakeforge and quake3-icculus.org
 	projects.
 
-	$Id: snd_sdl2.c,v 1.8 2010/01/23 12:01:23 sezero Exp $
+	Copyright (C) 1999-2005 Id Software, Inc.
+	Copyright (C) 2005-2011 O.Sezer <sezero@users.sourceforge.net>
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
