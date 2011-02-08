@@ -26,14 +26,6 @@
 #include "snd_codec.h"
 #include "bgmusic.h"
 
-/*
- * MUSIC FILE DIRECTORIES:
- *
- * Midi music file have always lived under "midi" directory, we are
- * not changing that.  Any other music files, including cd-rips, are
- * expected under the "music" directory.
- */
-
 #define MUSIC_DIRNAME	"music"
 
 qboolean	bgmloop;
@@ -63,15 +55,15 @@ static music_handler_t wanted_handlers[] =
 {
 	{ CODECTYPE_OGG,  BGM_STREAMER, -1,  ".ogg", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_MP3,  BGM_STREAMER, -1,  ".mp3", MUSIC_DIRNAME, NULL },
-	{ CODECTYPE_WAV,  BGM_STREAMER, -1,  ".wav", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_FLAC, BGM_STREAMER, -1, ".flac", MUSIC_DIRNAME, NULL },
+	{ CODECTYPE_WAV,  BGM_STREAMER, -1,  ".wav", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_NONE, BGM_NONE,     -1,    NULL,         NULL,  NULL }
 };
 
 static music_handler_t *music_handlers = NULL;
 
 #define ANY_CODECTYPE	0xFFFFFFFF
-#define CDRIP_TYPES	(CODECTYPE_OGG | CODECTYPE_MP3 | CODECTYPE_WAV)
+#define CDRIP_TYPES	(CODECTYPE_OGG | CODECTYPE_MP3 | CODECTYPE_FLAC | CODECTYPE_WAV)
 #define CDRIPTYPE(x)	(((x) & CDRIP_TYPES) != 0)
 
 static snd_stream_t *bgmstream = NULL;

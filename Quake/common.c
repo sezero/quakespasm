@@ -1957,9 +1957,9 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 
 size_t FS_fread(void *ptr, size_t size, size_t nmemb, fshandle_t *fh)
 {
-	long byteSize;
-	long bytesRead;
-	size_t nMembRead;
+	long byte_size;
+	long bytes_read;
+	size_t nmemb_read;
 
 	if (!ptr)
 	{
@@ -1979,21 +1979,21 @@ size_t FS_fread(void *ptr, size_t size, size_t nmemb, fshandle_t *fh)
 		return 0;
 	}
 
-	byteSize = nmemb * size;
-	if (byteSize > fh->length - fh->pos) /* just read to end */
-		byteSize = fh->length - fh->pos;
-	bytesRead = fread(ptr, 1, byteSize, fh->file);
-	fh->pos += bytesRead;
+	byte_size = nmemb * size;
+	if (byte_size > fh->length - fh->pos)	/* just read to end */
+		byte_size = fh->length - fh->pos;
+	bytes_read = fread(ptr, 1, byte_size, fh->file);
+	fh->pos += bytes_read;
 
-	/* return the number of elements read not the number of bytes */
-	nMembRead = bytesRead / size;
-
+	/* fread() must return the number of elements read,
+	 * not the total number of bytes. */
+	nmemb_read = bytes_read / size;
 	/* even if the last member is only read partially
-	 * it is counted as a whole in the return value */
-	if (bytesRead % size)
-		nMembRead++;
+	 * it is counted as a whole in the return value. */
+	if (bytes_read % size)
+		nmemb_read++;
 
-	return nMembRead;
+	return nmemb_read;
 }
 
 int FS_fseek(fshandle_t *fh, long offset, int whence)

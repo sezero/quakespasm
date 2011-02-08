@@ -34,11 +34,12 @@ qboolean BGM_Init (void);
 void BGM_Shutdown (void);
 
 void BGM_Play (const char *filename);
-void BGM_PlayCDtrack (byte track, qboolean looping);
 void BGM_Stop (void);
 void BGM_Update (void);
 void BGM_Pause (void);
 void BGM_Resume (void);
+
+void BGM_PlayCDtrack (byte track, qboolean looping);
 
 #endif	/* _BGMUSIC_H_ */
 
