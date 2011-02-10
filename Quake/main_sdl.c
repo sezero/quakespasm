@@ -130,6 +130,12 @@ int main(int argc, char *argv[])
 			  case SDL_BUTTON_WHEELDOWN:
 				Key_Event(K_MWHEELDOWN, event.button.type == SDL_MOUSEBUTTONDOWN);
 				break;
+			  case SDL_BUTTON_X1:
+				Key_Event(K_MOUSE4, event.button.type == SDL_MOUSEBUTTONDOWN);
+				break;
+			  case SDL_BUTTON_X2:
+				Key_Event(K_MOUSE5, event.button.type == SDL_MOUSEBUTTONDOWN);
+				break;
 			  }
 			  break;
 			case SDL_KEYDOWN:

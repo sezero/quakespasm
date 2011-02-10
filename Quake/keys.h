@@ -139,6 +139,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define K_MWHEELUP		239
 #define K_MWHEELDOWN		240
 
+// thumb buttons
+#define K_MOUSE4		241
+#define K_MOUSE5		242
+
 
 typedef enum {key_game, key_console, key_message, key_menu} keydest_t;
 
