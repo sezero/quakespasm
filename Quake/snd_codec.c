@@ -232,7 +232,7 @@ snd_stream_t *S_CodecUtilOpen(const char *filename, snd_codec_t *codec)
 	/* Try to open the file */
 	length = (long) COM_FOpenFile(filename, &handle, NULL);
 	pak = file_from_pak;
-	if (length == (size_t)-1)
+	if (length == -1)
 	{
 		Con_DPrintf("Couldn't open %s\n", filename);
 		return NULL;
