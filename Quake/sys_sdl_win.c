@@ -57,10 +57,9 @@ static int findhandle (void)
 	return -1;
 }
 
-int Sys_filelength (FILE *f)
+long Sys_filelength (FILE *f)
 {
-	int pos;
-	int end;
+	long		pos, end;
 
 	pos = ftell (f);
 	fseek (f, 0, SEEK_END);

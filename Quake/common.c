@@ -1446,6 +1446,23 @@ void    COM_CreatePath (char *path)
 }
 
 /*
+================
+COM_filelength
+================
+*/
+long COM_filelength (FILE *f)
+{
+	long		pos, end;
+
+	pos = ftell (f);
+	fseek (f, 0, SEEK_END);
+	end = ftell (f);
+	fseek (f, pos, SEEK_SET);
+
+	return end;
+}
+
+/*
 ===========
 COM_FindFile
 
@@ -1474,66 +1491,68 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 //
 	for (search = com_searchpaths; search; search = search->next)
 	{
-	// is the element a pak file?
-		if (search->pack)
+		if (search->pack)	/* look through all the pak file elements */
 		{
-		// look through all the pak file elements
 			pak = search->pack;
 			for (i=0 ; i<pak->numfiles ; i++)
-				if (!strcmp (pak->files[i].name, filename))
-				{	// found it!
-				//	Sys_Printf ("PackFile: %s : %s\n",pak->filename, filename);
-					file_from_pak = 1;
-					com_filesize = pak->files[i].filelen;
-					if (path_id)
-						*path_id = search->path_id;
-					if (handle)
-					{
-						*handle = pak->handle;
-						Sys_FileSeek (pak->handle, pak->files[i].filepos);
-					}
-					else if (file)
-					{       // open a new file on the pakfile
-						*file = fopen (pak->filename, "rb");
-						if (*file)
-							fseek (*file, pak->files[i].filepos, SEEK_SET);
-					}
+			{
+				if (strcmp(pak->files[i].name, filename) != 0)
+					continue;
+				// found it!
+				com_filesize = pak->files[i].filelen;
+				file_from_pak = 1;
+				if (path_id)
+					*path_id = search->path_id;
+				if (handle)
+				{
+					*handle = pak->handle;
+					Sys_FileSeek (pak->handle, pak->files[i].filepos);
 					return com_filesize;
 				}
+				else if (file)
+				{ /* open a new file on the pakfile */
+					*file = fopen (pak->filename, "rb");
+					if (*file)
+						fseek (*file, pak->files[i].filepos, SEEK_SET);
+					return com_filesize;
+				}
+				else /* for COM_FileExists() */
+				{
+					return com_filesize;
+				}
+			}
 		}
-		else
+		else	/* check a file in the directory tree */
 		{
-	// check a file in the directory tree
 			if (!static_registered)
-			{       // if not a registered version, don't ever go beyond base
+			{ /* if not a registered version, don't ever go beyond base */
 				if ( strchr (filename, '/') || strchr (filename,'\\'))
 					continue;
 			}
 
 			sprintf (netpath, "%s/%s",search->filename, filename);
-
 			findtime = Sys_FileTime (netpath);
 			if (findtime == -1)
 				continue;
 
-		//	Sys_Printf ("FindFile: %s\n",netpath);
-			com_filesize = Sys_FileOpenRead (netpath, &i);
 			if (path_id)
 				*path_id = search->path_id;
 			if (handle)
 			{
+				com_filesize = Sys_FileOpenRead (netpath, &i);
 				*handle = i;
+				return com_filesize;
 			}
 			else if (file)
 			{
-				Sys_FileClose (i);
 				*file = fopen (netpath, "rb");
+				com_filesize = (*file == NULL) ? -1 : COM_filelength (*file);
+				return com_filesize;
 			}
 			else
 			{
-				Sys_FileClose (i);
+				return 0; /* dummy valid value for COM_FileExists() */
 			}
-			return com_filesize;
 		}
 
 	}
@@ -1542,10 +1561,10 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 
 	if (handle)
 		*handle = -1;
-	else if (file)
+	if (file)
 		*file = NULL;
 	com_filesize = -1;
-	return -1;
+	return com_filesize;
 }
 
 
@@ -1553,13 +1572,13 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 ===========
 COM_FileExists
 
-Returns com_filesize if file is found in the quake filesystem,
--1 if not. Closes the files it opens, if any.
+Returns whether the file is found in the quake filesystem.
 ===========
 */
-int COM_FileExists (const char *filename, unsigned int *path_id)
+qboolean COM_FileExists (const char *filename, unsigned int *path_id)
 {
-	return COM_FindFile (filename, NULL, NULL, path_id);
+	int ret = COM_FindFile (filename, NULL, NULL, path_id);
+	return (ret == -1) ? false : true;
 }
 
 /*
