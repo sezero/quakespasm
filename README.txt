@@ -77,14 +77,14 @@
 
   3.1.  Music Playback
 
-  From 0.85.4 Quakespasm can play back external MP3, OGG and Wave music
-  files.
+  Since version 0.85.4, Quakespasm can play back external MP3, OGG and
+  Wave music files.
 
   o  Tracks should be named "track02.ogg, track03.ogg" ... (for example.
-     There is no track01), and placed into "Quake/id1/music".
+     there is no track01), and placed into "Quake/id1/music".
 
-  o  Linux users may need some extra libraries installed: libmad-0.15.1b
-     for MP3, and libogg-1.2.2 and libvorbis-1.3.2 for OGG.
+  o  Unix users may need some extra libraries installed: libmad for MP3
+     and libogg and libvorbis for OGG.
 
   o  Use the "-nomusic" option to disable this feature.
 
@@ -113,12 +113,9 @@
   "libvorbis" for OGG files.
 
   HOME directory support can be enabled via the Misc/homedir_0.patch
-  diff
 
-  If for any reason this doesn't work, the project can also be built
-  with Codeblocks.  This is a large, free, integrated development
-  environment that requires wxWidgets and cmake to install.  The process
-  is not for the faint hearted.
+  The project can also be built with Codeblocks (project files included).
+
 
   5.  Changes
 
@@ -128,8 +125,11 @@
 
   o  Implement music (ogg, mp3, wav) playback
 
-  o  A better fix for the infamous "SV_TouchLinks: next != l->next"
-     problem
+  o  A better fix for the infamous SV_TouchLinks problem, no more hard
+     lockups with maps such as "whiteroom"
+
+  o  Add support for mouse buttons 4 and 5
+
 
   5.2.  0.85.3
 

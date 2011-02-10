@@ -44,10 +44,10 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 </itemize>
 </p>
 <sect1>Music Playback<p>
-From 0.85.4 Quakespasm can play back external MP3, OGG and Wave music files.
+Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music files.
 <itemize>
-<item>Tracks should be named "track02.ogg, track03.ogg" ... (for example. There is no track01), and placed into "Quake/id1/music".
-<item>Linux users may need some extra libraries installed: libmad-0.15.1b  for MP3, and libogg-1.2.2 and libvorbis-1.3.2 for OGG.
+<item>Tracks should be named "track02.ogg, track03.ogg" ... (for example. there is no track01), and placed into "Quake/id1/music".
+<item>Unix users may need some extra libraries installed: libmad for MP3 and libogg and libvorbis for OGG.
 <item>Use the "-nomusic" option to disable this feature.
 </itemize>
 
@@ -67,16 +67,15 @@ Compile time options include
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installs
 </itemize>
 <p>Streaming music playback requires "libmad" for MP3, and "libogg", "libvorbis" for OGG files.
-<p>HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf> diff
-<p><em>If for any reason this doesn't work, the project can also be built with Codeblocks.
-This is a large, free, integrated development environment that requires wxWidgets and cmake to install.
-The process is not for the faint hearted</em></p>.
+<p>HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf>
+<p>The project can also be built with Codeblocks (project files included).</p>.
 
 <sect> Changes<p>
 <sect1> 0.85.4<p>
 <itemize>
 <item> Implement music (ogg, mp3, wav) playback
-<item> A better fix for the infamous "SV_TouchLinks: next != l->next" problem
+<item> A better fix for the infamous SV_TouchLinks problem, no more hard lockups with maps such as "whiteroom"
+<item> Add support for mouse buttons 4 and 5
 </itemize>
 </p>
 <sect1> 0.85.3<p>
