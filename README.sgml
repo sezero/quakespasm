@@ -46,7 +46,7 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 <sect1>Music Playback<p>
 Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music files.
 <itemize>
-<item>Tracks should be named "track02.ogg, track03.ogg" ... (for example. there is no track01), and placed into "Quake/id1/music".
+<item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: libmad for MP3 and libogg and libvorbis for OGG.
 <item>Use the "-nomusic" option to disable this feature.
 </itemize>
