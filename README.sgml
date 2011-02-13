@@ -76,6 +76,12 @@ Compile time options include
 <item> Implement music (ogg, mp3, wav) playback
 <item> A better fix for the infamous SV_TouchLinks problem, no more hard lockups with maps such as "whiteroom"
 <item> Add support for mouse buttons 4 and 5
+<item> Fix the "unalias" console command
+<item> Restore the "screen size" menu item
+<item> Fixed an erroneous protocol check in the server code
+<item> Revised lit file loading, the lit file must be from the same game directory as the map itself
+<item> Fixed rest of the compiler warnings
+<item> Other minor sound and cdaudio updates
 </itemize>
 </p>
 <sect1> 0.85.3<p>

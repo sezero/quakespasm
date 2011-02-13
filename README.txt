@@ -130,6 +130,19 @@
 
   o  Add support for mouse buttons 4 and 5
 
+  o  Fix the "unalias" console command
+
+  o  Restore the "screen size" menu item
+
+  o  Fixed an erroneous protocol check in the server code
+
+  o  Revised lit file loading, the lit file must be from the same game
+     directory as the map itself
+
+  o  Fixed rest of the compiler warnings
+
+  o  Other minor sound and cdaudio updates
+
 
   5.2.  0.85.3
 
