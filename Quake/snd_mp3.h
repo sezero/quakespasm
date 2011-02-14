@@ -1,4 +1,4 @@
-/* MP3 decoding support using libmad. */
+/* MP3 decoding support using libmad or libmpg123. */
 
 #if !defined(_SND_MP3_H_)
 #define _SND_MP3_H_

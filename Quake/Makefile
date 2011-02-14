@@ -19,6 +19,9 @@ USE_CODEC_WAVE=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 
+# which library to use for mp3 decoding: mad or mpg123
+MP3LIB=mad
+
 # ============================================================================
 # Helper functions
 # ============================================================================
@@ -121,6 +124,17 @@ ifeq ($(USE_QS_CONBACK),1)
 CFLAGS+= -DUSE_QS_CONBACK
 endif
 
+ifeq ($(MP3LIB),mad)
+mp3_obj=snd_mp3.o
+else
+ifeq ($(MP3LIB),mpg123)
+mp3_obj=snd_mpg123.o
+else
+USE_CODEC_MP3=no
+mp3_obj=snd_mp3.o
+endif
+endif
+
 CODECLIBS  :=
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
@@ -131,7 +145,7 @@ CODECLIBS+= vorbis vorbisfile ogg
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
-CODECLIBS+= mad
+CODECLIBS+= $(MP3LIB)
 endif
 
 COMMON_LIBS:= m GL
@@ -161,7 +175,7 @@ MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
 	snd_wave.o \
 	snd_vorbis.o \
-	snd_mp3.o
+	$(mp3_obj)
 COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
 SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o

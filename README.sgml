@@ -66,7 +66,7 @@ Compile time options include
 <item><bf>make SDLNET=1</bf> to enable SDL_net (Otherwise the socket api will be used directly)
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installs
 </itemize>
-<p>Streaming music playback requires "libmad" for MP3, and "libogg", "libvorbis" for OGG files.
+<p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
 <p>HOME directory support can be enabled via the <bf>Misc/homedir_0.patch</bf>
 <p>The project can also be built with Codeblocks (project files included).</p>.
 

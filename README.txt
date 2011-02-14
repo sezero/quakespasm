@@ -109,8 +109,8 @@
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installs
 
-  Streaming music playback requires "libmad" for MP3, and "libogg",
-  "libvorbis" for OGG files.
+  Streaming music playback requires "libmad" or "libmpg123" for MP3, and
+  "libogg" and "libvorbis" for OGG files.
 
   HOME directory support can be enabled via the Misc/homedir_0.patch
 
