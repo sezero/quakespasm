@@ -128,7 +128,7 @@ qboolean BGM_Init (void)
 	Cmd_AddCommand("music_loop", BGM_Loop_f);
 	Cmd_AddCommand("music_stop", BGM_Stop_f);
 
-	if (COM_CheckParm("-nomusic") != 0)
+	if (COM_CheckParm("-noextmusic") != 0)
 		no_extmusic = true;
 
 	bgmloop = true;
@@ -301,6 +301,8 @@ void BGM_PlayCDtrack (byte track, qboolean looping)
 	while (handler)
 	{
 		if (! handler->is_available)
+			goto _next;
+		if (! CDRIPTYPE(handler->type))
 			goto _next;
 		q_snprintf(tmp, sizeof(tmp), "%s/track%02d%s",
 				MUSIC_DIRNAME, (int)track, handler->ext);

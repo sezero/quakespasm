@@ -86,7 +86,7 @@
   o  Unix users may need some extra libraries installed: libmad for MP3
      and libogg and libvorbis for OGG.
 
-  o  Use the "-nomusic" option to disable this feature.
+  o  Use the "-noextmusic" option to disable this feature.
 
 
   4.  Compiling
