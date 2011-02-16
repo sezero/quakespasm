@@ -1,5 +1,5 @@
 /*
- * Background music handling for Quakespasm
+ * Background music handling for Quakespasm (adapted from uHexen2)
  * Handles streaming music as raw sound samples and runs the midi driver
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
@@ -37,8 +37,8 @@ static float	old_volume = -1.0f;
 typedef enum _bgm_player
 {
 	BGM_NONE = -1,
-	BGM_MIDIDRV,
-	BGM_STREAMER,
+	BGM_MIDIDRV = 1,
+	BGM_STREAMER
 } bgm_player_t;
 
 typedef struct music_handler_s

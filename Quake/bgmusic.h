@@ -1,11 +1,9 @@
 /*
- * Background music handling for Quakespasm
+ * Background music handling for Quakespasm (adapted from uHexen2)
  * Handles streaming music as raw sound samples and runs the midi driver
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
  * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
- *
- * $Id: bgmusic.h 3818 2010-12-19 09:04:17Z sezero $
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
