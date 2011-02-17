@@ -136,6 +136,8 @@
 
   o  Fixed an erroneous protocol check in the server code
 
+  o  Raised the default zone memory size to 384 kb
+
   o  Revised lit file loading, the lit file must be from the same game
      directory as the map itself
 
