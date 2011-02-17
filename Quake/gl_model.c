@@ -649,7 +649,7 @@ void Mod_LoadLighting (lump_t *l)
 		if (path_id != loadmodel->path_id)
 		{
 			Hunk_FreeToLowMark(mark);
-			Con_DPrintf("%s ignored (not from the same gamedir)\n", litfilename);
+			Con_Printf("%s ignored (not from the same gamedir)\n", litfilename);
 		}
 		else
 		if (data[0] == 'Q' && data[1] == 'L' && data[2] == 'I' && data[3] == 'T')
