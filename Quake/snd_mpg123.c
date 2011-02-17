@@ -65,10 +65,13 @@ static off_t mp3_seek (void *f, off_t offset, int whence)
 
 static qboolean S_MP3_CodecInitialize (void)
 {
-	if (! mp3_codec.initialized)
+	if (!mp3_codec.initialized)
 	{
 		if (mpg123_init() != MPG123_OK)
+		{
+			Con_Printf ("Could not initialize mpg123\n");
 			return false;
+		}
 		mp3_codec.initialized = true;
 		return true;
 	}
