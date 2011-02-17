@@ -80,6 +80,7 @@ Compile time options include
 <item> Restore the "screen size" menu item
 <item> Fixed an erroneous protocol check in the server code
 <item> Raised the default zone memory size to 384 kb
+<item> Raised the default max_edicts from 1024 to 2048
 <item> Revised lit file loading, the lit file must be from the same game directory as the map itself
 <item> Fixed rest of the compiler warnings
 <item> Other minor sound and cdaudio updates

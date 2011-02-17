@@ -138,6 +138,8 @@
 
   o  Raised the default zone memory size to 384 kb
 
+  o  Raised the default max_edicts from 1024 to 2048
+
   o  Revised lit file loading, the lit file must be from the same game
      directory as the map itself
 
