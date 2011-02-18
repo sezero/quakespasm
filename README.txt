@@ -4,22 +4,20 @@
 
   Table of Contents
 
-
   1. About
   2. Downloads
   3. Hints
-     3.1 Music Playback
+     3.1  Music Playback
 
   4. Compiling
   5. Changes
-     5.1 0.85.4
-     5.2 0.85.3
-     5.3 0.85.2
-     5.4 0.85.1
+     5.1  0.85.4
+     5.2  0.85.3
+     5.3  0.85.2
+     5.4  0.85.1
 
   6. Todo
   7. Links
-
 
   ______________________________________________________________________
 
@@ -29,33 +27,32 @@
 
   1.  About
 
-
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
-  includes 64bit CPU cupport, a new sound driver, several networking
-  fixes, and a few graphical niceities.
+  includes 64bit CPU support, a new sound driver, several networking
+  fixes and a few graphical niceities.
 
   <http://quakespasm.sourceforge.net>
 
 
   2.  Downloads
 
-
   Source
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download>
-  Linux binary
+
+  Linux (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download>
-  Windows
+
+  Windows (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
+
   OSX universal binary
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download>
 
 
   3.  Hints
 
-
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
-
 
   o  To disable some changes, use "quakespasm -fitz"
 
@@ -63,7 +60,7 @@
      ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
   o  Shift+Escape draws the Console.
 
-  o  From the console, use UP to browse the command line history, and
+  o  From the console, use UP to browse the command line history and
      TAB to autocomplete command and map names.
 
   o  There is currently no CD Music volume support. cd_sdl.c needs
@@ -83,8 +80,8 @@
   o  Tracks should be named like "track02.ogg", "track03.ogg" ... (there
      is no track01) and placed into "Quake/id1/music".
 
-  o  Unix users may need some extra libraries installed: libmad for MP3
-     and libogg and libvorbis for OGG.
+  o  Unix users may need some extra libraries installed: "libmad" for
+     MP3, and "libogg" and "libvorbis" for OGG.
 
   o  Use the "-noextmusic" option to disable this feature.
 
@@ -93,12 +90,10 @@
 
   After extracting the source tarball, browse the Makefile and edit the
   music streaming options, then
-
   ______________________________________________________________________
   make
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
-
 
   Compile time options include
 
@@ -107,12 +102,12 @@
   o  make SDLNET=1 to enable SDL_net (Otherwise the socket api will be
      used directly)
 
-  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installs
+  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
 
-  HOME directory support can be enabled via the Misc/homedir_0.patch
+  HOME directory support can be enabled via Misc/homedir_0.patch
 
   The project can also be built with Codeblocks (project files included).
 
@@ -122,8 +117,7 @@
 
   5.1.  0.85.4
 
-
-  o  Implement music (ogg, mp3, wav) playback
+  o  Implement music (OGG, MP3, WAV) playback
 
   o  A better fix for the infamous SV_TouchLinks problem, no more hard
      lockups with maps such as "whiteroom"
@@ -150,7 +144,6 @@
 
   5.2.  0.85.3
 
-
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
 
@@ -161,7 +154,7 @@
   o  Add a slider for scr_sbaralpha, which now defaults to 0.95
      (slightly transparent, allowing for a nicer status bar)
 
-  o  Allow player messages longer than 32 chars
+  o  Allow player messages longer than 32 characters
 
   o  Sockaddr fix for FreeBSD/OSX/etc networking
 
@@ -187,7 +180,6 @@
 
 
   5.3.  0.85.2
-
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -216,14 +208,13 @@
 
   5.4.  0.85.1
 
-
   o  64 bit CPU support
 
   o  Restructured SDL sound driver
 
   o  Custom conback
 
-  o  Tweaked the command line completion , and added a map/changelevel
+  o  Tweaked the command line completion and added a map/changelevel
      autocompletion function
 
   o  Alt+Enter toggles fullscreen
@@ -249,19 +240,18 @@
 
   o  Changes to default console alpha, speed
 
-  o  Changes to cvar persistence gl_flashblend(default 0), r_shadow,
+  o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
 
   6.  Todo
-
 
   o  Add HoT's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
      volume controls
 
-  o  Test usb keyboards. Do the keypads work ? Make the OSX apple key
+  o  Test usb keyboards. Do the keypads work? Make the OSX apple key
      work.
 
   o  Tested HOME directory support
@@ -270,13 +260,11 @@
 
   o  Fix Centerview (V_StartPitchDrift)
 
-
-  o  There is still an unecessary screen render on program init under
+  o  There is still an unnecessary screen render on program init under
      some conditions, when using the "-window/-fullscreen" options.
 
 
   7.  Links
-
 
   QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
   QuakeSpasm Project page <http://sourceforge.net/projects/quakespasm>
@@ -292,5 +280,4 @@
   Ozkan's email <mailto:gmail - dot - com - username - sezeroz>
   Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
   Kristian's email <mailto:gmail - dot - com - username - inveigle>
-
 

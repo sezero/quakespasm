@@ -49,7 +49,7 @@
 
 
 <P>QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.
-It includes 64bit CPU cupport, a new sound driver, several networking fixes, and a few graphical niceities.</P>
+It includes 64bit CPU support, a new sound driver, several networking fixes and a few graphical niceities.</P>
 <P>
 <A HREF="http://quakespasm.sourceforge.net">http://quakespasm.sourceforge.net</A></P>
 
@@ -58,8 +58,8 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 
 <P>
 <A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download">Source</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download">Linux binary</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download">Windows</A><BR>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download">Linux (x86)</A><BR>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download">Windows (x86)</A><BR>
 <A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download">OSX universal binary</A><BR></P>
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
@@ -75,7 +75,7 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 , where DRIVER may be alsa, dsp, pulse, esd ...
 </LI>
 <LI><B>Shift+Escape</B> draws the Console.</LI>
-<LI>From the console, use <B>UP</B> to browse the command line history, and
+<LI>From the console, use <B>UP</B> to browse the command line history and
 <B>TAB</B> to autocomplete command and map names.</LI>
 <LI>There is currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
@@ -89,7 +89,7 @@ It includes 64bit CPU cupport, a new sound driver, several networking fixes, and
 <P>Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music files.
 <UL>
 <LI>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".</LI>
-<LI>Unix users may need some extra libraries installed: libmad for MP3 and libogg and libvorbis for OGG.</LI>
+<LI>Unix users may need some extra libraries installed: "libmad" for MP3, and "libogg" and "libvorbis" for OGG.</LI>
 <LI>Use the "-noextmusic" option to disable this feature.</LI>
 </UL>
 </P>
@@ -110,11 +110,11 @@ Compile time options include
 <UL>
 <LI><B>make DEBUG=1</B> for debugging</LI>
 <LI><B>make SDLNET=1</B> to enable SDL_net (Otherwise the socket api will be used directly)</LI>
-<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installs</LI>
+<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installations</LI>
 </UL>
 </P>
 <P>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</P>
-<P>HOME directory support can be enabled via the <B>Misc/homedir_0.patch</B></P>
+<P>HOME directory support can be enabled via <B>Misc/homedir_0.patch</B></P>
 <P>The project can also be built with Codeblocks (project files included).</P>
 .
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
@@ -125,7 +125,7 @@ Compile time options include
 
 <P>
 <UL>
-<LI> Implement music (ogg, mp3, wav) playback</LI>
+<LI> Implement music (OGG, MP3, WAV) playback</LI>
 <LI> A better fix for the infamous SV_TouchLinks problem, no more hard lockups with maps such as "whiteroom"</LI>
 <LI> Add support for mouse buttons 4 and 5</LI>
 <LI> Fix the "unalias" console command</LI>
@@ -147,7 +147,7 @@ Compile time options include
 <LI> Much needed OSX framework stuff from Kristian</LI>
 <LI> Add a persistent history feature (thanks Baker)</LI>
 <LI> Add a slider for scr_sbaralpha, which now defaults to 0.95 (slightly transparent, allowing for a nicer status bar)</LI>
-<LI> Allow player messages longer than 32 chars</LI>
+<LI> Allow player messages longer than 32 characters</LI>
 <LI> Sockaddr fix for FreeBSD/OSX/etc networking</LI>
 <LI> Connect status bar size to the scale slider</LI>
 <LI> Include an ISNAN (is not-a-number) fix to catch the occassional quake C bug giving traceline problems</LI>
@@ -189,7 +189,7 @@ Compile time options include
 <LI>64 bit CPU support</LI>
 <LI>Restructured SDL sound driver</LI>
 <LI>Custom conback </LI>
-<LI>Tweaked the command line completion , and added a map/changelevel autocompletion function</LI>
+<LI>Tweaked the command line completion and added a map/changelevel autocompletion function</LI>
 <LI>Alt+Enter toggles fullscreen</LI>
 <LI>Disable Draw_BeginDisc which causes core dumps when called excessively</LI>
 <LI>Show helpful info on start-up</LI>
@@ -201,7 +201,7 @@ Compile time options include
 <LI>Don't play demos on program init</LI>
 <LI>Default Heapsize is 64meg</LI>
 <LI>Changes to default console alpha, speed</LI>
-<LI>Changes to cvar persistence gl_flashblend(default 0), r_shadow, r_wateralpha, r_dynamic, r_novis</LI>
+<LI>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis</LI>
 </UL>
 </P>
 
@@ -212,11 +212,11 @@ Compile time options include
 <UL>
 <LI>Add HoT's first person camera (and menu item)</LI>
 <LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls</LI>
-<LI>Test usb keyboards. Do the keypads work ? Make the OSX apple key work.</LI>
+<LI>Test usb keyboards. Do the keypads work? Make the OSX apple key work.</LI>
 <LI>Tested HOME directory support</LI>
 <LI>Finalize OSX automatic updating feature</LI>
 <LI>Fix Centerview (V_StartPitchDrift)</LI>
-<LI>There is still an unecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.</LI>
+<LI>There is still an unnecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.</LI>
 </UL>
 </P>
 
