@@ -170,8 +170,10 @@ int main(int argc, char *argv[])
 		time = newtime - oldtime;
 		Host_Frame(time);
 
-		// throttle the game loop just a little bit - noone needs more than 1000fps, I think
-		if (newtime - oldtime < 1)
+		/* throttle the game loop just a little bit
+		   and make the game run a little cooler:
+		   noone needs more than 1000fps, I think */
+		if (time < sys_throttle.value)
 			SDL_Delay(1);
 
 		oldtime = newtime;

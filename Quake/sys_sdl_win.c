@@ -37,6 +37,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 qboolean		isDedicated;
 qboolean	Win95, Win95old, WinNT, WinVista;
+cvar_t		sys_throttle = {"sys_throttle", "0.02", true};
 
 static HANDLE		hinput, houtput;
 
