@@ -1,7 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
-Copyright (C) 2007-2008 Kristian Duske
+Copyright (C) 2011 O.Sezer
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -645,11 +645,12 @@ void Mod_LoadLighting (lump_t *l)
 	data = (byte*) COM_LoadHunkFile (litfilename, &path_id);
 	if (data)
 	{
-		// use lit file only from the same gamedir as the map itself
-		if (path_id != loadmodel->path_id)
+		// use lit file only from the same gamedir as the map
+		// itself or from a searchpath with higher priority.
+		if (path_id < loadmodel->path_id)
 		{
 			Hunk_FreeToLowMark(mark);
-			Con_Printf("%s ignored (not from the same gamedir)\n", litfilename);
+			Con_Printf("ignored %s from a gamedir with lower priority\n", litfilename);
 		}
 		else
 		if (data[0] == 'Q' && data[1] == 'L' && data[2] == 'I' && data[3] == 'T')

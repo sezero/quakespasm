@@ -135,7 +135,8 @@
   o  Raised the default max_edicts from 1024 to 2048
 
   o  Revised lit file loading, the lit file must be from the same game
-     directory as the map itself
+     directory as the map itself or from a searchpath with a higher
+     priority
 
   o  Fixed rest of the compiler warnings
 
