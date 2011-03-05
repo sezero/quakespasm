@@ -13,7 +13,7 @@ USE_QS_CONBACK=1
 ### Enable/Disable codecs for streaming music support
 #
 # OGG (vorbis) playback requires libvorbis and libogg
-# MP3 playback requires libmad
+# MP3 playback requires libmad or libmpg123
 
 USE_CODEC_WAVE=1
 USE_CODEC_MP3=1
