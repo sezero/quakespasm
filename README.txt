@@ -4,31 +4,28 @@
 
   Table of Contents
 
-
   1. About
   2. Downloads
   3. Hints
-     3.1 Music Playback
+     3.1  Music Playback
 
   4. Compiling
   5. Changes
-     5.1 0.85.4
-     5.2 0.85.3
-     5.3 0.85.2
-     5.4 0.85.1
+     5.1  0.85.4
+     5.2  0.85.3
+     5.3  0.85.2
+     5.4  0.85.1
 
   6. Todo
   7. Links
 
-
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.4 (19 February 2011)
+  QuakeSpasm 0.85.4 (27 March 2011)
 
 
   1.  About
-
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
@@ -39,28 +36,30 @@
 
   2.  Downloads
 
-
   Source
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download>
+
   Linux (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download>
+
   Windows (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
+
   OSX universal binary
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download>
 
 
   3.  Hints
 
-
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
-
 
   o  To disable some changes, use "quakespasm -fitz"
 
-  o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
-     ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
+  o  For different sound drivers use
+     "SDL_AUDIODRIVER=DRIVER ./quakespasm" , where DRIVER may be alsa,
+     dsp, pulse, esd ...
+
   o  Shift+Escape draws the Console.
 
   o  From the console, use UP to browse the command line history and TAB
@@ -93,21 +92,19 @@
 
   After extracting the source tarball, browse the Makefile and edit the
   music streaming options, then
-
   ______________________________________________________________________
   make
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
 
-
   Compile time options include
 
-  o  make DEBUG=1 for debugging
+  o  make DEBUG=1  for debugging
 
-  o  make SDLNET=1 to enable SDL_net (Otherwise the socket api will be
+  o  make SDLNET=1  to enable SDL_net (Otherwise the socket api will be
      used directly)
 
-  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
+  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG  for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
@@ -115,13 +112,13 @@
   HOME directory support can be enabled via Misc/homedir_0.patch
 
   The project can also be built with Codeblocks (project files
-  included)..
+  included).
+
 
   5.  Changes
 
 
   5.1.  0.85.4
-
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -148,8 +145,8 @@
 
   o  Other minor sound and cdaudio updates
 
-  5.2.  0.85.3
 
+  5.2.  0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -188,7 +185,6 @@
 
   5.3.  0.85.2
 
-
   o  Replace the old "Screen size" slider with a "Scale" slider
 
   o  Don't constantly open and close condebug log
@@ -215,7 +211,6 @@
 
 
   5.4.  0.85.1
-
 
   o  64 bit CPU support
 
@@ -255,7 +250,6 @@
 
   6.  Todo
 
-
   o  Add HoT's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
@@ -276,20 +270,25 @@
 
   7.  Links
 
-
   QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
+
   QuakeSpasm Project page <http://sourceforge.net/projects/quakespasm>
+
   FitzQuake Homepage <http://www.celephais.net/fitzquake>
+
   Sleepwalkr's Original SDL Port
   <http://www.kristianduske.com/fitzquake>
+
   Baker's 0.85 Source Code
   <http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip>
+
   Func Quakespasm forum
   <http://www.celephais.net/board/view_thread.php?id=60452>
+
   Func SDL Fitzquake forum
   <http://www.celephais.net/board/view_thread.php?id=60172>
+
   Ozkan's email <mailto:gmail - dot - com - username - sezeroz>
   Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
   Kristian's email <mailto:gmail - dot - com - username - inveigle>
-
 

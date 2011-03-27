@@ -1,5 +1,5 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win32 : MinGW)
-# using cross-toolchains on a linux host	/ Jan. 12, 2011.
+# using cross-toolchains on a linux host	/ Mar. 27, 2011.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=1" to use WinSock2 api instead of old WinSock 1.1.

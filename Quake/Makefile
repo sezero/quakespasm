@@ -1,4 +1,4 @@
-### GNU Makefile for QuakeSpasm unix targets, Jan. 12, 2011
+### GNU Makefile for QuakeSpasm unix targets, Mar. 27, 2011
 #
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
@@ -13,7 +13,7 @@ USE_QS_CONBACK=1
 ### Enable/Disable codecs for streaming music support
 #
 # OGG (vorbis) playback requires libvorbis and libogg
-# MP3 playback requires libmad or libmpg123
+# MP3 playback requires libmad or libmpg123 (see MP3LIB below)
 
 USE_CODEC_WAVE=1
 USE_CODEC_MP3=1
