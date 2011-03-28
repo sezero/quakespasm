@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 42;
+	objectVersion = 44;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -29,6 +29,11 @@
 		002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
 		48134A1812102F400015BF15 /* net_bsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1412102F400015BF15 /* net_bsd.c */; };
 		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
+		4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0A112D5B9AE006DD66E /* bgmusic.c */; };
+		4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0AC12D5B9ED006DD66E /* snd_codec.c */; };
+		4818B0B612D5BA1A006DD66E /* snd_mp3.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B012D5BA1A006DD66E /* snd_mp3.c */; };
+		4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B212D5BA1A006DD66E /* snd_vorbis.c */; };
+		4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B412D5BA1A006DD66E /* snd_wave.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
 		48348943120595B1004184BC /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48348942120595B1004184BC /* Sparkle.framework */; };
 		4834894F120595E9004184BC /* Sparkle.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 48348942120595B1004184BC /* Sparkle.framework */; };
@@ -145,6 +150,17 @@
 		48134A1512102F400015BF15 /* net_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_defs.h; path = ../Quake/net_defs.h; sourceTree = SOURCE_ROOT; };
 		48134A1612102F400015BF15 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
 		48134A1712102F400015BF15 /* net_udp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_udp.h; path = ../Quake/net_udp.h; sourceTree = SOURCE_ROOT; };
+		4818B0A112D5B9AE006DD66E /* bgmusic.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bgmusic.c; path = ../Quake/bgmusic.c; sourceTree = SOURCE_ROOT; };
+		4818B0A212D5B9AE006DD66E /* bgmusic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bgmusic.h; path = ../Quake/bgmusic.h; sourceTree = SOURCE_ROOT; };
+		4818B0AC12D5B9ED006DD66E /* snd_codec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_codec.c; path = ../Quake/snd_codec.c; sourceTree = SOURCE_ROOT; };
+		4818B0AD12D5B9ED006DD66E /* snd_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_codec.h; path = ../Quake/snd_codec.h; sourceTree = SOURCE_ROOT; };
+		4818B0AF12D5BA1A006DD66E /* snd_codeci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_codeci.h; path = ../Quake/snd_codeci.h; sourceTree = SOURCE_ROOT; };
+		4818B0B012D5BA1A006DD66E /* snd_mp3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3.c; path = ../Quake/snd_mp3.c; sourceTree = SOURCE_ROOT; };
+		4818B0B112D5BA1A006DD66E /* snd_mp3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_mp3.h; path = ../Quake/snd_mp3.h; sourceTree = SOURCE_ROOT; };
+		4818B0B212D5BA1A006DD66E /* snd_vorbis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_vorbis.c; path = ../Quake/snd_vorbis.c; sourceTree = SOURCE_ROOT; };
+		4818B0B312D5BA1A006DD66E /* snd_vorbis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_vorbis.h; path = ../Quake/snd_vorbis.h; sourceTree = SOURCE_ROOT; };
+		4818B0B412D5BA1A006DD66E /* snd_wave.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_wave.c; path = ../Quake/snd_wave.c; sourceTree = SOURCE_ROOT; };
+		4818B0B512D5BA1A006DD66E /* snd_wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_wave.h; path = ../Quake/snd_wave.h; sourceTree = SOURCE_ROOT; };
 		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
 		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
 		48348942120595B1004184BC /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -462,11 +478,16 @@
 			isa = PBXGroup;
 			children = (
 				483A77E10D2EE91000CB2E4C /* Headers */,
+				4818B0A112D5B9AE006DD66E /* bgmusic.c */,
 				483A78500D2EEAC300CB2E4C /* cd_sdl.c */,
+				4818B0AC12D5B9ED006DD66E /* snd_codec.c */,
 				486577C80D31A22A00E7920A /* snd_dma.c */,
 				486577C90D31A22A00E7920A /* snd_mem.c */,
 				486577CA0D31A22A00E7920A /* snd_mix.c */,
+				4818B0B012D5BA1A006DD66E /* snd_mp3.c */,
 				483A78540D2EEAC300CB2E4C /* snd_sdl.c */,
+				4818B0B212D5BA1A006DD66E /* snd_vorbis.c */,
+				4818B0B412D5BA1A006DD66E /* snd_wave.c */,
 			);
 			name = Sound;
 			sourceTree = "<group>";
@@ -546,8 +567,14 @@
 		483A77E10D2EE91000CB2E4C /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				4818B0A212D5B9AE006DD66E /* bgmusic.h */,
 				483A77FD0D2EE9BD00CB2E4C /* cdaudio.h */,
 				483A77FE0D2EE9BD00CB2E4C /* q_sound.h */,
+				4818B0AD12D5B9ED006DD66E /* snd_codec.h */,
+				4818B0AF12D5BA1A006DD66E /* snd_codeci.h */,
+				4818B0B112D5BA1A006DD66E /* snd_mp3.h */,
+				4818B0B312D5BA1A006DD66E /* snd_vorbis.h */,
+				4818B0B512D5BA1A006DD66E /* snd_wave.h */,
 			);
 			name = Headers;
 			sourceTree = "<group>";
@@ -613,7 +640,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "QuakeSpasm" */;
 			compatibilityVersion = "Xcode 2.4";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* QuakeSpasm */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -729,6 +763,11 @@
 				4890A5D21205D55700452753 /* UpdateButton.m in Sources */,
 				48134A1812102F400015BF15 /* net_bsd.c in Sources */,
 				48134A1912102F400015BF15 /* net_udp.c in Sources */,
+				4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */,
+				4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */,
+				4818B0B612D5BA1A006DD66E /* snd_mp3.c in Sources */,
+				4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */,
+				4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -768,9 +807,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				PRODUCT_NAME = Distribution;
 			};
 			name = Debug;
@@ -781,9 +818,7 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				PRODUCT_NAME = Distribution;
 				ZERO_LINK = NO;
 			};
@@ -792,8 +827,10 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = (
+					x86_64,
+					i386,
+				);
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -804,9 +841,7 @@
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
 					/Library/Frameworks/SDL_net.framework/Headers,
@@ -814,6 +849,10 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = QuakeSpasm;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -823,8 +862,11 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = (
+					i386,
+					x86_64,
+					ppc,
+				);
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -832,9 +874,7 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
 					/Library/Frameworks/SDL_net.framework/Headers,
@@ -842,6 +882,28 @@
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
+				OTHER_CFLAGS = "";
+				"OTHER_CFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_CFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_LDFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
 				PRODUCT_NAME = QuakeSpasm;
 				WRAPPER_EXTENSION = app;
 			};
@@ -850,48 +912,75 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = (
+					i386,
+					x86_64,
+				);
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_MODEL_TUNING = G3;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
 				HEADER_SEARCH_PATHS = (
+					/opt/local/include,
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
+				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1)";
-				ARCHS_STANDARD_32_64_BIT_PRE_XCODE_3_1 = "x86_64 i386 ppc";
+				ARCHS = (
+					x86_64,
+					i386,
+					ppc,
+				);
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_MODEL_TUNING = G3;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"USE_QS_CONBACK",
-				);
 				HEADER_SEARCH_PATHS = (
+					/opt/local/include,
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
+				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "";
+				"OTHER_CFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_CFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_LDFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
 				PREBINDING = NO;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				VALID_ARCHS = "i386 x86_64 ppc ppc64 ppc7400 ppc970";
 			};
 			name = Release;
 		};
