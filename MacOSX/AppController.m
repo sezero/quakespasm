@@ -107,6 +107,7 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
 		[arguments removeArgument:@"-nolauncher"];
 		[self launchQuake:self];
 	} else {
+        [launcherWindow center];
 		[launcherWindow makeKeyAndOrderFront:self];
 
         SUUpdater* updater = [SUUpdater sharedUpdater];
