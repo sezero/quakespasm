@@ -31,7 +31,6 @@
 		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
 		4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0A112D5B9AE006DD66E /* bgmusic.c */; };
 		4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0AC12D5B9ED006DD66E /* snd_codec.c */; };
-		4818B0B612D5BA1A006DD66E /* snd_mp3.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B012D5BA1A006DD66E /* snd_mp3.c */; };
 		4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B212D5BA1A006DD66E /* snd_vorbis.c */; };
 		4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B412D5BA1A006DD66E /* snd_wave.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
@@ -91,15 +90,18 @@
 		483A78810D2EEAF000CB2E4C /* r_world.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A786D0D2EEAF000CB2E4C /* r_world.c */; };
 		4847CD5F12057F94000B560F /* sys_sdl_unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4847CD5E12057F94000B560F /* sys_sdl_unix.c */; };
 		484AA4B40D3FF6C0005D917A /* QuakeSpasm.icns in Resources */ = {isa = PBXBuildFile; fileRef = 484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */; };
+		4854B1AF1340C5FD004C9F45 /* libmpg123.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4854B1AE1340C5FD004C9F45 /* libmpg123.dylib */; };
+		4854B1B11340C646004C9F45 /* snd_mpg123.c in Sources */ = {isa = PBXBuildFile; fileRef = 4854B1B01340C646004C9F45 /* snd_mpg123.c */; };
+		4854B1E71340C964004C9F45 /* libogg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4854B1E41340C964004C9F45 /* libogg.dylib */; };
+		4854B1E81340C964004C9F45 /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4854B1E51340C964004C9F45 /* libvorbis.dylib */; };
+		4854B1E91340C964004C9F45 /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4854B1E61340C964004C9F45 /* libvorbisfile.dylib */; };
+		4854B1EA1340C970004C9F45 /* libogg.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 4854B1E41340C964004C9F45 /* libogg.dylib */; };
+		4854B1EB1340C970004C9F45 /* libvorbis.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 4854B1E51340C964004C9F45 /* libvorbis.dylib */; };
+		4854B1EC1340C970004C9F45 /* libvorbisfile.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 4854B1E61340C964004C9F45 /* libvorbisfile.dylib */; };
+		4854B1ED1340C970004C9F45 /* libmpg123.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 4854B1AE1340C5FD004C9F45 /* libmpg123.dylib */; };
 		486577CB0D31A22A00E7920A /* snd_dma.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577C80D31A22A00E7920A /* snd_dma.c */; };
 		486577CC0D31A22A00E7920A /* snd_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577C90D31A22A00E7920A /* snd_mem.c */; };
 		486577CD0D31A22A00E7920A /* snd_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577CA0D31A22A00E7920A /* snd_mix.c */; };
-		48692BED1340A08400A0F098 /* libvorbis.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48692BEB1340A08400A0F098 /* libvorbis.0.dylib */; };
-		48692BEE1340A08500A0F098 /* libvorbisfile.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48692BEC1340A08400A0F098 /* libvorbisfile.3.dylib */; };
-		48692BF41340A1EC00A0F098 /* libogg.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48692BF31340A1EC00A0F098 /* libogg.0.dylib */; };
-		48692C2D1340A4EE00A0F098 /* libogg.0.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 48692BF31340A1EC00A0F098 /* libogg.0.dylib */; };
-		48692C2E1340A4F100A0F098 /* libvorbis.0.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 48692BEB1340A08400A0F098 /* libvorbis.0.dylib */; };
-		48692C2F1340A4F600A0F098 /* libvorbisfile.3.dylib in Resources */ = {isa = PBXBuildFile; fileRef = 48692BEC1340A08400A0F098 /* libvorbisfile.3.dylib */; };
 		48728D2D0D3004A80004D61B /* net_dgrm.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D280D3004A70004D61B /* net_dgrm.c */; };
 		48728D2E0D3004A80004D61B /* net_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D2A0D3004A80004D61B /* net_loop.c */; };
 		48895DB90D4914A000849ABF /* pl_osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 48895DB80D4914A000849ABF /* pl_osx.m */; };
@@ -170,7 +172,6 @@
 		4818B0AC12D5B9ED006DD66E /* snd_codec.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_codec.c; path = ../Quake/snd_codec.c; sourceTree = SOURCE_ROOT; };
 		4818B0AD12D5B9ED006DD66E /* snd_codec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_codec.h; path = ../Quake/snd_codec.h; sourceTree = SOURCE_ROOT; };
 		4818B0AF12D5BA1A006DD66E /* snd_codeci.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_codeci.h; path = ../Quake/snd_codeci.h; sourceTree = SOURCE_ROOT; };
-		4818B0B012D5BA1A006DD66E /* snd_mp3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3.c; path = ../Quake/snd_mp3.c; sourceTree = SOURCE_ROOT; };
 		4818B0B112D5BA1A006DD66E /* snd_mp3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_mp3.h; path = ../Quake/snd_mp3.h; sourceTree = SOURCE_ROOT; };
 		4818B0B212D5BA1A006DD66E /* snd_vorbis.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_vorbis.c; path = ../Quake/snd_vorbis.c; sourceTree = SOURCE_ROOT; };
 		4818B0B312D5BA1A006DD66E /* snd_vorbis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_vorbis.h; path = ../Quake/snd_vorbis.h; sourceTree = SOURCE_ROOT; };
@@ -276,12 +277,14 @@
 		4846EB500D329BEB00A108DE /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../Quake/platform.h; sourceTree = SOURCE_ROOT; };
 		4847CD5E12057F94000B560F /* sys_sdl_unix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sys_sdl_unix.c; path = ../Quake/sys_sdl_unix.c; sourceTree = SOURCE_ROOT; };
 		484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = QuakeSpasm.icns; sourceTree = "<group>"; };
+		4854B1AE1340C5FD004C9F45 /* libmpg123.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmpg123.dylib; sourceTree = "<group>"; };
+		4854B1B01340C646004C9F45 /* snd_mpg123.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mpg123.c; path = ../Quake/snd_mpg123.c; sourceTree = SOURCE_ROOT; };
+		4854B1E41340C964004C9F45 /* libogg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libogg.dylib; sourceTree = "<group>"; };
+		4854B1E51340C964004C9F45 /* libvorbis.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvorbis.dylib; sourceTree = "<group>"; };
+		4854B1E61340C964004C9F45 /* libvorbisfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvorbisfile.dylib; sourceTree = "<group>"; };
 		486577C80D31A22A00E7920A /* snd_dma.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_dma.c; path = ../Quake/snd_dma.c; sourceTree = SOURCE_ROOT; };
 		486577C90D31A22A00E7920A /* snd_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mem.c; path = ../Quake/snd_mem.c; sourceTree = SOURCE_ROOT; };
 		486577CA0D31A22A00E7920A /* snd_mix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mix.c; path = ../Quake/snd_mix.c; sourceTree = SOURCE_ROOT; };
-		48692BEB1340A08400A0F098 /* libvorbis.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvorbis.0.dylib; sourceTree = "<group>"; };
-		48692BEC1340A08400A0F098 /* libvorbisfile.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libvorbisfile.3.dylib; sourceTree = "<group>"; };
-		48692BF31340A1EC00A0F098 /* libogg.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libogg.0.dylib; sourceTree = "<group>"; };
 		48728D280D3004A70004D61B /* net_dgrm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_dgrm.c; path = ../Quake/net_dgrm.c; sourceTree = SOURCE_ROOT; };
 		48728D290D3004A80004D61B /* net_dgrm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_dgrm.h; path = ../Quake/net_dgrm.h; sourceTree = SOURCE_ROOT; };
 		48728D2A0D3004A80004D61B /* net_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_loop.c; path = ../Quake/net_loop.c; sourceTree = SOURCE_ROOT; };
@@ -319,9 +322,10 @@
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */,
 				48348943120595B1004184BC /* Sparkle.framework in Frameworks */,
-				48692BED1340A08400A0F098 /* libvorbis.0.dylib in Frameworks */,
-				48692BEE1340A08500A0F098 /* libvorbisfile.3.dylib in Frameworks */,
-				48692BF41340A1EC00A0F098 /* libogg.0.dylib in Frameworks */,
+				4854B1AF1340C5FD004C9F45 /* libmpg123.dylib in Frameworks */,
+				4854B1E71340C964004C9F45 /* libogg.dylib in Frameworks */,
+				4854B1E81340C964004C9F45 /* libvorbis.dylib in Frameworks */,
+				4854B1E91340C964004C9F45 /* libvorbisfile.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,9 +377,10 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				48692BF31340A1EC00A0F098 /* libogg.0.dylib */,
-				48692BEB1340A08400A0F098 /* libvorbis.0.dylib */,
-				48692BEC1340A08400A0F098 /* libvorbisfile.3.dylib */,
+				4854B1E41340C964004C9F45 /* libogg.dylib */,
+				4854B1E51340C964004C9F45 /* libvorbis.dylib */,
+				4854B1E61340C964004C9F45 /* libvorbisfile.dylib */,
+				4854B1AE1340C5FD004C9F45 /* libmpg123.dylib */,
 				48FA25B612437EAB00667668 /* dsa_pub.pem */,
 				484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */,
 				48B9E7860D340B1E0001CACF /* Launcher.nib */,
@@ -508,8 +513,8 @@
 				486577C80D31A22A00E7920A /* snd_dma.c */,
 				486577C90D31A22A00E7920A /* snd_mem.c */,
 				486577CA0D31A22A00E7920A /* snd_mix.c */,
-				4818B0B012D5BA1A006DD66E /* snd_mp3.c */,
 				483A78540D2EEAC300CB2E4C /* snd_sdl.c */,
+				4854B1B01340C646004C9F45 /* snd_mpg123.c */,
 				4818B0B212D5BA1A006DD66E /* snd_vorbis.c */,
 				4818B0B412D5BA1A006DD66E /* snd_wave.c */,
 			);
@@ -688,9 +693,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48692C2D1340A4EE00A0F098 /* libogg.0.dylib in Resources */,
-				48692C2E1340A4F100A0F098 /* libvorbis.0.dylib in Resources */,
-				48692C2F1340A4F600A0F098 /* libvorbisfile.3.dylib in Resources */,
+				4854B1EA1340C970004C9F45 /* libogg.dylib in Resources */,
+				4854B1EB1340C970004C9F45 /* libvorbis.dylib in Resources */,
+				4854B1EC1340C970004C9F45 /* libvorbisfile.dylib in Resources */,
+				4854B1ED1340C970004C9F45 /* libmpg123.dylib in Resources */,
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */,
 				484AA4B40D3FF6C0005D917A /* QuakeSpasm.icns in Resources */,
@@ -793,9 +799,9 @@
 				48134A1912102F400015BF15 /* net_udp.c in Sources */,
 				4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */,
 				4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */,
-				4818B0B612D5BA1A006DD66E /* snd_mp3.c in Sources */,
 				4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */,
 				4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */,
+				4854B1B11340C646004C9F45 /* snd_mpg123.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,7 +909,12 @@
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_CODEC_MP3,
+					USE_CODEC_VORBIS,
+					USE_CODEC_WAVE,
+					USE_QS_CONBACK,
+				);
 				HEADER_SEARCH_PATHS = (
 					/Library/Frameworks/SDL.framework/Headers,
 					/Library/Frameworks/SDL_net.framework/Headers,
@@ -981,6 +992,7 @@
 				);
 				GCC_MODEL_TUNING = G3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_CODEC_MP3,
 					USE_CODEC_VORBIS,
 					USE_CODEC_WAVE,
 					USE_QS_CONBACK,
@@ -988,7 +1000,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/opt/local/include,
+					include,
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
