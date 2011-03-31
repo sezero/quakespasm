@@ -91,6 +91,7 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <LI>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".</LI>
 <LI>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.</LI>
 <LI>Use the "-noextmusic" option to disable this feature.</LI>
+<LI>See README.music for more details, if necessary.</LI>
 </UL>
 </P>
 
@@ -109,13 +110,13 @@ cp quakespasm /usr/local/games/quake (for example)
 Compile time options include
 <UL>
 <LI><B>make DEBUG=1</B> for debugging</LI>
-<LI><B>make SDLNET=1</B> to enable SDL_net (Otherwise the socket api will be used directly)</LI>
 <LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installations</LI>
 </UL>
 </P>
 <P>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</P>
 <P>HOME directory support can be enabled via <B>Misc/homedir_0.patch</B></P>
 <P>The project can also be built with Codeblocks (project files included).</P>
+<P>Windows developers can also build using Visual Studio 2005 or newer.</P>
 .
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
 
@@ -175,7 +176,7 @@ Compile time options include
 <LI> Block/Unblock sound upon focus loss/gain</LI>
 <LI> NAT fix (networking protocol fix)</LI>
 <LI> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000</LI>
-<LI> sv_main.c (localmodels) Bumped array size from 5 to 6 in order for it to operate correctly with the raised limits of fitzquake-0.85</LI>
+<LI> Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an old fitzquake-0.85 bug which used to cause segfaults depending on the compiler.</LI>
 <LI> Accept commandline options like "+connect ip:port"</LI>
 <LI> Add OSX Makefile (tested?)</LI>
 </UL>
@@ -210,7 +211,7 @@ Compile time options include
 
 <P>
 <UL>
-<LI>Add HoT's first person camera (and menu item)</LI>
+<LI>Add uHexen2's first person camera (and menu item)</LI>
 <LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls</LI>
 <LI>Test usb keyboards. Do the keypads work? Make the OSX apple key work.</LI>
 <LI>Tested HOME directory support</LI>

@@ -49,6 +49,7 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 <item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
 <item>Use the "-noextmusic" option to disable this feature.
+<item>See README.music for more details, if necessary.
 </itemize>
 
 
@@ -63,12 +64,12 @@ cp quakespasm /usr/local/games/quake (for example)
 Compile time options include
 <itemize>
 <item><bf>make DEBUG=1</bf> for debugging
-<item><bf>make SDLNET=1</bf> to enable SDL_net (Otherwise the socket api will be used directly)
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installations
 </itemize>
 <p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
 <p>HOME directory support can be enabled via <bf>Misc/homedir_0.patch</bf>
 <p>The project can also be built with Codeblocks (project files included).</p>.
+<p>Windows developers can also build using Visual Studio 2005 or newer.</p>.
 
 <sect> Changes<p>
 <sect1> 0.85.4<p>
@@ -116,7 +117,7 @@ Compile time options include
 <item> Block/Unblock sound upon focus loss/gain
 <item> NAT fix (networking protocol fix)
 <item> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000
-<item> sv_main.c (localmodels) Bumped array size from 5 to 6 in order for it to operate correctly with the raised limits of fitzquake-0.85
+<item> Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an old fitzquake-0.85 bug which used to cause segfaults depending on the compiler.
 <item> Accept commandline options like "+connect ip:port"
 <item> Add OSX Makefile (tested?)
 </itemize>
@@ -144,7 +145,7 @@ Compile time options include
 
 <sect> Todo <p>
 <itemize>
-<item>Add HoT's first person camera (and menu item)
+<item>Add uHexen2's first person camera (and menu item)
 <item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls
 <item>Test usb keyboards. Do the keypads work? Make the OSX apple key work.
 <item>Tested HOME directory support

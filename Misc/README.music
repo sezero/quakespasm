@@ -1,0 +1,80 @@
+QuakeSpasm supports ogg, mp3 and wav external music files to be played
+instead of cd music. What you should do is simple:
+
+1. Use your favorite cd-ripper application and rip your quake cdrom
+   audio tracks, convert them to ogg or mp3 so they occupy less space,
+   like track02.ogg, track03.ogg, etc.  (Notice that there is no such
+   thing as track01: the first tracks of both original Quake and the
+   mission pack cdroms are always "data" tracks.)
+
+2. Go into your quake installation directory and create a new directory
+   id1/music (for windows users id1\music).
+
+3. If you have the Scourge of Armagon mission pack, then create another
+   directory hipnotic/music .  If you have the Dissolution of Eternity
+   then create another directory rogue/music .
+
+4. Take the ripped music files from step1, place them under id1/music.
+   If you have the mission packs, repeat step1 for the mission packs,
+   too, and place the ripped music files under hipnotic/music for the
+   first mission pack or under rogue/music for the second mission pack.
+
+5. All are ready to go: When a level starts, the engine will first try
+   playing the necessary cdaudio track and if it doesn't find the cdrom
+   it will use the ripped music files instead.
+
+
+New console commands:
+---------------------
+- music <filename>
+  Start playing the requested music file.
+  Example:  music mymusic1
+
+  Notice that you don't have to type the file extension: The requested
+  music will be searched with ogg, mp3, and then with a wav extension,
+  automatically.
+
+  If you do specify the file extension, like "music mymusic1.wav", then
+  it will honor your wish and try only the given type: this is good for
+  testing/comparing the same music in different formats.
+
+- music_stop
+  Stops the playing music.
+
+- music_pause
+  Pauses the playing music
+
+- music_resume
+  Resumes playing the music if it was paused
+
+- music_loop 1
+  Makes the background music to loop (default behavior)
+
+- music_loop 0
+  Makes the background music to play once and then stop
+
+New cvars:
+-------------------------
+- bgm_extmusic (0 or 1): Disable or enable playback of external music
+  files instead of cdaudio. default is 1 (enabled).
+
+New command line options:
+-------------------------
+- -noextmusic: Disables the playback of external music files instead of
+  cdaudio.
+
+Music file directories:
+-------------------------
+- The music files are always searched under the "music" subdirectory of
+  a game.
+
+Music file search order:
+-------------------------
+The engine can handle multiple audio formats.  The map-dictated music,
+i.e. the ripped cd music, is always searched by the order of searchpath
+priority:  the file from the searchpath with the highest priority is
+chosen, because it is most likely the one from our own game directory
+itself.  This way, if a mod has track02 as a mp3 or wav, which is below
+track02.ogg in the music_handler order, the mp3 or wav will still have
+priority over track02.ogg from the id1 game directory.
+

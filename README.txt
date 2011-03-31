@@ -87,6 +87,8 @@
 
   o  Use the "-noextmusic" option to disable this feature.
 
+  o  See README.music for more details, if necessary.
+
 
   4.  Compiling
 
@@ -101,9 +103,6 @@
 
   o  make DEBUG=1  for debugging
 
-  o  make SDLNET=1  to enable SDL_net (Otherwise the socket api will be
-     used directly)
-
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG  for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
@@ -113,6 +112,8 @@
 
   The project can also be built with Codeblocks (project files
   included).
+
+  Windows developers can also build using Visual Studio 2005 or newer.
 
 
   5.  Changes
@@ -202,8 +203,9 @@
   o  SDLNet_ResolveHost bug-fix allowing connection to ports other than
      26000
 
-  o  sv_main.c (localmodels) Bumped array size from 5 to 6 in order for
-     it to operate correctly with the raised limits of fitzquake-0.85
+  o  Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an
+     old fitzquake-0.85 bug which used to cause segfaults depending on
+     the compiler.
 
   o  Accept commandline options like "+connect ip:port"
 
@@ -250,7 +252,7 @@
 
   6.  Todo
 
-  o  Add HoT's first person camera (and menu item)
+  o  Add uHexen2's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
      volume controls
