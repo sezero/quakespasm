@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 enum srcformat {SRC_INDEXED, SRC_LIGHTMAP, SRC_RGBA};
 
-typedef size_t src_offset_t; // technically need uintptr_t, but size_t is OK virtually everywhere.
+typedef uintptr_t src_offset_t;
 
 typedef struct gltexture_s {
 //managed by texture manager

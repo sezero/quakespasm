@@ -154,7 +154,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 		{
 			for (p = s->polys->next; p; p = p->next)
 			{
-				srand((unsigned int) (size_t) p);
+				srand((unsigned int) (uintptr_t) p);
 				glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 				DrawGLPoly (p);
 				rs_brushpasses++;
@@ -162,7 +162,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 			return;
 		}
 
-		srand((unsigned int) (size_t) s->polys);
+		srand((unsigned int) (uintptr_t) s->polys);
 		glColor3f (rand()%256/255.0, rand()%256/255.0, rand()%256/255.0);
 		DrawGLPoly (s->polys);
 		rs_brushpasses++;
