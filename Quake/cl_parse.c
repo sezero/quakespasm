@@ -192,13 +192,14 @@ When the client is taking a long time to load stuff, send keepalive messages
 so the server doesn't disconnect.
 ==================
 */
+static byte	net_olddata[NET_MAXMESSAGE];
 void CL_KeepaliveMessage (void)
 {
 	float	time;
 	static float lastmsg;
 	int		ret;
 	sizebuf_t	old;
-	byte		olddata[8192];
+	byte	*olddata;
 
 	if (sv.active)
 		return;		// no need if server is local
@@ -206,6 +207,7 @@ void CL_KeepaliveMessage (void)
 		return;
 
 // read messages from server, should just be nops
+	olddata = net_olddata;
 	old = net_message;
 	memcpy (olddata, net_message.data, net_message.cursize);
 
