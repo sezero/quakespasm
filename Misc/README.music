@@ -63,6 +63,10 @@ New command line options:
 - -noextmusic: Disables the playback of external music files instead of
   cdaudio.
 
+Music files in PAK files:
+-------------------------
+PAK-contained music files are fully supported.
+
 Music file directories:
 -------------------------
 - The music files are always searched under the "music" subdirectory of
