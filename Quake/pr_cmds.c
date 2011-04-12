@@ -1307,6 +1307,7 @@ void PF_aim (void)
 
 	ent = G_EDICT(OFS_PARM0);
 	speed = G_FLOAT(OFS_PARM1);
+	(void) speed; /* variable set but not used */
 
 	VectorCopy (ent->v.origin, start);
 	start[2] += 20;

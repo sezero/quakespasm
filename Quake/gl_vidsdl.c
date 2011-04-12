@@ -370,7 +370,6 @@ VID_Restart -- johnfitz -- change video modes on the fly
 void VID_Restart (void)
 {
 	int		i;
-	vmode_t		oldmode;
 
 	if (vid_locked || !vid_changed)
 		return;
@@ -378,8 +377,6 @@ void VID_Restart (void)
 //
 // decide which mode to set
 //
-	oldmode = modelist[vid_default];
-
 	if (vid_fullscreen.value)
 	{
 		for (i=1; i<nummodes; i++)
@@ -1163,7 +1160,7 @@ void	VID_Init (void)
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
 	int		i, existingmode;
-	int		basenummodes, width, height, bpp, findbpp, done;
+	int		width, height, bpp, findbpp, done;
 
 	//johnfitz -- clean up init readouts
 	//Con_Printf("------------- Init Video -------------\n");
@@ -1189,7 +1186,7 @@ void	VID_Init (void)
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
 	VID_InitDIB();
-	basenummodes = nummodes = 1;
+	nummodes = 1;
 	VID_InitFullDIB();
 
 	// Config file is not read yet, so we don't know vid_fullscreen.value

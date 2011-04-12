@@ -1355,10 +1355,9 @@ void M_UnbindCommand (const char *command)
 
 void M_Keys_Draw (void)
 {
-	int		i, l;
+	int		i, x, y;
 	int		keys[2];
 	const char	*name;
-	int		x, y;
 	qpic_t	*p;
 
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
@@ -1375,8 +1374,6 @@ void M_Keys_Draw (void)
 		y = 48 + 8*i;
 
 		M_Print (16, y, bindnames[i][1]);
-
-		l = strlen (bindnames[i][0]);
 
 		M_FindKeysForCommand (bindnames[i][0], keys);
 

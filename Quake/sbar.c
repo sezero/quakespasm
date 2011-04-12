@@ -1175,7 +1175,7 @@ Sbar_MiniDeathmatchOverlay
 */
 void Sbar_MiniDeathmatchOverlay (void)
 {
-	int				i, k, l, top, bottom, x, y, f, numlines;
+	int			i, k, top, bottom, x, y, f, numlines;
 	char			num[12];
 	float			scale; //johnfitz
 	scoreboard_t	*s;
@@ -1190,7 +1190,6 @@ void Sbar_MiniDeathmatchOverlay (void)
 	Sbar_SortFrags ();
 
 // draw the text
-	l = scoreboardlines;
 	numlines = (scr_viewsize.value >= 110) ? 3 : 6; //johnfitz
 
 	//find us

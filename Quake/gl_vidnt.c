@@ -75,7 +75,6 @@ qboolean		scr_skipupdate;
 
 static vmode_t	modelist[MAX_MODE_LIST];
 static int		nummodes;
-static vmode_t	*pcurrentmode;
 static vmode_t	badmode;
 
 static DEVMODE	gdevmode;
@@ -105,6 +104,7 @@ HDC		maindc;
 glvert_t glv;
 
 HWND WINAPI InitializeWindow (HINSTANCE hInstance, int nCmdShow);
+BOOL bSetupPixelFormat(HDC hDC);
 
 viddef_t	vid;				// global video state
 
@@ -124,11 +124,6 @@ const char *VID_GetModeDescription (int mode);
 void ClearAllStates (void);
 void VID_UpdateWindowStatus (void);
 void GL_Init (void);
-
-PROC glArrayElementEXT;
-PROC glColorPointerEXT;
-PROC glTexCoordPointerEXT;
-PROC glVertexPointerEXT;
 
 typedef void (APIENTRY *lp3DFXFUNC) (int, int, int, int, int, const void*);
 
@@ -325,7 +320,6 @@ CenterWindow
 */
 void CenterWindow(HWND hWndCenter, int width, int height, BOOL lefttopjustify)
 {
-    RECT    rect;
     int     CenterX, CenterY;
 
 	CenterX = (GetSystemMetrics(SM_CXSCREEN) - width) / 2;
@@ -530,7 +524,6 @@ int VID_SetMode (int modenum)
 	int		original_mode, temp;
 	qboolean	stat = false;
 	MSG		msg;
-	HDC		hdc;
 
 	if ((windowed && (modenum != 0)) ||
 		(!windowed && (modenum < 1)) ||
@@ -662,7 +655,6 @@ void VID_Restart (void)
 	HGLRC		hrc;
 	int		i;
 	qboolean	mode_changed = false;
-	vmode_t		oldmode;
 
 	if (vid_locked)
 		return;
@@ -692,8 +684,6 @@ void VID_Restart (void)
 //
 // decide which mode to set
 //
-		oldmode = modelist[vid_default];
-
 		if (vid_fullscreen.value)
 		{
 			for (i=1; i<nummodes; i++)
@@ -790,7 +780,7 @@ void VID_Restart (void)
 				LPVOID lpMsgBuf;
 				DWORD dw = GetLastError();
 				FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, NULL, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR) &lpMsgBuf, 0, NULL );
-				sprintf(szBuf, "VID_Restart: wglMakeCurrent failed with error %d: %s", dw, lpMsgBuf);
+				sprintf(szBuf, "VID_Restart: wglMakeCurrent failed with error %u: %s", (unsigned int)dw, (const char *)lpMsgBuf);
  				Sys_Error (szBuf);
 			}
 			TexMgr_ReloadImages ();
@@ -1133,9 +1123,9 @@ void GetWGLExtensions (void)
 	const char *(*wglGetExtensionsStringARB) (HDC hdc);
 	const char *(*wglGetExtensionsStringEXT) ();
 
-	if (wglGetExtensionsStringARB = (void *) wglGetProcAddress ("wglGetExtensionsStringARB"))
+	if ((wglGetExtensionsStringARB = (void *) wglGetProcAddress ("wglGetExtensionsStringARB")) != NULL)
 		wgl_extensions = wglGetExtensionsStringARB (maindc);
-	else if (wglGetExtensionsStringEXT = (void *) wglGetProcAddress ("wglGetExtensionsStringEXT"))
+	else if ((wglGetExtensionsStringEXT = (void *) wglGetProcAddress ("wglGetExtensionsStringEXT")) != NULL)
 		wgl_extensions = wglGetExtensionsStringEXT ();
 	else
 		wgl_extensions = "";
@@ -1485,9 +1475,6 @@ void AppActivate(BOOL fActive, BOOL minimize)
 *
 ****************************************************************************/
 {
-	MSG msg;
-    HDC			hdc;
-    int			i, t;
 	static BOOL	sound_active;
 
 	ActiveApp = fActive;
@@ -1555,7 +1542,7 @@ LONG WINAPI MainWndProc (
     LPARAM  lParam)
 {
 	LONG    lRet = 1;
-	int		fwKeys, xPos, yPos, fActive, fMinimized, temp;
+	int		fActive, fMinimized, temp;
 	extern unsigned int uiWheelMessage;
 
 	if ( uMsg == uiWheelMessage )
@@ -1841,7 +1828,6 @@ void VID_InitDIB (HINSTANCE hInstance)
 	DEVMODE			devmode; //johnfitz
 	WNDCLASS		wc;
 	HDC				hdc;
-	int				i;
 
 	/* Register the frame class */
 	wc.style         = 0;
@@ -1909,7 +1895,7 @@ VID_InitFullDIB
 void VID_InitFullDIB (HINSTANCE hInstance)
 {
 	DEVMODE	devmode;
-	int		i, modenum, cmodes, originalnummodes, existingmode, numlowresmodes;
+	int		i, modenum, originalnummodes, existingmode, numlowresmodes;
 	int		j, bpp, done;
 	BOOL	stat;
 
@@ -1944,10 +1930,10 @@ void VID_InitFullDIB (HINSTANCE hInstance)
 				modelist[nummodes].bpp = devmode.dmBitsPerPel;
 				modelist[nummodes].refreshrate = devmode.dmDisplayFrequency; //johnfitz -- refreshrate
 				sprintf (modelist[nummodes].modedesc, "%dx%dx%d %dHz", //johnfitz -- refreshrate
-						 devmode.dmPelsWidth,
-						 devmode.dmPelsHeight,
-						 devmode.dmBitsPerPel,
-						 devmode.dmDisplayFrequency); //johnfitz -- refreshrate
+						(int) devmode.dmPelsWidth,
+						(int) devmode.dmPelsHeight,
+						(int) devmode.dmBitsPerPel,
+						(int) devmode.dmDisplayFrequency); //johnfitz -- refreshrate
 
 			// if the width is more than twice the height, reduce it by half because this
 			// is probably a dual-screen monitor
@@ -2017,10 +2003,10 @@ void VID_InitFullDIB (HINSTANCE hInstance)
 				modelist[nummodes].bpp = devmode.dmBitsPerPel;
 				modelist[nummodes].refreshrate = devmode.dmDisplayFrequency; //johnfitz -- refreshrate
 				sprintf (modelist[nummodes].modedesc, "%dx%dx%d %dHz", //johnfitz -- refreshrate
-						 devmode.dmPelsWidth,
-						 devmode.dmPelsHeight,
-						 devmode.dmBitsPerPel,
-						 devmode.dmDisplayFrequency); //johnfitz -- refreshrate
+						(int) devmode.dmPelsWidth,
+						(int) devmode.dmPelsHeight,
+						(int) devmode.dmBitsPerPel,
+						(int) devmode.dmDisplayFrequency); //johnfitz -- refreshrate
 
 				for (i=originalnummodes, existingmode = 0 ; i<nummodes ; i++)
 				{
@@ -2068,9 +2054,7 @@ VID_Init
 void	VID_Init (void)
 {
 	int		i, existingmode;
-	int		basenummodes, width, height, bpp, findbpp, done;
-	byte	*ptmp;
-	char	gldir[MAX_OSPATH];
+	int		width, height, bpp, findbpp, done;
 	HGLRC	baseRC; //johnfitz -- moved here from global scope, since it was only used in this
 	HDC		hdc;
 	DEVMODE	devmode;
@@ -2100,7 +2084,7 @@ void	VID_Init (void)
 	InitCommonControls();
 
 	VID_InitDIB (global_hInstance);
-	basenummodes = nummodes = 1;
+	nummodes = 1;
 
 	VID_InitFullDIB (global_hInstance);
 
@@ -2178,10 +2162,10 @@ void	VID_Init (void)
 					modelist[nummodes].fullscreen = 1;
 					modelist[nummodes].bpp = bpp;
 					sprintf (modelist[nummodes].modedesc, "%dx%dx%d %dHz", //johnfitz -- refreshrate
-							 devmode.dmPelsWidth,
-							 devmode.dmPelsHeight,
-							 devmode.dmBitsPerPel,
-							 devmode.dmDisplayFrequency); //johnfitz -- refreshrate
+							(int) devmode.dmPelsWidth,
+							(int) devmode.dmPelsHeight,
+							(int) devmode.dmBitsPerPel,
+							(int) devmode.dmDisplayFrequency); //johnfitz -- refreshrate
 
 					for (i=nummodes, existingmode = 0 ; i<nummodes ; i++)
 					{

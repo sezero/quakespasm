@@ -779,7 +779,7 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 {
 	int			i, lindex, lnumverts;
 	medge_t		*pedges, *r_pedge;
-	int			vertpage;
+//	int		vertpage;
 	float		*vec;
 	float		s, t;
 	glpoly_t	*poly;
@@ -787,7 +787,7 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 // reconstruct the polygon
 	pedges = currentmodel->edges;
 	lnumverts = fa->numedges;
-	vertpage = 0;
+//	vertpage = 0;
 
 	//
 	// draw texture
