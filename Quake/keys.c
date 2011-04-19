@@ -687,8 +687,8 @@ void History_Init (void)
 	}
 	key_linepos = 1;
 
-//	if (cl_savehistory.value)
-	if ((hf = fopen(HISTORY_FILE_NAME, "rt")) != NULL)
+	hf = fopen(va("%s/%s", host_parms->userdir, HISTORY_FILE_NAME), "rt");
+	if (hf != NULL)
 	{
 		do
 		{
@@ -714,8 +714,8 @@ void History_Shutdown (void)
 	int i;
 	FILE *hf;
 
-//	if (cl_savehistory.value)
-	if ((hf = fopen(HISTORY_FILE_NAME, "wt")) != NULL)
+	hf = fopen(va("%s/%s", host_parms->userdir, HISTORY_FILE_NAME), "wt");
+	if (hf != NULL)
 	{
 		i = edit_line;
 		do
