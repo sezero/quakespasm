@@ -1,20 +1,84 @@
 support for user directories, based on a patch by Piotr Szymaniak.
-** against quakespasm svn revision 411.
+** against quakespasm svn revision 445.
 ** in alpha state, minimally tested.
 ** on-the-fly game directory changes not supported yet.
 ** needs more work.
 
+Index: Quake/sys_sdl_unix.c
+===================================================================
+--- Quake/sys_sdl_unix.c	(revision 445)
++++ Quake/sys_sdl_unix.c	(working copy)
+@@ -20,6 +20,8 @@
+ 
+ */
+ 
++#define USE_PASSWORD_FILE 1
++
+ #include "quakedef.h"
+ 
+ #include <sys/types.h>
+@@ -29,6 +31,9 @@
+ #include <sys/time.h>
+ #include <fcntl.h>
+ #include <time.h>
++#if USE_PASSWORD_FILE
++#include <pwd.h>
++#endif	/* USE_PASSWORD_FILE */
+ 
+ #include "SDL.h"
+ 
+@@ -139,9 +144,41 @@
+ 	return -1;
+ }
+ 
++#define SYS_USERDIR	".quakespasm"
++static char	userdir[MAX_OSPATH];
++
++static void Sys_GetUserdir (char *dst, size_t dstsize)
++{
++	char		*home_dir = NULL;
++#if USE_PASSWORD_FILE
++	struct passwd	*pwent;
++
++	pwent = getpwuid( getuid() );
++	if (pwent == NULL)
++		perror("getpwuid");
++	else
++		home_dir = pwent->pw_dir;
++#endif
++	if (home_dir == NULL)
++		home_dir = getenv("HOME");
++	if (home_dir == NULL)
++		Sys_Error ("Couldn't determine userspace directory");
++
++/* what would be a maximum path for a file in the user's directory...
++ * $HOME/SYS_USERDIR/game_dir/dirname1/dirname2/dirname3/filename.ext
++ * still fits in the MAX_OSPATH == 256 definition, but just in case :
++ */
++	if (strlen(home_dir) + strlen(SYS_USERDIR) + 50 > dstsize)
++		Sys_Error ("Insufficient array size for userspace directory");
++
++	q_snprintf (dst, dstsize, "%s/%s", home_dir, SYS_USERDIR);
++	Sys_mkdir (dst);
++}
++
+ void Sys_Init (void)
+ {
+-	host_parms->userdir = host_parms->basedir; /* TODO: implement properly! */
++	Sys_GetUserdir(userdir, sizeof(userdir));
++	host_parms->userdir = userdir;
+ }
+ 
+ void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 411)
+--- Quake/common.c	(revision 445)
 +++ Quake/common.c	(working copy)
-@@ -1844,32 +1844,36 @@ pack_t *COM_LoadPackFile (const char *pa
+@@ -1844,32 +1844,34 @@ pack_t *COM_LoadPackFile (const char *pa
  COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
  =================
  */
 -void COM_AddGameDirectory (const char *dir)
-+#define SYS_USERDIR ".quakespasm"
-+static char *homedir = NULL;
 +void COM_AddGameDirectory (const char *base, const char *dir)
  {
  	int i;
@@ -49,33 +113,22 @@ Index: Quake/common.c
  		pak = COM_LoadPackFile (pakfile);
  		if (!pak)
  			break;
-@@ -1879,6 +1883,14 @@ void COM_AddGameDirectory (const char *d
+@@ -1879,6 +1881,14 @@ void COM_AddGameDirectory (const char *d
  		search->next = com_searchpaths;
  		com_searchpaths = search;
  	}
 +
-+	if (!been_here && homedir != NULL)
++	if (!been_here && host_parms->userdir != host_parms->basedir)
 +	{
 +		been_here = true;
-+		strcpy(com_gamedir, va("%s/%s/%s", homedir, SYS_USERDIR, dir));
++		strcpy(com_gamedir, va("%s/%s", host_parms->userdir, dir));
 +		Sys_mkdir(com_gamedir);
 +		goto _add_path;
 +	}
  }
  
  #if defined(USE_QS_CONBACK)
-@@ -1915,6 +1927,10 @@ void COM_InitFilesystem (void) //johnfit
- {
- 	int i, j;
- 
-+	homedir = getenv("HOME");
-+	if (homedir)
-+		Sys_mkdir (va("%s/%s", homedir, SYS_USERDIR));
-+
- 	i = COM_CheckParm ("-basedir");
- 	if (i && i < com_argc-1)
- 		strcpy (com_basedir, com_argv[i + 1]);
-@@ -1929,8 +1945,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1929,8 +1939,7 @@ void COM_InitFilesystem (void) //johnfit
  	}
  
  	// start up with GAMENAME by default (id1)
@@ -85,7 +138,7 @@ Index: Quake/common.c
  
  #if defined(USE_QS_CONBACK)
  	if (!fitzmode)
-@@ -1944,17 +1959,17 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1944,17 +1953,17 @@ void COM_InitFilesystem (void) //johnfit
  	com_nummissionpacks = 0;
  	if (COM_CheckParm ("-rogue"))
  	{
@@ -106,7 +159,7 @@ Index: Quake/common.c
  		com_nummissionpacks++;
  	}
  	//johnfitz
-@@ -1963,7 +1978,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1963,7 +1972,7 @@ void COM_InitFilesystem (void) //johnfit
  	if (i && i < com_argc-1)
  	{
  		com_modified = true;
