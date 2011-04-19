@@ -1825,6 +1825,7 @@ VID_InitDIB
 */
 void VID_InitDIB (HINSTANCE hInstance)
 {
+	int				i;
 	DEVMODE			devmode; //johnfitz
 	WNDCLASS		wc;
 	HDC				hdc;
@@ -1846,16 +1847,18 @@ void VID_InitDIB (HINSTANCE hInstance)
 
 	modelist[0].type = MS_WINDOWED;
 
-	if (COM_CheckParm("-width"))
-		modelist[0].width = Q_atoi(com_argv[COM_CheckParm("-width")+1]);
+	i = COM_CheckParm("-width");
+	if (i && i < com_argc-1)
+		modelist[0].width = Q_atoi(com_argv[i+1]);
 	else
 		modelist[0].width = 640;
 
 	if (modelist[0].width < 320)
 		modelist[0].width = 320;
 
-	if (COM_CheckParm("-height"))
-		modelist[0].height= Q_atoi(com_argv[COM_CheckParm("-height")+1]);
+	i = COM_CheckParm("-height");
+	if (i && i < com_argc-1)
+		modelist[0].height= Q_atoi(com_argv[i+1]);
 	else
 		modelist[0].height = modelist[0].width * 240/320;
 
@@ -2055,6 +2058,7 @@ void	VID_Init (void)
 {
 	int		i, existingmode;
 	int		width, height, bpp, findbpp, done;
+	int		p;
 	HGLRC	baseRC; //johnfitz -- moved here from global scope, since it was only used in this
 	HDC		hdc;
 	DEVMODE	devmode;
@@ -2110,9 +2114,10 @@ void	VID_Init (void)
 
 		windowed = false;
 
-		if (COM_CheckParm("-mode"))
+		p = COM_CheckParm("-mode");
+		if (p && p < com_argc-1)
 		{
-			vid_default = Q_atoi(com_argv[COM_CheckParm("-mode")+1]);
+			vid_default = Q_atoi(com_argv[p+1]);
 		}
 		else
 		{
@@ -2125,18 +2130,20 @@ void	VID_Init (void)
 			}
 			else
 			{
-				if (COM_CheckParm("-width"))
+				p = COM_CheckParm("-width");
+				if (p && p < com_argc-1)
 				{
-					width = Q_atoi(com_argv[COM_CheckParm("-width")+1]);
+					width = Q_atoi(com_argv[p+1]);
 				}
 				else
 				{
 					width = 640;
 				}
 
-				if (COM_CheckParm("-bpp"))
+				p = COM_CheckParm("-bpp");
+				if (p && p < com_argc-1)
 				{
-					bpp = Q_atoi(com_argv[COM_CheckParm("-bpp")+1]);
+					bpp = Q_atoi(com_argv[p+1]);
 					findbpp = 0;
 				}
 				else
@@ -2145,8 +2152,9 @@ void	VID_Init (void)
 					findbpp = 1;
 				}
 
-				if (COM_CheckParm("-height"))
-					height = Q_atoi(com_argv[COM_CheckParm("-height")+1]);
+				p = COM_CheckParm("-height");
+				if (p && p < com_argc-1)
+					height = Q_atoi(com_argv[p+1]);
 				else
 					height = width * 3 / 4; // assume 4:3 aspect ratio
 
@@ -2189,9 +2197,10 @@ void	VID_Init (void)
 
 				do
 				{
-					if (COM_CheckParm("-height"))
+					p = COM_CheckParm("-height");
+					if (p && p < com_argc-1)
 					{
-						height = Q_atoi(com_argv[COM_CheckParm("-height")+1]);
+						height = Q_atoi(com_argv[p+1]);
 
 						for (i=1, vid_default=0 ; i<nummodes ; i++)
 						{

@@ -137,6 +137,8 @@ S_Init
 */
 void S_Init (void)
 {
+	int i;
+
 	if (snd_initialized)
 	{
 		Con_Printf("Sound is already initialized\n");
@@ -166,9 +168,10 @@ void S_Init (void)
 	Cmd_AddCommand("soundlist", S_SoundList);
 	Cmd_AddCommand("soundinfo", S_SoundInfo_f);
 
-	if (COM_CheckParm("-sndspeed"))
+	i = COM_CheckParm("-sndspeed");
+	if (i && i < com_argc-1)
 	{
-		sndspeed.value = Q_atoi(com_argv[COM_CheckParm("-sndspeed")+1]);
+		sndspeed.value = Q_atoi(com_argv[i+1]);
 	}
 
 	if (host_parms->memsize < 0x800000)
