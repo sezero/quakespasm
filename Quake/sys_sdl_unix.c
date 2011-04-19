@@ -141,6 +141,7 @@ int Sys_FileTime (const char *path)
 
 void Sys_Init (void)
 {
+	host_parms->userdir = host_parms->basedir; /* TODO: implement properly! */
 }
 
 void Sys_mkdir (const char *path)

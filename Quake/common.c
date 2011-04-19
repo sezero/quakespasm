@@ -1211,7 +1211,7 @@ static void FitzTest_f (void)
 COM_Init
 ================
 */
-void COM_Init (const char *basedir)
+void COM_Init (void)
 {
 	int	i = 0x12345678;
 		/*    U N I X */
@@ -1919,7 +1919,7 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	if (i && i < com_argc-1)
 		strcpy (com_basedir, com_argv[i + 1]);
 	else
-		strcpy (com_basedir, host_parms.basedir);
+		strcpy (com_basedir, host_parms->basedir);
 
 	j = strlen (com_basedir);
 	if (j > 0)

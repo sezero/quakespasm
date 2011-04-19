@@ -153,7 +153,7 @@ void Host_Game_f (void)
 			return;
 		}
 
-		strcpy (pakfile, va("%s/%s", host_parms.basedir, Cmd_Argv(1)));
+		strcpy (pakfile, va("%s/%s", host_parms->basedir, Cmd_Argv(1)));
 		if (!Q_strcasecmp(pakfile, com_gamedir)) //no change
 		{
 			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
@@ -414,7 +414,7 @@ void Modlist_Init (void)
 	if (i && i < com_argc-1)
 		sprintf (dir_string, "%s/", com_argv[i+1]);
 	else
-		sprintf (dir_string, "%s/", host_parms.basedir);
+		sprintf (dir_string, "%s/", host_parms->basedir);
 
 	dir_p = opendir(dir_string);
 	if (dir_p == NULL)

@@ -26,14 +26,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define DEFAULT_MEMORY 0x4000000
 
+static quakeparms_t	parms;
+
 int main(int argc, char *argv[])
 {
 	SDL_Event	event;
-	quakeparms_t	parms;
 	int		t;
 	int		done = 0;
 	double		time, oldtime, newtime;
 
+	host_parms = &parms;
 	parms.basedir = ".";
 
 	parms.argc = argc;
@@ -69,7 +71,7 @@ int main(int argc, char *argv[])
 					FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 
 	Sys_Printf("Host_Init\n");
-	Host_Init(&parms);
+	Host_Init();
 
 	oldtime = Sys_FloatTime();
 	if (isDedicated)

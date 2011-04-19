@@ -265,7 +265,7 @@ extern qboolean noclip_anglehack;
 //
 // host
 //
-extern	quakeparms_t host_parms;
+extern	quakeparms_t *host_parms;
 
 extern	cvar_t		sys_ticrate;
 extern	cvar_t		sys_throttle;
@@ -283,7 +283,7 @@ extern	double		realtime;		// not bounded in any way, changed at
 void Host_ClearMemory (void);
 void Host_ServerFrame (void);
 void Host_InitCommands (void);
-void Host_Init (quakeparms_t *parms);
+void Host_Init (void);
 void Host_Shutdown(void);
 void Host_Error (const char *error, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
 void Host_EndGame (const char *message, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));

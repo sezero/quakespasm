@@ -171,7 +171,7 @@ extern	int		safemode;
  */
 
 int COM_CheckParm (const char *parm);
-void COM_Init (const char *path);
+void COM_Init (void);
 void COM_InitArgv (int argc, char **argv);
 
 const char *COM_SkipPath (const char *pathname);

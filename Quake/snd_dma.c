@@ -171,7 +171,7 @@ void S_Init (void)
 		sndspeed.value = Q_atoi(com_argv[COM_CheckParm("-sndspeed")+1]);
 	}
 
-	if (host_parms.memsize < 0x800000)
+	if (host_parms->memsize < 0x800000)
 	{
 		Cvar_Set ("loadas8bit", "1");
 		Con_Printf ("loading all sounds as 8bit\n");

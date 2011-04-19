@@ -148,6 +148,10 @@ void Sys_Init (void)
 {
 	OSVERSIONINFO	vinfo;
 
+	host_parms->userdir = host_parms->basedir;
+		/* user directories not really necessary for windows guys.
+		 * can be done if necessary, though... */
+
 	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
 
 	if (!GetVersionEx (&vinfo))
