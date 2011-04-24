@@ -28,6 +28,11 @@
 <P>
 <H2><A NAME="toc4">4.</A> <A HREF="README.html#s4">Compiling </A></H2>
 
+<UL>
+<LI><A NAME="toc4.1">4.1</A> <A HREF="README.html#ss4.1">Linux/Unix </A>
+<LI><A NAME="toc4.2">4.2</A> <A HREF="README.html#ss4.2">Windows </A>
+<LI><A NAME="toc4.3">4.3</A> <A HREF="README.html#ss4.3">Mac OS X </A>
+</UL>
 <P>
 <H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Changes</A></H2>
 
@@ -99,6 +104,11 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling </A></H2>
 
+
+<P><EM>To check-out the latest version of QuakeSpasm, use :</EM> svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk</P>
+<H2><A NAME="ss4.1">4.1</A> <A HREF="#toc4.1">Linux/Unix </A>
+</H2>
+
 <P>After extracting the source tarball, browse the Makefile and edit the music streaming options, then
 <HR>
 <PRE>
@@ -116,8 +126,17 @@ Compile time options include
 <P>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</P>
 <P>HOME directory support can be enabled via <B>Misc/homedir_0.patch</B></P>
 <P>The project can also be built with Codeblocks (project files included).</P>
-<P>Windows developers can also build using Visual Studio 2005 or newer.</P>
-.
+<H2><A NAME="ss4.2">4.2</A> <A HREF="#toc4.2">Windows </A>
+</H2>
+
+<P>The QS developers cross-compile win32 binaries using 
+<A HREF="http://www.mingw.org">Minimal GNU for Windows</A> (Mingw).</P>
+<P>The project can also build using Visual Studio 2005 (or newer).</P>
+<H2><A NAME="ss4.3">4.3</A> <A HREF="#toc4.3">Mac OS X </A>
+</H2>
+
+<P>A Quakespasm App (including program launcher and update framework) can be made using the <B>Xcode</B> template found in the MacOSX directory.</P>
+<P>Alternatively, have a look at <B>Quake/Makefile.darwin</B> for more instructions on building with GCC.</P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
 
 

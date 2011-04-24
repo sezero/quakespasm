@@ -55,6 +55,8 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 
 
 <sect> Compiling <p>
+<p><em>To check-out the latest version of QuakeSpasm, use :</em> <b>svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk</b></p>
+<sect1> Linux/Unix <p>
 After extracting the source tarball, browse the Makefile and edit the music streaming options, then
 <code>
 make
@@ -68,8 +70,17 @@ Compile time options include
 </itemize>
 <p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
 <p>HOME directory support can be enabled via <bf>Misc/homedir_0.patch</bf>
-<p>The project can also be built with Codeblocks (project files included).</p>.
-<p>Windows developers can also build using Visual Studio 2005 or newer.</p>.
+<p>The project can also be built with Codeblocks (project files included).</p>
+<sect1> Windows <p>
+The QS developers cross-compile win32 binaries using <url url="http://www.mingw.org" name="Minimal GNU for Windows"> (Mingw).
+
+The project can also build using Visual Studio 2005 (or newer).</p>
+</p>
+<sect1> Mac OS X <p>
+A Quakespasm App (including program launcher and update framework) can be made using the <bf>Xcode</bf> template found in the MacOSX directory.
+
+Alternatively, have a look at <bf>Quake/Makefile.darwin</bf> for more instructions on building with GCC.
+</p>
 
 <sect> Changes<p>
 <sect1> 0.85.4<p>
