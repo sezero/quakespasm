@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-QuakeSpasm 0.85.4 (27 March 2011)
+QuakeSpasm 0.85.5 (11 May 2011)
 
 <sect> About <p>
 
@@ -72,18 +72,18 @@ Compile time options include
 <p>HOME directory support can be enabled via <bf>Misc/homedir_0.patch</bf>
 <p>The project can also be built with Codeblocks (project files included).</p>
 <sect1> Windows <p>
-The QS developers cross-compile win32 binaries using <url url="http://www.mingw.org" name="Minimal GNU for Windows"> (Mingw).
+The QuakeSpasm developers cross-compile windows binaries using <url url="http://www.mingw.org" name="MinGW"> and <url url="http://mingw-w64.sf.net" name="Mingw-w64">.
 
-The project can also build using Visual Studio 2005 (or newer).</p>
+The project can also be built using Visual Studio 2005 (or newer).</p>
 </p>
 <sect1> Mac OS X <p>
 A Quakespasm App (including program launcher and update framework) can be made using the <bf>Xcode</bf> template found in the MacOSX directory.
 
-Alternatively, have a look at <bf>Quake/Makefile.darwin</bf> for more instructions on building with GCC.
+Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
 
 <sect> Changes<p>
-<sect1> 0.85.4<p>
+<sect1>  Changes in 0.85.4<p>
 <itemize>
 <item> Implement music (OGG, MP3, WAV) playback
 <item> A better fix for the infamous SV_TouchLinks problem, no more hard lockups with maps such as "whiteroom"
@@ -98,7 +98,7 @@ Alternatively, have a look at <bf>Quake/Makefile.darwin</bf> for more instructio
 <item> Other minor sound and cdaudio updates
 </itemize>
 </p>
-<sect1> 0.85.3<p>
+<sect1>  Changes in 0.85.3<p>
 <itemize>
 <item> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) rather than SDL_net
 <item> Much needed OSX framework stuff from Kristian
@@ -118,7 +118,7 @@ Alternatively, have a look at <bf>Quake/Makefile.darwin</bf> for more instructio
 
 </itemize>
 
-<sect1> 0.85.2<p>
+<sect1>  Changes in 0.85.2<p>
 <itemize>
 <item> Replace the old "Screen size" slider with a "Scale" slider
 <item> Don't constantly open and close condebug log
@@ -133,7 +133,7 @@ Alternatively, have a look at <bf>Quake/Makefile.darwin</bf> for more instructio
 <item> Add OSX Makefile (tested?)
 </itemize>
 
-<sect1> 0.85.1<p>
+<sect1>  Changes in 0.85.1<p>
 <itemize>
 <item>64 bit CPU support
 <item>Restructured SDL sound driver

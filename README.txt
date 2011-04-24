@@ -4,31 +4,32 @@
 
   Table of Contents
 
-
   1. About
   2. Downloads
   3. Hints
-     3.1 Music Playback
+     3.1  Music Playback
 
   4. Compiling
+     4.1  Linux/Unix
+     4.2  Windows
+     4.3  Mac OS X
+
   5. Changes
-     5.1 0.85.4
-     5.2 0.85.3
-     5.3 0.85.2
-     5.4 0.85.1
+     5.1  Changes in 0.85.4
+     5.2  Changes in 0.85.3
+     5.3  Changes in 0.85.2
+     5.4  Changes in 0.85.1
 
   6. Todo
   7. Links
 
-
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.4 (19 February 2011)
+  QuakeSpasm 0.85.5 (11 May 2011)
 
 
   1.  About
-
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
@@ -39,28 +40,30 @@
 
   2.  Downloads
 
-
   Source
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download>
+
   Linux (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download>
+
   Windows (x86)
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
+
   OSX universal binary
   <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download>
 
 
   3.  Hints
 
-
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
-
 
   o  To disable some changes, use "quakespasm -fitz"
 
-  o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
-     ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
+  o  For different sound drivers use
+     "SDL_AUDIODRIVER=DRIVER ./quakespasm" , where DRIVER may be alsa,
+     dsp, pulse, esd ...
+
   o  Shift+Escape draws the Console.
 
   o  From the console, use UP to browse the command line history and TAB
@@ -88,26 +91,28 @@
 
   o  Use the "-noextmusic" option to disable this feature.
 
+  o  See README.music for more details, if necessary.
+
 
   4.  Compiling
 
+  To check-out the latest version of QuakeSpasm, use :
+  svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
+
+  4.1.  Linux/Unix:
+
   After extracting the source tarball, browse the Makefile and edit the
   music streaming options, then
-
   ______________________________________________________________________
   make
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
 
-
   Compile time options include
 
-  o  make DEBUG=1 for debugging
+  o  make DEBUG=1  for debugging
 
-  o  make SDLNET=1 to enable SDL_net (Otherwise the socket api will be
-     used directly)
-
-  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
+  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG  for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
@@ -115,13 +120,28 @@
   HOME directory support can be enabled via Misc/homedir_0.patch
 
   The project can also be built with Codeblocks (project files
-  included)..
+  included).
+
+  4.2.  Windows:
+
+  The QuakeSpasm developers cross-compile windows binaries using MinGW
+  <http://www.mingw.org/> and Mingw-w64 <http://mingw-w64.sf.net/>.
+
+  The project can also be built using Visual Studio 2005 (or newer).
+
+  4.3.  Mac OS X:
+
+  A Quakespasm App (including program launcher and update framework) can
+  be made using the Xcode template found in the MacOSX directory.
+
+  Alternatively, have a look at Makefile.darwin for more instructions on
+  building from a console.
+
 
   5.  Changes
 
 
-  5.1.  0.85.4
-
+  5.1.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -148,8 +168,8 @@
 
   o  Other minor sound and cdaudio updates
 
-  5.2.  0.85.3
 
+  5.2.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -186,8 +206,7 @@
      some other CD tweaks.
 
 
-  5.3.  0.85.2
-
+  5.3.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -206,16 +225,16 @@
   o  SDLNet_ResolveHost bug-fix allowing connection to ports other than
      26000
 
-  o  sv_main.c (localmodels) Bumped array size from 5 to 6 in order for
-     it to operate correctly with the raised limits of fitzquake-0.85
+  o  Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an
+     old fitzquake-0.85 bug which used to cause segfaults depending on
+     the compiler.
 
   o  Accept commandline options like "+connect ip:port"
 
   o  Add OSX Makefile (tested?)
 
 
-  5.4.  0.85.1
-
+  5.4.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -255,8 +274,7 @@
 
   6.  Todo
 
-
-  o  Add HoT's first person camera (and menu item)
+  o  Add uHexen2's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
      volume controls
@@ -276,20 +294,25 @@
 
   7.  Links
 
-
   QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
+
   QuakeSpasm Project page <http://sourceforge.net/projects/quakespasm>
+
   FitzQuake Homepage <http://www.celephais.net/fitzquake>
+
   Sleepwalkr's Original SDL Port
   <http://www.kristianduske.com/fitzquake>
+
   Baker's 0.85 Source Code
   <http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip>
+
   Func Quakespasm forum
   <http://www.celephais.net/board/view_thread.php?id=60452>
+
   Func SDL Fitzquake forum
   <http://www.celephais.net/board/view_thread.php?id=60172>
+
   Ozkan's email <mailto:gmail - dot - com - username - sezeroz>
   Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
   Kristian's email <mailto:gmail - dot - com - username - inveigle>
-
 
