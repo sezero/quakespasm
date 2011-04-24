@@ -2,15 +2,11 @@
 <HTML>
 <HEAD>
  <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.21">
- <TITLE>QuakeSpasm </TITLE>
+ <TITLE>QuakeSpasm</TITLE>
 </HEAD>
 <BODY>
-<H1>QuakeSpasm </H1>
+<H1>QuakeSpasm</H1>
 
-<H2></H2><P>
-<PRE>
-</PRE>
-</P>
 <P>QuakeSpasm 0.85.5 (11 May 2011)</P>
 
 <P>
@@ -37,10 +33,11 @@
 <H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1"> Changes in 0.85.4</A>
-<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2"> Changes in 0.85.3</A>
-<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3"> Changes in 0.85.2</A>
-<LI><A NAME="toc5.4">5.4</A> <A HREF="README.html#ss5.4"> Changes in 0.85.1</A>
+<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1">Changes in 0.85.5</A>
+<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2">Changes in 0.85.4</A>
+<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3">Changes in 0.85.3</A>
+<LI><A NAME="toc5.4">5.4</A> <A HREF="README.html#ss5.4">Changes in 0.85.2</A>
+<LI><A NAME="toc5.5">5.5</A> <A HREF="README.html#ss5.5">Changes in 0.85.1</A>
 </UL>
 <P>
 <H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Todo </A></H2>
@@ -58,14 +55,23 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <P>
 <A HREF="http://quakespasm.sourceforge.net">http://quakespasm.sourceforge.net</A></P>
 
+
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
 
 
 <P>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download">Source</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download">Linux (x86)</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download">Windows (x86)</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download">OSX universal binary</A><BR></P>
+<UL>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download">Source</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download">Linux (x86)</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download">Windows (x86)</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download">OSX universal binary</A></LI>
+</UL>
+</P>
+
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
 
@@ -101,11 +107,11 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 </P>
 
 
-
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling </A></H2>
 
 
-<P><EM>To check-out the latest version of QuakeSpasm, use :</EM> svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk</P>
+<P>To check-out the latest version of QuakeSpasm, use :<BR>
+<EM>svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk</EM></P>
 <H2><A NAME="ss4.1">4.1</A> <A HREF="#toc4.1">Linux/Unix </A>
 </H2>
 
@@ -130,7 +136,8 @@ Compile time options include
 </H2>
 
 <P>The QuakeSpasm developers cross-compile windows binaries using 
-<A HREF="http://www.mingw.org">MinGW</A> and <A HREF="http://mingw-w64.sf.net">Mingw-w64</A>.</P>
+<A HREF="http://www.mingw.org">MinGW</A> and 
+<A HREF="http://mingw-w64.sf.net">Mingw-w64</A>.</P>
 <P>The project can also be built using Visual Studio 2005 (or newer).</P>
 <H2><A NAME="ss4.3">4.3</A> <A HREF="#toc4.3">Mac OS X </A>
 </H2>
@@ -140,7 +147,17 @@ Compile time options include
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
 
 
-<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1"> Changes in 0.85.4</A>
+
+<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">Changes in 0.85.5</A>
+</H2>
+
+<P>
+<UL>
+<LI> Fixed a crash in net play in maps with extended limits</LI>
+<LI> Verified successful compilation using gcc-4.6</LI>
+</UL>
+</P>
+<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">Changes in 0.85.4</A>
 </H2>
 
 <P>
@@ -158,7 +175,7 @@ Compile time options include
 <LI> Other minor sound and cdaudio updates</LI>
 </UL>
 </P>
-<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2"> Changes in 0.85.3</A>
+<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">Changes in 0.85.3</A>
 </H2>
 
 <P>
@@ -177,12 +194,11 @@ Compile time options include
 <LI> Lots of code fixes (some from uhexen2)</LI>
 <LI> Sys_Error calls Host_Shutdown</LI>
 <LI> Added MS Visual Studio support</LI>
-<LI> Add a "-cd" option to let the CD Player work in dedicated mode, and some other CD tweaks.
-</LI>
+<LI> Add a "-cd" option to let the CD Player work in dedicated mode, and some other CD tweaks.</LI>
 </UL>
 </P>
 
-<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3"> Changes in 0.85.2</A>
+<H2><A NAME="ss5.4">5.4</A> <A HREF="#toc5.4">Changes in 0.85.2</A>
 </H2>
 
 <P>
@@ -201,7 +217,7 @@ Compile time options include
 </UL>
 </P>
 
-<H2><A NAME="ss5.4">5.4</A> <A HREF="#toc5.4"> Changes in 0.85.1</A>
+<H2><A NAME="ss5.5">5.5</A> <A HREF="#toc5.5">Changes in 0.85.1</A>
 </H2>
 
 <P>
@@ -233,27 +249,41 @@ Compile time options include
 <LI>Add uHexen2's first person camera (and menu item)</LI>
 <LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls</LI>
 <LI>Test usb keyboards. Do the keypads work? Make the OSX apple key work.</LI>
-<LI>Tested HOME directory support</LI>
+<LI>Complete the unix user directories support</LI>
 <LI>Finalize OSX automatic updating feature</LI>
 <LI>Fix Centerview (V_StartPitchDrift)</LI>
 <LI>There is still an unnecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.</LI>
 </UL>
 </P>
 
+
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">Links </A></H2>
 
 
 <P>
-<A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A><BR>
-<A HREF="http://sourceforge.net/projects/quakespasm">QuakeSpasm Project page</A><BR>
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A><BR>
-<A HREF="http://www.kristianduske.com/fitzquake">Sleepwalkr's Original SDL Port</A><BR>
-<A HREF="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">Baker's 0.85 Source Code</A><BR>
-<A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A><BR>
-<A HREF="http://www.celephais.net/board/view_thread.php?id=60172">Func SDL Fitzquake forum</A><BR>
-<A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan's email</A><BR>
-<A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus email</A><BR>
-<A HREF="mailto:gmail - dot - com - username - inveigle">Kristian's email</A></P>
+<UL>
+<LI>
+<A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm">QuakeSpasm Project page</A></LI>
+<LI>
+<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A></LI>
+<LI>
+<A HREF="http://www.kristianduske.com/fitzquake">Sleepwalkr's Original SDL Port</A></LI>
+<LI>
+<A HREF="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">Baker's 0.85 Source Code</A></LI>
+<LI>
+<A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A></LI>
+<LI>
+<A HREF="http://www.celephais.net/board/view_thread.php?id=60172">Func SDL Fitzquake forum</A></LI>
+<LI>
+<A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan's email</A></LI>
+<LI>
+<A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus email</A></LI>
+<LI>
+<A HREF="mailto:gmail - dot - com - username - inveigle">Kristian's email</A></LI>
+</UL>
+</P>
 
 </BODY>
 </HTML>

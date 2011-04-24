@@ -7,18 +7,19 @@
   1. About
   2. Downloads
   3. Hints
-     3.1  Music Playback
+     3.1. Music Playback
 
   4. Compiling
-     4.1  Linux/Unix
-     4.2  Windows
-     4.3  Mac OS X
+     4.1. Linux/Unix
+     4.2. Windows
+     4.3. Mac OS X
 
   5. Changes
-     5.1  Changes in 0.85.4
-     5.2  Changes in 0.85.3
-     5.3  Changes in 0.85.2
-     5.4  Changes in 0.85.1
+     5.1. Changes in 0.85.5
+     5.2. Changes in 0.85.4
+     5.3. Changes in 0.85.3
+     5.4. Changes in 0.85.2
+     5.5. Changes in 0.85.1
 
   6. Todo
   7. Links
@@ -141,7 +142,14 @@
   5.  Changes
 
 
-  5.1.  Changes in 0.85.4
+  5.1.  Changes in 0.85.5
+
+  o  Fixed a crash in net play in maps with extended limits
+
+  o  Verified successful compilation using gcc-4.6
+
+
+  5.2.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -169,7 +177,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  5.2.  Changes in 0.85.3
+  5.3.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -206,7 +214,7 @@
      some other CD tweaks.
 
 
-  5.3.  Changes in 0.85.2
+  5.4.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -234,7 +242,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.4.  Changes in 0.85.1
+  5.5.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -282,7 +290,7 @@
   o  Test usb keyboards. Do the keypads work? Make the OSX apple key
      work.
 
-  o  Tested HOME directory support
+  o  Complete the unix user directories support
 
   o  Finalize OSX automatic updating feature
 
