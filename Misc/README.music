@@ -3,9 +3,15 @@ instead of cd music. What you should do is simple:
 
 1. Use your favorite cd-ripper application and rip your quake cdrom
    audio tracks, convert them to ogg or mp3 so they occupy less space,
-   like track02.ogg, track03.ogg, etc.  (Notice that there is no such
-   thing as track01: the first tracks of both original Quake and the
-   mission pack cdroms are always "data" tracks.)
+   like track02.ogg, track03.ogg, etc.
+
+   Note #1: There is no such thing as track01:  the first tracks of
+            original Quake and the mission pack cdroms are always data
+            tracks.
+
+   Note #2: Since the Quake cdrom audio tracks are pre-emphasized, you
+            should de-emphasize them during or after ripping to make
+            them sound right. (thanks to Sander van Dijk for this note)
 
 2. Go into your quake installation directory and create a new directory
    id1/music (for windows users id1\music).
