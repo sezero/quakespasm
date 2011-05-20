@@ -120,7 +120,7 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 
 static int S_OGG_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 {
-	int	section;	/* FIXME: handle section changes */
+	int	section;	/* FIXME: handle section changes! */
 	int	cnt, res, rem;
 	char *	ptr;
 
@@ -157,7 +157,7 @@ snd_codec_t ogg_codec =
 {
 	CODECTYPE_OGG,
 	false,
-	".ogg",
+	"ogg",
 	S_OGG_CodecInitialize,
 	S_OGG_CodecShutdown,
 	S_OGG_CodecOpenStream,

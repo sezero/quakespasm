@@ -132,8 +132,8 @@ snd_stream_t *S_CodecOpenStreamExt (const char *filename)
 	snd_stream_t *stream;
 	const char *ext;
 
-	ext = S_FileExtension(filename);
-	if (!ext)
+	ext = COM_FileGetExtension(filename);
+	if (! *ext)
 	{
 		Con_Printf("No extension for %s\n", filename);
 		return NULL;
@@ -163,15 +163,15 @@ snd_stream_t *S_CodecOpenStreamAny (const char *filename)
 	snd_stream_t *stream;
 	const char *ext;
 
-	ext = S_FileExtension(filename);
-	if (!ext)	/* try all available */
+	ext = COM_FileGetExtension(filename);
+	if (! *ext)	/* try all available */
 	{
 		char tmp[MAX_QPATH];
 
 		codec = codecs;
 		while (codec)
 		{
-			q_snprintf(tmp, sizeof(tmp), "%s%s", filename, codec->ext);
+			q_snprintf(tmp, sizeof(tmp), "%s.%s", filename, codec->ext);
 			stream = codec->codec_open(tmp);
 			if (stream)
 			{

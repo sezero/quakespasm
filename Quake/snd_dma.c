@@ -265,29 +265,6 @@ static sfx_t *S_FindName (const char *name)
 
 
 /*
-=================
-S_FileExtension
-
-return file's extension including the dot, or NULL
-=================
-*/
-const char *S_FileExtension (const char *name)
-{
-	const char *ptr = name + strlen(name) - 1;
-
-	while (ptr > name &&
-		(*ptr != '/' && *ptr != '\\'))
-	{
-		if (*ptr == '.')
-			return ptr;
-		ptr--;
-	}
-
-	return NULL;
-}
-
-
-/*
 ==================
 S_TouchSound
 

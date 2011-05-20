@@ -214,7 +214,7 @@ snd_codec_t mp3_codec =
 {
 	CODECTYPE_MP3,
 	false,
-	".mp3",
+	"mp3",
 	S_MP3_CodecInitialize,
 	S_MP3_CodecShutdown,
 	S_MP3_CodecOpenStream,
