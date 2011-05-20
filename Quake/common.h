@@ -178,6 +178,7 @@ const char *COM_SkipPath (const char *pathname);
 void COM_StripExtension (const char *in, char *out);
 void COM_FileBase (const char *in, char *out);
 void COM_DefaultExtension (char *path, const char *extension);
+const char *COM_FileGetExtension (const char *in);
 void COM_CreatePath (char *path);
 
 char *va (const char *format, ...) __attribute__((__format__(__printf__,1,2)));

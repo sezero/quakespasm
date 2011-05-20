@@ -919,23 +919,25 @@ void COM_StripExtension (const char *in, char *out)
 
 /*
 ============
-COM_FileExtension
+COM_FileGetExtension - doesn't return NULL
 ============
 */
-const char *COM_FileExtension (const char *in)
+const char *COM_FileGetExtension (const char *in)
 {
-	static char exten[8];
-	int             i;
+	const char	*src;
+	size_t		len;
 
-	while (*in && *in != '.')
-		in++;
-	if (!*in)
+	len = strlen(in);
+	if (len < 2)	/* nothing meaningful */
 		return "";
-	in++;
-	for (i=0 ; i<7 && *in ; i++,in++)
-		exten[i] = *in;
-	exten[i] = 0;
-	return exten;
+
+	src = in + len - 1;
+	while (src != in && src[-1] != '.')
+		src--;
+	if (src == in || strchr(src, '/') != NULL || strchr(src, '\\') != NULL)
+		return "";	/* no extension, or parent directory has a dot */
+
+	return src;
 }
 
 /*
