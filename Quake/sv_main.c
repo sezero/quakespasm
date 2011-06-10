@@ -78,6 +78,7 @@ void SV_Init (void)
 	extern	cvar_t	sv_maxvelocity;
 	extern	cvar_t	sv_gravity;
 	extern	cvar_t	sv_nostep;
+	extern	cvar_t	sv_freezenonclients;
 	extern	cvar_t	sv_friction;
 	extern	cvar_t	sv_edgefriction;
 	extern	cvar_t	sv_stopspeed;
@@ -97,6 +98,7 @@ void SV_Init (void)
 	Cvar_RegisterVariable (&sv_idealpitchscale, NULL);
 	Cvar_RegisterVariable (&sv_aim, NULL);
 	Cvar_RegisterVariable (&sv_nostep, NULL);
+	Cvar_RegisterVariable (&sv_freezenonclients, NULL);
 	Cvar_RegisterVariable (&sv_altnoclip, NULL); //johnfitz
 
 	Cmd_AddCommand ("sv_protocol", &SV_Protocol_f); //johnfitz

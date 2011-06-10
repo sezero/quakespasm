@@ -45,6 +45,8 @@ cvar_t	sv_stopspeed = {"sv_stopspeed","100"};
 cvar_t	sv_gravity = {"sv_gravity","800",false,true};
 cvar_t	sv_maxvelocity = {"sv_maxvelocity","2000"};
 cvar_t	sv_nostep = {"sv_nostep","0"};
+cvar_t	sv_freezenonclients = {"sv_freezenonclients","0"};
+
 
 #define	MOVE_EPSILON	0.01
 
@@ -1169,7 +1171,8 @@ SV_Physics
 */
 void SV_Physics (void)
 {
-	int		i;
+	int	i;
+	int	entity_cap; // For sv_freezenonclients 
 	edict_t	*ent;
 
 // let the progs know that a new frame has started
@@ -1184,7 +1187,14 @@ void SV_Physics (void)
 // treat each object in turn
 //
 	ent = sv.edicts;
-	for (i=0 ; i<sv.num_edicts ; i++, ent = NEXT_EDICT(ent))
+
+	if (sv_freezenonclients.value)
+	  entity_cap = svs.maxclients + 1; // Only run physics on clients and the world
+	else
+	  entity_cap = sv.num_edicts; 
+
+	//for (i=0 ; i<sv.num_edicts ; i++, ent = NEXT_EDICT(ent))
+	for (i=0 ; i<entity_cap ; i++, ent = NEXT_EDICT(ent))
 	{
 		if (ent->free)
 			continue;
@@ -1216,5 +1226,6 @@ void SV_Physics (void)
 	if (pr_global_struct->force_retouch)
 		pr_global_struct->force_retouch--;
 
-	sv.time += host_frametime;
+	if (!sv_freezenonclients.value) 
+	  sv.time += host_frametime;
 }
