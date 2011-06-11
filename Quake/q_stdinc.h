@@ -2,9 +2,12 @@
 	q_stdinc.h
 	includes the minimum necessary stdc headers,
 	defines common and / or missing types.
+	NOTE:	for net stuff use net_sys.h,
+		for byte order use q_endian.h,
+		for math stuff use mathlib.h.
 
 	Copyright (C) 1996-1997  Id Software, Inc.
-	Copyright (C) 2007-2008  O.Sezer <sezero@users.sourceforge.net>
+	Copyright (C) 2007-2011  O.Sezer <sezero@users.sourceforge.net>
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -42,6 +45,8 @@
    sizeof (float)	== 4
    sizeof (long)	== 4 / 8
    sizeof (pointer *)	== 4 / 8
+   For this, we need stdint.h (or inttypes.h)
+   FIXME: On some platforms, only inttypes.h is available.
    FIXME: Properly replace certain short and int usage
 	  with int16_t and int32_t.
  */
@@ -57,7 +62,7 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#if !(defined(_WIN32) || defined(_WIN64))
+#if !defined(_WIN32)
 #include <strings.h>	/* strcasecmp and strncasecmp	*/
 #endif	/* ! PLATFORM_WINDOWS */
 
@@ -117,17 +122,21 @@ typedef unsigned char		byte;
 #undef true
 #undef false
 #if defined(__cplusplus)
-/* do NOT use the bool of C++ because some structures have boolean and they
- * expect it to be 4 bytes long. as a hack, typedef it as int. */
-/* DO HOPE that the compiler built-ins for true and false are 1 and 0 ... */
+/* some structures have qboolean members and the x86 asm code expect
+ * those members to be 4 bytes long. therefore, qboolean must be 32
+ * bits and it can NOT be binary compatible with the 8 bit C++ bool.  */
 typedef int	qboolean;
+COMPILE_TIME_ASSERT(falsehood, (0 == false));
+COMPILE_TIME_ASSERT(truth, (1  == true));
 #else
 typedef enum {
 	false = 0,
 	true  = 1
 } qboolean;
+COMPILE_TIME_ASSERT(falsehood, ((1 != 1) == false));
+COMPILE_TIME_ASSERT(truth, ((1 == 1) == true));
 #endif
-
+COMPILE_TIME_ASSERT(qboolean, sizeof(qboolean) == 4);
 
 /*==========================================================================*/
 
@@ -151,12 +160,10 @@ typedef int	ssize_t;
 #endif	/* _MSC_VER */
 
 /* compatibility with M$ types */
-#if !(defined(_WIN32) || defined(_WIN64))
-
+#if !defined(_WIN32)
 #define	PASCAL
 #define	FAR
 #define	APIENTRY
-
 #endif	/* ! WINDOWS */
 
 #if !defined(__GNUC__)
