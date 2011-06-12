@@ -31,8 +31,9 @@
 #include <sys/mman.h>
 #include <sys/shm.h>
 #include <sys/wait.h>
-// FIXME: <sys/soundcard.h> is "by the book" but we should take care of
-// <soundcard.h>, <linux/soundcard.h> and <machine/soundcard.h> someday.
+/* FIXME:  <sys/soundcard.h> is by the book, but we might
+ * have to take care of <soundcard.h>, <linux/soundcard.h>
+ * and <machine/soundcard.h> someday.  */
 #include <sys/soundcard.h>
 #include <errno.h>
 
@@ -53,8 +54,8 @@ qboolean SNDDMA_Init (dma_t *dma)
 	unsigned long		sz;
 	struct audio_buf_info	info;
 
-	if (bigendien)	FORMAT_S16 = AFMT_S16_BE;
-	else		FORMAT_S16 = AFMT_S16_LE;
+	if (host_bigendian)	FORMAT_S16 = AFMT_S16_BE;
+	else			FORMAT_S16 = AFMT_S16_LE;
 
 	tmp = COM_CheckParm("-ossdev");
 	if (tmp != 0 && tmp < com_argc - 1)

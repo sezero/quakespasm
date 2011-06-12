@@ -35,8 +35,6 @@
 #define OGG_SAMPLEWIDTH 2
 #define OGG_SIGNED_DATA 1
 
-static int	ogg_bigendian = 0;
-
 /* CALLBACK FUNCTIONS: */
 
 static int ovc_fclose (void *f)
@@ -60,8 +58,6 @@ static const ov_callbacks ovc_qfs =
 
 static qboolean S_OGG_CodecInitialize (void)
 {
-	ogg_bigendian = (bigendien == true) ? 1 : 0;
-	ogg_codec.initialized = true;
 	return true;
 }
 
@@ -120,7 +116,7 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 
 static int S_OGG_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 {
-	int	section;	/* FIXME: handle section changes! */
+	int	section;	/* FIXME: handle section changes */
 	int	cnt, res, rem;
 	char *	ptr;
 
@@ -128,7 +124,7 @@ static int S_OGG_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 	ptr = (char *) buffer;
 	while (1)
 	{
-		res = ov_read((OggVorbis_File *) stream->priv, ptr, rem, ogg_bigendian,
+		res = ov_read((OggVorbis_File *) stream->priv, ptr, rem, host_bigendian,
 				OGG_SAMPLEWIDTH, OGG_SIGNED_DATA, &section);
 		if (res <= 0)
 			break;
@@ -156,7 +152,7 @@ static int S_OGG_CodecRewindStream (snd_stream_t *stream)
 snd_codec_t ogg_codec =
 {
 	CODECTYPE_OGG,
-	false,
+	true,	/* always available. */
 	"ogg",
 	S_OGG_CodecInitialize,
 	S_OGG_CodecShutdown,

@@ -470,7 +470,7 @@ float Q_atof (const char *str)
 ============================================================================
 */
 
-qboolean        bigendien;
+qboolean	host_bigendian;
 
 short   (*BigShort) (short l);
 short   (*LittleShort) (short l);
@@ -1229,22 +1229,13 @@ void COM_Init (void)
 		   N  U  X  I
 	*/
 	if ( *(char *)&i == 0x12 )
-		bigendien = true;
+		host_bigendian = true;
 	else if ( *(char *)&i == 0x78 )
-		bigendien = false;
+		host_bigendian = false;
 	else /* if ( *(char *)&i == 0x34 ) */
 		Sys_Error ("Unsupported endianism.");
 
-	if (bigendien == false)
-	{
-		BigShort = ShortSwap;
-		LittleShort = ShortNoSwap;
-		BigLong = LongSwap;
-		LittleLong = LongNoSwap;
-		BigFloat = FloatSwap;
-		LittleFloat = FloatNoSwap;
-	}
-	else /* we are big endian: */
+	if (host_bigendian)
 	{
 		BigShort = ShortNoSwap;
 		LittleShort = ShortSwap;
@@ -1252,6 +1243,15 @@ void COM_Init (void)
 		LittleLong = LongSwap;
 		BigFloat = FloatNoSwap;
 		LittleFloat = FloatSwap;
+	}
+	else /* assumed LITTLE_ENDIAN. */
+	{
+		BigShort = ShortSwap;
+		LittleShort = ShortNoSwap;
+		BigLong = LongSwap;
+		LittleLong = LongNoSwap;
+		BigFloat = FloatSwap;
+		LittleFloat = FloatNoSwap;
 	}
 
 	if (COM_CheckParm("-fitz"))
