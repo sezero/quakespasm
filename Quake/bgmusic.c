@@ -43,7 +43,7 @@ typedef enum _bgm_player
 
 typedef struct music_handler_s
 {
-	unsigned int	type;	/* power of two (snd_codec.h)	*/
+	unsigned int	type;	/* 1U << n (see snd_codec.h)	*/
 	bgm_player_t	player;	/* Enumerated bgm player type	*/
 	int	is_available;	/* -1 means not present		*/
 	const char	*ext;	/* Expected file extension	*/

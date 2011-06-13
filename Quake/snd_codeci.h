@@ -36,7 +36,7 @@ typedef void (*CODEC_CLOSE)(snd_stream_t *stream);
 
 struct snd_codec_s
 {
-	unsigned int type;	/* handled data type. */
+	unsigned int type;	/* handled data type. (1U << n) */
 	qboolean initialized;	/* init succeedded */
 	const char *ext;	/* expected extension */
 	CODEC_INIT initialize;
