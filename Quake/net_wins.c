@@ -336,7 +336,7 @@ sys_socket_t WINS_CheckNewConnections (void)
 		return INVALID_SOCKET;
 
 	if (recvfrom (net_acceptsocket, buf, sizeof(buf), MSG_PEEK, NULL, NULL)
-							!= SOCKET_ERROR) /* >= 0 */
+								!= SOCKET_ERROR)
 	{
 		return net_acceptsocket;
 	}

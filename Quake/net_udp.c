@@ -65,6 +65,10 @@ sys_socket_t UDP_Init (void)
 			Con_SafePrintf("UDP_Init: gethostbyname failed (%s)\n",
 							hstrerror(h_errno));
 		}
+		else if (local->h_addrtype != AF_INET)
+		{
+			Con_SafePrintf("UDP_Init: address from gethostbyname not IPv4\n");
+		}
 		else
 		{
 			myAddr = *(in_addr_t *)local->h_addr_list[0];
@@ -82,8 +86,8 @@ sys_socket_t UDP_Init (void)
 	broadcastaddr.sin_port = htons((unsigned short)net_hostport);
 
 	UDP_GetSocketAddr (net_controlsocket, &addr);
-	Q_strcpy(my_tcpip_address, UDP_AddrToString (&addr));
-	colon = Q_strrchr (my_tcpip_address, ':');
+	strcpy(my_tcpip_address, UDP_AddrToString (&addr));
+	colon = strrchr (my_tcpip_address, ':');
 	if (colon)
 		*colon = 0;
 
@@ -208,7 +212,7 @@ static int PartialIPAddress (const char *in, struct qsockaddr *hostaddr)
 	}
 
 	if (*b++ == ':')
-		port = Q_atoi(b);
+		port = atoi(b);
 	else
 		port = net_hostport;
 
@@ -219,6 +223,7 @@ static int PartialIPAddress (const char *in, struct qsockaddr *hostaddr)
 
 	return 0;
 }
+
 //=============================================================================
 
 int UDP_Connect (sys_socket_t socketid, struct qsockaddr *addr)
@@ -383,11 +388,11 @@ int UDP_GetNameFromAddr (struct qsockaddr *addr, char *name)
 						sizeof(struct in_addr), AF_INET);
 	if (hostentry)
 	{
-		Q_strncpy (name, (char *)hostentry->h_name, NET_NAMELEN - 1);
+		strncpy (name, (char *)hostentry->h_name, NET_NAMELEN - 1);
 		return 0;
 	}
 
-	Q_strcpy (name, UDP_AddrToString (addr));
+	strcpy (name, UDP_AddrToString (addr));
 	return 0;
 }
 
