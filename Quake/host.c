@@ -224,6 +224,13 @@ void	Host_FindMaxClients (void)
 		Cvar_SetValue ("deathmatch", 0.0);
 }
 
+void Host_Version_f (void)
+{
+	Con_Printf ("Quake Version %1.2f\n", VERSION);
+	Con_Printf ("QuakeSpasm Version %1.2f.%d\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
+	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
+}
+
 /*
 =======================
 Host_InitLocal
@@ -231,6 +238,8 @@ Host_InitLocal
 */
 void Host_InitLocal (void)
 {
+	Cmd_AddCommand ("version", Host_Version_f);
+
 	Host_InitCommands ();
 
 	Cvar_RegisterVariable (&host_framerate, NULL);

@@ -140,7 +140,6 @@ void Host_Game_f (void)
 
 	if (Cmd_Argc() > 1)
 	{
-
 		if (!registered.value) //disable command for shareware quake
 		{
 			Con_Printf("You must have the registered version to use modified games\n");
@@ -1281,14 +1280,6 @@ void Host_Name_f (void)
 	MSG_WriteString (&sv.reliable_datagram, host_client->name);
 }
 
-
-void Host_Version_f (void)
-{
-	Con_Printf ("Quake Version %1.2f\n", VERSION); //johnfitz
-	Con_Printf ("QuakeSpasm Version %1.2f.%d\n", FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH); //johnfitz
-	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
-}
-
 void Host_Say(qboolean teamonly)
 {
 	int		j;
@@ -2285,7 +2276,6 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("reconnect", Host_Reconnect_f);
 	Cmd_AddCommand ("name", Host_Name_f);
 	Cmd_AddCommand ("noclip", Host_Noclip_f);
-	Cmd_AddCommand ("version", Host_Version_f);
 
 	Cmd_AddCommand ("say", Host_Say_f);
 	Cmd_AddCommand ("say_team", Host_Say_Team_f);
