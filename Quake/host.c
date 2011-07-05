@@ -864,21 +864,21 @@ void Host_Init (void)
 		BGM_Init();
 		Sbar_Init ();
 		CL_Init ();
-
-		Cbuf_InsertText ("exec quake.rc\n");
-	//	Cbuf_InsertText ("exec fitzquake.rc\n"); //johnfitz (inserted second so it'll be executed first)
-
-	// johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
-		// note: two leading newlines because the command buffer swallows one of them.
-		Cbuf_AddText ("\n\nvid_unlock\n");
 	}
 
 	Hunk_AllocName (0, "-HOST_HUNKLEVEL-");
 	host_hunklevel = Hunk_LowMark ();
 
 	host_initialized = true;
+	Con_Printf ("\n========= Quake Initialized =========\n\n");
 
-	Con_Printf ("\n========= Quake Initialized =========\n\n"); //johnfitz - was Sys_Printf
+	if (cls.state != ca_dedicated)
+	{
+		Cbuf_InsertText ("exec quake.rc\n");
+	// johnfitz -- in case the vid mode was locked during vid_init, we can unlock it now.
+		// note: two leading newlines because the command buffer swallows one of them.
+		Cbuf_AddText ("\n\nvid_unlock\n");
+	}
 
 	if (cls.state == ca_dedicated)
 	{
