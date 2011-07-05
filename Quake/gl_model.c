@@ -1782,30 +1782,28 @@ typedef struct
 	short		x, y;
 } floodfill_t;
 
-extern unsigned d_8to24table[];
-
 // must be a power of 2
-#define FLOODFILL_FIFO_SIZE 0x1000
-#define FLOODFILL_FIFO_MASK (FLOODFILL_FIFO_SIZE - 1)
+#define	FLOODFILL_FIFO_SIZE		0x1000
+#define	FLOODFILL_FIFO_MASK		(FLOODFILL_FIFO_SIZE - 1)
 
-#define FLOODFILL_STEP( off, dx, dy ) \
-{ \
-	if (pos[off] == fillcolor) \
-	{ \
-		pos[off] = 255; \
+#define FLOODFILL_STEP( off, dx, dy )				\
+do {								\
+	if (pos[off] == fillcolor)				\
+	{							\
+		pos[off] = 255;					\
 		fifo[inpt].x = x + (dx), fifo[inpt].y = y + (dy); \
-		inpt = (inpt + 1) & FLOODFILL_FIFO_MASK; \
-	} \
-	else if (pos[off] != 255) fdc = pos[off]; \
-}
+		inpt = (inpt + 1) & FLOODFILL_FIFO_MASK;	\
+	}							\
+	else if (pos[off] != 255) fdc = pos[off];		\
+} while (0)
 
 void Mod_FloodFillSkin( byte *skin, int skinwidth, int skinheight )
 {
-	byte				fillcolor = *skin; // assume this is the pixel to fill
-	floodfill_t			fifo[FLOODFILL_FIFO_SIZE];
-	int					inpt = 0, outpt = 0;
-	int					filledcolor = -1;
-	int					i;
+	byte		fillcolor = *skin; // assume this is the pixel to fill
+	floodfill_t	fifo[FLOODFILL_FIFO_SIZE];
+	int			inpt = 0, outpt = 0;
+	int			filledcolor = -1;
+	int			i;
 
 	if (filledcolor == -1)
 	{
@@ -1852,13 +1850,13 @@ Mod_LoadAllSkins
 */
 void *Mod_LoadAllSkins (int numskins, daliasskintype_t *pskintype)
 {
-	int						i, j, k, size, groupskins;
-	char					name[32];
-	byte					*skin, *texels;
-	daliasskingroup_t		*pinskingroup;
+	int			i, j, k, size, groupskins;
+	char			name[32];
+	byte			*skin, *texels;
+	daliasskingroup_t	*pinskingroup;
 	daliasskininterval_t	*pinskinintervals;
-	char					fbr_mask_name[64]; //johnfitz -- added for fullbright support
-	src_offset_t				offset; //johnfitz
+	char			fbr_mask_name[64]; //johnfitz -- added for fullbright support
+	src_offset_t		offset; //johnfitz
 
 	skin = (byte *)(pskintype + 1);
 
@@ -2231,9 +2229,6 @@ void * Mod_LoadSpriteFrame (void * pin, mspriteframe_t **ppframe, int framenum)
 	size = width * height;
 
 	pspriteframe = (mspriteframe_t *) Hunk_AllocName (sizeof (mspriteframe_t),loadname);
-
-	Q_memset (pspriteframe, 0, sizeof (mspriteframe_t));
-
 	*ppframe = pspriteframe;
 
 	pspriteframe->width = width;
@@ -2254,8 +2249,9 @@ void * Mod_LoadSpriteFrame (void * pin, mspriteframe_t **ppframe, int framenum)
 	sprintf (name, "%s:frame%i", loadmodel->name, framenum);
 	offset = (src_offset_t)(pinframe+1) - (src_offset_t)mod_base; //johnfitz
 	pspriteframe->gltexture =
-		TexMgr_LoadImage (loadmodel, name, width, height, SRC_INDEXED, (byte *)(pinframe + 1),
-		loadmodel->name, offset, TEXPREF_PAD | TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
+		TexMgr_LoadImage (loadmodel, name, width, height, SRC_INDEXED,
+				  (byte *)(pinframe + 1), loadmodel->name, offset,
+				  TEXPREF_PAD | TEXPREF_ALPHA | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
 
 	return (void *)((byte *)pinframe + sizeof (dspriteframe_t) + size);
 }
@@ -2376,14 +2372,12 @@ void Mod_LoadSpriteModel (model_t *mod, void *buffer)
 		if (frametype == SPR_SINGLE)
 		{
 			pframetype = (dspriteframetype_t *)
-					Mod_LoadSpriteFrame (pframetype + 1,
-										 &psprite->frames[i].frameptr, i);
+					Mod_LoadSpriteFrame (pframetype + 1, &psprite->frames[i].frameptr, i);
 		}
 		else
 		{
 			pframetype = (dspriteframetype_t *)
-					Mod_LoadSpriteGroup (pframetype + 1,
-										 &psprite->frames[i].frameptr, i);
+					Mod_LoadSpriteGroup (pframetype + 1, &psprite->frames[i].frameptr, i);
 		}
 	}
 

@@ -26,14 +26,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "net_defs.h"	/* for struct qsocket_s details */
 
-server_t		sv;
+server_t	sv;
 server_static_t	svs;
 
-char	localmodels[MAX_MODELS][8];			// inline model names for precache
+static char	localmodels[MAX_MODELS][8];	// inline model names for precache
 
-int sv_protocol = PROTOCOL_FITZQUAKE; //johnfitz
+int		sv_protocol = PROTOCOL_FITZQUAKE; //johnfitz
 
-extern qboolean		pr_alpha_supported; //johnfitz
+extern qboolean	pr_alpha_supported; //johnfitz
 
 //============================================================================
 
@@ -1315,9 +1315,8 @@ void SV_SpawnServer (const char *server)
 //
 // set up the new server
 //
+	//memset (&sv, 0, sizeof(sv));
 	Host_ClearMemory ();
-
-	memset (&sv, 0, sizeof(sv));
 
 	strcpy (sv.name, server);
 
@@ -1327,6 +1326,7 @@ void SV_SpawnServer (const char *server)
 	PR_LoadProgs ();
 
 // allocate server memory
+	/* Host_ClearMemory() called above already cleared the whole sv structure */
 	sv.max_edicts = CLAMP (MIN_EDICTS,(int)max_edicts.value,MAX_EDICTS); //johnfitz -- max_edicts cvar
 	sv.edicts = (edict_t *) Hunk_AllocName (sv.max_edicts*pr_edict_size, "edicts");
 
