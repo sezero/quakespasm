@@ -126,7 +126,7 @@ extern	int			pr_xstatement;
 
 extern	unsigned short		pr_crc;
 
-void PR_RunError (const char *error, ...) __attribute__((__format__(__printf__,1,2)));
+void PR_RunError (const char *error, ...) __attribute__((__format__(__printf__,1,2), __noreturn__));
 
 void ED_PrintEdicts (void);
 void ED_PrintNum (int ent);
