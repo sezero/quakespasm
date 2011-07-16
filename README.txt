@@ -54,8 +54,8 @@
   o  Windows (x86)
      <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
 
-  o  OSX universal binary
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download>
+  o  OSX image
+     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.4.dmg/download>
 
 
   3.  Hints

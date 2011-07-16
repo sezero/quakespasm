@@ -20,7 +20,7 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download" name="Source">
 <item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download" name="Linux (x86)">
 <item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download" name="Windows (x86)">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_osx.zip/download" name="OSX universal binary">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.4.dmg/download" name="OSX image">
 </itemize>
 
 
