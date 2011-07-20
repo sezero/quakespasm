@@ -505,7 +505,17 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	if (!stream)
 		return NULL;
 
+#if 0 /*defined(CODECS_USE_ZONE)*/
 	stream->priv = Z_Malloc(sizeof(mp3_priv_t));
+#else
+	stream->priv = calloc(1, sizeof(mp3_priv_t));
+	if (!stream->priv)
+	{
+		S_CodecUtilClose(&stream);
+		Con_Printf("Insufficient memory for MP3 audio\n");
+		return NULL;
+	}
+#endif
 
 	if (mp3_startread(stream) < 0)
 	{
@@ -527,19 +537,22 @@ static int S_MP3_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 static void S_MP3_CodecCloseStream (snd_stream_t *stream)
 {
 	mp3_stopread(stream);
+#if 0 /*defined(CODECS_USE_ZONE)*/
 	Z_Free(stream->priv);
+#else
+	free(stream->priv);
+#endif
 	S_CodecUtilClose(&stream);
 }
 
 static int S_MP3_CodecRewindStream (snd_stream_t *stream)
 {
-#if 0
+	/*
 	mp3_stopread(stream);
 	FS_rewind(&stream->fh);
 	return mp3_startread(stream);
-#else
+	*/
 	return mp3_madseek(stream, 0);
-#endif
 }
 
 snd_codec_t mp3_codec =
