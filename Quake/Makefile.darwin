@@ -158,7 +158,7 @@ CFLAGS+= -DUSE_CODEC_WAVE
 endif
 ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS
-CODECLIBS+= -lvorbis -lvorbisfile -logg
+CODECLIBS+= -lvorbisfile -lvorbis -logg
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3

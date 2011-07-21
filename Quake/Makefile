@@ -141,7 +141,7 @@ CFLAGS+= -DUSE_CODEC_WAVE
 endif
 ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS
-CODECLIBS+= vorbis vorbisfile ogg
+CODECLIBS+= vorbisfile vorbis ogg
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3

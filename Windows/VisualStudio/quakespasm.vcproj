@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				GenerateDebugInformation="true"
@@ -210,7 +210,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -285,7 +285,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbis.lib libvorbisfile.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				GenerateDebugInformation="true"

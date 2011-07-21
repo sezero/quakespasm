@@ -42,8 +42,8 @@
 		<Linker>
 			<Add library="SDLmain" />
 			<Add library="SDL" />
-			<Add library="vorbis" />
 			<Add library="vorbisfile" />
+			<Add library="vorbis" />
 			<Add library="ogg" />
 			<Add library="mad" />
 			<Add library="winmm" />
