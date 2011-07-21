@@ -41,8 +41,8 @@
 		<Linker>
 			<Add option="`sdl-config --libs`" />
 			<Add option="-lGL" />
-			<Add option="-lvorbis" />
 			<Add option="-lvorbisfile" />
+			<Add option="-lvorbis" />
 			<Add option="-logg" />
 			<Add option="-lmad" />
 		</Linker>

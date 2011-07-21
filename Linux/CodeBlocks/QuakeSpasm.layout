@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Release" />
-	<File name="../../Quake/pr_edict.c" open="0" top="0" tabpos="0">
-		<Cursor position="8356" topLine="404" />
-	</File>
 </CodeBlocks_layout_file>
