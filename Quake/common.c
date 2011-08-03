@@ -1642,8 +1642,7 @@ Allways appends a 0 byte.
 #define	LOADFILE_TEMPHUNK	2
 #define	LOADFILE_CACHE		3
 #define	LOADFILE_STACK		4
-#define	LOADFILE_BUF		5
-#define	LOADFILE_MALLOC		6
+#define	LOADFILE_MALLOC		5
 
 static byte	*loadbuf;
 static cache_user_t *loadcache;
@@ -1685,12 +1684,6 @@ byte *COM_LoadFile (const char *path, int usehunk, unsigned int *path_id)
 			buf = loadbuf;
 		else
 			buf = (byte *) Hunk_TempAlloc (len+1);
-		break;
-	case LOADFILE_BUF:
-		if (len < loadsize && loadbuf != NULL)
-			buf = loadbuf;
-		else
-			buf = (byte *) Hunk_AllocName(len + 1, base);
 		break;
 	case LOADFILE_MALLOC:
 		buf = (byte *) malloc (len+1);
@@ -1739,23 +1732,6 @@ byte *COM_LoadStackFile (const char *path, void *buffer, int bufsize, unsigned i
 	loadbuf = (byte *)buffer;
 	loadsize = bufsize;
 	buf = COM_LoadFile (path, LOADFILE_STACK, path_id);
-
-	return buf;
-}
-
-// loads into a previously allocated buffer. if space is insufficient
-// or the buffer is NULL, loads onto the hunk.  bufsize is the actual
-// size (without the +1).
-byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize, unsigned int *path_id)
-{
-	byte	*buf;
-
-	loadbuf = (byte *)buffer;
-	loadsize = (*bufsize) + 1;
-	buf = COM_LoadFile (path, LOADFILE_BUF, path_id);
-	*bufsize = (buf == NULL) ? 0 : com_filesize;
-	if (loadbuf && buf && buf != loadbuf)
-		Sys_Printf("LoadBufFile: insufficient buffer for %s not used.\n", path);
 
 	return buf;
 }

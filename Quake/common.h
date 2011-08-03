@@ -219,12 +219,6 @@ void COM_LoadCacheFile (const char *path, struct cache_user_s *cu,
 	// uses cache mem for allocating the buffer.
 byte *COM_LoadMallocFile (const char *path, unsigned int *path_id);
 	// allocates the buffer on the system mem (malloc).
-byte *COM_LoadBufFile (const char *path, void *buffer, int *bufsize,
-						unsigned int *path_id);
-	// uses the specified pre-allocated buffer with bufsize + 1 size.
-	// bufsize is the actual expected size (without the + 1).  if the
-	// space is too short or the buffer is NULL, loads onto the hunk.
-	// sets bufsize to com_filesize for success, or to 0 for failure.
 
 /* The following FS_*() stdio replacements are necessary if one is
  * to perform non-sequential reads on files reopened on pak files
