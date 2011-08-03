@@ -1261,9 +1261,9 @@ void LOG_Init (quakeparms_t *parms)
 	strftime (session, sizeof(session), "%m/%d/%Y %H:%M:%S", localtime(&inittime));
 	q_snprintf (logfilename, sizeof(logfilename), "%s/qconsole.log", parms->basedir);
 
-	unlink (logfilename);
+//	unlink (logfilename);
 
-	log_fd = open (logfilename, O_WRONLY | O_CREAT | O_APPEND, 0666);
+	log_fd = open (logfilename, O_WRONLY | O_CREAT | O_TRUNC, 0666);
 	if (log_fd == -1)
 	{
 		fprintf (stderr, "Error: Unable to create log file %s\n", logfilename);
