@@ -1,14 +1,13 @@
-/* gcc -Wall mk_header.c -o mk_header */
-
 /*
+gcc -Wall mk_header.c -o mk_header
 
-dump the bytes of given input to a C header.
+dumps the bytes of given input to a C header as
+comma separated hexadecimal values.  the output
+header can be used in a C source like:
 
-use the header in the relevant source like:
-
-const char array[] =
+const char bin[] =
 {
-# include "conback.h"
+# include "output.h"
 };
 
 */
@@ -23,12 +22,12 @@ int main (int argc, char **argv)
 	struct stat s;
 	unsigned char *buf, *ptr;
 	const char *output;
-	int i, j;
+	long i, j;
 
 	if (argc != 2 && argc != 3)
 	{
-		printf ("Usage: mk_header  <input>  [output]\n"
-			"       output defaults to conback.h\n");
+		printf ("Usage: mk_header <input> [output]\n"
+			"Default output file is \"output.h\"\n");
 		return 1;
 	}
 
@@ -46,7 +45,7 @@ int main (int argc, char **argv)
 	}
 
 	buf = (unsigned char *) malloc (s.st_size);
-	if (!buf)
+	if (buf == NULL)
 	{
 		printf ("Couldn't malloc %ld bytes\n",
 					(long)s.st_size);
@@ -54,13 +53,13 @@ int main (int argc, char **argv)
 	}
 
 	f = fopen (argv[1], "rb");
-	if (!f)
+	if (f == NULL)
 	{
 		printf ("Couldn't open %s\n", argv[1]);
 		return 1;
 	}
 
-	if (fread (buf, 1, s.st_size, f) != s.st_size)
+	if (fread (buf, 1, s.st_size, f) != (size_t) s.st_size)
 	{
 		fclose (f);
 		free (buf);
@@ -69,7 +68,7 @@ int main (int argc, char **argv)
 	}
 	fclose (f);
 
-	output = (argc == 3) ? argv[2] : "conback.h";
+	output = (argc == 3) ? argv[2] : "output.h";
 	f = fopen (output, "wb");
 	if (!f)
 	{
