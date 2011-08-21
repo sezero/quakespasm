@@ -308,7 +308,7 @@ static int mp3_decode(snd_stream_t *stream, byte *buf, int len)
 				i++;
 			}
 			p->cursamp++;
-		};
+		}
 
 		len -= donow;
 		done += donow;
@@ -483,7 +483,7 @@ static int mp3_madseek(snd_stream_t *stream, unsigned long offset)
 				break;
 			}
 		}
-	};
+	}
 
 	return -1;
 }
@@ -517,15 +517,17 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	}
 #endif
 
-	if (mp3_startread(stream) < 0)
-	{
-		Con_Printf("%s is not a valid MP3 file.\n", filename);
-		Z_Free(stream->priv);
-		S_CodecUtilClose(&stream);
-		return NULL;
-	}
+	if (mp3_startread(stream) == 0)
+		return stream;
 
-	return stream;
+	Con_Printf("%s is not a valid mp3 file\n", filename);
+#if 0 /*defined(CODECS_USE_ZONE)*/
+	Z_Free(stream->priv);
+#else
+	free(stream->priv);
+#endif
+	S_CodecUtilClose(&stream);
+	return NULL;
 }
 
 static int S_MP3_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
