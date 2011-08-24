@@ -25,6 +25,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater; //johnfitz
 
+extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
+
 int		gl_lightmap_format;
 int		lightmap_bytes;
 
@@ -543,7 +545,19 @@ void R_DrawBrushModel (entity_t *e)
 
     glPushMatrix ();
 	e->angles[0] = -e->angles[0];	// stupid quake bug
+	if (gl_zfix.value)
+	{
+		e->origin[0] -= DIST_EPSILON;
+		e->origin[1] -= DIST_EPSILON;
+		e->origin[2] -= DIST_EPSILON;
+	}
 	R_RotateForEntity (e->origin, e->angles);
+	if (gl_zfix.value)
+	{
+		e->origin[0] += DIST_EPSILON;
+		e->origin[1] += DIST_EPSILON;
+		e->origin[2] += DIST_EPSILON;
+	}
 	e->angles[0] = -e->angles[0];	// stupid quake bug
 
 	//
