@@ -197,7 +197,8 @@ void V_DriftPitch (void)
 
 		if ( cl.driftmove > v_centermove.value)
 		{
-			V_StartPitchDrift ();
+			if (lookspring.value)
+				V_StartPitchDrift ();
 		}
 		return;
 	}

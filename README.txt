@@ -308,8 +308,6 @@
 
   o  Finalize OSX automatic updating feature
 
-  o  Fix Centerview (V_StartPitchDrift)
-
   o  There is still an unnecessary screen render on program init under
      some conditions, when using the "-window/-fullscreen" options.
 

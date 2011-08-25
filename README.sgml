@@ -175,7 +175,6 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item>Test usb keyboards. Do the keypads work? Make the OSX apple key work.
 <item>Complete the unix user directories support
 <item>Finalize OSX automatic updating feature
-<item>Fix Centerview (V_StartPitchDrift)
 <item>There is still an unnecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.
 </itemize>
 

@@ -159,7 +159,10 @@ void IN_Move (usercmd_t *cmd)
 		cl.viewangles[YAW] -= m_yaw.value * dmx;
 
 	if (in_mlook.state & 1)
-		V_StopPitchDrift ();
+	{
+		if (dmx || dmy)
+			V_StopPitchDrift ();
+	}
 
 	if ( (in_mlook.state & 1) && !(in_strafe.state & 1))
 	{
