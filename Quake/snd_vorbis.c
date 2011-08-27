@@ -27,8 +27,15 @@
 #include "snd_codec.h"
 #include "snd_codeci.h"
 #include "snd_vorbis.h"
+
 #define OV_EXCLUDE_STATIC_CALLBACKS
+#if defined(VORBIS_USE_TREMOR)
+/* for Tremor / Vorbisfile api differences,
+ * see doc/diff.html in the Tremor package. */
+#include <tremor/ivorbisfile.h>
+#else
 #include <vorbis/vorbisfile.h>
+#endif
 
 /* The OGG codec can return the samples in a number of different
  * formats, we use the standard signed short format. */
@@ -124,8 +131,20 @@ static int S_OGG_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 	ptr = (char *) buffer;
 	while (1)
 	{
-		res = ov_read((OggVorbis_File *) stream->priv, ptr, rem, host_bigendian,
-				OGG_SAMPLEWIDTH, OGG_SIGNED_DATA, &section);
+	/* # ov_read() from libvorbisfile returns the decoded PCM audio
+	 *   in requested endianness, signedness and word size.
+	 * # ov_read() from Tremor (libvorbisidec) returns decoded audio
+	 *   always in host-endian, signed 16 bit PCM format.
+	 * # For both of the libraries, if the audio is multichannel,
+	 *   the channels are interleaved in the output buffer.
+	 */
+		res = ov_read( (OggVorbis_File *)stream->priv, ptr, rem,
+#if !defined(VORBIS_USE_TREMOR)
+				host_bigendian,
+				OGG_SAMPLEWIDTH,
+				OGG_SIGNED_DATA,
+#endif	/* ! VORBIS_USE_TREMOR */
+				&section );
 		if (res <= 0)
 			break;
 		rem -= res;
@@ -146,7 +165,11 @@ static void S_OGG_CodecCloseStream (snd_stream_t *stream)
 
 static int S_OGG_CodecRewindStream (snd_stream_t *stream)
 {
-	return ov_time_seek ((OggVorbis_File *)stream->priv, 0.0);
+/* for libvorbisfile, the ov_time_seek() position argument
+ * is seconds as doubles, whereas for Tremor libvorbisidec
+ * it is milliseconds as 64 bit integers.
+ */
+	return ov_time_seek ((OggVorbis_File *)stream->priv, 0);
 }
 
 snd_codec_t ogg_codec =
