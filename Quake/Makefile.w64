@@ -1,9 +1,9 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win64 : MinGW-w64)
-# using cross-toolchains on a linux host	/ Mar. 27, 2011.
+# using cross-toolchains on a linux host	/ Aug. 27, 2011.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
-# "make WINSOCK2=0" to use the old WinSock 1.1 api (not recommended).
-# "make SDLNET=1" to use SDL_net (not recommended) instead of platform
+# "make WINSOCK2=0" to use the old WinSock 1.1 api (NOT recommended).
+# "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
 # specific code.
 
 ### Embed custom Quakespasm console background picture
@@ -16,6 +16,8 @@ USE_CODEC_VORBIS=1
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
+# which library to use for ogg decoding: vorbis or tremor
+VORBISLIB=vorbis
 
 # ============================================================================
 # Helper functions
@@ -96,15 +98,31 @@ ifeq ($(USE_QS_CONBACK),1)
 CFLAGS+= -DUSE_QS_CONBACK
 endif
 
+ifneq ($(VORBISLIB),vorbis)
+ifneq ($(VORBISLIB),tremor)
+$(error Invalid VORBISLIB setting)
+endif
+endif
+ifneq ($(MP3LIB),mpg123)
+ifneq ($(MP3LIB),mad)
+$(error Invalid MP3LIB setting)
+endif
+endif
 ifeq ($(MP3LIB),mad)
 mp3_obj=snd_mp3.o
-else
+lib_mp3dec=-lmad
+endif
 ifeq ($(MP3LIB),mpg123)
 mp3_obj=snd_mpg123.o
-else
-USE_CODEC_MP3=no
-mp3_obj=snd_mp3.o
+lib_mp3dec=-lmpg123
 endif
+ifeq ($(VORBISLIB),vorbis)
+cpp_vorbisdec=
+lib_vorbisdec=-lvorbisfile -lvorbis -logg
+endif
+ifeq ($(VORBISLIB),tremor)
+cpp_vorbisdec=-DVORBIS_USE_TREMOR
+lib_vorbisdec=-lvorbisidec -logg
 endif
 
 CODECLIBS  :=
@@ -114,16 +132,16 @@ CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64
 endif
 ifeq ($(USE_CODEC_VORBIS),1)
-CFLAGS+= -DUSE_CODEC_VORBIS
+CFLAGS+= -DUSE_CODEC_VORBIS $(cpp_vorbisdec)
 CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64
-CODECLIBS+= -lvorbisfile -lvorbis -logg
+CODECLIBS+= $(lib_vorbisdec)
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
 CODEC_INC = -I../Windows/codecs/include
 CODEC_LINK= -L../Windows/codecs/x64
-CODECLIBS+= -l$(MP3LIB)
+CODECLIBS+= $(lib_mp3dec)
 endif
 CFLAGS+= $(CODEC_INC)
 

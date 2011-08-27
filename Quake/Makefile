@@ -1,26 +1,23 @@
-### GNU Makefile for QuakeSpasm unix targets, Mar. 27, 2011
+### GNU Makefile for QuakeSpasm unix targets, Aug. 27, 2011
 #
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
-# "make SDLNET=1" to use SDL_net (not recommended)
-#                 instead of platform specific code.
-# Build objects are separate from those of codeblocks
+# "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
+# specific code.
 
 ### Embed custom Quakespasm console background picture
 USE_QS_CONBACK=1
 
 ### Enable/Disable codecs for streaming music support
-#
-# OGG (vorbis) playback requires libvorbis and libogg
-# MP3 playback requires libmad or libmpg123 (see MP3LIB below)
-
 USE_CODEC_WAVE=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
+# which library to use for ogg decoding: vorbis or tremor
+VORBISLIB=vorbis
 
 # ============================================================================
 # Helper functions
@@ -114,7 +111,7 @@ SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(SDLNET),1)
-NET_LIBS   := SDL_net
+NET_LIBS   :=-lSDL_net
 CFLAGS     +=-D_USE_SDLNET
 else
 NET_LIBS   :=
@@ -124,15 +121,31 @@ ifeq ($(USE_QS_CONBACK),1)
 CFLAGS+= -DUSE_QS_CONBACK
 endif
 
+ifneq ($(VORBISLIB),vorbis)
+ifneq ($(VORBISLIB),tremor)
+$(error Invalid VORBISLIB setting)
+endif
+endif
+ifneq ($(MP3LIB),mpg123)
+ifneq ($(MP3LIB),mad)
+$(error Invalid MP3LIB setting)
+endif
+endif
 ifeq ($(MP3LIB),mad)
 mp3_obj=snd_mp3.o
-else
+lib_mp3dec=-lmad
+endif
 ifeq ($(MP3LIB),mpg123)
 mp3_obj=snd_mpg123.o
-else
-USE_CODEC_MP3=no
-mp3_obj=snd_mp3.o
+lib_mp3dec=-lmpg123
 endif
+ifeq ($(VORBISLIB),vorbis)
+cpp_vorbisdec=
+lib_vorbisdec=-lvorbisfile -lvorbis -logg
+endif
+ifeq ($(VORBISLIB),tremor)
+cpp_vorbisdec=-DVORBIS_USE_TREMOR
+lib_vorbisdec=-lvorbisidec -logg
 endif
 
 CODECLIBS  :=
@@ -140,17 +153,17 @@ ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
 ifeq ($(USE_CODEC_VORBIS),1)
-CFLAGS+= -DUSE_CODEC_VORBIS
-CODECLIBS+= vorbisfile vorbis ogg
+CFLAGS+= -DUSE_CODEC_VORBIS $(cpp_vorbisdec)
+CODECLIBS+= $(lib_vorbisdec)
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
-CODECLIBS+= $(MP3LIB)
+CODECLIBS+= $(lib_mp3dec)
 endif
 
-COMMON_LIBS:= m GL
+COMMON_LIBS:= -lm -lGL
 
-LIBS := $(patsubst %,-l%,$(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS))
+LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
 
 # ---------------------------
 # targets
