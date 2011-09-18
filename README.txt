@@ -160,6 +160,10 @@
 
   o  Verified successful compilation using gcc-4.6
 
+  o  Added a cvar gl_zfix to stop GL texture flicker (z fighting)
+
+  o  mlook and lookspring fixes
+
   5.2.  Changes in 0.85.4
 
 
@@ -253,6 +257,7 @@
   o  Accept commandline options like "+connect ip:port"
 
   o  Add OSX Makefile (tested?)
+
 
   5.5.  Changes in 0.85.1
 
