@@ -96,6 +96,9 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item> Verified successful compilation using gcc-4.6
 <item> Added a cvar gl_zfix to stop GL texture flicker (z fighting)
 <item> mlook and lookspring fixes
+<item> Added support for loading external entity files, controlled by new cvar external_ents.
+<item> Made mp3 playback to allocate system memory instead of zone
+<item> Several code updates from uHexen2, several code cleanups.
 </itemize>
 </p>
 

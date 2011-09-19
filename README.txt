@@ -164,6 +164,13 @@
 
   o  mlook and lookspring fixes
 
+  o  Added support for loading external entity files, controlled by new
+     cvar external_ents.
+
+  o  Made mp3 playback to allocate system memory instead of zone
+
+  o  Several code updates from uHexen2, several code cleanups.
+
   5.2.  Changes in 0.85.4
 
 
