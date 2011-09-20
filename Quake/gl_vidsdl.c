@@ -1234,7 +1234,7 @@ void	VID_Init (void)
 				}
 				else
 				{
-					width = 640;
+					width = 800;	// QuakeSpasm, was 640
 				}
 
 				p = COM_CheckParm("-bpp");
