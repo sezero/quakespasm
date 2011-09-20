@@ -171,7 +171,7 @@ void S_Init (void)
 	i = COM_CheckParm("-sndspeed");
 	if (i && i < com_argc-1)
 	{
-		sndspeed.value = Q_atoi(com_argv[i+1]);
+		Cvar_Set ("sndspeed", com_argv[i+1]);
 	}
 
 	if (host_parms->memsize < 0x800000)
