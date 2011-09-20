@@ -217,6 +217,9 @@ typedef struct
 extern net_driver_t	net_drivers[MAX_NET_DRIVERS];
 extern int		net_numdrivers;
 
+/* Loop driver must always be registered the first */
+#define IS_LOOP_DRIVER(p)	((p) == 0)
+
 extern int		net_driverlevel;
 
 extern int		messagesSent;
