@@ -86,7 +86,7 @@ cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.95", true};
 cvar_t		scr_conwidth = {"scr_conwidth", "0", true};
 cvar_t		scr_conscale = {"scr_conscale", "1", true};
 cvar_t		scr_scale = {"scr_scale", "1", true};
-cvar_t		scr_crosshaircale = {"scr_crosshaircale", "1", true};
+cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", true};
 cvar_t		scr_showfps = {"scr_showfps", "0"};
 cvar_t		scr_clock = {"scr_clock", "0"};
 //johnfitz
@@ -375,7 +375,7 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_conwidth, &SCR_Conwidth_f);
 	Cvar_RegisterVariable (&scr_conscale, &SCR_Conwidth_f);
 	Cvar_RegisterVariable (&scr_scale, NULL);
-	Cvar_RegisterVariable (&scr_crosshaircale, NULL);
+	Cvar_RegisterVariable (&scr_crosshairscale, NULL);
 	Cvar_RegisterVariable (&scr_showfps, NULL);
 	Cvar_RegisterVariable (&scr_clock, NULL);
 	//johnfitz

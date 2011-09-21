@@ -76,7 +76,7 @@ extern	cvar_t		scr_sbarscale;
 extern	cvar_t		scr_conwidth;
 extern	cvar_t		scr_conscale;
 extern	cvar_t		scr_scale;
-extern	cvar_t		scr_crosshaircale;
+extern	cvar_t		scr_crosshairscale;
 //johnfitz
 
 extern int scr_tileclear_updates; //johnfitz
