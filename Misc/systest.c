@@ -62,7 +62,7 @@
 
 #if defined(BYTE_ORDER) && defined(LITTLE_ENDIAN) && defined(BIG_ENDIAN)
 
-# if (BYTE_ORDER != LITTLE_ENDIAN) && (BYTE_ORDER != BIG_ENDIAN) && (BYTE_ORDER != PDP_ENDIAN)
+# if (BYTE_ORDER != LITTLE_ENDIAN) && (BYTE_ORDER != BIG_ENDIAN)
 # error "Unsupported endianness."
 # endif
 
@@ -96,10 +96,14 @@
 #	define	BYTE_ORDER	BIG_ENDIAN
 #   endif
 
-# elif defined(__i386) || defined(__i386__) ||	/* any x86 */	\
-       defined(_M_IX86) ||					\
-       defined(__amd64) || defined(__x86_64__)	/* any x64 */
-#	define	BYTE_ORDER	LITTLE_ENDIAN
+# elif defined(__i386) || defined(__i386__) || defined(__386__) || defined(_M_IX86)
+#	define	BYTE_ORDER	LITTLE_ENDIAN	/* any x86 */
+
+# elif defined(__amd64) || defined(__x86_64__) || defined(_M_X64)
+#	define	BYTE_ORDER	LITTLE_ENDIAN	/* any x64 */
+
+# elif defined(_M_IA64)
+#	define	BYTE_ORDER	LITTLE_ENDIAN	/* ia64 / Visual C */
 
 # elif defined (__ppc__) || defined(__POWERPC__) || defined(_M_PPC)
 #	define	BYTE_ORDER	BIG_ENDIAN	/* PPC: big endian */
