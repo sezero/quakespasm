@@ -1,12 +1,12 @@
-support for user directories, based on a patch by Piotr Szymaniak.
-** against quakespasm svn revision 445.
+support for user directories, based on uhexen2 and tyrquake.
+** against quakespasm svn revision 496.
 ** in alpha state, minimally tested.
 ** on-the-fly game directory changes not supported yet.
 ** needs more work.
 
 Index: Quake/sys_sdl_unix.c
 ===================================================================
---- Quake/sys_sdl_unix.c	(revision 445)
+--- Quake/sys_sdl_unix.c	(revision 496)
 +++ Quake/sys_sdl_unix.c	(working copy)
 @@ -20,6 +20,8 @@
  
@@ -27,7 +27,7 @@ Index: Quake/sys_sdl_unix.c
  
  #include "SDL.h"
  
-@@ -139,9 +144,41 @@
+@@ -139,9 +144,43 @@
  	return -1;
  }
  
@@ -36,7 +36,8 @@ Index: Quake/sys_sdl_unix.c
 +
 +static void Sys_GetUserdir (char *dst, size_t dstsize)
 +{
-+	char		*home_dir = NULL;
++	size_t		n;
++	const char	*home_dir = NULL;
 +#if USE_PASSWORD_FILE
 +	struct passwd	*pwent;
 +
@@ -55,26 +56,27 @@ Index: Quake/sys_sdl_unix.c
 + * $HOME/SYS_USERDIR/game_dir/dirname1/dirname2/dirname3/filename.ext
 + * still fits in the MAX_OSPATH == 256 definition, but just in case :
 + */
-+	if (strlen(home_dir) + strlen(SYS_USERDIR) + 50 > dstsize)
++	n = strlen(home_dir) + strlen(SYS_USERDIR) + 50;
++	if (n >= dstsize)
 +		Sys_Error ("Insufficient array size for userspace directory");
 +
 +	q_snprintf (dst, dstsize, "%s/%s", home_dir, SYS_USERDIR);
-+	Sys_mkdir (dst);
 +}
 +
  void Sys_Init (void)
  {
 -	host_parms->userdir = host_parms->basedir; /* TODO: implement properly! */
 +	Sys_GetUserdir(userdir, sizeof(userdir));
++	Sys_mkdir (userdir);
 +	host_parms->userdir = userdir;
  }
  
  void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 445)
+--- Quake/common.c	(revision 496)
 +++ Quake/common.c	(working copy)
-@@ -1844,32 +1844,34 @@ pack_t *COM_LoadPackFile (const char *pa
+@@ -1822,32 +1822,34 @@
  COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
  =================
  */
@@ -113,7 +115,7 @@ Index: Quake/common.c
  		pak = COM_LoadPackFile (pakfile);
  		if (!pak)
  			break;
-@@ -1879,6 +1881,14 @@ void COM_AddGameDirectory (const char *d
+@@ -1857,6 +1859,14 @@
  		search->next = com_searchpaths;
  		com_searchpaths = search;
  	}
@@ -128,7 +130,7 @@ Index: Quake/common.c
  }
  
  #if defined(USE_QS_CONBACK)
-@@ -1929,8 +1939,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1907,8 +1917,7 @@
  	}
  
  	// start up with GAMENAME by default (id1)
@@ -138,7 +140,7 @@ Index: Quake/common.c
  
  #if defined(USE_QS_CONBACK)
  	if (!fitzmode)
-@@ -1944,17 +1953,17 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1922,17 +1931,17 @@
  	com_nummissionpacks = 0;
  	if (COM_CheckParm ("-rogue"))
  	{
@@ -159,7 +161,7 @@ Index: Quake/common.c
  		com_nummissionpacks++;
  	}
  	//johnfitz
-@@ -1963,7 +1972,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1941,7 +1950,7 @@
  	if (i && i < com_argc-1)
  	{
  		com_modified = true;
