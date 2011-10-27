@@ -45,7 +45,6 @@ static qboolean	enabled = true;
 static qboolean playLooping = false;
 static byte	remap[100];
 static byte	playTrack;
-static double	endOfTrack = -1.0, pausetime = -1.0;
 static SDL_CD	*cd_handle;
 static int	cd_dev = -1;
 static float	old_cdvolume;
@@ -78,8 +77,6 @@ static int CDAudio_GetAudioDiskInfo(void)
 
 int CDAudio_Play(byte track, qboolean looping)
 {
-	int	len_m, len_s, len_f;
-
 	if (!cd_handle || !enabled)
 		return -1;
 
@@ -123,18 +120,6 @@ int CDAudio_Play(byte track, qboolean looping)
 	playTrack = track;
 	playing = true;
 
-	FRAMES_TO_MSF(cd_handle->track[track-1].length, &len_m, &len_s, &len_f);
-	endOfTrack = realtime + ((double)len_m * 60.0) + (double)len_s + (double)len_f / (double)CD_FPS;
-
-	/*
-	 * Add the pregap for the next track.  This means that disc-at-once CDs
-	 * won't loop smoothly, but they wouldn't anyway so it doesn't really
-	 * matter.  SDL doesn't give us pregap information anyway, so you'll
-	 * just have to live with it.
-	 */
-	endOfTrack += 2.0;
-	pausetime = -1.0;
-
 	if (bgmvolume.value == 0) /* don't bother advancing */
 		CDAudio_Pause ();
 
@@ -154,8 +139,6 @@ void CDAudio_Stop(void)
 
 	wasPlaying = false;
 	playing = false;
-	pausetime = -1.0;
-	endOfTrack = -1.0;
 }
 
 void CDAudio_Pause(void)
@@ -171,7 +154,6 @@ void CDAudio_Pause(void)
 
 	wasPlaying = playing;
 	playing = false;
-	pausetime = realtime;
 }
 
 void CDAudio_Resume(void)
@@ -188,8 +170,6 @@ void CDAudio_Resume(void)
 	if (SDL_CDResume(cd_handle) == -1)
 		Con_Printf ("Unable to resume CD-ROM: %s\n", SDL_GetError());
 	playing = true;
-	endOfTrack += realtime - pausetime;
-	pausetime = -1.0;
 }
 
 static void CD_f (void)
@@ -366,6 +346,8 @@ static qboolean CDAudio_SetVolume (float value)
 void CDAudio_Update(void)
 {
 	CDstatus	curstat;
+	Uint32		timechk;
+	static Uint32	lastchk;
 
 	if (!cd_handle || !enabled)
 		return;
@@ -373,14 +355,14 @@ void CDAudio_Update(void)
 	if (old_cdvolume != bgmvolume.value)
 		CDAudio_SetVolume (bgmvolume.value);
 
-	if (playing && realtime > endOfTrack)
+	timechk = SDL_GetTicks ();
+	if (playing && lastchk < timechk)
 	{
-	//	curstat = cd_handle->status;
+		lastchk = timechk + 2000; /* two seconds between chks */
 		curstat = SDL_CDStatus(cd_handle);
 		if (curstat != CD_PLAYING && curstat != CD_PAUSED)
 		{
 			playing = false;
-			endOfTrack = -1.0;
 			if (playLooping)
 				CDAudio_Play(playTrack, true);
 		}
