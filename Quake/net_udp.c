@@ -235,7 +235,7 @@ int UDP_Connect (sys_socket_t socketid, struct qsockaddr *addr)
 
 sys_socket_t UDP_CheckNewConnections (void)
 {
-	unsigned long	available;
+	int		available;
 	struct sockaddr_in	from;
 	socklen_t	fromlen;
 	char		buff[1];
