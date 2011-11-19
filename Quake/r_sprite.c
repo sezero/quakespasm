@@ -40,7 +40,7 @@ mspriteframe_t *R_GetSpriteFrame (entity_t *currentent)
 
 	if ((frame >= psprite->numframes) || (frame < 0))
 	{
-		Con_Printf ("R_DrawSprite: no such frame %d\n", frame);
+		Con_DPrintf ("R_DrawSprite: no such frame %d\n", frame);
 		frame = 0;
 	}
 
