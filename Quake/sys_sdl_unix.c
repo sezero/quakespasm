@@ -147,8 +147,13 @@ void Sys_Init (void)
 void Sys_mkdir (const char *path)
 {
 	int rc = mkdir (path, 0777);
-	if (rc != 0 && errno != EEXIST)
-		Sys_Error("Unable to create directory %s", path);
+	if (rc != 0 && errno == EEXIST)
+		rc = 0;
+	if (rc != 0)
+	{
+		rc = errno;
+		Sys_Error("Unable to create directory %s: %s", path, strerror(rc));
+	}
 }
 
 static const char errortxt1[] = "\nERROR-OUT BEGIN\n\n";

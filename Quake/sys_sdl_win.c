@@ -196,8 +196,9 @@ void Sys_Init (void)
 
 void Sys_mkdir (const char *path)
 {
-	int rc = _mkdir (path);
-	if (rc != 0 && errno != EEXIST)
+	if (CreateDirectory(path, NULL) != 0)
+		return;
+	if (GetLastError() != ERROR_ALREADY_EXISTS)
 		Sys_Error("Unable to create directory %s", path);
 }
 
@@ -279,23 +280,23 @@ double Sys_FloatTime (void)
 char *Sys_ConsoleInput (void)
 {
 	static char	con_text[256];
-	static int		textlen;
+	static int	textlen;
 	INPUT_RECORD	recs[1024];
 	int		ch;
 	DWORD		dummy, numread, numevents;
 
 	if (!isDedicated)
-		return NULL;	// no stdin necessary in graphical mode
+		return NULL;
 
 	for ( ;; )
 	{
-		if (!GetNumberOfConsoleInputEvents (hinput, &numevents))
+		if (GetNumberOfConsoleInputEvents(hinput, &numevents) == 0)
 			Sys_Error ("Error getting # of console events");
 
 		if (numevents <= 0)
 			break;
 
-		if (!ReadConsoleInput(hinput, recs, 1, &numread))
+		if (ReadConsoleInput(hinput, recs, 1, &numread) == 0)
 			Sys_Error ("Error reading console input");
 
 		if (numread != 1)
@@ -303,43 +304,42 @@ char *Sys_ConsoleInput (void)
 
 		if (recs[0].EventType == KEY_EVENT)
 		{
-			if (!recs[0].Event.KeyEvent.bKeyDown)
+		    if (recs[0].Event.KeyEvent.bKeyDown == FALSE)
+		    {
+			ch = recs[0].Event.KeyEvent.uChar.AsciiChar;
+
+			switch (ch)
 			{
-				ch = recs[0].Event.KeyEvent.uChar.AsciiChar;
+			case '\r':
+				WriteFile(houtput, "\r\n", 2, &dummy, NULL);
 
-				switch (ch)
+				if (textlen != 0)
 				{
-				case '\r':
-					WriteFile(houtput, "\r\n", 2, &dummy, NULL);
-
-					if (textlen)
-					{
-						con_text[textlen] = 0;
-						textlen = 0;
-						return con_text;
-					}
-
-					break;
-
-				case '\b':
-					WriteFile(houtput, "\b \b", 3, &dummy, NULL);
-					if (textlen)
-					{
-						textlen--;
-					}
-					break;
-
-				default:
-					if (ch >= ' ')
-					{
-						WriteFile(houtput, &ch, 1, &dummy, NULL);
-						con_text[textlen] = ch;
-						textlen = (textlen + 1) & 0xff;
-					}
-
-					break;
+					con_text[textlen] = 0;
+					textlen = 0;
+					return con_text;
 				}
+
+				break;
+
+			case '\b':
+				WriteFile(houtput, "\b \b", 3, &dummy, NULL);
+				if (textlen != 0)
+					textlen--;
+
+				break;
+
+			default:
+				if (ch >= ' ')
+				{
+					WriteFile(houtput, &ch, 1, &dummy, NULL);
+					con_text[textlen] = ch;
+					textlen = (textlen + 1) & 0xff;
+				}
+
+				break;
 			}
+		    }
 		}
 	}
 
