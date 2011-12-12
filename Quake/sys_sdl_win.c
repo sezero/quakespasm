@@ -277,7 +277,7 @@ double Sys_FloatTime (void)
 	return SDL_GetTicks() / 1000.0;
 }
 
-char *Sys_ConsoleInput (void)
+const char *Sys_ConsoleInput (void)
 {
 	static char	con_text[256];
 	static int	textlen;

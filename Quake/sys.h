@@ -1,6 +1,5 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
-Copyright (C) 2002-2009 John Fitzgibbons and others
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -40,7 +39,7 @@ void Sys_FileClose (int handle);
 void Sys_FileSeek (int handle, int position);
 int Sys_FileRead (int handle, void *dest, int count);
 int Sys_FileWrite (int handle,const void *data, int count);
-int	Sys_FileTime (const char *path);
+int Sys_FileTime (const char *path);
 void Sys_mkdir (const char *path);
 
 //
@@ -56,7 +55,7 @@ void Sys_Quit (void) __attribute__((__noreturn__));
 
 double Sys_FloatTime (void);
 
-char *Sys_ConsoleInput (void);
+const char *Sys_ConsoleInput (void);
 
 void Sys_Sleep (void);
 // called to yield for a little bit so as
