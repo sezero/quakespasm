@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-char loadfilename[MAX_OSPATH]; //file scope so that error messages can use it
+static char loadfilename[MAX_OSPATH]; //file scope so that error messages can use it
 
 /*
 ============
@@ -33,7 +33,7 @@ returns a pointer to hunk allocated RGBA data
 TODO: search order: tga png jpg pcx lmp
 ============
 */
-byte *Image_LoadImage (char *name, int *width, int *height)
+byte *Image_LoadImage (const char *name, int *width, int *height)
 {
 	FILE	*f;
 
@@ -99,7 +99,7 @@ returns true if successful
 TODO: support BGRA and BGR formats (since opengl can return them, and we don't have to swap)
 ============
 */
-qboolean Image_WriteTGA (char *name, byte *data, int width, int height, int bpp, qboolean upsidedown)
+qboolean Image_WriteTGA (const char *name, byte *data, int width, int height, int bpp, qboolean upsidedown)
 {
 	int		handle, i, size, temp, bytes;
 	char	pathname[MAX_OSPATH];
