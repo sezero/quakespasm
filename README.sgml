@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-QuakeSpasm 0.85.5 (11 May 2011)
+QuakeSpasm 0.85.5 (12 December 2011)
 
 <sect> About <p>
 
@@ -98,6 +98,7 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item> mlook and lookspring fixes
 <item> Added support for loading external entity files, controlled by new cvar external_ents.
 <item> Made mp3 playback to allocate system memory instead of zone
+<item> Some updates to the progs interpreter code
 <item> Several code updates from uHexen2, several code cleanups.
 </itemize>
 </p>

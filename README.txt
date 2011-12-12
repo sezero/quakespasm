@@ -29,7 +29,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (11 May 2011)
+  QuakeSpasm 0.85.5 (12 December 2011)
 
 
   1.  About
@@ -168,6 +168,8 @@
      cvar external_ents.
 
   o  Made mp3 playback to allocate system memory instead of zone
+
+  o  Some updates to the progs interpreter code
 
   o  Several code updates from uHexen2, several code cleanups.
 
