@@ -564,7 +564,7 @@ void Host_God_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (pr_global_struct->deathmatch)
 		return;
 
 	//johnfitz -- allow user to explicitly set god mode to on or off
@@ -609,7 +609,7 @@ void Host_Notarget_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (pr_global_struct->deathmatch)
 		return;
 
 	//johnfitz -- allow user to explicitly set notarget to on or off
@@ -656,7 +656,7 @@ void Host_Noclip_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (pr_global_struct->deathmatch)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -712,7 +712,7 @@ void Host_Fly_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (pr_global_struct->deathmatch)
 		return;
 
 	//johnfitz -- allow user to explicitly set noclip to on or off
@@ -1742,7 +1742,7 @@ void Host_Kick_f (void)
 			return;
 		}
 	}
-	else if (pr_global_struct->deathmatch && !host_client->privileged)
+	else if (pr_global_struct->deathmatch)
 		return;
 
 	save = host_client;
@@ -1830,7 +1830,7 @@ void Host_Give_f (void)
 		return;
 	}
 
-	if (pr_global_struct->deathmatch && !host_client->privileged)
+	if (pr_global_struct->deathmatch)
 		return;
 
 	t = Cmd_Argv(1);

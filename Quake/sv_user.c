@@ -529,10 +529,7 @@ nextmsg:
 
 			case clc_stringcmd:
 				s = MSG_ReadString ();
-				if (host_client->privileged)
-					ret = 2;
-				else
-					ret = 0;
+				ret = 0;
 				if (Q_strncasecmp(s, "status", 6) == 0)
 					ret = 1;
 				else if (Q_strncasecmp(s, "god", 3) == 0)
@@ -571,9 +568,8 @@ nextmsg:
 					ret = 1;
 				else if (Q_strncasecmp(s, "ban", 3) == 0)
 					ret = 1;
-				if (ret == 2)
-					Cbuf_InsertText (s);
-				else if (ret == 1)
+
+				if (ret == 1)
 					Cmd_ExecuteString (s, src_client);
 				else
 					Con_DPrintf("%s tried to %s\n", host_client->name, s);
