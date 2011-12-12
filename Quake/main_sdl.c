@@ -73,18 +73,18 @@ int main(int argc, char *argv[])
 	Sys_Printf("Host_Init\n");
 	Host_Init();
 
-	oldtime = Sys_FloatTime();
+	oldtime = Sys_DoubleTime();
 	if (isDedicated)
 	{
 		while (1)
 		{
-			newtime = Sys_FloatTime ();
+			newtime = Sys_DoubleTime ();
 			time = newtime - oldtime;
 
 			while (time < sys_ticrate.value )
 			{
 				SDL_Delay(1);
-				newtime = Sys_FloatTime ();
+				newtime = Sys_DoubleTime ();
 				time = newtime - oldtime;
 			}
 
@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		newtime = Sys_FloatTime();
+		newtime = Sys_DoubleTime();
 		time = newtime - oldtime;
 		Host_Frame(time);
 

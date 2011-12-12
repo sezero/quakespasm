@@ -790,7 +790,7 @@ void R_RenderView (void)
 	if (r_speeds.value)
 	{
 		glFinish ();
-		time1 = Sys_FloatTime ();
+		time1 = Sys_DoubleTime ();
 
 		//johnfitz -- rendering statistics
 		rs_brushpolys = rs_aliaspolys = rs_skypolys = rs_particles = rs_fogpolys = rs_megatexels =
@@ -838,7 +838,7 @@ void R_RenderView (void)
 	//johnfitz
 
 	//johnfitz -- modified r_speeds output
-	time2 = Sys_FloatTime ();
+	time2 = Sys_DoubleTime ();
 	if (r_speeds.value == 2)
 		Con_Printf ("%3i ms  %4i/%4i wpoly %4i/%4i epoly %3i lmap %4i/%4i sky %1.1f mtex\n",
 					(int)((time2-time1)*1000),

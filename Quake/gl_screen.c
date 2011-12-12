@@ -870,14 +870,14 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 
 	S_ClearBuffer ();		// so dma doesn't loop current sound
 
-	time1 = Sys_FloatTime () + timeout; //johnfitz -- timeout
+	time1 = Sys_DoubleTime () + timeout; //johnfitz -- timeout
 	time2 = 0.0f; //johnfitz -- timeout
 
 	do
 	{
 		key_count = -1;		// wait for a key down and up
 		Sys_SendKeyEvents ();
-		if (timeout) time2 = Sys_FloatTime (); //johnfitz -- zero timeout means wait forever.
+		if (timeout) time2 = Sys_DoubleTime (); //johnfitz -- zero timeout means wait forever.
 	} while (key_lastpress != 'y' &&
 			 key_lastpress != 'n' &&
 			 key_lastpress != K_ESCAPE &&

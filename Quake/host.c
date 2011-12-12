@@ -482,7 +482,7 @@ void Host_ShutdownServer(qboolean crash)
 		CL_Disconnect ();
 
 // flush any pending messages - like the score!!!
-	start = Sys_FloatTime();
+	start = Sys_DoubleTime();
 	do
 	{
 		count = 0;
@@ -502,7 +502,7 @@ void Host_ShutdownServer(qboolean crash)
 				}
 			}
 		}
-		if ((Sys_FloatTime() - start) > 3.0)
+		if ((Sys_DoubleTime() - start) > 3.0)
 			break;
 	}
 	while (count);
@@ -728,14 +728,14 @@ void _Host_Frame (float time)
 
 // update video
 	if (host_speeds.value)
-		time1 = Sys_FloatTime ();
+		time1 = Sys_DoubleTime ();
 
 	SCR_UpdateScreen ();
 
 	CL_RunParticles (); //johnfitz -- seperated from rendering
 
 	if (host_speeds.value)
-		time2 = Sys_FloatTime ();
+		time2 = Sys_DoubleTime ();
 
 // update audio
 	BGM_Update();	// adds music raw samples and/or advances midi driver
@@ -752,7 +752,7 @@ void _Host_Frame (float time)
 	if (host_speeds.value)
 	{
 		pass1 = (time1 - time3)*1000;
-		time3 = Sys_FloatTime ();
+		time3 = Sys_DoubleTime ();
 		pass2 = (time2 - time1)*1000;
 		pass3 = (time3 - time2)*1000;
 		Con_Printf ("%3i tot %3i server %3i gfx %3i snd\n",
@@ -776,9 +776,9 @@ void Host_Frame (float time)
 		return;
 	}
 
-	time1 = Sys_FloatTime ();
+	time1 = Sys_DoubleTime ();
 	_Host_Frame (time);
-	time2 = Sys_FloatTime ();
+	time2 = Sys_DoubleTime ();
 
 	timetotal += time2 - time1;
 	timecount++;

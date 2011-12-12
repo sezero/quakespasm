@@ -29,8 +29,7 @@ void Sys_Init (void);
 // file IO
 //
 
-// returns the file size
-// return -1 if file is not present
+// returns the file size or -1 if file is not present.
 // the file should be in BINARY mode for stupid OSs that care
 int Sys_FileOpenRead (const char *path, int *hndl);
 
@@ -53,13 +52,12 @@ void Sys_Printf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)
 
 void Sys_Quit (void) __attribute__((__noreturn__));
 
-double Sys_FloatTime (void);
+double Sys_DoubleTime (void);
 
 const char *Sys_ConsoleInput (void);
 
-void Sys_Sleep (void);
-// called to yield for a little bit so as
-// not to hog cpu when paused or debugging
+void Sys_Sleep (unsigned long msecs);
+// yield for about 'msecs' milliseconds.
 
 void Sys_SendKeyEvents (void);
 // Perform Key_Event () callbacks until the input que is empty

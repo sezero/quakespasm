@@ -197,7 +197,7 @@ void Sys_Quit (void)
 	exit (0);
 }
 
-double Sys_FloatTime (void)
+double Sys_DoubleTime (void)
 {
 	return SDL_GetTicks() / 1000.0;
 }
@@ -253,8 +253,9 @@ const char *Sys_ConsoleInput (void)
 	return NULL;
 }
 
-void Sys_Sleep (void)
+void Sys_Sleep (unsigned long msecs)
 {
+	usleep (msecs * 1000);
 }
 
 void Sys_SendKeyEvents (void)
