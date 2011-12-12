@@ -703,12 +703,12 @@ void CL_SendCmd (void)
 
 	if (!NET_CanSendMessage (cls.netcon))
 	{
-		Con_DPrintf ("CL_WriteToServer: can't send\n");
+		Con_DPrintf ("CL_SendCmd: can't send\n");
 		return;
 	}
 
 	if (NET_SendMessage (cls.netcon, &cls.message) == -1)
-		Host_Error ("CL_WriteToServer: lost server connection");
+		Host_Error ("CL_SendCmd: lost server connection");
 
 	SZ_Clear (&cls.message);
 }

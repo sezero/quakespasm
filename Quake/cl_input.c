@@ -339,7 +339,7 @@ void CL_BaseMove (usercmd_t *cmd)
 CL_SendMove
 ==============
 */
-void CL_SendMove (usercmd_t *cmd)
+void CL_SendMove (const usercmd_t *cmd)
 {
 	int		i;
 	int		bits;

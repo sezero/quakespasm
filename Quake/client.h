@@ -320,18 +320,14 @@ extern 	kbutton_t 	in_speed;
 
 void CL_InitInput (void);
 void CL_SendCmd (void);
-void CL_SendMove (usercmd_t *cmd);
+void CL_SendMove (const usercmd_t *cmd);
+int  CL_ReadFromServer (void);
+void CL_BaseMove (usercmd_t *cmd);
 
 void CL_ParseTEnt (void);
 void CL_UpdateTEnts (void);
 
 void CL_ClearState (void);
-
-
-int  CL_ReadFromServer (void);
-void CL_WriteToServer (usercmd_t *cmd);
-void CL_BaseMove (usercmd_t *cmd);
-
 
 float CL_KeyState (kbutton_t *key);
 const char *Key_KeynumToString (int keynum);
