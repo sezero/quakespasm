@@ -20,7 +20,7 @@ Index: Quake/gl_model.c
 +				if (r_externaltexture_fix.value) {
 +					if (strstr(tx->name,"sky4")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==13039)
-+							sprintf(tx->name,"sky1");
++							strcpy(tx->name,"sky1");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +				} //mk -- end
@@ -37,44 +37,44 @@ Index: Quake/gl_model.c
 +				if (r_externaltexture_fix.value) {
 +					if (strstr(tx->name,"plat_top1")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==24428)
-+							sprintf(tx->name,"plat_top1_cable");
++							strcpy(tx->name,"plat_top1_cable");
 +						else
-+							sprintf(tx->name,"plat_top1_bolt");
++							strcpy(tx->name,"plat_top1_bolt");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +
 +					if (strstr(tx->name,"metal5_2")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==49173)
-+							sprintf(tx->name,"metal5_2_x");
++							strcpy(tx->name,"metal5_2_x");
 +						else
-+							sprintf(tx->name,"metal5_2_arc");
++							strcpy(tx->name,"metal5_2_arc");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +
 +					if (strstr(tx->name,"metal5_4")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==20977)
-+							sprintf(tx->name,"metal5_4_double");
++							strcpy(tx->name,"metal5_4_double");
 +						else
-+							sprintf(tx->name,"metal5_4_arc");
++							strcpy(tx->name,"metal5_4_arc");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +					if (strstr(tx->name,"metal5_8")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==48444)
-+							sprintf(tx->name,"metal5_8_rune");
++							strcpy(tx->name,"metal5_8_rune");
 +						else
-+							sprintf(tx->name,"metal5_8_back");
++							strcpy(tx->name,"metal5_8_back");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +					if (strstr(tx->name,"metal5_8")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==48444)
-+							sprintf(tx->name,"metal5_8_rune");
++							strcpy(tx->name,"metal5_8_rune");
 +						else
-+							sprintf(tx->name,"metal5_8_back");
++							strcpy(tx->name,"metal5_8_back");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +					if (strstr(tx->name,"window03")) {
 +						if (CRC_Block((byte *)(tx+1), tx->width * tx->height)==63697) // e4m2 variant
-+							sprintf(tx->name,"window03_e4m2");
++							strcpy(tx->name,"window03_e4m2");
 +						Con_Printf("  using %s\n", tx->name);
 +					}
 +				} //mk end
