@@ -347,10 +347,10 @@ void Cmd_Alias_f (void)
 		// copy the rest of the command line
 		cmd[0] = 0;		// start out with a null string
 		c = Cmd_Argc();
-		for (i=2 ; i< c ; i++)
+		for (i = 2; i < c; i++)
 		{
 			strcat (cmd, Cmd_Argv(i));
-			if (i != c)
+			if (i != c - 1)
 				strcat (cmd, " ");
 		}
 		strcat (cmd, "\n");
