@@ -2021,6 +2021,7 @@ void Mod_SetExtraFlags (model_t *mod)
 {
 	extern cvar_t r_nolerp_list;
 	const char *s;
+	char tmp[MAX_QPATH];
 	int i;
 
 	if (!mod || !mod->name || mod->type != mod_alias)
@@ -2029,17 +2030,27 @@ void Mod_SetExtraFlags (model_t *mod)
 	mod->flags &= 0xFF; //only preserve first byte
 
 	// nolerp flag
-	for (s=r_nolerp_list.string; *s; s += i+1, i=0)
+	s = r_nolerp_list.string;
+	while (*s)
 	{
-		//search forwards to the next comma or end of string
-		for (i=0; s[i] != ',' && s[i] != 0; i++) ;
-
+		// make a copy until the next comma or end of string
+		i = 0;
+		while (*s && *s != ',')
+		{
+			if (i < MAX_QPATH - 1)
+				tmp[i++] = *s;
+			s++;
+		}
+		tmp[i] = '\0';
 		//compare it to the model name
-		if (!strncmp(mod->name, s, i))
+		if (!strcmp(mod->name, tmp))
 		{
 			mod->flags |= MOD_NOLERP;
 			break;
 		}
+		//search forwards to the next comma or end of string
+		while (*s && *s == ',')
+			s++;
 	}
 
 	// noshadow flag (TODO: make this a cvar list)

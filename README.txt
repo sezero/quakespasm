@@ -29,7 +29,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (12 December 2011)
+  QuakeSpasm 0.85.5 (14 December 2011)
 
 
   1.  About
@@ -170,6 +170,8 @@
   o  Made mp3 playback to allocate system memory instead of zone
 
   o  Some updates to the progs interpreter code
+
+  o  Fixed r_nolerp_list parsing code from fitzquake
 
   o  Several code updates from uHexen2, several code cleanups.
 
