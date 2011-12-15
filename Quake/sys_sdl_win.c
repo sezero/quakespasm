@@ -285,9 +285,6 @@ const char *Sys_ConsoleInput (void)
 	int		ch;
 	DWORD		dummy, numread, numevents;
 
-	if (!isDedicated)
-		return NULL;
-
 	for ( ;; )
 	{
 		if (GetNumberOfConsoleInputEvents(hinput, &numevents) == 0)

@@ -210,9 +210,6 @@ const char *Sys_ConsoleInput (void)
 	fd_set		set;
 	struct timeval	timeout;
 
-	if (!isDedicated)
-		return NULL;	// no stdin necessary in graphical mode
-
 	FD_ZERO (&set);
 	FD_SET (0, &set);	// stdin
 	timeout.tv_sec = 0;

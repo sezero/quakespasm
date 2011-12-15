@@ -600,6 +600,9 @@ void Host_GetConsoleCommands (void)
 {
 	const char	*cmd;
 
+	if (!isDedicated)
+		return;	// no stdin necessary in graphical mode
+
 	while (1)
 	{
 		cmd = Sys_ConsoleInput ();
