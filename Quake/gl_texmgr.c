@@ -454,7 +454,7 @@ void TexMgr_LoadPalette (void)
 
 	//fullbright palette, 0-223 are black (for additive blending)
 	src = pal + 224*3;
-	dst = (byte *)(d_8to24table_fbright) + 224*4;
+	dst = (byte *) &d_8to24table_fbright[224];
 	for (i=224; i<256; i++)
 	{
 		*dst++ = *src++;
