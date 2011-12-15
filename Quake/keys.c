@@ -697,9 +697,19 @@ void History_Init (void)
 			{
 				c = fgetc(hf);
 				key_lines[edit_line][i++] = c;
-			} while (c != '\n' && c != EOF && i < MAXCMDLINE);
+			} while (c != '\r' && c != '\n' && c != EOF && i < MAXCMDLINE);
 			key_lines[edit_line][i - 1] = 0;
 			edit_line = (edit_line + 1) & (CMDLINES - 1);
+			/* for people using a windows-generated history file on unix: */
+			if (c == '\r' || c == '\n')
+			{
+				do
+					c = fgetc(hf);
+				while (c == '\r' || c == '\n');
+				if (c != EOF)
+					ungetc(c, hf);
+				else	c = 0; /* loop once more, otherwise last line is lost */
+			}
 		} while (c != EOF && edit_line < CMDLINES);
 		fclose(hf);
 
