@@ -1158,6 +1158,7 @@ void Host_Loadgame_f (void)
 
 	if (!sv.active)
 	{
+		fclose (f);
 		Con_Printf ("Couldn't load map\n");
 		return;
 	}
@@ -1189,14 +1190,20 @@ void Host_Loadgame_f (void)
 			}
 		}
 		if (i == sizeof(str) - 1)
+		{
+			fclose (f);
 			Sys_Error ("Loadgame buffer overflow");
+		}
 		str[i] = 0;
 		start = str;
 		start = COM_Parse(str);
 		if (!com_token[0])
 			break;		// end of file
 		if (strcmp(com_token,"{"))
+		{
+			fclose (f);
 			Sys_Error ("First token isn't a brace");
+		}
 
 		if (entnum == -1)
 		{	// parse the global vars
