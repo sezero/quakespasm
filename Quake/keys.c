@@ -861,12 +861,21 @@ void Key_Event (int key, qboolean down)
 	if (down)
 	{
 		key_repeats[key]++;
-		if (key_dest != key_console && key_repeats[key] > 1 && !repeatkeys[key]) //johnfitz -- use repeatkeys[]
-			return;	// ignore most autorepeats
+		if (key_repeats[key] > 1)
+		{
+			if (key_dest == key_console)
+				goto autorep0;
+			if (key_dest == key_message)
+				goto autorep0;
+			if (!repeatkeys[key]) //johnfitz -- use repeatkeys[]
+				return;	// ignore most autorepeats
+		}
 
 		if (key >= 200 && !keybindings[key])
 			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString (key) );
 	}
+
+autorep0:
 
 	if (key == K_SHIFT)
 		shift_down = down;
