@@ -29,7 +29,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (14 December 2011)
+  QuakeSpasm 0.85.5 (16 December 2011)
 
 
   1.  About
@@ -155,6 +155,9 @@
 
   5.1.  Changes in 0.85.5 (unreleased)
 
+
+  o  SDL input driver updated adding native keymap and dead key support
+     to the console
 
   o  Fixed a crash in net play in maps with extended limits
 

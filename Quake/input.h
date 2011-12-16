@@ -35,6 +35,10 @@ void IN_Commands (void);
 // mouse moved by dx and dy pixels
 void IN_MouseMove(int dx, int dy);
 
+
+void IN_SendKeyEvents (void);
+// used as a callback for Sys_SendKeyEvents() by some drivers
+
 void IN_Move (usercmd_t *cmd);
 // add additional movement on top of the keyboard move cmd
 
@@ -46,10 +50,6 @@ void IN_Activate ();
 
 // called when the app becomes inactive
 void IN_Deactivate (qboolean free_cursor);
-
-/* for SDL builds only */
-void BuildKeyMaps (void);
-int Key_Map (void *event); /* SDL_KeyboardEvent *event */
 
 #endif	/* _QUAKE_INPUT_H */
 

@@ -27,12 +27,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define DEFAULT_MEMORY 0x4000000
 
 static quakeparms_t	parms;
+static Uint8		appState;
 
 int main(int argc, char *argv[])
 {
-	SDL_Event	event;
 	int		t;
-	int		done = 0;
 	double		time, oldtime, newtime;
 
 	host_parms = &parms;
@@ -93,95 +92,35 @@ int main(int argc, char *argv[])
 		}
 	}
 	else
-	while (!done)
+	while (1)
 	{
-		while (!done && SDL_PollEvent (&event))
+		appState = SDL_GetAppState();
+		/* If we have no input focus at all, sleep a bit */
+		if ( !(appState & (SDL_APPMOUSEFOCUS | SDL_APPINPUTFOCUS)) || cl.paused)
 		{
-			switch (event.type)
-			{
-			case SDL_ACTIVEEVENT:
-				if (event.active.state & (SDL_APPACTIVE|SDL_APPINPUTFOCUS))
-				{
-					if (!COM_CheckParm("-bgsound")) {
-						if (event.active.gain)
-							S_UnblockSound();
-						else 
-							S_BlockSound();
-					}
-				}
-				break;
-			case SDL_MOUSEMOTION:
-				IN_MouseMove(event.motion.xrel, event.motion.yrel);
-				break;
-			case SDL_MOUSEBUTTONDOWN:
-			case SDL_MOUSEBUTTONUP:
-			  switch (event.button.button)
-			  {
-			  case SDL_BUTTON_LEFT:
-				Key_Event(K_MOUSE1, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_RIGHT:
-				Key_Event(K_MOUSE2, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_MIDDLE:
-				Key_Event(K_MOUSE3, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_WHEELUP:
-				Key_Event(K_MWHEELUP, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_WHEELDOWN:
-				Key_Event(K_MWHEELDOWN, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_X1:
-				Key_Event(K_MOUSE4, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  case SDL_BUTTON_X2:
-				Key_Event(K_MOUSE5, event.button.type == SDL_MOUSEBUTTONDOWN);
-				break;
-			  }
-			  break;
-			case SDL_KEYDOWN:
-			case SDL_KEYUP:
-				// SHIFT + ESC and circomflex always opens the console no matter what
-				if ((event.key.keysym.sym == SDLK_ESCAPE && (event.key.keysym.mod & KMOD_SHIFT))
-				    || (event.key.keysym.sym == SDLK_CARET))
-				{
-					if (event.key.type == SDL_KEYDOWN)
-						Con_ToggleConsole_f();
-				}
-				else if ((event.key.keysym.sym == SDLK_RETURN) &&
-					 (event.key.keysym.mod & KMOD_ALT))
-				{
-					if (event.key.type == SDL_KEYDOWN)
-						VID_Toggle();
-				}
-				else
-				{
-					Key_Event(Key_Map(&(event.key)), event.key.type == SDL_KEYDOWN);
-				}
-				break;
-			case SDL_QUIT:
-				done = 1;
-				break;
-			default:
-				break;
-			}
+			SDL_Delay(16);
 		}
-
-		newtime = Sys_DoubleTime();
+		/* If we're minimised, sleep a bit more */
+		if ( !(appState & SDL_APPACTIVE) )
+		{
+			scr_skipupdate = 1;
+			SDL_Delay(32);
+		}
+		else
+		{
+			scr_skipupdate = 0;
+		}
+		newtime = Sys_DoubleTime ();
 		time = newtime - oldtime;
-		Host_Frame(time);
 
-		/* throttle the game loop just a little bit
-		   and make the game run a little cooler:
-		   noone needs more than 1000fps, I think */
+		Host_Frame (time);
+
 		if (time < sys_throttle.value)
 			SDL_Delay(1);
 
 		oldtime = newtime;
 	}
 
-	Sys_Quit();
 	return 0;
 }
 

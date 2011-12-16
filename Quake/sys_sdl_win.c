@@ -350,25 +350,7 @@ void Sys_Sleep (unsigned long msecs)
 
 void Sys_SendKeyEvents (void)
 {
-	SDL_Event event;
-
-	SDL_PumpEvents();
-	while (SDL_PollEvent (&event))
-	{
-		switch (event.type)
-		{
-		case SDL_KEYDOWN:
-		case SDL_KEYUP:
-			Key_Event(Key_Map(&(event.key)), event.key.type == SDL_KEYDOWN);
-			return;
-		case SDL_QUIT:
-			Sys_Quit();
-			break;
-		default:
-			SDL_PumpEvents();
-			break;
-		}
-	}
+	IN_SendKeyEvents();
 }
 
 void Sys_LowFPPrecision (void)

@@ -751,10 +751,7 @@ void Key_Init (void)
 {
 	int		i;
 
-	BuildKeyMaps();
-
 	History_Init ();
-
 #if 0 /* This section of code is now done in History_Init */
 	for (i = 0; i < 32; i++)
 	{

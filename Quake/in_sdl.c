@@ -23,13 +23,26 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "SDL.h"
 
+static keydest_t	prev_key_dest;
+
 static qboolean	no_mouse = false;
 
-// mouse variables
+static int buttonremap[] =
+{
+	K_MOUSE1,
+	K_MOUSE3,	/* right button		*/
+	K_MOUSE2,	/* middle button	*/
+	K_MWHEELUP,
+	K_MWHEELDOWN,
+	K_MOUSE4,
+	K_MOUSE5
+};
+
+/* mouse variables */
 cvar_t	m_filter = {"m_filter","0"};
 
-// total accumulated mouse movement since last frame
-// this gets updated from the main game loop via IN_MouseMove
+/* total accumulated mouse movement since last frame,
+ * gets updated from the main game loop via IN_MouseMove */
 static int	total_dx, total_dy = 0;
 
 static int FilterMouseEvents (const SDL_Event *event)
@@ -93,22 +106,21 @@ void IN_Deactivate (qboolean free_cursor)
 		}
 	}
 
-	// discard all mouse events when input is deactivated
+	/* discard all mouse events when input is deactivated */
 	if (SDL_GetEventFilter() != FilterMouseEvents)
 		SDL_SetEventFilter(FilterMouseEvents);
 }
 
 void IN_Init (void)
 {
-	BuildKeyMaps();
-
+	SDL_EnableUNICODE (0); /* frame updates will change this as key_dest changes */
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
 
 	if (safemode || COM_CheckParm("-nomouse"))
 	{
 		no_mouse = true;
-		// discard all mouse events when input is deactivated
+		/* discard all mouse events when input is deactivated */
 		SDL_SetEventFilter(FilterMouseEvents);
 	}
 
@@ -122,11 +134,11 @@ void IN_Shutdown (void)
 
 void IN_Commands (void)
 {
-// TODO: implement this for joystick support
+/* TODO: implement this for joystick support */
 }
 
-extern cvar_t cl_maxpitch; //johnfitz -- variable pitch clamping
-extern cvar_t cl_minpitch; //johnfitz -- variable pitch clamping
+extern cvar_t cl_maxpitch; /* johnfitz -- variable pitch clamping */
+extern cvar_t cl_minpitch; /* johnfitz -- variable pitch clamping */
 
 
 void IN_MouseMove(int dx, int dy)
@@ -167,12 +179,11 @@ void IN_Move (usercmd_t *cmd)
 	if ( (in_mlook.state & 1) && !(in_strafe.state & 1))
 	{
 		cl.viewangles[PITCH] += m_pitch.value * dmy;
-		//johnfitz -- variable pitch clamping
+		/* johnfitz -- variable pitch clamping */
 		if (cl.viewangles[PITCH] > cl_maxpitch.value)
 			cl.viewangles[PITCH] = cl_maxpitch.value;
 		if (cl.viewangles[PITCH] < cl_minpitch.value)
 			cl.viewangles[PITCH] = cl_minpitch.value;
-		//johnfitz
 	}
 	else
 	{
@@ -187,206 +198,292 @@ void IN_ClearStates (void)
 {
 }
 
-
-/* =================================
-   SDL to quake keynum mapping
-   =================================*/
-
-static byte key_map[SDLK_LAST];
-
-void BuildKeyMaps (void)
+void IN_SendKeyEvents (void)
 {
-	int i;
+	SDL_Event event;
+	int sym, state;
+	int modstate;
 
-	for (i = 0; i < SDLK_LAST; i++)
-		key_map[i] = 0;
+	if (key_dest != prev_key_dest)
+	{
+		SDL_EnableUNICODE((key_dest == key_console || key_dest == key_message));
+		Key_ClearStates();
+		prev_key_dest = key_dest;
+	}
 
-	key_map[SDLK_BACKSPACE]     = K_BACKSPACE;
-	key_map[SDLK_TAB]           = K_TAB;
-	key_map[SDLK_RETURN]        = K_ENTER;
-	key_map[SDLK_PAUSE]         = K_PAUSE;
-	key_map[SDLK_ESCAPE]        = K_ESCAPE;
-	key_map[SDLK_SPACE]         = K_SPACE;
-	key_map[SDLK_EXCLAIM]       = '!';
-	key_map[SDLK_QUOTEDBL]      = '"';
-	key_map[SDLK_HASH]          = '#';
-	key_map[SDLK_DOLLAR]        = '$';
-	key_map[SDLK_AMPERSAND]     = '&';
-	key_map[SDLK_QUOTE]         = '\'';
-	key_map[SDLK_LEFTPAREN]     = '(';
-	key_map[SDLK_RIGHTPAREN]    = ')';
-	key_map[SDLK_ASTERISK]      = '*';
-	key_map[SDLK_PLUS]          = '+';
-	key_map[SDLK_COMMA]         = ',';
-	key_map[SDLK_MINUS]         = '-';
-	key_map[SDLK_PERIOD]        = '.';
-	key_map[SDLK_SLASH]         = '/';
-
-	key_map[SDLK_0]             = '0';
-	key_map[SDLK_1]             = '1';
-	key_map[SDLK_2]             = '2';
-	key_map[SDLK_3]             = '3';
-	key_map[SDLK_4]             = '4';
-	key_map[SDLK_5]             = '5';
-	key_map[SDLK_6]             = '6';
-	key_map[SDLK_7]             = '7';
-	key_map[SDLK_8]             = '8';
-	key_map[SDLK_9]             = '9';
-
-	key_map[SDLK_COLON]         = ':';
-	key_map[SDLK_SEMICOLON]     = ';';
-	key_map[SDLK_LESS]          = '<';
-	key_map[SDLK_EQUALS]        = '=';
-	key_map[SDLK_GREATER]       = '>';
-	key_map[SDLK_QUESTION]      = '?';
-	key_map[SDLK_AT]            = '@';
-	key_map[SDLK_LEFTBRACKET]   = '[';
-	key_map[SDLK_BACKSLASH]     = '\\';
-	key_map[SDLK_RIGHTBRACKET]  = ']';
-	key_map[SDLK_CARET]         = '^';
-	key_map[SDLK_UNDERSCORE]    = '_';
-	key_map[SDLK_BACKQUOTE]     = '`';
-
-	key_map[SDLK_a]             = 'a';
-	key_map[SDLK_b]             = 'b';
-	key_map[SDLK_c]             = 'c';
-	key_map[SDLK_d]             = 'd';
-	key_map[SDLK_e]             = 'e';
-	key_map[SDLK_f]             = 'f';
-	key_map[SDLK_g]             = 'g';
-	key_map[SDLK_h]             = 'h';
-	key_map[SDLK_i]             = 'i';
-	key_map[SDLK_j]             = 'j';
-	key_map[SDLK_k]             = 'k';
-	key_map[SDLK_l]             = 'l';
-	key_map[SDLK_m]             = 'm';
-	key_map[SDLK_n]             = 'n';
-	key_map[SDLK_o]             = 'o';
-	key_map[SDLK_p]             = 'p';
-	key_map[SDLK_q]             = 'q';
-	key_map[SDLK_r]             = 'r';
-	key_map[SDLK_s]             = 's';
-	key_map[SDLK_t]             = 't';
-	key_map[SDLK_u]             = 'u';
-	key_map[SDLK_v]             = 'v';
-	key_map[SDLK_w]             = 'w';
-	key_map[SDLK_x]             = 'x';
-	key_map[SDLK_y]             = 'y';
-	key_map[SDLK_z]             = 'z';
-
-	key_map[SDLK_DELETE]        = K_DEL;
-
-	key_map[SDLK_KP0]           = KP_INS;
-	key_map[SDLK_KP1]           = KP_END;
-	key_map[SDLK_KP2]           = KP_DOWNARROW;
-	key_map[SDLK_KP3]           = KP_PGDN;
-	key_map[SDLK_KP4]           = KP_LEFTARROW;
-	key_map[SDLK_KP5]           = KP_5;
-	key_map[SDLK_KP6]           = KP_RIGHTARROW;
-	key_map[SDLK_KP7]           = KP_HOME;
-	key_map[SDLK_KP8]           = KP_UPARROW;
-	key_map[SDLK_KP9]           = KP_PGUP;
-	key_map[SDLK_KP_PERIOD]     = KP_DEL;
-	key_map[SDLK_KP_DIVIDE]     = KP_SLASH;
-	key_map[SDLK_KP_MULTIPLY]   = KP_STAR;
-	key_map[SDLK_KP_MINUS]      = KP_MINUS;
-	key_map[SDLK_KP_PLUS]       = KP_PLUS;
-	key_map[SDLK_KP_ENTER]      = KP_ENTER;
-	key_map[SDLK_KP_EQUALS]     = 0;
-
-	key_map[SDLK_UP]            = K_UPARROW;
-	key_map[SDLK_DOWN]          = K_DOWNARROW;
-	key_map[SDLK_RIGHT]         = K_RIGHTARROW;
-	key_map[SDLK_LEFT]          = K_LEFTARROW;
-	key_map[SDLK_INSERT]        = K_INS;
-	key_map[SDLK_HOME]          = K_HOME;
-	key_map[SDLK_END]           = K_END;
-	key_map[SDLK_PAGEUP]        = K_PGUP;
-	key_map[SDLK_PAGEDOWN]      = K_PGDN;
-
-	key_map[SDLK_F1]            = K_F1;
-	key_map[SDLK_F2]            = K_F2;
-	key_map[SDLK_F3]            = K_F3;
-	key_map[SDLK_F4]            = K_F4;
-	key_map[SDLK_F5]            = K_F5;
-	key_map[SDLK_F6]            = K_F6;
-	key_map[SDLK_F7]            = K_F7;
-	key_map[SDLK_F8]            = K_F8;
-	key_map[SDLK_F9]            = K_F9;
-	key_map[SDLK_F10]           = K_F10;
-	key_map[SDLK_F11]           = K_F11;
-	key_map[SDLK_F12]           = K_F12;
-	key_map[SDLK_F13]           = 0;
-	key_map[SDLK_F14]           = 0;
-	key_map[SDLK_F15]           = 0;
-
-	key_map[SDLK_NUMLOCK]       = KP_NUMLOCK;
-	key_map[SDLK_CAPSLOCK]      = 0;
-	key_map[SDLK_SCROLLOCK]     = 0;
-	key_map[SDLK_RSHIFT]        = K_SHIFT;
-	key_map[SDLK_LSHIFT]        = K_SHIFT;
-	key_map[SDLK_RCTRL]         = K_CTRL;
-	key_map[SDLK_LCTRL]         = K_CTRL;
-	key_map[SDLK_RALT]          = K_ALT;
-	key_map[SDLK_LALT]          = K_ALT;
-	key_map[SDLK_RMETA]         = 0;
-	key_map[SDLK_LMETA]         = 0;
-	key_map[SDLK_LSUPER]        = 0;
-	key_map[SDLK_RSUPER]        = 0;
-	key_map[SDLK_MODE]          = 0;
-	key_map[SDLK_COMPOSE]       = 0;
-	key_map[SDLK_HELP]          = 0;
-	key_map[SDLK_PRINT]         = 0;
-	key_map[SDLK_SYSREQ]        = 0;
-	key_map[SDLK_BREAK]         = 0;
-	key_map[SDLK_MENU]          = 0;
-	key_map[SDLK_POWER]         = 0;
-	key_map[SDLK_EURO]          = 0;
-	key_map[SDLK_UNDO]          = 0;
-}
-
-/*
-=======
-MapKey
-
-Map from SDL to quake keynums
-=======
-*/
-int Key_Map (void *event) /* SDL_KeyboardEvent *event */
-{
-	return key_map[(*(SDL_KeyboardEvent *)event).keysym.sym];
-
-	/* TODO: keypad handling
-	if (cl_keypad.value) {
-		if (extended) {
-			switch (key) {
-			case K_ENTER:		return KP_ENTER;
-			case '/':		return KP_SLASH;
-			case K_PAUSE:		return KP_NUMLOCK;
-			};
-		} else {
-			switch (key) {
-			case K_HOME:		return KP_HOME;
-			case K_UPARROW:		return KP_UPARROW;
-			case K_PGUP:		return KP_PGUP;
-			case K_LEFTARROW:	return KP_LEFTARROW;
-			case K_RIGHTARROW:	return KP_RIGHTARROW;
-			case K_END:			return KP_END;
-			case K_DOWNARROW:	return KP_DOWNARROW;
-			case K_PGDN:		return KP_PGDN;
-			case K_INS:			return KP_INS;
-			case K_DEL:			return KP_DEL;
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_ACTIVEEVENT:
+			if (event.active.state & (SDL_APPINPUTFOCUS|SDL_APPACTIVE))
+			{
+				if (event.active.gain)
+				{
+				/*	Sys_Printf("FOCUS GAIN\n");*/
+					S_UnblockSound();
+				}
+				else
+				{
+				/*	Sys_Printf("FOCUS LOSS\n");*/
+					S_BlockSound();
+				}
 			}
-		}
-	} else {
-		// cl_keypad 0, compatibility mode
-		switch (key) {
-			case KP_STAR:	return '*';
-			case KP_MINUS:	return '-';
-			case KP_5:		return '5';
-			case KP_PLUS:	return '+';
+			break;
+
+		case SDL_KEYDOWN:
+			if ((event.key.keysym.sym == SDLK_RETURN) &&
+			    (event.key.keysym.mod & KMOD_ALT))
+			{
+				VID_Toggle();
+				break;
+			}
+			else if ((event.key.keysym.sym == SDLK_ESCAPE) &&
+				 (event.key.keysym.mod & KMOD_SHIFT))
+			{
+				Con_ToggleConsole_f();
+				break;
+			}
+
+		case SDL_KEYUP:
+			sym = event.key.keysym.sym;
+			state = event.key.state;
+			modstate = SDL_GetModState();
+
+			switch (key_dest)
+			{
+			case key_game:
+				if ((event.key.keysym.unicode != 0) || (modstate & KMOD_SHIFT))
+				{	/* only use unicode for ~ and ` in game mode */
+					if ((event.key.keysym.unicode & 0xFF80) == 0)
+					{
+						if (((event.key.keysym.unicode & 0x7F) == '`') ||
+						    ((event.key.keysym.unicode & 0x7F) == '~') )
+							sym = event.key.keysym.unicode & 0x7F;
+					}
+				}
+				break;
+			case key_message:
+			case key_console:
+				if ((event.key.keysym.unicode != 0) || (modstate & KMOD_SHIFT))
+				{
+#if defined(__QNX__)
+					if ((sym == SDLK_BACKSPACE) || (sym == SDLK_RETURN))
+						break;	/* S.A: fixes QNX weirdness */
+#endif	/* __QNX__ */
+					if ((event.key.keysym.unicode & 0xFF80) == 0)
+						sym = event.key.keysym.unicode & 0x7F;
+					/* else: it's an international character */
+				}
+			/*	printf("You pressed %s (%d) (%c)\n", SDL_GetKeyName(sym), sym, sym);*/
+				break;
+			default:
+				break;
+			}
+
+			switch (sym)
+			{
+			case SDLK_DELETE:
+				sym = K_DEL;
+				break;
+			case SDLK_BACKSPACE:
+				sym = K_BACKSPACE;
+				break;
+			case SDLK_F1:
+				sym = K_F1;
+				break;
+			case SDLK_F2:
+				sym = K_F2;
+				break;
+			case SDLK_F3:
+				sym = K_F3;
+				break;
+			case SDLK_F4:
+				sym = K_F4;
+				break;
+			case SDLK_F5:
+				sym = K_F5;
+				break;
+			case SDLK_F6:
+				sym = K_F6;
+				break;
+			case SDLK_F7:
+				sym = K_F7;
+				break;
+			case SDLK_F8:
+				sym = K_F8;
+				break;
+			case SDLK_F9:
+				sym = K_F9;
+				break;
+			case SDLK_F10:
+				sym = K_F10;
+				break;
+			case SDLK_F11:
+				sym = K_F11;
+				break;
+			case SDLK_F12:
+				sym = K_F12;
+				break;
+			case SDLK_BREAK:
+			case SDLK_PAUSE:
+				sym = K_PAUSE;
+				break;
+			case SDLK_UP:
+				sym = K_UPARROW;
+				break;
+			case SDLK_DOWN:
+				sym = K_DOWNARROW;
+				break;
+			case SDLK_RIGHT:
+				sym = K_RIGHTARROW;
+				break;
+			case SDLK_LEFT:
+				sym = K_LEFTARROW;
+				break;
+			case SDLK_INSERT:
+				sym = K_INS;
+				break;
+			case SDLK_HOME:
+				sym = K_HOME;
+				break;
+			case SDLK_END:
+				sym = K_END;
+				break;
+			case SDLK_PAGEUP:
+				sym = K_PGUP;
+				break;
+			case SDLK_PAGEDOWN:
+				sym = K_PGDN;
+				break;
+			case SDLK_RSHIFT:
+			case SDLK_LSHIFT:
+				sym = K_SHIFT;
+				break;
+			case SDLK_RCTRL:
+			case SDLK_LCTRL:
+				sym = K_CTRL;
+				break;
+			case SDLK_RALT:
+			case SDLK_LALT:
+				sym = K_ALT;
+				break;
+			case SDLK_KP0:
+				if (modstate & KMOD_NUM)
+					sym = K_INS;
+				else
+					sym = SDLK_0;
+				break;
+			case SDLK_KP1:
+				if (modstate & KMOD_NUM)
+					sym = K_END;
+				else
+					sym = SDLK_1;
+				break;
+			case SDLK_KP2:
+				if (modstate & KMOD_NUM)
+					sym = K_DOWNARROW;
+				else
+					sym = SDLK_2;
+				break;
+			case SDLK_KP3:
+				if (modstate & KMOD_NUM)
+					sym = K_PGDN;
+				else
+					sym = SDLK_3;
+				break;
+			case SDLK_KP4:
+				if (modstate & KMOD_NUM)
+					sym = K_LEFTARROW;
+				else
+					sym = SDLK_4;
+				break;
+			case SDLK_KP5:
+				sym = SDLK_5;
+				break;
+			case SDLK_KP6:
+				if (modstate & KMOD_NUM)
+					sym = K_RIGHTARROW;
+				else
+					sym = SDLK_6;
+				break;
+			case SDLK_KP7:
+				if (modstate & KMOD_NUM)
+					sym = K_HOME;
+				else
+					sym = SDLK_7;
+				break;
+			case SDLK_KP8:
+				if (modstate & KMOD_NUM)
+					sym = K_UPARROW;
+				else
+					sym = SDLK_8;
+				break;
+			case SDLK_KP9:
+				if (modstate & KMOD_NUM)
+					sym = K_PGUP;
+				else
+					sym = SDLK_9;
+				break;
+			case SDLK_KP_PERIOD:
+				if (modstate & KMOD_NUM)
+					sym = K_DEL;
+				else
+					sym = SDLK_PERIOD;
+				break;
+			case SDLK_KP_DIVIDE:
+				sym = SDLK_SLASH;
+				break;
+			case SDLK_KP_MULTIPLY:
+				sym = SDLK_ASTERISK;
+				break;
+			case SDLK_KP_MINUS:
+				sym = SDLK_MINUS;
+				break;
+			case SDLK_KP_PLUS:
+				sym = SDLK_PLUS;
+				break;
+			case SDLK_KP_ENTER:
+				sym = SDLK_RETURN;
+				break;
+			case SDLK_KP_EQUALS:
+				sym = SDLK_EQUALS;
+				break;
+			case 178: /* the '²' key */
+				sym = '~';
+				break;
+			}
+			/* If we're not directly handled and still
+			 * above 255, just force it to 0 */
+			if (sym > 255)
+				sym = 0;
+			Key_Event (sym, state);
+			break;
+
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button < 1 ||
+			    event.button.button > sizeof(buttonremap) / sizeof(buttonremap[0]))
+			{
+				Con_Printf ("Ignored event for mouse button %d\n",
+							event.button.button);
+				break;
+			}
+			Key_Event(buttonremap[event.button.button - 1], event.button.state == SDL_PRESSED);
+			break;
+
+		case SDL_MOUSEMOTION:
+			IN_MouseMove(event.motion.xrel, event.motion.yrel);
+			break;
+
+		case SDL_QUIT:
+			CL_Disconnect ();
+			Sys_Quit ();
+			break;
+
+		default:
+			break;
 		}
 	}
-	*/
 }
 
