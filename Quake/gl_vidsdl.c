@@ -20,7 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
-// gl_vidnt.c -- NT GL vid component
+// gl_vidsdl.c -- SDL GL vid component
 
 #include "quakedef.h"
 #include "bgmusic.h"
@@ -138,7 +138,7 @@ cvar_t		vid_fullscreen = {"vid_fullscreen", "0", true};	// QuakeSpasm, was "1"
 cvar_t		vid_width = {"vid_width", "800", true};		// QuakeSpasm, was 640
 cvar_t		vid_height = {"vid_height", "600", true};	// QuakeSpasm, was 480
 cvar_t		vid_bpp = {"vid_bpp", "16", true};
-cvar_t		vid_refreshrate = {"vid_refreshrate", "60", true};
+//cvar_t		vid_refreshrate = {"vid_refreshrate", "60", true};
 cvar_t		vid_vsync = {"vid_vsync", "0", true};
 //johnfitz
 
@@ -210,7 +210,7 @@ void VID_Gamma_f (void)
 
 	oldgamma = vid_gamma.value;
 
-	for (i=0; i<256; i++)
+	for (i = 0; i < 256; i++)
 	{
 		vid_gamma_red[i] =
 			CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
@@ -244,7 +244,6 @@ VID_SetMode
 int VID_SetMode (int modenum)
 {
 	int		temp;
-	qboolean	stat = false;
 	Uint32	flags = SDL_DEFAULT_FLAGS;
 	char		caption[50];
 
@@ -285,17 +284,14 @@ int VID_SetMode (int modenum)
 			draw_context = SDL_SetVideoMode(modelist[modenum].width,
 							modelist[modenum].height,
 							modelist[modenum].bpp, flags);
-			stat = true;
 		}
 		else
 		{
 			draw_context = SDL_SetVideoMode(modelist[modenum].width,
 							modelist[modenum].height,
 							modelist[modenum].bpp, flags);
-			stat = true;
 		}
 		modestate = MODE_WINDOWED;
-		// TODO set icon and title
 	}
 	else if (modelist[modenum].type == MODE_FULLSCREEN_DEFAULT)
 	{
@@ -303,7 +299,6 @@ int VID_SetMode (int modenum)
 		draw_context = SDL_SetVideoMode(modelist[modenum].width,
 						modelist[modenum].height,
 						modelist[modenum].bpp, flags);
-		stat = true;
 		modestate = MODE_FULLSCREEN_DEFAULT;
 	}
 	else
@@ -311,12 +306,11 @@ int VID_SetMode (int modenum)
 		Sys_Error ("VID_SetMode: Bad mode type in modelist");
 	}
 
-	if (!stat)
+	if (!draw_context)
 	{
 		Sys_Error ("Couldn't set video mode");
 	}
 
-	//kristian -- set window caption
 	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption(caption, caption);
 
@@ -379,7 +373,7 @@ void VID_Restart (void)
 //
 	if (vid_fullscreen.value)
 	{
-		for (i=1; i<nummodes; i++)
+		for (i = 1; i < nummodes; i++)
 		{
 			if (modelist[i].width == (int)vid_width.value &&
 			    modelist[i].height == (int)vid_height.value &&
@@ -391,11 +385,10 @@ void VID_Restart (void)
 
 		if (i == nummodes)
 		{
-			Con_Printf ("%dx%dx%d %dHz is not a valid fullscreen mode\n",
+			Con_Printf ("%dx%dx%d is not a valid fullscreen mode\n",
 						(int)vid_width.value,
 						(int)vid_height.value,
-						(int)vid_bpp.value,
-						(int)vid_refreshrate.value);
+						(int)vid_bpp.value);
 			return;
 		}
 
@@ -855,7 +848,7 @@ void ClearAllStates (void)
 	int		i;
 
 // send an up event for each key, to make sure the server clears them all
-	for (i=0 ; i<256 ; i++)
+	for (i = 0; i < 256; i++)
 	{
 		Key_Event (i, false);
 	}
@@ -988,19 +981,20 @@ void VID_DescribeModes_f (void)
 {
 	int		i, lnummodes, t;
 	vmode_t		*pv;
-	int		lastwidth=0, lastheight=0, lastbpp=0, count=0;
+	int		lastwidth, lastheight, lastbpp, count;
 
 	lnummodes = VID_NumModes ();
 
 	t = leavecurrentmode;
 	leavecurrentmode = 0;
+	lastwidth = lastheight = lastbpp = count = 0;
 
-	for (i=1 ; i<lnummodes ; i++)
+	for (i = 1; i < lnummodes; i++)
 	{
 		pv = VID_GetModePtr (i);
 		if (lastwidth != pv->width || lastheight != pv->height || lastbpp != pv->bpp)
 		{
-			if (count>0)
+			if (count > 0)
 				Con_SafePrintf ("\n");
 			Con_SafePrintf ("   %4i x %4i x %i", pv->width, pv->height, pv->bpp);
 			lastwidth = pv->width;
@@ -1297,7 +1291,7 @@ void	VID_Init (void)
 					{
 						height = Q_atoi(com_argv[p+1]);
 
-						for (i=1, vid_default=0 ; i<nummodes ; i++)
+						for (i = 1, vid_default = 0; i < nummodes; i++)
 						{
 							if ((modelist[i].width == width) &&
 								(modelist[i].height == height) &&
@@ -1311,7 +1305,7 @@ void	VID_Init (void)
 					}
 					else
 					{
-						for (i=1, vid_default=0 ; i<nummodes ; i++)
+						for (i = 1, vid_default = 0; i < nummodes; i++)
 						{
 							if ((modelist[i].width == width) && (modelist[i].bpp == bpp))
 							{
@@ -1480,21 +1474,21 @@ VID_Menu_Init
 */
 void VID_Menu_Init (void)
 {
-	int i,j,h,w;
+	int i, j, h, w;
 
-	for (i=1;i<nummodes;i++) //start i at mode 1 because 0 is windowed mode
+	for (i = 1; i < nummodes; i++) //start i at mode 1 because 0 is windowed mode
 	{
 		w = modelist[i].width;
 		h = modelist[i].height;
 
-		for (j=0;j<vid_menu_nummodes;j++)
+		for (j = 0; j < vid_menu_nummodes; j++)
 		{
 			if (vid_menu_modes[j].width == w &&
 				vid_menu_modes[j].height == h)
 				break;
 		}
 
-		if (j==vid_menu_nummodes)
+		if (j == vid_menu_nummodes)
 		{
 			vid_menu_modes[j].width = w;
 			vid_menu_modes[j].height = h;
@@ -1512,11 +1506,11 @@ regenerates bpp list based on current vid_width and vid_height
 */
 void VID_Menu_RebuildBppList (void)
 {
-	int i,j,b;
+	int i, j, b;
 
-	vid_menu_numbpps=0;
+	vid_menu_numbpps = 0;
 
-	for (i=1;i<nummodes;i++) //start i at mode 1 because 0 is windowed mode
+	for (i = 1; i < nummodes; i++) //start i at mode 1 because 0 is windowed mode
 	{
 		//bpp list is limited to bpps available with current width/height
 		if (modelist[i].width != vid_width.value ||
@@ -1525,13 +1519,13 @@ void VID_Menu_RebuildBppList (void)
 
 		b = modelist[i].bpp;
 
-		for (j=0;j<vid_menu_numbpps;j++)
+		for (j = 0; j < vid_menu_numbpps; j++)
 		{
 			if (vid_menu_bpps[j] == b)
 				break;
 		}
 
-		if (j==vid_menu_numbpps)
+		if (j == vid_menu_numbpps)
 		{
 			vid_menu_bpps[j] = b;
 			vid_menu_numbpps++;
@@ -1546,11 +1540,11 @@ void VID_Menu_RebuildBppList (void)
 	}
 
 	//if vid_bpp is not in the new list, change vid_bpp
-	for (i=0;i<vid_menu_numbpps;i++)
+	for (i = 0; i < vid_menu_numbpps; i++)
 		if (vid_menu_bpps[i] == (int)(vid_bpp.value))
 			break;
 
-	if (i==vid_menu_numbpps)
+	if (i == vid_menu_numbpps)
 		Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[0]);
 }
 
@@ -1566,23 +1560,23 @@ void VID_Menu_ChooseNextMode (int dir)
 {
 	int i;
 
-	for (i=0;i<vid_menu_nummodes;i++)
+	for (i = 0; i < vid_menu_nummodes; i++)
 	{
 		if (vid_menu_modes[i].width == vid_width.value &&
 			vid_menu_modes[i].height == vid_height.value)
 			break;
 	}
 
-	if (i==vid_menu_nummodes) //can't find it in list, so it must be a custom windowed res
+	if (i == vid_menu_nummodes) //can't find it in list, so it must be a custom windowed res
 	{
 		i = 0;
 	}
 	else
 	{
-		i+=dir;
-		if (i>=vid_menu_nummodes)
+		i += dir;
+		if (i >= vid_menu_nummodes)
 			i = 0;
-		else if (i<0)
+		else if (i < 0)
 			i = vid_menu_nummodes-1;
 	}
 
@@ -1602,22 +1596,22 @@ void VID_Menu_ChooseNextBpp (int dir)
 {
 	int i;
 
-	for (i=0;i<vid_menu_numbpps;i++)
+	for (i = 0; i < vid_menu_numbpps; i++)
 	{
 		if (vid_menu_bpps[i] == vid_bpp.value)
 			break;
 	}
 
-	if (i==vid_menu_numbpps) //can't find it in list
+	if (i == vid_menu_numbpps) //can't find it in list
 	{
 		i = 0;
 	}
 	else
 	{
-		i+=dir;
-		if (i>=vid_menu_numbpps)
+		i += dir;
+		if (i >= vid_menu_numbpps)
 			i = 0;
-		else if (i<0)
+		else if (i < 0)
 			i = vid_menu_numbpps-1;
 	}
 
@@ -1636,22 +1630,22 @@ void VID_Menu_ChooseNextRate (int dir)
 #if 0	/* not implemented for SDL */
 	int i;
 
-	for (i=0;i<vid_menu_numrates;i++)
+	for (i = 0; i < vid_menu_numrates; i++)
 	{
 		if (vid_menu_rates[i] == vid_refreshrate.value)
 			break;
 	}
 
-	if (i==vid_menu_numrates) //can't find it in list
+	if (i == vid_menu_numrates) //can't find it in list
 	{
 		i = 0;
 	}
 	else
 	{
-		i+=dir;
-		if (i>=vid_menu_numrates)
+		i += dir;
+		if (i >= vid_menu_numrates)
 			i = 0;
-		else if (i<0)
+		else if (i < 0)
 			i = vid_menu_numrates-1;
 	}
 
@@ -1858,3 +1852,4 @@ void VID_Menu_f (void)
 	//set up bpp and rate lists based on current cvars
 	VID_Menu_RebuildBppList ();
 }
+
