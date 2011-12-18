@@ -1235,7 +1235,7 @@ void SV_SendReconnect (void)
 	MSG_WriteString (&msg, "reconnect\n");
 	NET_SendToAll (&msg, 5.0);
 
-	if (cls.state != ca_dedicated)
+	if (!isDedicated)
 		Cmd_ExecuteString ("reconnect\n", src_command);
 }
 
