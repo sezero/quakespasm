@@ -204,54 +204,43 @@ typedef struct
 
 #include "common.h"
 #include "bspfile.h"
-#include "vid.h"
 #include "sys.h"
 #include "zone.h"
 #include "mathlib.h"
+#include "cvar.h"
+
+#include "protocol.h"
+#include "net.h"
+
+#include "cmd.h"
+#include "crc.h"
+
+#include "progs.h"
+#include "server.h"
 
 #include "platform.h"
-
 #include "SDL.h"
 #include "SDL_opengl.h"
 
-typedef struct
-{
-	vec3_t		origin;
-	vec3_t		angles;
-	unsigned short 	modelindex;	//johnfitz -- was int
-	unsigned short 	frame;		//johnfitz -- was int
-	unsigned char 	colormap;	//johnfitz -- was int
-	unsigned char 	skin;		//johnfitz -- was int
-	unsigned char	alpha;		//johnfitz -- added
-	int		effects;
-} entity_state_t;
-
-
+#include "console.h"
 #include "wad.h"
-#include "cvar.h"
+#include "vid.h"
 #include "screen.h"
 #include "draw.h"
-#include "net.h"
-#include "protocol.h"
-#include "cmd.h"
+#include "render.h"
+#include "view.h"
 #include "sbar.h"
 #include "q_sound.h"
-#include "render.h"
 #include "client.h"
-#include "progs.h"
-#include "server.h"
+
 #include "gl_model.h"
+#include "world.h"
 
 #include "image.h"	//johnfitz
 #include "gl_texmgr.h"	//johnfitz
-
 #include "input.h"
-#include "world.h"
 #include "keys.h"
-#include "console.h"
-#include "view.h"
 #include "menu.h"
-#include "crc.h"
 #include "cdaudio.h"
 #include "glquake.h"
 
@@ -305,16 +294,6 @@ extern int		current_skill;		// skill level for currently loaded level (in case
 extern qboolean		isDedicated;
 
 extern int		minimum_memory;
-
-//
-// chase
-//
-extern	cvar_t	chase_active;
-
-void Chase_Init (void);
-void TraceLine (vec3_t start, vec3_t end, vec3_t impact);
-void Chase_UpdateForClient (void);	//johnfitz
-void Chase_UpdateForDrawing (void);	//johnfitz
 
 #endif	/* __QUAKEDEFS_H */
 

@@ -219,5 +219,27 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define TE_BEAM				13
 // PGM 01/21/97
 
+typedef struct
+{
+	vec3_t		origin;
+	vec3_t		angles;
+	unsigned short 	modelindex;	//johnfitz -- was int
+	unsigned short 	frame;		//johnfitz -- was int
+	unsigned char 	colormap;	//johnfitz -- was int
+	unsigned char 	skin;		//johnfitz -- was int
+	unsigned char	alpha;		//johnfitz -- added
+	int		effects;
+} entity_state_t;
+
+typedef struct
+{
+	vec3_t	viewangles;
+
+// intended velocities
+	float	forwardmove;
+	float	sidemove;
+	float	upmove;
+} usercmd_t;
+
 #endif	/* _QUAKE_PROTOCOL_H */
 

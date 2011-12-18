@@ -26,16 +26,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 typedef struct
 {
-	vec3_t	viewangles;
-
-// intended velocities
-	float	forwardmove;
-	float	sidemove;
-	float	upmove;
-} usercmd_t;
-
-typedef struct
-{
 	int		length;
 	char	map[MAX_STYLESTRING];
 	char	average; //johnfitz
@@ -361,12 +351,21 @@ void V_Register (void);
 void V_ParseDamage (void);
 void V_SetContentsColor (int contents);
 
-
 //
 // cl_tent
 //
 void CL_InitTEnts (void);
 void CL_SignonReply (void);
+
+//
+// chase
+//
+extern	cvar_t	chase_active;
+
+void Chase_Init (void);
+void TraceLine (vec3_t start, vec3_t end, vec3_t impact);
+void Chase_UpdateForClient (void);	//johnfitz
+void Chase_UpdateForDrawing (void);	//johnfitz
 
 #endif	/* _CLIENT_H_ */
 
