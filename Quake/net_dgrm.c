@@ -46,8 +46,6 @@ static int receivedDuplicateCount = 0;
 static int shortPacketCount = 0;
 static int droppedDatagrams;
 
-static int myDriverLevel;
-
 static struct
 {
 	unsigned int	length;
@@ -55,11 +53,12 @@ static struct
 	byte			data[MAX_DATAGRAM];
 } packetBuffer;
 
+static int myDriverLevel;
+
 extern qboolean m_return_onerror;
 extern char m_return_reason[32];
 
 
-//#ifdef DEBUG
 static char *StrAddr (struct qsockaddr *addr)
 {
 	static char buf[34];
@@ -70,7 +69,6 @@ static char *StrAddr (struct qsockaddr *addr)
 		sprintf (buf + n * 2, "%02x", *p++);
 	return buf;
 }
-//#endif
 
 
 #ifdef BAN_TEST
@@ -305,8 +303,8 @@ int	Datagram_GetMessage (qsocket_t *sock)
 	{
 		length = sfunc.Read (sock->socket, (byte *)&packetBuffer, NET_DATAGRAMSIZE, &readaddr);
 
-//	if ((rand() & 255) > 220)
-//		continue;
+	//	if ((rand() & 255) > 220)
+	//		continue;
 
 		if (length == 0)
 			break;
@@ -319,11 +317,9 @@ int	Datagram_GetMessage (qsocket_t *sock)
 
 		if (sfunc.AddrCompare(&readaddr, &sock->addr) != 0)
 		{
-#ifdef DEBUG
 			Con_Printf("Forged packet received\n");
 			Con_Printf("Expected: %s\n", StrAddr (&sock->addr));
 			Con_Printf("Received: %s\n", StrAddr (&readaddr));
-#endif
 			continue;
 		}
 
@@ -518,6 +514,7 @@ static const char *Strip_Port (const char *host)
 	}
 	return noport;
 }
+
 
 static qboolean testInProgress = false;
 static int		testPollCount;
@@ -793,6 +790,7 @@ int Datagram_Init (void)
 	banMask.s_addr = INADDR_NONE;
 #endif
 	myDriverLevel = net_driverlevel;
+
 	Cmd_AddCommand ("net_stats", NET_Stats_f);
 
 	if (safemode || COM_CheckParm("-nolan"))
@@ -1308,12 +1306,10 @@ static qsocket_t *_Datagram_Connect (const char *host)
 				// is it from the right place?
 				if (sfunc.AddrCompare(&readaddr, &sendaddr) != 0)
 				{
-//#ifdef DEBUG
 					Con_Printf("wrong reply address\n");
 					Con_Printf("Expected: %s | %s\n", dfunc.AddrToString (&sendaddr), StrAddr(&sendaddr));
 					Con_Printf("Received: %s | %s\n", dfunc.AddrToString (&readaddr), StrAddr(&readaddr));
 					SCR_UpdateScreen ();
-//#endif
 					ret = 0;
 					continue;
 				}
