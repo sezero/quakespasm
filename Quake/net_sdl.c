@@ -29,10 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "net_dgrm.h"
 #include "net_loop.h"
 
-net_driver_t net_drivers[MAX_NET_DRIVERS] =
+net_driver_t net_drivers[] =
 {
-	{
-		"Loopback",
+	{	"Loopback",
 		false,
 		Loop_Init,
 		Loop_Listen,
@@ -48,8 +47,7 @@ net_driver_t net_drivers[MAX_NET_DRIVERS] =
 		Loop_Shutdown
 	},
 
-	{
-		"Datagram",
+	{	"Datagram",
 		false,
 		Datagram_Init,
 		Datagram_Listen,
@@ -66,14 +64,13 @@ net_driver_t net_drivers[MAX_NET_DRIVERS] =
 	}
 };
 
-int net_numdrivers = 2;
+const int net_numdrivers = (sizeof(net_drivers) / sizeof(net_drivers[0]));
 
 #include "net_sdlnet.h"
 
-net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
+net_landriver_t	net_landrivers[] =
 {
-	{
-		"UDP",
+	{	"UDP",
 		false,
 		0,
 		SDLN_Init,
@@ -97,5 +94,5 @@ net_landriver_t	net_landrivers[MAX_NET_DRIVERS] =
 	}
 };
 
-int net_numlandrivers = 1;
+const int net_numlandrivers = (sizeof(net_landrivers) / sizeof(net_landrivers[0]));
 
