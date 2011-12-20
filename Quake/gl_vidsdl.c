@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // gl_vidsdl.c -- SDL GL vid component
 
 #include "quakedef.h"
+#include "cfgfile.h"
 #include "bgmusic.h"
 #include "resource.h"
 #include "SDL.h"
@@ -1026,20 +1027,29 @@ void VID_InitDIB (void)
 
 	modelist[0].type = MODE_WINDOWED;
 
+	modelist[0].width = vid_width.value;
+	modelist[0].height = vid_height.value;
+
 	i = COM_CheckParm("-width");
 	if (i && i < com_argc-1)
+	{
 		modelist[0].width = Q_atoi(com_argv[i+1]);
-	else
-		modelist[0].width = 800;	// QuakeSpasm, was 640
-
-	if (modelist[0].width < 320)
-		modelist[0].width = 320;
+		
+		if (!COM_CheckParm("-height"))
+			modelist[0].height = modelist[0].width * 3 / 4;
+	}
 
 	i = COM_CheckParm("-height");
 	if (i && i < com_argc-1)
-		modelist[0].height= Q_atoi(com_argv[i+1]);
-	else
-		modelist[0].height = modelist[0].width * 240/320;
+	{
+		modelist[0].height = Q_atoi(com_argv[i+1]);
+
+		if (!COM_CheckParm("-width"))
+			modelist[0].width = modelist[0].height * 4 / 3;
+	}
+
+	if (modelist[0].width < 320)
+		modelist[0].width = 320;
 
 	if (modelist[0].height < 200) //johnfitz -- was 240
 		modelist[0].height = 200; //johnfitz -- was 240
@@ -1157,13 +1167,13 @@ void	VID_Init (void)
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
 	int		i, existingmode;
-	int		width, height, bpp, findbpp, done;
+	int		width, height, bpp;
 	int		p;
-
-	//johnfitz -- clean up init readouts
-	//Con_Printf("------------- Init Video -------------\n");
-	//Con_Printf("%cVideo Init\n", 2);
-	//johnfitz
+	const char	*read_vars[] = { "vid_fullscreen",
+					 "vid_width",
+					 "vid_height",
+					 "vid_bpp" };
+#define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
 	Cvar_RegisterVariable (&vid_fullscreen, VID_Changed_f); //johnfitz
 	Cvar_RegisterVariable (&vid_width, VID_Changed_f); //johnfitz
@@ -1183,22 +1193,33 @@ void	VID_Init (void)
 
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
+	if (CFG_OpenConfig("config.cfg") == 0)
+	{
+		CFG_ReadCvars(read_vars, num_readvars);
+		CFG_CloseConfig();
+	}
+	CFG_ReadCvarOverrides(read_vars, num_readvars);
+
 	VID_InitDIB();
 	nummodes = 1;
 	VID_InitFullDIB();
 
-	// Config file is not read yet, so we don't know vid_fullscreen.value
-	// Changed this to default to -window as otherwise it occasionally forces
-	// two switches of video mode (window->fullscreen->window) which is bad S.A
-	// It's still not perfect but, hell, this ancient code can be a pain
-	if (!COM_CheckParm("-fullscreen") && !COM_CheckParm ("-f"))
+	if (COM_CheckParm("-window") || COM_CheckParm("-w"))
+	{
+		Cvar_Set ("vid_fullscreen", "0");
+	}
+	else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
+	{
+		Cvar_Set ("vid_fullscreen", "1");
+	}
+
+	if (!vid_fullscreen.value)
 	{
 		windowed = true;
 		vid_default = MODE_WINDOWED;
 	}
 	else
 	{
-		Cvar_Set ("vid_fullscreen", "1");
 		if (nummodes == 1)
 			Sys_Error ("No RGB fullscreen modes available");
 
@@ -1216,38 +1237,38 @@ void	VID_Init (void)
 				info = SDL_GetVideoInfo();
 				modelist[MODE_FULLSCREEN_DEFAULT].width = info->current_w;
 				modelist[MODE_FULLSCREEN_DEFAULT].height = info->current_h;
+				modelist[MODE_FULLSCREEN_DEFAULT].bpp = info->vfmt->BitsPerPixel;
 				vid_default = MODE_FULLSCREEN_DEFAULT;
 				leavecurrentmode = 1;
 			}
 			else
 			{
+				width = vid_width.value;
+				height = vid_height.value;
+
 				p = COM_CheckParm("-width");
 				if (p && p < com_argc-1)
 				{
 					width = Q_atoi(com_argv[p+1]);
-				}
-				else
-				{
-					width = 800;	// QuakeSpasm, was 640
-				}
 
-				p = COM_CheckParm("-bpp");
-				if (p && p < com_argc-1)
-				{
-					bpp = Q_atoi(com_argv[p+1]);
-					findbpp = 0;
-				}
-				else
-				{
-					bpp = 15;
-					findbpp = 1;
+					if(!COM_CheckParm("-height"))
+						height = width * 3 / 4;
 				}
 
 				p = COM_CheckParm("-height");
 				if (p && p < com_argc-1)
+				{
 					height = Q_atoi(com_argv[p+1]);
+
+					if(!COM_CheckParm("-width"))
+						width = height * 4 / 3;
+				}
+
+				p = COM_CheckParm("-bpp");
+				if (p && p < com_argc-1)
+					bpp = Q_atoi(com_argv[p+1]);
 				else
-					height = width * 3 / 4; // assume 4:3 aspect ratio
+					bpp = vid_bpp.value;
 
 			// if they want to force it, add the specified mode to the list
 				if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
@@ -1282,70 +1303,53 @@ void	VID_Init (void)
 					}
 				}
 
-				done = 0;
+				vid_default = 0;
 
-				do
+				// Try to find a mode with matching width, height and bpp
+				for (i = 1; i < nummodes; i++)
 				{
-					p = COM_CheckParm("-height");
-					if (p && p < com_argc-1)
+					if ((modelist[i].width == width) &&
+						(modelist[i].height == height) &&
+						(modelist[i].bpp == bpp))
 					{
-						height = Q_atoi(com_argv[p+1]);
-
-						for (i = 1, vid_default = 0; i < nummodes; i++)
-						{
-							if ((modelist[i].width == width) &&
-								(modelist[i].height == height) &&
-								(modelist[i].bpp == bpp))
-							{
-								vid_default = i;
-								done = 1;
-								break;
-							}
-						}
+						vid_default = i;
+						break;
 					}
-					else
-					{
-						for (i = 1, vid_default = 0; i < nummodes; i++)
-						{
-							if ((modelist[i].width == width) && (modelist[i].bpp == bpp))
-							{
-								vid_default = i;
-								done = 1;
-								break;
-							}
-						}
-					}
+				}
 
-					if (!done)
-					{
-						if (findbpp)
-						{
-							switch (bpp)
-							{
-							case 15:
-								bpp = 16;
-								break;
-							case 16:
-								bpp = 32;
-								break;
-							case 32:
-								bpp = 24;
-								break;
-							case 24:
-								done = 1;
-								break;
-							}
-						}
-						else
-						{
-							done = 1;
-						}
-					}
-				} while (!done);
-
+				// Try to find a mode with matching width and height
 				if (!vid_default)
 				{
-					Sys_Error ("Specified video mode not available");
+					for (i = 1; i < nummodes; i++)
+					{
+						if ((modelist[i].width == width) &&
+							(modelist[i].height == height))
+						{
+							vid_default = i;
+							break;
+						}
+					}
+				}
+
+				// Try to find a mode with matching width
+				if (!vid_default)
+				{
+					for (i = 1; i < nummodes; i++)
+					{
+						if ((modelist[i].width == width))
+						{
+							vid_default = i;
+							break;
+						}
+					}
+				}
+
+				// Still no luck? Default to windowed mode
+				if (!vid_default)
+				{
+					Cvar_Set ("vid_fullscreen", "0");
+					windowed = true;
+					vid_default = MODE_WINDOWED;
 				}
 			}
 		}
@@ -1382,20 +1386,9 @@ void	VID_Init (void)
 	VID_Gamma_Init(); //johnfitz
 	VID_Menu_Init(); //johnfitz
 
-	//johnfitz -- command line vid settings should override config file settings.
+	//QuakeSpasm: current vid settings should override config file settings.
 	//so we have to lock the vid mode from now until after all config files are read.
-	if (COM_CheckParm("-width") || COM_CheckParm("-height") ||
-		COM_CheckParm("-bpp")				||
-		COM_CheckParm("-window") || COM_CheckParm("-w") ||
-		COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
-	{
-		vid_locked = true;
-	}
-	//johnfitz
-
-	// The problem here is (say) previous video mode is 1024x768 windowed
-	// And we call "fitzquake -w". This disables setting of 1024x768, and when video lock
-	// is removed, we get 800x600.
+	vid_locked = true;
 }
 
 // new proc by S.A., called by alt-return key binding.

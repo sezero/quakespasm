@@ -11,7 +11,7 @@
 <PRE>
 </PRE>
 </P>
-<P>QuakeSpasm 0.85.5 (16 December 2011)</P>
+<P>QuakeSpasm 0.85.5 (20 December 2011)</P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
@@ -162,6 +162,7 @@ Compile time options include
 <LI> Fixed a crash in net play in maps with extended limits</LI>
 <LI> Verified successful compilation using gcc-4.6</LI>
 <LI> Added a cvar gl_zfix to stop GL texture flicker (z fighting)</LI>
+<LI> Read video variables early so that a vid_restart isn't necessary after init</LI>
 <LI> mlook and lookspring fixes</LI>
 <LI> Added support for loading external entity files, controlled by new cvar external_ents.</LI>
 <LI> Made mp3 playback to allocate system memory instead of zone</LI>
@@ -264,7 +265,6 @@ Compile time options include
 <LI>Test usb keyboards. Do the keypads work? Make the OSX apple key work.</LI>
 <LI>Complete the unix user directories support</LI>
 <LI>Finalize OSX automatic updating feature</LI>
-<LI>There is still an unnecessary screen render on program init under some conditions, when using the "-window/-fullscreen" options.</LI>
 </UL>
 </P>
 

@@ -29,7 +29,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (16 December 2011)
+  QuakeSpasm 0.85.5 (20 December 2011)
 
 
   1.  About
@@ -164,6 +164,9 @@
   o  Verified successful compilation using gcc-4.6
 
   o  Added a cvar gl_zfix to stop GL texture flicker (z fighting)
+
+  o  Read video variables early so that a vid_restart isn't necessary
+     after init
 
   o  mlook and lookspring fixes
 
@@ -326,9 +329,6 @@
   o  Complete the unix user directories support
 
   o  Finalize OSX automatic updating feature
-
-  o  There is still an unnecessary screen render on program init under
-     some conditions, when using the "-window/-fullscreen" options.
 
 
   7.  Links

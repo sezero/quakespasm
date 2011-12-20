@@ -250,6 +250,7 @@ OBJS := \
 	common.o \
 	crc.o \
 	cvar.o \
+	cfgfile.o \
 	host.o \
 	host_cmd.o \
 	mathlib.o \
