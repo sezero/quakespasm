@@ -77,7 +77,7 @@ static int		nummodes;
 static vmode_t	badmode;
 
 static qboolean	vid_initialized = false;
-static qboolean	windowed, leavecurrentmode;
+static qboolean	windowed;
 static qboolean vid_canalttab = false;
 static qboolean vid_toggle_works = true;
 extern qboolean	mouseactive;  // from in_win.c
@@ -901,24 +901,12 @@ const char *VID_GetModeDescription (int mode)
 {
 	const char	*pinfo;
 	vmode_t		*pv;
-	static char	temp[100];
 
 	if ((mode < 0) || (mode >= nummodes))
 		return NULL;
 
-	if (!leavecurrentmode)
-	{
-		pv = VID_GetModePtr (mode);
-		pinfo = pv->modedesc;
-	}
-	else
-	{
-		sprintf (temp, "Desktop resolution (%ix%ix%i)", //johnfitz -- added bpp
-				 modelist[MODE_FULLSCREEN_DEFAULT].width,
-				 modelist[MODE_FULLSCREEN_DEFAULT].height,
-				 modelist[MODE_FULLSCREEN_DEFAULT].bpp); //johnfitz -- added bpp
-		pinfo = temp;
-	}
+	pv = VID_GetModePtr (mode);
+	pinfo = pv->modedesc;
 
 	return pinfo;
 }
@@ -940,17 +928,7 @@ const char *VID_GetExtModeDescription (int mode)
 	pv = VID_GetModePtr (mode);
 	if (modelist[mode].type == MODE_FULLSCREEN_DEFAULT)
 	{
-		if (!leavecurrentmode)
-		{
-			sprintf(pinfo,"%s fullscreen", pv->modedesc);
-		}
-		else
-		{
-			sprintf (pinfo, "Desktop resolution (%ix%ix%i)", //johnfitz -- added bpp
-					 modelist[MODE_FULLSCREEN_DEFAULT].width,
-					 modelist[MODE_FULLSCREEN_DEFAULT].height,
-					 modelist[MODE_FULLSCREEN_DEFAULT].bpp); //johnfitz -- added bpp
-		}
+		sprintf(pinfo,"%s fullscreen", pv->modedesc);
 	}
 	else
 	{
@@ -980,14 +958,12 @@ VID_DescribeModes_f -- johnfitz -- changed formatting, and added refresh rates a
 */
 void VID_DescribeModes_f (void)
 {
-	int		i, lnummodes, t;
+	int		i, lnummodes;
 	vmode_t		*pv;
 	int		lastwidth, lastheight, lastbpp, count;
 
 	lnummodes = VID_NumModes ();
 
-	t = leavecurrentmode;
-	leavecurrentmode = 0;
 	lastwidth = lastheight = lastbpp = count = 0;
 
 	for (i = 1; i < lnummodes; i++)
@@ -1005,8 +981,6 @@ void VID_DescribeModes_f (void)
 		}
 	}
 	Con_Printf ("\n%i modes\n", count);
-
-	leavecurrentmode = t;
 }
 
 //==========================================================================
@@ -1201,7 +1175,6 @@ void	VID_Init (void)
 	CFG_ReadCvarOverrides(read_vars, num_readvars);
 
 	VID_InitDIB();
-	nummodes = 1;
 	VID_InitFullDIB();
 
 	if (COM_CheckParm("-window") || COM_CheckParm("-w"))
@@ -1220,138 +1193,134 @@ void	VID_Init (void)
 	}
 	else
 	{
-		if (nummodes == 1)
-			Sys_Error ("No RGB fullscreen modes available");
-
 		windowed = false;
+		vid_default = NO_MODE;
+
+		width = vid_width.value;
+		height = vid_height.value;
+		bpp = vid_bpp.value;
+
+		if (COM_CheckParm("-current"))
+		{
+			info = SDL_GetVideoInfo();
+			width = info->current_w;
+			height = info->current_h;
+			bpp = info->vfmt->BitsPerPixel;
+		}
+		else
+		{
+			p = COM_CheckParm("-width");
+			if (p && p < com_argc-1)
+			{
+				width = Q_atoi(com_argv[p+1]);
+
+				if(!COM_CheckParm("-height"))
+					height = width * 3 / 4;
+			}
+
+			p = COM_CheckParm("-height");
+			if (p && p < com_argc-1)
+			{
+				height = Q_atoi(com_argv[p+1]);
+
+				if(!COM_CheckParm("-width"))
+					width = height * 4 / 3;
+			}
+
+			p = COM_CheckParm("-bpp");
+			if (p && p < com_argc-1)
+				bpp = Q_atoi(com_argv[p+1]);
+		}
+
+		// if they want to force it, add the specified mode to the list
+		if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
+		{
+			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
+			modelist[nummodes].width = width;
+			modelist[nummodes].height = height;
+			modelist[nummodes].modenum = 0;
+			modelist[nummodes].halfscreen = 0;
+			modelist[nummodes].dib = 1;
+			modelist[nummodes].fullscreen = 1;
+			modelist[nummodes].bpp = bpp;
+			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
+					 modelist[nummodes].width,
+					 modelist[nummodes].height,
+					 modelist[nummodes].bpp);
+
+			for (i=nummodes, existingmode = 0 ; i<nummodes ; i++)
+			{
+				if ((modelist[nummodes].width == modelist[i].width)   &&
+					(modelist[nummodes].height == modelist[i].height) &&
+					(modelist[nummodes].bpp == modelist[i].bpp))
+				{
+					existingmode = 1;
+					break;
+				}
+			}
+
+			if (!existingmode)
+			{
+				nummodes++;
+			}
+		}
 
 		p = COM_CheckParm("-mode");
 		if (p && p < com_argc-1)
 		{
-			vid_default = Q_atoi(com_argv[p+1]);
+			i = Q_atoi(com_argv[p+1]);
+			if (i > 0 && i < nummodes)
+				vid_default = i;
 		}
-		else
+
+		// Try to find a mode with matching width, height and bpp
+		if (vid_default == NO_MODE)
 		{
-			if (COM_CheckParm("-current"))
+			for (i = 1; i < nummodes; i++)
 			{
-				info = SDL_GetVideoInfo();
-				modelist[MODE_FULLSCREEN_DEFAULT].width = info->current_w;
-				modelist[MODE_FULLSCREEN_DEFAULT].height = info->current_h;
-				modelist[MODE_FULLSCREEN_DEFAULT].bpp = info->vfmt->BitsPerPixel;
-				vid_default = MODE_FULLSCREEN_DEFAULT;
-				leavecurrentmode = 1;
-			}
-			else
-			{
-				width = vid_width.value;
-				height = vid_height.value;
-
-				p = COM_CheckParm("-width");
-				if (p && p < com_argc-1)
+				if ((modelist[i].width == width) &&
+					(modelist[i].height == height) &&
+					(modelist[i].bpp == bpp))
 				{
-					width = Q_atoi(com_argv[p+1]);
-
-					if(!COM_CheckParm("-height"))
-						height = width * 3 / 4;
-				}
-
-				p = COM_CheckParm("-height");
-				if (p && p < com_argc-1)
-				{
-					height = Q_atoi(com_argv[p+1]);
-
-					if(!COM_CheckParm("-width"))
-						width = height * 4 / 3;
-				}
-
-				p = COM_CheckParm("-bpp");
-				if (p && p < com_argc-1)
-					bpp = Q_atoi(com_argv[p+1]);
-				else
-					bpp = vid_bpp.value;
-
-			// if they want to force it, add the specified mode to the list
-				if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
-				{
-					modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
-					modelist[nummodes].width = width;
-					modelist[nummodes].height = height;
-					modelist[nummodes].modenum = 0;
-					modelist[nummodes].halfscreen = 0;
-					modelist[nummodes].dib = 1;
-					modelist[nummodes].fullscreen = 1;
-					modelist[nummodes].bpp = bpp;
-					sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-							 modelist[nummodes].width,
-							 modelist[nummodes].height,
-							 modelist[nummodes].bpp);
-
-					for (i=nummodes, existingmode = 0 ; i<nummodes ; i++)
-					{
-						if ((modelist[nummodes].width == modelist[i].width)   &&
-							(modelist[nummodes].height == modelist[i].height) &&
-							(modelist[nummodes].bpp == modelist[i].bpp))
-						{
-							existingmode = 1;
-							break;
-						}
-					}
-
-					if (!existingmode)
-					{
-						nummodes++;
-					}
-				}
-
-				vid_default = 0;
-
-				// Try to find a mode with matching width, height and bpp
-				for (i = 1; i < nummodes; i++)
-				{
-					if ((modelist[i].width == width) &&
-						(modelist[i].height == height) &&
-						(modelist[i].bpp == bpp))
-					{
-						vid_default = i;
-						break;
-					}
-				}
-
-				// Try to find a mode with matching width and height
-				if (!vid_default)
-				{
-					for (i = 1; i < nummodes; i++)
-					{
-						if ((modelist[i].width == width) &&
-							(modelist[i].height == height))
-						{
-							vid_default = i;
-							break;
-						}
-					}
-				}
-
-				// Try to find a mode with matching width
-				if (!vid_default)
-				{
-					for (i = 1; i < nummodes; i++)
-					{
-						if ((modelist[i].width == width))
-						{
-							vid_default = i;
-							break;
-						}
-					}
-				}
-
-				// Still no luck? Default to windowed mode
-				if (!vid_default)
-				{
-					Cvar_Set ("vid_fullscreen", "0");
-					windowed = true;
-					vid_default = MODE_WINDOWED;
+					vid_default = i;
+					break;
 				}
 			}
+		}
+
+		// Try to find a mode with matching width and height
+		if (vid_default == NO_MODE)
+		{
+			for (i = 1; i < nummodes; i++)
+			{
+				if ((modelist[i].width == width) &&
+					(modelist[i].height == height))
+				{
+					vid_default = i;
+					break;
+				}
+			}
+		}
+
+		// Try to find a mode with matching width
+		if (vid_default == NO_MODE)
+		{
+			for (i = 1; i < nummodes; i++)
+			{
+				if ((modelist[i].width == width))
+				{
+					vid_default = i;
+					break;
+				}
+			}
+		}
+
+		// Still no luck? Default to windowed mode
+		if (vid_default == NO_MODE)
+		{
+			Cvar_Set ("vid_fullscreen", "0");
+			windowed = true;
+			vid_default = MODE_WINDOWED;
 		}
 	}
 
@@ -1553,29 +1522,32 @@ void VID_Menu_ChooseNextMode (int dir)
 {
 	int i;
 
-	for (i = 0; i < vid_menu_nummodes; i++)
+	if (vid_menu_nummodes)
 	{
-		if (vid_menu_modes[i].width == vid_width.value &&
-			vid_menu_modes[i].height == vid_height.value)
-			break;
-	}
+		for (i = 0; i < vid_menu_nummodes; i++)
+		{
+			if (vid_menu_modes[i].width == vid_width.value &&
+				vid_menu_modes[i].height == vid_height.value)
+				break;
+		}
 
-	if (i == vid_menu_nummodes) //can't find it in list, so it must be a custom windowed res
-	{
-		i = 0;
-	}
-	else
-	{
-		i += dir;
-		if (i >= vid_menu_nummodes)
+		if (i == vid_menu_nummodes) //can't find it in list, so it must be a custom windowed res
+		{
 			i = 0;
-		else if (i < 0)
-			i = vid_menu_nummodes-1;
-	}
+		}
+		else
+		{
+			i += dir;
+			if (i >= vid_menu_nummodes)
+				i = 0;
+			else if (i < 0)
+				i = vid_menu_nummodes-1;
+		}
 
-	Cvar_SetValue ("vid_width",(float)vid_menu_modes[i].width);
-	Cvar_SetValue ("vid_height",(float)vid_menu_modes[i].height);
-	VID_Menu_RebuildBppList ();
+		Cvar_SetValue ("vid_width",(float)vid_menu_modes[i].width);
+		Cvar_SetValue ("vid_height",(float)vid_menu_modes[i].height);
+		VID_Menu_RebuildBppList ();
+	}
 }
 
 /*
@@ -1589,26 +1561,29 @@ void VID_Menu_ChooseNextBpp (int dir)
 {
 	int i;
 
-	for (i = 0; i < vid_menu_numbpps; i++)
+	if (vid_menu_numbpps)
 	{
-		if (vid_menu_bpps[i] == vid_bpp.value)
-			break;
-	}
+		for (i = 0; i < vid_menu_numbpps; i++)
+		{
+			if (vid_menu_bpps[i] == vid_bpp.value)
+				break;
+		}
 
-	if (i == vid_menu_numbpps) //can't find it in list
-	{
-		i = 0;
-	}
-	else
-	{
-		i += dir;
-		if (i >= vid_menu_numbpps)
+		if (i == vid_menu_numbpps) //can't find it in list
+		{
 			i = 0;
-		else if (i < 0)
-			i = vid_menu_numbpps-1;
-	}
+		}
+		else
+		{
+			i += dir;
+			if (i >= vid_menu_numbpps)
+				i = 0;
+			else if (i < 0)
+				i = vid_menu_numbpps-1;
+		}
 
-	Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[i]);
+		Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[i]);
+	}
 }
 
 /*
@@ -1623,26 +1598,29 @@ void VID_Menu_ChooseNextRate (int dir)
 #if 0	/* not implemented for SDL */
 	int i;
 
-	for (i = 0; i < vid_menu_numrates; i++)
+	if (vid_menu_numrates)
 	{
-		if (vid_menu_rates[i] == vid_refreshrate.value)
-			break;
-	}
+		for (i = 0; i < vid_menu_numrates; i++)
+		{
+			if (vid_menu_rates[i] == vid_refreshrate.value)
+				break;
+		}
 
-	if (i == vid_menu_numrates) //can't find it in list
-	{
-		i = 0;
-	}
-	else
-	{
-		i += dir;
-		if (i >= vid_menu_numrates)
+		if (i == vid_menu_numrates) //can't find it in list
+		{
 			i = 0;
-		else if (i < 0)
-			i = vid_menu_numrates-1;
-	}
+		}
+		else
+		{
+			i += dir;
+			if (i >= vid_menu_numrates)
+				i = 0;
+			else if (i < 0)
+				i = vid_menu_numrates-1;
+		}
 
-	Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
+		Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
+	}
 #endif
 }
 
