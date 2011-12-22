@@ -1265,14 +1265,6 @@ void	VID_Init (void)
 			}
 		}
 
-		p = COM_CheckParm("-mode");
-		if (p && p < com_argc-1)
-		{
-			i = Q_atoi(com_argv[p+1]);
-			if (i > 0 && i < nummodes)
-				vid_default = i;
-		}
-
 		// Try to find a mode with matching width, height and bpp
 		if (vid_default == NO_MODE)
 		{
