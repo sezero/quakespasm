@@ -44,11 +44,12 @@ double		host_frametime;
 double		host_time;
 double		realtime;				// without any filtering or bounding
 double		oldrealtime;			// last frame run
-int			host_framecount;
 
-int			host_hunklevel;
+int		host_framecount;
 
-int			minimum_memory;
+int		host_hunklevel;
+
+int		minimum_memory;
 
 client_t	*host_client;			// current client
 
@@ -70,8 +71,8 @@ cvar_t	timelimit = {"timelimit","0",false,true};
 cvar_t	teamplay = {"teamplay","0",false,true};
 cvar_t	samelevel = {"samelevel","0"};
 cvar_t	noexit = {"noexit","0",false,true};
-cvar_t	skill = {"skill","1"};						// 0 - 3
-cvar_t	deathmatch = {"deathmatch","0"};			// 0, 1, or 2
+cvar_t	skill = {"skill","1"};			// 0 - 3
+cvar_t	deathmatch = {"deathmatch","0"};	// 0, 1, or 2
 cvar_t	coop = {"coop","0"};			// 0 or 1
 
 cvar_t	pausable = {"pausable","1"};
@@ -90,12 +91,11 @@ overflowtimes_t dev_overflows; //this stores the last time overflow messages wer
 Max_Edicts_f -- johnfitz
 ================
 */
-void Max_Edicts_f (void)
+static void Max_Edicts_f (void)
 {
 	static float oldval = DEF_EDICTS; //must match the default value for max_edicts
 
 	//TODO: clamp it here?
-
 	if (max_edicts.value == oldval)
 		return;
 
@@ -103,6 +103,19 @@ void Max_Edicts_f (void)
 		Con_Printf ("Changes to max_edicts will not take effect until the next time a map is loaded.\n");
 
 	oldval = max_edicts.value;
+}
+
+// 1999-09-06 deathmatch/coop not at the same time fix by Maddes
+static void Callback_Deathmatch (void)
+{
+	if (deathmatch.value)
+		Cvar_Set ("coop", "0");
+}
+
+static void Callback_Coop (void)
+{
+	if (coop.value)
+		Cvar_Set ("deathmatch", "0");
 }
 
 /*
@@ -261,8 +274,8 @@ void Host_InitLocal (void)
 	Cvar_RegisterVariable (&noexit, NULL);
 	Cvar_RegisterVariable (&skill, NULL);
 	Cvar_RegisterVariable (&developer, NULL);
-	Cvar_RegisterVariable (&deathmatch, NULL);
-	Cvar_RegisterVariable (&coop, NULL);
+	Cvar_RegisterVariable (&coop, Callback_Coop);
+	Cvar_RegisterVariable (&deathmatch, Callback_Deathmatch);
 
 	Cvar_RegisterVariable (&pausable, NULL);
 

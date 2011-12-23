@@ -29,7 +29,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (20 December 2011)
+  QuakeSpasm 0.85.5 (25 December 2011)
 
 
   1.  About
@@ -161,7 +161,7 @@
 
   o  Fixed a crash in net play in maps with extended limits
 
-  o  Verified successful compilation using gcc-4.6
+  o  Verified successful compilation using gcc-4.6.x
 
   o  Added a cvar gl_zfix to stop GL texture flicker (z fighting)
 
@@ -178,6 +178,8 @@
   o  Some updates to the progs interpreter code
 
   o  Fixed r_nolerp_list parsing code from fitzquake
+
+  o  Made sure that deathmatch and coop are not set at the same time
 
   o  Several code updates from uHexen2, several code cleanups.
 
