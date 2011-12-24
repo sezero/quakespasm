@@ -2084,3 +2084,19 @@ int FS_ferror(fshandle_t *fh)
 	return ferror(fh->file);
 }
 
+char *FS_fgets(char *s, int size, fshandle_t *fh)
+{
+	char *ret;
+
+	if (FS_feof(fh))
+		return NULL;
+
+	if (size > (fh->length - fh->pos) + 1)
+		size = (fh->length - fh->pos) + 1;
+
+	ret = fgets(s, size, fh->file);
+	fh->pos = ftell(fh->file) - fh->start;
+
+	return ret;
+}
+
