@@ -17,10 +17,10 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <sect> Downloads <p>
 
 <itemize>
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download" name="Source">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download" name="Linux (x86)">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download" name="Windows (x86)">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.4.dmg/download" name="OSX image">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5.tgz/download" name="Source">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_linux.tgz/download" name="Linux (x86)">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_windows.zip/download" name="Windows (x86)">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.5.dmg/download" name="OSX image">
 </itemize>
 
 
@@ -90,7 +90,7 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 
 <sect> Changes<p>
 
-<sect1> Changes in 0.85.5 (unreleased) <p>
+<sect1> Changes in 0.85.5<p>
 <itemize>
 <item> SDL input driver updated adding native keymap and dead key support to the console
 <item> Fixed a crash in net play in maps with extended limits

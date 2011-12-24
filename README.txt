@@ -16,7 +16,7 @@
      4.3 Mac OS X
 
   5. Changes
-     5.1 Changes in 0.85.5 (unreleased)
+     5.1 Changes in 0.85.5
      5.2 Changes in 0.85.4
      5.3 Changes in 0.85.3
      5.4 Changes in 0.85.2
@@ -46,16 +46,16 @@
 
 
   o  Source
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4.tgz/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5.tgz/download>
 
   o  Linux (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_linux.tgz/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_linux.tgz/download>
 
   o  Windows (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.4_windows.zip/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_windows.zip/download>
 
   o  OSX image
-     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.4.dmg/download>
+     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.5.dmg/download>
 
 
   3.  Hints
@@ -153,7 +153,7 @@
   5.  Changes
 
 
-  5.1.  Changes in 0.85.5 (unreleased)
+  5.1.  Changes in 0.85.5
 
 
   o  SDL input driver updated adding native keymap and dead key support

@@ -87,4 +87,3 @@ chosen, because it is most likely the one from our own game directory
 itself.  This way, if a mod has track02 as a mp3 or wav, which is below
 track02.ogg in the music_handler order, the mp3 or wav will still have
 priority over track02.ogg from the id1 game directory.
-
