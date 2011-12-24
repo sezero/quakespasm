@@ -2,9 +2,7 @@
 	cfgfile.c
 	misc reads from the config file
 
-	$Id: cfgfile.c 3880 2011-01-28 21:50:19Z sezero $
-
-	Copyright (C) 2008-2010  O.Sezer <sezero@users.sourceforge.net>
+	Copyright (C) 2008-2011  O.Sezer <sezero@users.sourceforge.net>
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -126,11 +124,11 @@ void CFG_ReadCvarOverrides (const char **vars, int num_vars)
 		return;
 
 	buff[0] = '+';
+	buff[sizeof(buff) - 1] = '\0';
 
 	for (i = 0; i < num_vars; i++)
 	{
-		strncpy (&buff[1], vars[i], sizeof(buff) - 1);
-		buff[sizeof(buff) - 1] = 0;
+		strncpy (&buff[1], vars[i], sizeof(buff) - 2);
 		j = COM_CheckParm(buff);
 		if (j != 0 && j < com_argc - 1)
 		{

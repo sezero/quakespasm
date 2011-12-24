@@ -2,9 +2,7 @@
 	cfgfile.h
 	misc reads from the config file
 
-	$Id: cfgfile.h 3862 2010-12-30 20:51:57Z sezero $
-
-	Copyright (C) 2008-2010  O.Sezer <sezero@users.sourceforge.net>
+	Copyright (C) 2008-2011  O.Sezer <sezero@users.sourceforge.net>
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
