@@ -201,7 +201,7 @@ void VID_Gamma_Shutdown (void)
 VID_Gamma_f -- callback when the cvar changes
 ================
 */
-void VID_Gamma_f (void)
+void VID_Gamma_f (cvar_t *var)
 {
 	static float oldgamma;
 	int i;
@@ -352,7 +352,7 @@ int VID_SetMode (int modenum)
 VID_Changed_f -- kristian -- notify us that a value has changed that requires a vid_restart
 ===================
 */
-void VID_Changed_f (void)
+static void VID_Changed_f (cvar_t *var)
 {
 	vid_changed = true;
 }

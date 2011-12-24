@@ -91,7 +91,7 @@ overflowtimes_t dev_overflows; //this stores the last time overflow messages wer
 Max_Edicts_f -- johnfitz
 ================
 */
-static void Max_Edicts_f (void)
+static void Max_Edicts_f (cvar_t *var)
 {
 	static float oldval = DEF_EDICTS; //must match the default value for max_edicts
 
@@ -106,15 +106,15 @@ static void Max_Edicts_f (void)
 }
 
 // 1999-09-06 deathmatch/coop not at the same time fix by Maddes
-static void Callback_Deathmatch (void)
+static void Callback_Deathmatch (cvar_t *var)
 {
-	if (deathmatch.value)
+	if (var->value)
 		Cvar_Set ("coop", "0");
 }
 
-static void Callback_Coop (void)
+static void Callback_Coop (cvar_t *var)
 {
-	if (coop.value)
+	if (var->value)
 		Cvar_Set ("deathmatch", "0");
 }
 

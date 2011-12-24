@@ -353,7 +353,7 @@ void Cvar_Set (const char *var_name, const char *value)
 
 	//johnfitz
 	if(var->callback && changed)
-		var->callback();
+		var->callback(var);
 	//johnfitz
 }
 

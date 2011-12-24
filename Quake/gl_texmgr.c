@@ -181,7 +181,7 @@ TexMgr_Anisotropy_f -- called when gl_texture_anisotropy changes
 FIXME: this is getting called twice (becuase of the recursive Cvar_SetValue call)
 ===============
 */
-void TexMgr_Anisotropy_f (void)
+void TexMgr_Anisotropy_f (cvar_t *var)
 {
 	extern float gl_max_anisotropy;
 	gltexture_t	*glt;

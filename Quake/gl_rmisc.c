@@ -53,14 +53,13 @@ extern cvar_t gl_subdivide_size; //johnfitz -- moved here from gl_model.c
 
 extern gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz
 
-void R_NoLerpList_f (void); //johnfitz
 
 /*
 ====================
 GL_Overbright_f -- johnfitz
 ====================
 */
-void GL_Overbright_f (void)
+static void GL_Overbright_f (cvar_t *var)
 {
 	R_RebuildAllLightmaps ();
 }
@@ -70,7 +69,7 @@ void GL_Overbright_f (void)
 GL_Fullbrights_f -- johnfitz
 ====================
 */
-void GL_Fullbrights_f (void)
+static void GL_Fullbrights_f (cvar_t *var)
 {
 	TexMgr_ReloadNobrightImages ();
 }
@@ -80,7 +79,7 @@ void GL_Fullbrights_f (void)
 R_SetClearColor_f -- johnfitz
 ====================
 */
-void R_SetClearColor_f (void)
+static void R_SetClearColor_f (cvar_t *var)
 {
 	byte	*rgb;
 	int		s;
@@ -95,21 +94,22 @@ void R_SetClearColor_f (void)
 R_Novis_f -- johnfitz
 ====================
 */
-void R_Novis_f (void)
+static void R_VisChanged (cvar_t *var)
 {
 	extern int vis_changed;
 	vis_changed = 1;
 }
 
 /*
-====================
-R_OldSkyLeaf_f -- johnfitz
-====================
+===============
+R_NoLerpList_f -- johnfitz -- called when r_nolerp_list cvar changes
+===============
 */
-void R_OldSkyLeaf_f (void)
+static void R_NoLerpList_f (cvar_t *var)
 {
-	extern int vis_changed;
-	vis_changed = 1;
+	int i;
+	for (i=0; i < MAX_MODELS; i++)
+		Mod_SetExtraFlags (cl.model_precache[i]);
 }
 
 /*
@@ -207,7 +207,7 @@ void R_Init (void)
 	Cvar_RegisterVariable (&r_shadows, NULL);
 	Cvar_RegisterVariable (&r_wateralpha, NULL);
 	Cvar_RegisterVariable (&r_dynamic, NULL);
-	Cvar_RegisterVariable (&r_novis, R_Novis_f);
+	Cvar_RegisterVariable (&r_novis, R_VisChanged);
 	Cvar_RegisterVariable (&r_speeds, NULL);
 
 	Cvar_RegisterVariable (&gl_finish, NULL);
@@ -229,7 +229,7 @@ void R_Init (void)
 	Cvar_RegisterVariable (&r_waterwarp, NULL);
 	Cvar_RegisterVariable (&r_drawflat, NULL);
 	Cvar_RegisterVariable (&r_flatlightstyles, NULL);
-	Cvar_RegisterVariable (&r_oldskyleaf, R_OldSkyLeaf_f);
+	Cvar_RegisterVariable (&r_oldskyleaf, R_VisChanged);
 	Cvar_RegisterVariable (&r_drawworld, NULL);
 	Cvar_RegisterVariable (&r_showtris, NULL);
 	Cvar_RegisterVariable (&r_showbboxes, NULL);
@@ -247,23 +247,10 @@ void R_Init (void)
 	Cvar_RegisterVariable (&gl_subdivide_size, NULL); //johnfitz -- moved here from gl_model.c
 
 	R_InitParticles ();
-	R_SetClearColor_f (); //johnfitz
+	R_SetClearColor_f (&r_clearcolor); //johnfitz
 
 	Sky_Init (); //johnfitz
 	Fog_Init (); //johnfitz
-}
-
-/*
-===============
-R_NoLerpList_f -- johnfitz -- called when r_nolerp_list cvar changes
-===============
-*/
-void R_NoLerpList_f (void)
-{
-	int i;
-
-	for (i=0; i < MAX_MODELS; i++)
-		Mod_SetExtraFlags (cl.model_precache[i]);
 }
 
 /*

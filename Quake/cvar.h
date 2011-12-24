@@ -58,7 +58,7 @@ Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
 */
 
-typedef void (*cvarcallback_t) (void);
+typedef void (*cvarcallback_t) (struct cvar_s *);
 
 typedef struct cvar_s
 {

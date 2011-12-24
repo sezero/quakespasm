@@ -237,7 +237,7 @@ void VID_Gamma_Shutdown (void)
 VID_Gamma_f -- callback when the cvar changes
 ================
 */
-void VID_Gamma_f (void)
+void VID_Gamma_f (cvar_t *var)
 {
 	static float oldgamma;
 	int i;
@@ -627,7 +627,7 @@ int VID_SetMode (int modenum)
 VID_Vsync_f -- johnfitz
 ===============
 */
-void VID_Vsync_f (void)
+void VID_Vsync_f (cvar_t *var)
 {
 	if (gl_swap_control)
 	{
@@ -790,7 +790,7 @@ void VID_Restart (void)
 		vid_canalttab = true;
 
 		//swapcontrol settings were lost when previous window was destroyed
-		VID_Vsync_f ();
+		VID_Vsync_f (&vid_vsync);
 
 		//warpimages needs to be recalculated
 		TexMgr_RecalcWarpImageSize ();

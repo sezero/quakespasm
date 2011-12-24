@@ -340,7 +340,7 @@ void SCR_SizeDown_f (void)
 SCR_Conwidth_f -- johnfitz -- called when scr_conwidth or scr_conscale changes
 ==================
 */
-void SCR_Conwidth_f (void)
+void SCR_Conwidth_f (cvar_t *var)
 {
 	vid.conwidth = (scr_conwidth.value > 0) ? (int)scr_conwidth.value : (scr_conscale.value > 0) ? (int)(vid.width/scr_conscale.value) : vid.width;
 	vid.conwidth = CLAMP (320, vid.conwidth, vid.width);

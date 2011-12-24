@@ -122,7 +122,7 @@ void R_InitParticleTextures (void)
 R_SetParticleTexture_f -- johnfitz
 ===============
 */
-void R_SetParticleTexture_f (void)
+static void R_SetParticleTexture_f (cvar_t *var)
 {
 	switch ((int)(r_particles.value))
 	{
