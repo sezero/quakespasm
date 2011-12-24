@@ -165,7 +165,7 @@ int CFG_OpenConfig (const char *cfg_name)
 	cfg_file->start = ftell(file);
 	cfg_file->pos = 0;
 	cfg_file->length = length;
-	cfg_file->pak = file_from_pak;
+	cfg_file->pak = pak;
 
 	return 0;
 }
