@@ -26,7 +26,7 @@
 #include "quakedef.h"
 
 
-static FILE			*cfg_file;
+static fshandle_t		*cfg_file;
 
 /*
 ===================
@@ -52,8 +52,7 @@ void CFG_ReadCvars (const char **vars, int num_vars)
 	do {
 		i = 0;
 		memset (buff, 0, sizeof(buff));
-		fgets(buff, sizeof(buff), cfg_file);
-		if (!feof(cfg_file))
+		if (FS_fgets(buff, sizeof(buff), cfg_file))
 		{
 			// we expect a line in the format that Cvar_WriteVariables
 			// writes to the config file. although I'm trying to be as
@@ -110,9 +109,9 @@ void CFG_ReadCvars (const char **vars, int num_vars)
 		if (j == num_vars)
 			break;
 
-	} while (!feof(cfg_file));
+	} while (!FS_feof(cfg_file));
 
-	fseek (cfg_file, 0, SEEK_SET);
+	FS_fseek (cfg_file, 0, SEEK_SET);
 }
 
 void CFG_ReadCvarOverrides (const char **vars, int num_vars)
@@ -142,17 +141,32 @@ void CFG_CloseConfig (void)
 {
 	if (cfg_file)
 	{
-		fclose (cfg_file);
+		FS_fclose(cfg_file);
+		Z_Free(cfg_file);
 		cfg_file = NULL;
 	}
 }
 
 int CFG_OpenConfig (const char *cfg_name)
 {
+	FILE *file;
+	long  length;
+	qboolean pak;
+
 	CFG_CloseConfig ();
-	COM_FOpenFile (cfg_name, &cfg_file, NULL);
-	if (!cfg_file)
+
+	length = (long) COM_FOpenFile (cfg_name, &file, NULL);
+	pak = file_from_pak;
+	if (length == -1)
 		return -1;
+
+	cfg_file = (fshandle_t *) Z_Malloc(sizeof(fshandle_t));
+	cfg_file->file = file;
+	cfg_file->start = ftell(file);
+	cfg_file->pos = 0;
+	cfg_file->length = length;
+	cfg_file->pak = file_from_pak;
+
 	return 0;
 }
 
