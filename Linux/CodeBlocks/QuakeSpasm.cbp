@@ -58,6 +58,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Quake/cdaudio.h" />
+		<Unit filename="../../Quake/cfgfile.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/cfgfile.h" />
 		<Unit filename="../../Quake/chase.c">
 			<Option compilerVar="CC" />
 		</Unit>
