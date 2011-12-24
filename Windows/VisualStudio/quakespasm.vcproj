@@ -334,6 +334,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\cfgfile.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\chase.c"
 				>
 			</File>
@@ -653,6 +657,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\crc.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\cfgfile.h"
 				>
 			</File>
 			<File
