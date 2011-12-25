@@ -95,15 +95,15 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item> SDL input driver updated adding native keymap and dead key support to the console
 <item> Fixed a crash in net play in maps with extended limits
 <item> Verified successful compilation using gcc-4.6.x
-<item> Added a cvar gl_zfix to stop GL texture flicker (z fighting)
+<item> Added workaround against GL texture flicker (z fighting), controlled by new cvar 'gl_zfix'
 <item> Read video variables early so that a vid_restart isn't necessary after init
 <item> mlook and lookspring fixes
-<item> Added support for loading external entity files, controlled by new cvar external_ents.
+<item> Added support for loading external entity files, controlled by new cvar 'external_ents'
 <item> Made mp3 playback to allocate system memory instead of zone
 <item> Some updates to the progs interpreter code
-<item> Fixed r_nolerp_list parsing code from fitzquake
+<item> Fixed r_nolerp_list parsing code of fitzquake
 <item> Made sure that deathmatch and coop are not set at the same time
-<item> Several code updates from uHexen2, several code cleanups.
+<item> Several code updates from uHexen2 project, several code cleanups.
 </itemize>
 </p>
 

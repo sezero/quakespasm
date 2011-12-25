@@ -163,7 +163,8 @@
 
   o  Verified successful compilation using gcc-4.6.x
 
-  o  Added a cvar gl_zfix to stop GL texture flicker (z fighting)
+  o  Added workaround against GL texture flicker (z fighting),
+     controlled by new cvar 'gl_zfix'
 
   o  Read video variables early so that a vid_restart isn't necessary
      after init
@@ -171,17 +172,17 @@
   o  mlook and lookspring fixes
 
   o  Added support for loading external entity files, controlled by new
-     cvar external_ents.
+     cvar 'external_ents'
 
   o  Made mp3 playback to allocate system memory instead of zone
 
   o  Some updates to the progs interpreter code
 
-  o  Fixed r_nolerp_list parsing code from fitzquake
+  o  Fixed r_nolerp_list parsing code of fitzquake
 
   o  Made sure that deathmatch and coop are not set at the same time
 
-  o  Several code updates from uHexen2, several code cleanups.
+  o  Several code updates from uHexen2 project, several code cleanups.
 
   5.2.  Changes in 0.85.4
 
