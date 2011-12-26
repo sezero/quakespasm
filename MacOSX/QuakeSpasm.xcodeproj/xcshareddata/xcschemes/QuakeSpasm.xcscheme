@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.8">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8D1107260486CEB800E47090"
+               BuildableName = "QuakeSpasm.app"
+               BlueprintName = "QuakeSpasm"
+               ReferencedContainer = "container:QuakeSpasm.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+      </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8D1107260486CEB800E47090"
+            BuildableName = "QuakeSpasm.app"
+            BlueprintName = "QuakeSpasm"
+            ReferencedContainer = "container:QuakeSpasm.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+   </TestAction>
+   <LaunchAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      displayScaleIsEnabled = "NO"
+      displayScale = "1.00"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8D1107260486CEB800E47090"
+            BuildableName = "QuakeSpasm.app"
+            BlueprintName = "QuakeSpasm"
+            ReferencedContainer = "container:QuakeSpasm.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "-basedir /Applications/Quake"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-nolauncher"
+            isEnabled = "NO">
+         </CommandLineArgument>
+      </CommandLineArguments>
+      <AdditionalOptions>
+      </AdditionalOptions>
+   </LaunchAction>
+   <ProfileAction
+      displayScaleIsEnabled = "NO"
+      displayScale = "1.00"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8D1107260486CEB800E47090"
+            BuildableName = "QuakeSpasm.app"
+            BlueprintName = "QuakeSpasm"
+            ReferencedContainer = "container:QuakeSpasm.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "set -o errexit&#10;&#10;[ $BUILD_STYLE = Release ] || { echo Distribution target requires &quot;&apos;Release&apos;&quot; build style; false; }&#10;&#10;VERSION=$(defaults read &quot;$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info&quot; CFBundleVersion)&#10;DOWNLOAD_BASE_URL=&quot;http://quakespasm.sourceforge.net/sparkle&quot;&#10;RELEASENOTES_URL=&quot;http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-$VERSION&quot;&#10;&#10;ARCHIVE_FILENAME=&quot;$PROJECT_NAME $VERSION.zip&quot;&#10;DOWNLOAD_URL=&quot;$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME&quot;&#10;KEYCHAIN_PRIVKEY_NAME=&quot;QuakeSpasm Sparkle Private Key&quot;&#10;&#10;WD=$PWD&#10;cd &quot;$BUILT_PRODUCTS_DIR&quot;&#10;rm -f &quot;$PROJECT_NAME&quot;*.zip&#10;ditto -ck --keepParent &quot;$PROJECT_NAME.app&quot; &quot;$ARCHIVE_FILENAME&quot;&#10;&#10;SIZE=$(stat -f %z &quot;$ARCHIVE_FILENAME&quot;)&#10;PUBDATE=$(LC_TIME=en_US date +&quot;%a, %d %b %G %T %z&quot;)&#10;SIGNATURE=$(&#10;/usr/bin/openssl dgst -sha1 -binary &lt; &quot;$ARCHIVE_FILENAME&quot; \&#10;| /usr/bin/openssl dgst -dss1 -sign &lt;(security find-generic-password -g -s &quot;$KEYCHAIN_PRIVKEY_NAME&quot; 2&gt;&amp;1 1&gt;/dev/null | perl -pe &apos;($_) = /&quot;(.+)&quot;/; s/\\012/\n/g&apos; | perl -MXML::LibXML -e &apos;print XML::LibXML-&gt;new()-&gt;parse_file(&quot;-&quot;)-&gt;findvalue(q(//string[preceding-sibling::key[1] = &quot;NOTE&quot;]))&apos;) \&#10;| /usr/bin/openssl enc -base64&#10;)&#10;[ $SIGNATURE ] || { echo Unable to load signing private key with name &quot;&apos;$KEYCHAIN_PRIVKEY_NAME&apos;&quot; from keychain; false; }&#10;&#10;cat &lt;&lt;EOF&#10;&lt;item&gt;&#10;&lt;title&gt;Version $VERSION&lt;/title&gt;&#10;&lt;sparkle:releaseNotesLink&gt;$RELEASENOTES_URL&lt;/sparkle:releaseNotesLink&gt;&#10;&lt;pubDate&gt;$PUBDATE&lt;/pubDate&gt;&#10;&lt;enclosure&#10;url=&quot;$DOWNLOAD_URL&quot;&#10;sparkle:version=&quot;$VERSION&quot;&#10;type=&quot;application/octet-stream&quot;&#10;length=&quot;$SIZE&quot;&#10;sparkle:dsaSignature=&quot;$SIGNATURE&quot;&#10;/&gt;&#10;&lt;/item&gt;&#10;EOF&#10;&#10;echo scp &quot;&apos;$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME&apos;&quot; www.example.com:download/&#10;echo scp &quot;&apos;$WD/appcast.xml&apos;&quot; www.example.com:web/software/my-cool-app/appcast.xml">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "8D1107260486CEB800E47090"
+                     BuildableName = "QuakeSpasm.app"
+                     BlueprintName = "QuakeSpasm"
+                     ReferencedContainer = "container:QuakeSpasm.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+   </ArchiveAction>
+</Scheme>

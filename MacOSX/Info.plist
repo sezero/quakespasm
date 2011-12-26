@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>SUEnableAutomaticChecks</key>
-	<false/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
@@ -21,14 +19,16 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>0.85.4</string>
+	<string>0.85.5</string>
 	<key>NSMainNibFile</key>
 	<string>Launcher</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
+	<key>SUEnableAutomaticChecks</key>
+	<false/>
 	<key>SUFeedURL</key>
 	<string>http://quakespasm.sourceforge.net/sparkle/appcast.xml</string>
+	<key>SUPublicDSAKeyFile</key>
+	<string>dsa_pub.pem</string>
 </dict>
 </plist>

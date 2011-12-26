@@ -6,21 +6,6 @@
 	objectVersion = 44;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		48ADEC8E1243D946000AF19C /* Distribution */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = 48ADEC921243D94A000AF19C /* Build configuration list for PBXAggregateTarget "Distribution" */;
-			buildPhases = (
-				48ADEC8D1243D946000AF19C /* ShellScript */,
-			);
-			dependencies = (
-				48ADECD61243E933000AF19C /* PBXTargetDependency */,
-			);
-			name = Distribution;
-			productName = Distribution;
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks into .app bundle */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
@@ -118,16 +103,6 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B021C20714A5FF7E003F18D6 /* cfgfile.c */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		48ADECD51243E933000AF19C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8D1107260486CEB800E47090;
-			remoteInfo = QuakeSpasm;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		002F39FD09D0883400EBEB88 /* Copy Frameworks into .app bundle */ = {
@@ -290,6 +265,7 @@
 		48728D290D3004A80004D61B /* net_dgrm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_dgrm.h; path = ../Quake/net_dgrm.h; sourceTree = SOURCE_ROOT; };
 		48728D2A0D3004A80004D61B /* net_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_loop.c; path = ../Quake/net_loop.c; sourceTree = SOURCE_ROOT; };
 		48728D2B0D3004A80004D61B /* net_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_loop.h; path = ../Quake/net_loop.h; sourceTree = SOURCE_ROOT; };
+		487D113A14A8E7FF008765D0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		48895DB80D4914A000849ABF /* pl_osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pl_osx.m; path = ../Quake/pl_osx.m; sourceTree = SOURCE_ROOT; };
 		4890A4601205A27B00452753 /* SUUpdaterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdaterDelegate.h; sourceTree = "<group>"; };
 		4890A4611205A27B00452753 /* SUUpdaterDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUUpdaterDelegate.m; sourceTree = "<group>"; };
@@ -367,6 +343,7 @@
 		29B97314FDCFA39411CA2CEA /* QuakeSpasm */ = {
 			isa = PBXGroup;
 			children = (
+				487D113A14A8E7FF008765D0 /* libz.dylib */,
 				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -688,7 +665,6 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* QuakeSpasm */,
-				48ADEC8E1243D946000AF19C /* Distribution */,
 			);
 		};
 /* End PBXProject section */
@@ -710,22 +686,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		48ADEC8D1243D946000AF19C /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "set -o errexit\n\n[ $BUILD_STYLE = Release ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://quakespasm.sourceforge.net/sparkle\"\nRELEASENOTES_URL=\"http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-$VERSION\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME $VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"QuakeSpasm Sparkle Private Key\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nditto -ck --keepParent \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$(\n\t/usr/bin/openssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" \\\n\t| /usr/bin/openssl dgst -dss1 -sign <(security find-generic-password -g -s \"$KEYCHAIN_PRIVKEY_NAME\" 2>&1 1>/dev/null | perl -pe '($_) = /\"(.+)\"/; s/\\\\012/\\n/g' | perl -MXML::LibXML -e 'print XML::LibXML->new()->parse_file(\"-\")->findvalue(q(//string[preceding-sibling::key[1] = \"NOTE\"]))') \\\n\t| /usr/bin/openssl enc -base64\n)\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n\t\t<item>\n\t\t\t<title>Version $VERSION</title>\n\t\t\t<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n\t\t\t<pubDate>$PUBDATE</pubDate>\n\t\t\t<enclosure\n\t\t\t\turl=\"$DOWNLOAD_URL\"\n\t\t\t\tsparkle:version=\"$VERSION\"\n\t\t\t\ttype=\"application/octet-stream\"\n\t\t\t\tlength=\"$SIZE\"\n\t\t\t\tsparkle:dsaSignature=\"$SIGNATURE\"\n\t\t\t/>\n\t\t</item>\nEOF\n\necho scp \"'$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME'\" www.example.com:download/\necho scp \"'$WD/appcast.xml'\" www.example.com:web/software/my-cool-app/appcast.xml";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -813,14 +773,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		48ADECD61243E933000AF19C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8D1107260486CEB800E47090 /* QuakeSpasm */;
-			targetProxy = 48ADECD51243E933000AF19C /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -841,29 +793,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		48ADEC8F1243D946000AF19C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
-				PRODUCT_NAME = Distribution;
-			};
-			name = Debug;
-		};
-		48ADEC901243D946000AF19C /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_ENABLE_FIX_AND_CONTINUE = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
-				PRODUCT_NAME = Distribution;
-				ZERO_LINK = NO;
-			};
-			name = Release;
-		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -895,6 +824,7 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = QuakeSpasm;
+				SDKROOT = macosx10.5;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -904,8 +834,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
-					i386,
 					x86_64,
+					i386,
 					ppc,
 				);
 				FRAMEWORK_SEARCH_PATHS = (
@@ -930,9 +860,10 @@
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/opt/local/lib,
 					"\"$(SRCROOT)\"",
 				);
+				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=ppc]" = 10.4;
 				OTHER_CFLAGS = "";
 				"OTHER_CFLAGS[arch=ppc64]" = (
 					"-arch",
@@ -952,6 +883,10 @@
 					ppc,
 				);
 				PRODUCT_NAME = QuakeSpasm;
+				SDKROOT = macosx10.5;
+				"SDKROOT[arch=i386]" = macosx10.4;
+				"SDKROOT[arch=ppc]" = macosx10.4;
+				"SDKROOT[arch=x86_64]" = macosx10.5;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -960,8 +895,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = (
-					i386,
 					x86_64,
+					i386,
 				);
 				FRAMEWORK_SEARCH_PATHS = (
 					/Library/Frameworks,
@@ -969,6 +904,7 @@
 				);
 				GCC_MODEL_TUNING = G3;
 				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -977,9 +913,10 @@
 					"$(HEADER_SEARCH_PATHS)",
 				);
 				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
 				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = macosx10.5;
 				VALID_ARCHS = "i386 x86_64";
 			};
 			name = Debug;
@@ -1003,6 +940,7 @@
 					USE_CODEC_WAVE,
 					USE_QS_CONBACK,
 				);
+				GCC_VERSION = 4.0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1010,7 +948,9 @@
 					/Library/Frameworks/SDL.framework/Headers,
 					"$(HEADER_SEARCH_PATHS)",
 				);
-				LIBRARY_SEARCH_PATHS = /opt/local/lib;
+				LIBRARY_SEARCH_PATHS = "";
+				MACOSX_DEPLOYMENT_TARGET = 10.4;
+				"MACOSX_DEPLOYMENT_TARGET[arch=x86_64]" = 10.5;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				"OTHER_CFLAGS[arch=ppc64]" = (
@@ -1031,7 +971,7 @@
 					ppc,
 				);
 				PREBINDING = NO;
-				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.4u.sdk";
+				SDKROOT = macosx10.5;
 				VALID_ARCHS = "i386 x86_64 ppc ppc64 ppc7400 ppc970";
 			};
 			name = Release;
@@ -1039,15 +979,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		48ADEC921243D94A000AF19C /* Build configuration list for PBXAggregateTarget "Distribution" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				48ADEC8F1243D946000AF19C /* Debug */,
-				48ADEC901243D946000AF19C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
