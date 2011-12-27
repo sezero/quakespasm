@@ -1,4 +1,4 @@
-### GNU Makefile for QuakeSpasm for Darwin, Aug. 27, 2011
+### GNU Makefile for QuakeSpasm for Darwin, Dec. 27, 2011
 
 # Usage: "make -f Makefile.darwin"
 #
@@ -130,7 +130,7 @@ endif
 #SDL_CONFIG ?= sdl-config
 SDL_CONFIG=/usr/local/bin/sdl-config
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
-SDL_LFLAGS := $(shell $(SDL_CONFIG) --libs)
+SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(SDLNET),1)
 NET_LIBS   :=-L/usr/local/lib -l SDL_net
@@ -297,7 +297,7 @@ OBJS := \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(CC) $(CFLAGS) -o quakespasm $(OBJS) $(X11_LFLAGS) $(SDL_LFLAGS) -L../MacOSX $(LIBS)
+	$(CC) $(OBJS) $(X11_LFLAGS) -L../MacOSX $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm
