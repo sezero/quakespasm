@@ -224,7 +224,8 @@ GLOBJS = \
 	r_brush.o \
 	gl_model.o
 
-OBJS := \
+OBJS := strlcat.o \
+	strlcpy.o \
 	$(GLOBJS) \
 	$(SYSOBJ_INPUT) \
 	$(COMOBJ_SND) \

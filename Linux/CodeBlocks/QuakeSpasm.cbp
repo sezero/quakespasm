@@ -275,6 +275,13 @@
 		</Unit>
 		<Unit filename="../../Quake/snd_wave.h" />
 		<Unit filename="../../Quake/spritegn.h" />
+		<Unit filename="../../Quake/strl_fn.h" />
+		<Unit filename="../../Quake/strlcat.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/strlcpy.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="../../Quake/sv_main.c">
 			<Option compilerVar="CC" />
 		</Unit>

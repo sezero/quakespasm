@@ -570,6 +570,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\strlcat.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\strlcpy.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\sv_main.c"
 				>
 			</File>
@@ -821,6 +829,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\spritegn.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\strl_fn.h"
 				>
 			</File>
 			<File
