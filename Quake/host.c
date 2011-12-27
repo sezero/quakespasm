@@ -105,19 +105,6 @@ static void Max_Edicts_f (cvar_t *var)
 	oldval = max_edicts.value;
 }
 
-// 1999-09-06 deathmatch/coop not at the same time fix by Maddes
-static void Callback_Deathmatch (cvar_t *var)
-{
-	if (var->value)
-		Cvar_Set ("coop", "0");
-}
-
-static void Callback_Coop (cvar_t *var)
-{
-	if (var->value)
-		Cvar_Set ("deathmatch", "0");
-}
-
 /*
 ================
 Host_EndGame
@@ -274,8 +261,8 @@ void Host_InitLocal (void)
 	Cvar_RegisterVariable (&noexit, NULL);
 	Cvar_RegisterVariable (&skill, NULL);
 	Cvar_RegisterVariable (&developer, NULL);
-	Cvar_RegisterVariable (&coop, Callback_Coop);
-	Cvar_RegisterVariable (&deathmatch, Callback_Deathmatch);
+	Cvar_RegisterVariable (&coop, NULL);
+	Cvar_RegisterVariable (&deathmatch, NULL);
 
 	Cvar_RegisterVariable (&pausable, NULL);
 
