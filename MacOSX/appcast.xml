@@ -17,5 +17,17 @@
 				sparkle:dsaSignature="MC4CFQDtSI8T8itHrvQoLTVG8XE4/qPa3wIVAN9qYIEN8LMpFdoIvLVZl6SxSH3m"
 			/>
 		</item>
+		<item>
+			<title>Version 0.85.5</title>
+			<sparkle:releaseNotesLink>http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-0.85.5</sparkle:releaseNotesLink>
+			<pubDate>Tue, 27 Dec 2011 11:31:38 +0100</pubDate>
+			<enclosure
+				url="http://quakespasm.sourceforge.net/sparkle/QuakeSpasm 0.85.5.zip"
+				sparkle:version="0.85.5"
+				type="application/octet-stream"
+				length="2937479"
+				sparkle:dsaSignature="YmRhMjY1ZDcyYzdiZjlhYzY4ZGJkZDIyZWRjM2U4NmQ1Y2RkZjIyZQo="
+			/>
+		</item>
    </channel>
 </rss>

@@ -93,6 +93,8 @@
 		4890A4621205A27B00452753 /* SUUpdaterDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A4611205A27B00452753 /* SUUpdaterDelegate.m */; };
 		4890A5D21205D55700452753 /* UpdateButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 4890A5D11205D55700452753 /* UpdateButton.m */; };
 		489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 489D8D2E0D3A630D00AA4471 /* ScreenInfo.m */; };
+		48A7C1FC14AA34940011B754 /* strlcat.c in Sources */ = {isa = PBXBuildFile; fileRef = 48A7C1FA14AA34940011B754 /* strlcat.c */; };
+		48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */ = {isa = PBXBuildFile; fileRef = 48A7C1FB14AA34940011B754 /* strlcpy.c */; };
 		48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */ = {isa = PBXBuildFile; fileRef = 48B9E7860D340B1E0001CACF /* Launcher.nib */; };
 		48B9E7A70D340BEA0001CACF /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7A60D340BEA0001CACF /* AppController.m */; };
 		48B9E7C00D340EA80001CACF /* SDLApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7BF0D340EA80001CACF /* SDLApplication.m */; };
@@ -103,6 +105,16 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B021C20714A5FF7E003F18D6 /* cfgfile.c */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		48A7C1F714A9E5150011B754 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8D1107260486CEB800E47090;
+			remoteInfo = QuakeSpasm;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		002F39FD09D0883400EBEB88 /* Copy Frameworks into .app bundle */ = {
@@ -265,7 +277,6 @@
 		48728D290D3004A80004D61B /* net_dgrm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_dgrm.h; path = ../Quake/net_dgrm.h; sourceTree = SOURCE_ROOT; };
 		48728D2A0D3004A80004D61B /* net_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_loop.c; path = ../Quake/net_loop.c; sourceTree = SOURCE_ROOT; };
 		48728D2B0D3004A80004D61B /* net_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_loop.h; path = ../Quake/net_loop.h; sourceTree = SOURCE_ROOT; };
-		487D113A14A8E7FF008765D0 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		48895DB80D4914A000849ABF /* pl_osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pl_osx.m; path = ../Quake/pl_osx.m; sourceTree = SOURCE_ROOT; };
 		4890A4601205A27B00452753 /* SUUpdaterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SUUpdaterDelegate.h; sourceTree = "<group>"; };
 		4890A4611205A27B00452753 /* SUUpdaterDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SUUpdaterDelegate.m; sourceTree = "<group>"; };
@@ -275,6 +286,11 @@
 		4890A5E71205D6D400452753 /* rnotes.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = rnotes.html; sourceTree = "<group>"; };
 		489D8D2D0D3A630D00AA4471 /* ScreenInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenInfo.h; sourceTree = "<group>"; };
 		489D8D2E0D3A630D00AA4471 /* ScreenInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScreenInfo.m; sourceTree = "<group>"; };
+		48A7C1F414A9E5000011B754 /* QuakeSpasm copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		48A7C1F614A9E5020011B754 /* QuakeSpasm copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "QuakeSpasm copy-Info.plist"; path = "/Users/kristian/Documents/Code/XCode/QuakeSpasm/MacOSX/QuakeSpasm copy-Info.plist"; sourceTree = "<absolute>"; };
+		48A7C1F914AA34940011B754 /* strl_fn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strl_fn.h; path = ../Quake/strl_fn.h; sourceTree = "<group>"; };
+		48A7C1FA14AA34940011B754 /* strlcat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strlcat.c; path = ../Quake/strlcat.c; sourceTree = "<group>"; };
+		48A7C1FB14AA34940011B754 /* strlcpy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strlcpy.c; path = ../Quake/strlcpy.c; sourceTree = "<group>"; };
 		48B9E7870D340B1E0001CACF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/Launcher.nib; sourceTree = "<group>"; };
 		48B9E7A50D340BEA0001CACF /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		48B9E7A60D340BEA0001CACF /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
@@ -336,6 +352,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* QuakeSpasm.app */,
+				48A7C1F414A9E5000011B754 /* QuakeSpasm copy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -343,13 +360,13 @@
 		29B97314FDCFA39411CA2CEA /* QuakeSpasm */ = {
 			isa = PBXGroup;
 			children = (
-				487D113A14A8E7FF008765D0 /* libz.dylib */,
 				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				4890A5EA1205D6ED00452753 /* Sparkle */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				48A7C1F614A9E5020011B754 /* QuakeSpasm copy-Info.plist */,
 			);
 			name = QuakeSpasm;
 			sourceTree = "<group>";
@@ -438,6 +455,8 @@
 				483A781C0D2EEA5400CB2E4C /* pr_exec.c */,
 				483A780E0D2EEA0F00CB2E4C /* progdefs.q1 */,
 				483A781D0D2EEA5400CB2E4C /* sbar.c */,
+				48A7C1FA14AA34940011B754 /* strlcat.c */,
+				48A7C1FB14AA34940011B754 /* strlcpy.c */,
 				4847CD5E12057F94000B560F /* sys_sdl_unix.c */,
 				483A781F0D2EEA5400CB2E4C /* view.c */,
 				483A78200D2EEA5400CB2E4C /* wad.c */,
@@ -541,6 +560,7 @@
 				483A77EF0D2EE97700CB2E4C /* progs.h */,
 				483A77F00D2EE97700CB2E4C /* quakedef.h */,
 				483A77F10D2EE97700CB2E4C /* sbar.h */,
+				48A7C1F914AA34940011B754 /* strl_fn.h */,
 				483A77F20D2EE97700CB2E4C /* sys.h */,
 				483A77F30D2EE97700CB2E4C /* view.h */,
 				483A77F40D2EE97700CB2E4C /* wad.h */,
@@ -625,6 +645,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		48A7C18B14A9E5000011B754 /* QuakeSpasm Release */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48A7C1F114A9E5000011B754 /* Build configuration list for PBXNativeTarget "QuakeSpasm Release" */;
+			buildPhases = (
+				48A7C1F014A9E5000011B754 /* Run Script */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				48A7C1F814A9E5150011B754 /* PBXTargetDependency */,
+			);
+			name = "QuakeSpasm Release";
+			productInstallPath = "$(HOME)/Applications";
+			productName = QuakeSpasm;
+			productReference = 48A7C1F414A9E5000011B754 /* QuakeSpasm copy.app */;
+			productType = "com.apple.product-type.application";
+		};
 		8D1107260486CEB800E47090 /* QuakeSpasm */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */;
@@ -668,6 +705,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* QuakeSpasm */,
+				48A7C18B14A9E5000011B754 /* QuakeSpasm Release */,
 			);
 		};
 /* End PBXProject section */
@@ -689,6 +727,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		48A7C1F014A9E5000011B754 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -o errexit\n\n[ \"$CONFIGURATION\" = \"Release\" ] || { echo Distribution target requires \"'Release'\" build style; false; }\n\nVERSION=$(defaults read \"$BUILT_PRODUCTS_DIR/$PROJECT_NAME.app/Contents/Info\" CFBundleVersion)\nDOWNLOAD_BASE_URL=\"http://quakespasm.sourceforge.net/sparkle\"\nRELEASENOTES_URL=\"http://quakespasm.sourceforge.net/sparkle/rnotes.html#version-$VERSION\"\n\nARCHIVE_FILENAME=\"$PROJECT_NAME $VERSION.zip\"\nDOWNLOAD_URL=\"$DOWNLOAD_BASE_URL/$ARCHIVE_FILENAME\"\nKEYCHAIN_PRIVKEY_NAME=\"QuakeSpasm Sparkle Private Key\"\n\nWD=$PWD\ncd \"$BUILT_PRODUCTS_DIR\"\nrm -f \"$PROJECT_NAME\"*.zip\nditto -ck --keepParent \"$PROJECT_NAME.app\" \"$ARCHIVE_FILENAME\"\n\nSIZE=$(stat -f %z \"$ARCHIVE_FILENAME\")\nPUBDATE=$(LC_TIME=en_US date +\"%a, %d %b %G %T %z\")\nSIGNATURE=$( /usr/bin/openssl dgst -sha1 -binary < \"$ARCHIVE_FILENAME\" | /usr/bin/openssl dgst -dss1 -sign < \"$WD/dsa_priv.pem\" | /usr/bin/openssl enc -base64 )\n\n[ $SIGNATURE ] || { echo Unable to load signing private key with name \"'$KEYCHAIN_PRIVKEY_NAME'\" from keychain; false; }\n\ncat <<EOF\n<item>\n<title>Version $VERSION</title>\n<sparkle:releaseNotesLink>$RELEASENOTES_URL</sparkle:releaseNotesLink>\n<pubDate>$PUBDATE</pubDate>\n<enclosure\nurl=\"$DOWNLOAD_URL\"\nsparkle:version=\"$VERSION\"\ntype=\"application/octet-stream\"\nlength=\"$SIZE\"\nsparkle:dsaSignature=\"$SIGNATURE\"\n/>\n</item>\nEOF\n\necho scp \"'$HOME/svn/my-cool-app/build/Release/$ARCHIVE_FILENAME'\" www.example.com:download/\necho scp \"'$WD/appcast.xml'\" www.example.com:web/software/my-cool-app/appcast.xml";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D11072C0486CEB800E47090 /* Sources */ = {
@@ -771,10 +826,20 @@
 				4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */,
 				4854B1B11340C646004C9F45 /* snd_mpg123.c in Sources */,
 				B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */,
+				48A7C1FC14AA34940011B754 /* strlcat.c in Sources */,
+				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		48A7C1F814A9E5150011B754 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8D1107260486CEB800E47090 /* QuakeSpasm */;
+			targetProxy = 48A7C1F714A9E5150011B754 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
@@ -796,6 +861,98 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		48A7C1F214A9E5000011B754 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					x86_64,
+					i386,
+				);
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = USE_QS_CONBACK;
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/SDL_net.framework/Headers,
+					"$(HEADER_SEARCH_PATHS)",
+				);
+				INFOPLIST_FILE = "QuakeSpasm copy-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				PRODUCT_NAME = "QuakeSpasm copy";
+				SDKROOT = macosx10.5;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		48A7C1F314A9E5000011B754 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					x86_64,
+					i386,
+					ppc,
+				);
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					USE_CODEC_MP3,
+					USE_CODEC_VORBIS,
+					USE_CODEC_WAVE,
+					USE_QS_CONBACK,
+				);
+				HEADER_SEARCH_PATHS = (
+					/Library/Frameworks/SDL.framework/Headers,
+					/Library/Frameworks/SDL_net.framework/Headers,
+					"$(HEADER_SEARCH_PATHS)",
+				);
+				INFOPLIST_FILE = "QuakeSpasm copy-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				OTHER_CFLAGS = "";
+				"OTHER_CFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_CFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
+				OTHER_LDFLAGS = "";
+				"OTHER_LDFLAGS[arch=ppc64]" = (
+					"-arch",
+					ppc,
+				);
+				"OTHER_LDFLAGS[arch=ppc]" = (
+					"-arch",
+					ppc,
+				);
+				PRODUCT_NAME = "QuakeSpasm copy";
+				SDKROOT = macosx10.5;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -984,6 +1141,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		48A7C1F114A9E5000011B754 /* Build configuration list for PBXNativeTarget "QuakeSpasm Release" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48A7C1F214A9E5000011B754 /* Debug */,
+				48A7C1F314A9E5000011B754 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
