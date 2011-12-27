@@ -1354,8 +1354,8 @@ void SV_SpawnServer (const char *server)
 
 	sv.time = 1.0;
 
-	strcpy (sv.name, server);
-	sprintf (sv.modelname,"maps/%s.bsp", server);
+	strncpy (sv.name, server, sizeof(sv.name) - 1);
+	q_snprintf (sv.modelname, sizeof(sv.modelname), "maps/%s.bsp", server);
 	sv.worldmodel = Mod_ForName (sv.modelname, false);
 	if (!sv.worldmodel)
 	{

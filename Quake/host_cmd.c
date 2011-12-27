@@ -189,7 +189,7 @@ void Host_Game_f (void)
 			//Load the paks if any are found:
 			for (i = 0; ; i++)
 			{
-				sprintf (pakfile, "%s/pak%i.pak", com_gamedir, i);
+				q_snprintf (pakfile, sizeof(pakfile), "%s/pak%i.pak", com_gamedir, i);
 				pak = COM_LoadPackFile (pakfile);
 				if (!pak)
 					break;
@@ -278,13 +278,13 @@ void ExtraMaps_Init (void)
 
 	// we don't want to list the maps in id1 pakfiles,
 	// because these are not "add-on" levels
-	sprintf (ignorepakdir, "/%s/", GAMENAME);
+	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
 
 	for (search = com_searchpaths; search; search = search->next)
 	{
 		if (*search->filename) //directory
 		{
-			sprintf (filestring,"%s/maps/",search->filename);
+			q_snprintf (filestring, sizeof(filestring), "%s/maps/", search->filename);
 			dir_p = opendir(filestring);
 			if (dir_p == NULL)
 				continue;
@@ -411,9 +411,9 @@ void Modlist_Init (void)
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
-		sprintf (dir_string, "%s/", com_argv[i+1]);
+		q_snprintf (dir_string, sizeof(dir_string), "%s/", com_argv[i+1]);
 	else
-		sprintf (dir_string, "%s/", host_parms->basedir);
+		q_snprintf (dir_string, sizeof(dir_string), "%s/", host_parms->basedir);
 
 	dir_p = opendir(dir_string);
 	if (dir_p == NULL)
@@ -423,7 +423,7 @@ void Modlist_Init (void)
 	{
 		if ((strcmp(dir_t->d_name, ".") == 0) || (strcmp(dir_t->d_name, "..") == 0))
 			continue;
-		sprintf(mod_dir_string, "%s%s/", dir_string, dir_t->d_name);
+		q_snprintf(mod_dir_string, sizeof(mod_dir_string), "%s%s/", dir_string, dir_t->d_name);
 		mod_dir_p = opendir(mod_dir_string);
 		if (mod_dir_p == NULL)
 			continue;
@@ -885,7 +885,7 @@ void Host_Changelevel_f (void)
 	}
 
 	//johnfitz -- check for client having map before anything else
-	sprintf (level, "maps/%s.bsp", Cmd_Argv(1));
+	q_snprintf (level, sizeof(level), "maps/%s.bsp", Cmd_Argv(1));
 	if (COM_OpenFile (level, &i, NULL) == -1)
 		Host_Error ("cannot find map %s", level);
 	//johnfitz
@@ -1047,7 +1047,7 @@ void Host_Savegame_f (void)
 		}
 	}
 
-	sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
+	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
 	COM_DefaultExtension (name, ".sav", sizeof(name));
 
 	Con_Printf ("Saving game to %s...\n", name);
@@ -1119,7 +1119,7 @@ void Host_Loadgame_f (void)
 
 	cls.demonum = -1;		// stop demo loop in case this fails
 
-	sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
+	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
 	COM_DefaultExtension (name, ".sav", sizeof(name));
 
 // we can't call SCR_BeginLoadingPlaque, because too much stack space has

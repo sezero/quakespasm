@@ -1453,7 +1453,7 @@ void COM_WriteFile (const char *filename, const void *data, int len)
 
 	Sys_mkdir (com_gamedir); //johnfitz -- if we've switched to a nonexistant gamedir, create it now so we don't crash
 
-	sprintf (name, "%s/%s", com_gamedir, filename);
+	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, filename);
 
 	handle = Sys_FileOpenWrite (name);
 	if (handle == -1)
@@ -1572,7 +1572,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 					continue;
 			}
 
-			sprintf (netpath, "%s/%s",search->filename, filename);
+			q_snprintf (netpath, sizeof(netpath), "%s/%s",search->filename, filename);
 			findtime = Sys_FileTime (netpath);
 			if (findtime == -1)
 				continue;
@@ -1887,7 +1887,7 @@ void COM_AddGameDirectory (const char *dir)
 	// add any pak files in the format pak0.pak pak1.pak, ...
 	for (i = 0; ; i++)
 	{
-		sprintf (pakfile, "%s/pak%i.pak", dir, i);
+		q_snprintf (pakfile, sizeof(pakfile), "%s/pak%i.pak", dir, i);
 		pak = COM_LoadPackFile (pakfile);
 		if (!pak)
 			break;

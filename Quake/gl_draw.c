@@ -246,7 +246,7 @@ qpic_t *Draw_PicFromWad (const char *name)
 	else
 	{
 		char texturename[64]; //johnfitz
-		sprintf (texturename, "%s:%s", WADFILENAME, name); //johnfitz
+		q_snprintf (texturename, sizeof(texturename), "%s:%s", WADFILENAME, name); //johnfitz
 
 		offset = (src_offset_t)p - (src_offset_t)wad_base + sizeof(int)*2; //johnfitz
 

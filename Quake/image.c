@@ -37,12 +37,12 @@ byte *Image_LoadImage (const char *name, int *width, int *height)
 {
 	FILE	*f;
 
-	sprintf (loadfilename, "%s.tga", name);
+	q_snprintf (loadfilename, sizeof(loadfilename), "%s.tga", name);
 	COM_FOpenFile (loadfilename, &f, NULL);
 	if (f)
 		return Image_LoadTGA (f, width, height);
 
-	sprintf (loadfilename, "%s.pcx", name);
+	q_snprintf (loadfilename, sizeof(loadfilename), "%s.pcx", name);
 	COM_FOpenFile (loadfilename, &f, NULL);
 	if (f)
 		return Image_LoadPCX (f, width, height);
@@ -106,7 +106,7 @@ qboolean Image_WriteTGA (const char *name, byte *data, int width, int height, in
 	byte	header[TARGAHEADERSIZE];
 
 	Sys_mkdir (com_gamedir); //if we've switched to a nonexistant gamedir, create it now so we don't crash
-	sprintf (pathname, "%s/%s", com_gamedir, name);
+	q_snprintf (pathname, sizeof(pathname), "%s/%s", com_gamedir, name);
 	handle = Sys_FileOpenWrite (pathname);
 	if (handle == -1)
 		return false;

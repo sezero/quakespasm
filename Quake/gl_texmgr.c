@@ -230,7 +230,7 @@ void TexMgr_Imagedump_f (void)
 	char *c;
 
 	//create directory
-	sprintf(dirname, "%s/imagedump", com_gamedir);
+	q_snprintf(dirname, sizeof(dirname), "%s/imagedump", com_gamedir);
 	Sys_mkdir (dirname);
 
 	//loop through textures
@@ -240,7 +240,7 @@ void TexMgr_Imagedump_f (void)
 		while ( (c = strchr(tempname, ':')) ) *c = '_';
 		while ( (c = strchr(tempname, '/')) ) *c = '_';
 		while ( (c = strchr(tempname, '*')) ) *c = '_';
-		sprintf(tganame, "imagedump/%s.tga", tempname);
+		q_snprintf(tganame, sizeof(tganame), "imagedump/%s.tga", tempname);
 
 		GL_Bind (glt);
 		if (glt->flags & TEXPREF_ALPHA)

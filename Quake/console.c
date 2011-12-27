@@ -162,7 +162,7 @@ void Con_Dump_f (void)
 #if 1
 	//johnfitz -- there is a security risk in writing files with an arbitrary filename. so,
 	//until stuffcmd is crippled to alleviate this risk, just force the default filename.
-	sprintf (name, "%s/condump.txt", com_gamedir);
+	q_snprintf (name, sizeof(name), "%s/condump.txt", com_gamedir);
 #else
 	if (Cmd_Argc() > 2)
 	{
@@ -177,11 +177,11 @@ void Con_Dump_f (void)
 			Con_Printf ("Relative pathnames are not allowed.\n");
 			return;
 		}
-		sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
+		q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
 		COM_DefaultExtension (name, ".txt", sizeof(name));
 	}
 	else
-		sprintf (name, "%s/condump.txt", com_gamedir);
+		q_snprintf (name, sizeof(name), "%s/condump.txt", com_gamedir);
 #endif
 
 	COM_CreatePath (name);
