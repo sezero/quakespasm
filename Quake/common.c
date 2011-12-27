@@ -957,6 +957,20 @@ const char *COM_FileGetExtension (const char *in)
 
 /*
 ============
+COM_ExtractExtension
+============
+*/
+void COM_ExtractExtension (const char *in, char *out, size_t outsize)
+{
+	const char *ext = COM_FileGetExtension (in);
+	if (! *ext)
+		*out = '\0';
+	else
+		q_strlcpy (out, ext, outsize);
+}
+
+/*
+============
 COM_FileBase
 take 'somedir/otherdir/filename.ext',
 write only 'filename' to the output
