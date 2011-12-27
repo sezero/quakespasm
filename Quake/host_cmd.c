@@ -292,7 +292,7 @@ void ExtraMaps_Init (void)
 			{
 				if (!strstr(dir_t->d_name, ".bsp") && !strstr(dir_t->d_name, ".BSP"))
 					continue;
-				COM_StripExtension(dir_t->d_name, mapname);
+				COM_StripExtension(dir_t->d_name, mapname, sizeof(mapname));
 				ExtraMaps_Add (mapname);
 			}
 			closedir(dir_p);
@@ -307,7 +307,7 @@ void ExtraMaps_Init (void)
 					{
 						if (pak->files[i].filelen > 32*1024)
 						{ // don't list files under 32k (ammo boxes etc)
-							COM_StripExtension(pak->files[i].name + 5, mapname);
+							COM_StripExtension(pak->files[i].name + 5, mapname, sizeof(mapname));
 							ExtraMaps_Add (mapname);
 						}
 					}
@@ -1000,7 +1000,7 @@ Host_Savegame_f
 */
 void Host_Savegame_f (void)
 {
-	char	name[256];
+	char	name[MAX_OSPATH];
 	FILE	*f;
 	int	i;
 	char	comment[SAVEGAME_COMMENT_LENGTH+1];
@@ -1048,7 +1048,7 @@ void Host_Savegame_f (void)
 	}
 
 	sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
-	COM_DefaultExtension (name, ".sav");
+	COM_DefaultExtension (name, ".sav", sizeof(name));
 
 	Con_Printf ("Saving game to %s...\n", name);
 	f = fopen (name, "w");
@@ -1120,7 +1120,7 @@ void Host_Loadgame_f (void)
 	cls.demonum = -1;		// stop demo loop in case this fails
 
 	sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
-	COM_DefaultExtension (name, ".sav");
+	COM_DefaultExtension (name, ".sav", sizeof(name));
 
 // we can't call SCR_BeginLoadingPlaque, because too much stack space has
 // been used.  The menu calls it before stuffing loadgame command

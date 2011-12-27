@@ -893,13 +893,13 @@ COM_SkipPath
 */
 const char *COM_SkipPath (const char *pathname)
 {
-	const char *last;
+	const char	*last;
 
 	last = pathname;
 	while (*pathname)
 	{
-		if (*pathname=='/')
-			last = pathname+1;
+		if (*pathname == '/')
+			last = pathname + 1;
 		pathname++;
 	}
 	return last;
@@ -910,11 +910,29 @@ const char *COM_SkipPath (const char *pathname)
 COM_StripExtension
 ============
 */
-void COM_StripExtension (const char *in, char *out)
+void COM_StripExtension (const char *in, char *out, size_t outsize)
 {
-	while (*in && *in != '.')
-		*out++ = *in++;
-	*out = 0;
+	int	length;
+
+	if (!*in)
+	{
+		*out = '\0';
+		return;
+	}
+	if (in != out)	/* copy when not in-place editing */
+	{
+		strncpy (out, in, outsize - 1);
+		out[outsize - 1] = '\0';
+	}
+	length = (int)strlen(out) - 1;
+	while (length > 0 && out[length] != '.')
+	{
+		--length;
+		if (out[length] == '/' || out[length] == '\\')
+			return;	/* no extension */
+	}
+	if (length > 0)
+		out[length] = '\0';
 }
 
 /*
@@ -943,52 +961,74 @@ const char *COM_FileGetExtension (const char *in)
 /*
 ============
 COM_FileBase
+take 'somedir/otherdir/filename.ext',
+write only 'filename' to the output
 ============
 */
-void COM_FileBase (const char *in, char *out)
+void COM_FileBase (const char *in, char *out, size_t outsize)
 {
-	const char *s, *s2;
+	const char	*dot, *slash, *s;
 
-	s = in + strlen(in) - 1;
+	s = in;
+	slash = in;
+	dot = NULL;
+	while (*s)
+	{
+		if (*s == '/')
+			slash = s + 1;
+		if (*s == '.')
+			dot = s;
+		s++;
+	}
+	if (dot == NULL)
+		dot = s;
 
-	while (s != in && *s != '.')
-		s--;
-
-	for (s2 = s ; s2 != in && *s2 && *s2 != '/' ; s2--)
-	;
-
-	if (s-s2 < 2)
-		strcpy (out,"?model?");
+	if (dot - slash < 2)
+	{
+		size_t	len = outsize - 1;
+		strncpy (out, "?model?", len);
+		out[len] = '\0';
+	}
 	else
 	{
-		s--;
-		strncpy (out,s2+1, s-s2);
-		out[s-s2] = 0;
+		size_t	len = dot - slash;
+		if (len >= outsize)
+			len = outsize - 1;
+		memcpy (out, slash, len);
+		out[len] = '\0';
 	}
 }
-
 
 /*
 ==================
 COM_DefaultExtension
 ==================
 */
-void COM_DefaultExtension (char *path, const char *extension)
+void COM_DefaultExtension (char *path, const char *extension, size_t len)
 {
-	char    *src;
+	char	*src;
+	size_t	l;
 //
 // if path doesn't have a .EXT, append extension
 // (extension should include the .)
 //
-	src = path + strlen(path) - 1;
+	if (!*path)
+		return;
+	l = strlen(path);
+	src = path + l - 1;
 
 	while (*src != '/' && src != path)
 	{
 		if (*src == '.')
-			return;                 // it has an extension
+			return;		// it has an extension
 		src--;
 	}
 
+	if (l + strlen(extension) >= len)	// buf overrun
+	{
+	//	Sys_Error("bufsize too small");
+		return;
+	}
 	strcat (path, extension);
 }
 
@@ -1663,7 +1703,7 @@ byte *COM_LoadFile (const char *path, int usehunk, unsigned int *path_id)
 		return NULL;
 
 // extract the filename base name for hunk tag
-	COM_FileBase (path, base);
+	COM_FileBase (path, base, sizeof(base));
 
 	switch (usehunk)
 	{

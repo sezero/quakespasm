@@ -292,7 +292,7 @@ model_t *Mod_LoadModel (model_t *mod, qboolean crash)
 //
 // allocate a new model
 //
-	COM_FileBase (mod->name, loadname);
+	COM_FileBase (mod->name, loadname, sizeof(loadname));
 
 	loadmodel = mod;
 
@@ -442,7 +442,7 @@ void Mod_LoadTextures (lump_t *l)
 			{
 				//external textures -- first look in "textures/mapname/" then look in "textures/"
 				mark = Hunk_LowMark();
-				COM_StripExtension (loadmodel->name + 5, mapname);
+				COM_StripExtension (loadmodel->name + 5, mapname, sizeof(mapname));
 				sprintf (filename, "textures/%s/#%s", mapname, tx->name+1); //this also replaces the '*' with a '#'
 				data = Image_LoadImage (filename, &fwidth, &fheight);
 				if (!data)
@@ -478,7 +478,7 @@ void Mod_LoadTextures (lump_t *l)
 			{
 				//external textures -- first look in "textures/mapname/" then look in "textures/"
 				mark = Hunk_LowMark ();
-				COM_StripExtension (loadmodel->name + 5, mapname);
+				COM_StripExtension (loadmodel->name + 5, mapname, sizeof(mapname));
 				sprintf (filename, "textures/%s/%s", mapname, tx->name);
 				data = Image_LoadImage (filename, &fwidth, &fheight);
 				if (!data)
@@ -637,13 +637,13 @@ void Mod_LoadLighting (lump_t *l)
 	int i, mark;
 	byte *in, *out, *data;
 	byte d;
-	char litfilename[1024];
+	char litfilename[MAX_OSPATH];
 	unsigned int path_id;
 
 	loadmodel->lightdata = NULL;
 	// LordHavoc: check for a .lit file
 	strcpy(litfilename, loadmodel->name);
-	COM_StripExtension(litfilename, litfilename);
+	COM_StripExtension(litfilename, litfilename, sizeof(litfilename));
 	strcat(litfilename, ".lit");
 	mark = Hunk_LowMark();
 	data = (byte*) COM_LoadHunkFile (litfilename, &path_id);
@@ -728,7 +728,7 @@ void Mod_LoadEntities (lump_t *l)
 		goto _load_embedded;
 
 	strcpy(entfilename, loadmodel->name);
-	COM_StripExtension(entfilename, entfilename);
+	COM_StripExtension(entfilename, entfilename, sizeof(entfilename));
 	strcat(entfilename, ".ent");
 	Con_DPrintf("trying to load %s\n", entfilename);
 	mark = Hunk_LowMark();

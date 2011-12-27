@@ -178,7 +178,7 @@ void Con_Dump_f (void)
 			return;
 		}
 		sprintf (name, "%s/%s", com_gamedir, Cmd_Argv(1));
-		COM_DefaultExtension (name, ".txt");
+		COM_DefaultExtension (name, ".txt", sizeof(name));
 	}
 	else
 		sprintf (name, "%s/condump.txt", com_gamedir);
