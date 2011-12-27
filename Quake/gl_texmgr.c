@@ -236,7 +236,7 @@ void TexMgr_Imagedump_f (void)
 	//loop through textures
 	for (glt=active_gltextures; glt; glt=glt->next)
 	{
-		Q_strcpy(tempname, glt->name);
+		q_strlcpy (tempname, glt->name, sizeof(tempname));
 		while ( (c = strchr(tempname, ':')) ) *c = '_';
 		while ( (c = strchr(tempname, '/')) ) *c = '_';
 		while ( (c = strchr(tempname, '*')) ) *c = '_';
@@ -1170,13 +1170,13 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int 
 
 	// copy data
 	glt->owner = owner;
-	strncpy (glt->name, name, sizeof(glt->name));
+	q_strlcpy (glt->name, name, sizeof(glt->name));
 	glt->width = width;
 	glt->height = height;
 	glt->flags = flags;
 	glt->shirt = -1;
 	glt->pants = -1;
-	strncpy (glt->source_file, source_file, sizeof(glt->source_file));
+	q_strlcpy (glt->source_file, source_file, sizeof(glt->source_file));
 	glt->source_offset = source_offset;
 	glt->source_format = format;
 	glt->source_width = width;

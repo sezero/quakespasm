@@ -123,11 +123,10 @@ void CFG_ReadCvarOverrides (const char **vars, int num_vars)
 		return;
 
 	buff[0] = '+';
-	buff[sizeof(buff) - 1] = '\0';
 
 	for (i = 0; i < num_vars; i++)
 	{
-		strncpy (&buff[1], vars[i], sizeof(buff) - 2);
+		q_strlcpy (&buff[1], vars[i], sizeof(buff) - 1);
 		j = COM_CheckParm(buff);
 		if (j != 0 && j < com_argc - 1)
 		{

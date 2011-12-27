@@ -337,9 +337,8 @@ void Hunk_Print (qboolean all)
 	hunk_t	*h, *next, *endlow, *starthigh, *endhigh;
 	int		count, sum;
 	int		totalblocks;
-	char	name[9];
+	char	name[HUNKNAME_LEN];
 
-	name[8] = 0;
 	count = 0;
 	sum = 0;
 	totalblocks = 0;
@@ -387,7 +386,7 @@ void Hunk_Print (qboolean all)
 	//
 	// print the single block
 	//
-		memcpy (name, h->name, 8);
+		memcpy (name, h->name, HUNKNAME_LEN);
 		if (all)
 			Con_Printf ("%8p :%8i %8s\n",h, h->size, name);
 
@@ -395,7 +394,7 @@ void Hunk_Print (qboolean all)
 	// print the total
 	//
 		if (next == endlow || next == endhigh ||
-		strncmp (h->name, next->name, 8) )
+		    strncmp (h->name, next->name, HUNKNAME_LEN - 1))
 		{
 			if (!all)
 				Con_Printf ("          :%8i %8s (TOTAL)\n",sum, name);
@@ -451,7 +450,7 @@ void *Hunk_AllocName (int size, const char *name)
 
 	h->size = size;
 	h->sentinal = HUNK_SENTINAL;
-	Q_strncpy (h->name, name, HUNKNAME_LEN - 1);
+	q_strlcpy (h->name, name, HUNKNAME_LEN);
 
 	return (void *)(h+1);
 }
@@ -542,7 +541,7 @@ void *Hunk_HighAllocName (int size, const char *name)
 	memset (h, 0, size);
 	h->size = size;
 	h->sentinal = HUNK_SENTINAL;
-	Q_strncpy (h->name, name, sizeof(h->name)-1);
+	q_strlcpy (h->name, name, HUNKNAME_LEN);
 
 	return (void *)(h+1);
 }
@@ -930,7 +929,7 @@ void *Cache_Alloc (cache_user_t *c, int size, const char *name)
 		cs = Cache_TryAlloc (size, false);
 		if (cs)
 		{
-			strncpy (cs->name, name, CACHENAME_LEN - 1);
+			q_strlcpy (cs->name, name, CACHENAME_LEN);
 			c->data = (void *)(cs+1);
 			cs->user = c;
 			break;

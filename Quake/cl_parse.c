@@ -290,7 +290,7 @@ void CL_ParseServerInfo (void)
 
 // parse signon message
 	str = MSG_ReadString ();
-	strncpy (cl.levelname, str, sizeof(cl.levelname)-1);
+	q_strlcpy (cl.levelname, str, sizeof(cl.levelname));
 
 // seperate the printfs so the server message can have a color
 	Con_Printf ("\n%s\n", Con_Quakebar(40)); //johnfitz
@@ -315,7 +315,7 @@ void CL_ParseServerInfo (void)
 			Con_Printf ("Server sent too many model precaches\n");
 			return;
 		}
-		strcpy (model_precache[nummodels], str);
+		q_strlcpy (model_precache[nummodels], str, MAX_QPATH);
 		Mod_TouchModel (str);
 	}
 
@@ -336,7 +336,7 @@ void CL_ParseServerInfo (void)
 			Con_Printf ("Server sent too many sound precaches\n");
 			return;
 		}
-		strcpy (sound_precache[numsounds], str);
+		q_strlcpy (sound_precache[numsounds], str, MAX_QPATH);
 		S_TouchSound (str);
 	}
 
@@ -1023,7 +1023,7 @@ void CL_ParseServerMessage (void)
 			i = MSG_ReadByte ();
 			if (i >= MAX_LIGHTSTYLES)
 				Sys_Error ("svc_lightstyle > MAX_LIGHTSTYLES");
-			Q_strcpy (cl_lightstyle[i].map,  MSG_ReadString());
+			q_strlcpy (cl_lightstyle[i].map, MSG_ReadString(), MAX_STYLESTRING);
 			cl_lightstyle[i].length = Q_strlen(cl_lightstyle[i].map);
 			//johnfitz -- save extra info
 			if (cl_lightstyle[i].length)
@@ -1056,7 +1056,7 @@ void CL_ParseServerMessage (void)
 			i = MSG_ReadByte ();
 			if (i >= cl.maxclients)
 				Host_Error ("CL_ParseServerMessage: svc_updatename > MAX_SCOREBOARD");
-			strcpy (cl.scores[i].name, MSG_ReadString ());
+			q_strlcpy (cl.scores[i].name, MSG_ReadString(), MAX_SCOREBOARDNAME);
 			break;
 
 		case svc_updatefrags:

@@ -301,7 +301,7 @@ void CL_PlayDemo_f (void)
 //
 // open the demo file
 //
-	strcpy (name, Cmd_Argv(1));
+	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
 	COM_DefaultExtension (name, ".dem", sizeof(name));
 
 	Con_Printf ("Playing demo from %s.\n", name);

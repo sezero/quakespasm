@@ -152,7 +152,7 @@ void Host_Game_f (void)
 			return;
 		}
 
-		strcpy (pakfile, va("%s/%s", host_parms->basedir, Cmd_Argv(1)));
+		q_strlcpy (pakfile, va("%s/%s", host_parms->basedir, Cmd_Argv(1)), sizeof(pakfile));
 		if (!Q_strcasecmp(pakfile, com_gamedir)) //no change
 		{
 			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
@@ -172,7 +172,7 @@ void Host_Game_f (void)
 		if (NumGames(com_searchpaths) > 1 + com_nummissionpacks)
 			KillGameDir(com_searchpaths);
 
-		strcpy (com_gamedir, pakfile);
+		q_strlcpy (com_gamedir, pakfile, sizeof(com_gamedir));
 
 		if (Q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
 		{
@@ -182,7 +182,7 @@ void Host_Game_f (void)
 			else	path_id = 1U;
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 			search->path_id = path_id;
-			strcpy (search->filename, pakfile);
+			q_strlcpy (search->filename, pakfile, sizeof(search->filename));
 			search->next = com_searchpaths;
 			com_searchpaths = search;
 
@@ -242,7 +242,7 @@ void ExtraMaps_Add (const char *name)
 	}
 
 	level = (extralevel_t *) Z_Malloc(sizeof(extralevel_t));
-	strcpy (level->name, name);
+	q_strlcpy (level->name, name, sizeof(level->name));
 
 	// insert each entry in alphabetical order
 	if (extralevels == NULL ||
@@ -378,7 +378,7 @@ void Modlist_Add (const char *name)
 	}
 
 	mod = (mod_t *) Z_Malloc(sizeof(mod_t));
-	strcpy (mod->name, name);
+	q_strlcpy (mod->name, name, sizeof(mod->name));
 
 	//insert each entry in alphabetical order
 	if (modlist == NULL ||
@@ -838,7 +838,7 @@ void Host_Map_f (void)
 	SCR_BeginLoadingPlaque ();
 
 	svs.serverflags = 0;			// haven't completed an episode yet
-	strcpy (name, Cmd_Argv(1));
+	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
 	// remove (any) trailing ".bsp" from mapname S.A.
 	p = strstr(name, ".bsp");
 	if (p && p[4] == '\0')
@@ -849,12 +849,11 @@ void Host_Map_f (void)
 
 	if (cls.state != ca_dedicated)
 	{
-		strcpy (cls.spawnparms, "");
-
+		memset (cls.spawnparms, 0, MAX_MAPSTRING);
 		for (i = 2; i < Cmd_Argc(); i++)
 		{
-			strcat (cls.spawnparms, Cmd_Argv(i));
-			strcat (cls.spawnparms, " ");
+			q_strlcat (cls.spawnparms, Cmd_Argv(i), MAX_MAPSTRING);
+			q_strlcat (cls.spawnparms, " ", MAX_MAPSTRING);
 		}
 
 		Cmd_ExecuteString ("connect local", src_command);
@@ -894,7 +893,7 @@ void Host_Changelevel_f (void)
 		IN_Activate();	// -- S.A.
 	key_dest = key_game;	// remove console or menu
 	SV_SaveSpawnparms ();
-	strcpy (level, Cmd_Argv(1));
+	q_strlcpy (level, Cmd_Argv(1), sizeof(level));
 	SV_SpawnServer (level);
 }
 
@@ -914,7 +913,7 @@ void Host_Restart_f (void)
 
 	if (cmd_source != src_command)
 		return;
-	strcpy (mapname, sv.name);	// must copy out, because it gets cleared
+	q_strlcpy (mapname, sv.name, sizeof(mapname));	// must copy out, because it gets cleared
 								// in sv_spawnserver
 	SV_SpawnServer (mapname);
 }
@@ -950,7 +949,7 @@ void Host_Connect_f (void)
 		CL_StopPlayback ();
 		CL_Disconnect ();
 	}
-	strcpy (name, Cmd_Argv(1));
+	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
 	CL_EstablishConnection (name);
 	Host_Reconnect_f ();
 }
@@ -1257,9 +1256,9 @@ void Host_Name_f (void)
 		return;
 	}
 	if (Cmd_Argc () == 2)
-		Q_strncpy(newName, Cmd_Argv(1), sizeof(newName)-1);
+		q_strlcpy(newName, Cmd_Argv(1), sizeof(newName));
 	else
-		Q_strncpy(newName, Cmd_Args(), sizeof(newName)-1);
+		q_strlcpy(newName, Cmd_Args(), sizeof(newName));
 	newName[15] = 0;	// client_t structure actually says name[32].
 
 	if (cmd_source == src_command)
@@ -2202,7 +2201,7 @@ void Host_Startdemos_f (void)
 	Con_Printf ("%i demo(s) in loop\n", c);
 
 	for (i = 1; i < c + 1; i++)
-		strncpy (cls.demos[i-1], Cmd_Argv(i), sizeof(cls.demos[0])-1);
+		q_strlcpy (cls.demos[i-1], Cmd_Argv(i), sizeof(cls.demos[0]));
 
 	if (!sv.active && cls.demonum != -1 && !cls.demoplayback)
 	{

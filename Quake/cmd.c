@@ -349,11 +349,16 @@ void Cmd_Alias_f (void)
 		c = Cmd_Argc();
 		for (i = 2; i < c; i++)
 		{
-			strcat (cmd, Cmd_Argv(i));
+			q_strlcat (cmd, Cmd_Argv(i), sizeof(cmd));
 			if (i != c - 1)
-				strcat (cmd, " ");
+				q_strlcat (cmd, " ", sizeof(cmd));
 		}
-		strcat (cmd, "\n");
+		if (q_strlcat(cmd, "\n", sizeof(cmd)) >= sizeof(cmd))
+		{
+			Con_Printf("alias value too long!\n");
+			cmd[0] = '\n';	// nullify the string
+			cmd[1] = 0;
+		}
 
 		a->value = Z_Strdup (cmd);
 		break;

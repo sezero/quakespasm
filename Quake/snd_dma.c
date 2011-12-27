@@ -256,7 +256,7 @@ static sfx_t *S_FindName (const char *name)
 		Sys_Error ("S_FindName: out of sfx_t");
 
 	sfx = &known_sfx[i];
-	strcpy (sfx->name, name);
+	q_strlcpy (sfx->name, name, sizeof(sfx->name));
 
 	num_sfx++;
 
@@ -966,13 +966,11 @@ static void S_Play (void)
 	i = 1;
 	while (i < Cmd_Argc())
 	{
+		q_strlcpy(name, Cmd_Argv(i), sizeof(name));
 		if (!Q_strrchr(Cmd_Argv(i), '.'))
 		{
-			Q_strcpy(name, Cmd_Argv(i));
-			Q_strcat(name, ".wav");
+			q_strlcat(name, ".wav", sizeof(name));
 		}
-		else
-			Q_strcpy(name, Cmd_Argv(i));
 		sfx = S_PrecacheSound(name);
 		S_StartSound(hash++, 0, sfx, listener_origin, 1.0, 1.0);
 		i++;
@@ -990,13 +988,11 @@ static void S_PlayVol (void)
 	i = 1;
 	while (i < Cmd_Argc())
 	{
+		q_strlcpy(name, Cmd_Argv(i), sizeof(name));
 		if (!Q_strrchr(Cmd_Argv(i), '.'))
 		{
-			Q_strcpy(name, Cmd_Argv(i));
-			Q_strcat(name, ".wav");
+			q_strlcat(name, ".wav", sizeof(name));
 		}
-		else
-			Q_strcpy(name, Cmd_Argv(i));
 		sfx = S_PrecacheSound(name);
 		vol = Q_atof(Cmd_Argv(i + 1));
 		S_StartSound(hash++, 0, sfx, listener_origin, vol, 1.0);

@@ -920,10 +920,7 @@ void COM_StripExtension (const char *in, char *out, size_t outsize)
 		return;
 	}
 	if (in != out)	/* copy when not in-place editing */
-	{
-		strncpy (out, in, outsize - 1);
-		out[outsize - 1] = '\0';
-	}
+		q_strlcpy (out, in, outsize);
 	length = (int)strlen(out) - 1;
 	while (length > 0 && out[length] != '.')
 	{
@@ -984,11 +981,7 @@ void COM_FileBase (const char *in, char *out, size_t outsize)
 		dot = s;
 
 	if (dot - slash < 2)
-	{
-		size_t	len = outsize - 1;
-		strncpy (out, "?model?", len);
-		out[len] = '\0';
-	}
+		q_strlcpy (out, "?model?", outsize);
 	else
 	{
 		size_t	len = dot - slash;
@@ -1024,12 +1017,7 @@ void COM_DefaultExtension (char *path, const char *extension, size_t len)
 		src--;
 	}
 
-	if (l + strlen(extension) >= len)	// buf overrun
-	{
-	//	Sys_Error("bufsize too small");
-		return;
-	}
-	strcat (path, extension);
+	q_strlcat(path, extension, len);
 }
 
 
@@ -1838,7 +1826,7 @@ pack_t *COM_LoadPackFile (const char *packfile)
 	// parse the directory
 	for (i = 0; i < numpackfiles ; i++)
 	{
-		strcpy (newfiles[i].name, info[i].name);
+		q_strlcpy (newfiles[i].name, info[i].name, sizeof(newfiles[i].name));
 		newfiles[i].filepos = LittleLong(info[i].filepos);
 		newfiles[i].filelen = LittleLong(info[i].filelen);
 	}
@@ -1848,7 +1836,7 @@ pack_t *COM_LoadPackFile (const char *packfile)
 	pack = (pack_t *) Z_Malloc (sizeof (pack_t));
 	//johnfitz
 
-	strcpy (pack->filename, packfile);
+	q_strlcpy (pack->filename, packfile, sizeof(pack->filename));
 	pack->handle = packhandle;
 	pack->numfiles = numpackfiles;
 	pack->files = newfiles;
@@ -1870,7 +1858,7 @@ void COM_AddGameDirectory (const char *dir)
 	pack_t *pak;
 	char pakfile[MAX_OSPATH];
 
-	strcpy (com_gamedir, dir);
+	q_strlcpy (com_gamedir, dir, sizeof(com_gamedir));
 
 	// assign a path_id to this game directory
 	if (com_searchpaths)
@@ -1880,7 +1868,7 @@ void COM_AddGameDirectory (const char *dir)
 	// add the directory to the search path
 	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 	search->path_id = path_id;
-	strcpy (search->filename, dir);
+	q_strlcpy (search->filename, dir, sizeof(search->filename));
 	search->next = com_searchpaths;
 	com_searchpaths = search;
 
@@ -1935,9 +1923,9 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
-		strcpy (com_basedir, com_argv[i + 1]);
+		q_strlcpy (com_basedir, com_argv[i + 1], sizeof(com_basedir));
 	else
-		strcpy (com_basedir, host_parms->basedir);
+		q_strlcpy (com_basedir, host_parms->basedir, sizeof(com_basedir));
 
 	j = strlen (com_basedir);
 	if (j > 0)
@@ -1948,7 +1936,7 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (va("%s/"GAMENAME, com_basedir));
-	strcpy (com_gamedir, va("%s/"GAMENAME, com_basedir));
+	q_strlcpy (com_gamedir, va("%s/"GAMENAME, com_basedir), sizeof(com_gamedir));
 
 #if defined(USE_QS_CONBACK)
 	if (!fitzmode)

@@ -219,7 +219,7 @@ model_t *Mod_FindName (const char *name)
 	{
 		if (mod_numknown == MAX_MOD_KNOWN)
 			Sys_Error ("mod_numknown == MAX_MOD_KNOWN");
-		strcpy (mod->name, name);
+		q_strlcpy (mod->name, name, MAX_QPATH);
 		mod->needload = true;
 		mod_numknown++;
 	}
@@ -454,7 +454,7 @@ void Mod_LoadTextures (lump_t *l)
 				//now load whatever we found
 				if (data) //load external image
 				{
-					strcpy (texturename, filename);
+					q_strlcpy (texturename, filename, sizeof(texturename));
 					tx->gltexture = TexMgr_LoadImage (loadmodel, texturename, fwidth, fheight,
 						SRC_RGBA, data, filename, 0, TEXPREF_NONE);
 				}
@@ -642,9 +642,9 @@ void Mod_LoadLighting (lump_t *l)
 
 	loadmodel->lightdata = NULL;
 	// LordHavoc: check for a .lit file
-	strcpy(litfilename, loadmodel->name);
+	q_strlcpy(litfilename, loadmodel->name, sizeof(litfilename));
 	COM_StripExtension(litfilename, litfilename, sizeof(litfilename));
-	strcat(litfilename, ".lit");
+	q_strlcat(litfilename, ".lit", sizeof(litfilename));
 	mark = Hunk_LowMark();
 	data = (byte*) COM_LoadHunkFile (litfilename, &path_id);
 	if (data)
@@ -727,9 +727,9 @@ void Mod_LoadEntities (lump_t *l)
 	if (! external_ents.value)
 		goto _load_embedded;
 
-	strcpy(entfilename, loadmodel->name);
+	q_strlcpy(entfilename, loadmodel->name, sizeof(entfilename));
 	COM_StripExtension(entfilename, entfilename, sizeof(entfilename));
-	strcat(entfilename, ".ent");
+	q_strlcat(entfilename, ".ent", sizeof(entfilename));
 	Con_DPrintf("trying to load %s\n", entfilename);
 	mark = Hunk_LowMark();
 	ents = (char *) COM_LoadHunkFile (entfilename, &path_id);

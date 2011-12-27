@@ -502,7 +502,7 @@ static const char *Strip_Port (const char *host)
 
 	if (!host || !*host)
 		return host;
-	strcpy (noport, host);
+	q_strlcpy (noport, host, sizeof(noport));
 	if ((p = Q_strrchr(noport, ':')) == NULL)
 		return host;
 	*p++ = '\0';
@@ -1373,8 +1373,7 @@ static qsocket_t *_Datagram_Connect (const char *host)
 	{
 		reason = MSG_ReadString();
 		Con_Printf("%s\n", reason);
-		Q_strncpy(m_return_reason, reason, 31);
-		m_return_reason[31] = 0;
+		q_strlcpy(m_return_reason, reason, sizeof(m_return_reason));
 		goto ErrorReturn;
 	}
 
