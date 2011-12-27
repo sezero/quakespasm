@@ -138,6 +138,9 @@ int Q_strncasecmp (const char *s1, const char *s2, int n);
 int	Q_atoi (const char *str);
 float Q_atof (const char *str);
 
+
+#include "strl_fn.h"
+
 /* snprintf, vsnprintf : always use our versions. */
 /* platform dependant (v)snprintf function names: */
 #if defined(_WIN32)
