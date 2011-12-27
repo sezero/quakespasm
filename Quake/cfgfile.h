@@ -27,21 +27,21 @@
 #define __CFGFILE_H
 
 int CFG_OpenConfig (const char *cfg_name);
-// opens the given config file and keeps it open
-// until CFG_CloseConfig is called
+// opens the given config file. only one open config file is
+// kept: previosly opened one, if any, will be closed.
 
 void CFG_CloseConfig (void);
-// closes the currently open config file
+// closes the currently open config file.
 
 void CFG_ReadCvars (const char **vars, int num_vars);
-// reads the values of cvars in the given list
-// from the currently open config file
+// reads the values of cvars in the given list from the opened
+// config file.
 
 void CFG_ReadCvarOverrides (const char **vars, int num_vars);
-// reads the "+" command line override values of cvars
-// in the given list.  doesn't care about the config file.
-// call this after CFG_ReadCvars() and before locking your
-// cvars.
+// convenience function, reading the "+" command line override
+// values of cvars in the given list. doesn't do anything with
+// the config file. call this after CFG_ReadCvars() and before
+// locking your cvars.
 
 #endif	/* __CFGFILE_H */
 
