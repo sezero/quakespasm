@@ -63,8 +63,8 @@ void Cvar_List_f (void)
 			continue;
 		}
 		Con_SafePrintf ("%s%s %s \"%s\"\n",
-			cvar->archive ? "*" : " ",
-			cvar->server ? "s" : " ",
+			(cvar->flags & CVAR_ARCHIVE) ? "*" : " ",
+			(cvar->flags & CVAR_NOTIFY)  ? "s" : " ",
 			cvar->name,
 			cvar->string);
 		count++;
@@ -321,7 +321,6 @@ Cvar_Set
 void Cvar_Set (const char *var_name, const char *value)
 {
 	cvar_t	*var;
-	qboolean changed;
 
 	var = Cvar_FindVar (var_name);
 	if (!var)
@@ -330,7 +329,12 @@ void Cvar_Set (const char *var_name, const char *value)
 		return;
 	}
 
-	changed = Q_strcmp(var->string, value);
+	if (var->flags & (CVAR_ROM|CVAR_LOCKED))
+		return;	// cvar is marked read-only or locked temporarily
+
+	if (!strcmp(var->string, value))
+		return;	// no change
+	var->flags |= CVAR_CHANGED;
 
 	Z_Free ((void *)var->string);	// free the old value string
 
@@ -345,16 +349,8 @@ void Cvar_Set (const char *var_name, const char *value)
 	}
 	//johnfitz
 
-	if (var->server && changed)
-	{
-		if (sv.active)
-			SV_BroadcastPrintf ("\"%s\" changed to \"%s\"\n", var->name, var->string);
-	}
-
-	//johnfitz
-	if(var->callback && changed)
+	if(var->callback)
 		var->callback(var);
-	//johnfitz
 }
 
 /*
@@ -372,12 +368,44 @@ void Cvar_SetValue (const char *var_name, const float value)
 
 /*
 ============
+Cvar_SetROM
+============
+*/
+void Cvar_SetROM (const char *var_name, const char *value)
+{
+	cvar_t *var = Cvar_FindVar (var_name);
+	if (var)
+	{
+		var->flags &= ~CVAR_ROM;
+		Cvar_Set (var_name, value);
+		var->flags |= CVAR_ROM;
+	}
+}
+
+/*
+============
+Cvar_SetValueROM
+============
+*/
+void Cvar_SetValueROM (const char *var_name, const float value)
+{
+	cvar_t *var = Cvar_FindVar (var_name);
+	if (var)
+	{
+		var->flags &= ~CVAR_ROM;
+		Cvar_SetValue (var_name, value);
+		var->flags |= CVAR_ROM;
+	}
+}
+
+/*
+============
 Cvar_RegisterVariable
 
 Adds a freestanding variable to the variable list.
 ============
 */
-void Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function)
+void Cvar_RegisterVariable (cvar_t *variable)
 {
 	cvar_t	*cursor,*prev; //johnfitz -- sorted list insert
 
@@ -425,7 +453,23 @@ void Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function)
 	}
 	//johnfitz
 
-	variable->callback = function; //johnfitz
+	if (!(variable->flags & CVAR_CALLBACK))
+		variable->callback = NULL;
+}
+
+/*
+============
+Cvar_SetCallback
+
+Set a callback function to the var
+============
+*/
+void Cvar_SetCallback (cvar_t *var, cvarcallback_t func)
+{
+	var->callback = func;
+	if (func)
+		var->flags |= CVAR_CALLBACK;
+	else	var->flags &= ~CVAR_CALLBACK;
 }
 
 /*
@@ -469,7 +513,7 @@ void Cvar_WriteVariables (FILE *f)
 	cvar_t	*var;
 
 	for (var = cvar_vars ; var ; var = var->next)
-		if (var->archive)
+		if (var->flags & CVAR_ARCHIVE)
 			fprintf (f, "%s \"%s\"\n", var->name, var->string);
 }
 

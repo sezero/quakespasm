@@ -28,14 +28,12 @@ static char     argvdummy[] = " ";
 
 int             safemode;
 
-cvar_t  registered = {"registered","0"};
-cvar_t  cmdline = {"cmdline","", false, true};
+cvar_t  registered = {"registered","0",CVAR_ROM};
+cvar_t  cmdline = {"cmdline","",CVAR_ROM|CVAR_SERVERINFO}; /* sending cmdline upon CCREQ_RULE_INFO is evil... */
 
 qboolean        com_modified;   // set true if using non-id files
 
 int com_nummissionpacks; //johnfitz
-
-int             static_registered = 1;  // only for startup check, then set
 
 qboolean		fitzmode;
 
@@ -1155,7 +1153,6 @@ void COM_CheckRegistered (void)
 	int                     i;
 
 	COM_OpenFile("gfx/pop.lmp", &h, NULL);
-	static_registered = 0;
 
 	if (h == -1)
 	{
@@ -1175,9 +1172,8 @@ void COM_CheckRegistered (void)
 		if (pop[i] != (unsigned short)BigShort (check[i]))
 			Sys_Error ("Corrupted data file.");
 
-	Cvar_Set ("cmdline", com_cmdline+1); //johnfitz -- eliminate leading space
-	Cvar_Set ("registered", "1");
-	static_registered = 1;
+	Cvar_SetROM ("cmdline", com_cmdline+1); //johnfitz -- eliminate leading space
+	Cvar_SetROM ("registered", "1");
 	Con_Printf ("Playing registered version.\n");
 }
 
@@ -1300,8 +1296,8 @@ void COM_Init (void)
 	if (COM_CheckParm("-fitz"))
 		fitzmode = true;
 
-	Cvar_RegisterVariable (&registered, NULL);
-	Cvar_RegisterVariable (&cmdline, NULL);
+	Cvar_RegisterVariable (&registered);
+	Cvar_RegisterVariable (&cmdline);
 	Cmd_AddCommand ("path", COM_Path_f);
 	COM_InitFilesystem ();
 	COM_CheckRegistered ();
@@ -1569,7 +1565,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 		}
 		else	/* check a file in the directory tree */
 		{
-			if (!static_registered)
+			if (!registered.value)
 			{ /* if not a registered version, don't ever go beyond base */
 				if ( strchr (filename, '/') || strchr (filename,'\\'))
 					continue;

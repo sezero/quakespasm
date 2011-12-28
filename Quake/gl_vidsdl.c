@@ -135,16 +135,16 @@ void GL_SetupState (void); //johnfitz
 //====================================
 
 //johnfitz -- new cvars
-cvar_t		vid_fullscreen = {"vid_fullscreen", "0", true};	// QuakeSpasm, was "1"
-cvar_t		vid_width = {"vid_width", "800", true};		// QuakeSpasm, was 640
-cvar_t		vid_height = {"vid_height", "600", true};	// QuakeSpasm, was 480
-cvar_t		vid_bpp = {"vid_bpp", "16", true};
-//cvar_t		vid_refreshrate = {"vid_refreshrate", "60", true};
-cvar_t		vid_vsync = {"vid_vsync", "0", true};
+cvar_t		vid_fullscreen = {"vid_fullscreen", "0", CVAR_ARCHIVE};	// QuakeSpasm, was "1"
+cvar_t		vid_width = {"vid_width", "800", CVAR_ARCHIVE};		// QuakeSpasm, was 640
+cvar_t		vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, was 480
+cvar_t		vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
+//cvar_t		vid_refreshrate = {"vid_refreshrate", "60", CVAR_ARCHIVE};
+cvar_t		vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
 //johnfitz
 
-cvar_t		_windowed_mouse = {"_windowed_mouse","1", true};
-cvar_t		vid_gamma = {"gamma", "1", true}; //johnfitz -- moved here from view.c
+cvar_t		_windowed_mouse = {"_windowed_mouse","1", CVAR_ARCHIVE};
+cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
 
 //==========================================================================
 //
@@ -234,7 +234,8 @@ void VID_Gamma_Init (void)
 	if (SDL_GetGammaRamp (&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) != -1)
 		vid_gammaworks = true;
 
-	Cvar_RegisterVariable (&vid_gamma, VID_Gamma_f);
+	Cvar_RegisterVariable (&vid_gamma);
+	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
 }
 
 /*
@@ -758,7 +759,8 @@ void GL_Init (void)
 
 	Cmd_AddCommand ("gl_info", GL_Info_f); //johnfitz
 
-	Cvar_RegisterVariable (&vid_vsync, VID_Changed_f); //johnfitz
+	Cvar_RegisterVariable (&vid_vsync); //johnfitz
+	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
 
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
 		fullsbardraw = true;
@@ -1149,12 +1151,16 @@ void	VID_Init (void)
 					 "vid_bpp" };
 #define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
-	Cvar_RegisterVariable (&vid_fullscreen, VID_Changed_f); //johnfitz
-	Cvar_RegisterVariable (&vid_width, VID_Changed_f); //johnfitz
-	Cvar_RegisterVariable (&vid_height, VID_Changed_f); //johnfitz
-	Cvar_RegisterVariable (&vid_bpp, VID_Changed_f); //johnfitz
-	//Cvar_RegisterVariable (&vid_refreshrate, NULL); //johnfitz
-	Cvar_RegisterVariable (&_windowed_mouse, NULL);
+	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
+	Cvar_RegisterVariable (&vid_width); //johnfitz
+	Cvar_RegisterVariable (&vid_height); //johnfitz
+	Cvar_RegisterVariable (&vid_bpp); //johnfitz
+	Cvar_SetCallback (&vid_fullscreen, VID_Changed_f);
+	Cvar_SetCallback (&vid_width, VID_Changed_f);
+	Cvar_SetCallback (&vid_height, VID_Changed_f);
+	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
+	//Cvar_RegisterVariable (&vid_refreshrate); //johnfitz
+	Cvar_RegisterVariable (&_windowed_mouse);
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz

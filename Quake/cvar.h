@@ -58,29 +58,49 @@ Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
 */
 
+#define	CVAR_NONE		0
+#define	CVAR_ARCHIVE		(1U << 0)	// if set, causes it to be saved to config
+#define	CVAR_NOTIFY		(1U << 1)	// changes will be broadcasted to all players (H2)
+#define	CVAR_SERVERINFO		(1U << 2)	// added to serverinfo will be sent to clients (net_dgrm.c, qwsv)
+#define	CVAR_USERINFO		(1U << 3)	// added to userinfo, will be sent to server (qwcl)
+#define	CVAR_CHANGED		(1U << 4)
+#define	CVAR_ROM		(1U << 6)
+#define	CVAR_LOCKED		(1U << 8)	// locked temporarily
+#define	CVAR_REGISTERED		(1U << 10)	// the var is added to the list of variables
+#define	CVAR_CALLBACK		(1U << 16)	// var has a callback
+
+
 typedef void (*cvarcallback_t) (struct cvar_s *);
 
 typedef struct cvar_s
 {
 	const char	*name;
 	const char	*string;
-	qboolean archive;		// set to true to cause it to be saved to vars.rc
-	qboolean server;		// notifies players when changed
-	float	value;
-	struct cvar_s *next;
+	unsigned int	flags;
+	float		value;
+	struct cvar_s	*next;
 	const char	*default_string; //johnfitz -- remember defaults for reset function
-	cvarcallback_t callback; //johnfitz
+	cvarcallback_t	callback; //johnfitz
 } cvar_t;
 
-void 	Cvar_RegisterVariable (cvar_t *variable, cvarcallback_t function); //johnfitz -- cvar callback
+void Cvar_SetCallback (cvar_t *var, cvarcallback_t func);
+// set a callback function to the var
+
+void	Cvar_RegisterVariable (cvar_t *variable);
 // registers a cvar that allready has the name, string, and optionally the
 // archive elements set.
 
-void 	Cvar_Set (const char *var_name, const char *value);
+void	Cvar_Set (const char *var_name, const char *value);
 // equivelant to "<name> <variable>" typed at the console
 
 void	Cvar_SetValue (const char *var_name, const float value);
 // expands value to a string and calls Cvar_Set
+
+void	Cvar_SetROM (const char *var_name, const char *value);
+// sets a CVAR_ROM variable from within the engine
+
+void	Cvar_SetValueROM (const char *var_name, const float value);
+// sets a CVAR_ROM variable from within the engine
 
 float	Cvar_VariableValue (const char *var_name);
 // returns 0 if not defined or non numeric
@@ -97,7 +117,7 @@ qboolean Cvar_Command (void);
 // command.  Returns true if the command was a variable reference that
 // was handled. (print or change)
 
-void 	Cvar_WriteVariables (FILE *f);
+void	Cvar_WriteVariables (FILE *f);
 // Writes lines containing "set variable value" for all variables
 // with the archive flag set to true.
 

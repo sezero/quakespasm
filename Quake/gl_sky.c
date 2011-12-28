@@ -40,10 +40,10 @@ gltexture_t	*skybox_textures[6];
 gltexture_t	*solidskytexture, *alphaskytexture;
 
 extern cvar_t gl_farclip;
-cvar_t r_fastsky = {"r_fastsky", "0"};
-cvar_t r_sky_quality = {"r_sky_quality", "12"};
-cvar_t r_skyalpha = {"r_skyalpha", "1"};
-cvar_t r_skyfog = {"r_skyfog","0.5"};
+cvar_t r_fastsky = {"r_fastsky", "0", CVAR_NONE};
+cvar_t r_sky_quality = {"r_sky_quality", "12", CVAR_NONE};
+cvar_t r_skyalpha = {"r_skyalpha", "1", CVAR_NONE};
+cvar_t r_skyfog = {"r_skyfog","0.5",CVAR_NONE};
 
 int		skytexorder[6] = {0,2,1,3,4,5}; //for skybox
 
@@ -295,10 +295,10 @@ void Sky_Init (void)
 {
 	int		i;
 
-	Cvar_RegisterVariable (&r_fastsky, NULL);
-	Cvar_RegisterVariable (&r_sky_quality, NULL);
-	Cvar_RegisterVariable (&r_skyalpha, NULL);
-	Cvar_RegisterVariable (&r_skyfog, NULL);
+	Cvar_RegisterVariable (&r_fastsky);
+	Cvar_RegisterVariable (&r_sky_quality);
+	Cvar_RegisterVariable (&r_skyalpha);
+	Cvar_RegisterVariable (&r_skyfog);
 
 	Cmd_AddCommand ("sky",Sky_SkyCommand_f);
 

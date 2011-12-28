@@ -25,9 +25,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern qboolean	gl_anisotropy_able;
 
-cvar_t		gl_texture_anisotropy = {"gl_texture_anisotropy", "1", true};
-cvar_t		gl_max_size = {"gl_max_size", "0"};
-cvar_t		gl_picmip = {"gl_picmip", "0"};
+cvar_t		gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
+cvar_t		gl_max_size = {"gl_max_size", "0", CVAR_NONE};
+cvar_t		gl_picmip = {"gl_picmip", "0", CVAR_NONE};
 GLint			gl_hardware_maxsize;
 const int	gl_solid_format = 3;
 const int	gl_alpha_format = 4;
@@ -580,9 +580,10 @@ void TexMgr_Init (void)
 	// palette
 	TexMgr_LoadPalette ();
 
-	Cvar_RegisterVariable (&gl_max_size, NULL);
-	Cvar_RegisterVariable (&gl_picmip, NULL);
-	Cvar_RegisterVariable (&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
+	Cvar_RegisterVariable (&gl_max_size);
+	Cvar_RegisterVariable (&gl_picmip);
+	Cvar_RegisterVariable (&gl_texture_anisotropy);
+	Cvar_SetCallback(&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
 	Cmd_AddCommand ("gl_texturemode", &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
 	Cmd_AddCommand ("imagelist", &TexMgr_Imagelist_f);

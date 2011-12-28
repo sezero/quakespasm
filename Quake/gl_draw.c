@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 //extern unsigned char d_15to8table[65536]; //johnfitz -- never used
 
-cvar_t		scr_conalpha = {"scr_conalpha", "0.5",true}; //johnfitz
+cvar_t		scr_conalpha = {"scr_conalpha", "0.5", CVAR_ARCHIVE}; //johnfitz
 
 qpic_t		*draw_disc;
 qpic_t		*draw_backtile;
@@ -458,7 +458,7 @@ Draw_Init -- johnfitz -- rewritten
 */
 void Draw_Init (void)
 {
-	Cvar_RegisterVariable (&scr_conalpha, NULL);
+	Cvar_RegisterVariable (&scr_conalpha);
 
 	// clear scrap and allocate gltextures
 	memset(&scrap_allocated, 0, sizeof(scrap_allocated));

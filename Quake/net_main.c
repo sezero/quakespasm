@@ -61,8 +61,8 @@ int		messagesReceived		= 0;
 int		unreliableMessagesSent		= 0;
 int		unreliableMessagesReceived	= 0;
 
-static	cvar_t	net_messagetimeout = {"net_messagetimeout","300"};
-cvar_t	hostname = {"hostname", "UNNAMED"};
+static	cvar_t	net_messagetimeout = {"net_messagetimeout","300",CVAR_NONE};
+cvar_t	hostname = {"hostname", "UNNAMED", CVAR_NONE};
 
 // these two macros are to make the code more readable
 #define sfunc	net_drivers[sock->driver]
@@ -733,8 +733,8 @@ void NET_Init (void)
 	// allocate space for network message buffer
 	SZ_Alloc (&net_message, NET_MAXMESSAGE);
 
-	Cvar_RegisterVariable (&net_messagetimeout, NULL);
-	Cvar_RegisterVariable (&hostname, NULL);
+	Cvar_RegisterVariable (&net_messagetimeout);
+	Cvar_RegisterVariable (&hostname);
 
 	Cmd_AddCommand ("slist", NET_Slist_f);
 	Cmd_AddCommand ("listen", NET_Listen_f);

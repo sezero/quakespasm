@@ -34,7 +34,7 @@ void Mod_LoadBrushModel (model_t *mod, void *buffer);
 void Mod_LoadAliasModel (model_t *mod, void *buffer);
 model_t *Mod_LoadModel (model_t *mod, qboolean crash);
 
-cvar_t	external_ents = {"external_ents", "1", true};
+cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
 
 byte	mod_novis[MAX_MAP_LEAFS/8];
 
@@ -52,8 +52,8 @@ Mod_Init
 */
 void Mod_Init (void)
 {
-	Cvar_RegisterVariable (&gl_subdivide_size, NULL);
-	Cvar_RegisterVariable (&external_ents, NULL);
+	Cvar_RegisterVariable (&gl_subdivide_size);
+	Cvar_RegisterVariable (&external_ents);
 
 	memset (mod_novis, 0xff, sizeof(mod_novis));
 

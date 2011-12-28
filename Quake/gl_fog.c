@@ -339,7 +339,7 @@ void Fog_StopAdditive (void)
 //
 //==============================================================================
 
-cvar_t r_vfog = {"r_vfog", "1"};
+cvar_t r_vfog = {"r_vfog", "1", CVAR_NONE};
 
 void Fog_DrawVFog (void){}
 void Fog_MarkModels (void){}
@@ -374,7 +374,7 @@ void Fog_Init (void)
 {
 	Cmd_AddCommand ("fog",Fog_FogCommand_f);
 
-	//Cvar_RegisterVariable (&r_vfog, NULL);
+	//Cvar_RegisterVariable (&r_vfog);
 
 	//set up global fog
 	fog_density = 0.0;

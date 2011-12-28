@@ -57,31 +57,31 @@ jmp_buf 	host_abortserver;
 
 byte		*host_colormap;
 
-cvar_t	host_framerate = {"host_framerate","0"};	// set for slow motion
-cvar_t	host_speeds = {"host_speeds","0"};			// set for running times
-cvar_t	host_maxfps = {"host_maxfps", "72", true}; //johnfitz
-cvar_t	host_timescale = {"host_timescale", "0"}; //johnfitz
-cvar_t	max_edicts = {"max_edicts", STR(DEF_EDICTS), true}; //johnfitz
+cvar_t	host_framerate = {"host_framerate","0",CVAR_NONE};	// set for slow motion
+cvar_t	host_speeds = {"host_speeds","0",CVAR_NONE};			// set for running times
+cvar_t	host_maxfps = {"host_maxfps", "72", CVAR_ARCHIVE}; //johnfitz
+cvar_t	host_timescale = {"host_timescale", "0", CVAR_NONE}; //johnfitz
+cvar_t	max_edicts = {"max_edicts", STR(DEF_EDICTS), CVAR_ARCHIVE}; //johnfitz
 
-cvar_t	sys_ticrate = {"sys_ticrate","0.05"}; // dedicated server
-cvar_t	serverprofile = {"serverprofile","0"};
+cvar_t	sys_ticrate = {"sys_ticrate","0.05",CVAR_NONE}; // dedicated server
+cvar_t	serverprofile = {"serverprofile","0",CVAR_NONE};
 
-cvar_t	fraglimit = {"fraglimit","0",false,true};
-cvar_t	timelimit = {"timelimit","0",false,true};
-cvar_t	teamplay = {"teamplay","0",false,true};
-cvar_t	samelevel = {"samelevel","0"};
-cvar_t	noexit = {"noexit","0",false,true};
-cvar_t	skill = {"skill","1"};			// 0 - 3
-cvar_t	deathmatch = {"deathmatch","0"};	// 0, 1, or 2
-cvar_t	coop = {"coop","0"};			// 0 or 1
+cvar_t	fraglimit = {"fraglimit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
+cvar_t	timelimit = {"timelimit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
+cvar_t	teamplay = {"teamplay","0",CVAR_NOTIFY|CVAR_SERVERINFO};
+cvar_t	samelevel = {"samelevel","0",CVAR_NONE};
+cvar_t	noexit = {"noexit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
+cvar_t	skill = {"skill","1",CVAR_NONE};			// 0 - 3
+cvar_t	deathmatch = {"deathmatch","0",CVAR_NONE};	// 0, 1, or 2
+cvar_t	coop = {"coop","0",CVAR_NONE};			// 0 or 1
 
-cvar_t	pausable = {"pausable","1"};
+cvar_t	pausable = {"pausable","1",CVAR_NONE};
 
-cvar_t	developer = {"developer","0"};
+cvar_t	developer = {"developer","0",CVAR_NONE};
 
-cvar_t	temp1 = {"temp1","0"};
+cvar_t	temp1 = {"temp1","0",CVAR_NONE};
 
-cvar_t devstats = {"devstats","0"}; //johnfitz -- track developer statistics that vary every frame
+cvar_t devstats = {"devstats","0",CVAR_NONE}; //johnfitz -- track developer statistics that vary every frame
 
 devstats_t dev_stats, dev_peakstats;
 overflowtimes_t dev_overflows; //this stores the last time overflow messages were displayed, not the last time overflows occured
@@ -231,6 +231,13 @@ void Host_Version_f (void)
 	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
 }
 
+/* cvar callback functions : */
+void Host_Callback_Notify (cvar_t *var)
+{
+	if (sv.active)
+		SV_BroadcastPrintf ("\"%s\" changed to \"%s\"\n", var->name, var->string);
+}
+
 /*
 =======================
 Host_InitLocal
@@ -242,31 +249,36 @@ void Host_InitLocal (void)
 
 	Host_InitCommands ();
 
-	Cvar_RegisterVariable (&host_framerate, NULL);
-	Cvar_RegisterVariable (&host_speeds, NULL);
-	Cvar_RegisterVariable (&host_maxfps, NULL); //johnfitz
-	Cvar_RegisterVariable (&host_timescale, NULL); //johnfitz
+	Cvar_RegisterVariable (&host_framerate);
+	Cvar_RegisterVariable (&host_speeds);
+	Cvar_RegisterVariable (&host_maxfps); //johnfitz
+	Cvar_RegisterVariable (&host_timescale); //johnfitz
 
-	Cvar_RegisterVariable (&max_edicts, Max_Edicts_f); //johnfitz
-	Cvar_RegisterVariable (&devstats, NULL); //johnfitz
+	Cvar_RegisterVariable (&max_edicts); //johnfitz
+	Cvar_SetCallback (&max_edicts, Max_Edicts_f);
+	Cvar_RegisterVariable (&devstats); //johnfitz
 
-	Cvar_RegisterVariable (&sys_ticrate, NULL);
-	Cvar_RegisterVariable (&sys_throttle, NULL);
-	Cvar_RegisterVariable (&serverprofile, NULL);
+	Cvar_RegisterVariable (&sys_ticrate);
+	Cvar_RegisterVariable (&sys_throttle);
+	Cvar_RegisterVariable (&serverprofile);
 
-	Cvar_RegisterVariable (&fraglimit, NULL);
-	Cvar_RegisterVariable (&timelimit, NULL);
-	Cvar_RegisterVariable (&teamplay, NULL);
-	Cvar_RegisterVariable (&samelevel, NULL);
-	Cvar_RegisterVariable (&noexit, NULL);
-	Cvar_RegisterVariable (&skill, NULL);
-	Cvar_RegisterVariable (&developer, NULL);
-	Cvar_RegisterVariable (&coop, NULL);
-	Cvar_RegisterVariable (&deathmatch, NULL);
+	Cvar_RegisterVariable (&fraglimit);
+	Cvar_RegisterVariable (&timelimit);
+	Cvar_RegisterVariable (&teamplay);
+	Cvar_SetCallback (&fraglimit, Host_Callback_Notify);
+	Cvar_SetCallback (&timelimit, Host_Callback_Notify);
+	Cvar_SetCallback (&teamplay, Host_Callback_Notify);
+	Cvar_RegisterVariable (&samelevel);
+	Cvar_RegisterVariable (&noexit);
+	Cvar_SetCallback (&noexit, Host_Callback_Notify);
+	Cvar_RegisterVariable (&skill);
+	Cvar_RegisterVariable (&developer);
+	Cvar_RegisterVariable (&coop);
+	Cvar_RegisterVariable (&deathmatch);
 
-	Cvar_RegisterVariable (&pausable, NULL);
+	Cvar_RegisterVariable (&pausable);
 
-	Cvar_RegisterVariable (&temp1, NULL);
+	Cvar_RegisterVariable (&temp1);
 
 	Host_FindMaxClients ();
 

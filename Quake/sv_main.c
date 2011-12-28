@@ -89,18 +89,21 @@ void SV_Init (void)
 	extern	cvar_t	sv_aim;
 	extern	cvar_t	sv_altnoclip; //johnfitz
 
-	Cvar_RegisterVariable (&sv_maxvelocity, NULL);
-	Cvar_RegisterVariable (&sv_gravity, NULL);
-	Cvar_RegisterVariable (&sv_friction, NULL);
-	Cvar_RegisterVariable (&sv_edgefriction, NULL);
-	Cvar_RegisterVariable (&sv_stopspeed, NULL);
-	Cvar_RegisterVariable (&sv_maxspeed, NULL);
-	Cvar_RegisterVariable (&sv_accelerate, NULL);
-	Cvar_RegisterVariable (&sv_idealpitchscale, NULL);
-	Cvar_RegisterVariable (&sv_aim, NULL);
-	Cvar_RegisterVariable (&sv_nostep, NULL);
-	Cvar_RegisterVariable (&sv_freezenonclients, NULL);
-	Cvar_RegisterVariable (&sv_altnoclip, NULL); //johnfitz
+	Cvar_RegisterVariable (&sv_maxvelocity);
+	Cvar_RegisterVariable (&sv_gravity);
+	Cvar_RegisterVariable (&sv_friction);
+	Cvar_SetCallback (&sv_gravity, Host_Callback_Notify);
+	Cvar_SetCallback (&sv_friction, Host_Callback_Notify);
+	Cvar_RegisterVariable (&sv_edgefriction);
+	Cvar_RegisterVariable (&sv_stopspeed);
+	Cvar_RegisterVariable (&sv_maxspeed);
+	Cvar_SetCallback (&sv_maxspeed, Host_Callback_Notify);
+	Cvar_RegisterVariable (&sv_accelerate);
+	Cvar_RegisterVariable (&sv_idealpitchscale);
+	Cvar_RegisterVariable (&sv_aim);
+	Cvar_RegisterVariable (&sv_nostep);
+	Cvar_RegisterVariable (&sv_freezenonclients);
+	Cvar_RegisterVariable (&sv_altnoclip); //johnfitz
 
 	Cmd_AddCommand ("sv_protocol", &SV_Protocol_f); //johnfitz
 

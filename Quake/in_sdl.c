@@ -39,7 +39,7 @@ static int buttonremap[] =
 };
 
 /* mouse variables */
-cvar_t	m_filter = {"m_filter","0"};
+cvar_t	m_filter = {"m_filter","0",CVAR_NONE};
 
 /* total accumulated mouse movement since last frame,
  * gets updated from the main game loop via IN_MouseMove */

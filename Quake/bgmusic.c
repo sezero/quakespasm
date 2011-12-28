@@ -29,7 +29,7 @@
 #define MUSIC_DIRNAME	"music"
 
 qboolean	bgmloop;
-cvar_t		bgm_extmusic = {"bgm_extmusic", "1", true};
+cvar_t		bgm_extmusic = {"bgm_extmusic", "1", CVAR_ARCHIVE};
 
 static qboolean	no_extmusic= false;
 static float	old_volume = -1.0f;
@@ -121,7 +121,7 @@ qboolean BGM_Init (void)
 	music_handler_t *handlers = NULL;
 	int i;
 
-	Cvar_RegisterVariable(&bgm_extmusic, NULL);
+	Cvar_RegisterVariable(&bgm_extmusic);
 	Cmd_AddCommand("music", BGM_Play_f);
 	Cmd_AddCommand("music_pause", BGM_Pause_f);
 	Cmd_AddCommand("music_resume", BGM_Resume_f);

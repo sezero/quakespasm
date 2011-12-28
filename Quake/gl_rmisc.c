@@ -195,50 +195,56 @@ void R_Init (void)
 	Cmd_AddCommand ("envmap", R_Envmap_f);
 	Cmd_AddCommand ("pointfile", R_ReadPointFile_f);
 
-	Cvar_RegisterVariable (&r_norefresh, NULL);
-	Cvar_RegisterVariable (&r_lightmap, NULL);
-	Cvar_RegisterVariable (&r_fullbright, NULL);
-	Cvar_RegisterVariable (&r_drawentities, NULL);
-	Cvar_RegisterVariable (&r_drawviewmodel, NULL);
-	Cvar_RegisterVariable (&r_shadows, NULL);
-	Cvar_RegisterVariable (&r_wateralpha, NULL);
-	Cvar_RegisterVariable (&r_dynamic, NULL);
-	Cvar_RegisterVariable (&r_novis, R_VisChanged);
-	Cvar_RegisterVariable (&r_speeds, NULL);
+	Cvar_RegisterVariable (&r_norefresh);
+	Cvar_RegisterVariable (&r_lightmap);
+	Cvar_RegisterVariable (&r_fullbright);
+	Cvar_RegisterVariable (&r_drawentities);
+	Cvar_RegisterVariable (&r_drawviewmodel);
+	Cvar_RegisterVariable (&r_shadows);
+	Cvar_RegisterVariable (&r_wateralpha);
+	Cvar_RegisterVariable (&r_dynamic);
+	Cvar_RegisterVariable (&r_novis);
+	Cvar_SetCallback (&r_novis, R_VisChanged);
+	Cvar_RegisterVariable (&r_speeds);
 
-	Cvar_RegisterVariable (&gl_finish, NULL);
-	Cvar_RegisterVariable (&gl_clear, NULL);
-	Cvar_RegisterVariable (&gl_cull, NULL);
-	Cvar_RegisterVariable (&gl_smoothmodels, NULL);
-	Cvar_RegisterVariable (&gl_affinemodels, NULL);
-	Cvar_RegisterVariable (&gl_polyblend, NULL);
-	Cvar_RegisterVariable (&gl_flashblend, NULL);
-	Cvar_RegisterVariable (&gl_playermip, NULL);
-	Cvar_RegisterVariable (&gl_nocolors, NULL);
+	Cvar_RegisterVariable (&gl_finish);
+	Cvar_RegisterVariable (&gl_clear);
+	Cvar_RegisterVariable (&gl_cull);
+	Cvar_RegisterVariable (&gl_smoothmodels);
+	Cvar_RegisterVariable (&gl_affinemodels);
+	Cvar_RegisterVariable (&gl_polyblend);
+	Cvar_RegisterVariable (&gl_flashblend);
+	Cvar_RegisterVariable (&gl_playermip);
+	Cvar_RegisterVariable (&gl_nocolors);
 
 	//johnfitz -- new cvars
-	Cvar_RegisterVariable (&r_stereo, NULL);
-	Cvar_RegisterVariable (&r_stereodepth, NULL);
-	Cvar_RegisterVariable (&r_clearcolor, R_SetClearColor_f);
-	Cvar_RegisterVariable (&r_waterquality, NULL);
-	Cvar_RegisterVariable (&r_oldwater, NULL);
-	Cvar_RegisterVariable (&r_waterwarp, NULL);
-	Cvar_RegisterVariable (&r_drawflat, NULL);
-	Cvar_RegisterVariable (&r_flatlightstyles, NULL);
-	Cvar_RegisterVariable (&r_oldskyleaf, R_VisChanged);
-	Cvar_RegisterVariable (&r_drawworld, NULL);
-	Cvar_RegisterVariable (&r_showtris, NULL);
-	Cvar_RegisterVariable (&r_showbboxes, NULL);
-	Cvar_RegisterVariable (&gl_farclip, NULL);
-	Cvar_RegisterVariable (&gl_fullbrights, GL_Fullbrights_f);
-	Cvar_RegisterVariable (&gl_overbright, GL_Overbright_f);
-	Cvar_RegisterVariable (&gl_overbright_models, NULL);
-	Cvar_RegisterVariable (&r_lerpmodels, NULL);
-	Cvar_RegisterVariable (&r_lerpmove, NULL);
-	Cvar_RegisterVariable (&r_nolerp_list, R_NoLerpList_f);
+	Cvar_RegisterVariable (&r_stereo);
+	Cvar_RegisterVariable (&r_stereodepth);
+	Cvar_RegisterVariable (&r_clearcolor);
+	Cvar_SetCallback (&r_clearcolor, R_SetClearColor_f);
+	Cvar_RegisterVariable (&r_waterquality);
+	Cvar_RegisterVariable (&r_oldwater);
+	Cvar_RegisterVariable (&r_waterwarp);
+	Cvar_RegisterVariable (&r_drawflat);
+	Cvar_RegisterVariable (&r_flatlightstyles);
+	Cvar_RegisterVariable (&r_oldskyleaf);
+	Cvar_SetCallback (&r_oldskyleaf, R_VisChanged);
+	Cvar_RegisterVariable (&r_drawworld);
+	Cvar_RegisterVariable (&r_showtris);
+	Cvar_RegisterVariable (&r_showbboxes);
+	Cvar_RegisterVariable (&gl_farclip);
+	Cvar_RegisterVariable (&gl_fullbrights);
+	Cvar_RegisterVariable (&gl_overbright);
+	Cvar_SetCallback (&gl_fullbrights, GL_Fullbrights_f);
+	Cvar_SetCallback (&gl_overbright, GL_Overbright_f);
+	Cvar_RegisterVariable (&gl_overbright_models);
+	Cvar_RegisterVariable (&r_lerpmodels);
+	Cvar_RegisterVariable (&r_lerpmove);
+	Cvar_RegisterVariable (&r_nolerp_list);
+	Cvar_SetCallback (&r_nolerp_list, R_NoLerpList_f);
 	//johnfitz
 
-	Cvar_RegisterVariable (&gl_zfix, NULL); // QuakeSpasm z-fighting fix
+	Cvar_RegisterVariable (&gl_zfix); // QuakeSpasm z-fighting fix
 
 	R_InitParticles ();
 	R_SetClearColor_f (&r_clearcolor); //johnfitz

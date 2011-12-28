@@ -68,22 +68,22 @@ static sfx_t	*ambient_sfx[NUM_AMBIENTS];
 
 static qboolean	sound_started = false;
 
-cvar_t		bgmvolume = {"bgmvolume", "1", true};
-cvar_t		sfxvolume = {"volume", "0.7", true};
+cvar_t		bgmvolume = {"bgmvolume", "1", CVAR_ARCHIVE};
+cvar_t		sfxvolume = {"volume", "0.7", CVAR_ARCHIVE};
 
-cvar_t		precache = {"precache", "1"};
-cvar_t		loadas8bit = {"loadas8bit", "0"};
+cvar_t		precache = {"precache", "1", CVAR_NONE};
+cvar_t		loadas8bit = {"loadas8bit", "0", CVAR_NONE};
 
-cvar_t		sndspeed = {"sndspeed", "11025"};
+cvar_t		sndspeed = {"sndspeed", "11025", CVAR_NONE};
 
 static	float	oldvolume = -1.0;
 
-static	cvar_t	nosound = {"nosound", "0"};
-static	cvar_t	ambient_level = {"ambient_level", "0.3"};
-static	cvar_t	ambient_fade = {"ambient_fade", "100"};
-static	cvar_t	snd_noextraupdate = {"snd_noextraupdate", "0"};
-static	cvar_t	snd_show = {"snd_show", "0"};
-static	cvar_t	_snd_mixahead = {"_snd_mixahead", "0.1", true};
+static	cvar_t	nosound = {"nosound", "0", CVAR_NONE};
+static	cvar_t	ambient_level = {"ambient_level", "0.3", CVAR_NONE};
+static	cvar_t	ambient_fade = {"ambient_fade", "100", CVAR_NONE};
+static	cvar_t	snd_noextraupdate = {"snd_noextraupdate", "0", CVAR_NONE};
+static	cvar_t	snd_show = {"snd_show", "0", CVAR_NONE};
+static	cvar_t	_snd_mixahead = {"_snd_mixahead", "0.1", CVAR_ARCHIVE};
 
 
 static void S_SoundInfo_f (void)
@@ -145,17 +145,17 @@ void S_Init (void)
 		return;
 	}
 
-	Cvar_RegisterVariable(&nosound, NULL);
-	Cvar_RegisterVariable(&sfxvolume, NULL);
-	Cvar_RegisterVariable(&precache, NULL);
-	Cvar_RegisterVariable(&loadas8bit, NULL);
-	Cvar_RegisterVariable(&bgmvolume, NULL);
-	Cvar_RegisterVariable(&ambient_level, NULL);
-	Cvar_RegisterVariable(&ambient_fade, NULL);
-	Cvar_RegisterVariable(&snd_noextraupdate, NULL);
-	Cvar_RegisterVariable(&snd_show, NULL);
-	Cvar_RegisterVariable(&_snd_mixahead, NULL);
-	Cvar_RegisterVariable(&sndspeed, NULL);
+	Cvar_RegisterVariable(&nosound);
+	Cvar_RegisterVariable(&sfxvolume);
+	Cvar_RegisterVariable(&precache);
+	Cvar_RegisterVariable(&loadas8bit);
+	Cvar_RegisterVariable(&bgmvolume);
+	Cvar_RegisterVariable(&ambient_level);
+	Cvar_RegisterVariable(&ambient_fade);
+	Cvar_RegisterVariable(&snd_noextraupdate);
+	Cvar_RegisterVariable(&snd_show);
+	Cvar_RegisterVariable(&_snd_mixahead);
+	Cvar_RegisterVariable(&sndspeed);
 
 	if (safemode || COM_CheckParm("-nosound"))
 		return;

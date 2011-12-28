@@ -27,23 +27,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // references them even when on a unix system.
 
 // these two are not intended to be set directly
-cvar_t	cl_name = {"_cl_name", "player", true};
-cvar_t	cl_color = {"_cl_color", "0", true};
+cvar_t	cl_name = {"_cl_name", "player", CVAR_ARCHIVE};
+cvar_t	cl_color = {"_cl_color", "0", CVAR_ARCHIVE};
 
-cvar_t	cl_shownet = {"cl_shownet","0"};	// can be 0, 1, or 2
-cvar_t	cl_nolerp = {"cl_nolerp","0"};
+cvar_t	cl_shownet = {"cl_shownet","0",CVAR_NONE};	// can be 0, 1, or 2
+cvar_t	cl_nolerp = {"cl_nolerp","0",CVAR_NONE};
 
-cvar_t	lookspring = {"lookspring","0", true};
-cvar_t	lookstrafe = {"lookstrafe","0", true};
-cvar_t	sensitivity = {"sensitivity","3", true};
+cvar_t	lookspring = {"lookspring","0", CVAR_ARCHIVE};
+cvar_t	lookstrafe = {"lookstrafe","0", CVAR_ARCHIVE};
+cvar_t	sensitivity = {"sensitivity","3", CVAR_ARCHIVE};
 
-cvar_t	m_pitch = {"m_pitch","0.022", true};
-cvar_t	m_yaw = {"m_yaw","0.022", true};
-cvar_t	m_forward = {"m_forward","1", true};
-cvar_t	m_side = {"m_side","0.8", true};
+cvar_t	m_pitch = {"m_pitch","0.022", CVAR_ARCHIVE};
+cvar_t	m_yaw = {"m_yaw","0.022", CVAR_ARCHIVE};
+cvar_t	m_forward = {"m_forward","1", CVAR_ARCHIVE};
+cvar_t	m_side = {"m_side","0.8", CVAR_ARCHIVE};
 
-cvar_t	cl_maxpitch = {"cl_maxpitch", "90", true}; //johnfitz -- variable pitch clamping
-cvar_t	cl_minpitch = {"cl_minpitch", "-90", true}; //johnfitz -- variable pitch clamping
+cvar_t	cl_maxpitch = {"cl_maxpitch", "90", CVAR_ARCHIVE}; //johnfitz -- variable pitch clamping
+cvar_t	cl_minpitch = {"cl_minpitch", "-90", CVAR_ARCHIVE}; //johnfitz -- variable pitch clamping
 
 client_static_t	cls;
 client_state_t	cl;
@@ -775,29 +775,29 @@ void CL_Init (void)
 	CL_InitInput ();
 	CL_InitTEnts ();
 
-	Cvar_RegisterVariable (&cl_name, NULL);
-	Cvar_RegisterVariable (&cl_color, NULL);
-	Cvar_RegisterVariable (&cl_upspeed, NULL);
-	Cvar_RegisterVariable (&cl_forwardspeed, NULL);
-	Cvar_RegisterVariable (&cl_backspeed, NULL);
-	Cvar_RegisterVariable (&cl_sidespeed, NULL);
-	Cvar_RegisterVariable (&cl_movespeedkey, NULL);
-	Cvar_RegisterVariable (&cl_yawspeed, NULL);
-	Cvar_RegisterVariable (&cl_pitchspeed, NULL);
-	Cvar_RegisterVariable (&cl_anglespeedkey, NULL);
-	Cvar_RegisterVariable (&cl_shownet, NULL);
-	Cvar_RegisterVariable (&cl_nolerp, NULL);
-	Cvar_RegisterVariable (&lookspring, NULL);
-	Cvar_RegisterVariable (&lookstrafe, NULL);
-	Cvar_RegisterVariable (&sensitivity, NULL);
+	Cvar_RegisterVariable (&cl_name);
+	Cvar_RegisterVariable (&cl_color);
+	Cvar_RegisterVariable (&cl_upspeed);
+	Cvar_RegisterVariable (&cl_forwardspeed);
+	Cvar_RegisterVariable (&cl_backspeed);
+	Cvar_RegisterVariable (&cl_sidespeed);
+	Cvar_RegisterVariable (&cl_movespeedkey);
+	Cvar_RegisterVariable (&cl_yawspeed);
+	Cvar_RegisterVariable (&cl_pitchspeed);
+	Cvar_RegisterVariable (&cl_anglespeedkey);
+	Cvar_RegisterVariable (&cl_shownet);
+	Cvar_RegisterVariable (&cl_nolerp);
+	Cvar_RegisterVariable (&lookspring);
+	Cvar_RegisterVariable (&lookstrafe);
+	Cvar_RegisterVariable (&sensitivity);
 
-	Cvar_RegisterVariable (&m_pitch, NULL);
-	Cvar_RegisterVariable (&m_yaw, NULL);
-	Cvar_RegisterVariable (&m_forward, NULL);
-	Cvar_RegisterVariable (&m_side, NULL);
+	Cvar_RegisterVariable (&m_pitch);
+	Cvar_RegisterVariable (&m_yaw);
+	Cvar_RegisterVariable (&m_forward);
+	Cvar_RegisterVariable (&m_side);
 
-	Cvar_RegisterVariable (&cl_maxpitch, NULL); //johnfitz -- variable pitch clamping
-	Cvar_RegisterVariable (&cl_minpitch, NULL); //johnfitz -- variable pitch clamping
+	Cvar_RegisterVariable (&cl_maxpitch); //johnfitz -- variable pitch clamping
+	Cvar_RegisterVariable (&cl_minpitch); //johnfitz -- variable pitch clamping
 
 	Cmd_AddCommand ("entities", CL_PrintEntities_f);
 	Cmd_AddCommand ("disconnect", CL_Disconnect_f);

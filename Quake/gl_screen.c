@@ -80,26 +80,26 @@ float		scr_conlines;		// lines of console to display
 float		oldscreensize, oldfov, oldsbarscale, oldsbaralpha; //johnfitz -- added oldsbarscale and oldsbaralpha
 
 //johnfitz -- new cvars
-cvar_t		scr_menuscale = {"scr_menuscale", "1", true};
-cvar_t		scr_sbarscale = {"scr_sbarscale", "1", true};
-cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.95", true};
-cvar_t		scr_conwidth = {"scr_conwidth", "0", true};
-cvar_t		scr_conscale = {"scr_conscale", "1", true};
-cvar_t		scr_scale = {"scr_scale", "1", true};
-cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", true};
-cvar_t		scr_showfps = {"scr_showfps", "0"};
-cvar_t		scr_clock = {"scr_clock", "0"};
+cvar_t		scr_menuscale = {"scr_menuscale", "1", CVAR_ARCHIVE};
+cvar_t		scr_sbarscale = {"scr_sbarscale", "1", CVAR_ARCHIVE};
+cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.95", CVAR_ARCHIVE};
+cvar_t		scr_conwidth = {"scr_conwidth", "0", CVAR_ARCHIVE};
+cvar_t		scr_conscale = {"scr_conscale", "1", CVAR_ARCHIVE};
+cvar_t		scr_scale = {"scr_scale", "1", CVAR_ARCHIVE};
+cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", CVAR_ARCHIVE};
+cvar_t		scr_showfps = {"scr_showfps", "0", CVAR_NONE};
+cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 //johnfitz
 
-cvar_t		scr_viewsize = {"viewsize","100", true};
-cvar_t		scr_fov = {"fov","90"};	// 10 - 170
-cvar_t		scr_conspeed = {"scr_conspeed","500",true};
-cvar_t		scr_centertime = {"scr_centertime","2"};
-cvar_t		scr_showram = {"showram","1"};
-cvar_t		scr_showturtle = {"showturtle","0"};
-cvar_t		scr_showpause = {"showpause","1"};
-cvar_t		scr_printspeed = {"scr_printspeed","8"};
-cvar_t		gl_triplebuffer = {"gl_triplebuffer", "1", true };
+cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
+cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
+cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE};
+cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE};
+cvar_t		scr_showram = {"showram","1",CVAR_NONE};
+cvar_t		scr_showturtle = {"showturtle","0",CVAR_NONE};
+cvar_t		scr_showpause = {"showpause","1",CVAR_NONE};
+cvar_t		scr_printspeed = {"scr_printspeed","8",CVAR_NONE};
+cvar_t		gl_triplebuffer = {"gl_triplebuffer", "1", CVAR_ARCHIVE};
 
 extern	cvar_t	crosshair;
 
@@ -369,26 +369,28 @@ SCR_Init
 void SCR_Init (void)
 {
 	//johnfitz -- new cvars
-	Cvar_RegisterVariable (&scr_menuscale, NULL);
-	Cvar_RegisterVariable (&scr_sbarscale, NULL);
-	Cvar_RegisterVariable (&scr_sbaralpha, NULL);
-	Cvar_RegisterVariable (&scr_conwidth, &SCR_Conwidth_f);
-	Cvar_RegisterVariable (&scr_conscale, &SCR_Conwidth_f);
-	Cvar_RegisterVariable (&scr_scale, NULL);
-	Cvar_RegisterVariable (&scr_crosshairscale, NULL);
-	Cvar_RegisterVariable (&scr_showfps, NULL);
-	Cvar_RegisterVariable (&scr_clock, NULL);
+	Cvar_RegisterVariable (&scr_menuscale);
+	Cvar_RegisterVariable (&scr_sbarscale);
+	Cvar_RegisterVariable (&scr_sbaralpha);
+	Cvar_RegisterVariable (&scr_conwidth);
+	Cvar_RegisterVariable (&scr_conscale);
+	Cvar_SetCallback (&scr_conwidth, &SCR_Conwidth_f);
+	Cvar_SetCallback (&scr_conscale, &SCR_Conwidth_f);
+	Cvar_RegisterVariable (&scr_scale);
+	Cvar_RegisterVariable (&scr_crosshairscale);
+	Cvar_RegisterVariable (&scr_showfps);
+	Cvar_RegisterVariable (&scr_clock);
 	//johnfitz
 
-	Cvar_RegisterVariable (&scr_fov, NULL);
-	Cvar_RegisterVariable (&scr_viewsize, NULL);
-	Cvar_RegisterVariable (&scr_conspeed, NULL);
-	Cvar_RegisterVariable (&scr_showram, NULL);
-	Cvar_RegisterVariable (&scr_showturtle, NULL);
-	Cvar_RegisterVariable (&scr_showpause, NULL);
-	Cvar_RegisterVariable (&scr_centertime, NULL);
-	Cvar_RegisterVariable (&scr_printspeed, NULL);
-	Cvar_RegisterVariable (&gl_triplebuffer, NULL);
+	Cvar_RegisterVariable (&scr_fov);
+	Cvar_RegisterVariable (&scr_viewsize);
+	Cvar_RegisterVariable (&scr_conspeed);
+	Cvar_RegisterVariable (&scr_showram);
+	Cvar_RegisterVariable (&scr_showturtle);
+	Cvar_RegisterVariable (&scr_showpause);
+	Cvar_RegisterVariable (&scr_centertime);
+	Cvar_RegisterVariable (&scr_printspeed);
+	Cvar_RegisterVariable (&gl_triplebuffer);
 
 	Cmd_AddCommand ("screenshot",SCR_ScreenShot_f);
 	Cmd_AddCommand ("sizeup",SCR_SizeUp_f);

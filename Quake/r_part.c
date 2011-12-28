@@ -40,8 +40,8 @@ int			r_numparticles;
 gltexture_t *particletexture, *particletexture1, *particletexture2, *particletexture3, *particletexture4; //johnfitz
 float texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
 
-cvar_t	r_particles = {"r_particles","1", true}; //johnfitz
-cvar_t	r_quadparticles = {"r_quadparticles","1", true}; //johnfitz
+cvar_t	r_particles = {"r_particles","1", CVAR_ARCHIVE}; //johnfitz
+cvar_t	r_quadparticles = {"r_quadparticles","1", CVAR_ARCHIVE}; //johnfitz
 
 /*
 ===============
@@ -166,8 +166,9 @@ void R_InitParticles (void)
 	particles = (particle_t *)
 			Hunk_AllocName (r_numparticles * sizeof(particle_t), "particles");
 
-	Cvar_RegisterVariable (&r_particles, R_SetParticleTexture_f); //johnfitz
-	Cvar_RegisterVariable (&r_quadparticles, NULL); //johnfitz
+	Cvar_RegisterVariable (&r_particles); //johnfitz
+	Cvar_SetCallback (&r_particles, R_SetParticleTexture_f);
+	Cvar_RegisterVariable (&r_quadparticles); //johnfitz
 
 	R_InitParticleTextures (); //johnfitz
 }

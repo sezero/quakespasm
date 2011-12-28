@@ -47,8 +47,8 @@ int			con_current;		// where next message will be printed
 int			con_x;				// offset in current line for next print
 char		*con_text = NULL;
 
-cvar_t		con_notifytime = {"con_notifytime","3"};		//seconds
-cvar_t		con_logcenterprint = {"con_logcenterprint", "1"}; //johnfitz
+cvar_t		con_notifytime = {"con_notifytime","3",CVAR_NONE};	//seconds
+cvar_t		con_logcenterprint = {"con_logcenterprint", "1", CVAR_NONE}; //johnfitz
 
 char		con_lastcenterstring[1024]; //johnfitz
 
@@ -355,8 +355,8 @@ void Con_Init (void)
 //
 // register our commands
 //
-	Cvar_RegisterVariable (&con_notifytime, NULL);
-	Cvar_RegisterVariable (&con_logcenterprint, NULL); //johnfitz
+	Cvar_RegisterVariable (&con_notifytime);
+	Cvar_RegisterVariable (&con_logcenterprint); //johnfitz
 
 	Cmd_AddCommand ("toggleconsole", Con_ToggleConsole_f);
 	Cmd_AddCommand ("messagemode", Con_MessageMode_f);

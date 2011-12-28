@@ -23,9 +23,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t r_drawflat;
 
-cvar_t r_oldwater = {"r_oldwater", "1"};
-cvar_t r_waterquality = {"r_waterquality", "8"};
-cvar_t r_waterwarp = {"r_waterwarp", "1"};
+cvar_t r_oldwater = {"r_oldwater", "1", CVAR_NONE};
+cvar_t r_waterquality = {"r_waterquality", "8", CVAR_NONE};
+cvar_t r_waterwarp = {"r_waterwarp", "1", CVAR_NONE};
 
 int gl_warpimagesize;
 
@@ -33,7 +33,7 @@ float load_subdivide_size; //johnfitz -- remember what subdivide_size value was 
 
 float	turbsin[] =
 {
-	#include "gl_warp_sin.h"
+#include "gl_warp_sin.h"
 };
 
 #define WARPCALC(s,t) ((s + turbsin[(int)((t*2)+(cl.time*(128.0/M_PI))) & 255]) * (1.0/64)) //johnfitz -- correct warp
@@ -49,7 +49,7 @@ extern	model_t	*loadmodel;
 
 msurface_t	*warpface;
 
-cvar_t gl_subdivide_size = {"gl_subdivide_size", "128", true};
+cvar_t gl_subdivide_size = {"gl_subdivide_size", "128", CVAR_ARCHIVE};
 
 void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
 {
