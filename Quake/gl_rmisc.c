@@ -47,10 +47,6 @@ extern cvar_t r_nolerp_list;
 
 extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 
-extern float load_subdivide_size; //johnfitz -- remember what subdivide_size value was when this map was loaded
-
-extern cvar_t gl_subdivide_size; //johnfitz -- moved here from gl_model.c
-
 extern gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz
 
 
@@ -243,8 +239,6 @@ void R_Init (void)
 	//johnfitz
 
 	Cvar_RegisterVariable (&gl_zfix, NULL); // QuakeSpasm z-fighting fix
-
-	Cvar_RegisterVariable (&gl_subdivide_size, NULL); //johnfitz -- moved here from gl_model.c
 
 	R_InitParticles ();
 	R_SetClearColor_f (&r_clearcolor); //johnfitz

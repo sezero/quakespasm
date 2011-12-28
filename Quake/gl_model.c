@@ -52,6 +52,7 @@ Mod_Init
 */
 void Mod_Init (void)
 {
+	Cvar_RegisterVariable (&gl_subdivide_size, NULL);
 	Cvar_RegisterVariable (&external_ents, NULL);
 
 	memset (mod_novis, 0xff, sizeof(mod_novis));
@@ -1088,12 +1089,7 @@ void Mod_LoadFaces (lump_t *l)
 		{
 			out->flags |= (SURF_DRAWTURB | SURF_DRAWTILED);
 			Mod_PolyForUnlitSurface (out);
-		/* FIXME:
-		   With dedicated servers, we segfault in SubdividePolygon() at
-		   the BoundPoly() call. The following dedicated server check is
-		   a workaround, the actual problem is yet to be looked into. */
-			if (cls.state != ca_dedicated)
-				GL_SubdivideSurface (out);
+			GL_SubdivideSurface (out);
 		}
 		else if (out->texinfo->flags & TEX_MISSING) // texture is missing from bsp
 		{
