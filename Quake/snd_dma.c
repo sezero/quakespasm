@@ -20,6 +20,7 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 // snd_dma.c -- main control for any streaming sound output device
 
 #include "quakedef.h"
@@ -76,8 +77,6 @@ cvar_t		loadas8bit = {"loadas8bit", "0", CVAR_NONE};
 
 cvar_t		sndspeed = {"sndspeed", "11025", CVAR_NONE};
 
-static	float	oldvolume = -1.0;
-
 static	cvar_t	nosound = {"nosound", "0", CVAR_NONE};
 static	cvar_t	ambient_level = {"ambient_level", "0.3", CVAR_NONE};
 static	cvar_t	ambient_fade = {"ambient_fade", "100", CVAR_NONE};
@@ -101,6 +100,12 @@ static void S_SoundInfo_f (void)
 	Con_Printf("%5d submission_chunk\n", shm->submission_chunk);
 	Con_Printf("%5d total_channels\n", total_channels);
 	Con_Printf("%p dma buffer\n", shm->buffer);
+}
+
+
+static void SND_Callback_sfxvolume (cvar_t *var)
+{
+	SND_InitScaletable ();
 }
 
 
@@ -179,6 +184,8 @@ void S_Init (void)
 		Cvar_Set ("loadas8bit", "1");
 		Con_Printf ("loading all sounds as 8bit\n");
 	}
+
+	Cvar_SetCallback(&sfxvolume, SND_Callback_sfxvolume);
 
 	SND_InitScaletable ();
 
@@ -759,12 +766,6 @@ void S_Update (vec3_t origin, vec3_t forward, vec3_t right, vec3_t up)
 
 	if (!sound_started || (snd_blocked > 0))
 		return;
-
-	if (sfxvolume.value != oldvolume)
-	{
-		oldvolume = sfxvolume.value;
-		SND_InitScaletable ();
-	}
 
 	VectorCopy(origin, listener_origin);
 	VectorCopy(forward, listener_forward);

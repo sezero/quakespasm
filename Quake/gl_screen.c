@@ -77,8 +77,6 @@ int			glx, gly, glwidth, glheight;
 float		scr_con_current;
 float		scr_conlines;		// lines of console to display
 
-float		oldscreensize, oldfov, oldsbarscale, oldsbaralpha; //johnfitz -- added oldsbarscale and oldsbaralpha
-
 //johnfitz -- new cvars
 cvar_t		scr_menuscale = {"scr_menuscale", "1", CVAR_ARCHIVE};
 cvar_t		scr_sbarscale = {"scr_sbarscale", "1", CVAR_ARCHIVE};
@@ -261,8 +259,6 @@ static void SCR_CalcRefdef (void)
 {
 	float		size, scale; //johnfitz -- scale
 
-	vid.recalc_refdef = 0;
-
 // force the status bar to redraw
 	Sbar_Changed ();
 
@@ -279,6 +275,8 @@ static void SCR_CalcRefdef (void)
 		Cvar_Set ("fov","10");
 	if (scr_fov.value > 170)
 		Cvar_Set ("fov","170");
+
+	vid.recalc_refdef = 0;
 
 	//johnfitz -- rewrote this section
 	size = scr_viewsize.value;
@@ -318,7 +316,6 @@ Keybinding command
 void SCR_SizeUp_f (void)
 {
 	Cvar_SetValue ("viewsize",scr_viewsize.value+10);
-	vid.recalc_refdef = 1;
 }
 
 
@@ -332,6 +329,10 @@ Keybinding command
 void SCR_SizeDown_f (void)
 {
 	Cvar_SetValue ("viewsize",scr_viewsize.value-10);
+}
+
+static void SCR_Callback_refdef (cvar_t *var)
+{
 	vid.recalc_refdef = 1;
 }
 
@@ -342,6 +343,7 @@ SCR_Conwidth_f -- johnfitz -- called when scr_conwidth or scr_conscale changes
 */
 void SCR_Conwidth_f (cvar_t *var)
 {
+	vid.recalc_refdef = 1;
 	vid.conwidth = (scr_conwidth.value > 0) ? (int)scr_conwidth.value : (scr_conscale.value > 0) ? (int)(vid.width/scr_conscale.value) : vid.width;
 	vid.conwidth = CLAMP (320, vid.conwidth, vid.width);
 	vid.conwidth &= 0xFFFFFFF8;
@@ -372,16 +374,17 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_menuscale);
 	Cvar_RegisterVariable (&scr_sbarscale);
 	Cvar_RegisterVariable (&scr_sbaralpha);
-	Cvar_RegisterVariable (&scr_conwidth);
-	Cvar_RegisterVariable (&scr_conscale);
 	Cvar_SetCallback (&scr_conwidth, &SCR_Conwidth_f);
 	Cvar_SetCallback (&scr_conscale, &SCR_Conwidth_f);
+	Cvar_RegisterVariable (&scr_conwidth);
+	Cvar_RegisterVariable (&scr_conscale);
 	Cvar_RegisterVariable (&scr_scale);
 	Cvar_RegisterVariable (&scr_crosshairscale);
 	Cvar_RegisterVariable (&scr_showfps);
 	Cvar_RegisterVariable (&scr_clock);
 	//johnfitz
-
+	Cvar_SetCallback (&scr_fov, SCR_Callback_refdef);
+	Cvar_SetCallback (&scr_viewsize, SCR_Callback_refdef);
 	Cvar_RegisterVariable (&scr_fov);
 	Cvar_RegisterVariable (&scr_viewsize);
 	Cvar_RegisterVariable (&scr_conspeed);
@@ -981,33 +984,6 @@ void SCR_UpdateScreen (void)
 	//
 	// determine size of refresh window
 	//
-
-	if (oldfov != scr_fov.value)
-	{
-		oldfov = scr_fov.value;
-		vid.recalc_refdef = true;
-	}
-
-	if (oldscreensize != scr_viewsize.value)
-	{
-		oldscreensize = scr_viewsize.value;
-		vid.recalc_refdef = true;
-	}
-
-	//johnfitz -- added oldsbarscale and oldsbaralpha
-	if (oldsbarscale != scr_sbarscale.value)
-	{
-		oldsbarscale = scr_sbarscale.value;
-		vid.recalc_refdef = true;
-	}
-
-	if (oldsbaralpha != scr_sbaralpha.value)
-	{
-		oldsbaralpha = scr_sbaralpha.value;
-		vid.recalc_refdef = true;
-	}
-	//johnfitz
-
 	if (vid.recalc_refdef)
 		SCR_CalcRefdef ();
 
