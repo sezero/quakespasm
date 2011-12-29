@@ -887,7 +887,8 @@ void BuildTabList (const char *partial)
 	bash_partial[0] = 0;
 	bash_singlematch = 1;
 
-	for (cvar=cvar_vars ; cvar ; cvar=cvar->next)
+	cvar = Cvar_FindVarAfter ("", CVAR_NONE);
+	for ( ; cvar ; cvar=cvar->next)
 		if (!Q_strncmp (partial, cvar->name, len))
 			AddToTabList (cvar->name, "cvar");
 

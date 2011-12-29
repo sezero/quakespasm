@@ -22,7 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-cvar_t	*cvar_vars;
+static cvar_t	*cvar_vars;
 static char	cvar_null_string[] = "";
 
 //==============================================================================
@@ -243,6 +243,59 @@ cvar_t *Cvar_FindVar (const char *var_name)
 	return NULL;
 }
 
+cvar_t *Cvar_FindVarAfter (const char *prev_name, unsigned int with_flags)
+{
+	cvar_t	*var;
+
+	if (*prev_name)
+	{
+		var = Cvar_FindVar (prev_name);
+		if (!var)
+			return NULL;
+		var = var->next;
+	}
+	else
+		var = cvar_vars;
+
+	// search for the next cvar matching the needed flags
+	while (var)
+	{
+		if ((var->flags & with_flags) || !with_flags)
+			break;
+		var = var->next;
+	}
+	return var;
+}
+
+/*
+============
+Cvar_LockVar
+============
+*/
+void Cvar_LockVar (const char *var_name)
+{
+	cvar_t	*var = Cvar_FindVar (var_name);
+	if (var)
+		var->flags |= CVAR_LOCKED;
+}
+
+void Cvar_UnlockVar (const char *var_name)
+{
+	cvar_t	*var = Cvar_FindVar (var_name);
+	if (var)
+		var->flags &= ~CVAR_LOCKED;
+}
+
+void Cvar_UnlockAll (void)
+{
+	cvar_t	*var;
+
+	for (var = cvar_vars ; var ; var = var->next)
+	{
+		var->flags &= ~CVAR_LOCKED;
+	}
+}
+
 /*
 ============
 Cvar_VariableValue
@@ -318,7 +371,7 @@ void Cvar_Reset (const char *name)
 void Cvar_SetQuick (cvar_t *var, const char *value)
 {
 	if (var->flags & (CVAR_ROM|CVAR_LOCKED))
-		return;	// cvar is marked read-only or locked temporarily
+		return;
 	if (!(var->flags & CVAR_REGISTERED))
 		return;
 
@@ -356,8 +409,8 @@ void Cvar_SetQuick (cvar_t *var, const char *value)
 	}
 	//johnfitz
 
-	if(var->callback)
-		var->callback(var);
+	if (var->callback)
+		var->callback (var);
 }
 
 void Cvar_SetValueQuick (cvar_t *var, const float value)
@@ -386,7 +439,7 @@ Cvar_Set
 */
 void Cvar_Set (const char *var_name, const char *value)
 {
-	cvar_t	*var;
+	cvar_t		*var;
 
 	var = Cvar_FindVar (var_name);
 	if (!var)
@@ -467,10 +520,10 @@ void Cvar_RegisterVariable (cvar_t *variable)
 	qboolean	set_rom;
 	cvar_t	*cursor,*prev; //johnfitz -- sorted list insert
 
-// first check to see if it has allready been defined
+// first check to see if it has already been defined
 	if (Cvar_FindVar (variable->name))
 	{
-		Con_Printf ("Can't register variable %s, allready defined\n", variable->name);
+		Con_Printf ("Can't register variable %s, already defined\n", variable->name);
 		return;
 	}
 

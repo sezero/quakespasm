@@ -22,21 +22,24 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef __CVAR_H__
 #define __CVAR_H__
 
-// cvar.h
-
 /*
 
-cvar_t variables are used to hold scalar or string variables that can be changed or displayed at the console or prog code as well as accessed directly
-in C code.
+cvar_t variables are used to hold scalar or string variables that can
+be changed or displayed at the console or prog code as well as accessed
+directly in C code.
 
-it is sufficient to initialize a cvar_t with just the first two fields, or
-you can add a ,true flag for variables that you want saved to the configuration
-file when the game is quit:
+it is sufficient to initialize a cvar_t with just the first two fields,
+or you can add a ,true flag for variables that you want saved to the
+configuration file when the game is quit:
 
 cvar_t	r_draworder = {"r_draworder","1"};
 cvar_t	scr_screensize = {"screensize","1",true};
 
-Cvars must be registered before use, or they will have a 0 value instead of the float interpretation of the string.  Generally, all cvar_t declarations should be registered in the apropriate init function before any console commands are executed:
+Cvars must be registered before use, or they will have a 0 value instead
+of the float interpretation of the string.
+Generally, all cvar_t declarations should be registered in the apropriate
+init function before any console commands are executed:
+
 Cvar_RegisterVariable (&host_framerate);
 
 
@@ -52,16 +55,18 @@ teamplay = cvar("teamplay");
 cvar_set ("registered", "1");
 
 The user can access cvars from the console in two ways:
-r_draworder			prints the current value
+r_draworder		prints the current value
 r_draworder 0		sets the current value to 0
+
 Cvars are restricted from having the same names as commands to keep this
 interface from being ambiguous.
+
 */
 
 #define	CVAR_NONE		0
 #define	CVAR_ARCHIVE		(1U << 0)	// if set, causes it to be saved to config
-#define	CVAR_NOTIFY		(1U << 1)	// changes will be broadcasted to all players (H2)
-#define	CVAR_SERVERINFO		(1U << 2)	// added to serverinfo will be sent to clients (net_dgrm.c, qwsv)
+#define	CVAR_NOTIFY		(1U << 1)	// changes will be broadcasted to all players (q1)
+#define	CVAR_SERVERINFO		(1U << 2)	// added to serverinfo will be sent to clients (q1/net_dgrm.c and qwsv)
 #define	CVAR_USERINFO		(1U << 3)	// added to userinfo, will be sent to server (qwcl)
 #define	CVAR_CHANGED		(1U << 4)
 #define	CVAR_ROM		(1U << 6)
@@ -78,17 +83,17 @@ typedef struct cvar_s
 	const char	*string;
 	unsigned int	flags;
 	float		value;
-	struct cvar_s	*next;
 	const char	*default_string; //johnfitz -- remember defaults for reset function
-	cvarcallback_t	callback; //johnfitz
+	cvarcallback_t	callback;
+	struct cvar_s	*next;
 } cvar_t;
+
+void	Cvar_RegisterVariable (cvar_t *variable);
+// registers a cvar that already has the name, string, and optionally
+// the archive elements set.
 
 void Cvar_SetCallback (cvar_t *var, cvarcallback_t func);
 // set a callback function to the var
-
-void	Cvar_RegisterVariable (cvar_t *variable);
-// registers a cvar that allready has the name, string, and optionally the
-// archive elements set.
 
 void	Cvar_Set (const char *var_name, const char *value);
 // equivelant to "<name> <variable>" typed at the console
@@ -109,12 +114,8 @@ void Cvar_SetValueQuick (cvar_t *var, const float value);
 float	Cvar_VariableValue (const char *var_name);
 // returns 0 if not defined or non numeric
 
-const char	*Cvar_VariableString (const char *var_name);
+const char *Cvar_VariableString (const char *var_name);
 // returns an empty string if not defined
-
-const char	*Cvar_CompleteVariable (const char *partial);
-// attempts to match a partial variable name for command line completion
-// returns NULL if nothing fits
 
 qboolean Cvar_Command (void);
 // called by Cmd_ExecuteString when Cmd_Argv(0) doesn't match a known
@@ -123,13 +124,20 @@ qboolean Cvar_Command (void);
 
 void	Cvar_WriteVariables (FILE *f);
 // Writes lines containing "set variable value" for all variables
-// with the archive flag set to true.
+// with the CVAR_ARCHIVE flag set
 
-cvar_t *Cvar_FindVar (const char *var_name);
+cvar_t	*Cvar_FindVar (const char *var_name);
+cvar_t	*Cvar_FindVarAfter (const char *prev_name, unsigned int with_flags);
 
-void Cvar_Init (void);
+void	Cvar_LockVar (const char *var_name);
+void	Cvar_UnlockVar (const char *var_name);
+void	Cvar_UnlockAll (void);
 
-extern cvar_t	*cvar_vars;
+void	Cvar_Init (void);
+
+const char	*Cvar_CompleteVariable (const char *partial);
+// attempts to match a partial variable name for command line completion
+// returns NULL if nothing fits
 
 #endif	/* __CVAR_H__ */
 
