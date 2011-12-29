@@ -176,12 +176,12 @@ void S_Init (void)
 	i = COM_CheckParm("-sndspeed");
 	if (i && i < com_argc-1)
 	{
-		Cvar_Set ("sndspeed", com_argv[i+1]);
+		Cvar_SetQuick (&sndspeed, com_argv[i+1]);
 	}
 
 	if (host_parms->memsize < 0x800000)
 	{
-		Cvar_Set ("loadas8bit", "1");
+		Cvar_SetQuick (&loadas8bit, "1");
 		Con_Printf ("loading all sounds as 8bit\n");
 	}
 

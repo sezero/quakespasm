@@ -219,9 +219,9 @@ void	Host_FindMaxClients (void)
 	svs.clients = (struct client_s *) Hunk_AllocName (svs.maxclientslimit*sizeof(client_t), "clients");
 
 	if (svs.maxclients > 1)
-		Cvar_SetValue ("deathmatch", 1.0);
+		Cvar_SetQuick (&deathmatch, "1");
 	else
-		Cvar_SetValue ("deathmatch", 0.0);
+		Cvar_SetQuick (&deathmatch, "0");
 }
 
 void Host_Version_f (void)

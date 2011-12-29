@@ -439,10 +439,10 @@ void VID_Restart (void)
 //
 // keep cvars in line with actual mode
 //
-	Cvar_Set ("vid_width", va("%i", modelist[vid_default].width));
-	Cvar_Set ("vid_height", va("%i", modelist[vid_default].height));
-	Cvar_Set ("vid_bpp", va("%i", modelist[vid_default].bpp));
-	Cvar_Set ("vid_fullscreen", (windowed) ? "0" : "1");
+	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
+	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
+	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 }
 
 /*
@@ -467,10 +467,10 @@ void VID_Test (void)
 	if (!SCR_ModalMessage("Would you like to keep this\nvideo mode? (y/n)\n", 5.0f))
 	{
 		//revert cvars and mode
-		Cvar_Set ("vid_width", va("%i", oldmode.width));
-		Cvar_Set ("vid_height", va("%i", oldmode.height));
-		Cvar_Set ("vid_bpp", va("%i", oldmode.bpp));
-		Cvar_Set ("vid_fullscreen", (oldmode.type == MODE_WINDOWED) ? "0" : "1");
+		Cvar_SetQuick (&vid_width, va("%i", oldmode.width));
+		Cvar_SetQuick (&vid_height, va("%i", oldmode.height));
+		Cvar_SetQuick (&vid_bpp, va("%i", oldmode.bpp));
+		Cvar_SetQuick (&vid_fullscreen, (oldmode.type == MODE_WINDOWED) ? "0" : "1");
 		VID_Restart ();
 	}
 }
@@ -485,10 +485,10 @@ void VID_Unlock (void)
 	vid_locked = false;
 
 	//sync up cvars in case they were changed during the lock
-	Cvar_Set ("vid_width", va("%i", modelist[vid_default].width));
-	Cvar_Set ("vid_height", va("%i", modelist[vid_default].height));
-	Cvar_Set ("vid_bpp", va("%i", modelist[vid_default].bpp));
-	Cvar_Set ("vid_fullscreen", (windowed) ? "0" : "1");
+	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
+	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
+	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 }
 
 /*
@@ -1185,11 +1185,11 @@ void	VID_Init (void)
 
 	if (COM_CheckParm("-window") || COM_CheckParm("-w"))
 	{
-		Cvar_Set ("vid_fullscreen", "0");
+		Cvar_SetQuick (&vid_fullscreen, "0");
 	}
 	else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
 	{
-		Cvar_Set ("vid_fullscreen", "1");
+		Cvar_SetQuick (&vid_fullscreen, "1");
 	}
 
 	if (!vid_fullscreen.value)
@@ -1316,7 +1316,7 @@ void	VID_Init (void)
 		// Still no luck? Default to windowed mode
 		if (vid_default == NO_MODE)
 		{
-			Cvar_Set ("vid_fullscreen", "0");
+			Cvar_SetQuick (&vid_fullscreen, "0");
 			windowed = true;
 			vid_default = MODE_WINDOWED;
 		}
@@ -1374,14 +1374,14 @@ void	VID_Toggle (void)
 		else
 		    vid.type = MODE_FULLSCREEN_DEFAULT;
 
-		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
+		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 	}
 	else
 	{
 		vid_toggle_works = false;
 		Con_Printf ("ToggleFullScreen failed, attempting VID_Restart\n");
 vrestart:
-		Cvar_SetValue ("vid_fullscreen", ! (int)vid_fullscreen.value);
+		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
 	}
 }
@@ -1395,13 +1395,13 @@ void VID_SyncCvars (void)
 {
 	int swap_control;
 
-	Cvar_Set ("vid_width", va("%i", modelist[vid_default].width));
-	Cvar_Set ("vid_height", va("%i", modelist[vid_default].height));
-	Cvar_Set ("vid_bpp", va("%i", modelist[vid_default].bpp));
-	Cvar_Set ("vid_fullscreen", (windowed) ? "0" : "1");
+	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
+	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
+	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 
 	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
-		Cvar_Set ("vid_vsync", (swap_control) ? "1" : "0");
+		Cvar_SetQuick (&vid_vsync, (swap_control) ? "1" : "0");
 }
 
 //==========================================================================
@@ -1495,7 +1495,7 @@ void VID_Menu_RebuildBppList (void)
 	//if there are no valid fullscreen bpps for this width/height, just pick one
 	if (vid_menu_numbpps == 0)
 	{
-		Cvar_SetValue ("vid_bpp",(float)modelist[0].bpp);
+		Cvar_SetValueQuick (&vid_bpp, (float)modelist[0].bpp);
 		return;
 	}
 
@@ -1505,7 +1505,7 @@ void VID_Menu_RebuildBppList (void)
 			break;
 
 	if (i == vid_menu_numbpps)
-		Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[0]);
+		Cvar_SetValueQuick (&vid_bpp, (float)vid_menu_bpps[0]);
 }
 
 /*
@@ -1542,8 +1542,8 @@ void VID_Menu_ChooseNextMode (int dir)
 				i = vid_menu_nummodes-1;
 		}
 
-		Cvar_SetValue ("vid_width",(float)vid_menu_modes[i].width);
-		Cvar_SetValue ("vid_height",(float)vid_menu_modes[i].height);
+		Cvar_SetValueQuick (&vid_width, (float)vid_menu_modes[i].width);
+		Cvar_SetValueQuick (&vid_height, (float)vid_menu_modes[i].height);
 		VID_Menu_RebuildBppList ();
 	}
 }
@@ -1580,7 +1580,7 @@ void VID_Menu_ChooseNextBpp (int dir)
 				i = vid_menu_numbpps-1;
 		}
 
-		Cvar_SetValue ("vid_bpp",(float)vid_menu_bpps[i]);
+		Cvar_SetValueQuick (&vid_bpp, (float)vid_menu_bpps[i]);
 	}
 }
 
@@ -1617,7 +1617,7 @@ void VID_Menu_ChooseNextRate (int dir)
 				i = vid_menu_numrates-1;
 		}
 
-		Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
+		Cvar_SetValueQuick (&vid_refreshrate, (float)vid_menu_rates[i]);
 	}
 #endif
 }
