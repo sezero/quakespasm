@@ -55,10 +55,10 @@ void Cvar_List_f (void)
 		len = 0;
 	}
 
-	count=0;
-	for (cvar=cvar_vars ; cvar ; cvar=cvar->next)
+	count = 0;
+	for (cvar = cvar_vars ; cvar ; cvar = cvar->next)
 	{
-		if (partial && Q_strncmp (partial,cvar->name, len))
+		if (partial && Q_strncmp(partial, cvar->name, len))
 		{
 			continue;
 		}
@@ -140,8 +140,7 @@ void Cvar_Cycle_f (void)
 	//loop through the args until you find one that matches the current cvar value.
 	//yes, this will get stuck on a list that contains the same value twice.
 	//it's not worth dealing with, and i'm not even sure it can be dealt with.
-
-	for (i=2;i<Cmd_Argc();i++)
+	for (i = 2; i < Cmd_Argc(); i++)
 	{
 		//zero is assumed to be a string, even though it could actually be zero.  The worst case
 		//is that the first time you call this command, it won't match on zero when it should, but after that,
@@ -194,7 +193,7 @@ void Cvar_ResetAll_f (void)
 {
 	cvar_t	*var;
 
-	for (var = cvar_vars; var; var = var->next)
+	for (var = cvar_vars ; var ; var = var->next)
 		Cvar_Reset (var->name);
 }
 
@@ -235,9 +234,11 @@ cvar_t *Cvar_FindVar (const char *var_name)
 {
 	cvar_t	*var;
 
-	for (var=cvar_vars ; var ; var=var->next)
-		if (!Q_strcmp (var_name, var->name))
+	for (var = cvar_vars ; var ; var = var->next)
+	{
+		if (!Q_strcmp(var_name, var->name))
 			return var;
+	}
 
 	return NULL;
 }
@@ -281,18 +282,19 @@ Cvar_CompleteVariable
 */
 const char *Cvar_CompleteVariable (const char *partial)
 {
-	cvar_t		*cvar;
-	int			len;
+	cvar_t	*cvar;
+	int	len;
 
 	len = Q_strlen(partial);
-
 	if (!len)
 		return NULL;
 
 // check functions
-	for (cvar=cvar_vars ; cvar ; cvar=cvar->next)
-		if (!Q_strncmp (partial,cvar->name, len))
+	for (cvar = cvar_vars ; cvar ; cvar = cvar->next)
+	{
+		if (!Q_strncmp(partial, cvar->name, len))
 			return cvar->name;
+	}
 
 	return NULL;
 }
@@ -310,7 +312,71 @@ void Cvar_Reset (const char *name)
 	if (!var)
 		Con_Printf ("variable \"%s\" not found\n", name);
 	else
-		Cvar_Set (var->name, var->default_string);
+		Cvar_SetQuick (var, var->default_string);
+}
+
+void Cvar_SetQuick (cvar_t *var, const char *value)
+{
+	if (var->flags & (CVAR_ROM|CVAR_LOCKED))
+		return;	// cvar is marked read-only or locked temporarily
+	if (!(var->flags & CVAR_REGISTERED))
+		return;
+
+	if (!var->string)
+		var->string = Z_Strdup (value);
+	else
+	{
+		size_t	len;
+
+		if (!strcmp(var->string, value))
+			return;	// no change
+
+		var->flags |= CVAR_CHANGED;
+		len = Q_strlen (value);
+		if (len != Q_strlen(var->string))
+		{
+			Z_Free ((void *)var->string);
+			var->string = (char *) Z_Malloc (len + 1);
+		}
+		memcpy ((char *)var->string, value, len + 1);
+	}
+
+	var->value = Q_atof (var->string);
+
+	//johnfitz -- save initial value for "reset" command
+	if (!var->default_string)
+		var->default_string = Z_Strdup (var->string);
+	//johnfitz -- during initialization, update default too
+	else if (!host_initialized)
+	{
+	//	Sys_Printf("changing default of %s: %s -> %s\n",
+	//		   var->name, var->default_string, var->string);
+		Z_Free ((void *)var->default_string);
+		var->default_string = Z_Strdup (var->string);
+	}
+	//johnfitz
+
+	if(var->callback)
+		var->callback(var);
+}
+
+void Cvar_SetValueQuick (cvar_t *var, const float value)
+{
+	char	val[32], *ptr = val;
+
+	if (value == (float)((int)value))
+		q_snprintf (val, sizeof(val), "%i", (int)value);
+	else
+	{
+		q_snprintf (val, sizeof(val), "%f", value);
+		// kill trailing zeroes
+		while (*ptr)
+			ptr++;
+		while (--ptr > val && *ptr == '0' && ptr[-1] != '.')
+			*ptr = '\0';
+	}
+
+	Cvar_SetQuick (var, val);
 }
 
 /*
@@ -329,28 +395,7 @@ void Cvar_Set (const char *var_name, const char *value)
 		return;
 	}
 
-	if (var->flags & (CVAR_ROM|CVAR_LOCKED))
-		return;	// cvar is marked read-only or locked temporarily
-
-	if (!strcmp(var->string, value))
-		return;	// no change
-	var->flags |= CVAR_CHANGED;
-
-	Z_Free ((void *)var->string);	// free the old value string
-
-	var->string = (const char *) Z_Strdup (value);
-	var->value = Q_atof (var->string);
-
-	//johnfitz -- during initialization, update default too
-	if (!host_initialized)
-	{
-		Z_Free ((void *)var->default_string);
-		var->default_string = (const char *) Z_Strdup (value);
-	}
-	//johnfitz
-
-	if(var->callback)
-		var->callback(var);
+	Cvar_SetQuick (var, value);
 }
 
 /*
@@ -360,9 +405,20 @@ Cvar_SetValue
 */
 void Cvar_SetValue (const char *var_name, const float value)
 {
-	char	val[32];
+	char	val[32], *ptr = val;
 
-	sprintf (val, "%f",value);
+	if (value == (float)((int)value))
+		q_snprintf (val, sizeof(val), "%i", (int)value);
+	else
+	{
+		q_snprintf (val, sizeof(val), "%f", value);
+		// kill trailing zeroes
+		while (*ptr)
+			ptr++;
+		while (--ptr > val && *ptr == '0' && ptr[-1] != '.')
+			*ptr = '\0';
+	}
+
 	Cvar_Set (var_name, val);
 }
 
@@ -377,7 +433,7 @@ void Cvar_SetROM (const char *var_name, const char *value)
 	if (var)
 	{
 		var->flags &= ~CVAR_ROM;
-		Cvar_Set (var_name, value);
+		Cvar_SetQuick (var, value);
 		var->flags |= CVAR_ROM;
 	}
 }
@@ -393,7 +449,7 @@ void Cvar_SetValueROM (const char *var_name, const float value)
 	if (var)
 	{
 		var->flags &= ~CVAR_ROM;
-		Cvar_SetValue (var_name, value);
+		Cvar_SetValueQuick (var, value);
 		var->flags |= CVAR_ROM;
 	}
 }
@@ -407,6 +463,8 @@ Adds a freestanding variable to the variable list.
 */
 void Cvar_RegisterVariable (cvar_t *variable)
 {
+	char	value[512];
+	qboolean	set_rom;
 	cvar_t	*cursor,*prev; //johnfitz -- sorted list insert
 
 // first check to see if it has allready been defined
@@ -423,18 +481,10 @@ void Cvar_RegisterVariable (cvar_t *variable)
 		return;
 	}
 
-// copy the value off, because future sets will Z_Free it
-	variable->string = (const char *) Z_Strdup (variable->string);
-	variable->value = Q_atof (variable->string);
-
-	//johnfitz -- save initial value for "reset" command
-	variable->default_string = (const char *) Z_Strdup (variable->string);
-	//johnfitz
-
 // link the variable in
-
 	//johnfitz -- insert each entry in alphabetical order
-	if (cvar_vars == NULL || strcmp(variable->name, cvar_vars->name) < 0) //insert at front
+	if (cvar_vars == NULL ||
+	    strcmp(variable->name, cvar_vars->name) < 0) // insert at front
 	{
 		variable->next = cvar_vars;
 		cvar_vars = variable;
@@ -452,9 +502,22 @@ void Cvar_RegisterVariable (cvar_t *variable)
 		prev->next = variable;
 	}
 	//johnfitz
+	variable->flags |= CVAR_REGISTERED;
+
+// copy the value off, because future sets will Z_Free it
+	q_strlcpy (value, variable->string, sizeof(value));
+	variable->string = NULL;
+	variable->default_string = NULL;
 
 	if (!(variable->flags & CVAR_CALLBACK))
 		variable->callback = NULL;
+
+// set it through the function to be consistent
+	set_rom = (variable->flags & CVAR_ROM);
+	variable->flags &= ~CVAR_ROM;
+	Cvar_SetQuick (variable, value);
+	if (set_rom)
+		variable->flags |= CVAR_ROM;
 }
 
 /*
@@ -513,7 +576,9 @@ void Cvar_WriteVariables (FILE *f)
 	cvar_t	*var;
 
 	for (var = cvar_vars ; var ; var = var->next)
+	{
 		if (var->flags & CVAR_ARCHIVE)
 			fprintf (f, "%s \"%s\"\n", var->name, var->string);
+	}
 }
 

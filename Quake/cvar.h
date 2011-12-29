@@ -97,10 +97,14 @@ void	Cvar_SetValue (const char *var_name, const float value);
 // expands value to a string and calls Cvar_Set
 
 void	Cvar_SetROM (const char *var_name, const char *value);
-// sets a CVAR_ROM variable from within the engine
-
 void	Cvar_SetValueROM (const char *var_name, const float value);
 // sets a CVAR_ROM variable from within the engine
+
+void Cvar_SetQuick (cvar_t *var, const char *value);
+void Cvar_SetValueQuick (cvar_t *var, const float value);
+// these two accept a cvar pointer instead of a var name,
+// but are otherwise identical to the "non-Quick" versions.
+// the cvar MUST be registered.
 
 float	Cvar_VariableValue (const char *var_name);
 // returns 0 if not defined or non numeric
