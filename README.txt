@@ -30,7 +30,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.6 (02 January 2011)
+  QuakeSpasm 0.85.6 (02 January 2012)
 
 
   1.  About
@@ -62,7 +62,7 @@
   3.  Hints
 
 
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
 
 
