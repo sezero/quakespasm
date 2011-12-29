@@ -388,10 +388,11 @@ static void BGM_UpdateStream (void)
 
 		/* our max buffer size */
 		fileBytes = fileSamples * (bgmstream->info.width * bgmstream->info.channels);
-		if (fileBytes > sizeof(raw))
+		if (fileBytes > (int) sizeof(raw))
 		{
-			fileBytes = sizeof(raw);
-			fileSamples = fileBytes / (bgmstream->info.width * bgmstream->info.channels);
+			fileBytes = (int) sizeof(raw);
+			fileSamples = fileBytes /
+					  (bgmstream->info.width * bgmstream->info.channels);
 		}
 
 		/* Read */
@@ -405,7 +406,9 @@ static void BGM_UpdateStream (void)
 		if (res > 0)	/* data: add to raw buffer */
 		{
 			S_RawSamples(fileSamples, bgmstream->info.rate,
-				bgmstream->info.width, bgmstream->info.channels, raw, bgmvolume.value);
+							bgmstream->info.width,
+							bgmstream->info.channels,
+							raw, bgmvolume.value);
 		}
 		else if (res == 0)	/* EOF */
 		{

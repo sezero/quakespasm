@@ -518,7 +518,7 @@ char *GL_MakeNiceExtensionsList (const char *in)
 	int i, count;
 
 	//each space will be replaced by 4 chars, so count the spaces before we malloc
-	for (i = 0, count = 1; i < strlen(in); i++)
+	for (i = 0, count = 1; i < (int) strlen(in); i++)
 		if (in[i] == ' ')
 			count++;
 	out = (char *) Z_Malloc (strlen(in) + count*3 + 1); //usually about 1-2k

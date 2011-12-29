@@ -131,22 +131,22 @@ CL_ParseStartSoundPacket
 */
 void CL_ParseStartSoundPacket(void)
 {
-    vec3_t  pos;
-    int 	channel, ent;
-    int 	sound_num;
-    int 	volume;
-    int 	field_mask;
-    float 	attenuation;
- 	int		i;
+	vec3_t	pos;
+	int	channel, ent;
+	int	sound_num;
+	int	volume;
+	int	field_mask;
+	float	attenuation;
+	int	i;
 
-    field_mask = MSG_ReadByte();
+	field_mask = MSG_ReadByte();
 
-    if (field_mask & SND_VOLUME)
+	if (field_mask & SND_VOLUME)
 		volume = MSG_ReadByte ();
 	else
 		volume = DEFAULT_SOUND_PACKET_VOLUME;
 
-    if (field_mask & SND_ATTENUATION)
+	if (field_mask & SND_ATTENUATION)
 		attenuation = MSG_ReadByte () / 64.0;
 	else
 		attenuation = DEFAULT_SOUND_PACKET_ATTENUATION;
@@ -178,10 +178,10 @@ void CL_ParseStartSoundPacket(void)
 	if (ent > cl_max_edicts) //johnfitz -- no more MAX_EDICTS
 		Host_Error ("CL_ParseStartSoundPacket: ent = %i", ent);
 
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 		pos[i] = MSG_ReadCoord ();
 
-    S_StartSound (ent, channel, cl.sound_precache[sound_num], pos, volume/255.0, attenuation);
+	S_StartSound (ent, channel, cl.sound_precache[sound_num], pos, volume/255.0, attenuation);
 }
 
 /*
@@ -305,7 +305,7 @@ void CL_ParseServerInfo (void)
 
 // precache models
 	memset (cl.model_precache, 0, sizeof(cl.model_precache));
-	for (nummodels=1 ; ; nummodels++)
+	for (nummodels = 1 ; ; nummodels++)
 	{
 		str = MSG_ReadString ();
 		if (!str[0])
@@ -326,7 +326,7 @@ void CL_ParseServerInfo (void)
 
 // precache sounds
 	memset (cl.sound_precache, 0, sizeof(cl.sound_precache));
-	for (numsounds=1 ; ; numsounds++)
+	for (numsounds = 1 ; ; numsounds++)
 	{
 		str = MSG_ReadString ();
 		if (!str[0])
@@ -352,7 +352,7 @@ void CL_ParseServerInfo (void)
 	// copy the naked name of the map file to the cl structure -- O.S
 	COM_StripExtension (COM_SkipPath(model_precache[1]), cl.mapname, sizeof(cl.mapname));
 
-	for (i=1 ; i<nummodels ; i++)
+	for (i = 1; i < nummodels; i++)
 	{
 		cl.model_precache[i] = Mod_ForName (model_precache[i], false);
 		if (cl.model_precache[i] == NULL)
@@ -364,13 +364,12 @@ void CL_ParseServerInfo (void)
 	}
 
 	S_BeginPrecaching ();
-	for (i=1 ; i<numsounds ; i++)
+	for (i = 1; i < numsounds; i++)
 	{
 		cl.sound_precache[i] = S_PrecacheSound (sound_precache[i]);
 		CL_KeepaliveMessage ();
 	}
 	S_EndPrecaching ();
-
 
 // local state
 	cl_entities[0].model = cl.worldmodel = cl.model_precache[1];
@@ -484,7 +483,8 @@ void CL_ParseUpdate (int bits)
 		skin = MSG_ReadByte();
 	else
 		skin = ent->baseline.skin;
-	if (skin != ent->skinnum) {
+	if (skin != ent->skinnum)
+	{
 		ent->skinnum = skin;
 		if (num > 0 && num <= cl.maxclients)
 			R_TranslateNewPlayerSkin (num - 1); //johnfitz -- was R_TranslatePlayerSkin
@@ -526,7 +526,7 @@ void CL_ParseUpdate (int bits)
 		ent->msg_angles[0][2] = ent->baseline.angles[2];
 
 	//johnfitz -- lerping for movetype_step entities
-	if ( bits & U_STEP )
+	if (bits & U_STEP)
 	{
 		ent->lerpflags |= LERP_MOVESTEP;
 		ent->forcelink = true;
@@ -559,9 +559,10 @@ void CL_ParseUpdate (int bits)
 		//HACK: if this bit is set, assume this is PROTOCOL_NEHAHRA
 		if (bits & U_TRANS)
 		{
-			float a,b;
+			float a, b;
 
-			if (warn_about_nehahra_protocol) {
+			if (warn_about_nehahra_protocol)
+			{
 				Con_Warning ("nonstandard update bit, assuming Nehahra protocol\n");
 				warn_about_nehahra_protocol = false;
 			}
@@ -628,7 +629,7 @@ void CL_ParseBaseline (entity_t *ent, int version) //johnfitz -- added argument
 
 	ent->baseline.colormap = MSG_ReadByte();
 	ent->baseline.skin = MSG_ReadByte();
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
 		ent->baseline.origin[i] = MSG_ReadCoord ();
 		ent->baseline.angles[i] = MSG_ReadAngle ();
@@ -670,7 +671,7 @@ void CL_ParseClientdata (void)
 		cl.idealpitch = 0;
 
 	VectorCopy (cl.mvelocity[0], cl.mvelocity[1]);
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 	{
 		if (bits & (SU_PUNCH1<<i) )
 			cl.punchangle[i] = MSG_ReadChar();
@@ -697,7 +698,7 @@ void CL_ParseClientdata (void)
 	if (cl.items != i)
 	{	// set flash times
 		Sbar_Changed ();
-		for (j=0 ; j<32 ; j++)
+		for (j = 0; j < 32; j++)
 			if ( (i & (1<<j)) && !(cl.items & (1<<j)))
 				cl.item_gettime[j] = cl.time;
 		cl.items = i;
@@ -750,7 +751,7 @@ void CL_ParseClientdata (void)
 		Sbar_Changed ();
 	}
 
-	for (i=0 ; i<4 ; i++)
+	for (i = 0; i < 4; i++)
 	{
 		j = MSG_ReadByte ();
 		if (cl.stats[STAT_SHELLS+i] != j)
@@ -823,19 +824,23 @@ void CL_NewTranslation (int slot)
 	bottom = (cl.scores[slot].colors &15)<<4;
 	R_TranslatePlayerSkin (slot);
 
-	for (i=0 ; i<VID_GRADES ; i++, dest += 256, source+=256)
+	for (i = 0; i < VID_GRADES; i++, dest += 256, source+=256)
 	{
 		if (top < 128)	// the artists made some backwards ranges.  sigh.
 			memcpy (dest + TOP_RANGE, source + top, 16);
 		else
-			for (j=0 ; j<16 ; j++)
+		{
+			for (j = 0; j < 16; j++)
 				dest[TOP_RANGE+j] = source[top+15-j];
+		}
 
 		if (bottom < 128)
 			memcpy (dest + BOTTOM_RANGE, source + bottom, 16);
 		else
-			for (j=0 ; j<16 ; j++)
+		{
+			for (j = 0; j < 16; j++)
 				dest[BOTTOM_RANGE+j] = source[bottom+15-j];
+		}
 	}
 }
 
@@ -884,7 +889,7 @@ void CL_ParseStaticSound (int version) //johnfitz -- added argument
 	int			sound_num, vol, atten;
 	int			i;
 
-	for (i=0 ; i<3 ; i++)
+	for (i = 0; i < 3; i++)
 		org[i] = MSG_ReadCoord ();
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
@@ -961,7 +966,7 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_nop:
-//			Con_Printf ("svc_nop\n");
+		//	Con_Printf ("svc_nop\n");
 			break;
 
 		case svc_time:
@@ -1095,19 +1100,16 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_setpause:
+			cl.paused = MSG_ReadByte ();
+			if (cl.paused)
 			{
-				cl.paused = MSG_ReadByte ();
-
-				if (cl.paused)
-				{
-					CDAudio_Pause ();
-					BGM_Pause ();
-				}
-				else
-				{
-					CDAudio_Resume ();
-					BGM_Resume ();
-				}
+				CDAudio_Pause ();
+				BGM_Pause ();
+			}
+			else
+			{
+				CDAudio_Resume ();
+				BGM_Resume ();
 			}
 			break;
 
@@ -1219,3 +1221,4 @@ void CL_ParseServerMessage (void)
 		lastcmd = cmd; //johnfitz
 	}
 }
+

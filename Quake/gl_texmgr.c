@@ -330,7 +330,7 @@ gltexture_t *TexMgr_NewTexture (void)
 	glt->next = active_gltextures;
 	active_gltextures = glt;
 
-	glGenTextures(1, (GLuint *)&glt->texnum);
+	glGenTextures(1, &glt->texnum);
 	numgltextures++;
 	return glt;
 }
@@ -356,7 +356,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 		kill->next = free_gltextures;
 		free_gltextures = kill;
 
-		glDeleteTextures(1, (const GLuint *)&kill->texnum);
+		glDeleteTextures(1, &kill->texnum);
 		numgltextures--;
 		return;
 	}
@@ -368,7 +368,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 			kill->next = free_gltextures;
 			free_gltextures = kill;
 
-			glDeleteTextures(1, (const GLuint *)&kill->texnum);
+			glDeleteTextures(1, &kill->texnum);
 			numgltextures--;
 			return;
 		}
@@ -528,9 +528,9 @@ void TexMgr_RecalcWarpImageSize (void)
 
 	gl_warpimagesize = TexMgr_SafeTextureSize (512);
 
-	while (gl_warpimagesize > vid.width)
+	while (gl_warpimagesize > (int)vid.width)
 		gl_warpimagesize >>= 1;
-	while (gl_warpimagesize > vid.height)
+	while (gl_warpimagesize > (int)vid.height)
 		gl_warpimagesize >>= 1;
 
 	if (gl_warpimagesize == oldsize)
@@ -978,14 +978,14 @@ void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 	picmip = (glt->flags & TEXPREF_NOPICMIP) ? 0 : q_max((int)gl_picmip.value, 0);
 	mipwidth = TexMgr_SafeTextureSize (glt->width >> picmip);
 	mipheight = TexMgr_SafeTextureSize (glt->height >> picmip);
-	while (glt->width > mipwidth)
+	while ((int) glt->width > mipwidth)
 	{
 		TexMgr_MipMapW (data, glt->width, glt->height);
 		glt->width >>= 1;
 		if (glt->flags & TEXPREF_ALPHA)
 			TexMgr_AlphaEdgeFix ((byte *)data, glt->width, glt->height);
 	}
-	while (glt->height > mipheight)
+	while ((int) glt->height > mipheight)
 	{
 		TexMgr_MipMapH (data, glt->width, glt->height);
 		glt->height >>= 1;
@@ -1049,10 +1049,10 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	// detect false alpha cases
 	if (glt->flags & TEXPREF_ALPHA && !(glt->flags & TEXPREF_CONCHARS))
 	{
-		for (i = 0; i < glt->width*glt->height; i++)
+		for (i = 0; i < (int) (glt->width * glt->height); i++)
 			if (data[i] == 255) //transparent index
 				break;
-		if (i == glt->width*glt->height)
+		if (i == (int) (glt->width * glt->height))
 			glt->flags -= TEXPREF_ALPHA;
 	}
 
@@ -1081,13 +1081,13 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	// pad each dimention, but only if it's not going to be downsampled later
 	if (glt->flags & TEXPREF_PAD)
 	{
-		if (glt->width < TexMgr_SafeTextureSize(glt->width))
+		if ((int) glt->width < TexMgr_SafeTextureSize(glt->width))
 		{
 			data = TexMgr_PadImageW (data, glt->width, glt->height, padbyte);
 			glt->width = TexMgr_Pad(glt->width);
 			padw = true;
 		}
-		if (glt->height < TexMgr_SafeTextureSize(glt->height))
+		if ((int) glt->height < TexMgr_SafeTextureSize(glt->height))
 		{
 			data = TexMgr_PadImageH (data, glt->width, glt->height, padbyte);
 			glt->height = TexMgr_Pad(glt->height);
@@ -1328,7 +1328,7 @@ void TexMgr_ReloadImages (void)
 
 	for (glt=active_gltextures; glt; glt=glt->next)
 	{
-		glGenTextures(1, (GLuint *)&glt->texnum);
+		glGenTextures(1, &glt->texnum);
 		TexMgr_ReloadImage (glt, -1, -1);
 	}
 }
@@ -1355,7 +1355,7 @@ void TexMgr_ReloadNobrightImages (void)
 ================================================================================
 */
 
-int	currenttexture = -1; // to avoid unnecessary texture sets
+GLuint	currenttexture = (GLuint)-1; // to avoid unnecessary texture sets
 GLenum TEXTURE0, TEXTURE1; //johnfitz
 qboolean mtexenabled = false;
 
@@ -1367,7 +1367,7 @@ GL_SelectTexture -- johnfitz -- rewritten
 void GL_SelectTexture (GLenum target)
 {
 	static GLenum currenttarget;
-	static int ct0, ct1;
+	static GLuint ct0, ct1;
 
 	if (target == currenttarget)
 		return;

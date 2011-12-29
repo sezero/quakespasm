@@ -1176,7 +1176,7 @@ void Host_Loadgame_f (void)
 	entnum = -1;		// -1 is the globals
 	while (!feof(f))
 	{
-		for (i = 0; i < sizeof(str) - 1; i++)
+		for (i = 0; i < (int) sizeof(str) - 1; i++)
 		{
 			r = fgetc (f);
 			if (r == EOF || !r)
@@ -1188,7 +1188,7 @@ void Host_Loadgame_f (void)
 				break;
 			}
 		}
-		if (i == sizeof(str) - 1)
+		if (i == (int) sizeof(str) - 1)
 		{
 			fclose (f);
 			Sys_Error ("Loadgame buffer overflow");
@@ -1330,8 +1330,8 @@ void Host_Say(qboolean teamonly)
 		q_snprintf (text, sizeof(text), "\001<%s> %s", hostname.string, p);
 
 // check length & truncate if necessary
-	j = strlen(text);
-	if (j >= sizeof(text) - 1)
+	j = (int) strlen(text);
+	if (j >= (int) sizeof(text) - 1)
 	{
 		text[sizeof(text) - 2] = '\n';
 		text[sizeof(text) - 1] = '\0';
@@ -1408,8 +1408,8 @@ void Host_Tell_f(void)
 	q_snprintf (text, sizeof(text), "%s: %s", host_client->name, p);
 
 // check length & truncate if necessary
-	j = strlen(text);
-	if (j >= sizeof(text) - 1)
+	j = (int) strlen(text);
+	if (j >= (int) sizeof(text) - 1)
 	{
 		text[sizeof(text) - 2] = '\n';
 		text[sizeof(text) - 1] = '\0';

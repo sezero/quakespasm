@@ -235,7 +235,7 @@ const char *Sys_ConsoleInput (void)
 		}
 		con_text[textlen] = c;
 		textlen++;
-		if (textlen < sizeof(con_text))
+		if (textlen < (int) sizeof(con_text))
 			con_text[textlen] = '\0';
 		else
 		{

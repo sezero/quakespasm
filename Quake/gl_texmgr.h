@@ -43,15 +43,15 @@ typedef uintptr_t src_offset_t;
 
 typedef struct gltexture_s {
 //managed by texture manager
-	unsigned int		texnum;
+	GLuint			texnum;
 	struct gltexture_s	*next;
-	model_t				*owner;
+	model_t			*owner;
 //managed by image loading
-	char				name[64];
+	char			name[64];
 	unsigned int		width; //size of image as it exists in opengl
 	unsigned int		height; //size of image as it exists in opengl
 	unsigned int		flags;
-	char				source_file[MAX_QPATH]; //relative filepath to data source, or "" if source is in memory
+	char			source_file[MAX_QPATH]; //relative filepath to data source, or "" if source is in memory
 	src_offset_t		source_offset; //byte offset into file, or memory address
 	enum srcformat		source_format; //format of pixel data (indexed, lightmap, or rgba)
 	unsigned int		source_width; //size of image in source data
@@ -60,7 +60,7 @@ typedef struct gltexture_s {
 	char				shirt; //0-13 shirt color, or -1 if never colormapped
 	char				pants; //0-13 pants color, or -1 if never colormapped
 //used for rendering
-	int					visframe; //matches r_framecount if texture was bound this frame
+	int			visframe; //matches r_framecount if texture was bound this frame
 } gltexture_t;
 
 extern gltexture_t *notexture;

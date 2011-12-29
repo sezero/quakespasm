@@ -80,7 +80,7 @@ const char *Con_Quakebar (int len)
 	static char bar[42];
 	int i;
 
-	len = q_min(len, sizeof(bar) - 2);
+	len = q_min(len, (int)sizeof(bar) - 2);
 	len = q_min(len, con_linewidth);
 
 	bar[0] = '\35';
@@ -1146,7 +1146,7 @@ void Con_DrawInput (void)
 		text += 1 + key_linepos - con_linewidth;
 
 // draw input string
-	for (i=0; i <= strlen(text) - 1; i++) //only write enough letters to go from *text to cursor
+	for (i = 0; i <= (int)strlen(text) - 1; i++) //only write enough letters to go from *text to cursor
 		Draw_Character ((i+1)<<3, vid.conheight - 16, text[i]);
 
 // johnfitz -- new cursor handling
@@ -1164,9 +1164,9 @@ The typing input line at the bottom should only be drawn if typing is allowed
 */
 void Con_DrawConsole (int lines, qboolean drawinput)
 {
-	int				i, x, y, j, sb, rows;
-	char			ver[32];
-	char			*text;
+	int	i, x, y, j, sb, rows;
+	char	ver[32];
+	char	*text;
 
 	if (lines <= 0)
 		return;
@@ -1178,29 +1178,29 @@ void Con_DrawConsole (int lines, qboolean drawinput)
 	Draw_ConsoleBackground ();
 
 // draw the buffer text
-	rows = (con_vislines+7)/8;
+	rows = (con_vislines +7)/8;
 	y = vid.conheight - rows*8;
 	rows -= 2; //for input and version lines
 	sb = (con_backscroll) ? 2 : 0;
 
-	for (i = con_current - rows + 1 ; i <= con_current - sb ; i++, y+=8)
+	for (i = con_current - rows + 1; i <= con_current - sb; i++, y += 8)
 	{
 		j = i - con_backscroll;
-		if (j<0)
+		if (j < 0)
 			j = 0;
 		text = con_text + (j % con_totallines)*con_linewidth;
 
-		for (x=0 ; x<con_linewidth ; x++)
-			Draw_Character ( (x+1)<<3, y, text[x]);
+		for (x = 0; x < con_linewidth; x++)
+			Draw_Character ( (x + 1)<<3, y, text[x]);
 	}
 
 // draw scrollback arrows
 	if (con_backscroll)
 	{
-		y+=8; // blank line
-		for (x=0 ; x<con_linewidth ; x+=4)
-			Draw_Character ((x+1)<<3, y, '^');
-		y+=8;
+		y += 8; // blank line
+		for (x = 0; x < con_linewidth; x += 4)
+			Draw_Character ((x + 1)<<3, y, '^');
+		y += 8;
 	}
 
 // draw the input prompt, user text, and cursor
@@ -1208,10 +1208,10 @@ void Con_DrawConsole (int lines, qboolean drawinput)
 		Con_DrawInput ();
 
 //draw version number in bottom right
-	y+=8;
+	y += 8;
 	sprintf (ver, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
-	for (x=0; x<strlen(ver); x++)
-		Draw_Character ((con_linewidth-strlen(ver)+x+2)<<3, y, ver[x] /*+ 128*/);
+	for (x = 0; x < (int)strlen(ver); x++)
+		Draw_Character ((con_linewidth - strlen(ver) + x + 2)<<3, y, ver[x] /*+ 128*/);
 }
 
 

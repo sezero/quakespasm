@@ -379,7 +379,7 @@ void Cvar_SetQuick (cvar_t *var, const char *value)
 		var->string = Z_Strdup (value);
 	else
 	{
-		size_t	len;
+		int	len;
 
 		if (!strcmp(var->string, value))
 			return;	// no change

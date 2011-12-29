@@ -130,7 +130,7 @@ qboolean SNDDMA_Init (dma_t *dma)
 			}
 			else
 			{
-				if (rate != tryrates[i])
+				if (rate != (unsigned int) tryrates[i])
 				{
 					Con_Printf ("Warning: Rate set (%u) didn't match requested rate (%d)!\n", rate, tryrates[i]);
 				//	goto error;
@@ -146,7 +146,7 @@ qboolean SNDDMA_Init (dma_t *dma)
 	}
 	else
 	{
-		if (rate != (int)sndspeed.value)
+		if (rate != (unsigned int) sndspeed.value)
 		{
 			Con_Printf ("Warning: Rate set (%u) didn't match requested rate (%d)!\n", rate, (int)sndspeed.value);
 		//	goto error;

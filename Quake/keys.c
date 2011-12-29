@@ -233,7 +233,7 @@ void Key_Console (int key)
 
 	case K_DEL:
 		key_tabpartial[0] = 0;
-		if (key_linepos < strlen(key_lines[edit_line]))
+		if (key_linepos < (int) strlen(key_lines[edit_line]))
 			strcpy(key_lines[edit_line] + key_linepos, key_lines[edit_line] + key_linepos + 1);
 		return;
 
@@ -274,7 +274,7 @@ void Key_Console (int key)
 	// when mouse is released to the window manager
 	// case K_MWHEELUP:
 		con_backscroll += keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
-		if (con_backscroll > con_totallines - (vid.height>>3) - 1)
+		if (con_backscroll > con_totallines - (int)(vid.height>>3) - 1)
 			con_backscroll = con_totallines - (vid.height>>3) - 1;
 		return;
 
@@ -294,9 +294,9 @@ void Key_Console (int key)
 		return;
 
 	case K_RIGHTARROW:
-		if (strlen(key_lines[edit_line]) == key_linepos)
+		if ((int) strlen(key_lines[edit_line]) == key_linepos)
 		{
-			if (strlen(key_lines[(edit_line + 31) & 31]) <= key_linepos)
+			if ((int) strlen(key_lines[(edit_line + 31) & 31]) <= key_linepos)
 				return; // no character to get
 
 			key_lines[edit_line][key_linepos] = key_lines[(edit_line + 31) & 31][key_linepos];

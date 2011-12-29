@@ -763,7 +763,8 @@ float MSG_ReadFloat (void)
 const char *MSG_ReadString (void)
 {
 	static char	string[2048];
-	int		l, c;
+	int		c;
+	size_t		l;
 
 	l = 0;
 	do
@@ -773,7 +774,7 @@ const char *MSG_ReadString (void)
 			break;
 		string[l] = c;
 		l++;
-	} while (l < sizeof(string)-1);
+	} while (l < sizeof(string) - 1);
 
 	string[l] = 0;
 

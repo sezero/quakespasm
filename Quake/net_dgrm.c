@@ -50,7 +50,7 @@ static struct
 {
 	unsigned int	length;
 	unsigned int	sequence;
-	byte			data[MAX_DATAGRAM];
+	byte	data[MAX_DATAGRAM];
 } packetBuffer;
 
 static int myDriverLevel;
@@ -80,7 +80,8 @@ static void NET_Ban_f (void)
 {
 	char	addrStr [32];
 	char	maskStr [32];
-	void	(*print_fn) (const char *fmt, ...) __fp_attribute__((__format__(__printf__,1,2)));
+	void	(*print_fn)(const char *fmt, ...)
+				__fp_attribute__((__format__(__printf__,1,2)));
 
 	if (cmd_source == src_command)
 	{
@@ -301,7 +302,8 @@ int	Datagram_GetMessage (qsocket_t *sock)
 
 	while (1)
 	{
-		length = sfunc.Read (sock->socket, (byte *)&packetBuffer, NET_DATAGRAMSIZE, &readaddr);
+		length = (unsigned int) sfunc.Read(sock->socket, (byte *)&packetBuffer,
+							NET_DATAGRAMSIZE, &readaddr);
 
 	//	if ((rand() & 255) > 220)
 	//		continue;
@@ -309,7 +311,7 @@ int	Datagram_GetMessage (qsocket_t *sock)
 		if (length == 0)
 			break;
 
-		if (length == -1)
+		if (length == (unsigned int)-1)
 		{
 			Con_Printf("Read error\n");
 			return -1;
@@ -540,7 +542,7 @@ static void Test_Poll (void *unused)
 	while (1)
 	{
 		len = dfunc.Read (testSocket, net_message.data, net_message.maxsize, &clientaddr);
-		if (len < sizeof(int))
+		if (len < (int) sizeof(int))
 			break;
 
 		net_message.cursize = len;
@@ -550,7 +552,7 @@ static void Test_Poll (void *unused)
 		MSG_ReadLong();
 		if (control == -1)
 			break;
-		if ((control & (~NETFLAG_LENGTH_MASK)) !=  NETFLAG_CTL)
+		if ((control & (~NETFLAG_LENGTH_MASK)) != (int)NETFLAG_CTL)
 			break;
 		if ((control & NETFLAG_LENGTH_MASK) != len)
 			break;
@@ -565,7 +567,7 @@ static void Test_Poll (void *unused)
 		connectTime = MSG_ReadLong();
 		Q_strcpy(address, MSG_ReadString());
 
-		Con_Printf("%s\n  frags:%3i  colors:%u %u  time:%u\n  %s\n", name, frags, colors >> 4, colors & 0x0f, connectTime / 60, address);
+		Con_Printf("%s\n  frags:%3i  colors:%d %d  time:%d\n  %s\n", name, frags, colors >> 4, colors & 0x0f, connectTime / 60, address);
 	}
 
 	testPollCount--;
@@ -669,7 +671,7 @@ static void Test2_Poll (void *unused)
 	name[0] = 0;
 
 	len = dfunc.Read (test2Socket, net_message.data, net_message.maxsize, &clientaddr);
-	if (len < sizeof(int))
+	if (len < (int) sizeof(int))
 		goto Reschedule;
 
 	net_message.cursize = len;
@@ -679,7 +681,7 @@ static void Test2_Poll (void *unused)
 	MSG_ReadLong();
 	if (control == -1)
 		goto Error;
-	if ((control & (~NETFLAG_LENGTH_MASK)) !=  NETFLAG_CTL)
+	if ((control & (~NETFLAG_LENGTH_MASK)) != (int)NETFLAG_CTL)
 		goto Error;
 	if ((control & NETFLAG_LENGTH_MASK) != len)
 		goto Error;
@@ -876,7 +878,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	SZ_Clear(&net_message);
 
 	len = dfunc.Read (acceptsock, net_message.data, net_message.maxsize, &clientaddr);
-	if (len < sizeof(int))
+	if (len < (int) sizeof(int))
 		return NULL;
 	net_message.cursize = len;
 
@@ -885,7 +887,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	MSG_ReadLong();
 	if (control == -1)
 		return NULL;
-	if ((control & (~NETFLAG_LENGTH_MASK)) !=  NETFLAG_CTL)
+	if ((control & (~NETFLAG_LENGTH_MASK)) != (int)NETFLAG_CTL)
 		return NULL;
 	if ((control & NETFLAG_LENGTH_MASK) != len)
 		return NULL;
@@ -1143,7 +1145,7 @@ static void _Datagram_SearchForHosts (qboolean xmit)
 
 	while ((ret = dfunc.Read (dfunc.controlSock, net_message.data, net_message.maxsize, &readaddr)) > 0)
 	{
-		if (ret < sizeof(int))
+		if (ret < (int) sizeof(int))
 			continue;
 		net_message.cursize = ret;
 
@@ -1160,7 +1162,7 @@ static void _Datagram_SearchForHosts (qboolean xmit)
 		MSG_ReadLong();
 		if (control == -1)
 			continue;
-		if ((control & (~NETFLAG_LENGTH_MASK)) !=  NETFLAG_CTL)
+		if ((control & (~NETFLAG_LENGTH_MASK)) != (int)NETFLAG_CTL)
 			continue;
 		if ((control & NETFLAG_LENGTH_MASK) != ret)
 			continue;
@@ -1298,7 +1300,7 @@ static qsocket_t *_Datagram_Connect (const char *host)
 					continue;
 				}
 
-				if (ret < sizeof(int))
+				if (ret < (int) sizeof(int))
 				{
 					ret = 0;
 					continue;
@@ -1314,7 +1316,7 @@ static qsocket_t *_Datagram_Connect (const char *host)
 					ret = 0;
 					continue;
 				}
-				if ((control & (~NETFLAG_LENGTH_MASK)) !=  NETFLAG_CTL)
+				if ((control & (~NETFLAG_LENGTH_MASK)) != (int)NETFLAG_CTL)
 				{
 					ret = 0;
 					continue;

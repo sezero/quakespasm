@@ -1355,7 +1355,7 @@ void M_Keys_Draw (void)
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
 // search for known bindings
-	for (i = 0; i < NUMCOMMANDS; i++)
+	for (i = 0; i < (int)NUMCOMMANDS; i++)
 	{
 		y = 48 + 8*i;
 
@@ -1424,7 +1424,7 @@ void M_Keys_Key (int k)
 	case K_RIGHTARROW:
 		S_LocalSound ("misc/menu1.wav");
 		keys_cursor++;
-		if (keys_cursor >= NUMCOMMANDS)
+		if (keys_cursor >= (int)NUMCOMMANDS)
 			keys_cursor = 0;
 		break;
 
