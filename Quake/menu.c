@@ -985,86 +985,72 @@ void M_Menu_Options_f (void)
 
 void M_AdjustSliders (int dir)
 {
+	float	f;
+
 	S_LocalSound ("misc/menu3.wav");
 
 	switch (options_cursor)
 	{
 	case OPT_SCALE:	// console and menu scale
-		scr_scale.value += dir * .1; // or .2
-		if (scr_scale.value < 1)
-			scr_scale.value = 1;
-		else if (scr_scale.value > 6)
-			scr_scale.value = 6;
-		Cvar_SetValue ("scr_scale", scr_scale.value);
-
+		f = scr_scale.value + dir * .1; // or .2
+		if (f < 1)	f = 1;
+		else if (f > 6)	f = 6;
+		Cvar_SetValue ("scr_scale", f);
 		// status bar size increases half as fast
 		Cvar_SetValue ("scr_sbarscale", (scr_scale.value - 1)/2 + 1);
-
 		Cvar_SetValue ("scr_conscale", scr_scale.value);
 		Cvar_SetValue ("scr_menuscale", scr_scale.value);
 		break;
 	case OPT_SCRSIZE:	// screen size
-		scr_viewsize.value += dir * 10;
-		if (scr_viewsize.value < 30)
-			scr_viewsize.value = 30;
-		if (scr_viewsize.value > 120)
-			scr_viewsize.value = 120;
-		Cvar_SetValue ("viewsize", scr_viewsize.value);
+		f = scr_viewsize.value + dir * 10;
+		if (f > 120)	f = 120;
+		else if(f < 30)	f = 30;
+		Cvar_SetValue ("viewsize", f);
 		break;
 	case OPT_GAMMA:	// gamma
-		vid_gamma.value -= dir * 0.05;
-		if (vid_gamma.value < 0.5)
-			vid_gamma.value = 0.5;
-		else if (vid_gamma.value > 1)
-			vid_gamma.value = 1;
-		Cvar_SetValue ("gamma", vid_gamma.value);
+		f = vid_gamma.value - dir * 0.05;
+		if (f < 0.5)	f = 0.5;
+		else if (f > 1)	f = 1;
+		Cvar_SetValue ("gamma", f);
 		break;
 	case OPT_MOUSESPEED:	// mouse speed
-		sensitivity.value += dir * 0.5;
-		if (sensitivity.value < 1)
-			sensitivity.value = 1;
-		else if (sensitivity.value > 11)
-			sensitivity.value = 11;
-		Cvar_SetValue ("sensitivity", sensitivity.value);
+		f = sensitivity.value + dir * 0.5;
+		if (f > 11)	f = 11;
+		else if (f < 1)	f = 1;
+		Cvar_SetValue ("sensitivity", f);
 		break;
 	case OPT_SBALPHA:	// statusbar alpha
-		scr_sbaralpha.value -= dir * 0.05;
-		if (scr_sbaralpha.value < 0)
-			scr_sbaralpha.value = 0;
-		else if (scr_sbaralpha.value > 1)
-			scr_sbaralpha.value = 1;
-		Cvar_SetValue ("scr_sbaralpha", scr_sbaralpha.value);
+		f = scr_sbaralpha.value - dir * 0.05;
+		if (f < 0)	f = 0;
+		else if (f > 1)	f = 1;
+		Cvar_SetValue ("scr_sbaralpha", f);
 		break;
 	case OPT_MUSICVOL:	// music volume
-		bgmvolume.value += dir * 0.1;
-		if (bgmvolume.value < 0)
-			bgmvolume.value = 0;
-		else if (bgmvolume.value > 1)
-			bgmvolume.value = 1;
-		Cvar_SetValue ("bgmvolume", bgmvolume.value);
+		f = bgmvolume.value + dir * 0.1;
+		if (f < 0)	f = 0;
+		else if (f > 1)	f = 1;
+		Cvar_SetValue ("bgmvolume", f);
 		break;
 	case OPT_MUSICEXT:	// enable external music vs cdaudio
-		Cvar_SetValue ("bgm_extmusic", !bgm_extmusic.value);
+		Cvar_Set ("bgm_extmusic", bgm_extmusic.value ? "0" : "1");
 		break;
 	case OPT_SNDVOL:	// sfx volume
-		sfxvolume.value += dir * 0.1;
-		if (sfxvolume.value < 0)
-			sfxvolume.value = 0;
-		else if (sfxvolume.value > 1)
-			sfxvolume.value = 1;
-		Cvar_SetValue ("volume", sfxvolume.value);
+		f = sfxvolume.value + dir * 0.1;
+		if (f < 0)	f = 0;
+		else if (f > 1)	f = 1;
+		Cvar_SetValue ("volume", f);
 		break;
 
 	case OPT_ALWAYRUN:	// always run
 		if (cl_forwardspeed.value > 200)
 		{
-			Cvar_SetValue ("cl_forwardspeed", 200);
-			Cvar_SetValue ("cl_backspeed", 200);
+			Cvar_Set ("cl_forwardspeed", "200");
+			Cvar_Set ("cl_backspeed", "200");
 		}
 		else
 		{
-			Cvar_SetValue ("cl_forwardspeed", 400);
-			Cvar_SetValue ("cl_backspeed", 400);
+			Cvar_Set ("cl_forwardspeed", "400");
+			Cvar_Set ("cl_backspeed", "400");
 		}
 		break;
 
@@ -1080,11 +1066,11 @@ void M_AdjustSliders (int dir)
 		break;
 
 	case OPT_LOOKSPRING:	// lookspring
-		Cvar_SetValue ("lookspring", !lookspring.value);
+		Cvar_Set ("lookspring", lookspring.value ? "0" : "1");
 		break;
 
 	case OPT_LOOKSTRAFE:	// lookstrafe
-		Cvar_SetValue ("lookstrafe", !lookstrafe.value);
+		Cvar_Set ("lookstrafe", lookstrafe.value ? "0" : "1");
 		break;
 	}
 }
@@ -2116,6 +2102,7 @@ void M_GameOptions_Draw (void)
 void M_NetStart_Change (int dir)
 {
 	int count;
+	float	f;
 
 	switch (gameoptions_cursor)
 	{
@@ -2132,44 +2119,36 @@ void M_NetStart_Change (int dir)
 		break;
 
 	case 2:
-		Cvar_SetValue ("coop", coop.value ? 0 : 1);
+		Cvar_Set ("coop", coop.value ? "0" : "1");
 		break;
 
 	case 3:
-		if (rogue)
-			count = 6;
-		else
-			count = 2;
-
-		Cvar_SetValue ("teamplay", teamplay.value + dir);
-		if (teamplay.value > count)
-			Cvar_SetValue ("teamplay", 0);
-		else if (teamplay.value < 0)
-			Cvar_SetValue ("teamplay", count);
+		count = (rogue) ? 6 : 2;
+		f = teamplay.value + dir;
+		if (f > count)	f = 0;
+		else if (f < 0)	f = count;
+		Cvar_SetValue ("teamplay", f);
 		break;
 
 	case 4:
-		Cvar_SetValue ("skill", skill.value + dir);
-		if (skill.value > 3)
-			Cvar_SetValue ("skill", 0);
-		if (skill.value < 0)
-			Cvar_SetValue ("skill", 3);
+		f = skill.value + dir;
+		if (f > 3)	f = 0;
+		else if (f < 0)	f = 3;
+		Cvar_SetValue ("skill", f);
 		break;
 
 	case 5:
-		Cvar_SetValue ("fraglimit", fraglimit.value + dir*10);
-		if (fraglimit.value > 100)
-			Cvar_SetValue ("fraglimit", 0);
-		if (fraglimit.value < 0)
-			Cvar_SetValue ("fraglimit", 100);
+		f = fraglimit.value + dir * 10;
+		if (f > 100)	f = 0;
+		else if (f < 0)	f = 100;
+		Cvar_SetValue ("fraglimit", f);
 		break;
 
 	case 6:
-		Cvar_SetValue ("timelimit", timelimit.value + dir*5);
-		if (timelimit.value > 60)
-			Cvar_SetValue ("timelimit", 0);
-		if (timelimit.value < 0)
-			Cvar_SetValue ("timelimit", 60);
+		f = timelimit.value + dir * 5;
+		if (f > 60)	f = 0;
+		else if (f < 0)	f = 60;
+		Cvar_SetValue ("timelimit", f);
 		break;
 
 	case 7:
