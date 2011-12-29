@@ -16,11 +16,12 @@
      4.3 Mac OS X
 
   5. Changes
-     5.1 Changes in 0.85.5
-     5.2 Changes in 0.85.4
-     5.3 Changes in 0.85.3
-     5.4 Changes in 0.85.2
-     5.5 Changes in 0.85.1
+     5.1 Changes in 0.85.6
+     5.2 Changes in 0.85.5
+     5.3 Changes in 0.85.4
+     5.4 Changes in 0.85.3
+     5.5 Changes in 0.85.2
+     5.6 Changes in 0.85.1
 
   6. Todo
   7. Links
@@ -29,7 +30,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.5 (25 December 2011)
+  QuakeSpasm 0.85.6 (02 January 2011)
 
 
   1.  About
@@ -153,8 +154,18 @@
   5.  Changes
 
 
-  5.1.  Changes in 0.85.5
+  5.1.  Changes in 0.85.6
 
+  o More work for string buffer safety
+
+  o Reverted v0.85.5 change of not allowing deathmatch and coop cvars to
+    be set at the same time (was reported for possibility of causing
+    compatibility issues with mods)
+
+  o Several cleanups in the cvar layer
+
+
+  5.2.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -184,8 +195,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-  5.2.  Changes in 0.85.4
 
+  5.3.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -212,8 +223,8 @@
 
   o  Other minor sound and cdaudio updates
 
-  5.3.  Changes in 0.85.3
 
+  5.4.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -250,8 +261,7 @@
      some other CD tweaks.
 
 
-  5.4.  Changes in 0.85.2
-
+  5.5.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -279,8 +289,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.5.  Changes in 0.85.1
-
+  5.6.  Changes in 0.85.1
 
   o  64 bit CPU support
 
