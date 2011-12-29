@@ -841,6 +841,7 @@ void Host_Init (void)
 	LOG_Init (host_parms);
 	Cvar_Init (); //johnfitz
 	COM_Init ();
+	COM_InitFilesystem ();
 	Host_InitLocal ();
 	W_LoadWadFile (); //johnfitz -- filename is now hard-coded for honesty
 	if (cls.state != ca_dedicated)

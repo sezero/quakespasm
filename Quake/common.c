@@ -37,7 +37,7 @@ int	com_nummissionpacks; //johnfitz
 
 qboolean		fitzmode;
 
-void COM_InitFilesystem (void);
+static void COM_Path_f (void);
 
 // if a packfile directory differs from this, it is assumed to be hacked
 #define PAK0_COUNT              339
@@ -127,6 +127,7 @@ void InsertLinkBefore (link_t *l, link_t *before)
 	l->prev->next = l;
 	l->next->prev = l;
 }
+
 void InsertLinkAfter (link_t *l, link_t *after)
 {
 	l->next = after->next;
@@ -814,7 +815,6 @@ float MSG_ReadAngle16 (void)
 }
 //johnfitz
 
-
 //===========================================================================
 
 void SZ_Alloc (sizebuf_t *buf, int startsize)
@@ -883,7 +883,6 @@ void SZ_Print (sizebuf_t *buf, const char *data)
 
 
 //============================================================================
-
 
 /*
 ============
@@ -1146,7 +1145,7 @@ Immediately exits out if an alternate game was attempted to be started without
 being registered.
 ================
 */
-void COM_CheckRegistered (void)
+static void COM_CheckRegistered (void)
 {
 	int		h;
 	unsigned short	check[128];
@@ -1169,16 +1168,21 @@ void COM_CheckRegistered (void)
 	COM_CloseFile (h);
 
 	for (i = 0; i < 128; i++)
+	{
 		if (pop[i] != (unsigned short)BigShort (check[i]))
 			Sys_Error ("Corrupted data file.");
+	}
 
-	Cvar_SetROM ("cmdline", com_cmdline+1); //johnfitz -- eliminate leading space
+	for (i = 0; com_cmdline[i]; i++)
+	{
+		if (com_cmdline[i]!= ' ')
+			break;
+	}
+
+	Cvar_SetROM ("cmdline", &com_cmdline[i]);
 	Cvar_SetROM ("registered", "1");
 	Con_Printf ("Playing registered version.\n");
 }
-
-
-void COM_Path_f (void);
 
 
 /*
@@ -1295,13 +1299,6 @@ void COM_Init (void)
 
 	if (COM_CheckParm("-fitz"))
 		fitzmode = true;
-
-	Cvar_RegisterVariable (&registered);
-	Cvar_RegisterVariable (&cmdline);
-	Cmd_AddCommand ("path", COM_Path_f);
-	COM_InitFilesystem ();
-	COM_CheckRegistered ();
-
 #ifdef _DEBUG
 	Cmd_AddCommand ("fitztest", FitzTest_f); //johnfitz
 #endif
@@ -1340,18 +1337,6 @@ char *va (const char *format, ...)
 	va_end (argptr);
 
 	return va_buf;
-}
-
-
-/// just for debugging
-int memsearch (byte *start, int count, int search)
-{
-	int		i;
-
-	for (i = 0; i < count; i++)
-		if (start[i] == search)
-			return i;
-	return -1;
 }
 
 /*
@@ -1422,7 +1407,7 @@ searchpath_t	*com_searchpaths;
 COM_Path_f
 ============
 */
-void COM_Path_f (void)
+static void COM_Path_f (void)
 {
 	searchpath_t	*s;
 
@@ -1860,7 +1845,7 @@ pack_t *COM_LoadPackFile (const char *packfile)
 COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
 =================
 */
-void COM_AddGameDirectory (const char *dir)
+static void COM_AddGameDirectory (const char *dir)
 {
 	int i;
 	unsigned int path_id;
@@ -1931,6 +1916,10 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 {
 	int i, j;
 
+	Cvar_RegisterVariable (&registered);
+	Cvar_RegisterVariable (&cmdline);
+	Cmd_AddCommand ("path", COM_Path_f);
+
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
 		q_strlcpy (com_basedir, com_argv[i + 1], sizeof(com_basedir));
@@ -1981,6 +1970,8 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		com_modified = true;
 		COM_AddGameDirectory (va("%s/%s", com_basedir, com_argv[i + 1]));
 	}
+
+	COM_CheckRegistered ();
 }
 
 
