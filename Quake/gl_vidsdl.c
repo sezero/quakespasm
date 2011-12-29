@@ -1367,6 +1367,8 @@ void	VID_Toggle (void)
 		goto vrestart;
 	if (SDL_WM_ToggleFullScreen(draw_context) == 1)
 	{
+		qboolean was_changed = vid_changed;
+
 		Sbar_Changed ();	// Sbar seems to need refreshing
 		windowed = !windowed;
 		if (vid.type == MODE_FULLSCREEN_DEFAULT)
@@ -1374,7 +1376,11 @@ void	VID_Toggle (void)
 		else
 		    vid.type = MODE_FULLSCREEN_DEFAULT;
 
+		// since we succeeded, ignore the vid_fullscreen
+		// callback function setting vid_changed to true.
+		was_changed = vid_changed;
 		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
+		vid_changed = was_changed;
 	}
 	else
 	{
