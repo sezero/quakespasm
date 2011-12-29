@@ -267,16 +267,8 @@ int VID_SetMode (int modenum)
 	// set vertical sync
 	if (gl_swap_control)
 	{
-		if (vid_vsync.value)
-		{
-			if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 1) == -1)
-				Con_Printf ("VID_Vsync_f: failed on SDL_GL_SetAttribute\n");
-		}
-		else
-		{
-			if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1)
-				Con_Printf ("VID_Vsync_f: failed on SDL_GL_SetAttribute\n");
-		}
+		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
+			Con_Printf ("Unable to set swap control\n");
 	}
 
 	if (modelist[modenum].type == MODE_WINDOWED)
@@ -667,7 +659,7 @@ void GL_CheckExtensions (void)
 			}
 			else
 			{
-				Con_Printf("FOUND: WGL_EXT_swap_control\n");
+				Con_Printf("FOUND: GL_EXT_swap_control\n");
 				gl_swap_control = true;
 			}
 		}

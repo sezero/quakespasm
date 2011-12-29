@@ -1063,7 +1063,7 @@ void GL_CheckExtensions (void)
 				Con_Warning ("vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
 			else
 			{
-				Con_Printf("FOUND: WGL_EXT_swap_control\n");
+				Con_Printf("FOUND: GL_EXT_swap_control\n");
 				gl_swap_control = true;
 			}
 		}
