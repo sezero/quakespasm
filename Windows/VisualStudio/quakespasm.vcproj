@@ -852,10 +852,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Quake\winquake.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Quake\world.h"
 				>
 			</File>
