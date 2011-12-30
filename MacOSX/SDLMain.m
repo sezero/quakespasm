@@ -78,7 +78,6 @@ int main (int argc, char **argv)
         gFinderLaunch = NO;
     }
 
-    [SDLApplication poseAsClass:[NSApplication class]];
-    NSApplicationMain (argc, argv);
+    NSApplicationMain (argc, (const char**) argv);
     return 0;
 }

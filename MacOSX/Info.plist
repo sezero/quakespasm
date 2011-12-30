@@ -23,7 +23,7 @@
 	<key>NSMainNibFile</key>
 	<string>Launcher</string>
 	<key>NSPrincipalClass</key>
-	<string>NSApplication</string>
+	<string>SDLApplication</string>
 	<key>SUEnableAutomaticChecks</key>
 	<false/>
 	<key>SUFeedURL</key>
