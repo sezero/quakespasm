@@ -752,7 +752,8 @@ void GL_Init (void)
 	Cmd_AddCommand ("gl_info", GL_Info_f); //johnfitz
 
 	Cvar_RegisterVariable (&vid_vsync); //johnfitz
-	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
+	if (gl_swap_control)
+		Cvar_SetCallback (&vid_vsync, VID_Changed_f);
 
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
 		fullsbardraw = true;
