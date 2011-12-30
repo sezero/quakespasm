@@ -4,7 +4,6 @@
 
   Table of Contents
 
-
   1. About
   2. Downloads
   3. Hints
@@ -26,7 +25,6 @@
   6. Todo
   7. Links
 
-
   ______________________________________________________________________
 
 
@@ -34,7 +32,6 @@
 
 
   1.  About
-
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
@@ -45,22 +42,10 @@
 
   2.  Downloads
 
-
-  o  Source
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6.tgz/download>
-
-  o  Linux (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_linux.tgz/download>
-
-  o  Windows (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_windows.zip/download>
-
-  o  OSX image
-     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.6.dmg/download>
+  o  <http://quakespasm.sourceforge.net/download.htm>
 
 
   3.  Hints
-
 
   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
@@ -106,7 +91,6 @@
 
   4.  Compiling
 
-
   To check-out the latest version of QuakeSpasm, use :
   svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
 
@@ -151,8 +135,8 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
-  5.  Changes
 
+  5.  Changes
 
   5.1.  Changes in 0.85.6
 
@@ -331,7 +315,6 @@
 
   6.  Todo
 
-
   o  Add uHexen2's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
@@ -342,11 +325,8 @@
 
   o  Complete the unix user directories support
 
-  o  Finalize OSX automatic updating feature
-
 
   7.  Links
-
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
@@ -372,5 +352,4 @@
   o  Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
 
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
-
 
