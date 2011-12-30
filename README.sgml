@@ -17,10 +17,10 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <sect> Downloads <p>
 
 <itemize>
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5.tgz/download" name="Source">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_linux.tgz/download" name="Linux (x86)">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_windows.zip/download" name="Windows (x86)">
-<item><url url="http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.5.dmg/download" name="OSX image">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6.tgz/download" name="Source">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_linux.tgz/download" name="Linux (x86)">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_windows.zip/download" name="Windows (x86)">
+<item><url url="http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.6.dmg/download" name="OSX image">
 </itemize>
 
 
@@ -94,7 +94,8 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <itemize>
 <item> More work for string buffer safety
 <item> Reverted v0.85.5 change of not allowing deathmatch and coop cvars to be set at the same time (was reported for possibility of causing compatibility issues with mods)
-<item> Several cleanups in the cvar layer
+<item> Several cleanups/changes in the cvar layer
+<item> Minor SDL video fixes.
 </itemize>
 </p>
 

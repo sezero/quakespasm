@@ -47,16 +47,16 @@
 
 
   o  Source
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5.tgz/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6.tgz/download>
 
   o  Linux (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_linux.tgz/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_linux.tgz/download>
 
   o  Windows (x86)
-     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.5_windows.zip/download>
+     <http://sourceforge.net/projects/quakespasm/files/quakespasm-0.85.6_windows.zip/download>
 
   o  OSX image
-     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.5.dmg/download>
+     <http://sourceforge.net/projects/quakespasm/files/QuakeSpasm-0.85.6.dmg/download>
 
 
   3.  Hints
@@ -162,7 +162,9 @@
     be set at the same time (was reported for possibility of causing
     compatibility issues with mods)
 
-  o Several cleanups in the cvar layer
+  o Several cleanups/changes in the cvar layer
+
+  o Minor SDL video fixes.
 
 
   5.2.  Changes in 0.85.5
