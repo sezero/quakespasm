@@ -1399,7 +1399,7 @@ void VID_SyncCvars (void)
 	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 
 	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
-		Cvar_SetQuick (&vid_vsync, (swap_control) ? "1" : "0");
+		Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
 }
 
 //==========================================================================
