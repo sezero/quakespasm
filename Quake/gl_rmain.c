@@ -365,7 +365,6 @@ R_Clear -- johnfitz -- rewritten and gutted
 */
 void R_Clear (void)
 {
-	extern int gl_stencilbits;
 	unsigned int clearbits;
 
 	clearbits = GL_DEPTH_BUFFER_BIT;

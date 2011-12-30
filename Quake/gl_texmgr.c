@@ -23,19 +23,18 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-extern qboolean	gl_anisotropy_able;
-
-cvar_t		gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
-cvar_t		gl_max_size = {"gl_max_size", "0", CVAR_NONE};
-cvar_t		gl_picmip = {"gl_picmip", "0", CVAR_NONE};
-GLint			gl_hardware_maxsize;
 const int	gl_solid_format = 3;
 const int	gl_alpha_format = 4;
 
+static cvar_t	gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
+static cvar_t	gl_max_size = {"gl_max_size", "0", CVAR_NONE};
+static cvar_t	gl_picmip = {"gl_picmip", "0", CVAR_NONE};
+static GLint	gl_hardware_maxsize;
+
 #define	MAX_GLTEXTURES	2048
-gltexture_t	*active_gltextures, *free_gltextures;
-gltexture_t	*notexture, *nulltexture;
-int numgltextures;
+static int numgltextures;
+static gltexture_t	*active_gltextures, *free_gltextures;
+gltexture_t		*notexture, *nulltexture;
 
 unsigned int d_8to24table[256];
 unsigned int d_8to24table_fbright[256];
@@ -58,11 +57,11 @@ typedef struct
 	int	minfilter;
 	const char  *name;
 } glmode_t;
-glmode_t modes[] = {
-	{GL_NEAREST, GL_NEAREST,				"GL_NEAREST"},
+static glmode_t modes[] = {
+	{GL_NEAREST, GL_NEAREST,		"GL_NEAREST"},
 	{GL_NEAREST, GL_NEAREST_MIPMAP_NEAREST,	"GL_NEAREST_MIPMAP_NEAREST"},
 	{GL_NEAREST, GL_NEAREST_MIPMAP_LINEAR,	"GL_NEAREST_MIPMAP_LINEAR"},
-	{GL_LINEAR,  GL_LINEAR,					"GL_LINEAR"},
+	{GL_LINEAR,  GL_LINEAR,			"GL_LINEAR"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_NEAREST,	"GL_LINEAR_MIPMAP_NEAREST"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
@@ -74,11 +73,11 @@ int gl_texturemode = 5; // bilinear
 TexMgr_DescribeTextureModes_f -- report available texturemodes
 ===============
 */
-void TexMgr_DescribeTextureModes_f (void)
+static void TexMgr_DescribeTextureModes_f (void)
 {
 	int i;
 
-	for (i=0; i<NUM_GLMODES; i++)
+	for (i = 0; i < NUM_GLMODES; i++)
 		Con_SafePrintf ("   %2i: %s\n", i + 1, modes[i].name);
 
 	Con_Printf ("%i modes\n", i);
@@ -89,7 +88,7 @@ void TexMgr_DescribeTextureModes_f (void)
 TexMgr_SetFilterModes
 ===============
 */
-void TexMgr_SetFilterModes (gltexture_t *glt)
+static void TexMgr_SetFilterModes (gltexture_t *glt)
 {
 	GL_Bind (glt);
 
@@ -122,7 +121,7 @@ void TexMgr_SetFilterModes (gltexture_t *glt)
 TexMgr_TextureMode_f
 ===============
 */
-void TexMgr_TextureMode_f (void)
+static void TexMgr_TextureMode_f (void)
 {
 	gltexture_t	*glt;
 	const char	*arg;
@@ -137,12 +136,14 @@ void TexMgr_TextureMode_f (void)
 		arg = Cmd_Argv(1);
 		if (arg[0] == 'G' || arg[0] == 'g')
 		{
-			for (i=0; i<NUM_GLMODES; i++)
+			for (i = 0; i < NUM_GLMODES; i++)
+			{
 				if (!Q_strcasecmp (modes[i].name, arg))
 				{
 					gl_texturemode = i;
 					goto stuff;
 				}
+			}
 			Con_Printf ("\"%s\" is not a valid texturemode\n", arg);
 			return;
 		}
@@ -160,7 +161,7 @@ void TexMgr_TextureMode_f (void)
 			Con_Printf ("\"%s\" is not a valid texturemode\n", arg);
 
 stuff:
-		for (glt=active_gltextures; glt; glt=glt->next)
+		for (glt = active_gltextures; glt; glt = glt->next)
 			TexMgr_SetFilterModes (glt);
 
 		Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
@@ -181,14 +182,13 @@ TexMgr_Anisotropy_f -- called when gl_texture_anisotropy changes
 FIXME: this is getting called twice (becuase of the recursive Cvar_SetValue call)
 ===============
 */
-void TexMgr_Anisotropy_f (cvar_t *var)
+static void TexMgr_Anisotropy_f (cvar_t *var)
 {
-	extern float gl_max_anisotropy;
 	gltexture_t	*glt;
 
 	Cvar_SetValue ("gl_texture_anisotropy", CLAMP (1.0f, gl_texture_anisotropy.value, gl_max_anisotropy));
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 		TexMgr_SetFilterModes (glt);
 }
 
@@ -197,14 +197,13 @@ void TexMgr_Anisotropy_f (cvar_t *var)
 TexMgr_Imagelist_f -- report loaded textures
 ===============
 */
-void TexMgr_Imagelist_f (void)
+static void TexMgr_Imagelist_f (void)
 {
 	float mb;
 	float texels = 0;
 	gltexture_t	*glt;
-	extern cvar_t vid_bpp;
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		Con_SafePrintf ("   %4i x%4i %s\n", glt->width, glt->height, glt->name);
 		if (glt->flags & TEXPREF_MIPMAP)
@@ -213,7 +212,7 @@ void TexMgr_Imagelist_f (void)
 			texels += (glt->width * glt->height);
 	}
 
-	mb = texels * (vid_bpp.value / 8.0f) / 0x100000;
+	mb = texels * (Cvar_VariableValue("vid_bpp") / 8.0f) / 0x100000;
 	Con_Printf ("%i textures %i pixels %1.1f megabytes\n", numgltextures, (int)texels, mb);
 }
 
@@ -222,7 +221,7 @@ void TexMgr_Imagelist_f (void)
 TexMgr_Imagedump_f -- dump all current textures to TGA files
 ===============
 */
-void TexMgr_Imagedump_f (void)
+static void TexMgr_Imagedump_f (void)
 {
 	char tganame[MAX_OSPATH], tempname[MAX_OSPATH], dirname[MAX_OSPATH];
 	gltexture_t	*glt;
@@ -234,7 +233,7 @@ void TexMgr_Imagedump_f (void)
 	Sys_mkdir (dirname);
 
 	//loop through textures
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		q_strlcpy (tempname, glt->name, sizeof(tempname));
 		while ( (c = strchr(tempname, ':')) ) *c = '_';
@@ -271,9 +270,9 @@ float TexMgr_FrameUsage (void)
 	float mb;
 	float texels = 0;
 	gltexture_t	*glt;
-	extern cvar_t vid_bpp;
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
+	{
 		if (glt->visframe == r_framecount)
 		{
 			if (glt->flags & TEXPREF_MIPMAP)
@@ -281,8 +280,9 @@ float TexMgr_FrameUsage (void)
 			else
 				texels += (glt->width * glt->height);
 		}
+	}
 
-	mb = texels * (vid_bpp.value / 8.0f) / 0x100000;
+	mb = texels * (Cvar_VariableValue("vid_bpp") / 8.0f) / 0x100000;
 	return mb;
 }
 
@@ -305,9 +305,11 @@ gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name)
 
 	if (name)
 	{
-		for (glt=active_gltextures; glt; glt=glt->next)
+		for (glt = active_gltextures; glt; glt = glt->next)
+		{
 			if (glt->owner == owner && !strcmp (glt->name, name))
 				return glt;
+		}
 	}
 
 	return NULL;
@@ -362,6 +364,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 	}
 
 	for (glt = active_gltextures; glt; glt = glt->next)
+	{
 		if (glt->next == kill)
 		{
 			glt->next = kill->next;
@@ -372,6 +375,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 			numgltextures--;
 			return;
 		}
+	}
 
 	Con_Printf ("TexMgr_FreeTexture: not found\n");
 }
@@ -443,7 +447,7 @@ void TexMgr_LoadPalette (void)
 	//standard palette, 255 is transparent
 	dst = (byte *)d_8to24table;
 	src = pal;
-	for (i=0; i<256; i++)
+	for (i = 0; i < 256; i++)
 	{
 		*dst++ = *src++;
 		*dst++ = *src++;
@@ -455,14 +459,14 @@ void TexMgr_LoadPalette (void)
 	//fullbright palette, 0-223 are black (for additive blending)
 	src = pal + 224*3;
 	dst = (byte *) &d_8to24table_fbright[224];
-	for (i=224; i<256; i++)
+	for (i = 224; i < 256; i++)
 	{
 		*dst++ = *src++;
 		*dst++ = *src++;
 		*dst++ = *src++;
 		*dst++ = 255;
 	}
-	for (i=0; i<224; i++)
+	for (i = 0; i < 224; i++)
 	{
 		dst = (byte *) &d_8to24table_fbright[i];
 		dst[3] = 255;
@@ -472,14 +476,14 @@ void TexMgr_LoadPalette (void)
 	//nobright palette, 224-255 are black (for additive blending)
 	dst = (byte *)d_8to24table_nobright;
 	src = pal;
-	for (i=0; i<256; i++)
+	for (i = 0; i < 256; i++)
 	{
 		*dst++ = *src++;
 		*dst++ = *src++;
 		*dst++ = *src++;
 		*dst++ = 255;
 	}
-	for (i=224; i<256; i++)
+	for (i = 224; i < 256; i++)
 	{
 		dst = (byte *) &d_8to24table_nobright[i];
 		dst[3] = 255;
@@ -542,7 +546,7 @@ void TexMgr_RecalcWarpImageSize (void)
 	mark = Hunk_LowMark();
 	dummy = (byte *) Hunk_Alloc (gl_warpimagesize*gl_warpimagesize*4);
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		if (glt->flags & TEXPREF_WARPIMAGE)
 		{
@@ -572,7 +576,7 @@ void TexMgr_Init (void)
 	// init texture list
 	free_gltextures = (gltexture_t *) Hunk_AllocName (MAX_GLTEXTURES * sizeof(gltexture_t), "gltextures");
 	active_gltextures = NULL;
-	for (i=0; i<MAX_GLTEXTURES-1; i++)
+	for (i = 0; i < MAX_GLTEXTURES - 1; i++)
 		free_gltextures[i].next = &free_gltextures[i+1];
 	free_gltextures[i].next = NULL;
 	numgltextures = 0;
@@ -620,7 +624,8 @@ TexMgr_Pad -- return smallest power of two greater than or equal to s
 int TexMgr_Pad (int s)
 {
 	int i;
-	for (i = 1; i < s; i<<=1);
+	for (i = 1; i < s; i<<=1)
+		;
 	return i;
 }
 
@@ -656,15 +661,15 @@ int TexMgr_PadConditional (int s)
 TexMgr_MipMapW
 ================
 */
-unsigned *TexMgr_MipMapW (unsigned *data, int width, int height)
+static unsigned *TexMgr_MipMapW (unsigned *data, int width, int height)
 {
-	int		i, size;
+	int	i, size;
 	byte	*out, *in;
 
 	out = in = (byte *)data;
 	size = (width*height)>>1;
 
-	for (i=0; i<size; i++, out+=4, in+=8)
+	for (i = 0; i < size; i++, out += 4, in += 8)
 	{
 		out[0] = (in[0] + in[4])>>1;
 		out[1] = (in[1] + in[5])>>1;
@@ -680,23 +685,25 @@ unsigned *TexMgr_MipMapW (unsigned *data, int width, int height)
 TexMgr_MipMapH
 ================
 */
-unsigned *TexMgr_MipMapH (unsigned *data, int width, int height)
+static unsigned *TexMgr_MipMapH (unsigned *data, int width, int height)
 {
-	int		i, j;
+	int	i, j;
 	byte	*out, *in;
 
 	out = in = (byte *)data;
 	height>>=1;
 	width<<=2;
 
-	for (i=0; i<height; i++, in+=width)
-		for (j=0; j<width; j+=4, out+=4, in+=4)
+	for (i = 0; i < height; i++, in += width)
+	{
+		for (j = 0; j < width; j += 4, out += 4, in += 4)
 		{
 			out[0] = (in[0] + in[width+0])>>1;
 			out[1] = (in[1] + in[width+1])>>1;
 			out[2] = (in[2] + in[width+2])>>1;
 			out[3] = (in[3] + in[width+3])>>1;
 		}
+	}
 
 	return data;
 }
@@ -706,7 +713,7 @@ unsigned *TexMgr_MipMapH (unsigned *data, int width, int height)
 TexMgr_ResampleTexture -- bilinear resample
 ================
 */
-unsigned *TexMgr_ResampleTexture (unsigned *in, int inwidth, int inheight, qboolean alpha)
+static unsigned *TexMgr_ResampleTexture (unsigned *in, int inwidth, int inheight, qboolean alpha)
 {
 	byte *nwpx, *nepx, *swpx, *sepx, *dest;
 	unsigned xfrac, yfrac, x, y, modx, mody, imodx, imody, injump, outjump;
@@ -724,14 +731,14 @@ unsigned *TexMgr_ResampleTexture (unsigned *in, int inwidth, int inheight, qbool
 	yfrac = ((inheight-1) << 16) / (outheight-1);
 	y = outjump = 0;
 
-	for (i=0; i<outheight; i++)
+	for (i = 0; i < outheight; i++)
 	{
 		mody = (y>>8) & 0xFF;
 		imody = 256 - mody;
 		injump = (y>>16) * inwidth;
 		x = 0;
 
-		for (j=0; j<outwidth; j++)
+		for (j = 0; j < outwidth; j++)
 		{
 			modx = (x>>8) & 0xFF;
 			imodx = 256 - modx;
@@ -768,18 +775,20 @@ eliminate pink edges on sprites, etc.
 operates in place on 32bit data
 ===============
 */
-void TexMgr_AlphaEdgeFix (byte *data, int width, int height)
+static void TexMgr_AlphaEdgeFix (byte *data, int width, int height)
 {
-	int i,j,n=0,b,c[3]={0,0,0},lastrow,thisrow,nextrow,lastpix,thispix,nextpix;
-	byte *dest = data;
+	int	i, j, n = 0, b, c[3] = {0,0,0},
+		lastrow, thisrow, nextrow,
+		lastpix, thispix, nextpix;
+	byte	*dest = data;
 
-	for (i=0; i<height; i++)
+	for (i = 0; i < height; i++)
 	{
 		lastrow = width * 4 * ((i == 0) ? height-1 : i-1);
 		thisrow = width * 4 * i;
 		nextrow = width * 4 * ((i == height-1) ? 0 : i+1);
 
-		for (j=0; j<width; j++, dest+=4)
+		for (j = 0; j < width; j++, dest += 4)
 		{
 			if (dest[3]) //not transparent
 				continue;
@@ -817,7 +826,7 @@ TexMgr_PadEdgeFixW -- special case of AlphaEdgeFix for textures that only need i
 operates in place on 32bit data, and expects unpadded height and width values
 ===============
 */
-void TexMgr_PadEdgeFixW (byte *data, int width, int height)
+static void TexMgr_PadEdgeFixW (byte *data, int width, int height)
 {
 	byte *src, *dst;
 	int i, padw, padh;
@@ -827,7 +836,7 @@ void TexMgr_PadEdgeFixW (byte *data, int width, int height)
 
 	//copy last full column to first empty column, leaving alpha byte at zero
 	src = data + (width - 1) * 4;
-	for (i=0; i<padh; i++)
+	for (i = 0; i < padh; i++)
 	{
 		src[4] = src[0];
 		src[5] = src[1];
@@ -838,7 +847,7 @@ void TexMgr_PadEdgeFixW (byte *data, int width, int height)
 	//copy first full column to last empty column, leaving alpha byte at zero
 	src = data;
 	dst = data + (padw - 1) * 4;
-	for (i=0; i<padh; i++)
+	for (i = 0; i < padh; i++)
 	{
 		dst[0] = src[0];
 		dst[1] = src[1];
@@ -855,7 +864,7 @@ TexMgr_PadEdgeFixH -- special case of AlphaEdgeFix for textures that only need i
 operates in place on 32bit data, and expects unpadded height and width values
 ===============
 */
-void TexMgr_PadEdgeFixH (byte *data, int width, int height)
+static void TexMgr_PadEdgeFixH (byte *data, int width, int height)
 {
 	byte *src, *dst;
 	int i, padw, padh;
@@ -866,7 +875,7 @@ void TexMgr_PadEdgeFixH (byte *data, int width, int height)
 	//copy last full row to first empty row, leaving alpha byte at zero
 	dst = data + height * padw * 4;
 	src = dst - padw * 4;
-	for (i=0; i<padw; i++)
+	for (i = 0; i < padw; i++)
 	{
 		dst[0] = src[0];
 		dst[1] = src[1];
@@ -878,7 +887,7 @@ void TexMgr_PadEdgeFixH (byte *data, int width, int height)
 	//copy first full row to last empty row, leaving alpha byte at zero
 	dst = data + (padh - 1) * padw * 4;
 	src = data;
-	for (i=0; i<padw; i++)
+	for (i = 0; i < padw; i++)
 	{
 		dst[0] = src[0];
 		dst[1] = src[1];
@@ -893,14 +902,14 @@ void TexMgr_PadEdgeFixH (byte *data, int width, int height)
 TexMgr_8to32
 ================
 */
-unsigned *TexMgr_8to32 (byte *in, int pixels, unsigned int *usepal)
+static unsigned *TexMgr_8to32 (byte *in, int pixels, unsigned int *usepal)
 {
 	int i;
 	unsigned *out, *data;
 
 	out = data = (unsigned *) Hunk_Alloc(pixels*4);
 
-	for (i=0 ; i<pixels ; i++)
+	for (i = 0; i < pixels; i++)
 		*out++ = usepal[*in++];
 
 	return data;
@@ -911,7 +920,7 @@ unsigned *TexMgr_8to32 (byte *in, int pixels, unsigned int *usepal)
 TexMgr_PadImageW -- return image with width padded up to power-of-two dimentions
 ================
 */
-byte *TexMgr_PadImageW (byte *in, int width, int height, byte padbyte)
+static byte *TexMgr_PadImageW (byte *in, int width, int height, byte padbyte)
 {
 	int i, j, outwidth;
 	byte *out, *data;
@@ -923,11 +932,11 @@ byte *TexMgr_PadImageW (byte *in, int width, int height, byte padbyte)
 
 	out = data = (byte *) Hunk_Alloc(outwidth*height);
 
-	for (i=0; i<height; i++)
+	for (i = 0; i < height; i++)
 	{
-		for (j=0; j<width; j++)
+		for (j = 0; j < width; j++)
 			*out++ = *in++;
-		for (   ; j<outwidth; j++)
+		for (  ; j < outwidth; j++)
 			*out++ = padbyte;
 	}
 
@@ -939,7 +948,7 @@ byte *TexMgr_PadImageW (byte *in, int width, int height, byte padbyte)
 TexMgr_PadImageH -- return image with height padded up to power-of-two dimentions
 ================
 */
-byte *TexMgr_PadImageH (byte *in, int width, int height, byte padbyte)
+static byte *TexMgr_PadImageH (byte *in, int width, int height, byte padbyte)
 {
 	int i, srcpix, dstpix;
 	byte *data, *out;
@@ -952,9 +961,9 @@ byte *TexMgr_PadImageH (byte *in, int width, int height, byte padbyte)
 
 	out = data = (byte *) Hunk_Alloc(dstpix);
 
-	for (i=0; i<srcpix; i++)
+	for (i = 0; i < srcpix; i++)
 		*out++ = *in++;
-	for (   ; i<dstpix; i++)
+	for (     ; i < dstpix; i++)
 		*out++ = padbyte;
 
 	return data;
@@ -965,7 +974,7 @@ byte *TexMgr_PadImageH (byte *in, int width, int height, byte padbyte)
 TexMgr_LoadImage32 -- handles 32bit source data
 ================
 */
-void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
+static void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 {
 	int	internalformat,	miplevel, mipwidth, mipheight, picmip;
 
@@ -1029,7 +1038,7 @@ void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 TexMgr_LoadImage8 -- handles 8bit source data, then passes it to LoadImage32
 ================
 */
-void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
+static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 {
 	extern cvar_t gl_fullbrights;
 	qboolean padw = false, padh = false;
@@ -1038,7 +1047,9 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	int i;
 
 	// HACK HACK HACK -- taken from tomazquake
-	if (strstr(glt->name, "shot1sid") && glt->width==32 && glt->height==32 && CRC_Block(data, 1024) == 65393)
+	if (strstr(glt->name, "shot1sid") &&
+	    glt->width == 32 && glt->height == 32 &&
+	    CRC_Block(data, 1024) == 65393)
 	{
 		// This texture in b_shell1.bsp has some of the first 32 pixels painted white.
 		// They are invisible in software, but look really ugly in GL. So we just copy
@@ -1118,10 +1129,8 @@ void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 TexMgr_LoadLightmap -- handles lightmap data
 ================
 */
-void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
+static void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
 {
-	extern int gl_lightmap_format, lightmap_bytes;
-
 	// upload it
 	GL_Bind (glt);
 	glTexImage2D (GL_TEXTURE_2D, 0, lightmap_bytes, glt->width, glt->height, 0, gl_lightmap_format, GL_UNSIGNED_BYTE, data);
@@ -1138,7 +1147,6 @@ TexMgr_LoadImage -- the one entry point for loading all textures
 gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int height, enum srcformat format,
 			       byte *data, const char *source_file, src_offset_t source_offset, unsigned flags)
 {
-	extern int lightmap_bytes;
 	unsigned short crc;
 	gltexture_t *glt;
 	int mark;
@@ -1149,17 +1157,17 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int 
 	// cache check
 	switch (format)
 	{
-		case SRC_INDEXED:
-			crc = CRC_Block(data, width * height);
-			break;
-		case SRC_LIGHTMAP:
-			crc = CRC_Block(data, width * height * lightmap_bytes);
-			break;
-		case SRC_RGBA:
-			crc = CRC_Block(data, width * height * 4);
-			break;
-		default: /* not reachable but avoids compiler warnings */
-			crc = 0;
+	case SRC_INDEXED:
+		crc = CRC_Block(data, width * height);
+		break;
+	case SRC_LIGHTMAP:
+		crc = CRC_Block(data, width * height * lightmap_bytes);
+		break;
+	case SRC_RGBA:
+		crc = CRC_Block(data, width * height * 4);
+		break;
+	default: /* not reachable but avoids compiler warnings */
+		crc = 0;
 	}
 	if ((flags & TEXPREF_OVERWRITE) && (glt = TexMgr_FindTexture (owner, name)))
 	{
@@ -1189,15 +1197,15 @@ gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int 
 
 	switch (glt->source_format)
 	{
-		case SRC_INDEXED:
-			TexMgr_LoadImage8 (glt, data);
-			break;
-		case SRC_LIGHTMAP:
-			TexMgr_LoadLightmap (glt, data);
-			break;
-		case SRC_RGBA:
-			TexMgr_LoadImage32 (glt, (unsigned *)data);
-			break;
+	case SRC_INDEXED:
+		TexMgr_LoadImage8 (glt, data);
+		break;
+	case SRC_LIGHTMAP:
+		TexMgr_LoadLightmap (glt, data);
+		break;
+	case SRC_RGBA:
+		TexMgr_LoadImage32 (glt, (unsigned *)data);
+		break;
 	}
 
 	Hunk_FreeToLowMark(mark);
@@ -1222,7 +1230,7 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 {
 	byte	translation[256];
 	byte	*src, *dst, *data = NULL, *translated;
-	int		mark, size, i;
+	int	mark, size, i;
 //
 // get source data
 //
@@ -1269,31 +1277,39 @@ invalid:
 	if (glt->shirt > -1 && glt->pants > -1)
 	{
 		//create new translation table
-		for (i=0 ; i<256 ; i++)
+		for (i = 0; i < 256; i++)
 			translation[i] = i;
 
 		shirt = glt->shirt * 16;
 		if (shirt < 128)
-			for (i=0 ; i<16 ; i++)
-				translation[TOP_RANGE+i] = shirt+i;
+		{
+			for (i = 0; i < 16; i++)
+				translation[TOP_RANGE+i] = shirt + i;
+		}
 		else
-			for (i=0 ; i<16 ; i++)
+		{
+			for (i = 0; i < 16; i++)
 				translation[TOP_RANGE+i] = shirt+15-i;
+		}
 
 		pants = glt->pants * 16;
 		if (pants < 128)
-			for (i=0 ; i<16 ; i++)
-				translation[BOTTOM_RANGE+i] = pants+i;
+		{
+			for (i = 0; i < 16; i++)
+				translation[BOTTOM_RANGE+i] = pants + i;
+		}
 		else
-			for (i=0 ; i<16 ; i++)
+		{
+			for (i = 0; i < 16; i++)
 				translation[BOTTOM_RANGE+i] = pants+15-i;
+		}
 
 		//translate texture
 		size = glt->width * glt->height;
 		dst = translated = (byte *) Hunk_Alloc (size);
 		src = data;
 
-		for (i=0; i<size; i++)
+		for (i = 0; i < size; i++)
 			*dst++ = translation[*src++];
 
 		data = translated;
@@ -1303,15 +1319,15 @@ invalid:
 //
 	switch (glt->source_format)
 	{
-		case SRC_INDEXED:
-			TexMgr_LoadImage8 (glt, data);
-			break;
-		case SRC_LIGHTMAP:
-			TexMgr_LoadLightmap (glt, data);
-			break;
-		case SRC_RGBA:
-			TexMgr_LoadImage32 (glt, (unsigned *)data);
-			break;
+	case SRC_INDEXED:
+		TexMgr_LoadImage8 (glt, data);
+		break;
+	case SRC_LIGHTMAP:
+		TexMgr_LoadLightmap (glt, data);
+		break;
+	case SRC_RGBA:
+		TexMgr_LoadImage32 (glt, (unsigned *)data);
+		break;
 	}
 
 	Hunk_FreeToLowMark(mark);
@@ -1326,7 +1342,7 @@ void TexMgr_ReloadImages (void)
 {
 	gltexture_t *glt;
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		glGenTextures(1, &glt->texnum);
 		TexMgr_ReloadImage (glt, -1, -1);
@@ -1342,7 +1358,7 @@ void TexMgr_ReloadNobrightImages (void)
 {
 	gltexture_t *glt;
 
-	for (glt=active_gltextures; glt; glt=glt->next)
+	for (glt = active_gltextures; glt; glt = glt->next)
 		if (glt->flags & TEXPREF_NOBRIGHT)
 			TexMgr_ReloadImage(glt, -1, -1);
 }
@@ -1355,16 +1371,16 @@ void TexMgr_ReloadNobrightImages (void)
 ================================================================================
 */
 
-GLuint	currenttexture = (GLuint)-1; // to avoid unnecessary texture sets
-GLenum TEXTURE0, TEXTURE1; //johnfitz
-qboolean mtexenabled = false;
+static GLuint	currenttexture = (GLuint)-1; // to avoid unnecessary texture sets
+GLenum		TEXTURE0, TEXTURE1; //johnfitz
+qboolean	mtexenabled = false;
 
 /*
 ================
 GL_SelectTexture -- johnfitz -- rewritten
 ================
 */
-void GL_SelectTexture (GLenum target)
+static void GL_SelectTexture (GLenum target)
 {
 	static GLenum currenttarget;
 	static GLuint ct0, ct1;

@@ -38,40 +38,38 @@ typedef byte pixel_t;
 
 typedef struct vrect_s
 {
-	int				x,y,width,height;
+	int	x, y, width, height;
 	struct vrect_s	*pnext;
 } vrect_t;
 
 typedef struct
 {
-	pixel_t			*buffer;		// invisible buffer
-	pixel_t			*colormap;		// 256 * VID_GRADES size
+	pixel_t		*buffer;	// invisible buffer
+	pixel_t		*colormap;	// 256 * VID_GRADES size
 	unsigned short	*colormap16;	// 256 * VID_GRADES size
-	int				fullbright;		// index of first fullbright color
-	unsigned		rowbytes;	// may be > width if displayed in a window
-	unsigned		width;
-	unsigned		height;
-	float			aspect;		// width / height -- < 0 is taller than wide
-	int				numpages;
-	int				recalc_refdef;	// if true, recalc vid-based stuff
-	pixel_t			*conbuffer;
-	int				conrowbytes;
-	unsigned		conwidth;
-	unsigned		conheight;
-	int				maxwarpwidth;
-	int				maxwarpheight;
-	pixel_t			*direct;		// direct drawing to framebuffer, if not
-									//  NULL
-    int             type;   // kristian
+	int		fullbright;	// index of first fullbright color
+	unsigned	rowbytes;	// may be > width if displayed in a window
+	unsigned	width;
+	unsigned	height;
+	float		aspect;		// width / height -- < 0 is taller than wide
+	int		numpages;
+	int		recalc_refdef;	// if true, recalc vid-based stuff
+	pixel_t		*conbuffer;
+	int		conrowbytes;
+	unsigned	conwidth;
+	unsigned	conheight;
+	int		maxwarpwidth;
+	int		maxwarpheight;
+	pixel_t		*direct;	// direct drawing to framebuffer, if not NULL
+
+	int		type;	// kristian
 } viddef_t;
 
 extern	viddef_t	vid;				// global video state
-//extern	unsigned short	d_8to16table[256]; //johnfitz -- never used
+
 extern void (*vid_menudrawfn)(void);
 extern void (*vid_menukeyfn)(int key);
 extern void (*vid_menucmdfn)(void); //johnfitz
-
-//johnfitz -- deleted VID_SetPalette and VID_ShiftPalette
 
 void	VID_Init (void); //johnfitz -- removed palette from argument list
 
@@ -80,10 +78,6 @@ void	VID_Shutdown (void);
 
 void	VID_Update (vrect_t *rects);
 // flushes the given rectangles from the view buffer to the screen
-
-int VID_SetMode (int modenum); //johnfitz -- removed palette from argument list
-// sets the mode; only used by the Quake engine for resetting to mode 0 (the
-// base mode) on memory allocation failures
 
 void VID_SyncCvars (void);
 

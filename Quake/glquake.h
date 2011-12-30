@@ -27,17 +27,6 @@ void GL_BeginRendering (int *x, int *y, int *width, int *height);
 void GL_EndRendering (void);
 void GL_Set2D (void);
 
-//johnfitz -- removed texture object stuff since they are standard in gl 1.1
-
-typedef struct
-{
-	float	x, y, z;
-	float	s, t;
-	float	r, g, b;
-} glvert_t;
-
-extern glvert_t glv;
-
 extern	int glx, gly, glwidth, glheight;
 
 // r_local.h -- private refresh defs
@@ -64,28 +53,28 @@ typedef struct surfcache_s
 {
 	struct surfcache_s	*next;
 	struct surfcache_s 	**owner;		// NULL is an empty chunk of memory
-	int					lightadj[MAXLIGHTMAPS]; // checked for strobe flush
-	int					dlight;
-	int					size;		// including header
-	unsigned			width;
-	unsigned			height;		// DEBUG only needed for debug
-	float				mipscale;
+	int			lightadj[MAXLIGHTMAPS]; // checked for strobe flush
+	int			dlight;
+	int			size;		// including header
+	unsigned		width;
+	unsigned		height;		// DEBUG only needed for debug
+	float			mipscale;
 	struct texture_s	*texture;	// checked for animating textures
-	byte				data[4];	// width*height elements
+	byte			data[4];	// width*height elements
 } surfcache_t;
 
 
 typedef struct
 {
 	pixel_t		*surfdat;	// destination for generated surface
-	int			rowbytes;	// destination logical width in bytes
+	int		rowbytes;	// destination logical width in bytes
 	msurface_t	*surf;		// description for surface to generate
 	fixed8_t	lightadj[MAXLIGHTMAPS];
 							// adjust for lightmap levels for dynamic lighting
 	texture_t	*texture;	// corrected for animating textures
-	int			surfmip;	// mipmapped ratio of surface texels / world pixels
-	int			surfwidth;	// in mipmapped texels
-	int			surfheight;	// in mipmapped texels
+	int		surfmip;	// mipmapped ratio of surface texels / world pixels
+	int		surfwidth;	// in mipmapped texels
+	int		surfheight;	// in mipmapped texels
 } drawsurf_t;
 
 
@@ -113,8 +102,8 @@ typedef struct particle_s
 extern	qboolean	r_cache_thrash;		// compatability
 extern	vec3_t		modelorg, r_entorigin;
 extern	entity_t	*currententity;
-extern	int			r_visframecount;	// ??? what difs?
-extern	int			r_framecount;
+extern	int		r_visframecount;	// ??? what difs?
+extern	int		r_framecount;
 extern	mplane_t	frustum[4];
 
 //
@@ -155,7 +144,6 @@ extern	cvar_t	gl_polyblend;
 extern	cvar_t	gl_flashblend;
 extern	cvar_t	gl_nocolors;
 
-extern	cvar_t	gl_max_size;
 extern	cvar_t	gl_playermip;
 
 extern	cvar_t	gl_subdivide_size;
@@ -163,14 +151,13 @@ extern	float	load_subdivide_size; //johnfitz -- remember what subdivide_size val
 
 extern	float	r_world_matrix[16];
 
-extern	const char *gl_vendor;
-extern	const char *gl_renderer;
-extern	const char *gl_version;
-extern	const char *gl_extensions;
+extern	int	gl_stencilbits; //johnfitz
 
 // Multitexture
-#define    TEXTURE0_SGIS				0x835E
-#define    TEXTURE1_SGIS				0x835F
+extern	qboolean	mtexenabled;
+extern	qboolean	gl_mtexable;
+#define	TEXTURE0_SGIS				0x835E
+#define	TEXTURE1_SGIS				0x835F
 //johnfitz -- modified multitexture support
 extern PFNGLMULTITEXCOORD2FARBPROC  GL_MTexCoord2fFunc;
 extern PFNGLACTIVETEXTUREARBPROC    GL_SelectTextureFunc;
@@ -178,8 +165,10 @@ extern GLenum TEXTURE0, TEXTURE1;
 //johnfitz
 
 //johnfitz -- anisotropic filtering
-#define	GL_TEXTURE_MAX_ANISOTROPY_EXT 0x84FE
-#define	GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT 0x84FF
+#define	GL_TEXTURE_MAX_ANISOTROPY_EXT		0x84FE
+#define	GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT	0x84FF
+extern	float		gl_max_anisotropy;
+extern	qboolean	gl_anisotropy_able;
 //johnfitz
 
 //johnfitz -- polygon offset
@@ -205,9 +194,8 @@ void GL_PolygonOffset (int);
 #define GL_SOURCE0_ALPHA_EXT	0x8588
 #define GL_SOURCE1_ALPHA_EXT	0x8589
 extern qboolean gl_texture_env_combine;
+extern qboolean gl_texture_env_add; // for GL_EXT_texture_env_add
 //johnfitz
-
-extern qboolean gl_texture_env_add; //johnfitz -- for GL_EXT_texture_env_add
 
 extern qboolean isIntelVideo; //johnfitz -- intel video workarounds from Baker
 
@@ -242,6 +230,7 @@ extern overflowtimes_t dev_overflows; //this stores the last time overflow messa
 //johnfitz
 
 //johnfitz -- moved here from r_brush.c
+extern int gl_lightmap_format, lightmap_bytes;
 #define MAX_LIGHTMAPS 256 //johnfitz -- was 64
 extern gltexture_t *lightmap_textures[MAX_LIGHTMAPS]; //johnfitz -- changed to an array
 //johnfitz
