@@ -16,19 +16,15 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.85.7</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>CFBundleVersion</key>
-	<string>0.85.6</string>
+	<key>LSApplicationCategoryType</key>
+	<string>public.app-category.action-games</string>
 	<key>NSMainNibFile</key>
 	<string>Launcher</string>
 	<key>NSPrincipalClass</key>
 	<string>SDLApplication</string>
-	<key>SUEnableAutomaticChecks</key>
-	<false/>
-	<key>SUFeedURL</key>
-	<string>http://quakespasm.sourceforge.net/sparkle/appcast.xml</string>
-	<key>SUPublicDSAKeyFile</key>
-	<string>dsa_pub.pem</string>
 </dict>
 </plist>

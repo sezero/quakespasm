@@ -18,11 +18,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 #import "AppController.h"
-#import "SUUpdaterDelegate.h"
 #import "ScreenInfo.h"
 #import "SDL.h"
 #import "SDLMain.h"
-#import <Sparkle/Sparkle.h>
 
 NSString *FQPrefCommandLineKey = @"CommandLine";
 NSString *FQPrefFullscreenKey = @"Fullscreen";
@@ -109,15 +107,6 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
 	} else {
         [launcherWindow center];
 		[launcherWindow makeKeyAndOrderFront:self];
-
-        SUUpdater* updater = [SUUpdater sharedUpdater];
-        SUUpdaterDelegate* delegate = [[SUUpdaterDelegate alloc] initWithTabView:updateTabView 
-                                                                       indicator:updateProgressIndicator 
-                                                                          button:updateButton
-                                                                           label:versionLabel];
-        [updater setDelegate:delegate];
-        
-        [updater checkForUpdateInformation];
 	}
 }
 

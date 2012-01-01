@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #import <Carbon/Carbon.h>
 #import <Cocoa/Cocoa.h>
-#import "QuakeArguments.h";
+#import "QuakeArguments.h"
 
 extern NSString *FQPrefCommandLineKey;
 extern NSString *FQPrefFullscreenKey;
@@ -31,10 +31,6 @@ extern NSString *FQPrefScreenModeKey;
     IBOutlet NSTextField *paramTextField;
     IBOutlet NSPopUpButton *screenModePopUp;
     IBOutlet NSButton *fullscreenCheckBox;
-    IBOutlet NSTabView *updateTabView;
-    IBOutlet NSProgressIndicator *updateProgressIndicator;
-    IBOutlet NSButton *updateButton;
-    IBOutlet NSTextField *versionLabel;
     
     NSMutableArray *screenModes;
     QuakeArguments *arguments;
