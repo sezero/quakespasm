@@ -192,6 +192,12 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item>Complete the unix user directories support
 </itemize>
 
+<sect> Copyright <p>
+<itemize>
+<item>Quake and Quakespasm are released under the <url url="http://www.gnu.org/licenses/gpl-2.0.html" name="GNU GENERAL PUBLIC LICENSE Version 2">
+<item>Quakespasm console background image by <bf>AAS</bf>, released under the
+<url url="http://creativecommons.org/licenses/by/3.0/legalcode" name="CREATIVE COMMONS PUBLIC LICENSE">
+</itemize>
 
 <sect> Links <p>
 

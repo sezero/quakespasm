@@ -4,6 +4,7 @@
 
   Table of Contents
 
+
   1. About
   2. Downloads
   3. Hints
@@ -23,7 +24,9 @@
      5.6 Changes in 0.85.1
 
   6. Todo
-  7. Links
+  7. Copyright
+  8. Links
+
 
   ______________________________________________________________________
 
@@ -32,6 +35,7 @@
 
 
   1.  About
+
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
@@ -42,12 +46,14 @@
 
   2.  Downloads
 
+
   o  <http://quakespasm.sourceforge.net/download.htm>
 
 
   3.  Hints
 
-  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+
+   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
 
 
@@ -91,6 +97,7 @@
 
   4.  Compiling
 
+
   To check-out the latest version of QuakeSpasm, use :
   svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
 
@@ -107,13 +114,13 @@
 
   Compile time options include
 
-
   o  make DEBUG=1 for debugging
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
+
 
   HOME directory support can be enabled via Misc/homedir_0.patch
 
@@ -135,23 +142,24 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
-
   5.  Changes
+
 
   5.1.  Changes in 0.85.6
 
-  o More work for string buffer safety
 
-  o Reverted v0.85.5 change of not allowing deathmatch and coop cvars to
-    be set at the same time (was reported for possibility of causing
-    compatibility issues with mods)
+  o  More work for string buffer safety
 
-  o Several cleanups/changes in the cvar layer
+  o  Reverted v0.85.5 change of not allowing deathmatch and coop cvars
+     to be set at the same time (was reported for possibility of causing
+     compatibility issues with mods)
 
-  o Minor SDL video fixes.
+  o  Several cleanups/changes in the cvar layer
 
+  o  Minor SDL video fixes.
 
   5.2.  Changes in 0.85.5
+
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -181,8 +189,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-
   5.3.  Changes in 0.85.4
+
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -209,8 +217,8 @@
 
   o  Other minor sound and cdaudio updates
 
-
   5.4.  Changes in 0.85.3
+
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -245,9 +253,8 @@
 
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
-
-
   5.5.  Changes in 0.85.2
+
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -276,6 +283,7 @@
 
 
   5.6.  Changes in 0.85.1
+
 
   o  64 bit CPU support
 
@@ -311,9 +319,8 @@
 
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
-
-
   6.  Todo
+
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -326,7 +333,19 @@
   o  Complete the unix user directories support
 
 
-  7.  Links
+  7.  Copyright
+
+
+  o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
+     LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
+
+  o  Quakespasm console background image by AAS, released under the
+     CREATIVE COMMONS PUBLIC LICENSE
+     <http://creativecommons.org/licenses/by/3.0/legalcode>
+
+
+  8.  Links
+
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
@@ -352,4 +371,5 @@
   o  Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
 
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
+
 
