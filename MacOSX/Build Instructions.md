@@ -51,18 +51,6 @@ This should be it. The guides in the link collection at the end of this document
 ## Building QuakeSpasm
 Now you can build QuakeSpasm. Simply open the project file using XCode 4.2 and make sure that "QuakeSpasm > My Mac 64-bit" is selected as the scheme in the toolbar. Select "Product > Run" from the menu to run and debug QuakeSpasm. This will not produce a universal binary however. To produce a universal binary for Intel 64bit, Intel 32bit and PowerPC 32bit, you need to select "Product > Archive" from the menu. This will create an application archive that contains the universal binary.
 
-# Releasing QuakeSpasm
-QuakeSpasm for Mac uses the Sparkle framework for automatic updates. This means you have to provide an appcast and the zipped binary at the following location:
-
-http://quakespasm.sourceforge.net/sparkle/appcast.xml
-http://quakespasm.sourceforge.net/sparkle/QuakeSpasm <version>.zip
-
-You may also want to update the release notes at
-
-http://quakespasm.sourceforge.net/sparkle/rnotes.html
-
-For security reasons, Sparkle requires updates to be signed. All this is automated using a script.
-
 # Useful Links
 - XCode 3.2.6:
 http://connect.apple.com/cgi-bin/WebObjects/MemberSite.woa/wa/getSoftware?bundleID=20792
