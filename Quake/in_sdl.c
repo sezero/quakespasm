@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 
 #ifdef __APPLE__
-// Mouse acceleration needs to be disabled
+/* Mouse acceleration needs to be disabled on OS X */
 #define MACOS_X_ACCELERATION_HACK
 #endif
 
@@ -54,7 +54,7 @@ static int buttonremap[] =
 cvar_t	m_filter = {"m_filter","0",CVAR_NONE};
 
 #ifdef MACOS_X_ACCELERATION_HACK
-cvar_t in_disablemacosxmouseaccel = {"in_disablemacosxmouseaccel", "1", true};
+static cvar_t in_disablemacosxmouseaccel = {"in_disablemacosxmouseaccel", "1", CVAR_ARCHIVE};
 static double originalMouseSpeed = -1.0;
 #endif
 
@@ -76,29 +76,24 @@ static int FilterMouseEvents (const SDL_Event *event)
 }
 
 #ifdef MACOS_X_ACCELERATION_HACK
-/*
- ===============
- IN_GetIOHandle
- ===============
- */
-static io_connect_t IN_GetIOHandle(void) // mac os x mouse accel hack
+static io_connect_t IN_GetIOHandle(void)
 {
 	io_connect_t iohandle = MACH_PORT_NULL;
 	kern_return_t status;
 	io_service_t iohidsystem = MACH_PORT_NULL;
 	mach_port_t masterport;
-	
+
 	status = IOMasterPort(MACH_PORT_NULL, &masterport);
-	if(status != KERN_SUCCESS)
+	if (status != KERN_SUCCESS)
 		return 0;
-	
+
 	iohidsystem = IORegistryEntryFromPath(masterport, kIOServicePlane ":/IOResources/IOHIDSystem");
-	if(!iohidsystem)
+	if (!iohidsystem)
 		return 0;
-	
+
 	status = IOServiceOpen(iohidsystem, mach_task_self(), kIOHIDParamConnectType, &iohandle);
 	IOObjectRelease(iohidsystem);
-	
+
 	return iohandle;
 }
 #endif
@@ -110,39 +105,35 @@ void IN_Activate (void)
 		return;
 
 #ifdef MACOS_X_ACCELERATION_HACK
-	// mac os x mouse accel hack
+	/* Save the status of mouse acceleration */
+	if (originalMouseSpeed == -1 && in_disablemacosxmouseaccel.value)
 	{
-		// Save the status of mouse acceleration
-		
-		if (originalMouseSpeed == -1 && in_disablemacosxmouseaccel.value)
+		io_connect_t mouseDev = IN_GetIOHandle();
+		if (mouseDev != 0)
 		{
-			io_connect_t mouseDev = IN_GetIOHandle();
-			if(mouseDev != 0)
+			if (IOHIDGetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), &originalMouseSpeed) == kIOReturnSuccess)
 			{
-				if(IOHIDGetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), &originalMouseSpeed) == kIOReturnSuccess)
+				if (IOHIDSetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), -1.0) != kIOReturnSuccess)
 				{
-					if(IOHIDSetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), -1.0) != kIOReturnSuccess)
-					{
-						Con_Printf("WARNING: Could not disable mouse acceleration (failed at IOHIDSetAccelerationWithKey).\n");
-						Cvar_Set ("in_disablemacosxmouseaccel", "0");
-					}
-				}
-				else
-				{
-					Con_Printf("WARNING: Could not disable mouse acceleration (failed at IOHIDGetAccelerationWithKey).\n");
+					Con_Printf("WARNING: Could not disable mouse acceleration (failed at IOHIDSetAccelerationWithKey).\n");
 					Cvar_Set ("in_disablemacosxmouseaccel", "0");
 				}
-				IOServiceClose(mouseDev);
 			}
 			else
 			{
-				Con_Printf("WARNING: Could not disable mouse acceleration (failed at IO_GetIOHandle).\n");
+				Con_Printf("WARNING: Could not disable mouse acceleration (failed at IOHIDGetAccelerationWithKey).\n");
 				Cvar_Set ("in_disablemacosxmouseaccel", "0");
 			}
+			IOServiceClose(mouseDev);
+		}
+		else
+		{
+			Con_Printf("WARNING: Could not disable mouse acceleration (failed at IO_GetIOHandle).\n");
+			Cvar_Set ("in_disablemacosxmouseaccel", "0");
 		}
 	}
-#endif	
-	
+#endif
+
 	if (SDL_WM_GrabInput(SDL_GRAB_QUERY) != SDL_GRAB_ON)
 	{
 		SDL_WM_GrabInput(SDL_GRAB_ON);
@@ -170,26 +161,23 @@ void IN_Deactivate (qboolean free_cursor)
 		return;
 
 #ifdef MACOS_X_ACCELERATION_HACK
-	// mac os x mouse accel hack
+	if (originalMouseSpeed != -1.0)
 	{
-		if(originalMouseSpeed != -1.0)
+		io_connect_t mouseDev = IN_GetIOHandle();
+		if (mouseDev != 0)
 		{
-			io_connect_t mouseDev = IN_GetIOHandle();
-			if(mouseDev != 0)
-			{
-				if(IOHIDSetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), originalMouseSpeed) != kIOReturnSuccess)
-					Con_Printf("WARNING: Could not re-enable mouse acceleration (failed at IOHIDSetAccelerationWithKey).\n");
-				IOServiceClose(mouseDev);				
-			}
-			else
-			{
-				Con_Printf("WARNING: Could not re-enable mouse acceleration (failed at IO_GetIOHandle).\n");
-			}
-			originalMouseSpeed = -1;
+			if (IOHIDSetAccelerationWithKey(mouseDev, CFSTR(kIOHIDMouseAccelerationType), originalMouseSpeed) != kIOReturnSuccess)
+				Con_Printf("WARNING: Could not re-enable mouse acceleration (failed at IOHIDSetAccelerationWithKey).\n");
+			IOServiceClose(mouseDev);
 		}
+		else
+		{
+			Con_Printf("WARNING: Could not re-enable mouse acceleration (failed at IO_GetIOHandle).\n");
+		}
+		originalMouseSpeed = -1;
 	}
-#endif	
-	
+#endif
+
 	if (free_cursor)
 	{
 		if (SDL_WM_GrabInput(SDL_GRAB_QUERY) != SDL_GRAB_OFF)
@@ -228,7 +216,7 @@ void IN_Init (void)
 #ifdef MACOS_X_ACCELERATION_HACK
 	Cvar_RegisterVariable(&in_disablemacosxmouseaccel);
 #endif
-	
+
 	IN_Activate();
 }
 
