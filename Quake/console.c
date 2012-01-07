@@ -1139,31 +1139,25 @@ void Con_DrawInput (void)
 	extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
 	extern	double key_blinktime;
 	extern	int key_insert;
-	int	i, len;
-	char	c[MAXCMDLINE+1] /* extra space == +1 */, *text;
+	int	i, ofs;
 
 	if (key_dest != key_console && !con_forcedup)
 		return;		// don't draw anything
 
-	text = strcpy(c, key_lines[edit_line]);
-
-// pad with one space so we can draw one past the string (in case the cursor is there)
-	len = strlen(key_lines[edit_line]);
-	text[len] = ' ';
-	text[len+1] = 0;
-
 // prestep if horizontally scrolling
 	if (key_linepos >= con_linewidth)
-		text += key_linepos - con_linewidth;
+		ofs = 1 + key_linepos - con_linewidth;
+	else
+		ofs = 0;
 
 // draw input string
-	for (i = 0; i < q_min((int)strlen(text), con_linewidth + 1); i++) //only write enough letters to go from *text to cursor
-		Draw_Character ((i+1)<<3, vid.conheight - 16, text[i]);
+	for (i = 0; key_lines[edit_line][i+ofs] && i < con_linewidth; i++)
+		Draw_Character ((i+1)<<3, vid.conheight - 16, key_lines[edit_line][i+ofs]);
 
 // johnfitz -- new cursor handling
 	if (!((int)((realtime-key_blinktime)*con_cursorspeed) & 1))
 	{
-		i = key_linepos < con_linewidth ? key_linepos : con_linewidth;
+		i = key_linepos - ofs;
 		Draw_Pic ((i+1)<<3, vid.conheight - 16, key_insert ? pic_ins : pic_ovr);
 	}
 }
