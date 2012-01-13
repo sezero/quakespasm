@@ -153,6 +153,7 @@ void SCR_CenterPrint (const char *str) //update centerprint data
 
 // count the number of lines for centering
 	scr_center_lines = 1;
+	str = scr_centerstring;
 	while (*str)
 	{
 		if (*str == '\n')
