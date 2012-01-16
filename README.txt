@@ -31,7 +31,7 @@
   ______________________________________________________________________
 
 
-  QuakeSpasm 0.85.6 (02 January 2012)
+  Page last edited 17 January 2012
 
 
   1.  About
@@ -92,7 +92,7 @@
 
   o  Use the "-noextmusic" option to disable this feature.
 
-  o  See README.music for more details, if necessary.
+  o  See  <README.music> for more details.
 
 
   4.  Compiling
