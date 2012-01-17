@@ -197,6 +197,19 @@ void Cvar_ResetAll_f (void)
 		Cvar_Reset (var->name);
 }
 
+/*
+============
+Cvar_ResetCfg_f -- QuakeSpasm
+============
+*/
+void Cvar_ResetCfg_f (void)
+{
+	cvar_t	*var;
+
+	for (var = cvar_vars ; var ; var = var->next)
+		if (var->flags & CVAR_ARCHIVE) Cvar_Reset (var->name);
+}
+
 //==============================================================================
 //
 //  INIT
@@ -217,6 +230,7 @@ void Cvar_Init (void)
 	Cmd_AddCommand ("inc", Cvar_Inc_f);
 	Cmd_AddCommand ("reset", Cvar_Reset_f);
 	Cmd_AddCommand ("resetall", Cvar_ResetAll_f);
+	Cmd_AddCommand ("resetcfg", Cvar_ResetCfg_f);
 }
 
 //==============================================================================

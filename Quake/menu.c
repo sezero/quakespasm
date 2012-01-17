@@ -1120,7 +1120,7 @@ void M_Options_Draw (void)
 	// OPT_CONSOLE:
 	M_Print (16, 32 + 8*OPT_CONSOLE,	"          Goto console");
 	// OPT_DEFAULTS:
-	M_Print (16, 32 + 8*OPT_DEFAULTS,	"        Reset defaults");
+	M_Print (16, 32 + 8*OPT_DEFAULTS,	"          Reset config");
 
 	// OPT_SCALE:
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
@@ -1210,8 +1210,11 @@ void M_Options_Key (int k)
 			Con_ToggleConsole_f ();
 			break;
 		case OPT_DEFAULTS:
-			Cbuf_AddText ("resetall\n"); //johnfitz
-			Cbuf_AddText ("exec default.cfg\n");
+			if (SCR_ModalMessage("Would you like to reset the\nconfiguration? (y/n)\n", 5.0f))
+			{
+				Cbuf_AddText ("resetcfg\n");
+				Cbuf_AddText ("exec default.cfg\n");
+			}
 			break;
 		case OPT_VIDEO:
 			M_Menu_Video_f ();
