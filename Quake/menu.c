@@ -1210,7 +1210,8 @@ void M_Options_Key (int k)
 			Con_ToggleConsole_f ();
 			break;
 		case OPT_DEFAULTS:
-			if (SCR_ModalMessage("Would you like to reset the\nconfiguration? (y/n)\n", 5.0f))
+			if (SCR_ModalMessage("This will reset all controls\n"
+					"and stored cvars. Continue? (y/n)\n", 15.0f))
 			{
 				Cbuf_AddText ("resetcfg\n");
 				Cbuf_AddText ("exec default.cfg\n");
