@@ -692,9 +692,16 @@ static void GL_CheckExtensions (void)
 
 		//get max value either way, so the menu and stuff know it
 		glGetFloatv (GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &gl_max_anisotropy);
+		if (gl_max_anisotropy < 1)
+		{
+			gl_anisotropy_able = false;
+			gl_max_anisotropy = 1;
+			Con_Warning ("anisotropic filtering broken\n");
+		}
 	}
 	else
 	{
+		gl_max_anisotropy = 1;
 		Con_Warning ("texture_filter_anisotropic not supported\n");
 	}
 }
