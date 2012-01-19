@@ -890,6 +890,10 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 			 key_lastpress != K_ESCAPE &&
 			 time2 <= time1);
 
+	// make sure we don't ignore the next keypress
+	if (key_count < 0)
+		key_count = 0;
+
 //	SCR_UpdateScreen (); //johnfitz -- commented out
 
 	//johnfitz -- timeout
