@@ -184,12 +184,20 @@ FIXME: this is getting called twice (becuase of the recursive Cvar_SetValue call
 */
 static void TexMgr_Anisotropy_f (cvar_t *var)
 {
-	gltexture_t	*glt;
-
-	Cvar_SetValue ("gl_texture_anisotropy", CLAMP (1.0f, gl_texture_anisotropy.value, gl_max_anisotropy));
-
-	for (glt = active_gltextures; glt; glt = glt->next)
-		TexMgr_SetFilterModes (glt);
+	if (gl_texture_anisotropy.value < 1)
+	{
+		Cvar_SetQuick (&gl_texture_anisotropy, "1");
+	}
+	else if (gl_texture_anisotropy.value > gl_max_anisotropy)
+	{
+		Cvar_SetValueQuick (&gl_texture_anisotropy, gl_max_anisotropy);
+	}
+	else
+	{
+		gltexture_t	*glt;
+		for (glt = active_gltextures; glt; glt = glt->next)
+			TexMgr_SetFilterModes (glt);
+	}
 }
 
 /*
