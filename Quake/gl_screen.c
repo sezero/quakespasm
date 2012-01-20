@@ -414,37 +414,39 @@ SCR_DrawFPS -- johnfitz
 */
 void SCR_DrawFPS (void)
 {
-	static double	oldtime = 0, fps = 0;
-	static int		oldframecount = 0;
-	double			time;
-	char			str[12];
-	int				x, y, frames;
+	static double	oldtime = 0;
+	static double	lastfps = 0;
+	static int	oldframecount = 0;
+	double	elapsed_time;
+	int	frames;
 
-	time = realtime - oldtime;
+	elapsed_time = realtime - oldtime;
 	frames = r_framecount - oldframecount;
 
-	if (time < 0 || frames < 0)
+	if (elapsed_time < 0 || frames < 0)
 	{
 		oldtime = realtime;
 		oldframecount = r_framecount;
 		return;
 	}
-
-	if (time > 0.75) //update value every 3/4 second
+	// update value every 3/4 second
+	if (elapsed_time > 0.75)
 	{
-		fps = frames / time;
+		lastfps = frames / elapsed_time;
 		oldtime = realtime;
 		oldframecount = r_framecount;
 	}
 
-	if (scr_showfps.value) //draw it
+	if (scr_showfps.value)
 	{
-		sprintf (str, "%4.0f fps", fps);
-		x = 320 - (strlen(str)<<3);
+		char	st[16];
+		int	x, y;
+		sprintf (st, "%4.0f fps", lastfps);
+		x = 320 - (strlen(st)<<3);
 		y = 200 - 8;
 		if (scr_clock.value) y -= 8; //make room for clock
 		GL_SetCanvas (CANVAS_BOTTOMRIGHT);
-		Draw_String (x, y, str);
+		Draw_String (x, y, st);
 		scr_tileclear_updates = 0;
 	}
 
@@ -968,7 +970,7 @@ void SCR_UpdateScreen (void)
 	if (block_drawing)
 		return;
 
-	vid.numpages = 2 + (gl_triplebuffer.value ? 1 : 0); //johnfitz -- in case gl_triplebuffer is not 0 or 1
+	vid.numpages = (gl_triplebuffer.value) ? 3 : 2;
 
 	if (scr_disabled_for_loading)
 	{
