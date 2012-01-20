@@ -131,11 +131,14 @@ static void TexMgr_TextureMode_f (cvar_t *var)
 	{
 		if (!Q_strcmp (modes[i].name, gl_texturemode.string))
 		{
-			mode = i;
-			for (glt = active_gltextures; glt; glt = glt->next)
-				TexMgr_SetFilterModes (glt);
-			Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
-			//FIXME: warpimages need to be redrawn, too.
+			if (mode != i)
+			{
+				mode = i;
+				for (glt = active_gltextures; glt; glt = glt->next)
+					TexMgr_SetFilterModes (glt);
+				Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
+				//FIXME: warpimages need to be redrawn, too.
+			}
 			return;
 		}
 	}
