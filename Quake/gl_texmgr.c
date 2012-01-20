@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int	gl_solid_format = 3;
 const int	gl_alpha_format = 4;
 
+static cvar_t	gl_texturemode = {"gl_texturemode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE};
 static cvar_t	gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
 static cvar_t	gl_max_size = {"gl_max_size", "0", CVAR_NONE};
 static cvar_t	gl_picmip = {"gl_picmip", "0", CVAR_NONE};
@@ -66,7 +67,7 @@ static glmode_t modes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
 #define NUM_GLMODES 6
-int gl_texturemode = 5; // bilinear
+static int mode = 5; // bilinear
 
 /*
 ===============
@@ -104,13 +105,13 @@ static void TexMgr_SetFilterModes (gltexture_t *glt)
 	}
 	else if (glt->flags & TEXPREF_MIPMAP)
 	{
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[gl_texturemode].magfilter);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[gl_texturemode].minfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[mode].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[mode].minfilter);
 	}
 	else
 	{
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[gl_texturemode].magfilter);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[gl_texturemode].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[mode].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[mode].magfilter);
 	}
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_anisotropy.value);
@@ -118,68 +119,52 @@ static void TexMgr_SetFilterModes (gltexture_t *glt)
 
 /*
 ===============
-TexMgr_TextureMode_f
+TexMgr_TextureMode_f -- called when gl_texturemode changes
 ===============
 */
-static void TexMgr_TextureMode_f (void)
+static void TexMgr_TextureMode_f (cvar_t *var)
 {
 	gltexture_t	*glt;
-	const char	*arg;
 	int i;
 
-	switch (Cmd_Argc())
+	for (i = 0; i < NUM_GLMODES; i++)
 	{
-	case 1:
-		Con_Printf ("\"gl_texturemode\" is \"%s\"\n", modes[gl_texturemode].name);
-		break;
-	case 2:
-		arg = Cmd_Argv(1);
-		if (arg[0] == 'G' || arg[0] == 'g')
+		if (!Q_strcmp (modes[i].name, gl_texturemode.string))
 		{
-			for (i = 0; i < NUM_GLMODES; i++)
-			{
-				if (!Q_strcasecmp (modes[i].name, arg))
-				{
-					gl_texturemode = i;
-					goto stuff;
-				}
-			}
-			Con_Printf ("\"%s\" is not a valid texturemode\n", arg);
+			mode = i;
+			for (glt = active_gltextures; glt; glt = glt->next)
+				TexMgr_SetFilterModes (glt);
+			Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
+			//FIXME: warpimages need to be redrawn, too.
 			return;
 		}
-		else if (arg[0] >= '0' && arg[0] <= '9')
-		{
-			i = atoi(arg);
-			if (i > NUM_GLMODES || i < 1)
-			{
-				Con_Printf ("\"%s\" is not a valid texturemode\n", arg);
-				return;
-			}
-			gl_texturemode = i - 1;
-		}
-		else
-			Con_Printf ("\"%s\" is not a valid texturemode\n", arg);
-
-stuff:
-		for (glt = active_gltextures; glt; glt = glt->next)
-			TexMgr_SetFilterModes (glt);
-
-		Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
-
-		//FIXME: warpimages need to be redrawn, too.
-
-		break;
-	default:
-		Con_SafePrintf ("usage: gl_texturemode <mode>\n");
-		break;
 	}
+
+	for (i = 0; i < NUM_GLMODES; i++)
+	{
+		if (!Q_strcasecmp (modes[i].name, gl_texturemode.string))
+		{
+			Cvar_SetQuick (&gl_texturemode, modes[i].name);
+			return;
+		}
+	}
+
+	i = atoi(gl_texturemode.string);
+	if (i >= 1 && i <= NUM_GLMODES)
+	{
+		Cvar_SetQuick (&gl_texturemode, modes[i-1].name);
+		return;
+	}
+
+	Con_Printf ("\"%s\" is not a valid texturemode\n", gl_texturemode.string);
+	Cvar_SetQuick (&gl_texturemode, modes[mode].name);
+
+	return;
 }
 
 /*
 ===============
 TexMgr_Anisotropy_f -- called when gl_texture_anisotropy changes
-
-FIXME: this is getting called twice (becuase of the recursive Cvar_SetValue call)
 ===============
 */
 static void TexMgr_Anisotropy_f (cvar_t *var)
@@ -596,7 +581,8 @@ void TexMgr_Init (void)
 	Cvar_RegisterVariable (&gl_picmip);
 	Cvar_RegisterVariable (&gl_texture_anisotropy);
 	Cvar_SetCallback(&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
-	Cmd_AddCommand ("gl_texturemode", &TexMgr_TextureMode_f);
+	Cvar_RegisterVariable (&gl_texturemode);
+	Cvar_SetCallback(&gl_texturemode, &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
 	Cmd_AddCommand ("imagelist", &TexMgr_Imagelist_f);
 	Cmd_AddCommand ("imagedump", &TexMgr_Imagedump_f);
