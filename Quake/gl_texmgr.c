@@ -583,9 +583,10 @@ void TexMgr_Init (void)
 	Cvar_RegisterVariable (&gl_max_size);
 	Cvar_RegisterVariable (&gl_picmip);
 	Cvar_RegisterVariable (&gl_texture_anisotropy);
-	Cvar_SetCallback(&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
+	Cvar_SetCallback (&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
 	Cvar_RegisterVariable (&gl_texturemode);
-	Cvar_SetCallback(&gl_texturemode, &TexMgr_TextureMode_f);
+	Cvar_SetQuick (&gl_texturemode, modes[mode].name); // sync with mode
+	Cvar_SetCallback (&gl_texturemode, &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
 	Cmd_AddCommand ("imagelist", &TexMgr_Imagelist_f);
 	Cmd_AddCommand ("imagedump", &TexMgr_Imagedump_f);
