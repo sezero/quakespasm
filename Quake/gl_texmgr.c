@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 const int	gl_solid_format = 3;
 const int	gl_alpha_format = 4;
 
-static cvar_t	gl_texturemode = {"gl_texturemode", "GL_LINEAR_MIPMAP_LINEAR", CVAR_ARCHIVE};
+static cvar_t	gl_texturemode = {"gl_texturemode", "", CVAR_ARCHIVE};
 static cvar_t	gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
 static cvar_t	gl_max_size = {"gl_max_size", "0", CVAR_NONE};
 static cvar_t	gl_picmip = {"gl_picmip", "0", CVAR_NONE};
@@ -66,8 +66,8 @@ static glmode_t modes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_NEAREST,	"GL_LINEAR_MIPMAP_NEAREST"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
-#define NUM_GLMODES 6
-static int mode = 5; // bilinear
+#define NUM_GLMODES ( sizeof(modes)/sizeof(modes[0]) )
+static int mode = NUM_GLMODES - 1; /* trilinear */
 
 /*
 ===============
@@ -584,8 +584,8 @@ void TexMgr_Init (void)
 	Cvar_RegisterVariable (&gl_picmip);
 	Cvar_RegisterVariable (&gl_texture_anisotropy);
 	Cvar_SetCallback (&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
+	gl_texturemode.string = modes[mode].name;
 	Cvar_RegisterVariable (&gl_texturemode);
-	Cvar_SetQuick (&gl_texturemode, modes[mode].name); // sync with mode
 	Cvar_SetCallback (&gl_texturemode, &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
 	Cmd_AddCommand ("imagelist", &TexMgr_Imagelist_f);
