@@ -58,7 +58,7 @@ typedef struct
 	int	minfilter;
 	const char  *name;
 } glmode_t;
-static glmode_t modes[] = {
+static glmode_t glmodes[] = {
 	{GL_NEAREST, GL_NEAREST,		"GL_NEAREST"},
 	{GL_NEAREST, GL_NEAREST_MIPMAP_NEAREST,	"GL_NEAREST_MIPMAP_NEAREST"},
 	{GL_NEAREST, GL_NEAREST_MIPMAP_LINEAR,	"GL_NEAREST_MIPMAP_LINEAR"},
@@ -66,8 +66,8 @@ static glmode_t modes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_NEAREST,	"GL_LINEAR_MIPMAP_NEAREST"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
-#define NUM_GLMODES ( sizeof(modes)/sizeof(modes[0]) )
-static int mode = NUM_GLMODES - 1; /* trilinear */
+#define NUM_GLMODES ( sizeof(glmodes)/sizeof(glmodes[0]) )
+static int glmode_idx = NUM_GLMODES - 1; /* trilinear */
 
 /*
 ===============
@@ -79,7 +79,7 @@ static void TexMgr_DescribeTextureModes_f (void)
 	int i;
 
 	for (i = 0; i < NUM_GLMODES; i++)
-		Con_SafePrintf ("   %2i: %s\n", i + 1, modes[i].name);
+		Con_SafePrintf ("   %2i: %s\n", i + 1, glmodes[i].name);
 
 	Con_Printf ("%i modes\n", i);
 }
@@ -105,13 +105,13 @@ static void TexMgr_SetFilterModes (gltexture_t *glt)
 	}
 	else if (glt->flags & TEXPREF_MIPMAP)
 	{
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[mode].magfilter);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[mode].minfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glmodes[glmode_idx].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glmodes[glmode_idx].minfilter);
 	}
 	else
 	{
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, modes[mode].magfilter);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, modes[mode].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glmodes[glmode_idx].magfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glmodes[glmode_idx].magfilter);
 	}
 
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_anisotropy.value);
@@ -129,11 +129,11 @@ static void TexMgr_TextureMode_f (cvar_t *var)
 
 	for (i = 0; i < NUM_GLMODES; i++)
 	{
-		if (!Q_strcmp (modes[i].name, gl_texturemode.string))
+		if (!Q_strcmp (glmodes[i].name, gl_texturemode.string))
 		{
-			if (mode != i)
+			if (glmode_idx != i)
 			{
-				mode = i;
+				glmode_idx = i;
 				for (glt = active_gltextures; glt; glt = glt->next)
 					TexMgr_SetFilterModes (glt);
 				Sbar_Changed (); //sbar graphics need to be redrawn with new filter mode
@@ -145,9 +145,9 @@ static void TexMgr_TextureMode_f (cvar_t *var)
 
 	for (i = 0; i < NUM_GLMODES; i++)
 	{
-		if (!Q_strcasecmp (modes[i].name, gl_texturemode.string))
+		if (!Q_strcasecmp (glmodes[i].name, gl_texturemode.string))
 		{
-			Cvar_SetQuick (&gl_texturemode, modes[i].name);
+			Cvar_SetQuick (&gl_texturemode, glmodes[i].name);
 			return;
 		}
 	}
@@ -155,14 +155,12 @@ static void TexMgr_TextureMode_f (cvar_t *var)
 	i = atoi(gl_texturemode.string);
 	if (i >= 1 && i <= NUM_GLMODES)
 	{
-		Cvar_SetQuick (&gl_texturemode, modes[i-1].name);
+		Cvar_SetQuick (&gl_texturemode, glmodes[i-1].name);
 		return;
 	}
 
 	Con_Printf ("\"%s\" is not a valid texturemode\n", gl_texturemode.string);
-	Cvar_SetQuick (&gl_texturemode, modes[mode].name);
-
-	return;
+	Cvar_SetQuick (&gl_texturemode, glmodes[glmode_idx].name);
 }
 
 /*
@@ -584,7 +582,7 @@ void TexMgr_Init (void)
 	Cvar_RegisterVariable (&gl_picmip);
 	Cvar_RegisterVariable (&gl_texture_anisotropy);
 	Cvar_SetCallback (&gl_texture_anisotropy, &TexMgr_Anisotropy_f);
-	gl_texturemode.string = modes[mode].name;
+	gl_texturemode.string = glmodes[glmode_idx].name;
 	Cvar_RegisterVariable (&gl_texturemode);
 	Cvar_SetCallback (&gl_texturemode, &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
