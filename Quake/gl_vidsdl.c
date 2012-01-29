@@ -1292,7 +1292,7 @@ void	VID_Init (void)
 		{
 			for (i = 1; i < nummodes; i++)
 			{
-				if ((modelist[i].width == width))
+				if (modelist[i].width == width)
 				{
 					vid_default = i;
 					break;
