@@ -411,7 +411,7 @@ static int mp3_madseek(snd_stream_t *stream, unsigned long offset)
 		depadded = true;
 		mad_stream_buffer(&p->Stream, p->mp3_buffer + padding, leftover + bytes_read - padding);
 
-		while (to_skip_samples >= 0)	/* Decode frame headers */
+		while (1)	/* Decode frame headers */
 		{
 			static unsigned short samples;
 			p->Stream.error = MAD_ERROR_NONE;
@@ -473,7 +473,6 @@ static int mp3_madseek(snd_stream_t *stream, unsigned long offset)
 			{
 				p->FrameCount = offset / samples;
 				to_skip_samples = offset % samples;
-
 				if (0 != FS_fseek(&stream->fh, (p->FrameCount * consumed / 64) + tagsize, SEEK_SET))
 					return -1;
 
