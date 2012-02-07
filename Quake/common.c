@@ -1505,7 +1505,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 	searchpath_t	*search;
 	char		netpath[MAX_OSPATH];
 	pack_t		*pak;
-	int		i, findtime;
+	int		i, findtime, l;
 
 	if (file && handle)
 		Sys_Error ("COM_FindFile: both handle and file set");
@@ -1583,7 +1583,11 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 
 	}
 
-	Con_DPrintf ("FindFile: can't find %s\n", filename);
+
+        // Don't spam about missing external textures
+        l = strlen(filename);
+        if (strcmp (filename+l-3,"pcx") != 0 && strcmp (filename+l-3,"tga") != 0)
+	  Con_DPrintf ("FindFile: can't find %s\n", filename);
 
 	if (handle)
 		*handle = -1;
