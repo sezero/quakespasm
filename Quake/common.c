@@ -1584,9 +1584,9 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 	}
 
 
-        // Don't spam about missing external textures
+        // Don't spam about missing pcx textures
         l = strlen(filename);
-        if (strcmp (filename+l-3,"pcx") != 0 && strcmp (filename+l-3,"tga") != 0)
+        if (strcmp (filename+l-3,"pcx") != 0)
 	  Con_DPrintf ("FindFile: can't find %s\n", filename);
 
 	if (handle)
