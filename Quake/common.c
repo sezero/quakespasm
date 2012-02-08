@@ -1584,10 +1584,10 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 	}
 
 
-        // Don't spam about missing pcx textures
-        l = strlen(filename);
-        if (strcmp (filename+l-3,"pcx") != 0)
-	  Con_DPrintf ("FindFile: can't find %s\n", filename);
+	// Don't spam about missing pcx textures
+	l = strlen(filename);
+	if (l<3 || strcmp (filename+l-3,"pcx") != 0)
+		Con_DPrintf ("FindFile: can't find %s\n", filename);
 
 	if (handle)
 		*handle = -1;
