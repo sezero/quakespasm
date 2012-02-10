@@ -798,7 +798,7 @@ GL_EndRendering
 */
 void GL_EndRendering (void)
 {
-	if (!scr_skipupdate || block_drawing)
+	if (!scr_skipupdate)
 		SDL_GL_SwapBuffers();
 
 	if (fullsbardraw)

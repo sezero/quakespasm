@@ -116,8 +116,6 @@ qboolean	scr_disabled_for_loading;
 qboolean	scr_drawloading;
 float		scr_disabled_time;
 
-qboolean	block_drawing;
-
 int	scr_tileclear_updates = 0; //johnfitz
 
 void SCR_ScreenShot_f (void);
@@ -967,9 +965,6 @@ needs almost the entire 256k of stack space!
 */
 void SCR_UpdateScreen (void)
 {
-	if (block_drawing)
-		return;
-
 	vid.numpages = (gl_triplebuffer.value) ? 3 : 2;
 
 	if (scr_disabled_for_loading)
