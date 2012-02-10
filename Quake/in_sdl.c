@@ -364,6 +364,10 @@ void IN_SendKeyEvents (void)
 			case key_console:
 				if ((event.key.keysym.unicode != 0) || (modstate & KMOD_SHIFT))
 				{
+#if defined(__APPLE__) && defined(__MACH__)
+					if (sym == SDLK_BACKSPACE)
+						break;	/* avoid change to SDLK_DELETE */
+#endif	/* Mac OS X */
 #if defined(__QNX__)
 					if ((sym == SDLK_BACKSPACE) || (sym == SDLK_RETURN))
 						break;	/* S.A: fixes QNX weirdness */
