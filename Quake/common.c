@@ -1505,7 +1505,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 	searchpath_t	*search;
 	char		netpath[MAX_OSPATH];
 	pack_t		*pak;
-	int		i, findtime, l;
+	int		i, findtime;
 
 	if (file && handle)
 		Sys_Error ("COM_FindFile: both handle and file set");
@@ -1580,15 +1580,10 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 				return 0; /* dummy valid value for COM_FileExists() */
 			}
 		}
-
 	}
 
-
-	// Don't spam about missing pcx textures
-	l = strlen(filename);
-	if (l<3 || strcmp (filename+l-3,"pcx") != 0)
-		Con_DPrintf ("FindFile: can't find %s\n", filename);
-
+	Con_DPrintf2 ("FindFile: can't find %s\n", filename);	/* if(developer.value >= 2) */
+				/* would've been better if I'd implement and use Sys_DPrintf() */
 	if (handle)
 		*handle = -1;
 	if (file)
