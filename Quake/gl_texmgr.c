@@ -1235,10 +1235,21 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 	if (glt->source_file[0] && glt->source_offset)
 	{
 		//lump inside file
-		data = COM_LoadHunkFile (glt->source_file, NULL);
-		if (!data)
+		long size;
+		FILE *f;
+		COM_FOpenFile(glt->source_file, &f, NULL);
+		if (!f)
 			goto invalid;
-		data += glt->source_offset;
+		fseek (f, glt->source_offset, SEEK_CUR);
+		size = (long) (glt->source_width * glt->source_height);
+		/* should be SRC_INDEXED, but no harm being paranoid:  */
+		if (glt->source_format == SRC_RGBA)
+			size *= 4;
+		else if (glt->source_format == SRC_LIGHTMAP)
+			size *= lightmap_bytes;
+		data = Hunk_Alloc (size);
+		fread (data, 1, size, f);
+		fclose (f);
 	}
 	else if (glt->source_file[0] && !glt->source_offset)
 		data = Image_LoadImage (glt->source_file, (int *)&glt->source_width, (int *)&glt->source_height); //simple file
