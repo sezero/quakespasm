@@ -25,10 +25,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define TEXPREF_NONE			0x0000
 #define TEXPREF_MIPMAP			0x0001	// generate mipmaps
+// TEXPREF_NEAREST and TEXPREF_LINEAR aren't supposed to be ORed with TEX_MIPMAP
 #define TEXPREF_LINEAR			0x0002	// force linear
 #define TEXPREF_NEAREST			0x0004	// force nearest
 #define TEXPREF_ALPHA			0x0008	// allow alpha
-#define TEXPREF_PAD				0x0010	// allow padding
+#define TEXPREF_PAD			0x0010	// allow padding
 #define TEXPREF_PERSIST			0x0020	// never free
 #define TEXPREF_OVERWRITE		0x0040	// overwrite existing same-name texture
 #define TEXPREF_NOPICMIP		0x0080	// always load full-sized

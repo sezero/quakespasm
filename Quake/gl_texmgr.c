@@ -107,14 +107,13 @@ static void TexMgr_SetFilterModes (gltexture_t *glt)
 	{
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glmodes[glmode_idx].magfilter);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glmodes[glmode_idx].minfilter);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_anisotropy.value);
 	}
 	else
 	{
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glmodes[glmode_idx].magfilter);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glmodes[glmode_idx].magfilter);
 	}
-
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_anisotropy.value);
 }
 
 /*
@@ -182,7 +181,15 @@ static void TexMgr_Anisotropy_f (cvar_t *var)
 	{
 		gltexture_t	*glt;
 		for (glt = active_gltextures; glt; glt = glt->next)
-			TexMgr_SetFilterModes (glt);
+		{
+		/*  TexMgr_SetFilterModes (glt);*/
+		    if (glt->flags & TEXPREF_MIPMAP) {
+			GL_Bind (glt);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, glmodes[glmode_idx].magfilter);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, glmodes[glmode_idx].minfilter);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, gl_texture_anisotropy.value);
+		    }
+		}
 	}
 }
 
