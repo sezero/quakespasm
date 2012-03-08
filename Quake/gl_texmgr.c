@@ -66,7 +66,7 @@ static glmode_t glmodes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_NEAREST,	"GL_LINEAR_MIPMAP_NEAREST"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
-#define NUM_GLMODES ( sizeof(glmodes)/sizeof(glmodes[0]) )
+#define NUM_GLMODES (int)(sizeof(glmodes)/sizeof(glmodes[0]))
 static int glmode_idx = NUM_GLMODES - 1; /* trilinear */
 
 /*
@@ -533,9 +533,9 @@ void TexMgr_RecalcWarpImageSize (void)
 
 	gl_warpimagesize = TexMgr_SafeTextureSize (512);
 
-	while (gl_warpimagesize > (int)vid.width)
+	while (gl_warpimagesize > vid.width)
 		gl_warpimagesize >>= 1;
-	while (gl_warpimagesize > (int)vid.height)
+	while (gl_warpimagesize > vid.height)
 		gl_warpimagesize >>= 1;
 
 	if (gl_warpimagesize == oldsize)
@@ -1254,7 +1254,7 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 			size *= 4;
 		else if (glt->source_format == SRC_LIGHTMAP)
 			size *= lightmap_bytes;
-		data = Hunk_Alloc (size);
+		data = (byte *) Hunk_Alloc (size);
 		fread (data, 1, size, f);
 		fclose (f);
 	}
