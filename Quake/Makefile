@@ -1,4 +1,4 @@
-### GNU Makefile for QuakeSpasm unix targets, Dec. 27, 2011
+### GNU Makefile for QuakeSpasm unix targets, March 09, 2012
 #
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
@@ -32,7 +32,7 @@ SDLNET   ?= 0
 
 BUILDDIR := .
 
-SYSNAME := $(shell uname -s) 
+SYSNAME := $(shell uname -s)
 
 ifneq (,$(findstring MINGW32,$(SYSNAME)))
 HOST_OS = WIN32
@@ -54,7 +54,7 @@ endif
 endif
 
 # ---------------------------------------
-# Define some build variables
+# build variables
 # ---------------------------------------
 
 CC ?= gcc
@@ -268,7 +268,7 @@ OBJS := strlcat.o \
 	$(SYSOBJ_SYS) $(SYSOBJ_MAIN) $(SYSOBJ_RES)
 
 # ------------------------
-# build rules for Linux
+# Linux build rules
 # ------------------------
 
 quakespasm:	$(OBJS)

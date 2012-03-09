@@ -1,5 +1,5 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win64 : MinGW-w64)
-# using cross-toolchains on a linux host	/ Dec. 27, 2011.
+# using cross-toolchains on a linux host	/ March 09, 2012
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=0" to use the old WinSock 1.1 api (NOT recommended).
@@ -34,7 +34,7 @@ SDLNET   ?= 0
 TOPDIR := $(shell pwd)
 
 # ---------------------------------------
-# Define some build variables
+# build variables
 # ---------------------------------------
 
 TARGET=x86_64-w64-mingw32
@@ -254,11 +254,11 @@ OBJS := strlcat.o \
 	$(SYSOBJ_SYS) $(SYSOBJ_MAIN) $(SYSOBJ_RES)
 
 # ------------------------
-# build rules for mingw-w64 :
+# MinGW-w64 build rules
 # ------------------------
 
 quakespasm.exe:	$(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(SDL_LIBS) -o $@
+	$(CC) $(OBJS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm.exe

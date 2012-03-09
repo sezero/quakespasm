@@ -1,4 +1,4 @@
-### GNU Makefile for QuakeSpasm for Darwin, Dec. 27, 2011
+### GNU Makefile for QuakeSpasm for Darwin, March 09, 2012
 
 # Usage: "make -f Makefile.darwin"
 #
@@ -47,7 +47,7 @@ SDLNET   ?= 0
 
 BUILDDIR := .
 
-SYSNAME := $(shell uname -s) 
+SYSNAME := $(shell uname -s)
 
 ifneq (,$(findstring MINGW32,$(SYSNAME)))
 HOST_OS = WIN32
@@ -75,7 +75,7 @@ endif
 endif
 
 # ---------------------------------------
-# Define some build variables
+# build variables
 # ---------------------------------------
 
 CC ?= gcc
@@ -294,7 +294,7 @@ OBJS := strlcat.o \
 	$(SYSOBJ_SYS) $(SYSOBJ_MAIN) $(SYSOBJ_RES)
 
 # ------------------------
-# build rules for Linux
+# darwin build rules
 # ------------------------
 
 quakespasm:	$(OBJS)
