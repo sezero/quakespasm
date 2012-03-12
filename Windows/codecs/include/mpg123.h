@@ -1,5 +1,5 @@
 /*
-	libmpg123: MPEG Audio Decoder library (version 1.13.4)
+	libmpg123: MPEG Audio Decoder library (version 1.13.6)
 
 	copyright 1995-2010 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
@@ -133,7 +133,7 @@ EXPORT void mpg123_delete(mpg123_handle *mh);
 /** Enumeration of the parameters types that it is possible to set/get. */
 enum mpg123_parms
 {
-	MPG123_VERBOSE,        /**< set verbosity value for enabling messages to stderr, >= 0 makes sense (integer) */
+	MPG123_VERBOSE = 0,        /**< set verbosity value for enabling messages to stderr, >= 0 makes sense (integer) */
 	MPG123_FLAGS,          /**< set all flags, p.ex val = MPG123_GAPLESS|MPG123_MONO_MIX (integer) */
 	MPG123_ADD_FLAGS,      /**< add some flags (integer) */
 	MPG123_FORCE_RATE,     /**< when value > 0, force output rate to that value (integer) */
