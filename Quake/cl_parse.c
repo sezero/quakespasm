@@ -91,7 +91,6 @@ const char *svc_strings[] =
 qboolean warn_about_nehahra_protocol; //johnfitz
 
 extern vec3_t	v_punchangles[2]; //johnfitz
-extern	int	stufftext_frame;
 
 //=============================================================================
 
@@ -1004,8 +1003,8 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_stufftext:
-			stufftext_frame = host_framecount;	// allow full frame update
-								// on stuff messages. Pa3PyX
+			cls.stufftext_frame = host_framecount;	// allow full frame update
+								// in demo playback -- Pa3PyX
 			Cbuf_AddText (MSG_ReadString ());
 			break;
 

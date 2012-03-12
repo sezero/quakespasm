@@ -20,8 +20,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-int		stufftext_frame;
-
 static void CL_FinishTimeDemo (void);
 
 /*
@@ -90,11 +88,11 @@ static int CL_GetDemoMessage (void)
 	// decide if it is time to grab the next message
 	if (cls.signon == SIGNONS)	// always grab until fully connected
 	{
-		// Always wait for full frame update on stuff messages.
-		// If the server stuffs a reconnect, we must wait for
-		// the client to re-initialize before accepting further
-		// messages. Otherwise demo playback may freeze. Pa3PyX
-		if (stufftext_frame == host_framecount)
+		// Wait for full frame update on stufftext messages:
+		// If the server stuffs a "reconnect", failing to wait
+		// for the client to re-initialize before accepting
+		// further messages freezes demo playback.  -- Pa3PyX
+		if (host_framecount == cls.stufftext_frame)
 			return 0;
 
 		if (cls.timedemo)
