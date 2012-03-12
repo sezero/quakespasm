@@ -16,12 +16,13 @@
      4.3 Mac OS X
 
   5. Changes
-     5.1 Changes in 0.85.6
-     5.2 Changes in 0.85.5
-     5.3 Changes in 0.85.4
-     5.4 Changes in 0.85.3
-     5.5 Changes in 0.85.2
-     5.6 Changes in 0.85.1
+     5.1 Changes in 0.85.7
+     5.2 Changes in 0.85.6
+     5.3 Changes in 0.85.5
+     5.4 Changes in 0.85.4
+     5.5 Changes in 0.85.3
+     5.6 Changes in 0.85.2
+     5.7 Changes in 0.85.1
 
   6. Todo
   7. Copyright
@@ -31,11 +32,10 @@
   ______________________________________________________________________
 
 
-  Page last edited 17 January 2012
+  Page last edited 12 March 2012
 
 
   1.  About
-
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
@@ -46,14 +46,12 @@
 
   2.  Downloads
 
-
   o  <http://quakespasm.sourceforge.net/download.htm>
 
 
   3.  Hints
 
-
-   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
 
 
@@ -76,6 +74,7 @@
   o  Quakespasm allows loading new games (mods) on the fly with "game
      GAMENAME"
 
+
   3.1.  Music Playback
 
   Since version 0.85.4, Quakespasm can play back external MP3, OGG and
@@ -97,7 +96,6 @@
 
   4.  Compiling
 
-
   To check-out the latest version of QuakeSpasm, use :
   svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
 
@@ -111,7 +109,6 @@
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
 
-
   Compile time options include
 
   o  make DEBUG=1 for debugging
@@ -120,7 +117,6 @@
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
-
 
   HOME directory support can be enabled via Misc/homedir_0.patch
 
@@ -142,11 +138,35 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
+
   5.  Changes
 
 
-  5.1.  Changes in 0.85.6
+  5.1.  Changes in 0.85.7
 
+  o  Added support for cross-level demo playback
+
+  o  gl_texturemode is reimplemented as a cvar with a callback and the
+     setting is automatically saved to the config
+
+  o  Fixed execution of external files without a newline at the end
+
+  o  Reduced memory usage during reloading of textures
+
+  o  Fixed compilation on GNU/kFreeBSD (Debian bug #657793)
+
+  o  Fixed backspace key on Mac OS X
+
+  o  Disable mouse acceleration in Mac OS X
+
+  o  Worked around recursive calling of the anisotropic filter callback
+
+  o  Console word wrap and long input line fixes
+
+  o  Several other small changes mostly invisible to the end-user
+
+
+  5.2.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -158,8 +178,8 @@
 
   o  Minor SDL video fixes.
 
-  5.2.  Changes in 0.85.5
 
+  5.3.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -189,8 +209,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-  5.3.  Changes in 0.85.4
 
+  5.4.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -217,8 +237,8 @@
 
   o  Other minor sound and cdaudio updates
 
-  5.4.  Changes in 0.85.3
 
+  5.5.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -253,8 +273,9 @@
 
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
-  5.5.  Changes in 0.85.2
 
+
+  5.6.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -282,8 +303,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.6.  Changes in 0.85.1
-
+  5.7.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -319,8 +339,9 @@
 
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
-  6.  Todo
 
+
+  6.  Todo
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -335,7 +356,6 @@
 
   7.  Copyright
 
-
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
 
@@ -345,7 +365,6 @@
 
 
   8.  Links
-
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 

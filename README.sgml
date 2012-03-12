@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited 17 January 2012</em>
+<em>Page last edited 12 March 2012</em>
 
 <sect> About <p>
 
@@ -86,6 +86,21 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.85.7<p>
+<itemize>
+<item> Added support for cross-level demo playback
+<item> gl_texturemode is reimplemented as a cvar with a callback and the setting is automatically saved to the config
+<item> Fixed execution of external files without a newline at the end
+<item> Reduced memory usage during reloading of textures
+<item> Fixed compilation on GNU/kFreeBSD (Debian bug #657793)
+<item> Fixed backspace key on Mac OS X
+<item> Disable mouse acceleration in Mac OS X
+<item> Worked around recursive calling of the anisotropic filter callback
+<item> Console word wrap and long input line fixes
+<item> Several other small changes mostly invisible to the end-user
+</itemize>
+</p>
 
 <sect1> Changes in 0.85.6<p>
 <itemize>
