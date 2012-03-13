@@ -163,6 +163,8 @@
 
   o  Console word wrap and long input line fixes
 
+  o  Verified correct compilation by clang (using v3.0)
+
   o  Several other small changes mostly invisible to the end-user
 
 

@@ -98,6 +98,7 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 <item> Disable mouse acceleration in Mac OS X
 <item> Worked around recursive calling of the anisotropic filter callback
 <item> Console word wrap and long input line fixes
+<item> Verified correct compilation by clang (using v3.0)
 <item> Several other small changes mostly invisible to the end-user
 </itemize>
 </p>
