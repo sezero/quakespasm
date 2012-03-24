@@ -37,8 +37,16 @@ struct mplane_s;
 
 extern vec3_t vec3_origin;
 
-#define	nanmask		(255<<23)	/* 7F800000 */
-#define	IS_NAN(x)	(((*(int *) &x) & nanmask) == nanmask)
+#define	nanmask		(255 << 23)	/* 7F800000 */
+#if 0	/* macro is violating strict aliasing rules */
+#define	IS_NAN(x)	(((*(int *) (char *) &x) & nanmask) == nanmask)
+#else
+static inline int IS_NAN (float x) {
+	union { float f; int i; } num;
+	num.f = x;
+	return ((num.i & nanmask) == nanmask);
+}
+#endif
 
 #define Q_rint(x) ((x) > 0 ? (int)((x) + 0.5) : (int)((x) - 0.5)) //johnfitz -- from joequake
 
