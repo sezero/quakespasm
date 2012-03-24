@@ -52,6 +52,7 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 </itemize>
 
 
+
 <sect> Compiling <p>
 <p>To check-out the latest version of QuakeSpasm, use :
 <newline>
@@ -84,6 +85,16 @@ A Quakespasm App (including program launcher and update framework) can be made u
 Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
 
+<sect> Known Bugs <p>
+Some versions of Xorg and SDL have brightness issues. If you have Xorg >= 7.5 and broken brightness,
+these patched libSDL binaries may help.
+<itemize>
+    <item><url url="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download"
+    name="Gamma patched libSDL (i686-linux)"></li>
+    <item><url url="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download"
+    name="Gamma patched libSDL (x86_64-linux)">
+</itemize>
+</p>
 
 <sect> Changes<p>
 

@@ -15,18 +15,19 @@
      4.2 Windows
      4.3 Mac OS X
 
-  5. Changes
-     5.1 Changes in 0.85.7
-     5.2 Changes in 0.85.6
-     5.3 Changes in 0.85.5
-     5.4 Changes in 0.85.4
-     5.5 Changes in 0.85.3
-     5.6 Changes in 0.85.2
-     5.7 Changes in 0.85.1
+  5. Known Bugs
+  6. Changes
+     6.1 Changes in 0.85.7
+     6.2 Changes in 0.85.6
+     6.3 Changes in 0.85.5
+     6.4 Changes in 0.85.4
+     6.5 Changes in 0.85.3
+     6.6 Changes in 0.85.2
+     6.7 Changes in 0.85.1
 
-  6. Todo
-  7. Copyright
-  8. Links
+  7. Todo
+  8. Copyright
+  9. Links
 
 
   ______________________________________________________________________
@@ -37,6 +38,7 @@
 
   1.  About
 
+
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
   includes 64bit CPU support, a new sound driver, several networking
   fixes and a few graphical niceities.
@@ -46,14 +48,15 @@
 
   2.  Downloads
 
+
   o  <http://quakespasm.sourceforge.net/download.htm>
 
 
   3.  Hints
 
-  Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
-  a full run-down of the engine's commands and variables.
 
+   Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
+  a full run-down of the engine's commands and variables.
 
   o  To disable some changes, use "quakespasm -fitz"
 
@@ -73,7 +76,6 @@
 
   o  Quakespasm allows loading new games (mods) on the fly with "game
      GAMENAME"
-
 
   3.1.  Music Playback
 
@@ -96,6 +98,7 @@
 
   4.  Compiling
 
+
   To check-out the latest version of QuakeSpasm, use :
   svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
 
@@ -108,6 +111,7 @@
   make
   cp quakespasm /usr/local/games/quake (for example)
   ______________________________________________________________________
+
 
   Compile time options include
 
@@ -138,11 +142,23 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
+  5.  Known Bugs
 
-  5.  Changes
+  Some versions of Xorg and SDL have brightness issues. If you have Xorg
+  >= 7.5 and broken brightness, these patched libSDL binaries may help.
+
+  o  Gamma patched libSDL (i686-linux)
+     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download>
+
+  o  Gamma patched libSDL (x86_64-linux)
+     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-
+     AMD64.tgz/download>
+
+  6.  Changes
 
 
-  5.1.  Changes in 0.85.7
+  6.1.  Changes in 0.85.7
+
 
   o  Added support for cross-level demo playback
 
@@ -167,8 +183,8 @@
 
   o  Several other small changes mostly invisible to the end-user
 
+  6.2.  Changes in 0.85.6
 
-  5.2.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -180,8 +196,8 @@
 
   o  Minor SDL video fixes.
 
+  6.3.  Changes in 0.85.5
 
-  5.3.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -211,8 +227,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
+  6.4.  Changes in 0.85.4
 
-  5.4.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -235,12 +251,13 @@
      directory as the map itself or from a searchpath with a higher
      priority
 
+
   o  Fixed rest of the compiler warnings
 
   o  Other minor sound and cdaudio updates
 
+  6.5.  Changes in 0.85.3
 
-  5.5.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -277,7 +294,8 @@
      some other CD tweaks.
 
 
-  5.6.  Changes in 0.85.2
+  6.6.  Changes in 0.85.2
+
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -305,7 +323,8 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.7.  Changes in 0.85.1
+  6.7.  Changes in 0.85.1
+
 
   o  64 bit CPU support
 
@@ -343,7 +362,8 @@
      r_wateralpha, r_dynamic, r_novis
 
 
-  6.  Todo
+  7.  Todo
+
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -356,17 +376,20 @@
   o  Complete the unix user directories support
 
 
-  7.  Copyright
+  8.  Copyright
+
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
+
 
   o  Quakespasm console background image by AAS, released under the
      CREATIVE COMMONS PUBLIC LICENSE
      <http://creativecommons.org/licenses/by/3.0/legalcode>
 
 
-  8.  Links
+  9.  Links
+
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 

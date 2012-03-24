@@ -34,25 +34,28 @@
 <LI><A NAME="toc4.3">4.3</A> <A HREF="README.html#ss4.3">Mac OS X </A>
 </UL>
 <P>
-<H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Changes</A></H2>
+<H2><A NAME="toc5">5.</A> <A HREF="README.html#s5">Known Bugs </A></H2>
+
+<P>
+<H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc5.1">5.1</A> <A HREF="README.html#ss5.1">Changes in 0.85.7</A>
-<LI><A NAME="toc5.2">5.2</A> <A HREF="README.html#ss5.2">Changes in 0.85.6</A>
-<LI><A NAME="toc5.3">5.3</A> <A HREF="README.html#ss5.3">Changes in 0.85.5</A>
-<LI><A NAME="toc5.4">5.4</A> <A HREF="README.html#ss5.4">Changes in 0.85.4</A>
-<LI><A NAME="toc5.5">5.5</A> <A HREF="README.html#ss5.5">Changes in 0.85.3</A>
-<LI><A NAME="toc5.6">5.6</A> <A HREF="README.html#ss5.6">Changes in 0.85.2</A>
-<LI><A NAME="toc5.7">5.7</A> <A HREF="README.html#ss5.7">Changes in 0.85.1</A>
+<LI><A NAME="toc6.1">6.1</A> <A HREF="README.html#ss6.1">Changes in 0.85.7</A>
+<LI><A NAME="toc6.2">6.2</A> <A HREF="README.html#ss6.2">Changes in 0.85.6</A>
+<LI><A NAME="toc6.3">6.3</A> <A HREF="README.html#ss6.3">Changes in 0.85.5</A>
+<LI><A NAME="toc6.4">6.4</A> <A HREF="README.html#ss6.4">Changes in 0.85.4</A>
+<LI><A NAME="toc6.5">6.5</A> <A HREF="README.html#ss6.5">Changes in 0.85.3</A>
+<LI><A NAME="toc6.6">6.6</A> <A HREF="README.html#ss6.6">Changes in 0.85.2</A>
+<LI><A NAME="toc6.7">6.7</A> <A HREF="README.html#ss6.7">Changes in 0.85.1</A>
 </UL>
 <P>
-<H2><A NAME="toc6">6.</A> <A HREF="README.html#s6">Todo </A></H2>
+<H2><A NAME="toc7">7.</A> <A HREF="README.html#s7">Todo </A></H2>
 
 <P>
-<H2><A NAME="toc7">7.</A> <A HREF="README.html#s7">Copyright </A></H2>
+<H2><A NAME="toc8">8.</A> <A HREF="README.html#s8">Copyright </A></H2>
 
 <P>
-<H2><A NAME="toc8">8.</A> <A HREF="README.html#s8">Links </A></H2>
+<H2><A NAME="toc9">9.</A> <A HREF="README.html#s9">Links </A></H2>
 
 
 <HR>
@@ -112,6 +115,7 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 </P>
 
 
+
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling </A></H2>
 
 
@@ -149,11 +153,22 @@ Compile time options include
 
 <P>A Quakespasm App (including program launcher and update framework) can be made using the <B>Xcode</B> template found in the MacOSX directory.</P>
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
-<H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
+<H2><A NAME="s5">5.</A> <A HREF="#toc5">Known Bugs </A></H2>
+
+<P>Some versions of Xorg and SDL have brightness issues. If you have Xorg >= 7.5 and broken brightness,
+these patched libSDL binaries may help.
+<UL>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download">Gamma patched libSDL (i686-linux)</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
+</UL>
+</P>
+<H2><A NAME="s6">6.</A> <A HREF="#toc6">Changes</A></H2>
 
 
 
-<H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">Changes in 0.85.7</A>
+<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.85.7</A>
 </H2>
 
 <P>
@@ -171,7 +186,7 @@ Compile time options include
 <LI> Several other small changes mostly invisible to the end-user</LI>
 </UL>
 </P>
-<H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">Changes in 0.85.6</A>
+<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.85.6</A>
 </H2>
 
 <P>
@@ -182,7 +197,7 @@ Compile time options include
 <LI> Minor SDL video fixes.</LI>
 </UL>
 </P>
-<H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">Changes in 0.85.5</A>
+<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">Changes in 0.85.5</A>
 </H2>
 
 <P>
@@ -201,7 +216,7 @@ Compile time options include
 <LI> Several code updates from uHexen2 project, several code cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss5.4">5.4</A> <A HREF="#toc5.4">Changes in 0.85.4</A>
+<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">Changes in 0.85.4</A>
 </H2>
 
 <P>
@@ -219,7 +234,7 @@ Compile time options include
 <LI> Other minor sound and cdaudio updates</LI>
 </UL>
 </P>
-<H2><A NAME="ss5.5">5.5</A> <A HREF="#toc5.5">Changes in 0.85.3</A>
+<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">Changes in 0.85.3</A>
 </H2>
 
 <P>
@@ -242,7 +257,7 @@ Compile time options include
 </UL>
 </P>
 
-<H2><A NAME="ss5.6">5.6</A> <A HREF="#toc5.6">Changes in 0.85.2</A>
+<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">Changes in 0.85.2</A>
 </H2>
 
 <P>
@@ -261,7 +276,7 @@ Compile time options include
 </UL>
 </P>
 
-<H2><A NAME="ss5.7">5.7</A> <A HREF="#toc5.7">Changes in 0.85.1</A>
+<H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.85.1</A>
 </H2>
 
 <P>
@@ -286,7 +301,7 @@ Compile time options include
 </P>
 
 
-<H2><A NAME="s6">6.</A> <A HREF="#toc6">Todo </A></H2>
+<H2><A NAME="s7">7.</A> <A HREF="#toc7">Todo </A></H2>
 
 <P>
 <UL>
@@ -297,7 +312,7 @@ Compile time options include
 </UL>
 </P>
 
-<H2><A NAME="s7">7.</A> <A HREF="#toc7">Copyright </A></H2>
+<H2><A NAME="s8">8.</A> <A HREF="#toc8">Copyright </A></H2>
 
 <P>
 <UL>
@@ -308,7 +323,7 @@ Compile time options include
 </UL>
 </P>
 
-<H2><A NAME="s8">8.</A> <A HREF="#toc8">Links </A></H2>
+<H2><A NAME="s9">9.</A> <A HREF="#toc9">Links </A></H2>
 
 
 <P>
