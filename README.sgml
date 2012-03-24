@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited 12 March 2012</em>
+<em>Page last edited 24 March 2012</em>
 
 <sect> About <p>
 
@@ -50,7 +50,6 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 <item>Use the "-noextmusic" option to disable this feature.
 <item>See <url url="README.music"> for more details.
 </itemize>
-
 
 
 <sect> Compiling <p>
