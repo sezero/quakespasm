@@ -40,8 +40,13 @@ qboolean		fitzmode;
 static void COM_Path_f (void);
 
 // if a packfile directory differs from this, it is assumed to be hacked
-#define PAK0_COUNT              339
-#define PAK0_CRC                32981
+#define PAK0_COUNT		339	/* id1/pak0.pak - v1.0x */
+#define PAK0_CRC_V100		13900	/* id1/pak0.pak - v1.00 */
+#define PAK0_CRC_V101		62751	/* id1/pak0.pak - v1.01 */
+#define PAK0_CRC_V106		32981	/* id1/pak0.pak - v1.06 */
+#define PAK0_CRC	(PAK0_CRC_V106)
+#define PAK0_COUNT_V091		308	/* id1/pak0.pak - v0.91/0.92, not supported */
+#define PAK0_CRC_V091		28804	/* id1/pak0.pak - v0.91/0.92, not supported */
 
 char	com_token[1024];
 int		com_argc;
@@ -1818,7 +1823,7 @@ pack_t *COM_LoadPackFile (const char *packfile)
 	CRC_Init (&crc);
 	for (i = 0; i < header.dirlen; i++)
 		CRC_ProcessByte (&crc, ((byte *)info)[i]);
-	if (crc != PAK0_CRC)
+	if (crc != PAK0_CRC_V106 && crc != PAK0_CRC_V101 && crc != PAK0_CRC_V100)
 		com_modified = true;
 
 	// parse the directory
