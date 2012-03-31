@@ -80,7 +80,7 @@ float TexMgr_FrameUsage (void);
 gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name);
 gltexture_t *TexMgr_NewTexture (void);
 void TexMgr_FreeTexture (gltexture_t *kill);
-void TexMgr_FreeTextures (int flags, int mask);
+void TexMgr_FreeTextures (unsigned int flags, unsigned int mask);
 void TexMgr_FreeTexturesForOwner (model_t *owner);
 void TexMgr_NewGame (void);
 void TexMgr_Init (void);

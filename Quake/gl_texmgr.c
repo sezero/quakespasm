@@ -388,7 +388,7 @@ TexMgr_FreeTextures
 compares each bit in "flags" to the one in glt->flags only if that bit is active in "mask"
 ================
 */
-void TexMgr_FreeTextures (int flags, int mask)
+void TexMgr_FreeTextures (unsigned int flags, unsigned int mask)
 {
 	gltexture_t *glt, *next;
 

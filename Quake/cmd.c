@@ -527,7 +527,7 @@ Cmd_Argv
 */
 const char	*Cmd_Argv (int arg)
 {
-	if ( (unsigned)arg >= cmd_argc )
+	if (arg < 0 || arg >= cmd_argc)
 		return cmd_null_string;
 	return cmd_argv[arg];
 }
