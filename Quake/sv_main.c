@@ -20,11 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 // sv_main.c -- server main program
 
-#include "q_stdinc.h"
-#include "arch_def.h"
-#include "net_sys.h"	/* for net_defs.h */
 #include "quakedef.h"
-#include "net_defs.h"	/* for struct qsocket_s details */
 
 server_t	sv;
 server_static_t	svs;
@@ -329,7 +325,7 @@ void SV_ConnectClient (int clientnum)
 
 	client = svs.clients + clientnum;
 
-	Con_DPrintf ("Client %s connected\n", client->netconnection->address);
+	Con_DPrintf ("Client %s connected\n", NET_QSocketGetAddressString(client->netconnection));
 
 	edictnum = clientnum+1;
 
@@ -919,7 +915,7 @@ qboolean SV_SendClientDatagram (client_t *client)
 	msg.cursize = 0;
 
 	//johnfitz -- if client is nonlocal, use smaller max size so packets aren't fragmented
-	if (Q_strcmp (client->netconnection->address, "LOCAL") != 0)
+	if (Q_strcmp(NET_QSocketGetAddressString(client->netconnection), "LOCAL") != 0)
 		msg.maxsize = DATAGRAM_MTU;
 	//johnfitz
 

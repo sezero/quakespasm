@@ -156,6 +156,18 @@ void NET_FreeQSocket(qsocket_t *sock)
 }
 
 
+double NET_QSocketGetTime (qsocket_t *s)
+{
+	return s->connecttime;
+}
+
+
+const char *NET_QSocketGetAddressString (qsocket_t *s)
+{
+	return s->address;
+}
+
+
 static void NET_Listen_f (void)
 {
 	if (Cmd_Argc () != 2)
@@ -293,6 +305,59 @@ void NET_Slist_f (void)
 	SchedulePollProcedure(&slistPollProcedure, 0.1);
 
 	hostCacheCount = 0;
+}
+
+
+void NET_SlistSort (void)
+{
+	if (hostCacheCount > 1)
+	{
+		int	i, j;
+		hostcache_t temp;
+		for (i = 0; i < hostCacheCount; i++)
+		{
+			for (j = i + 1; j < hostCacheCount; j++)
+			{
+				if (strcmp(hostcache[j].name, hostcache[i].name) < 0)
+				{
+					memcpy(&temp, &hostcache[j], sizeof(hostcache_t));
+					memcpy(&hostcache[j], &hostcache[i], sizeof(hostcache_t));
+					memcpy(&hostcache[i], &temp, sizeof(hostcache_t));
+				}
+			}
+		}
+	}
+}
+
+
+const char *NET_SlistPrintServer (int idx)
+{
+	static char	string[64];
+
+	if (idx < 0 || idx >= hostCacheCount)
+		return "";
+
+	if (hostcache[idx].maxusers)
+	{
+		q_snprintf(string, sizeof(string), "%-15.15s %-15.15s %2u/%2u\n",
+					hostcache[idx].name, hostcache[idx].map,
+					hostcache[idx].users, hostcache[idx].maxusers);
+	}
+	else
+	{
+		q_snprintf(string, sizeof(string), "%-15.15s %-15.15s\n",
+					hostcache[idx].name, hostcache[idx].map);
+	}
+
+	return string;
+}
+
+
+const char *NET_SlistPrintServerName (int idx)
+{
+	if (idx < 0 || idx >= hostCacheCount)
+		return "";
+	return hostcache[idx].cname;
 }
 
 

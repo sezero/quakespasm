@@ -19,11 +19,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "q_stdinc.h"
-#include "arch_def.h"
-#include "net_sys.h"	/* FIXME */
 #include "quakedef.h"
-#include "net_defs.h"	/* FIXME */
 #include "bgmusic.h"
 
 void (*vid_menucmdfn)(void); //johnfitz
@@ -2341,42 +2337,19 @@ void M_Menu_ServerList_f (void)
 
 void M_ServerList_Draw (void)
 {
-	int		n;
-	char	string [64];
+	int	n;
 	qpic_t	*p;
 
 	if (!slist_sorted)
 	{
-		if (hostCacheCount > 1)
-		{
-			int	i,j;
-			hostcache_t temp;
-			for (i = 0; i < hostCacheCount; i++)
-			{
-				for (j = i + 1; j < hostCacheCount; j++)
-				{
-					if (strcmp(hostcache[j].name, hostcache[i].name) < 0)
-					{
-						Q_memcpy(&temp, &hostcache[j], sizeof(hostcache_t));
-						Q_memcpy(&hostcache[j], &hostcache[i], sizeof(hostcache_t));
-						Q_memcpy(&hostcache[i], &temp, sizeof(hostcache_t));
-					}
-				}
-			}
-		}
 		slist_sorted = true;
+		NET_SlistSort ();
 	}
 
 	p = Draw_CachePic ("gfx/p_multi.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 	for (n = 0; n < hostCacheCount; n++)
-	{
-		if (hostcache[n].maxusers)
-			sprintf(string, "%-15.15s %-15.15s %2u/%2u\n", hostcache[n].name, hostcache[n].map, hostcache[n].users, hostcache[n].maxusers);
-		else
-			sprintf(string, "%-15.15s %-15.15s\n", hostcache[n].name, hostcache[n].map);
-		M_Print (16, 32 + 8*n, string);
-	}
+		M_Print (16, 32 + 8*n, NET_SlistPrintServer (n));
 	M_DrawCharacter (0, 32 + slist_cursor*8, 12+((int)(realtime*4)&1));
 
 	if (*m_return_reason)
@@ -2420,7 +2393,7 @@ void M_ServerList_Key (int k)
 		IN_Activate();
 		key_dest = key_game;
 		m_state = m_none;
-		Cbuf_AddText ( va ("connect \"%s\"\n", hostcache[slist_cursor].cname) );
+		Cbuf_AddText ( va ("connect \"%s\"\n", NET_SlistPrintServerName(slist_cursor)) );
 		break;
 
 	default:

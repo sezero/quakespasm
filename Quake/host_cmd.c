@@ -20,12 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#include "q_stdinc.h"
-#include "arch_def.h"
-#include "net_sys.h"	/* for net_defs.h */
-#include <dirent.h>
 #include "quakedef.h"
-#include "net_defs.h"	/* for struct qsocket_s details */
+#include <dirent.h>
 
 extern cvar_t	pausable;
 
@@ -533,7 +529,7 @@ void Host_Status_f (void)
 	{
 		if (!client->active)
 			continue;
-		seconds = (int)(net_time - client->netconnection->connecttime);
+		seconds = (int)(net_time - NET_QSocketGetTime(client->netconnection));
 		minutes = seconds / 60;
 		if (minutes)
 		{
@@ -545,7 +541,7 @@ void Host_Status_f (void)
 		else
 			hours = 0;
 		print_fn ("#%-2u %-16.16s  %3i  %2i:%02i:%02i\n", j+1, client->name, (int)client->edict->v.frags, hours, minutes, seconds);
-		print_fn ("   %s\n", client->netconnection->address);
+		print_fn ("   %s\n", NET_QSocketGetAddressString(client->netconnection));
 	}
 }
 
@@ -1632,7 +1628,7 @@ void Host_Spawn_f (void)
 		pr_global_struct->self = EDICT_TO_PROG(sv_player);
 		PR_ExecuteProgram (pr_global_struct->ClientConnect);
 
-		if ((Sys_DoubleTime() - host_client->netconnection->connecttime) <= sv.time)
+		if ((Sys_DoubleTime() - NET_QSocketGetTime(host_client->netconnection)) <= sv.time)
 			Sys_Printf ("%s entered the game\n", host_client->name);
 
 		PR_ExecuteProgram (pr_global_struct->PutClientInServer);
