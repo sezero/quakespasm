@@ -28,7 +28,7 @@ static char	argvdummy[] = " ";
 
 int		safemode;
 
-cvar_t	registered = {"registered","0",CVAR_ROM};
+cvar_t	registered = {"registered","1",CVAR_ROM}; /* set to correct value in COM_CheckRegistered() */
 cvar_t	cmdline = {"cmdline","",CVAR_ROM/*|CVAR_SERVERINFO*/}; /* sending cmdline upon CCREQ_RULE_INFO is evil */
 
 qboolean	com_modified;	// set true if using non-id files
@@ -1161,6 +1161,7 @@ static void COM_CheckRegistered (void)
 
 	if (h == -1)
 	{
+		Cvar_SetROM ("registered", "0");
 #if WINDED
 		Sys_Error ("This dedicated server requires a full registered copy of Quake");
 #endif
