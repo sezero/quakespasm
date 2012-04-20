@@ -471,66 +471,66 @@ void IN_SendKeyEvents (void)
 				break;
 			case SDLK_KP0:
 				if (modstate & KMOD_NUM)
-					sym = K_INS;
-				else
 					sym = SDLK_0;
+				else
+					sym = K_INS;
 				break;
 			case SDLK_KP1:
 				if (modstate & KMOD_NUM)
-					sym = K_END;
-				else
 					sym = SDLK_1;
+				else
+					sym = K_END;
 				break;
 			case SDLK_KP2:
 				if (modstate & KMOD_NUM)
-					sym = K_DOWNARROW;
-				else
 					sym = SDLK_2;
+				else
+					sym = K_DOWNARROW;
 				break;
 			case SDLK_KP3:
 				if (modstate & KMOD_NUM)
-					sym = K_PGDN;
-				else
 					sym = SDLK_3;
+				else
+					sym = K_PGDN;
 				break;
 			case SDLK_KP4:
 				if (modstate & KMOD_NUM)
-					sym = K_LEFTARROW;
-				else
 					sym = SDLK_4;
+				else
+					sym = K_LEFTARROW;
 				break;
 			case SDLK_KP5:
 				sym = SDLK_5;
 				break;
 			case SDLK_KP6:
 				if (modstate & KMOD_NUM)
-					sym = K_RIGHTARROW;
-				else
 					sym = SDLK_6;
+				else
+					sym = K_RIGHTARROW;
 				break;
 			case SDLK_KP7:
 				if (modstate & KMOD_NUM)
-					sym = K_HOME;
-				else
 					sym = SDLK_7;
+				else
+					sym = K_HOME;
 				break;
 			case SDLK_KP8:
 				if (modstate & KMOD_NUM)
-					sym = K_UPARROW;
-				else
 					sym = SDLK_8;
+				else
+					sym = K_UPARROW;
 				break;
 			case SDLK_KP9:
 				if (modstate & KMOD_NUM)
-					sym = K_PGUP;
-				else
 					sym = SDLK_9;
+				else
+					sym = K_PGUP;
 				break;
 			case SDLK_KP_PERIOD:
 				if (modstate & KMOD_NUM)
-					sym = K_DEL;
-				else
 					sym = SDLK_PERIOD;
+				else
+					sym = K_DEL;
 				break;
 			case SDLK_KP_DIVIDE:
 				sym = SDLK_SLASH;
