@@ -110,80 +110,6 @@ static void R_NoLerpList_f (cvar_t *var)
 
 /*
 ===============
-R_Envmap_f
-
-Grab six views for environment mapping tests
-===============
-*/
-void R_Envmap_f (void)
-{
-	byte	buffer[256*256*4];
-	refdef_t	save_refdef;
-
-	if (cls.state != ca_connected)
-		return;
-
-	memcpy (&save_refdef, &r_refdef, sizeof(refdef_t));
-	glDrawBuffer  (GL_FRONT);
-	glReadBuffer  (GL_FRONT);
-	envmap = true;
-
-	r_refdef.vrect.x = 0;
-	r_refdef.vrect.y = 0;
-	r_refdef.vrect.width = 256;
-	r_refdef.vrect.height = 256;
-
-	r_refdef.viewangles[0] = 0;
-	r_refdef.viewangles[1] = 0;
-	r_refdef.viewangles[2] = 0;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env0.rgb", buffer, sizeof(buffer));
-
-	r_refdef.viewangles[1] = 90;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env1.rgb", buffer, sizeof(buffer));
-
-	r_refdef.viewangles[1] = 180;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env2.rgb", buffer, sizeof(buffer));
-
-	r_refdef.viewangles[1] = 270;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env3.rgb", buffer, sizeof(buffer));
-
-	r_refdef.viewangles[0] = -90;
-	r_refdef.viewangles[1] = 0;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env4.rgb", buffer, sizeof(buffer));
-
-	r_refdef.viewangles[0] = 90;
-	r_refdef.viewangles[1] = 0;
-	GL_BeginRendering (&glx, &gly, &glwidth, &glheight);
-	R_RenderView ();
-	glReadPixels (0, 0, 256, 256, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-	COM_WriteFile ("env5.rgb", buffer, sizeof(buffer));
-
-	envmap = false;
-	glDrawBuffer  (GL_BACK);
-	glReadBuffer  (GL_BACK);
-	GL_EndRendering ();
-
-	memcpy (&r_refdef, &save_refdef, sizeof(refdef_t));
-	vid.recalc_refdef = 1;
-}
-
-/*
-===============
 R_Init
 ===============
 */
@@ -192,7 +118,6 @@ void R_Init (void)
 	extern cvar_t gl_finish;
 
 	Cmd_AddCommand ("timerefresh", R_TimeRefresh_f);
-	Cmd_AddCommand ("envmap", R_Envmap_f);
 	Cmd_AddCommand ("pointfile", R_ReadPointFile_f);
 
 	Cvar_RegisterVariable (&r_norefresh);
@@ -367,26 +292,28 @@ For program optimization
 */
 void R_TimeRefresh_f (void)
 {
-	int			i;
+	int		i;
 	float		start, stop, time;
 
-	glDrawBuffer  (GL_FRONT);
-	glFinish ();
+	if (cls.state != ca_connected)
+	{
+		Con_Printf("Not connected to a server\n");
+		return;
+	}
 
 	start = Sys_DoubleTime ();
-	for (i=0 ; i<128 ; i++)
+	for (i = 0; i < 128; i++)
 	{
+		GL_BeginRendering(&glx, &gly, &glwidth, &glheight);
 		r_refdef.viewangles[1] = i/128.0*360.0;
 		R_RenderView ();
+		GL_EndRendering ();
 	}
 
 	glFinish ();
 	stop = Sys_DoubleTime ();
 	time = stop-start;
 	Con_Printf ("%f seconds (%f fps)\n", time, 128/time);
-
-	glDrawBuffer (GL_BACK);
-	GL_EndRendering ();
 }
 
 void D_FlushCaches (void)

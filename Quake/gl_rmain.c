@@ -37,8 +37,6 @@ int rs_brushpolys, rs_aliaspolys, rs_skypolys, rs_particles, rs_fogpolys;
 int rs_dynamiclightmaps, rs_brushpasses, rs_aliaspasses, rs_skypasses;
 float rs_megatexels;
 
-qboolean	envmap;				// true during envmap command capture
-
 //
 // view origin
 //
@@ -503,7 +501,7 @@ R_DrawViewModel -- johnfitz -- gutted
 */
 void R_DrawViewModel (void)
 {
-	if (!r_drawviewmodel.value || !r_drawentities.value || chase_active.value || envmap)
+	if (!r_drawviewmodel.value || !r_drawentities.value || chase_active.value)
 		return;
 
 	if (cl.items & IT_INVISIBILITY || cl.stats[STAT_HEALTH] <= 0)
@@ -677,7 +675,6 @@ void R_ShowTris (void)
 		currententity = &cl.viewent;
 		if (r_drawviewmodel.value
 			&& !chase_active.value
-			&& !envmap
 			&& cl.stats[STAT_HEALTH] > 0
 			&& !(cl.items & IT_INVISIBILITY)
 			&& currententity->model

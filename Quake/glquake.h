@@ -121,8 +121,6 @@ extern	refdef_t	r_refdef;
 extern	mleaf_t		*r_viewleaf, *r_oldviewleaf;
 extern	int		d_lightstylevalue[256];	// 8.8 fraction of base light value
 
-extern	qboolean	envmap;
-
 extern	cvar_t	r_norefresh;
 extern	cvar_t	r_drawentities;
 extern	cvar_t	r_drawworld;
