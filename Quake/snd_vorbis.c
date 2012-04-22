@@ -85,12 +85,11 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 
 	ovFile = (OggVorbis_File *) Z_Malloc(sizeof(OggVorbis_File));
 	res = ov_open_callbacks(&stream->fh, ovFile, NULL, 0, ovc_qfs);
-	if (res < 0)
+	if (res != 0)
 	{
-		Con_Printf("%s is not a valid Ogg Vorbis file (error %i).\n", filename, res);
-		Z_Free(ovFile);
-		S_CodecUtilClose(&stream);
-		return NULL;
+		Con_Printf("%s is not a valid Ogg Vorbis file (error %i).\n",
+				filename, res);
+		goto _fail;
 	}
 
 	stream->priv = ovFile;
@@ -98,20 +97,21 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 	if (!ov_seekable(ovFile))
 	{
 		Con_Printf("OGG_Open: stream %s not seekable.\n", filename);
-		ov_clear(ovFile);
-		Z_Free(ovFile);
-		S_CodecUtilClose(&stream);
-		return NULL;
+		goto _fail;
 	}
 
 	ogg_info = ov_info(ovFile, 0);
 	if (!ogg_info)
 	{
 		Con_Printf("Unable to get stream information for %s.\n", filename);
-		ov_clear(ovFile);
-		Z_Free(ovFile);
-		S_CodecUtilClose(&stream);
-		return NULL;
+		goto _fail;
+	}
+
+	if (ogg_info->channels != 1 && ogg_info->channels != 2)
+	{
+		Con_Printf("Unsupported number of channels %d in %s\n",
+					ogg_info->channels, filename);
+		goto _fail;
 	}
 
 	stream->info.rate = ogg_info->rate;
@@ -119,6 +119,12 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 	stream->info.width = OGG_SAMPLEWIDTH;
 
 	return stream;
+_fail:
+	if (res == 0)
+		ov_clear(ovFile);
+	Z_Free(ovFile);
+	S_CodecUtilClose(&stream);
+	return NULL;
 }
 
 static int S_OGG_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)

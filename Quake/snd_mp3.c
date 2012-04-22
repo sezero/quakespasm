@@ -499,6 +499,7 @@ static void S_MP3_CodecShutdown (void)
 static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 {
 	snd_stream_t *stream;
+	int err;
 
 	stream = S_CodecUtilOpen(filename, &mp3_codec);
 	if (!stream)
@@ -516,10 +517,21 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	}
 #endif
 
-	if (mp3_startread(stream) == 0)
+	err = mp3_startread(stream);
+	if (err != 0)
+	{
+		Con_Printf("%s is not a valid mp3 file\n", filename);
+	}
+	else if (stream->info.channels != 1 && stream->info.channels != 2)
+	{
+		Con_Printf("Unsupported number of channels %d in %s\n",
+					stream->info.channels, filename);
+	}
+	else
+	{
 		return stream;
+	}
 
-	Con_Printf("%s is not a valid mp3 file\n", filename);
 #if 0 /*defined(CODECS_USE_ZONE)*/
 	Z_Free(stream->priv);
 #else
