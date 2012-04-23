@@ -60,6 +60,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	K_HOME			151
 #define	K_END			152
 
+#if 0 /* QuakeSpasm: keypad keys are mapped to their non-keypad counterparts */
 //johnfitz -- keypad
 #define	KP_NUMLOCK		153
 #define	KP_SLASH		154
@@ -79,6 +80,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	KP_INS			168
 #define	KP_DEL			169
 //johnfitz
+#endif
 
 #define K_PAUSE			255
 
