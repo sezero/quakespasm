@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited 24 March 2012</em>
+<em>Page last edited 23 April 2012</em>
 
 <sect> About <p>
 
@@ -96,6 +96,15 @@ these patched libSDL binaries may help.
 </p>
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.85.8<p>
+<itemize>
+<item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
+<item> Restored original behavior for Quake registered version detection.
+<item> Music playback: Made sure that the file's channels count is supported.
+<item> Miscellaneous source code cleanups.
+</itemize>
+</p>
 
 <sect1> Changes in 0.85.7<p>
 <itemize>
