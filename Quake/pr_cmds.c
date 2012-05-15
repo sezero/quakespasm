@@ -49,17 +49,21 @@ static char *PR_GetTempString (void)
 static char *PF_VarString (int	first)
 {
 	int		i;
-	static char out[256];
+	static char out[384];
+	size_t s;
 
 	out[0] = 0;
+	s = 0;
 	for (i = first; i < pr_argc; i++)
 	{
-		if ( q_strlcat(out, G_STRING((OFS_PARM0+i*3)), sizeof(out)) >= sizeof(out) )
-		{
-			Con_Printf("PF_VarString: overflow (string truncated)\n");
+		s = q_strlcat(out, G_STRING((OFS_PARM0+i*3)), sizeof(out));
+		if (s >= sizeof(out))
 			break;
-		}
 	}
+	if (s > 255)
+		Con_Warning("PF_VarString: %i characters exceeds standard limit of 255.\n", s);
+	if (s >= sizeof(out))
+		Con_Printf("PF_VarString: overflow (string truncated)\n");
 	return out;
 }
 
