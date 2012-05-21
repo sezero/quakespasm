@@ -129,7 +129,6 @@ static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
 static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
 //johnfitz
 
-cvar_t		_windowed_mouse = {"_windowed_mouse","1", CVAR_ARCHIVE};
 cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
 
 //==========================================================================
@@ -263,26 +262,11 @@ static int VID_SetMode (int modenum)
 
 	if (modelist[modenum].type == MODE_WINDOWED)
 	{
-		if (_windowed_mouse.value && key_dest == key_game)
-		{
-			draw_context = SDL_SetVideoMode(modelist[modenum].width,
-							modelist[modenum].height,
-							modelist[modenum].bpp, flags);
-		}
-		else
-		{
-			draw_context = SDL_SetVideoMode(modelist[modenum].width,
-							modelist[modenum].height,
-							modelist[modenum].bpp, flags);
-		}
 		modestate = MODE_WINDOWED;
 	}
 	else if (modelist[modenum].type == MODE_FULLSCREEN_DEFAULT)
 	{
 		flags |= SDL_FULLSCREEN;
-		draw_context = SDL_SetVideoMode(modelist[modenum].width,
-						modelist[modenum].height,
-						modelist[modenum].bpp, flags);
 		modestate = MODE_FULLSCREEN_DEFAULT;
 	}
 	else
@@ -290,6 +274,9 @@ static int VID_SetMode (int modenum)
 		Sys_Error ("VID_SetMode: Bad mode type in modelist");
 	}
 
+	draw_context = SDL_SetVideoMode(modelist[modenum].width,
+					modelist[modenum].height,
+					modelist[modenum].bpp, flags);
 	if (!draw_context)
 	{
 		Sys_Error ("Couldn't set video mode");
@@ -421,9 +408,9 @@ static void VID_Restart (void)
 //
 // keep cvars in line with actual mode
 //
-	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
-	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
-	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
+	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
+	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
 	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 }
 
@@ -450,9 +437,9 @@ static void VID_Test (void)
 	if (!SCR_ModalMessage("Would you like to keep this\nvideo mode? (y/n)\n", 5.0f))
 	{
 		//revert cvars and mode
-		Cvar_SetQuick (&vid_width, va("%i", oldmode.width));
-		Cvar_SetQuick (&vid_height, va("%i", oldmode.height));
-		Cvar_SetQuick (&vid_bpp, va("%i", oldmode.bpp));
+		Cvar_SetValueQuick (&vid_width, oldmode.width);
+		Cvar_SetValueQuick (&vid_height, oldmode.height);
+		Cvar_SetValueQuick (&vid_bpp, oldmode.bpp);
 		Cvar_SetQuick (&vid_fullscreen, (oldmode.type == MODE_WINDOWED) ? "0" : "1");
 		VID_Restart ();
 	}
@@ -468,9 +455,9 @@ static void VID_Unlock (void)
 	vid_locked = false;
 
 	//sync up cvars in case they were changed during the lock
-	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
-	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
-	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
+	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
+	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
 	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 }
 
@@ -1147,7 +1134,6 @@ void	VID_Init (void)
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
 //	Cvar_RegisterVariable (&vid_refreshrate); //johnfitz
-	Cvar_RegisterVariable (&_windowed_mouse);
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
@@ -1388,9 +1374,9 @@ void VID_SyncCvars (void)
 {
 	int swap_control;
 
-	Cvar_SetQuick (&vid_width, va("%i", modelist[vid_default].width));
-	Cvar_SetQuick (&vid_height, va("%i", modelist[vid_default].height));
-	Cvar_SetQuick (&vid_bpp, va("%i", modelist[vid_default].bpp));
+	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
+	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
+	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
 	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
 
 	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
