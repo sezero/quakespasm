@@ -2068,7 +2068,7 @@ Host_Viewmodel_f
 void Host_Viewmodel_f (void)
 {
 	edict_t	*e;
-	model_t	*m;
+	qmodel_t	*m;
 
 	e = FindViewthing ();
 	if (!e)
@@ -2094,7 +2094,7 @@ void Host_Viewframe_f (void)
 {
 	edict_t	*e;
 	int		f;
-	model_t	*m;
+	qmodel_t	*m;
 
 	e = FindViewthing ();
 	if (!e)
@@ -2109,7 +2109,7 @@ void Host_Viewframe_f (void)
 }
 
 
-void PrintFrameName (model_t *m, int frame)
+void PrintFrameName (qmodel_t *m, int frame)
 {
 	aliashdr_t 			*hdr;
 	maliasframedesc_t	*pframedesc;
@@ -2130,7 +2130,7 @@ Host_Viewnext_f
 void Host_Viewnext_f (void)
 {
 	edict_t	*e;
-	model_t	*m;
+	qmodel_t	*m;
 
 	e = FindViewthing ();
 	if (!e)
@@ -2152,7 +2152,7 @@ Host_Viewprev_f
 void Host_Viewprev_f (void)
 {
 	edict_t	*e;
-	model_t	*m;
+	qmodel_t	*m;
 
 	e = FindViewthing ();
 	if (!e)

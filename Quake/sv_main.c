@@ -432,7 +432,7 @@ crosses a waterline.
 int		fatbytes;
 byte	fatpvs[MAX_MAP_LEAFS/8];
 
-void SV_AddToFatPVS (vec3_t org, mnode_t *node, model_t *worldmodel) //johnfitz -- added worldmodel as a parameter
+void SV_AddToFatPVS (vec3_t org, mnode_t *node, qmodel_t *worldmodel) //johnfitz -- added worldmodel as a parameter
 {
 	int		i;
 	byte	*pvs;
@@ -475,7 +475,7 @@ Calculates a PVS that is the inclusive or of all leafs within 8 pixels of the
 given point.
 =============
 */
-byte *SV_FatPVS (vec3_t org, model_t *worldmodel) //johnfitz -- added worldmodel as a parameter
+byte *SV_FatPVS (vec3_t org, qmodel_t *worldmodel) //johnfitz -- added worldmodel as a parameter
 {
 	fatbytes = (worldmodel->numleafs+31)>>3;
 	Q_memset (fatpvs, 0, fatbytes);
@@ -490,7 +490,7 @@ SV_VisibleToClient -- johnfitz
 PVS test encapsulated in a nice function
 =============
 */
-qboolean SV_VisibleToClient (edict_t *client, edict_t *test, model_t *worldmodel)
+qboolean SV_VisibleToClient (edict_t *client, edict_t *test, qmodel_t *worldmodel)
 {
 	byte	*pvs;
 	vec3_t	org;

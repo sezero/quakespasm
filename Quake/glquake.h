@@ -297,7 +297,7 @@ void GL_DrawAliasShadow (entity_t *e);
 void DrawGLTriangleFan (glpoly_t *p);
 void DrawGLPoly (glpoly_t *p);
 void DrawWaterPoly (glpoly_t *p);
-void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr);
+void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr);
 
 void Sky_Init (void);
 void Sky_DrawSky (void);

@@ -55,7 +55,7 @@ void CL_InitTEnts (void)
 CL_ParseBeam
 =================
 */
-void CL_ParseBeam (model_t *m)
+void CL_ParseBeam (qmodel_t *m)
 {
 	int		ent;
 	vec3_t	start, end;

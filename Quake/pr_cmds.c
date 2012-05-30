@@ -265,7 +265,7 @@ static void PF_setmodel (void)
 {
 	int		i;
 	const char	*m, **check;
-	model_t		*mod;
+	qmodel_t	*mod;
 	edict_t		*e;
 
 	e = G_EDICT(OFS_PARM0);

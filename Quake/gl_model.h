@@ -361,7 +361,7 @@ typedef enum {mod_brush, mod_sprite, mod_alias} modtype_t;
 #define	MOD_FBRIGHTHACK	1024	//when fullbrights are disabled, use a hack to render this model brighter
 //johnfitz
 
-typedef struct model_s
+typedef struct qmodel_s
 {
 	char		name[MAX_QPATH];
 	unsigned int	path_id;		// path id of the game directory
@@ -440,19 +440,19 @@ typedef struct model_s
 //
 	cache_user_t	cache;		// only access through Mod_Extradata
 
-} model_t;
+} qmodel_t;
 
 //============================================================================
 
 void	Mod_Init (void);
 void	Mod_ClearAll (void);
-model_t *Mod_ForName (const char *name, qboolean crash);
-void	*Mod_Extradata (model_t *mod);	// handles caching
+qmodel_t *Mod_ForName (const char *name, qboolean crash);
+void	*Mod_Extradata (qmodel_t *mod);	// handles caching
 void	Mod_TouchModel (const char *name);
 
-mleaf_t *Mod_PointInLeaf (float *p, model_t *model);
-byte	*Mod_LeafPVS (mleaf_t *leaf, model_t *model);
+mleaf_t *Mod_PointInLeaf (float *p, qmodel_t *model);
+byte	*Mod_LeafPVS (mleaf_t *leaf, qmodel_t *model);
 
-void Mod_SetExtraFlags (model_t *mod);
+void Mod_SetExtraFlags (qmodel_t *mod);
 
 #endif	// __MODEL__

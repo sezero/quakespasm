@@ -28,7 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 float Fog_GetDensity(void);
 float *Fog_GetColor(void);
 
-extern	model_t	*loadmodel;
+extern	qmodel_t	*loadmodel;
 extern	int	rs_skypolys; //for r_speeds readout
 extern	int rs_skypasses; //for r_speeds readout
 float	skyflatcolor[3];

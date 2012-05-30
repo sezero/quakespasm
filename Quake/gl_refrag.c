@@ -190,7 +190,7 @@ R_AddEfrags
 */
 void R_AddEfrags (entity_t *ent)
 {
-	model_t		*entmodel;
+	qmodel_t	*entmodel;
 	int			i;
 
 	if (!ent->model)

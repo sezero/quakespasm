@@ -874,10 +874,10 @@ void Cache_Free (cache_user_t *c, qboolean freetextures) //johnfitz -- added sec
 	Cache_UnlinkLRU (cs);
 
 	//johnfitz -- if a model becomes uncached, free the gltextures.  This only works
-	//becuase the cache_user_t is the last component of the model_t struct.  Should
+	//becuase the cache_user_t is the last component of the qmodel_t struct.  Should
 	//fail harmlessly if *c is actually part of an sfx_t struct.  I FEEL DIRTY
 	if (freetextures)
-		TexMgr_FreeTexturesForOwner ((model_t *)(c + 1) - 1);
+		TexMgr_FreeTexturesForOwner ((qmodel_t *)(c + 1) - 1);
 }
 
 

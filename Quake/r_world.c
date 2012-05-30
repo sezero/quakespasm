@@ -27,7 +27,7 @@ extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater, r_oldskylea
 
 extern glpoly_t	*lightmap_polys[MAX_LIGHTMAPS];
 
-byte *SV_FatPVS (vec3_t org, model_t *worldmodel);
+byte *SV_FatPVS (vec3_t org, qmodel_t *worldmodel);
 extern byte mod_novis[MAX_MAP_LEAFS/8];
 int vis_changed; //if true, force pvs to be refreshed
 

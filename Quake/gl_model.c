@@ -26,20 +26,20 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-model_t	*loadmodel;
+qmodel_t	*loadmodel;
 char	loadname[32];	// for hunk tags
 
-void Mod_LoadSpriteModel (model_t *mod, void *buffer);
-void Mod_LoadBrushModel (model_t *mod, void *buffer);
-void Mod_LoadAliasModel (model_t *mod, void *buffer);
-model_t *Mod_LoadModel (model_t *mod, qboolean crash);
+void Mod_LoadSpriteModel (qmodel_t *mod, void *buffer);
+void Mod_LoadBrushModel (qmodel_t *mod, void *buffer);
+void Mod_LoadAliasModel (qmodel_t *mod, void *buffer);
+qmodel_t *Mod_LoadModel (qmodel_t *mod, qboolean crash);
 
 cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
 
 byte	mod_novis[MAX_MAP_LEAFS/8];
 
-#define	MAX_MOD_KNOWN	2048 //johnfitz -- was 512
-model_t	mod_known[MAX_MOD_KNOWN];
+#define	MAX_MOD_KNOWN	2048 /*johnfitz -- was 512 */
+qmodel_t	mod_known[MAX_MOD_KNOWN];
 int		mod_numknown;
 
 texture_t	*r_notexture_mip; //johnfitz -- moved here from r_main.c
@@ -75,7 +75,7 @@ Mod_Extradata
 Caches the data if needed
 ===============
 */
-void *Mod_Extradata (model_t *mod)
+void *Mod_Extradata (qmodel_t *mod)
 {
 	void	*r;
 
@@ -95,7 +95,7 @@ void *Mod_Extradata (model_t *mod)
 Mod_PointInLeaf
 ===============
 */
-mleaf_t *Mod_PointInLeaf (vec3_t p, model_t *model)
+mleaf_t *Mod_PointInLeaf (vec3_t p, qmodel_t *model)
 {
 	mnode_t		*node;
 	float		d;
@@ -126,7 +126,7 @@ mleaf_t *Mod_PointInLeaf (vec3_t p, model_t *model)
 Mod_DecompressVis
 ===================
 */
-byte *Mod_DecompressVis (byte *in, model_t *model)
+byte *Mod_DecompressVis (byte *in, qmodel_t *model)
 {
 	static byte	decompressed[MAX_MAP_LEAFS/8];
 	int		c;
@@ -170,7 +170,7 @@ byte *Mod_DecompressVis (byte *in, model_t *model)
 	return decompressed;
 }
 
-byte *Mod_LeafPVS (mleaf_t *leaf, model_t *model)
+byte *Mod_LeafPVS (mleaf_t *leaf, qmodel_t *model)
 {
 	if (leaf == model->leafs)
 		return mod_novis;
@@ -185,7 +185,7 @@ Mod_ClearAll
 void Mod_ClearAll (void)
 {
 	int		i;
-	model_t	*mod;
+	qmodel_t	*mod;
 
 	for (i=0 , mod=mod_known ; i<mod_numknown ; i++, mod++)
 		if (mod->type != mod_alias)
@@ -201,10 +201,10 @@ Mod_FindName
 
 ==================
 */
-model_t *Mod_FindName (const char *name)
+qmodel_t *Mod_FindName (const char *name)
 {
 	int		i;
-	model_t	*mod;
+	qmodel_t	*mod;
 
 	if (!name[0])
 		Sys_Error ("Mod_FindName: NULL name"); //johnfitz -- was "Mod_ForName"
@@ -236,7 +236,7 @@ Mod_TouchModel
 */
 void Mod_TouchModel (const char *name)
 {
-	model_t	*mod;
+	qmodel_t	*mod;
 
 	mod = Mod_FindName (name);
 
@@ -254,7 +254,7 @@ Mod_LoadModel
 Loads a model into the cache
 ==================
 */
-model_t *Mod_LoadModel (model_t *mod, qboolean crash)
+qmodel_t *Mod_LoadModel (qmodel_t *mod, qboolean crash)
 {
 	byte	*buf;
 	byte	stackbuf[1024];		// avoid dirtying the cache heap
@@ -330,9 +330,9 @@ Mod_ForName
 Loads in a model for the given name
 ==================
 */
-model_t *Mod_ForName (const char *name, qboolean crash)
+qmodel_t *Mod_ForName (const char *name, qboolean crash)
 {
-	model_t	*mod;
+	qmodel_t	*mod;
 
 	mod = Mod_FindName (name);
 
@@ -1519,7 +1519,7 @@ Therefore, the bounding box of the hull can be constructed entirely
 from axial planes found in the clipnodes for that hull.
 =================
 */
-void Mod_BoundsFromClipNode (model_t *mod, int hull, int nodenum)
+void Mod_BoundsFromClipNode (qmodel_t *mod, int hull, int nodenum)
 {
 	mplane_t	*plane;
 	mclipnode_t	*node;
@@ -1564,7 +1564,7 @@ void Mod_BoundsFromClipNode (model_t *mod, int hull, int nodenum)
 Mod_LoadBrushModel
 =================
 */
-void Mod_LoadBrushModel (model_t *mod, void *buffer)
+void Mod_LoadBrushModel (qmodel_t *mod, void *buffer)
 {
 	int			i, j;
 	dheader_t	*header;
@@ -2013,7 +2013,7 @@ void Mod_CalcAliasBounds (aliashdr_t *a)
 Mod_SetExtraFlags -- johnfitz -- set up extra flags that aren't in the mdl
 =================
 */
-void Mod_SetExtraFlags (model_t *mod)
+void Mod_SetExtraFlags (qmodel_t *mod)
 {
 	extern cvar_t r_nolerp_list;
 	const char *s;
@@ -2070,7 +2070,7 @@ void Mod_SetExtraFlags (model_t *mod)
 Mod_LoadAliasModel
 =================
 */
-void Mod_LoadAliasModel (model_t *mod, void *buffer)
+void Mod_LoadAliasModel (qmodel_t *mod, void *buffer)
 {
 	int					i, j;
 	mdl_t				*pinmodel;
@@ -2328,7 +2328,7 @@ void * Mod_LoadSpriteGroup (void * pin, mspriteframe_t **ppframe, int framenum)
 Mod_LoadSpriteModel
 =================
 */
-void Mod_LoadSpriteModel (model_t *mod, void *buffer)
+void Mod_LoadSpriteModel (qmodel_t *mod, void *buffer)
 {
 	int					i;
 	int					version;
@@ -2408,7 +2408,7 @@ Mod_Print
 void Mod_Print (void)
 {
 	int		i;
-	model_t	*mod;
+	qmodel_t	*mod;
 
 	Con_SafePrintf ("Cached models:\n"); //johnfitz -- safeprint instead of print
 	for (i=0, mod=mod_known ; i < mod_numknown ; i++, mod++)

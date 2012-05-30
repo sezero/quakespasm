@@ -300,7 +300,7 @@ float TexMgr_FrameUsage (void)
 TexMgr_FindTexture
 ================
 */
-gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name)
+gltexture_t *TexMgr_FindTexture (qmodel_t *owner, const char *name)
 {
 	gltexture_t	*glt;
 
@@ -405,7 +405,7 @@ void TexMgr_FreeTextures (unsigned int flags, unsigned int mask)
 TexMgr_FreeTexturesForOwner
 ================
 */
-void TexMgr_FreeTexturesForOwner (model_t *owner)
+void TexMgr_FreeTexturesForOwner (qmodel_t *owner)
 {
 	gltexture_t *glt, *next;
 
@@ -1147,7 +1147,7 @@ static void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
 TexMgr_LoadImage -- the one entry point for loading all textures
 ================
 */
-gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int height, enum srcformat format,
+gltexture_t *TexMgr_LoadImage (qmodel_t *owner, const char *name, int width, int height, enum srcformat format,
 			       byte *data, const char *source_file, src_offset_t source_offset, unsigned flags)
 {
 	unsigned short crc;

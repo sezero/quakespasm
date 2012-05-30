@@ -33,7 +33,7 @@ ALIAS MODEL DISPLAY LIST GENERATION
 =================================================================
 */
 
-model_t		*aliasmodel;
+qmodel_t	*aliasmodel;
 aliashdr_t	*paliashdr;
 
 int		used[8192]; // qboolean
@@ -294,7 +294,7 @@ void BuildTris (void)
 GL_MakeAliasModelDisplayLists
 ================
 */
-void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
+void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr)
 {
 	int		i, j;
 	int			*cmds;
@@ -312,7 +312,6 @@ void GL_MakeAliasModelDisplayLists (model_t *m, aliashdr_t *hdr)
 	paliashdr = hdr;	// (aliashdr_t *)Mod_Extradata (m);
 
 //johnfitz -- generate meshes
-
 	Con_DPrintf ("meshing %s...\n",m->name);
 	BuildTris ();
 

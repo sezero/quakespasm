@@ -505,7 +505,7 @@ void R_DrawBrushModel (entity_t *e)
 	msurface_t	*psurf;
 	float		dot;
 	mplane_t	*pplane;
-	model_t		*clmodel;
+	qmodel_t	*clmodel;
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -598,7 +598,7 @@ void R_DrawBrushModel_ShowTris (entity_t *e)
 	msurface_t	*psurf;
 	float		dot;
 	mplane_t	*pplane;
-	model_t		*clmodel;
+	qmodel_t	*clmodel;
 	glpoly_t	*p;
 
 	if (R_CullModelForEntity(e))
@@ -761,7 +761,7 @@ int AllocBlock (int w, int h, int *x, int *y)
 
 
 mvertex_t	*r_pcurrentvertbase;
-model_t		*currentmodel;
+qmodel_t	*currentmodel;
 
 int	nColinElim;
 
@@ -873,7 +873,7 @@ void GL_BuildLightmaps (void)
 	char	name[16];
 	byte	*data;
 	int		i, j;
-	model_t	*m;
+	qmodel_t	*m;
 
 	memset (allocated, 0, sizeof(allocated));
 
@@ -1156,7 +1156,7 @@ R_RebuildAllLightmaps -- johnfitz -- called when gl_overbright gets toggled
 void R_RebuildAllLightmaps (void)
 {
 	int			i, j;
-	model_t		*mod;
+	qmodel_t	*mod;
 	msurface_t	*fa;
 	byte		*base;
 

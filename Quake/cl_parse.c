@@ -405,7 +405,7 @@ relinked.  Other attributes can change without relinking.
 void CL_ParseUpdate (int bits)
 {
 	int		i;
-	model_t		*model;
+	qmodel_t	*model;
 	int		modnum;
 	qboolean	forcelink;
 	entity_t	*ent;

@@ -45,7 +45,7 @@ float	turbsin[] =
 //
 //==============================================================================
 
-extern	model_t	*loadmodel;
+extern	qmodel_t	*loadmodel;
 
 msurface_t	*warpface;
 

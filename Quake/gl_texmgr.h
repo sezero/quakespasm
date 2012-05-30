@@ -46,7 +46,7 @@ typedef struct gltexture_s {
 //managed by texture manager
 	GLuint			texnum;
 	struct gltexture_s	*next;
-	model_t			*owner;
+	qmodel_t		*owner;
 //managed by image loading
 	char			name[64];
 	unsigned int		width; //size of image as it exists in opengl
@@ -77,16 +77,16 @@ extern unsigned int d_8to24table_pants[256];
 // TEXTURE MANAGER
 
 float TexMgr_FrameUsage (void);
-gltexture_t *TexMgr_FindTexture (model_t *owner, const char *name);
+gltexture_t *TexMgr_FindTexture (qmodel_t *owner, const char *name);
 gltexture_t *TexMgr_NewTexture (void);
 void TexMgr_FreeTexture (gltexture_t *kill);
 void TexMgr_FreeTextures (unsigned int flags, unsigned int mask);
-void TexMgr_FreeTexturesForOwner (model_t *owner);
+void TexMgr_FreeTexturesForOwner (qmodel_t *owner);
 void TexMgr_NewGame (void);
 void TexMgr_Init (void);
 
 // IMAGE LOADING
-gltexture_t *TexMgr_LoadImage (model_t *owner, const char *name, int width, int height, enum srcformat format,
+gltexture_t *TexMgr_LoadImage (qmodel_t *owner, const char *name, int width, int height, enum srcformat format,
 			       byte *data, const char *source_file, src_offset_t source_offset, unsigned flags);
 void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants);
 void TexMgr_ReloadImages (void);

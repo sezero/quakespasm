@@ -79,7 +79,7 @@ typedef struct
 typedef struct
 {
 	int		entity;
-	struct model_s	*model;
+	struct qmodel_s	*model;
 	float	endtime;
 	vec3_t	start, end;
 } beam_t;
@@ -197,7 +197,7 @@ typedef struct
 //
 // information that is static for the entire time connected to a server
 //
-	struct model_s		*model_precache[MAX_MODELS];
+	struct qmodel_s		*model_precache[MAX_MODELS];
 	struct sfx_s		*sound_precache[MAX_SOUNDS];
 
 	char		mapname[128];
@@ -207,7 +207,7 @@ typedef struct
 	int			gametype;
 
 // refresh related state
-	struct model_s	*worldmodel;	// cl_entitites[0].model
+	struct qmodel_s	*worldmodel;	// cl_entitites[0].model
 	struct efrag_s	*free_efrags;
 	int			num_entities;	// held in cl_entities array
 	int			num_statics;	// held in cl_staticentities array

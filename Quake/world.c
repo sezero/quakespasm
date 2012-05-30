@@ -130,7 +130,7 @@ testing object's origin to get a point to use with the returned hull.
 */
 hull_t *SV_HullForEntity (edict_t *ent, vec3_t mins, vec3_t maxs, vec3_t offset)
 {
-	model_t		*model;
+	qmodel_t	*model;
 	vec3_t		size;
 	vec3_t		hullmins, hullmaxs;
 	hull_t		*hull;
