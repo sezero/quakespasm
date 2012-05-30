@@ -27,11 +27,9 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 
 # ============================================================================
 
-DEBUG    ?= 0
-WINSOCK2 ?= 1
-SDLNET   ?= 0
-
-TOPDIR := $(shell pwd)
+DEBUG   ?= 0
+WINSOCK2?= 1
+SDLNET  ?= 0
 
 # ---------------------------------------
 # build variables

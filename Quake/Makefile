@@ -27,31 +27,10 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 
 # ============================================================================
 
-DEBUG    ?= 0
-SDLNET   ?= 0
+HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 
-BUILDDIR := .
-
-SYSNAME := $(shell uname -s)
-
-ifneq (,$(findstring MINGW32,$(SYSNAME)))
-HOST_OS = WIN32
-TOPDIR := $(shell pwd -W)
-else
-ifneq (,$(findstring $(SYSNAME),FreeBSD NetBSD OpenBSD))
-HOST_OS = UNIX
-UNIX = bsd
-TOPDIR := $(shell pwd)
-else
-ifneq (,$(findstring Linux,$(SYSNAME)))
-HOST_OS = UNIX
-UNIX = linux
-TOPDIR := $(shell pwd)
-else
-$(error OS type not detected.)
-endif
-endif
-endif
+DEBUG   ?= 0
+SDLNET  ?= 0
 
 # ---------------------------------------
 # build variables
@@ -114,7 +93,11 @@ ifeq ($(SDLNET),1)
 NET_LIBS   :=-lSDL_net
 CFLAGS     +=-D_USE_SDLNET
 else
+ifeq ($(HOST_OS),sunos)
+NET_LIBS   :=-lsocket -lnsl -lresolv
+else
 NET_LIBS   :=
+endif
 endif
 
 ifeq ($(USE_QS_CONBACK),1)

@@ -42,37 +42,13 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 
 # ============================================================================
 
-DEBUG    ?= 0
-SDLNET   ?= 0
+HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
+ifneq ($(HOST_OS),darwin))
+$(error This Makefile is for Darwin only)
+endif
 
-BUILDDIR := .
-
-SYSNAME := $(shell uname -s)
-
-ifneq (,$(findstring MINGW32,$(SYSNAME)))
-HOST_OS = WIN32
-TOPDIR := $(shell pwd -W)
-else
-ifneq (,$(findstring $(SYSNAME),FreeBSD NetBSD OpenBSD))
-HOST_OS = UNIX
-UNIX = bsd
-TOPDIR := $(shell pwd)
-else
-ifneq (,$(findstring Darwin,$(SYSNAME)))
-HOST_OS = UNIX
-UNIX = darwin
-TOPDIR := $(shell pwd)
-else
-ifneq (,$(findstring Linux,$(SYSNAME)))
-HOST_OS = UNIX
-UNIX = linux
-TOPDIR := $(shell pwd)
-else
-$(error OS type not detected.)
-endif
-endif
-endif
-endif
+DEBUG   ?= 0
+SDLNET  ?= 0
 
 # ---------------------------------------
 # build variables
