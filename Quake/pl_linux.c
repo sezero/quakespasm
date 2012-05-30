@@ -86,9 +86,12 @@ void PL_SetWindowIcon (void)
 	if (icon == NULL)
 		return;
 	mask = PL_CreateIconMask(icon);
-	SDL_WM_SetIcon(icon, mask);
+	if (mask != NULL)
+	{
+		SDL_WM_SetIcon(icon, mask);
+		free(mask);
+	}
 	SDL_FreeSurface(icon);
-	free(mask);
 }
 
 void PL_VID_Shutdown (void)
