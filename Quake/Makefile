@@ -1,5 +1,4 @@
-### GNU Makefile for QuakeSpasm unix targets, March 09, 2012
-#
+# GNU Makefile for QuakeSpasm unix targets, May 30, 2012
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
@@ -39,6 +38,8 @@ SDLNET  ?= 0
 CC ?= gcc
 WINDRES ?= windres
 STRIP ?= strip
+
+LINKER = $(CC)
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
@@ -255,7 +256,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(CC) $(OBJS) $(X11_LFLAGS) $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(X11_LFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm

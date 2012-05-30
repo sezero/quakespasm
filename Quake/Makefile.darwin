@@ -1,7 +1,5 @@
-### GNU Makefile for QuakeSpasm for Darwin, March 09, 2012
-
+# GNU Makefile for QuakeSpasm for Darwin, May 30, 2012
 # Usage: "make -f Makefile.darwin"
-#
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
@@ -57,6 +55,8 @@ SDLNET  ?= 0
 CC ?= gcc
 WINDRES ?= windres
 STRIP ?= strip
+
+LINKER = $(CC)
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
@@ -274,7 +274,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(CC) $(OBJS) $(X11_LFLAGS) -L../MacOSX $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(X11_LFLAGS) -L../MacOSX $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm
