@@ -36,7 +36,7 @@ static Uint8 *PL_CreateIconMask(SDL_Surface *icon)
 	Uint8	*mask;
 
 	/* Note that this sets all pixels to invisible in the mask. */
-	mask = calloc(((icon->w + 7) / 8) * icon->h, sizeof(Uint8));
+	mask = (Uint8 *) calloc(((icon->w + 7) / 8) * icon->h, sizeof(Uint8));
 	if (!mask)
 		return NULL;
 
@@ -46,12 +46,14 @@ static Uint8 *PL_CreateIconMask(SDL_Surface *icon)
 	/* The top-left pixel and identical pixels will remain invisible. */
 	topleft_pixel = (Uint8 *)icon->pixels;
 	for (x = 0; x < icon->w; x++)
+	{
 		for (y = 0; y < icon->h; y++)
 		{
 			current_pixel = (Uint8 *)icon->pixels +
 					y * icon->pitch +
 					x * icon->format->BytesPerPixel;
 			for (i = 0; i < icon->format->BytesPerPixel; i++)
+			{
 				/* If the current pixel is not identical to
 				 * the top-left pixel, set it to visible in
 				 * the mask. */
@@ -60,7 +62,9 @@ static Uint8 *PL_CreateIconMask(SDL_Surface *icon)
 					mask[y * ((icon->w + 7) / 8) + x / 8] |= 128 >> x % 8;
 					break;
 				}
+			}
 		}
+	}
 
 	if (SDL_MUSTLOCK(icon))
 		SDL_UnlockSurface(icon);
@@ -93,7 +97,5 @@ void PL_VID_Shutdown (void)
 
 void PL_ErrorDialog (const char *errorMsg)
 {
-// TODO: we can dlopen gtk for an error
-// dialog window. would it be worth it?
 }
 
