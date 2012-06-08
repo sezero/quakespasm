@@ -35,8 +35,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <IOKit/hidsystem/event_status_driver.h>
 #endif
 
-static keydest_t	prev_key_dest;
-
 static qboolean	no_mouse = false;
 
 static int buttonremap[] =
@@ -301,14 +299,15 @@ void IN_SendKeyEvents (void)
 	int sym, state;
 	int modstate;
 	qboolean gamekey;
+	static qboolean prev_gamekey;
 
 	gamekey = (key_dest == key_game || m_keys_bind_grab);
 
-	if (key_dest != prev_key_dest)
+	if (gamekey != prev_gamekey)
 	{
 		SDL_EnableUNICODE(!gamekey);
 		Key_ClearStates();
-		prev_key_dest = key_dest;
+		prev_gamekey = gamekey;
 	}
 
 	while (SDL_PollEvent(&event))
