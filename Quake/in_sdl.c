@@ -300,10 +300,13 @@ void IN_SendKeyEvents (void)
 	SDL_Event event;
 	int sym, state;
 	int modstate;
+	qboolean gamekey;
+
+	gamekey = (key_dest == key_game || m_keys_bind_grab);
 
 	if (key_dest != prev_key_dest)
 	{
-		SDL_EnableUNICODE((key_dest == key_console || key_dest == key_message));
+		SDL_EnableUNICODE(!gamekey);
 		Key_ClearStates();
 		prev_key_dest = key_dest;
 	}
@@ -470,85 +473,89 @@ void IN_SendKeyEvents (void)
 				sym = K_ALT;
 				break;
 			case SDLK_KP0:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_0;
-				else
-					sym = K_INS;
+				if (gamekey)
+					sym = KP_INS;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_0 : K_INS;
 				break;
 			case SDLK_KP1:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_1;
-				else
-					sym = K_END;
+				if (gamekey)
+					sym = KP_END;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_1 : K_END;
 				break;
 			case SDLK_KP2:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_2;
-				else
-					sym = K_DOWNARROW;
+				if (gamekey)
+					sym = KP_DOWNARROW;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_2 : K_DOWNARROW;
 				break;
 			case SDLK_KP3:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_3;
-				else
-					sym = K_PGDN;
+				if (gamekey)
+					sym = KP_PGDN;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_3 : K_PGDN;
 				break;
 			case SDLK_KP4:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_4;
-				else
-					sym = K_LEFTARROW;
+				if (gamekey)
+					sym = KP_LEFTARROW;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_4 : K_LEFTARROW;
 				break;
 			case SDLK_KP5:
-				sym = SDLK_5;
+				if (gamekey)
+					sym = KP_5;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_5 : 0;
 				break;
 			case SDLK_KP6:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_6;
-				else
-					sym = K_RIGHTARROW;
+				if (gamekey)
+					sym = KP_RIGHTARROW;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_6 : K_RIGHTARROW;
 				break;
 			case SDLK_KP7:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_7;
-				else
-					sym = K_HOME;
+				if (gamekey)
+					sym = KP_HOME;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_7 : K_HOME;
 				break;
 			case SDLK_KP8:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_8;
-				else
-					sym = K_UPARROW;
+				if (gamekey)
+					sym = KP_UPARROW;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_8 : K_UPARROW;
 				break;
 			case SDLK_KP9:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_9;
-				else
-					sym = K_PGUP;
+				if (gamekey)
+					sym = KP_PGUP;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_9 : K_PGUP;
 				break;
 			case SDLK_KP_PERIOD:
-				if (modstate & KMOD_NUM)
-					sym = SDLK_PERIOD;
-				else
-					sym = K_DEL;
+				if (gamekey)
+					sym = KP_DEL;
+				else	sym = (modstate & KMOD_NUM) ? SDLK_PERIOD : K_DEL;
 				break;
 			case SDLK_KP_DIVIDE:
-				sym = SDLK_SLASH;
+				if (gamekey)
+					sym = KP_SLASH;
+				else	sym = SDLK_SLASH;
 				break;
 			case SDLK_KP_MULTIPLY:
-				sym = SDLK_ASTERISK;
+				if (gamekey)
+					sym = KP_STAR;
+				else	sym = SDLK_ASTERISK;
 				break;
 			case SDLK_KP_MINUS:
-				sym = SDLK_MINUS;
+				if (gamekey)
+					sym = KP_MINUS;
+				else	sym = SDLK_MINUS;
 				break;
 			case SDLK_KP_PLUS:
-				sym = SDLK_PLUS;
+				if (gamekey)
+					sym = KP_PLUS;
+				else	sym = SDLK_PLUS;
 				break;
 			case SDLK_KP_ENTER:
-				sym = SDLK_RETURN;
+				if (gamekey)
+					sym = KP_ENTER;
+				else	sym = SDLK_RETURN;
 				break;
 			case SDLK_KP_EQUALS:
-				sym = SDLK_EQUALS;
+				if (gamekey)
+					sym = 0;
+				else	sym = SDLK_EQUALS;
 				break;
 			case 178: /* the '²' key */
 				sym = '~';

@@ -1283,7 +1283,7 @@ const char *bindnames[][2] =
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
 
 int		keys_cursor;
-int		bind_grab;
+qboolean	m_keys_bind_grab;
 
 void M_Menu_Keys_f (void)
 {
@@ -1349,7 +1349,7 @@ void M_Keys_Draw (void)
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	if (bind_grab)
+	if (m_keys_bind_grab)
 		M_Print (12, 32, "Press a key or button for this action");
 	else
 		M_Print (18, 32, "Enter to change, backspace to clear");
@@ -1380,7 +1380,7 @@ void M_Keys_Draw (void)
 		}
 	}
 
-	if (bind_grab)
+	if (m_keys_bind_grab)
 		M_DrawCharacter (130, 48 + keys_cursor*8, '=');
 	else
 		M_DrawCharacter (130, 48 + keys_cursor*8, 12+((int)(realtime*4)&1));
@@ -1392,7 +1392,7 @@ void M_Keys_Key (int k)
 	char	cmd[80];
 	int		keys[2];
 
-	if (bind_grab)
+	if (m_keys_bind_grab)
 	{	// defining a key
 		S_LocalSound ("misc/menu1.wav");
 		if ((k != K_ESCAPE) && (k != '`'))
@@ -1401,7 +1401,7 @@ void M_Keys_Key (int k)
 			Cbuf_InsertText (cmd);
 		}
 
-		bind_grab = false;
+		m_keys_bind_grab = false;
 		IN_Deactivate(vid.type == MODE_WINDOWED); // deactivate because we're returning to the menu
 		return;
 	}
@@ -1433,7 +1433,7 @@ void M_Keys_Key (int k)
 		S_LocalSound ("misc/menu2.wav");
 		if (keys[1] != -1)
 			M_UnbindCommand (bindnames[keys_cursor][0]);
-		bind_grab = true;
+		m_keys_bind_grab = true;
 		IN_Activate(); // activate to allow mouse key binding
 		break;
 

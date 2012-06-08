@@ -76,7 +76,6 @@ keyname_t keynames[] =
 	{"CTRL", K_CTRL},
 	{"SHIFT", K_SHIFT},
 
-#if 0 /* QuakeSpasm: keypad keys are mapped to their non-keypad counterparts */
 	//johnfitz -- keypad
 	{"KP_NUMLOCK",		KP_NUMLOCK},
 	{"KP_SLASH",		KP_SLASH },
@@ -96,7 +95,6 @@ keyname_t keynames[] =
 	{"KP_INS",			KP_INS },
 	{"KP_DEL",			KP_DEL },
 	//johnfitz
-#endif
 
 	{"F1", K_F1},
 	{"F2", K_F2},
@@ -196,9 +194,6 @@ void Key_Console (int key)
 	switch (key)
 	{
 	case K_ENTER:
-#if 0 /* QuakeSpasm: keypad keys are mapped to their non-keypad counterparts */
-	case KP_ENTER:
-#endif
 		key_tabpartial[0] = 0;
 		Cbuf_AddText (key_lines[edit_line]+1);	// skip the prompt
 		Cbuf_AddText ("\n");
@@ -773,9 +768,6 @@ void Key_Init (void)
 	for (i=32 ; i<128 ; i++)
 		consolekeys[i] = true;
 	consolekeys[K_ENTER] = true;
-#if 0 /* QuakeSpasm: keypad keys are mapped to their non-keypad counterparts */
-	consolekeys[KP_ENTER] = true; //johnfitz
-#endif
 	consolekeys[K_TAB] = true;
 	consolekeys[K_LEFTARROW] = true;
 	consolekeys[K_RIGHTARROW] = true;
