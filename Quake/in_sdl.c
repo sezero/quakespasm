@@ -471,6 +471,11 @@ void IN_SendKeyEvents (void)
 			case SDLK_LALT:
 				sym = K_ALT;
 				break;
+			case SDLK_NUMLOCK:
+				if (gamekey)
+					sym = KP_NUMLOCK;
+				else	sym = 0;
+				break;
 			case SDLK_KP0:
 				if (gamekey)
 					sym = KP_INS;
