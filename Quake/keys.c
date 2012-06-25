@@ -19,13 +19,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
+
 #include "quakedef.h"
 
-/*
-
-key up events are sent even if in console mode
-
-*/
+/* key up events are sent even if in console mode */
 
 #define		HISTORY_FILE_NAME "history.txt"
 #define		CMDLINES 32
@@ -36,10 +33,10 @@ int		key_linepos;
 int		shift_down=false;
 int		key_lastpress;
 int		key_insert;	//johnfitz -- insert key toggle (for editing)
-double	key_blinktime; //johnfitz -- fudge cursor blinking to make it easier to spot in certain cases
+double		key_blinktime; //johnfitz -- fudge cursor blinking to make it easier to spot in certain cases
 
-int		edit_line=0;
-int		history_line=0;
+int		edit_line = 0;
+int		history_line = 0;
 
 keydest_t	key_dest;
 
@@ -76,25 +73,23 @@ keyname_t keynames[] =
 	{"CTRL", K_CTRL},
 	{"SHIFT", K_SHIFT},
 
-	//johnfitz -- keypad
-	{"KP_NUMLOCK",		KP_NUMLOCK},
-	{"KP_SLASH",		KP_SLASH },
-	{"KP_STAR",			KP_STAR },
-	{"KP_MINUS",		KP_MINUS },
-	{"KP_HOME",			KP_HOME },
-	{"KP_UPARROW",		KP_UPARROW },
-	{"KP_PGUP",			KP_PGUP },
-	{"KP_PLUS",			KP_PLUS },
-	{"KP_LEFTARROW",	KP_LEFTARROW },
-	{"KP_5",			KP_5 },
-	{"KP_RIGHTARROW",	KP_RIGHTARROW },
-	{"KP_END",			KP_END },
-	{"KP_DOWNARROW",	KP_DOWNARROW },
-	{"KP_PGDN",			KP_PGDN },
-	{"KP_ENTER",		KP_ENTER },
-	{"KP_INS",			KP_INS },
-	{"KP_DEL",			KP_DEL },
-	//johnfitz
+//	{"KP_NUMLOCK", K_KP_NUMLOCK},
+	{"KP_SLASH", K_KP_SLASH},
+	{"KP_STAR", K_KP_STAR},
+	{"KP_MINUS", K_KP_MINUS},
+	{"KP_HOME", K_KP_HOME},
+	{"KP_UPARROW", K_KP_UPARROW},
+	{"KP_PGUP", K_KP_PGUP},
+	{"KP_PLUS", K_KP_PLUS},
+	{"KP_LEFTARROW", K_KP_LEFTARROW},
+	{"KP_5", K_KP_5},
+	{"KP_RIGHTARROW", K_KP_RIGHTARROW},
+	{"KP_END", K_KP_END},
+	{"KP_DOWNARROW", K_KP_DOWNARROW},
+	{"KP_PGDN", K_KP_PGDN},
+	{"KP_ENTER", K_KP_ENTER},
+	{"KP_INS", K_KP_INS},
+	{"KP_DEL", K_KP_DEL},
 
 	{"F1", K_F1},
 	{"F2", K_F2},
@@ -167,7 +162,7 @@ keyname_t keynames[] =
 
 	{"SEMICOLON", ';'},	// because a raw semicolon seperates commands
 
-	{NULL,0}
+	{NULL,		0}
 };
 
 /*
@@ -187,9 +182,9 @@ Interactive line editing and console scrollback
 */
 void Key_Console (int key)
 {
+	static	char current[MAXCMDLINE] = "";
 	extern	int con_vislines;
 	extern	char key_tabpartial[MAXCMDLINE];
-	static  char current[MAXCMDLINE]="";
 
 	switch (key)
 	{
@@ -240,17 +235,19 @@ void Key_Console (int key)
 		if (keydown[K_CTRL])
 		{
 			//skip initial empty lines
-			int		i, x;
+			int	i, x;
 			char	*line;
 			extern int con_current, con_linewidth;
 			extern char *con_text;
 
-			for (i = con_current - con_totallines + 1 ; i <= con_current ; i++)
+			for (i = con_current - con_totallines + 1; i <= con_current; i++)
 			{
-				line = con_text + (i%con_totallines)*con_linewidth;
-				for (x=0 ; x<con_linewidth ; x++)
+				line = con_text + (i % con_totallines) * con_linewidth;
+				for (x = 0; x < con_linewidth; x++)
+				{
 					if (line[x] != ' ')
 						break;
+				}
 				if (x != con_linewidth)
 					break;
 			}
@@ -313,9 +310,8 @@ void Key_Console (int key)
 		// Needs rewriting as we have persistent history
 
 		// if (history_line == 0) return;
-		if (history_line == edit_line) {
+		if (history_line == edit_line)
 			Q_strcpy(current,key_lines[edit_line]);
-		};
 		key_tabpartial[0] = 0;
 		history_line = (history_line - 1) & 31;
 
@@ -509,8 +505,8 @@ FIXME: handle quote special (general escape sequence?)
 */
 const char *Key_KeynumToString (int keynum)
 {
-	keyname_t	*kn;
 	static	char	tinystr[2];
+	keyname_t	*kn;
 
 	if (keynum == -1)
 		return "<KEY NOT FOUND>";
@@ -521,9 +517,11 @@ const char *Key_KeynumToString (int keynum)
 		return tinystr;
 	}
 
-	for (kn=keynames ; kn->name ; kn++)
+	for (kn = keynames; kn->name; kn++)
+	{
 		if (keynum == kn->keynum)
 			return kn->name;
+	}
 
 	return "<UNKNOWN KEYNUM>";
 }
@@ -536,9 +534,6 @@ Key_SetBinding
 */
 void Key_SetBinding (int keynum, const char *binding)
 {
-	char	*new_binding;
-	int		l;
-
 	if (keynum == -1)
 		return;
 
@@ -550,11 +545,7 @@ void Key_SetBinding (int keynum, const char *binding)
 	}
 
 // allocate memory for new binding
-	l = Q_strlen (binding);
-	new_binding = (char *) Z_Malloc (l+1);
-	Q_strcpy (new_binding, binding);
-	new_binding[l] = 0;
-	keybindings[keynum] = new_binding;
+	keybindings[keynum] = Z_Strdup(binding);
 }
 
 /*
@@ -564,7 +555,7 @@ Key_Unbind_f
 */
 void Key_Unbind_f (void)
 {
-	int		b;
+	int	b;
 
 	if (Cmd_Argc() != 2)
 	{
@@ -573,7 +564,7 @@ void Key_Unbind_f (void)
 	}
 
 	b = Key_StringToKeynum (Cmd_Argv(1));
-	if (b==-1)
+	if (b == -1)
 	{
 		Con_Printf ("\"%s\" isn't a valid key\n", Cmd_Argv(1));
 		return;
@@ -584,11 +575,13 @@ void Key_Unbind_f (void)
 
 void Key_Unbindall_f (void)
 {
-	int		i;
+	int	i;
 
-	for (i=0 ; i<256 ; i++)
+	for (i = 0; i < 256; i++)
+	{
 		if (keybindings[i])
 			Key_SetBinding (i, "");
+	}
 }
 
 /*
@@ -598,16 +591,17 @@ Key_Bindlist_f -- johnfitz
 */
 void Key_Bindlist_f (void)
 {
-	int		i, count;
+	int	i, count;
 
 	count = 0;
-	for (i=0 ; i<256 ; i++)
-		if (keybindings[i])
-			if (*keybindings[i])
-			{
-				Con_SafePrintf ("   %s \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
-				count++;
-			}
+	for (i = 0; i < 256; i++)
+	{
+		if (keybindings[i] && *keybindings[i])
+		{
+			Con_SafePrintf ("   %s \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
+			count++;
+		}
+	}
 	Con_SafePrintf ("%i bindings\n", count);
 }
 
@@ -618,8 +612,8 @@ Key_Bind_f
 */
 void Key_Bind_f (void)
 {
-	int			i, c, b;
-	char		cmd[1024];
+	int	i, c, b;
+	char	cmd[1024];
 
 	c = Cmd_Argc();
 
@@ -629,7 +623,7 @@ void Key_Bind_f (void)
 		return;
 	}
 	b = Key_StringToKeynum (Cmd_Argv(1));
-	if (b==-1)
+	if (b == -1)
 	{
 		Con_Printf ("\"%s\" isn't a valid key\n", Cmd_Argv(1));
 		return;
@@ -645,8 +639,8 @@ void Key_Bind_f (void)
 	}
 
 // copy the rest of the command line
-	cmd[0] = 0;		// start out with a null string
-	for (i=2 ; i< c ; i++)
+	cmd[0] = 0;
+	for (i = 2; i < c; i++)
 	{
 		q_strlcat (cmd, Cmd_Argv(i), sizeof(cmd));
 		if (i != (c-1))
@@ -665,12 +659,13 @@ Writes lines containing "bind key value"
 */
 void Key_WriteBindings (FILE *f)
 {
-	int		i;
+	int	i;
 
-	for (i=0 ; i<256 ; i++)
-		if (keybindings[i])
-			if (*keybindings[i])
-				fprintf (f, "bind \"%s\" \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
+	for (i = 0; i < 256; i++)
+	{
+		if (keybindings[i] && *keybindings[i])
+			fprintf (f, "bind \"%s\" \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
+	}
 }
 
 
@@ -748,7 +743,7 @@ Key_Init
 */
 void Key_Init (void)
 {
-	int		i;
+	int	i;
 
 	History_Init ();
 #if 0 /* This section of code is now done in History_Init */
@@ -765,7 +760,7 @@ void Key_Init (void)
 //
 // init ascii characters in console mode
 //
-	for (i=32 ; i<128 ; i++)
+	for (i = 32; i < 128; i++)
 		consolekeys[i] = true;
 	consolekeys[K_ENTER] = true;
 	consolekeys[K_TAB] = true;
@@ -787,7 +782,7 @@ void Key_Init (void)
 	consolekeys['~'] = false;
 
 	//johnfitz -- repeating keys
-	for (i=0 ; i<256 ; i++)
+	for (i = 0; i < 256; i++)
 		repeatkeys[i] = false;
 	repeatkeys[K_BACKSPACE] = true;
 	repeatkeys[K_DEL] = true;
@@ -798,9 +793,9 @@ void Key_Init (void)
 	repeatkeys[K_RIGHTARROW] = true;
 	//johnfitz
 
-	for (i=0 ; i<256 ; i++)
+	for (i = 0; i < 256; i++)
 		keyshift[i] = i;
-	for (i='a' ; i<='z' ; i++)
+	for (i = 'a' ; i <= 'z'; i++)
 		keyshift[i] = i - 'a' + 'A';
 	keyshift['1'] = '!';
 	keyshift['2'] = '@';
@@ -825,7 +820,7 @@ void Key_Init (void)
 	keyshift['\\'] = '|';
 
 	menubound[K_ESCAPE] = true;
-	for (i=0 ; i<12 ; i++)
+	for (i = 0; i < 12; i++)
 		menubound[K_F1+i] = true;
 
 //
@@ -858,9 +853,7 @@ void Key_Event (int key, qboolean down)
 	key_lastpress = key;
 	key_count++;
 	if (key_count <= 0)
-	{
 		return;		// just catching keys for Con_NotifyBox
-	}
 
 // update auto-repeat status
 	if (down)
@@ -881,13 +874,10 @@ void Key_Event (int key, qboolean down)
 	}
 
 autorep0:
-
 	if (key == K_SHIFT)
 		shift_down = down;
 
-//
 // handle escape specialy, so the user can never unbind it
-//
 	if (key == K_ESCAPE)
 	{
 		if (!down)
@@ -910,20 +900,11 @@ autorep0:
 		return;
 	}
 
-// johnfitz -- alt-enter to toggle fullscreen. FIXME -- this does NOT work
-// But this hack (from sf.net/uhexen2) for SDLFitz works for me. S.A
-// *** moved to main.c so that it works properly ***
-//	if (!down && (key == K_ENTER) && keydown[K_ALT])
-//		VID_Toggle();
-// johnfitz
-
-//
 // key up events only generate commands if the game key binding is
 // a button command (leading + sign).  These will occur even in console mode,
 // to keep the character from continuing an action started before a console
 // switch.  Button commands include the kenum as a parameter, so multiple
 // downs can be matched with ups
-//
 	if (!down)
 	{
 		kb = keybindings[key];
@@ -944,21 +925,17 @@ autorep0:
 		return;
 	}
 
-//
 // during demo playback, most keys bring up the main menu
-//
 	if (cls.demoplayback && down && consolekeys[key] && key_dest == key_game && key != K_TAB)
 	{
 		M_ToggleMenu_f ();
 		return;
 	}
 
-//
 // if not a consolekey, send to the interpreter no matter what mode is
-//
-	if ( (key_dest == key_menu && menubound[key])
-	|| (key_dest == key_console && !consolekeys[key])
-	|| (key_dest == key_game && ( !con_forcedup || !consolekeys[key] ) ) )
+	if ((key_dest == key_menu && menubound[key]) ||
+	    (key_dest == key_console && !consolekeys[key]) ||
+	    (key_dest == key_game && (!con_forcedup || !consolekeys[key])))
 	{
 		kb = keybindings[key];
 		if (kb)
@@ -981,9 +958,7 @@ autorep0:
 		return;		// other systems only care about key down events
 
 	if (shift_down)
-	{
 		key = keyshift[key];
-	}
 
 	switch (key_dest)
 	{
@@ -1011,12 +986,12 @@ Key_ClearStates
 */
 void Key_ClearStates (void)
 {
-	int		i;
+	int	i;
 
-	for (i=0 ; i<256 ; i++)
+	for (i = 0; i < 256; i++)
 	{
-		keydown[i] = false;
-		key_repeats[i] = 0;
+		if (keydown[i])
+			Key_Event (i, false);
 	}
 }
 

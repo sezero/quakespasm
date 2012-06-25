@@ -23,6 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "SDL.h"
 
+static qboolean	prev_gamekey;
+
 #ifdef __APPLE__
 /* Mouse acceleration needs to be disabled on OS X */
 #define MACOS_X_ACCELERATION_HACK
@@ -204,7 +206,8 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	SDL_EnableUNICODE (0); /* frame updates will change this as key_dest changes */
+	prev_gamekey = (key_dest == key_game || m_keys_bind_grab);
+	SDL_EnableUNICODE (!prev_gamekey);
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
 
@@ -299,15 +302,13 @@ void IN_SendKeyEvents (void)
 	int sym, state;
 	int modstate;
 	qboolean gamekey;
-	static qboolean prev_gamekey;
 
 	gamekey = (key_dest == key_game || m_keys_bind_grab);
-
 	if (gamekey != prev_gamekey)
 	{
-		SDL_EnableUNICODE(!gamekey);
-		Key_ClearStates();
 		prev_gamekey = gamekey;
+		Key_ClearStates();
+		SDL_EnableUNICODE(!gamekey);
 	}
 
 	while (SDL_PollEvent(&event))
@@ -318,15 +319,8 @@ void IN_SendKeyEvents (void)
 			if (event.active.state & (SDL_APPINPUTFOCUS|SDL_APPACTIVE))
 			{
 				if (event.active.gain)
-				{
-				/*	Sys_Printf("FOCUS GAIN\n");*/
 					S_UnblockSound();
-				}
-				else
-				{
-				/*	Sys_Printf("FOCUS LOSS\n");*/
-					S_BlockSound();
-				}
+				else	S_BlockSound();
 			}
 			break;
 
@@ -337,13 +331,13 @@ void IN_SendKeyEvents (void)
 				VID_Toggle();
 				break;
 			}
-			else if ((event.key.keysym.sym == SDLK_ESCAPE) &&
-				 (event.key.keysym.mod & KMOD_SHIFT))
+			if ((event.key.keysym.sym == SDLK_ESCAPE) &&
+			    (event.key.keysym.mod & KMOD_SHIFT))
 			{
 				Con_ToggleConsole_f();
 				break;
 			}
-
+		/* fallthrough */
 		case SDL_KEYUP:
 			sym = event.key.keysym.sym;
 			state = event.key.state;
@@ -473,87 +467,87 @@ void IN_SendKeyEvents (void)
 				break;
 			case SDLK_NUMLOCK:
 				if (gamekey)
-					sym = KP_NUMLOCK;
+					sym = K_KP_NUMLOCK;
 				else	sym = 0;
 				break;
 			case SDLK_KP0:
 				if (gamekey)
-					sym = KP_INS;
+					sym = K_KP_INS;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_0 : K_INS;
 				break;
 			case SDLK_KP1:
 				if (gamekey)
-					sym = KP_END;
+					sym = K_KP_END;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_1 : K_END;
 				break;
 			case SDLK_KP2:
 				if (gamekey)
-					sym = KP_DOWNARROW;
+					sym = K_KP_DOWNARROW;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_2 : K_DOWNARROW;
 				break;
 			case SDLK_KP3:
 				if (gamekey)
-					sym = KP_PGDN;
+					sym = K_KP_PGDN;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_3 : K_PGDN;
 				break;
 			case SDLK_KP4:
 				if (gamekey)
-					sym = KP_LEFTARROW;
+					sym = K_KP_LEFTARROW;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_4 : K_LEFTARROW;
 				break;
 			case SDLK_KP5:
 				if (gamekey)
-					sym = KP_5;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_5 : 0;
+					sym = K_KP_5;
+				else	sym = SDLK_5;
 				break;
 			case SDLK_KP6:
 				if (gamekey)
-					sym = KP_RIGHTARROW;
+					sym = K_KP_RIGHTARROW;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_6 : K_RIGHTARROW;
 				break;
 			case SDLK_KP7:
 				if (gamekey)
-					sym = KP_HOME;
+					sym = K_KP_HOME;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_7 : K_HOME;
 				break;
 			case SDLK_KP8:
 				if (gamekey)
-					sym = KP_UPARROW;
+					sym = K_KP_UPARROW;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_8 : K_UPARROW;
 				break;
 			case SDLK_KP9:
 				if (gamekey)
-					sym = KP_PGUP;
+					sym = K_KP_PGUP;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_9 : K_PGUP;
 				break;
 			case SDLK_KP_PERIOD:
 				if (gamekey)
-					sym = KP_DEL;
+					sym = K_KP_DEL;
 				else	sym = (modstate & KMOD_NUM) ? SDLK_PERIOD : K_DEL;
 				break;
 			case SDLK_KP_DIVIDE:
 				if (gamekey)
-					sym = KP_SLASH;
+					sym = K_KP_SLASH;
 				else	sym = SDLK_SLASH;
 				break;
 			case SDLK_KP_MULTIPLY:
 				if (gamekey)
-					sym = KP_STAR;
+					sym = K_KP_STAR;
 				else	sym = SDLK_ASTERISK;
 				break;
 			case SDLK_KP_MINUS:
 				if (gamekey)
-					sym = KP_MINUS;
+					sym = K_KP_MINUS;
 				else	sym = SDLK_MINUS;
 				break;
 			case SDLK_KP_PLUS:
 				if (gamekey)
-					sym = KP_PLUS;
+					sym = K_KP_PLUS;
 				else	sym = SDLK_PLUS;
 				break;
 			case SDLK_KP_ENTER:
 				if (gamekey)
-					sym = KP_ENTER;
+					sym = K_KP_ENTER;
 				else	sym = SDLK_RETURN;
 				break;
 			case SDLK_KP_EQUALS:

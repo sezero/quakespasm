@@ -60,25 +60,23 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	K_HOME			151
 #define	K_END			152
 
-//johnfitz -- keypad
-#define	KP_NUMLOCK		153
-#define	KP_SLASH		154
-#define	KP_STAR			155
-#define	KP_MINUS		156
-#define	KP_HOME			157
-#define	KP_UPARROW		158
-#define	KP_PGUP			159
-#define	KP_PLUS			160
-#define	KP_LEFTARROW	161
-#define	KP_5			162
-#define	KP_RIGHTARROW	163
-#define	KP_END			164
-#define	KP_DOWNARROW	165
-#define	KP_PGDN			166
-#define	KP_ENTER		167
-#define	KP_INS			168
-#define	KP_DEL			169
-//johnfitz
+#define	K_KP_NUMLOCK		153
+#define	K_KP_SLASH		154
+#define	K_KP_STAR		155
+#define	K_KP_MINUS		156
+#define	K_KP_HOME		157
+#define	K_KP_UPARROW		158
+#define	K_KP_PGUP		159
+#define	K_KP_PLUS		160
+#define	K_KP_LEFTARROW		161
+#define	K_KP_5			162
+#define	K_KP_RIGHTARROW		163
+#define	K_KP_END		164
+#define	K_KP_DOWNARROW		165
+#define	K_KP_PGDN		166
+#define	K_KP_ENTER		167
+#define	K_KP_INS		168
+#define	K_KP_DEL		169
 
 #define K_PAUSE			255
 
@@ -96,11 +94,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	K_JOY2			204
 #define	K_JOY3			205
 #define	K_JOY4			206
-
-//
 // aux keys are for multi-buttoned joysticks to generate so they can use
 // the normal binding process
-//
+// aux29-32: reserved for the HAT (POV) switch motion
 #define	K_AUX1			207
 #define	K_AUX2			208
 #define	K_AUX3			209
