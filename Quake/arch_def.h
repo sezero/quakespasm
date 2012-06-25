@@ -1,27 +1,28 @@
 /*
-	arch_def.h
-	platform specific definitions
-
-	Copyright (C) 2007  O.Sezer <sezero@users.sourceforge.net>
-
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-	See the GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to:
-
-		Free Software Foundation, Inc.
-		51 Franklin St, Fifth Floor,
-		Boston, MA  02110-1301  USA
-*/
+ * arch_def.h
+ * platform specific definitions
+ * - standalone header
+ * - doesn't and must not include any other headers
+ * - shouldn't depend on compiler.h, q_stdinc.h, or
+ *   any other headers
+ *
+ * Copyright (C) 2007-2012  O.Sezer <sezero@users.sourceforge.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #ifndef __ARCH_DEFS__
 #define __ARCH_DEFS__
@@ -78,10 +79,16 @@
 #	define	PLATFORM_MAC		1
 #   endif
 
-#elif defined(__MORPHOS__) || defined(__AMIGA__)
+#elif defined(__MORPHOS__) || defined(__AMIGA__) || defined(__AROS__)
 
 #   if !defined(PLATFORM_AMIGA)
 #	define	PLATFORM_AMIGA		1
+#   endif
+
+#elif defined(__riscos__)
+
+#   if !defined(PLATFORM_RISCOS)
+#	define	PLATFORM_RISCOS		1
 #   endif
 
 #else	/* here goes the unix platforms */
@@ -101,8 +108,8 @@
 #endif	/* end of PLATFORM_ definitions */
 
 
-/* Hack section: Platforms that are mostly fine when
- * classified under PLATFORM_UNIX :
+/* Platforms that are (mostly) fine
+ * when classified as PLATFORM_UNIX :
  */
 #if defined(__MACOSX__)
 
@@ -110,7 +117,7 @@
 #	define	PLATFORM_UNIX		2
 #   endif
 
-#endif	/* end of PLATFORM_UNIX hacks */
+#endif	/* end of (pseudo) PLATFORM_UNIX */
 
 
 #endif	/* __ARCH_DEFS__ */

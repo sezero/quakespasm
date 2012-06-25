@@ -1,27 +1,26 @@
 /*
-	net_sys.h
-	common network system header
-
-	Copyright (C) 2007-2010  O.Sezer <sezero@users.sourceforge.net>
-
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-	See the GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to:
-
-		Free Software Foundation, Inc.
-		51 Franklin St, Fifth Floor,
-		Boston, MA  02110-1301  USA
-*/
+ * net_sys.h
+ * common network system header
+ * - depends on arch_def.h
+ * - may depend on q_stdinc.h
+ *
+ * Copyright (C) 2007-2012  O.Sezer <sezero@users.sourceforge.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #if defined(_USE_SDLNET)
 
@@ -62,13 +61,16 @@
 
 #if defined(__FreeBSD__) || defined(__DragonFly__)	|| \
     defined(__OpenBSD__) || defined(__NetBSD__)		|| \
-    defined(__MACOSX__)  || defined(__FreeBSD_kernel__)
+    defined(PLATFORM_AMIGA) /* bsdsocket.library */	|| \
+    defined(__MACOSX__)  || defined(__FreeBSD_kernel__)	|| \
+    defined(__riscos__)
 /* struct sockaddr has unsigned char sa_len as the first member in BSD
  * variants and the family member is also an unsigned char instead of an
  * unsigned short. This should matter only when PLATFORM_UNIX is defined,
  * however, checking for the offset of sa_family in every platform that
  * provide a struct sockaddr doesn't hurt either (see down below for the
  * compile time asserts.) */
+/* FIXME : GET RID OF THIS ABOMINATION !!! */
 #define	HAVE_SA_LEN	1
 #define	SA_FAM_OFFSET	1
 #else
@@ -77,7 +79,7 @@
 #endif	/* BSD, sockaddr */
 
 /* unix includes and compatibility macros */
-#if defined(PLATFORM_UNIX) || defined(PLATFORM_AMIGA)
+#if defined(PLATFORM_UNIX) || defined(PLATFORM_RISCOS)
 
 #include <sys/param.h>
 #include <sys/ioctl.h>
@@ -85,11 +87,9 @@
 
 #if defined(__sun) || defined(sun)
 #include <sys/filio.h>
+#include <sys/sockio.h>
 #endif	/* __sunos__ */
 
-#if defined(PLATFORM_AMIGA)
-#include <proto/socket.h>
-#endif
 #include <sys/socket.h>
 
 #include <netinet/in.h>
@@ -100,16 +100,11 @@ typedef int	sys_socket_t;
 #define	INVALID_SOCKET	(-1)
 #define	SOCKET_ERROR	(-1)
 
-#if defined(PLATFORM_AMIGA)
-typedef int	socklen_t;
-#define	SOCKETERRNO	Errno()
-#define	ioctlsocket	IoctlSocket
-#define	closesocket	CloseSocket
-#else
 #define	SOCKETERRNO	errno
 #define	ioctlsocket	ioctl
 #define	closesocket	close
-#endif
+#define	selectsocket	select
+#define	IOCTLARG_P(x)	/* (char *) */ x
 
 #define	NET_EWOULDBLOCK		EWOULDBLOCK
 #define	NET_ECONNREFUSED	ECONNREFUSED
@@ -120,6 +115,50 @@ typedef int	socklen_t;
 COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET);
 
 #endif	/* end of unix stuff */
+
+
+/* amiga includes and compatibility macros */
+#if defined(PLATFORM_AMIGA) /* Amiga bsdsocket.library */
+
+#include <sys/param.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+#include <proto/exec.h>
+#include <proto/socket.h>
+#include <sys/socket.h>
+
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <netdb.h>
+
+typedef int	sys_socket_t;
+#define	INVALID_SOCKET	(-1)
+#define	SOCKET_ERROR	(-1)
+
+#if !defined(__AROS__)
+typedef int	socklen_t;
+#endif
+typedef unsigned int	in_addr_t;	/* u_int32_t */
+
+#define	SOCKETERRNO	Errno()
+#define	ioctlsocket	IoctlSocket
+#define	closesocket	CloseSocket
+#define	selectsocket(_N,_R,_W,_E,_T)		\
+	WaitSelect((_N),(_R),(_W),(_E),(_T),NULL)
+#define	IOCTLARG_P(x)	(char *) x
+
+#define	NET_EWOULDBLOCK		EWOULDBLOCK
+#define	NET_ECONNREFUSED	ECONNREFUSED
+
+#define	socketerror(x)	strerror((x))
+/* there is h_errno but no hstrerror() */
+#define	hstrerror(x)	strerror((x))
+
+/* Verify that we defined HAVE_SA_LEN correctly: */
+COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET);
+
+#endif	/* end of amiga bsdsocket.library stuff */
 
 
 /* windows includes and compatibility macros */
@@ -144,6 +183,9 @@ typedef int	socklen_t;
 
 typedef SOCKET	sys_socket_t;
 
+#define	selectsocket	select
+#define	IOCTLARG_P(x)	/* (u_long *) */ x
+
 #define	SOCKETERRNO	WSAGetLastError()
 #define	NET_EWOULDBLOCK		WSAEWOULDBLOCK
 #define	NET_ECONNREFUSED	WSAECONNREFUSED
@@ -154,16 +196,6 @@ typedef SOCKET	sys_socket_t;
 COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFFSET);
 
 #endif	/* end of windows stuff */
-
-
-/* dos includes and compatibility macros */
-#if defined(PLATFORM_DOS)
-
-/* our local headers : */
-#include "dos/dos_inet.h"
-#include "dos/dos_sock.h"
-
-#endif	/* end of dos stuff. */
 
 
 /* macros which may still be missing */
