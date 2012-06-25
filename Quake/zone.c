@@ -62,7 +62,7 @@ all big things are allocated on the hunk.
 ==============================================================================
 */
 
-memzone_t	*mainzone;
+static memzone_t	*mainzone;
 
 
 /*
@@ -246,8 +246,9 @@ void *Z_Realloc(void *ptr, int size)
 
 char *Z_Strdup (const char *s)
 {
-	char *ptr = (char *) Z_Malloc (strlen(s) + 1);
-	strcpy (ptr, s);
+	size_t sz = strlen(s) + 1;
+	char *ptr = (char *) Z_Malloc (sz);
+	memcpy (ptr, s, sz);
 	return ptr;
 }
 
@@ -575,8 +576,9 @@ void *Hunk_TempAlloc (int size)
 
 char *Hunk_Strdup (const char *s, const char *name)
 {
-	char *ptr = (char *) Hunk_AllocName (strlen(s) + 1, name);
-	strcpy (ptr, s);
+	size_t sz = strlen(s) + 1;
+	char *ptr = (char *) Hunk_AllocName (sz, name);
+	memcpy (ptr, s, sz);
 	return ptr;
 }
 
@@ -823,16 +825,6 @@ Cache_Report
 void Cache_Report (void)
 {
 	Con_DPrintf ("%4.1f megabyte data cache\n", (hunk_size - hunk_high_used - hunk_low_used) / (float)(1024*1024) );
-}
-
-/*
-============
-Cache_Compact
-
-============
-*/
-void Cache_Compact (void)
-{
 }
 
 /*
