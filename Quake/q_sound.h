@@ -55,6 +55,7 @@ typedef struct
 	int	submission_chunk;	/* don't mix less than this #			*/
 	int	samplepos;		/* in mono samples				*/
 	int	samplebits;
+	int	signed8;		/* device opened for S8 format? (e.g. Amiga AHI) */
 	int	speed;
 	unsigned char	*buffer;
 } dma_t;
@@ -117,6 +118,7 @@ void SND_Spatialize (channel_t *ch);
 
 /* music stream support */
 void S_RawSamples(int samples, int rate, int width, int channels, byte * data, float volume);
+				/* Expects data in signed 16 bit, or unsigned 8 bit format. */
 
 /* initializes cycling through a DMA buffer and returns information on it */
 qboolean SNDDMA_Init(dma_t *dma);

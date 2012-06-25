@@ -2,7 +2,7 @@
  * Ogg/Vorbis streaming music support, loosely based on several open source
  * Quake engine based projects with many modifications.
  *
- * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2012 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,8 @@ static const ov_callbacks ovc_qfs =
 	(long (*)(void *))				FS_ftell
 };
 
+#define OV_OPEN_CALLBACKS		ov_open_callbacks
+
 static qboolean S_OGG_CodecInitialize (void)
 {
 	return true;
@@ -84,7 +86,7 @@ static snd_stream_t *S_OGG_CodecOpenStream (const char *filename)
 		return NULL;
 
 	ovFile = (OggVorbis_File *) Z_Malloc(sizeof(OggVorbis_File));
-	res = ov_open_callbacks(&stream->fh, ovFile, NULL, 0, ovc_qfs);
+	res = OV_OPEN_CALLBACKS(&stream->fh, ovFile, NULL, 0, ovc_qfs);
 	if (res != 0)
 	{
 		Con_Printf("%s is not a valid Ogg Vorbis file (error %i).\n",

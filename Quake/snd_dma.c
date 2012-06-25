@@ -541,7 +541,7 @@ void S_ClearBuffer (void)
 
 	s_rawend = 0;
 
-	if (shm->samplebits == 8)
+	if (shm->samplebits == 8 && !shm->signed8)
 		clear = 0x80;
 	else
 		clear = 0;
@@ -656,6 +656,8 @@ S_RawSamples		(from QuakeII)
 
 Streaming music support. Byte swapping
 of data must be handled by the codec.
+Expects data in signed 16 bit, or unsigned
+8 bit format.
 ===================
 */
 void S_RawSamples (int samples, int rate, int width, int channels, byte *data, float volume)
@@ -666,9 +668,7 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, f
 	int intVolume;
 
 	if (s_rawend < paintedtime)
-	{
 		s_rawend = paintedtime;
-	}
 
 	scale = (float) rate / shm->speed;
 	intVolume = (int) (256 * volume);
@@ -678,12 +678,8 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, f
 		for (i = 0; ; i++)
 		{
 			src = i * scale;
-
 			if (src >= samples)
-			{
 				break;
-			}
-
 			dst = s_rawend & (MAX_RAW_SAMPLES - 1);
 			s_rawend++;
 			s_rawsamples [dst].left = ((short *) data)[src * 2] * intVolume;
@@ -695,12 +691,8 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, f
 		for (i = 0; ; i++)
 		{
 			src = i * scale;
-
 			if (src >= samples)
-			{
 				break;
-			}
-
 			dst = s_rawend & (MAX_RAW_SAMPLES - 1);
 			s_rawend++;
 			s_rawsamples [dst].left = ((short *) data)[src] * intVolume;
@@ -714,17 +706,12 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, f
 		for (i = 0; ; i++)
 		{
 			src = i * scale;
-
 			if (src >= samples)
-			{
 				break;
-			}
-
 			dst = s_rawend & (MAX_RAW_SAMPLES - 1);
 			s_rawend++;
-		//	s_rawsamples [dst].left = ((char *) data)[src * 2] * intVolume;
-		//	s_rawsamples [dst].right = ((char *) data)[src * 2 + 1] * intVolume;
-		/* the above doesn't work for me with U8, only the unsigned ones below do */
+		//	s_rawsamples [dst].left = ((signed char *) data)[src * 2] * intVolume;
+		//	s_rawsamples [dst].right = ((signed char *) data)[src * 2 + 1] * intVolume;
 			s_rawsamples [dst].left = (((byte *) data)[src * 2] - 128) * intVolume;
 			s_rawsamples [dst].right = (((byte *) data)[src * 2 + 1] - 128) * intVolume;
 		}
@@ -736,14 +723,12 @@ void S_RawSamples (int samples, int rate, int width, int channels, byte *data, f
 		for (i = 0; ; i++)
 		{
 			src = i * scale;
-
 			if (src >= samples)
-			{
 				break;
-			}
-
 			dst = s_rawend & (MAX_RAW_SAMPLES - 1);
 			s_rawend++;
+		//	s_rawsamples [dst].left = ((signed char *) data)[src] * intVolume;
+		//	s_rawsamples [dst].right = ((signed char *) data)[src] * intVolume;
 			s_rawsamples [dst].left = (((byte *) data)[src] - 128) * intVolume;
 			s_rawsamples [dst].right = (((byte *) data)[src] - 128) * intVolume;
 		}

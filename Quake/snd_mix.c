@@ -117,7 +117,7 @@ static void S_TransferPaintBuffer (int endtime)
 			out_idx = (out_idx + 1) & out_mask;
 		}
 	}
-	else if (shm->samplebits == 8)
+	else if (shm->samplebits == 8 && !shm->signed8)
 	{
 		unsigned char *out = shm->buffer;
 		while (count--)
@@ -129,6 +129,21 @@ static void S_TransferPaintBuffer (int endtime)
 			else if (val < (short)0x8000)
 				val = (short)0x8000;
 			out[out_idx] = (val >> 8) + 128;
+			out_idx = (out_idx + 1) & out_mask;
+		}
+	}
+	else if (shm->samplebits == 8)	/* S8 format, e.g. with Amiga AHI */
+	{
+		signed char *out = (signed char *) shm->buffer;
+		while (count--)
+		{
+			val = *p >> 8;
+			p+= step;
+			if (val > 0x7fff)
+				val = 0x7fff;
+			else if (val < (short)0x8000)
+				val = (short)0x8000;
+			out[out_idx] = (val >> 8);
 			out_idx = (out_idx + 1) & out_mask;
 		}
 	}

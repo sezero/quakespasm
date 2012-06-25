@@ -1,9 +1,8 @@
 /*
  * MP3 decoding support using libmpg123, loosely based on an SDL_mixer
- * plugin found at http://bubu.lv/
  * See: http://bubu.lv/changeset/4/public/libs/SDL/generated/SDL_mixer
  *
- * Copyright (C) 2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2011-2012 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,7 +18,6 @@
  * You should have received a copy of the GNU General Public License along
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
  */
 
 #include "quakedef.h"
@@ -31,8 +29,8 @@
 #include <errno.h>
 #include <mpg123.h>
 
-#if !defined(MPG123_API_VERSION) || (MPG123_API_VERSION < 25)
-#error minimum required libmpg123 version is 1.12.0 (api version 25)
+#if !defined(MPG123_API_VERSION) || (MPG123_API_VERSION < 24)
+#error minimum required libmpg123 version is 1.12.0 (api version 24)
 #endif	/* MPG123_API_VERSION */
 
 /* Private data */

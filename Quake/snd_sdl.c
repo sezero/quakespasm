@@ -1,35 +1,31 @@
 /*
-	snd_sdl.c
-	SDL audio driver for Hexen II: Hammer of Thyrion, based on the
-	implementations found in the quakeforge and quake3-icculus.org
-	projects.
-
-	Copyright (C) 1999-2005 Id Software, Inc.
-	Copyright (C) 2005-2011 O.Sezer <sezero@users.sourceforge.net>
-
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-	See the GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to:
-
-		Free Software Foundation, Inc.
-		51 Franklin St, Fifth Floor,
-		Boston, MA  02110-1301  USA
-*/
+ * snd_sdl.c - SDL audio driver for Hexen II: Hammer of Thyrion (uHexen2)
+ * based on implementations found in the quakeforge and ioquake3 projects.
+ *
+ * Copyright (C) 1999-2005 Id Software, Inc.
+ * Copyright (C) 2005-2012 O.Sezer <sezero@users.sourceforge.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #include "quakedef.h"
 #include "SDL.h"
 
 static int	buffersize;
+
 
 static void paint_audio (void *unused, Uint8 *stream, int len)
 {
@@ -110,6 +106,7 @@ qboolean SNDDMA_Init (dma_t *dma)
 	/* Make sure we can support the audio format */
 	switch (obtained.format)
 	{
+	case AUDIO_S8:		/* maybe needed by AHI */
 	case AUDIO_U8:
 	case AUDIO_S16SYS:
 		/* Supported */
@@ -126,6 +123,7 @@ qboolean SNDDMA_Init (dma_t *dma)
 
 	/* Fill the audio DMA information block */
 	shm->samplebits = (obtained.format & 0xFF); /* first byte of format is bits */
+	shm->signed8 = (obtained.format == AUDIO_S8);
 	if (obtained.freq != tmp)
 		Con_Printf ("Warning: Rate set (%d) didn't match requested rate (%d)!\n", obtained.freq, tmp);
 	shm->speed = obtained.freq;
