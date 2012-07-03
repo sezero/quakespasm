@@ -100,8 +100,12 @@ these patched libSDL binaries may help.
 <sect1> Changes in 0.85.8<p>
 <itemize>
 <item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
-<item> Restored original behavior for Quake registered version detection.
+<item> Made the keypad keys to send separate key events in game mode.
 <item> Music playback: Made sure that the file's channels count is supported.
+<item> Support for Solaris.
+<item> Increased string buffer size from 256 to 384 for PF_VarString to work around broken mods such as UQC.
+<item> Restored original behavior for Quake registered version detection.
+<item> New icon.
 <item> Miscellaneous source code cleanups.
 </itemize>
 </p>

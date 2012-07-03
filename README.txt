@@ -161,10 +161,19 @@
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
 
-  o  Restored original behavior for Quake registered version detection.
+  o  Made the keypad keys to send separate key events in game mode.
 
   o  Music playback: Made sure that the file's channels count is
      supported.
+
+  o  Support for Solaris.
+
+  o  Increased string buffer size from 256 to 384 for PF_VarString to
+     work around broken mods such as UQC.
+
+  o  Restored original behavior for Quake registered version detection.
+
+  o  New icon.
 
   o  Miscellaneous source code cleanups.
 
