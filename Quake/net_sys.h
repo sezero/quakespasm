@@ -63,7 +63,7 @@
     defined(__OpenBSD__) || defined(__NetBSD__)		|| \
     defined(PLATFORM_AMIGA) /* bsdsocket.library */	|| \
     defined(__MACOSX__)  || defined(__FreeBSD_kernel__)	|| \
-    defined(__riscos__)
+    defined(__GNU__) /* GNU/Hurd */ || defined(__riscos__)
 /* struct sockaddr has unsigned char sa_len as the first member in BSD
  * variants and the family member is also an unsigned char instead of an
  * unsigned short. This should matter only when PLATFORM_UNIX is defined,
