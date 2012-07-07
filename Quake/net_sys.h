@@ -1,6 +1,5 @@
 /*
- * net_sys.h
- * common network system header
+ * net_sys.h -- common network system header.
  * - depends on arch_def.h
  * - may depend on q_stdinc.h
  *
