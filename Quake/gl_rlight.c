@@ -165,7 +165,7 @@ DYNAMIC LIGHTS
 R_MarkLights -- johnfitz -- rewritten to use LordHavoc's lighting speedup
 =============
 */
-void R_MarkLights (dlight_t *light, int bit, mnode_t *node)
+void R_MarkLights (dlight_t *light, int num, mnode_t *node)
 {
 	mplane_t	*splitplane;
 	msurface_t	*surf;
@@ -214,18 +214,18 @@ start:
 		{
 			if (surf->dlightframe != r_dlightframecount) // not dynamic until now
 			{
-				surf->dlightbits = bit;
+				surf->dlightbits[num >> 5] = 1U << (num & 31);
 				surf->dlightframe = r_dlightframecount;
 			}
 			else // already dynamic
-				surf->dlightbits |= bit;
+				surf->dlightbits[num >> 5] |= 1U << (num & 31);
 		}
 	}
 
 	if (node->children[0]->contents >= 0)
-		R_MarkLights (light, bit, node->children[0]);
+		R_MarkLights (light, num, node->children[0]);
 	if (node->children[1]->contents >= 0)
-		R_MarkLights (light, bit, node->children[1]);
+		R_MarkLights (light, num, node->children[1]);
 }
 
 /*
@@ -249,7 +249,7 @@ void R_PushDlights (void)
 	{
 		if (l->die < cl.time || !l->radius)
 			continue;
-		R_MarkLights ( l, 1<<i, cl.worldmodel->nodes );
+		R_MarkLights (l, i, cl.worldmodel->nodes);
 	}
 }
 

@@ -163,6 +163,8 @@
 
   o  Made the keypad keys to send separate key events in game mode.
 
+  o  Fixed increased (more than 32) dynamic lights.
+
   o  Music playback: Made sure that the file's channels count is
      supported.
 

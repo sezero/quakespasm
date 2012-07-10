@@ -101,6 +101,7 @@ these patched libSDL binaries may help.
 <itemize>
 <item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
 <item> Made the keypad keys to send separate key events in game mode.
+<item> Fixed increased (more than 32) dynamic lights.
 <item> Music playback: Made sure that the file's channels count is supported.
 <item> Support for Solaris.
 <item> Increased string buffer size from 256 to 384 for PF_VarString to work around broken mods such as UQC.
