@@ -137,6 +137,7 @@ void CL_Disconnect (void)
 
 	cls.demoplayback = cls.timedemo = false;
 	cls.signon = 0;
+	cl.intermission = 0;
 }
 
 void CL_Disconnect_f (void)

@@ -104,6 +104,7 @@ these patched libSDL binaries may help.
 <item> Fixed increased (more than 32) dynamic lights.
 <item> Music playback: Made sure that the file's channels count is supported.
 <item> Support for Solaris.
+<item> Fixed a minor intermissions glitch.
 <item> Increased string buffer size from 256 to 384 for PF_VarString to work around broken mods such as UQC.
 <item> Restored original behavior for Quake registered version detection.
 <item> New icon.

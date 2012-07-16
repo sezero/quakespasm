@@ -170,6 +170,8 @@
 
   o  Support for Solaris.
 
+  o  Fixed a minor intermissions glitch.
+
   o  Increased string buffer size from 256 to 384 for PF_VarString to
      work around broken mods such as UQC.
 
