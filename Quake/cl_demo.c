@@ -249,15 +249,15 @@ void CL_Record_f (void)
 
 	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
 
-//
 // start the map up
-//
 	if (c > 2)
+	{
 		Cmd_ExecuteString ( va("map %s", Cmd_Argv(2)), src_command);
+		if (cls.state != ca_connected)
+			return;
+	}
 
-//
 // open the demo file
-//
 	COM_DefaultExtension (name, ".dem", sizeof(name));
 
 	Con_Printf ("recording to %s.\n", name);
@@ -300,14 +300,10 @@ void CL_PlayDemo_f (void)
 // get rid of the menu and/or console
 	key_dest = key_game;
 
-//
 // disconnect from server
-//
 	CL_Disconnect ();
 
-//
 // open the demo file
-//
 	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
 	COM_DefaultExtension (name, ".dem", sizeof(name));
 
@@ -321,21 +317,39 @@ void CL_PlayDemo_f (void)
 		return;
 	}
 
-	cls.demoplayback = true;
-	cls.state = ca_connected;
 // ZOID, fscanf is evil
+// O.S.: if a space character e.g. 0x20 (' ') follows '\n',
+// fscanf skips that byte too and screws up further reads.
 //	fscanf (cls.demofile, "%i\n", &cls.forcetrack);
 	cls.forcetrack = 0;
 	neg = false;
-	while ((c = getc(cls.demofile)) != '\n')
+	// read a decimal integer possibly with a leading '-',
+	// followed by a '\n':
+	for (i = 0; i < 13; i++)
 	{
-		if (c == '-')
+		c = getc(cls.demofile);
+		if (c == '\n')
+			break;
+		if (c == '-') {
 			neg = true;
-		else
-			cls.forcetrack = cls.forcetrack * 10 + (c - '0');
+			continue;
+		}
+		// check for multiple '-' or legal digits? meh...
+		cls.forcetrack = cls.forcetrack * 10 + (c - '0');
+	}
+	if (c != '\n')
+	{
+		fclose (cls.demofile);
+		cls.demofile = NULL;
+		cls.demonum = -1;	// stop demo loop
+		Con_Printf ("ERROR: demo \"%s\" is invalid\n", name);
+		return;
 	}
 	if (neg)
 		cls.forcetrack = -cls.forcetrack;
+
+	cls.demoplayback = true;
+	cls.state = ca_connected;
 
 // Get a new message on playback start.
 // Moved from CL_TimeDemo_f to here, Pa3PyX.
@@ -382,6 +396,8 @@ void CL_TimeDemo_f (void)
 	}
 
 	CL_PlayDemo_f ();
+	if (!cls.demofile)
+		return;
 
 // cls.td_starttime will be grabbed at the second frame of the demo, so
 // all the loading time doesn't get counted

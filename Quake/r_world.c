@@ -80,6 +80,7 @@ void R_MarkSurfaces (void)
 		return;
 	}
 
+	vis_changed = false;
 	r_visframecount++;
 	r_oldviewleaf = r_viewleaf;
 
