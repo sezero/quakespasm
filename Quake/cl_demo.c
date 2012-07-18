@@ -297,9 +297,6 @@ void CL_PlayDemo_f (void)
 		return;
 	}
 
-// get rid of the menu and/or console
-	key_dest = key_game;
-
 // disconnect from server
 	CL_Disconnect ();
 
@@ -350,6 +347,9 @@ void CL_PlayDemo_f (void)
 
 	cls.demoplayback = true;
 	cls.state = ca_connected;
+
+// get rid of the menu and/or console
+	key_dest = key_game;
 
 // Get a new message on playback start.
 // Moved from CL_TimeDemo_f to here, Pa3PyX.
