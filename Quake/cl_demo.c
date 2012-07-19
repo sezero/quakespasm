@@ -285,7 +285,7 @@ play [demoname]
 void CL_PlayDemo_f (void)
 {
 	char	name[MAX_OSPATH];
-	int	c;
+	int	i, c;
 	qboolean neg;
 
 	if (cmd_source != src_command)
