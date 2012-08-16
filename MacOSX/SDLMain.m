@@ -5,7 +5,11 @@
     Feel free to customize this file to suit your needs
 */
 
+#if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#import <SDL/SDL.h>
+#else
 #import "SDL.h"
+#endif
 #import "SDLMain.h"
 #import <sys/param.h> /* for MAXPATHLEN */
 #import <unistd.h>

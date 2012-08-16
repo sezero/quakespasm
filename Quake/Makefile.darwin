@@ -6,19 +6,6 @@
 # "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
 # specific code.
 
-# COMPILING Quakespasm on OSX with music enabled:
-#
-# Because of difficulties of compiling the CODEC libs on OSX (especially G4),
-# this makefile has been tweaked to link against the includes and libraries in ../MacOSX
-# If you already have libogg/libvorbis/libmpg123 installed, please remove the 
-# "-I../MacOSX/include" and "-L../MacOSX" found below.
-#
-# STARTING GAME
-# To install the CODEC libraries, copy ../MacOSX/*dylib to your Quake folder, then
-#   DYLD_FALLBACK_LIBRARY_PATH=. ./quakespasm
-# Or copy ./MacOSX/*dylib to /usr/local/lib and use
-#   DYLD_FALLBACK_LIBRARY_PATH=/usr/local/lib ./quakespasm
-
 ### Embed custom Quakespasm console background picture
 USE_QS_CONBACK=1
 
@@ -28,7 +15,7 @@ USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 
 # which library to use for mp3 decoding: mad or mpg123
-MP3LIB=mpg123
+MP3LIB=mad
 # which library to use for ogg decoding: vorbis or tremor
 VORBISLIB=vorbis
 
@@ -41,9 +28,7 @@ check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1;
 # ============================================================================
 
 HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
-ifneq ($(HOST_OS),darwin))
-$(error This Makefile is for Darwin only)
-endif
+MACH_TYPE= $(shell sh detect.sh arch)
 
 DEBUG   ?= 0
 SDLNET  ?= 0
@@ -58,13 +43,16 @@ STRIP ?= strip
 
 LINKER = $(CC)
 
-#CPUFLAGS= -mtune=i686
-#CPUFLAGS= -march=pentium4
-#CPUFLAGS= -mtune=k8
-#CPUFLAGS= -march=atom
 CPUFLAGS= 
+# require 10.5 for 64 bit builds
+ifeq ($(MACH_TYPE),x86_64)
+CPUFLAGS+=-mmacosx-version-min=10.5
+endif
+ifeq ($(MACH_TYPE),ppc64)
+CPUFLAGS+=-mmacosx-version-min=10.5
+endif
 DFLAGS ?=
-CFLAGS ?= -Wall -Wno-trigraphs
+CFLAGS ?= -Wall
 # CFLAGS += -Werror
 CFLAGS += $(CPUFLAGS)
 
@@ -83,33 +71,14 @@ define do_strip
 endef
 endif
 
-### X11BASE only gets used if its in an unusual place
-
-X11DIRS := /usr/X11R7 /usr/local/X11R7 /usr/X11R6 /usr/local/X11R6
-X11BASE_GUESS := $(shell \
-	if [ -e /usr/include/X11/Xlib.h ] && \
-		[ -e /usr/lib/libX11.a ]; then exit 0; fi; \
-	if [ -e /usr/local/include/X11/Xlib.h ] && \
-		[ -e /usr/local/lib/libX11.a ]; then exit 0; fi; \
-	for DIR in $(X11DIRS); do \
-            if [ -e $$DIR/include/X11/Xlib.h ] && \
-		[ -e $$DIR/lib/libX11.a ]; then echo $$DIR; break; fi; \
-	done )
-
-X11BASE	?= $(X11BASE_GUESS)
-
-ifneq ($(X11BASE),)
-X11_LFLAGS := -L$(X11BASE)/lib
-X11_CFLAGS := -I$(X11BASE)/include
-endif
-
-#SDL_CONFIG ?= sdl-config
-SDL_CONFIG=/usr/local/bin/sdl-config
-SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
-SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
+# not relying on sdl-config command and assuming
+# /Library/Frameworks/SDL.framework is available
+SDL_CFLAGS =-D_GNU_SOURCE=1 -D_THREAD_SAFE
+SDL_CFLAGS+=-DSDL_FRAMEWORK -DNO_SDL_CONFIG
+SDL_LIBS   =-Wl,-framework,SDL -Wl,-framework,Cocoa
 
 ifeq ($(SDLNET),1)
-NET_LIBS   :=-L/usr/local/lib -l SDL_net
+NET_LIBS   :=-Wl,-framework,SDL_net
 CFLAGS     +=-D_USE_SDLNET
 else
 NET_LIBS   :=
@@ -146,24 +115,29 @@ cpp_vorbisdec=-DVORBIS_USE_TREMOR
 lib_vorbisdec=-lvorbisidec -logg
 endif
 
-# FIXME: The codec libs stuff are copied over from the unix makefile
-#	 They might need adaptations for Darwin
+#codeclibdir=$(MACH_TYPE)
+codeclibdir=fat
 CODECLIBS  :=
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
 ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS $(cpp_vorbisdec)
+CODEC_INC = -I../MacOSX/codecs/include
+CODEC_LINK= -L../MacOSX/codecs/$(codeclibdir)
 CODECLIBS+= $(lib_vorbisdec)
 endif
 ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
+CODEC_INC = -I../MacOSX/codecs/include
+CODEC_LINK= -L../MacOSX/codecs/$(codeclibdir)
 CODECLIBS+= $(lib_mp3dec)
 endif
+CFLAGS+= $(CODEC_INC)
 
-COMMON_LIBS:= -Wl,-framework,OpenGL
+COMMON_LIBS:= -Wl,-framework,IOKit -Wl,-framework,OpenGL
 
-LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
+LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
 
 # ---------------------------
 # targets
@@ -178,9 +152,11 @@ DEFAULT_TARGET := quakespasm
 # ---------------------------
 
 %.o:	%.c
-	$(CC) $(DFLAGS) -I../MacOSX/include -c $(CFLAGS) $(X11_CFLAGS) $(SDL_CFLAGS) -o $@ $^
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $^
 %.o:	%.m
-	$(CC) $(DFLAGS) -c $(CFLAGS) $(X11_CFLAGS) $(SDL_CFLAGS) -o $@ $^
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $^
+%.o:	../MacOSX/%.m
+	$(CC) $(DFLAGS) -c -I../MacOSX $(CFLAGS) $(SDL_CFLAGS) -o $@ $^
 
 # ----------------------------------------------------------------------------
 # objects
@@ -201,9 +177,9 @@ SYSOBJ_NET := net_sdl.o net_sdlnet.o
 else
 SYSOBJ_NET := net_bsd.o net_udp.o
 endif
+SYSOBJ_LAUNCHER := AppController.o QuakeArgument.o QuakeArguments.o ScreenInfo.o SDLApplication.o
 SYSOBJ_SYS := pl_osx.o sys_sdl_unix.o
-SYSOBJ_MAIN:= main_sdl.o
-SYSOBJ_RES :=
+SYSOBJ_MAIN:= main_sdl.o SDLMain.o
 
 GLOBJS = \
 	gl_refrag.o \
@@ -267,14 +243,14 @@ OBJS := strlcat.o \
 	world.o \
 	conback.o \
 	zone.o \
-	$(SYSOBJ_SYS) $(SYSOBJ_MAIN) $(SYSOBJ_RES)
+	$(SYSOBJ_SYS) $(SYSOBJ_LAUNCHER) $(SYSOBJ_MAIN)
 
 # ------------------------
 # darwin build rules
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(X11_LFLAGS) -L../MacOSX $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(SDL_LIBS) $(LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm

@@ -26,7 +26,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "cfgfile.h"
 #include "bgmusic.h"
 #include "resource.h"
+#if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#include <SDL/SDL.h>
+#else
 #include "SDL.h"
+#endif
 
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
 #define VID_ROW_SIZE	3

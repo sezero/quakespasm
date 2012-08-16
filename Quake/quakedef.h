@@ -219,8 +219,13 @@ typedef struct
 #include "server.h"
 
 #include "platform.h"
+#if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#include <SDL/SDL.h>
+#include <SDL/SDL_opengl.h>
+#else
 #include "SDL.h"
 #include "SDL_opengl.h"
+#endif
 
 #include "console.h"
 #include "wad.h"

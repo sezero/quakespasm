@@ -24,8 +24,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include "net_defs.h"
 #include "net_sdlnet.h"
+#if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#include <SDL/SDL.h>
+#include <SDL_net/SDL_net.h>
+#else
 #include "SDL.h"
 #include "SDL_net.h"
+#endif
 
 #define MAX_SOCKETS	32
 
