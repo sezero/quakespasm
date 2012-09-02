@@ -38,10 +38,10 @@ SDLNET  ?= 0
 # ---------------------------------------
 
 CC ?= gcc
-WINDRES ?= windres
-STRIP ?= strip
-
 LINKER = $(CC)
+LIPO ?= lipo
+
+STRIP ?= strip
 
 CPUFLAGS= 
 # require 10.5 for 64 bit builds

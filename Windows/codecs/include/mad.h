@@ -20,9 +20,9 @@
  * so by contacting: Underbit Technologies, Inc. <info@underbit.com>
  */
 
-# ifdef __cplusplus
+#ifdef __cplusplus
 extern "C" {
-# endif
+#endif
 
 /* windows-only configuration : */
 #ifdef _WIN64
@@ -32,10 +32,10 @@ extern "C" {
 #endif
 # define SIZEOF_LONG 4
 /*
-# ifdef __i386__
+#ifdef __i386__
 # define FPM_INTEL
 # define SIZEOF_LONG 4
-# endif
+#endif
 #ifdef __x86_64__
 # define FPM_64BIT
 # ifdef _WIN64
@@ -43,20 +43,20 @@ extern "C" {
 # else
 # define SIZEOF_LONG 8
 # endif
-# endif
-#ifdef __powerpc__
-#define FPM_PPC
-#define SIZEOF_LONG 4
 #endif
-#ifdef __powerpc64__
-#define FPM_PPC
-#define SIZEOF_LONG 8
+#if (defined(__ppc__) || defined(__POWERPC__) || defined(__powerpc__)) && !(defined(__ppc64__) || defined(__powerpc64__))
+# define FPM_PPC
+# define SIZEOF_LONG 4
+#endif
+#if defined(__ppc64__) || defined(__powerpc64__)
+# define FPM_PPC
+# define SIZEOF_LONG 8
 #endif
 */
 
 
-# define SIZEOF_INT 4
-# define SIZEOF_LONG_LONG 8
+#define SIZEOF_INT 4
+#define SIZEOF_LONG_LONG 8
 
 
 /* Id: version.h,v 1.26 2004/01/23 09:41:33 rob Exp */
@@ -346,12 +346,25 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 	 : "+r" (lo), "+r" (hi)  \
 	 : "%r" (x), "r" (y))
 
+#ifdef __thumb__
+/* In Thumb-2, the RSB-immediate instruction is only allowed with a zero
+	operand.  If needed this code can also support Thumb-1 
+	(simply append "s" to the end of the second two instructions). */
+#  define MAD_F_MLN(hi, lo)  \
+    asm ("rsbs        %0, %0, #0\n\t"  \
+	 "sbc   %1, %1, %1\n\t"  \
+	 "sub   %1, %1, %2"  \
+	 : "+&r" (lo), "=&r" (hi)  \
+	 : "r" (hi)  \
+	 : "cc")
+#else /* ! __thumb__ */
 #  define MAD_F_MLN(hi, lo)  \
     asm ("rsbs	%0, %2, #0\n\t"  \
 	 "rsc	%1, %3, #0"  \
-	 : "=r" (lo), "=r" (hi)  \
+	 : "=&r" (lo), "=r" (hi)  \
 	 : "0" (lo), "1" (hi)  \
 	 : "cc")
+#endif /* __thumb__ */
 
 #  define mad_f_scale64(hi, lo)  \
     ({ mad_fixed_t __result;  \
@@ -370,6 +383,15 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 
 # elif defined(FPM_MIPS)
 
+#if defined (__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4))
+  typedef unsigned int u64_di_t __attribute__ ((mode (DI)));
+# define MAD_F_MLX(hi, lo, x, y) \
+   do { \
+      u64_di_t __ll = (u64_di_t) (x) * (y); \
+      hi = __ll >> 32; \
+      lo = __ll; \
+   } while (0)
+#else
 /*
  * This MIPS version is fast and accurate; the disposition of the least
  * significant bit depends on OPT_ACCURACY via mad_f_scale64().
@@ -399,6 +421,7 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
 	 : "%r" ((x) >> 12), "r" ((y) >> 16))
 #  define MAD_F_MLZ(hi, lo)  ((mad_fixed_t) (lo))
 # endif
+#endif /* MIPS / gcc-4.4. */
 
 # if defined(OPT_SPEED)
 #  define mad_f_scale64(hi, lo)  \
@@ -450,8 +473,8 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
        asm ("addc %0,%2,%3\n\t"  \
 	    "adde %1,%4,%5"  \
 	    : "=r" (lo), "=r" (hi)  \
-	    : "%r" (lo), "r" (__lo),  \
-	      "%r" (hi), "r" (__hi)  \
+	    : "0" (lo), "r" (__lo), \
+	      "1" (hi), "r" (__hi) \
 	    : "xer");  \
     })
 #  endif

@@ -36,10 +36,9 @@ SDLNET  ?= 0
 # ---------------------------------------
 
 CC ?= gcc
-WINDRES ?= windres
-STRIP ?= strip
-
 LINKER = $(CC)
+
+STRIP ?= strip
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
