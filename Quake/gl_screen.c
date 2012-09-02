@@ -80,7 +80,7 @@ float		scr_conlines;		// lines of console to display
 //johnfitz -- new cvars
 cvar_t		scr_menuscale = {"scr_menuscale", "1", CVAR_ARCHIVE};
 cvar_t		scr_sbarscale = {"scr_sbarscale", "1", CVAR_ARCHIVE};
-cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.95", CVAR_ARCHIVE};
+cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.7", CVAR_ARCHIVE};
 cvar_t		scr_conwidth = {"scr_conwidth", "0", CVAR_ARCHIVE};
 cvar_t		scr_conscale = {"scr_conscale", "1", CVAR_ARCHIVE};
 cvar_t		scr_scale = {"scr_scale", "1", CVAR_ARCHIVE};
