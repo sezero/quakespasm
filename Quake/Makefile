@@ -45,6 +45,7 @@ STRIP ?= strip
 #CPUFLAGS= -mtune=k8
 #CPUFLAGS= -march=atom
 CPUFLAGS= 
+LDFLAGS = 
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
 # CFLAGS += -Werror
@@ -255,7 +256,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(X11_LFLAGS) $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(X11_LFLAGS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm

@@ -44,12 +44,15 @@ LIPO ?= lipo
 STRIP ?= strip
 
 CPUFLAGS= 
+LDFLAGS = 
 # require 10.5 for 64 bit builds
 ifeq ($(MACH_TYPE),x86_64)
 CPUFLAGS+=-mmacosx-version-min=10.5
+LDFLAGS +=-mmacosx-version-min=10.5
 endif
 ifeq ($(MACH_TYPE),ppc64)
 CPUFLAGS+=-mmacosx-version-min=10.5
+LDFLAGS +=-mmacosx-version-min=10.5
 endif
 DFLAGS ?=
 CFLAGS ?= -Wall
@@ -250,7 +253,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(SDL_LIBS) $(LIBS) -o $@
+	$(LINKER) $(OBJS) $(SDL_LIBS) $(LDFLAGS) $(LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm

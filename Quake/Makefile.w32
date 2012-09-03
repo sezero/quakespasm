@@ -54,6 +54,7 @@ STRIP = $(TOOLCHAIN_PREFIX)strip
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
 CPUFLAGS= 
+LDFLAGS = 
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
 # CFLAGS += -Werror
@@ -258,7 +259,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm.exe:	$(OBJS)
-	$(LINKER) $(OBJS) $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm.exe
