@@ -988,14 +988,14 @@ void M_AdjustSliders (int dir)
 	switch (options_cursor)
 	{
 	case OPT_SCALE:	// console and menu scale
-		f = scr_scale.value + dir * .1; // or .2
-		if (f < 1)	f = 1;
-		else if (f > 6)	f = 6;
-		Cvar_SetValue ("scr_scale", f);
-		// status bar size increases half as fast
-		Cvar_SetValue ("scr_sbarscale", (scr_scale.value - 1)/2 + 1);
-		Cvar_SetValue ("scr_conscale", scr_scale.value);
-		Cvar_SetValue ("scr_menuscale", scr_scale.value);
+		f = scr_conscale.value + dir * .1;
+		if (f < 1)
+			f = 1;
+		else if (f > (vid.width / 32) / 10.0)
+			f = (vid.width / 32) / 10.0;
+		Cvar_SetValue ("scr_conscale", f);
+		Cvar_SetValue ("scr_menuscale", f);
+		Cvar_SetValue ("scr_sbarscale", f);
 		break;
 	case OPT_SCRSIZE:	// screen size
 		f = scr_viewsize.value + dir * 10;
@@ -1120,7 +1120,7 @@ void M_Options_Draw (void)
 
 	// OPT_SCALE:
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
-	r = (scr_scale.value-1)/5 ; // r ranges from 0 to 1, scr_scale from 1 to 6
+	r = (scr_conscale.value - 1) / (((vid.width / 32) / 10.0) - 1);
 	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
 
 	// OPT_SCRSIZE:
