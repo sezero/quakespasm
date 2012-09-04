@@ -981,18 +981,17 @@ void M_Menu_Options_f (void)
 
 void M_AdjustSliders (int dir)
 {
-	float	f;
+	float	f, l;
 
 	S_LocalSound ("misc/menu3.wav");
 
 	switch (options_cursor)
 	{
 	case OPT_SCALE:	// console and menu scale
+		l = ceil(vid.width / 32.0) / 10;
 		f = scr_conscale.value + dir * .1;
-		if (f < 1)
-			f = 1;
-		else if (f > (vid.width / 32) / 10.0)
-			f = (vid.width / 32) / 10.0;
+		if (f < 1)	f = 1;
+		else if(f > l)	f = l;
 		Cvar_SetValue ("scr_conscale", f);
 		Cvar_SetValue ("scr_menuscale", f);
 		Cvar_SetValue ("scr_sbarscale", f);
@@ -1103,7 +1102,7 @@ void M_DrawCheckbox (int x, int y, int on)
 
 void M_Options_Draw (void)
 {
-	float		r;
+	float		r, l;
 	qpic_t	*p;
 
 	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp") );
@@ -1120,7 +1119,8 @@ void M_Options_Draw (void)
 
 	// OPT_SCALE:
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
-	r = (scr_conscale.value - 1) / (((vid.width / 32) / 10.0) - 1);
+	l = ceil(vid.width / 32.0) / 10;
+	r = l > 1 ? (scr_conscale.value - 1) / (l - 1) : 0;
 	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
 
 	// OPT_SCRSIZE:
