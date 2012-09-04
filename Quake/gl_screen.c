@@ -881,8 +881,8 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 	{
 		key_count = -1;		// wait for a key down and up
 		Sys_SendKeyEvents ();
-		if (timeout) time2 = Sys_DoubleTime (); //johnfitz -- zero timeout means wait forever.
 		Sys_Sleep(16);
+		if (timeout) time2 = Sys_DoubleTime (); //johnfitz -- zero timeout means wait forever.
 	} while (key_lastpress != 'y' &&
 			 key_lastpress != 'n' &&
 			 key_lastpress != K_ESCAPE &&
