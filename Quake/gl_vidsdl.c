@@ -1354,7 +1354,7 @@ void	VID_Toggle (void)
 	else
 	{
 		vid_toggle_works = false;
-		Con_Printf ("ToggleFullScreen failed, attempting VID_Restart\n");
+		Con_DPrintf ("ToggleFullScreen failed, attempting VID_Restart\n");
 vrestart:
 		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
