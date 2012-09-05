@@ -1120,7 +1120,7 @@ void M_Options_Draw (void)
 	// OPT_SCALE:
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
 	l = ceil(vid.width / 32.0) / 10;
-	r = l > 1 ? (scr_conscale.value - 1) / (l - 1) : 0;
+	r = l - 1 > 0 ? (scr_conscale.value - 1) / (l - 1) : 0;
 	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
 
 	// OPT_SCRSIZE:
