@@ -1,4 +1,4 @@
-# GNU Makefile for QuakeSpasm for Mac OS X, Sep. 03, 2012.
+# GNU Makefile for QuakeSpasm for Mac OS X, Sep. 05, 2012.
 # Usage: "make -f Makefile.darwin"
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
@@ -43,20 +43,19 @@ LIPO ?= lipo
 
 STRIP ?= strip
 
-CPUFLAGS= 
-LDFLAGS = 
+CPUFLAGS=
+LDFLAGS =
+DFLAGS ?=
+CFLAGS ?= -Wall
 # require 10.5 for 64 bit builds
 ifeq ($(MACH_TYPE),x86_64)
-CPUFLAGS+=-mmacosx-version-min=10.5
+CFLAGS  +=-mmacosx-version-min=10.5
 LDFLAGS +=-mmacosx-version-min=10.5
 endif
 ifeq ($(MACH_TYPE),ppc64)
-CPUFLAGS+=-mmacosx-version-min=10.5
+CFLAGS  +=-mmacosx-version-min=10.5
 LDFLAGS +=-mmacosx-version-min=10.5
 endif
-DFLAGS ?=
-CFLAGS ?= -Wall
-# CFLAGS += -Werror
 CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)

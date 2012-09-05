@@ -53,11 +53,10 @@ STRIP = $(TOOLCHAIN_PREFIX)strip
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
-CPUFLAGS= 
-LDFLAGS = 
+CPUFLAGS=
+LDFLAGS =
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
-# CFLAGS += -Werror
 CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)

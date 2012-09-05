@@ -44,11 +44,10 @@ STRIP ?= strip
 #CPUFLAGS= -march=pentium4
 #CPUFLAGS= -mtune=k8
 #CPUFLAGS= -march=atom
-CPUFLAGS= 
-LDFLAGS = 
+CPUFLAGS=
+LDFLAGS =
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
-# CFLAGS += -Werror
 CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)
