@@ -250,7 +250,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(SDL_LIBS) $(LDFLAGS) $(LIBS) -o $@
+	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm

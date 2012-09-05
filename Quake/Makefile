@@ -81,8 +81,8 @@ X11BASE_GUESS := $(shell \
 X11BASE	?= $(X11BASE_GUESS)
 
 ifneq ($(X11BASE),)
-X11_LFLAGS := -L$(X11BASE)/lib
-X11_CFLAGS := -I$(X11BASE)/include
+LDFLAGS+= -L$(X11BASE)/lib
+CFLAGS += -I$(X11BASE)/include
 endif
 
 SDL_CONFIG ?= sdl-config
@@ -161,7 +161,7 @@ DEFAULT_TARGET := quakespasm
 # ---------------------------
 
 %.o:	%.c
-	$(CC) $(DFLAGS) -c $(CFLAGS) $(X11_CFLAGS) $(SDL_CFLAGS) -o $@ $^
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $^
 
 # ----------------------------------------------------------------------------
 # objects
@@ -255,7 +255,7 @@ OBJS := strlcat.o \
 # ------------------------
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(X11_LFLAGS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
+	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
 
 release:	quakespasm
