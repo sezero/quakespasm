@@ -22,6 +22,15 @@
 	<string>????</string>
 	<key>LSApplicationCategoryType</key>
 	<string>public.app-category.action-games</string>
+	<key>LSMinimumSystemVersionByArchitecture</key>
+	<dict>
+		<key>i386</key>
+		<string>10.4.0</string>
+		<key>ppc</key>
+		<string>10.4.0</string>
+		<key>x86_64</key>
+		<string>10.6.0</string>
+	</dict>
 	<key>NSMainNibFile</key>
 	<string>Launcher</string>
 	<key>NSPrincipalClass</key>
