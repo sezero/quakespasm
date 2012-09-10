@@ -82,15 +82,12 @@
 
 #include <sys/param.h>
 #include <sys/ioctl.h>
-#include <unistd.h>
-
 #if defined(__sun) || defined(sun)
 #include <sys/filio.h>
 #include <sys/sockio.h>
 #endif	/* __sunos__ */
-
+#include <unistd.h>
 #include <sys/socket.h>
-
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -98,6 +95,11 @@
 typedef int	sys_socket_t;
 #define	INVALID_SOCKET	(-1)
 #define	SOCKET_ERROR	(-1)
+
+#if defined(__APPLE__) && defined(SO_NKE) && !defined(SO_NOADDRERR)
+				/* ancient Mac OS X SDKs 10.2 and older are missing socklen_t */
+typedef int	socklen_t;			/* defining as signed int to match the old api */
+#endif	/* ancient OSX SDKs */
 
 #define	SOCKETERRNO	errno
 #define	ioctlsocket	ioctl
@@ -122,11 +124,9 @@ COMPILE_TIME_ASSERT(sockaddr, offsetof(struct sockaddr, sa_family) == SA_FAM_OFF
 #include <sys/param.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
-
 #include <proto/exec.h>
 #include <proto/socket.h>
 #include <sys/socket.h>
-
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
