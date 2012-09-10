@@ -170,12 +170,22 @@
 
   o  Support for Solaris.
 
+  o  Switched to using libmad instead of libmpg123 for MP3 playback on
+     Mac OS X.
+
+  o  Better support for building the Mac OS X version using a makefile,
+     support for cross-compiling on Linux.
+
   o  Fixed a minor intermissions glitch.
 
   o  Increased string buffer size from 256 to 384 for PF_VarString to
      work around broken mods such as UQC.
 
   o  Restored original behavior for Quake registered version detection.
+
+  o  Minor demo recording/playback tweaks.
+
+  o  Minor tweaks to the scale menu option.
 
   o  New icon.
 
