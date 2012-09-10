@@ -371,6 +371,7 @@ void SCR_Init (void)
 	//johnfitz -- new cvars
 	Cvar_RegisterVariable (&scr_menuscale);
 	Cvar_RegisterVariable (&scr_sbarscale);
+	Cvar_SetCallback (&scr_sbaralpha, SCR_Callback_refdef);
 	Cvar_RegisterVariable (&scr_sbaralpha);
 	Cvar_SetCallback (&scr_conwidth, &SCR_Conwidth_f);
 	Cvar_SetCallback (&scr_conscale, &SCR_Conwidth_f);
