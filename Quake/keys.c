@@ -661,8 +661,6 @@ void Key_WriteBindings (FILE *f)
 {
 	int	i;
 
-	fprintf (f, "unbindall\n");
-
 	for (i = 0; i < 256; i++)
 	{
 		if (keybindings[i] && *keybindings[i])

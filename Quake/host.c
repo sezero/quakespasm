@@ -81,6 +81,8 @@ cvar_t	developer = {"developer","0",CVAR_NONE};
 
 cvar_t	temp1 = {"temp1","0",CVAR_NONE};
 
+cvar_t	cfg_unbindall = {"cfg_unbindall", "1", CVAR_ARCHIVE}; //QuakeSpasm
+
 cvar_t devstats = {"devstats","0",CVAR_NONE}; //johnfitz -- track developer statistics that vary every frame
 
 devstats_t dev_stats, dev_peakstats;
@@ -280,6 +282,8 @@ void Host_InitLocal (void)
 
 	Cvar_RegisterVariable (&temp1);
 
+	Cvar_RegisterVariable (&cfg_unbindall); //QuakeSpasm
+
 	Host_FindMaxClients ();
 
 	host_time = 1.0;		// so a think at time 0 won't get called
@@ -309,6 +313,8 @@ void Host_WriteConfiguration (void)
 		}
 
 		VID_SyncCvars (); //johnfitz -- write actual current mode to config file, in case cvars were messed with
+
+		if (cfg_unbindall.value) fprintf (f, "unbindall\n"); //QuakeSpasm -- unbindall before loading stored bindings
 
 		Key_WriteBindings (f);
 		Cvar_WriteVariables (f);
