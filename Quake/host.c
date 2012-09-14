@@ -61,7 +61,7 @@ cvar_t	host_framerate = {"host_framerate","0",CVAR_NONE};	// set for slow motion
 cvar_t	host_speeds = {"host_speeds","0",CVAR_NONE};			// set for running times
 cvar_t	host_maxfps = {"host_maxfps", "72", CVAR_ARCHIVE}; //johnfitz
 cvar_t	host_timescale = {"host_timescale", "0", CVAR_NONE}; //johnfitz
-cvar_t	max_edicts = {"max_edicts", STR(DEF_EDICTS), CVAR_ARCHIVE}; //johnfitz
+cvar_t	max_edicts = {"max_edicts", "2048", CVAR_ARCHIVE}; //johnfitz
 
 cvar_t	sys_ticrate = {"sys_ticrate","0.05",CVAR_NONE}; // dedicated server
 cvar_t	serverprofile = {"serverprofile","0",CVAR_NONE};
@@ -95,16 +95,10 @@ Max_Edicts_f -- johnfitz
 */
 static void Max_Edicts_f (cvar_t *var)
 {
-	static float oldval = DEF_EDICTS; //must match the default value for max_edicts
-
 	//TODO: clamp it here?
-	if (max_edicts.value == oldval)
-		return;
 
 	if (cls.state == ca_connected || sv.active)
 		Con_Printf ("Changes to max_edicts will not take effect until the next time a map is loaded.\n");
-
-	oldval = max_edicts.value;
 }
 
 /*
