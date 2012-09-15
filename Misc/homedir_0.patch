@@ -1,11 +1,11 @@
 support for user directories, based on uhexen2 and tyrquake:
-** against quakespasm svn revision 588.
+** against quakespasm svn revision 725.
 ** on-the-fly game directory switching not supported yet.
 ** minimally tested, needs more work.
 
 Index: Quake/sys_sdl_unix.c
 ===================================================================
---- Quake/sys_sdl_unix.c	(revision 588)
+--- Quake/sys_sdl_unix.c	(revision 699)
 +++ Quake/sys_sdl_unix.c	(working copy)
 @@ -20,6 +20,8 @@
  
@@ -24,9 +24,9 @@ Index: Quake/sys_sdl_unix.c
 +#include <pwd.h>
 +#endif	/* USE_PASSWORD_FILE */
  
- #include "SDL.h"
- 
-@@ -139,9 +144,43 @@
+ #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+ #include <SDL/SDL.h>
+@@ -143,9 +148,43 @@
  	return -1;
  }
  
@@ -73,9 +73,9 @@ Index: Quake/sys_sdl_unix.c
  void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 588)
+--- Quake/common.c	(revision 658)
 +++ Quake/common.c	(working copy)
-@@ -1846,32 +1846,34 @@ pack_t *COM_LoadPackFile (const char *pa
+@@ -1854,32 +1854,34 @@ pack_t *COM_LoadPackFile (const char *pa
  COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
  =================
  */
@@ -114,7 +114,7 @@ Index: Quake/common.c
  		pak = COM_LoadPackFile (pakfile);
  		if (!pak)
  			break;
-@@ -1881,6 +1883,14 @@ static void COM_AddGameDirectory (const 
+@@ -1889,6 +1891,14 @@ static void COM_AddGameDirectory (const 
  		search->next = com_searchpaths;
  		com_searchpaths = search;
  	}
@@ -129,7 +129,7 @@ Index: Quake/common.c
  }
  
  #if defined(USE_QS_CONBACK)
-@@ -1935,8 +1945,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1943,8 +1953,7 @@ void COM_InitFilesystem (void) //johnfit
  	}
  
  	// start up with GAMENAME by default (id1)
@@ -139,7 +139,7 @@ Index: Quake/common.c
  
  #if defined(USE_QS_CONBACK)
  	if (!fitzmode)
-@@ -1950,17 +1959,17 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1958,17 +1967,17 @@ void COM_InitFilesystem (void) //johnfit
  	com_nummissionpacks = 0;
  	if (COM_CheckParm ("-rogue"))
  	{
@@ -160,7 +160,7 @@ Index: Quake/common.c
  		com_nummissionpacks++;
  	}
  	//johnfitz
-@@ -1969,7 +1978,7 @@ void COM_InitFilesystem (void) //johnfit
+@@ -1977,7 +1986,7 @@ void COM_InitFilesystem (void) //johnfit
  	if (i && i < com_argc-1)
  	{
  		com_modified = true;

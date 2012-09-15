@@ -1,7 +1,7 @@
 
 Index: Quake/gl_model.c
 ===================================================================
---- Quake/gl_model.c	(revision 588)
+--- Quake/gl_model.c	(revision 676)
 +++ Quake/gl_model.c	(working copy)
 @@ -387,6 +387,8 @@ void Mod_LoadTextures (lump_t *l)
  	extern byte *hunk_base;
@@ -85,9 +85,9 @@ Index: Quake/gl_model.c
  				if (!data)
 Index: Quake/gl_rmain.c
 ===================================================================
---- Quake/gl_rmain.c	(revision 588)
+--- Quake/gl_rmain.c	(revision 660)
 +++ Quake/gl_rmain.c	(working copy)
-@@ -102,6 +102,7 @@
+@@ -100,6 +100,7 @@
  cvar_t	r_nolerp_list = {"r_nolerp_list", "progs/flame.mdl,progs/flame2.mdl,progs/braztall.mdl,progs/brazshrt.mdl,progs/longtrch.mdl,progs/flame_pyre.mdl,progs/v_saw.mdl,progs/v_xfist.mdl,progs/h2stuff/newfire.mdl", CVAR_NONE};
  extern cvar_t	r_vfog;
  //johnfitz
@@ -97,7 +97,7 @@ Index: Quake/gl_rmain.c
  
 Index: Quake/gl_rmisc.c
 ===================================================================
---- Quake/gl_rmisc.c	(revision 588)
+--- Quake/gl_rmisc.c	(revision 660)
 +++ Quake/gl_rmisc.c	(working copy)
 @@ -44,6 +44,7 @@
  extern cvar_t r_lerpmove;
@@ -107,7 +107,7 @@ Index: Quake/gl_rmisc.c
  
  extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
  
-@@ -243,6 +244,7 @@ void R_Init (void)
+@@ -168,6 +169,7 @@ void R_Init (void)
  	Cvar_RegisterVariable (&r_nolerp_list);
  	Cvar_SetCallback (&r_nolerp_list, R_NoLerpList_f);
  	//johnfitz
