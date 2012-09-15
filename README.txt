@@ -187,6 +187,9 @@
 
   o  Minor tweaks to the scale menu option.
 
+  o  unbindall before loading stored bindings (configurable by new cvar
+     cfg_unbindall, enabled by default.)
+
   o  New icon.
 
   o  Miscellaneous source code cleanups.

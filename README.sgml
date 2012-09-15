@@ -111,6 +111,7 @@ these patched libSDL binaries may help.
 <item> Restored original behavior for Quake registered version detection.
 <item> Minor demo recording/playback tweaks.
 <item> Minor tweaks to the scale menu option.
+<item> unbindall before loading stored bindings (configurable by new cvar cfg_unbindall, enabled by default.)
 <item> New icon.
 <item> Miscellaneous source code cleanups.
 </itemize>
