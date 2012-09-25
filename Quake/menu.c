@@ -1282,8 +1282,11 @@ const char *bindnames[][2] =
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
 
-int		keys_cursor;
+#define KEYS_SIZE 15
+
+static int	keys_cursor;
 qboolean	m_keys_bind_grab;
+static int	keys_top;
 
 void M_Menu_Keys_f (void)
 {
@@ -1345,6 +1348,7 @@ void M_Keys_Draw (void)
 	int		keys[2];
 	const char	*name;
 	qpic_t	*p;
+	extern qpic_t	*pic_up, *pic_down;
 
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
@@ -1354,14 +1358,22 @@ void M_Keys_Draw (void)
 	else
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
+	if (keys_top)
+		Draw_Pic (6, 48, pic_up);
+	if (keys_top + KEYS_SIZE < (int)NUMCOMMANDS)
+		Draw_Pic (6, 48 + ((KEYS_SIZE-1)*8), pic_down);
+
 // search for known bindings
-	for (i = 0; i < (int)NUMCOMMANDS; i++)
+	for (i = 0; i < KEYS_SIZE; i++)
 	{
+		if (i+keys_top >= (int)NUMCOMMANDS)
+			break;
+
 		y = 48 + 8*i;
 
-		M_Print (16, y, bindnames[i][1]);
+		M_Print (16, y, bindnames[i+keys_top][1]);
 
-		M_FindKeysForCommand (bindnames[i][0], keys);
+		M_FindKeysForCommand (bindnames[i+keys_top][0], keys);
 
 		if (keys[0] == -1)
 		{
@@ -1381,9 +1393,9 @@ void M_Keys_Draw (void)
 	}
 
 	if (m_keys_bind_grab)
-		M_DrawCharacter (130, 48 + keys_cursor*8, '=');
+		M_DrawCharacter (130, 48 + (keys_cursor-keys_top)*8, '=');
 	else
-		M_DrawCharacter (130, 48 + keys_cursor*8, 12+((int)(realtime*4)&1));
+		M_DrawCharacter (130, 48 + (keys_cursor-keys_top)*8, 12+((int)(realtime*4)&1));
 }
 
 
@@ -1443,6 +1455,11 @@ void M_Keys_Key (int k)
 		M_UnbindCommand (bindnames[keys_cursor][0]);
 		break;
 	}
+
+	if (keys_cursor < keys_top)
+		keys_top = keys_cursor;
+	else if (keys_cursor >= keys_top+KEYS_SIZE)
+		keys_top = keys_cursor - KEYS_SIZE + 1;
 }
 
 //=============================================================================
