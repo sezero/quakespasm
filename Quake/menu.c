@@ -1282,7 +1282,7 @@ const char *bindnames[][2] =
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
 
-#define KEYS_SIZE 15
+#define KEYS_SIZE 18
 
 static int	keys_cursor;
 qboolean	m_keys_bind_grab;
@@ -1359,9 +1359,9 @@ void M_Keys_Draw (void)
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
 	if (keys_top)
-		Draw_Pic (6, 48, pic_up);
+		M_DrawTransPic (6, 48, pic_up);
 	if (keys_top + KEYS_SIZE < (int)NUMCOMMANDS)
-		Draw_Pic (6, 48 + ((KEYS_SIZE-1)*8), pic_down);
+		M_DrawTransPic (6, 48 + ((KEYS_SIZE-1)*8), pic_down);
 
 // search for known bindings
 	for (i = 0; i < KEYS_SIZE; i++)
