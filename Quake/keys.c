@@ -183,6 +183,7 @@ Interactive line editing and console scrollback
 void Key_Console (int key)
 {
 	static	char current[MAXCMDLINE] = "";
+	int history_line_last;
 	extern	int con_vislines;
 	extern	char key_tabpartial[MAXCMDLINE];
 
@@ -307,25 +308,38 @@ void Key_Console (int key)
 		return;
 
 	case K_UPARROW:
-		// Needs rewriting as we have persistent history
-
-		// if (history_line == 0) return;
 		if (history_line == edit_line)
 			Q_strcpy(current,key_lines[edit_line]);
+
+		history_line_last = history_line;
+
+		do
+		{
+			history_line = (history_line - 1) & 31;
+		}
+		while (history_line != edit_line && !key_lines[history_line][1]);
+
+		if (history_line == edit_line)
+		{
+			history_line = history_line_last;
+			return;
+		}
 		key_tabpartial[0] = 0;
-		history_line = (history_line - 1) & 31;
 
 		Q_strcpy(key_lines[edit_line], key_lines[history_line]);
 		key_linepos = Q_strlen(key_lines[edit_line]);
 		return;
 
 	case K_DOWNARROW:
-		key_tabpartial[0] = 0;
-
 		if (history_line == edit_line) 
 			return;
+		key_tabpartial[0] = 0;
 
-		history_line = (history_line + 1) & 31;
+		do
+		{
+			history_line = (history_line + 1) & 31;
+		}
+		while (history_line != edit_line && !key_lines[history_line][1]);
 
 		if (history_line == edit_line)
 			Q_strcpy(key_lines[edit_line], current);
