@@ -55,6 +55,11 @@ void PL_VID_Shutdown (void)
 {
 }
 
+char *PL_GetClipboardData (void)
+{
+	return NULL;
+}
+
 void PL_ErrorDialog (const char *errorMsg)
 {
 }

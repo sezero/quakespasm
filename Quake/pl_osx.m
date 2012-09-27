@@ -30,11 +30,17 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 void PL_SetWindowIcon (void)
 {
-    // nothing to do on OS X
+/* nothing to do on OS X */
 }
 
 void PL_VID_Shutdown (void)
 {
+}
+
+char *PL_GetClipboardData (void)
+{
+	/* TODO */
+	return NULL;
 }
 
 void PL_ErrorDialog(const char *errorMsg)

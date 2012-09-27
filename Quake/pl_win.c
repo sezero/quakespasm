@@ -62,6 +62,37 @@ void PL_VID_Shutdown (void)
 	DestroyIcon(icon);
 }
 
+#define MAX_CLIPBOARDTXT	MAXCMDLINE	/* 256 */
+char *PL_GetClipboardData (void)
+{
+	char *data = NULL;
+	char *cliptext;
+
+	if (OpenClipboard(NULL) != 0)
+	{
+		HANDLE hClipboardData;
+
+		if ((hClipboardData = GetClipboardData(CF_TEXT)) != NULL)
+		{
+			cliptext = (char *) GlobalLock(hClipboardData);
+			if (cliptext != NULL)
+			{
+				size_t size = GlobalSize(hClipboardData) + 1;
+			/* this is intended for simple small text copies
+			 * such as an ip address, etc:  do chop the size
+			 * here, otherwise we may experience Z_Malloc()
+			 * failures and all other not-oh-so-fun stuff. */
+				size = q_min(MAX_CLIPBOARDTXT, size);
+				data = (char *) Z_Malloc(size);
+				q_strlcpy (data, cliptext, size);
+				GlobalUnlock (hClipboardData);
+			}
+		}
+		CloseClipboard ();
+	}
+	return data;
+}
+
 void PL_ErrorDialog(const char *errorMsg)
 {
 	MessageBox (NULL, errorMsg, "Quake Error",
