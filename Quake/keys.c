@@ -349,6 +349,7 @@ void Key_Console (int key)
 		return;
 
 	case 'c':
+	case 'C':
 		if (keydown[K_CTRL]) {
 			// Control+C (S.A)
 			//   abort this line.
