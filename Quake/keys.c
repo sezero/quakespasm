@@ -180,24 +180,27 @@ Key_Console -- johnfitz -- heavy revision
 Interactive line editing and console scrollback
 ====================
 */
+extern	char key_tabpartial[MAXCMDLINE];
+extern	int con_vislines;
+
 void Key_Console (int key)
 {
 	static	char current[MAXCMDLINE] = "";
-	int history_line_last;
-	extern	int con_vislines;
-	extern	char key_tabpartial[MAXCMDLINE];
+	int	history_line_last;
+	size_t		len;
+	char *workline = key_lines[edit_line];
 
 	switch (key)
 	{
 	case K_ENTER:
 		key_tabpartial[0] = 0;
-		Cbuf_AddText (key_lines[edit_line]+1);	// skip the prompt
+		Cbuf_AddText (workline + 1);	// skip the prompt
 		Cbuf_AddText ("\n");
-		Con_Printf ("%s\n",key_lines[edit_line]);
+		Con_Printf ("%s\n", workline);
 
 		// If the last two lines are identical, skip storing this line in history 
 		// by not incrementing edit_line
-		if (strcmp(key_lines[edit_line],key_lines[(edit_line-1)&31]))
+		if (strcmp(workline, key_lines[(edit_line-1)&31]))
 			edit_line = (edit_line + 1) & 31;
 
 		history_line = edit_line;
@@ -217,7 +220,13 @@ void Key_Console (int key)
 		key_tabpartial[0] = 0;
 		if (key_linepos > 1)
 		{
-			strcpy(key_lines[edit_line] + key_linepos - 1, key_lines[edit_line] + key_linepos);
+			workline += key_linepos - 1;
+			if (workline[1])
+			{
+				len = strlen(workline);
+				memmove (workline, workline + 1, len);
+			}
+			else	*workline = 0;
 			key_linepos--;
 		}
 		return;
@@ -228,8 +237,16 @@ void Key_Console (int key)
 
 	case K_DEL:
 		key_tabpartial[0] = 0;
-		if (key_linepos < (int) strlen(key_lines[edit_line]))
-			strcpy(key_lines[edit_line] + key_linepos, key_lines[edit_line] + key_linepos + 1);
+		workline += key_linepos;
+		if (*workline)
+		{
+			if (workline[1])
+			{
+				len = strlen(workline);
+				memmove (workline, workline + 1, len);
+			}
+			else	*workline = 0;
+		}
 		return;
 
 	case K_HOME:
@@ -263,7 +280,7 @@ void Key_Console (int key)
 		if (keydown[K_CTRL])
 			con_backscroll = 0;
 		else
-			key_linepos = strlen(key_lines[edit_line]);
+			key_linepos = strlen(workline);
 		return;
 
 	case K_PGUP:
@@ -291,14 +308,16 @@ void Key_Console (int key)
 		return;
 
 	case K_RIGHTARROW:
-		if ((int) strlen(key_lines[edit_line]) == key_linepos)
+		len = strlen(workline);
+		if ((int)len == key_linepos)
 		{
-			if ((int) strlen(key_lines[(edit_line + 31) & 31]) <= key_linepos)
+			len = strlen(key_lines[(edit_line + 31) & 31]);
+			if ((int)len <= key_linepos)
 				return; // no character to get
-
-			key_lines[edit_line][key_linepos] = key_lines[(edit_line + 31) & 31][key_linepos];
+			workline += key_linepos;
+			*workline = key_lines[(edit_line + 31) & 31][key_linepos];
+			workline[1] = 0;
 			key_linepos++;
-			key_lines[edit_line][key_linepos] = 0;
 		}
 		else
 		{
@@ -309,30 +328,29 @@ void Key_Console (int key)
 
 	case K_UPARROW:
 		if (history_line == edit_line)
-			Q_strcpy(current,key_lines[edit_line]);
+			Q_strcpy(current, workline);
 
 		history_line_last = history_line;
-
 		do
 		{
 			history_line = (history_line - 1) & 31;
-		}
-		while (history_line != edit_line && !key_lines[history_line][1]);
+		} while (history_line != edit_line && !key_lines[history_line][1]);
 
 		if (history_line == edit_line)
 		{
 			history_line = history_line_last;
 			return;
 		}
-		key_tabpartial[0] = 0;
 
-		Q_strcpy(key_lines[edit_line], key_lines[history_line]);
-		key_linepos = Q_strlen(key_lines[edit_line]);
+		key_tabpartial[0] = 0;
+		Q_strcpy(workline, key_lines[history_line]);
+		key_linepos = Q_strlen(workline);
 		return;
 
 	case K_DOWNARROW:
-		if (history_line == edit_line) 
+		if (history_line == edit_line)
 			return;
+
 		key_tabpartial[0] = 0;
 
 		do
@@ -342,90 +360,99 @@ void Key_Console (int key)
 		while (history_line != edit_line && !key_lines[history_line][1]);
 
 		if (history_line == edit_line)
-			Q_strcpy(key_lines[edit_line], current);
-		else
-			Q_strcpy(key_lines[edit_line], key_lines[history_line]);
-		key_linepos = Q_strlen(key_lines[edit_line]);
+			Q_strcpy(workline, current);
+		else	Q_strcpy(workline, key_lines[history_line]);
+		key_linepos = Q_strlen(workline);
 		return;
 
 	case 'c':
 	case 'C':
 		if (keydown[K_CTRL]) {
-			// Control+C (S.A)
-			//   abort this line.
-			Con_Printf ("%s\n",key_lines[edit_line]);
-			key_lines[edit_line][0] = ']';
-			key_lines[edit_line][1] = 0; //johnfitz -- otherwise old history items show up in the new edit line
+		// Control+C :  abort this line -- S.A
+			Con_Printf ("%s\n", workline);
+			workline[0] = ']';
+			workline[1] = 0; //johnfitz -- otherwise old history items show up in the new edit line
 			key_linepos = 1;
-			history_line=edit_line;
+			history_line= edit_line;
 			return;
 		}
 	}
 
-//johnfitz -- clipboard pasting, stolen from zquake
-/* TODO: make portable or remove
 	if ((key=='V' || key=='v') && keydown[K_CTRL])
 	{
-		HANDLE	th;
-		char	*clipText;
-		int		i;
+		if (key_linepos == MAXCMDLINE - 1)
+			return;
+		else
+		{
+			char *cbd, *p;
+			int mvlen, inslen;
 
-		if (OpenClipboard(NULL)) {
-			th = GetClipboardData(CF_TEXT);
-			if (th) {
-				clipText = GlobalLock(th);
-				if (clipText) {
-					for (i=0; clipText[i]; i++)
-						if (clipText[i]=='\n' || clipText[i]=='\r' || clipText[i]=='\b')
-							break;
-					if (i + strlen(key_lines[edit_line]) > MAXCMDLINE-1)
-						i = MAXCMDLINE-1 - strlen(key_lines[edit_line]);
-					if (i > 0)
-					{	// insert the string
-						memmove (key_lines[edit_line] + key_linepos + i,
-							key_lines[edit_line] + key_linepos, strlen(key_lines[edit_line]) - key_linepos + 1);
-						memcpy (key_lines[edit_line] + key_linepos, clipText, i);
-						key_linepos += i;
-					}
+			if ((cbd = PL_GetClipboardData()) == NULL)
+				return;
+			p = cbd;
+			while (*p)
+			{
+				if (*p == '\n' || *p == '\r' ||
+						  *p == '\b')
+				{
+					*p = 0;
+					break;
 				}
-				GlobalUnlock(th);
+				p++;
 			}
-			CloseClipboard();
+
+			inslen = (int) (p - cbd);
+			if (inslen + key_linepos > MAXCMDLINE - 1)
+				inslen = MAXCMDLINE - 1 - key_linepos;
+			if (inslen <= 0) goto done;
+
+			workline += key_linepos;
+			mvlen = (int) strlen(workline);
+			if (mvlen + inslen + key_linepos > MAXCMDLINE - 1)
+			{
+				mvlen = MAXCMDLINE - 1 - key_linepos - inslen;
+				if (mvlen < 0) mvlen = 0;
+			}
+
+			// insert the string
+			if (mvlen > 0)
+				memmove (workline + inslen, workline, mvlen);
+			memcpy (workline, cbd, inslen);
+			key_linepos += inslen;
+			workline[mvlen + inslen] = '\0';
+			done:
+			Z_Free(cbd);
 		}
 		return;
 	}
-*/
+
 	if (key < 32 || key > 127)
 		return;	// non printable
 
-	//johnfitz -- stolen from darkplaces
 	if (key_linepos < MAXCMDLINE-1)
 	{
-		int i;
+		qboolean endpos = !workline[key_linepos];
 
 		key_tabpartial[0] = 0; //johnfitz
-
-		if (key_insert)	// check insert mode
+		// if inserting, move the text to the right
+		if (key_insert && !endpos)
 		{
-			// can't do strcpy to move string to right
-			i = strlen(key_lines[edit_line]) - 1;
-
-			if (i == 254)
-				i--;
-
-			for (; i >= key_linepos; i--)
-				key_lines[edit_line][i + 1] = key_lines[edit_line][i];
+			workline[MAXCMDLINE - 2] = 0;
+			workline += key_linepos;
+			len = strlen(workline) + 1;
+			memmove (workline + 1, workline, len);
+			*workline = key;
 		}
-
-		// only null terminate if at the end
-		i = key_lines[edit_line][key_linepos];
-		key_lines[edit_line][key_linepos] = key;
+		else
+		{
+			workline += key_linepos;
+			*workline = key;
+			// null terminate if at the end
+			if (endpos)
+				workline[1] = 0;
+		}
 		key_linepos++;
-
-		if (!i)
-			key_lines[edit_line][key_linepos] = 0;
 	}
-	//johnfitz
 }
 
 //============================================================================
