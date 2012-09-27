@@ -173,6 +173,52 @@ keyname_t keynames[] =
 ==============================================================================
 */
 
+static void PasteToConsole (void)
+{
+	char *cbd, *p, *workline;
+	int mvlen, inslen;
+
+	if (key_linepos == MAXCMDLINE - 1)
+		return;
+
+	if ((cbd = PL_GetClipboardData()) == NULL)
+		return;
+
+	p = cbd;
+	while (*p)
+	{
+		if (*p == '\n' || *p == '\r' || *p == '\b')
+		{
+			*p = 0;
+			break;
+		}
+		p++;
+	}
+
+	inslen = (int) (p - cbd);
+	if (inslen + key_linepos > MAXCMDLINE - 1)
+		inslen = MAXCMDLINE - 1 - key_linepos;
+	if (inslen <= 0) goto done;
+
+	workline = key_lines[edit_line];
+	workline += key_linepos;
+	mvlen = (int) strlen(workline);
+	if (mvlen + inslen + key_linepos > MAXCMDLINE - 1)
+	{
+		mvlen = MAXCMDLINE - 1 - key_linepos - inslen;
+		if (mvlen < 0) mvlen = 0;
+	}
+
+	// insert the string
+	if (mvlen != 0)
+		memmove (workline + inslen, workline, mvlen);
+	memcpy (workline, cbd, inslen);
+	key_linepos += inslen;
+	workline[mvlen + inslen] = '\0';
+  done:
+	Z_Free(cbd);
+}
+
 /*
 ====================
 Key_Console -- johnfitz -- heavy revision
@@ -380,49 +426,7 @@ void Key_Console (int key)
 
 	if ((key=='V' || key=='v') && keydown[K_CTRL])
 	{
-		if (key_linepos == MAXCMDLINE - 1)
-			return;
-		else
-		{
-			char *cbd, *p;
-			int mvlen, inslen;
-
-			if ((cbd = PL_GetClipboardData()) == NULL)
-				return;
-			p = cbd;
-			while (*p)
-			{
-				if (*p == '\n' || *p == '\r' ||
-						  *p == '\b')
-				{
-					*p = 0;
-					break;
-				}
-				p++;
-			}
-
-			inslen = (int) (p - cbd);
-			if (inslen + key_linepos > MAXCMDLINE - 1)
-				inslen = MAXCMDLINE - 1 - key_linepos;
-			if (inslen <= 0) goto done;
-
-			workline += key_linepos;
-			mvlen = (int) strlen(workline);
-			if (mvlen + inslen + key_linepos > MAXCMDLINE - 1)
-			{
-				mvlen = MAXCMDLINE - 1 - key_linepos - inslen;
-				if (mvlen < 0) mvlen = 0;
-			}
-
-			// insert the string
-			if (mvlen > 0)
-				memmove (workline + inslen, workline, mvlen);
-			memcpy (workline, cbd, inslen);
-			key_linepos += inslen;
-			workline[mvlen + inslen] = '\0';
-			done:
-			Z_Free(cbd);
-		}
+		PasteToConsole();
 		return;
 	}
 
