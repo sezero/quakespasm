@@ -303,8 +303,7 @@ void IN_ClearStates (void)
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
-	int sym, state;
-	int modstate;
+	int sym, usym, state, modstate;
 	qboolean gamekey;
 
 	gamekey = (key_dest == key_game || m_keys_bind_grab);
@@ -350,19 +349,19 @@ void IN_SendKeyEvents (void)
 			switch (key_dest)
 			{
 			case key_game:
-				if ((event.key.keysym.unicode != 0) || (modstate & KMOD_SHIFT))
+				if (event.key.keysym.unicode != 0)
 				{	/* only use unicode for ~ and ` in game mode */
 					if ((event.key.keysym.unicode & 0xFF80) == 0)
 					{
-						if (((event.key.keysym.unicode & 0x7F) == '`') ||
-						    ((event.key.keysym.unicode & 0x7F) == '~') )
-							sym = event.key.keysym.unicode & 0x7F;
+						usym = event.key.keysym.unicode & 0x7F;
+						if (usym == '`' || usym == '~')
+							sym = usym;
 					}
 				}
 				break;
 			case key_message:
 			case key_console:
-				if ((event.key.keysym.unicode != 0) || (modstate & KMOD_SHIFT))
+				if (event.key.keysym.unicode != 0)
 				{
 #if defined(__APPLE__) && defined(__MACH__)
 					if (sym == SDLK_BACKSPACE)
@@ -374,11 +373,14 @@ void IN_SendKeyEvents (void)
 #endif	/* __QNX__ */
 					if ((event.key.keysym.unicode & 0xFF80) == 0)
 					{
-						sym = event.key.keysym.unicode & 0x7F;
-						if (sym > 0 && sym < 32 && modstate & KMOD_CTRL)
+						usym = event.key.keysym.unicode & 0x7F;
+						if (sym >= 32 && usym < 32 && modstate & KMOD_CTRL)
+						{
 							if (modstate & KMOD_SHIFT)
-								sym += 64;
-							else	sym += 96;
+								usym += 64;
+							else	usym += 96;
+						}
+						sym = usym;
 					}
 					/* else: it's an international character */
 				}
