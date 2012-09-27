@@ -161,7 +161,12 @@
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
 
+  o  Fixed control-character handling in unicode mode.
+
   o  Made the keypad keys to send separate key events in game mode.
+
+  o  Ctrl-V text pasting support from OS clipboard to console (windows-
+     only for now.)
 
   o  Fixed increased (more than 32) dynamic lights.
 
