@@ -1341,6 +1341,7 @@ void M_UnbindCommand (const char *command)
 	}
 }
 
+extern qpic_t	*pic_up, *pic_down;
 
 void M_Keys_Draw (void)
 {
@@ -1348,7 +1349,6 @@ void M_Keys_Draw (void)
 	int		keys[2];
 	const char	*name;
 	qpic_t	*p;
-	extern qpic_t	*pic_up, *pic_down;
 
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
