@@ -950,11 +950,15 @@ void Con_TabComplete (void)
 		const char *matched_map = BuildMapList(partial);
 		if (!*matched_map)
 			return;
-		Q_strcpy (partial, matched_map);
-		Q_strcpy (c, partial);
+		q_strlcpy (partial, matched_map, MAXCMDLINE);
+		*c = '\0';
+		q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
 		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_map); //set new cursor position
+		if (key_linepos >= MAXCMDLINE)
+			key_linepos = MAXCMDLINE - 1;
 		// if only one match, append a space
-		if ((key_lines[edit_line][key_linepos] == 0) && map_singlematch)
+		if (key_linepos < MAXCMDLINE - 1 &&
+		    key_lines[edit_line][key_linepos] == 0 && map_singlematch)
 		{
 			key_lines[edit_line][key_linepos] = ' ';
 			key_linepos++;
@@ -976,7 +980,7 @@ void Con_TabComplete (void)
 	mark = Hunk_LowMark();
 	if (!key_tabpartial[0]) //first time through
 	{
-		Q_strcpy (key_tabpartial, partial);
+		q_strlcpy (key_tabpartial, partial, MAXCMDLINE);
 		BuildTabList (key_tabpartial);
 
 		if (!tablist)
@@ -1021,13 +1025,17 @@ void Con_TabComplete (void)
 	Hunk_FreeToLowMark(mark); //it's okay to free it here because match is a pointer to persistent data
 
 // insert new match into edit line
-	Q_strcpy (partial, match); //first copy match string
-	Q_strcat (partial, key_lines[edit_line] + key_linepos); //then add chars after cursor
-	Q_strcpy (c, partial); //now copy all of this into edit line
+	q_strlcpy (partial, match, MAXCMDLINE); //first copy match string
+	q_strlcat (partial, key_lines[edit_line] + key_linepos, MAXCMDLINE); //then add chars after cursor
+	*c = '\0';	//now copy all of this into edit line
+	q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
 	key_linepos = c - key_lines[edit_line] + Q_strlen(match); //set new cursor position
+	if (key_linepos >= MAXCMDLINE)
+		key_linepos = MAXCMDLINE - 1;
 
 // if cursor is at end of string, let's append a space to make life easier
-	if (key_lines[edit_line][key_linepos] == 0 && bash_singlematch)
+	if (key_linepos < MAXCMDLINE - 1 &&
+	    key_lines[edit_line][key_linepos] == 0 && bash_singlematch)
 	{
 		key_lines[edit_line][key_linepos] = ' ';
 		key_linepos++;
