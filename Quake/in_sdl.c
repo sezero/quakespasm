@@ -374,8 +374,9 @@ void IN_SendKeyEvents (void)
 					if ((event.key.keysym.unicode & 0xFF80) == 0)
 					{
 						usym = event.key.keysym.unicode & 0x7F;
-						if (sym >= 32 && usym < 32 && modstate & KMOD_CTRL)
+						if (modstate & KMOD_CTRL && usym < 32 && sym >= 32)
 						{
+							/* control characters */
 							if (modstate & KMOD_SHIFT)
 								usym += 64;
 							else	usym += 96;
