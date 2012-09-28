@@ -478,6 +478,10 @@ void IN_SendKeyEvents (void)
 			case SDLK_LALT:
 				sym = K_ALT;
 				break;
+			case SDLK_RMETA:
+			case SDLK_LMETA:
+				sym = K_COMMAND;
+				break;
 			case SDLK_NUMLOCK:
 				if (gamekey)
 					sym = K_KP_NUMLOCK;
@@ -572,9 +576,10 @@ void IN_SendKeyEvents (void)
 				sym = '~';
 				break;
 			}
-			/* If we're not directly handled and still
-			 * above 255, just force it to 0 */
-			if (sym > 255)
+			/* If we are not directly handled and still above 255,
+			 * just force it to 0. kill unsupported international
+			 * characters, too.  */
+			if (sym > 255 || (sym >= SDLK_WORLD_0 && sym <= SDLK_WORLD_95))
 				sym = 0;
 			Key_Event (sym, state);
 			break;

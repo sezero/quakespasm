@@ -78,6 +78,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	K_KP_INS		168
 #define	K_KP_DEL		169
 
+#define	K_COMMAND		170
+
 #define K_PAUSE			255
 
 //

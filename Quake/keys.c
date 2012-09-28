@@ -111,6 +111,8 @@ keyname_t keynames[] =
 	{"HOME", K_HOME},
 	{"END", K_END},
 
+	{"COMMAND", K_COMMAND},
+
 	{"MOUSE1", K_MOUSE1},
 	{"MOUSE2", K_MOUSE2},
 	{"MOUSE3", K_MOUSE3},
@@ -424,7 +426,15 @@ void Key_Console (int key)
 		}
 	}
 
-	if ((key=='V' || key=='v') && keydown[K_CTRL])
+#if defined(__MACOSX__) || defined(__MACOS__)
+	/* Cmd+V paste request for Mac : */
+	if (keydown[K_COMMAND] && (key == 'V' || key == 'v'))
+	{
+		PasteToConsole();
+		return;
+	}
+#endif
+	if (keydown[K_CTRL] && (key=='V' || key=='v'))
 	{
 		PasteToConsole();
 		return;

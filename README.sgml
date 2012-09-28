@@ -103,6 +103,7 @@ these patched libSDL binaries may help.
 <item> Fixed control-character handling in unicode mode.
 <item> Made the keypad keys to send separate key events in game mode.
 <item> Text pasting support from OS clipboard to console. (windows and macosx.)
+<item> Support for the Apple (Command) key on macosx.
 <item> Fixed increased (more than 32) dynamic lights.
 <item> Music playback: Made sure that the file's channels count is supported.
 <item> Support for Solaris.
@@ -236,7 +237,7 @@ these patched libSDL binaries may help.
 <itemize>
 <item>Add uHexen2's first person camera (and menu item)
 <item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls
-<item>Test usb keyboards. Do the keypads work? Make the OSX apple key work.
+<item>Test usb keyboards.
 <item>Complete the unix user directories support
 </itemize>
 

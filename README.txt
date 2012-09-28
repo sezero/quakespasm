@@ -168,6 +168,8 @@
   o  Text pasting support from OS clipboard to console. (windows and
      macosx.)
 
+  o  Support for the Apple (Command) key on macosx.
+
   o  Fixed increased (more than 32) dynamic lights.
 
   o  Music playback: Made sure that the file's channels count is
@@ -408,8 +410,7 @@
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
      volume controls
 
-  o  Test usb keyboards. Do the keypads work? Make the OSX apple key
-     work.
+  o  Test usb keyboards.
 
   o  Complete the unix user directories support
 
