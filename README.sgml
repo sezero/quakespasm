@@ -102,7 +102,7 @@ these patched libSDL binaries may help.
 <item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
 <item> Fixed control-character handling in unicode mode.
 <item> Made the keypad keys to send separate key events in game mode.
-<item> Ctrl-V text pasting support from OS clipboard to console (windows-only for now.)
+<item> Text pasting support from OS clipboard to console. (windows and macosx.)
 <item> Fixed increased (more than 32) dynamic lights.
 <item> Music playback: Made sure that the file's channels count is supported.
 <item> Support for Solaris.

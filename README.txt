@@ -165,8 +165,8 @@
 
   o  Made the keypad keys to send separate key events in game mode.
 
-  o  Ctrl-V text pasting support from OS clipboard to console (windows-
-     only for now.)
+  o  Text pasting support from OS clipboard to console. (windows and
+     macosx.)
 
   o  Fixed increased (more than 32) dynamic lights.
 

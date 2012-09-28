@@ -37,16 +37,36 @@ void PL_VID_Shutdown (void)
 {
 }
 
+#define MAX_CLIPBOARDTXT	MAXCMDLINE	/* 256 */
 char *PL_GetClipboardData (void)
 {
-	/* TODO */
-	return NULL;
+    char *data			= NULL;
+    NSPasteboard* pasteboard	= [NSPasteboard generalPasteboard];
+    NSArray* types		= [pasteboard types];
+
+    if ([types containsObject: NSStringPboardType]) {
+	NSString* clipboardString = [pasteboard stringForType: NSStringPboardType];
+	if (clipboardString != NULL && [clipboardString length] > 0) {
+		size_t sz = [clipboardString length] + 1;
+		sz = q_min(MAX_CLIPBOARDTXT, sz);
+		data = (char *) Z_Malloc(sz);
+#if (MAC_OS_X_VERSION_MIN_REQUIRED < 1040)	/* for ppc builds targeting 10.3 and older */
+		q_strlcpy (data, [clipboardString cString], sz);
+#else
+		q_strlcpy (data, [clipboardString cStringUsingEncoding: NSASCIIStringEncoding], sz);
+#endif
+	}
+    }
+    return data;
 }
 
 void PL_ErrorDialog(const char *errorMsg)
 {
-    NSRunCriticalAlertPanel(@"Quake Error",
-			    [NSString stringWithUTF8String:errorMsg],
-			    @"OK", nil, nil);
+#if (MAC_OS_X_VERSION_MIN_REQUIRED < 1040)	/* ppc builds targeting 10.3 and older */
+    NSString* msg = [NSString stringWithCString:errorMsg];
+#else
+    NSString* msg = [NSString stringWithCString:errorMsg encoding:NSASCIIStringEncoding];
+#endif
+    NSRunCriticalAlertPanel (@"Quake Error", msg, @"OK", nil, nil);
 }
 
