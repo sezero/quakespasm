@@ -575,12 +575,15 @@ void IN_SendKeyEvents (void)
 			case 178: /* the '²' key */
 				sym = '~';
 				break;
-			}
+			default:
 			/* If we are not directly handled and still above 255,
 			 * just force it to 0. kill unsupported international
 			 * characters, too.  */
-			if (sym > 255 || (sym >= SDLK_WORLD_0 && sym <= SDLK_WORLD_95))
-				sym = 0;
+				if ((sym >= SDLK_WORLD_0 && sym <= SDLK_WORLD_95) ||
+									sym > 255)
+					sym = 0;
+				break;
+			}
 			Key_Event (sym, state);
 			break;
 
