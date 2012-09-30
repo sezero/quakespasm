@@ -229,15 +229,15 @@ Key_Console -- johnfitz -- heavy revision
 Interactive line editing and console scrollback
 ====================
 */
-extern	char key_tabpartial[MAXCMDLINE];
-extern	int con_vislines;
+extern	char *con_text, key_tabpartial[MAXCMDLINE];
+extern	int con_current, con_linewidth, con_vislines;
 
 void Key_Console (int key)
 {
 	static	char current[MAXCMDLINE] = "";
-	int	history_line_last;
+	int	history_line_last, i, x;
 	size_t		len;
-	char *workline = key_lines[edit_line];
+	char *line, *workline = key_lines[edit_line];
 
 	switch (key)
 	{
@@ -302,10 +302,6 @@ void Key_Console (int key)
 		if (keydown[K_CTRL])
 		{
 			//skip initial empty lines
-			int	i, x;
-			char	*line;
-			extern int con_current, con_linewidth;
-			extern char *con_text;
 
 			for (i = con_current - con_totallines + 1; i <= con_current; i++)
 			{
@@ -425,20 +421,24 @@ void Key_Console (int key)
 			history_line= edit_line;
 			return;
 		}
-	}
+		break;
 
+	case 'v':
+	case 'V':
 #if defined(__MACOSX__) || defined(__MACOS__)
-	/* Cmd+V paste request for Mac : */
-	if (keydown[K_COMMAND] && (key == 'V' || key == 'v'))
-	{
-		PasteToConsole();
-		return;
-	}
+		/* Cmd+V paste request for Mac : */
+		if (keydown[K_COMMAND])
+		{
+			PasteToConsole();
+			return;
+		}
 #endif
-	if (keydown[K_CTRL] && (key=='V' || key=='v'))
-	{
-		PasteToConsole();
-		return;
+		if (keydown[K_CTRL])
+		{
+			PasteToConsole();
+			return;
+		}
+		break;
 	}
 
 	if (key < 32 || key > 127)

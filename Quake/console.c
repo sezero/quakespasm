@@ -1135,6 +1135,10 @@ void Con_DrawNotify (void)
 	}
 }
 
+extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
+extern	double key_blinktime;
+extern	int key_insert;
+
 /*
 ================
 Con_DrawInput -- johnfitz -- modified to allow insert editing
@@ -1144,9 +1148,6 @@ The input line scrolls horizontally if typing goes beyond the right edge
 */
 void Con_DrawInput (void)
 {
-	extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
-	extern	double key_blinktime;
-	extern	int key_insert;
 	int	i, ofs;
 
 	if (key_dest != key_console && !con_forcedup)
