@@ -235,7 +235,7 @@ extern	int con_current, con_linewidth, con_vislines;
 void Key_Console (int key)
 {
 	static	char current[MAXCMDLINE] = "";
-	int	history_line_last, i, x;
+	int	history_line_last;
 	size_t		len;
 	char *line, *workline = key_lines[edit_line];
 
@@ -280,10 +280,6 @@ void Key_Console (int key)
 		}
 		return;
 
-	case K_INS:
-		key_insert ^= 1;
-		return;
-
 	case K_DEL:
 		key_tabpartial[0] = 0;
 		workline += key_linepos;
@@ -301,8 +297,7 @@ void Key_Console (int key)
 	case K_HOME:
 		if (keydown[K_CTRL])
 		{
-			//skip initial empty lines
-
+			int i, x;//skip initial empty lines
 			for (i = con_current - con_totallines + 1; i <= con_current; i++)
 			{
 				line = con_text + (i % con_totallines) * con_linewidth;
@@ -314,18 +309,15 @@ void Key_Console (int key)
 				if (x != con_linewidth)
 					break;
 			}
-
 			con_backscroll = CLAMP(0, con_current-i%con_totallines-2, con_totallines-(glheight>>3)-1);
 		}
-		else
-			key_linepos = 1;
+		else	key_linepos = 1;
 		return;
 
 	case K_END:
 		if (keydown[K_CTRL])
 			con_backscroll = 0;
-		else
-			key_linepos = strlen(workline);
+		else	key_linepos = strlen(workline);
 		return;
 
 	case K_PGUP:
@@ -401,8 +393,7 @@ void Key_Console (int key)
 		do
 		{
 			history_line = (history_line + 1) & 31;
-		}
-		while (history_line != edit_line && !key_lines[history_line][1]);
+		} while (history_line != edit_line && !key_lines[history_line][1]);
 
 		if (history_line == edit_line)
 			Q_strcpy(workline, current);
@@ -410,32 +401,34 @@ void Key_Console (int key)
 		key_linepos = Q_strlen(workline);
 		return;
 
-	case 'c':
-	case 'C':
-		if (keydown[K_CTRL]) {
-		// Control+C :  abort this line -- S.A
-			Con_Printf ("%s\n", workline);
-			workline[0] = ']';
-			workline[1] = 0; //johnfitz -- otherwise old history items show up in the new edit line
-			key_linepos = 1;
-			history_line= edit_line;
-			return;
-		}
-		break;
+	case K_INS:
+		if (keydown[K_SHIFT])		/* Shift-Ins paste */
+			PasteToConsole();
+		else	key_insert ^= 1;
+		return;
 
 	case 'v':
 	case 'V':
 #if defined(__MACOSX__) || defined(__MACOS__)
-		/* Cmd+V paste request for Mac : */
-		if (keydown[K_COMMAND])
-		{
+		if (keydown[K_COMMAND]) {	/* Cmd+v paste (Mac-only) */
 			PasteToConsole();
 			return;
 		}
 #endif
-		if (keydown[K_CTRL])
-		{
+		if (keydown[K_CTRL]) {		/* Ctrl+v paste */
 			PasteToConsole();
+			return;
+		}
+		break;
+
+	case 'c':
+	case 'C':
+		if (keydown[K_CTRL]) {		/* Ctrl+C: abort the line -- S.A */
+			Con_Printf ("%s\n", workline);
+			workline[0] = ']';
+			workline[1] = 0;
+			key_linepos = 1;
+			history_line= edit_line;
 			return;
 		}
 		break;
