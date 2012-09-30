@@ -237,7 +237,7 @@ void Key_Console (int key)
 	static	char current[MAXCMDLINE] = "";
 	int	history_line_last;
 	size_t		len;
-	char *line, *workline = key_lines[edit_line];
+	char *workline = key_lines[edit_line];
 
 	switch (key)
 	{
@@ -297,7 +297,10 @@ void Key_Console (int key)
 	case K_HOME:
 		if (keydown[K_CTRL])
 		{
-			int i, x;//skip initial empty lines
+			//skip initial empty lines
+			int i, x;
+			char *line;
+
 			for (i = con_current - con_totallines + 1; i <= con_current; i++)
 			{
 				line = con_text + (i % con_totallines) * con_linewidth;

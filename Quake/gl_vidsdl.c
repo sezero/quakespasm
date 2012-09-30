@@ -33,6 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #endif
 
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
+#define MAX_BPPS_LIST	5
 #define VID_ROW_SIZE	3
 #define WARP_WIDTH		320
 #define WARP_HEIGHT		200
@@ -1021,7 +1022,7 @@ static void VID_InitFullDIB (void)
 	SDL_Rect	**modes;
 	Uint32		flags;
 	int		i, j, k, modenum, originalnummodes, existingmode;
-	int		bpps[3] = {16, 24, 32}; // enumerate >8 bpp modes
+	int		bpps[] = {16, 24, 32}; // enumerate >8 bpp modes
 
 	originalnummodes = nummodes;
 	modenum = 0;
@@ -1029,7 +1030,7 @@ static void VID_InitFullDIB (void)
 
 	// enumerate fullscreen modes
 	flags = SDL_DEFAULT_FLAGS | SDL_FULLSCREEN;
-	for (i = 0; i < 3; i++)
+	for (i = 0; i < (int)sizeof(bpps); i++)
 	{
 		if (nummodes >= MAX_MODE_LIST)
 			break;
@@ -1391,7 +1392,7 @@ typedef struct {
 static vid_menu_mode vid_menu_modes[MAX_MODE_LIST];
 static int vid_menu_nummodes = 0;
 
-static int vid_menu_bpps[4];
+static int vid_menu_bpps[MAX_BPPS_LIST];
 static int vid_menu_numbpps = 0;
 
 #if 0
@@ -1444,6 +1445,9 @@ static void VID_Menu_RebuildBppList (void)
 
 	for (i = 1; i < nummodes; i++) //start i at mode 1 because 0 is windowed mode
 	{
+		if (vid_menu_numbpps >= MAX_BPPS_LIST)
+			break;
+
 		//bpp list is limited to bpps available with current width/height
 		if (modelist[i].width != vid_width.value ||
 			modelist[i].height != vid_height.value)
