@@ -1030,7 +1030,7 @@ static void VID_InitFullDIB (void)
 
 	// enumerate fullscreen modes
 	flags = SDL_DEFAULT_FLAGS | SDL_FULLSCREEN;
-	for (i = 0; i < (int)sizeof(bpps); i++)
+	for (i = 0; i < (int)(sizeof(bpps)/sizeof(int)); i++)
 	{
 		if (nummodes >= MAX_MODE_LIST)
 			break;
