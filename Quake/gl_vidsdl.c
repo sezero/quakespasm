@@ -196,18 +196,12 @@ VID_Gamma_f -- callback when the cvar changes
 */
 static void VID_Gamma_f (cvar_t *var)
 {
-	static float oldgamma;
 	int i;
-
-	if (vid_gamma.value == oldgamma)
-		return;
-
-	oldgamma = vid_gamma.value;
 
 	for (i = 0; i < 256; i++)
 	{
 		vid_gamma_red[i] =
-			CLAMP(0, (int) (255 * pow ((i+0.5)/255.5, vid_gamma.value) + 0.5), 255) << 8;
+			CLAMP(0, (int) (255 * pow((i + 0.5)/255.5, var->value) + 0.5), 255) << 8;
 		vid_gamma_green[i] = vid_gamma_red[i];
 		vid_gamma_blue[i] = vid_gamma_red[i];
 	}
