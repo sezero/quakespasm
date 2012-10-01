@@ -104,10 +104,10 @@ const char *Con_Quakebar (int len)
 Con_ToggleConsole_f
 ================
 */
+extern int history_line; //johnfitz
+
 void Con_ToggleConsole_f (void)
 {
-	extern int history_line; //johnfitz
-
 	if (key_dest == key_console)
 	{
 		if (cls.state == ca_connected)
@@ -1063,13 +1063,14 @@ Con_DrawNotify
 Draws the last few lines of output transparently over the game top
 ================
 */
+extern	char chat_buffer[];
+
 void Con_DrawNotify (void)
 {
 	int	x, v;
 	char	*text;
 	int	i;
 	float	time;
-	extern	char chat_buffer[];
 
 	GL_SetCanvas (CANVAS_CONSOLE); //johnfitz
 	v = vid.conheight; //johnfitz
@@ -1135,10 +1136,6 @@ void Con_DrawNotify (void)
 	}
 }
 
-extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
-extern	double key_blinktime;
-extern	int key_insert;
-
 /*
 ================
 Con_DrawInput -- johnfitz -- modified to allow insert editing
@@ -1146,6 +1143,10 @@ Con_DrawInput -- johnfitz -- modified to allow insert editing
 The input line scrolls horizontally if typing goes beyond the right edge
 ================
 */
+extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
+extern	double key_blinktime;
+extern	int key_insert;
+
 void Con_DrawInput (void)
 {
 	int	i, ofs;
