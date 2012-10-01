@@ -45,6 +45,7 @@ void PL_SetWindowIcon (void)
 	icon = SDL_LoadBMP_RW(rwop, 1);
 	if (icon == NULL)
 		return;
+	/* make pure magenta (#ff00ff) tranparent */
 	colorkey = SDL_MapRGB(icon->format, 255, 0, 255);
 	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, colorkey);
 	SDL_WM_SetIcon(icon, NULL);
