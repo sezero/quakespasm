@@ -1012,15 +1012,16 @@ void Con_TabComplete (void)
 
 		//find current match -- can't save a pointer because the list will be rebuilt each time
 		t = tablist;
+		match = keydown[K_SHIFT] ? t->prev->name : t->name;
 		do
 		{
 			if (!Q_strcmp(t->name, partial))
+			{
+				match = keydown[K_SHIFT] ? t->prev->name : t->next->name;
 				break;
+			}
 			t = t->next;
 		} while (t != tablist);
-
-		//use prev or next to find next match
-		match = keydown[K_SHIFT] ? t->prev->name : t->next->name;
 	}
 	Hunk_FreeToLowMark(mark); //it's okay to free it here because match is a pointer to persistent data
 
