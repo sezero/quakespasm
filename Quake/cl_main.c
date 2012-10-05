@@ -133,6 +133,11 @@ void CL_Disconnect (void)
 		cls.state = ca_disconnected;
 		if (sv.active)
 			Host_ShutdownServer(false);
+		if (cls.state != ca_dedicated && key_dest != key_menu)
+		{
+			key_dest = key_console;
+			IN_Deactivate(vid.type == MODE_WINDOWED);
+		}
 	}
 
 	cls.demoplayback = cls.timedemo = false;
@@ -145,6 +150,11 @@ void CL_Disconnect_f (void)
 	CL_Disconnect ();
 	if (sv.active)
 		Host_ShutdownServer (false);
+	if (cls.state != ca_dedicated && key_dest != key_menu)
+	{
+		key_dest = key_console;
+		IN_Deactivate(vid.type == MODE_WINDOWED);
+	}
 }
 
 

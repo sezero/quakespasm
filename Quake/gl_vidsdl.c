@@ -411,6 +411,11 @@ static void VID_Restart (void)
 	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
 	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
 	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
+
+	if (vid_fullscreen.value)
+		IN_Activate();
+	else if (key_dest == key_console || key_dest == key_menu)
+		IN_Deactivate(vid.type == MODE_WINDOWED);
 }
 
 /*
@@ -1345,6 +1350,11 @@ void	VID_Toggle (void)
 		was_changed = vid_changed;
 		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 		vid_changed = was_changed;
+
+		if (vid_fullscreen.value)
+			IN_Activate();
+		else if (key_dest == key_console || key_dest == key_menu)
+			IN_Deactivate(vid.type == MODE_WINDOWED);
 	}
 	else
 	{
@@ -1702,10 +1712,15 @@ static void VID_MenuKey (int key)
 			Cbuf_AddText ("vid_test\n");
 			break;
 		case 6:
-			Cbuf_AddText ("vid_restart\n");
-			key_dest = key_game;
 			m_state = m_none;
-			IN_Activate();
+			Cbuf_AddText ("vid_restart\n");
+			if (cls.state == ca_connected)
+			{
+				key_dest = key_game;
+				IN_Activate();
+			}
+			else
+				key_dest = key_console;
 			break;
 		default:
 			break;
