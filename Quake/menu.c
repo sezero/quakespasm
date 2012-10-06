@@ -217,13 +217,8 @@ void M_ToggleMenu_f (void)
 			return;
 		}
 
-		if (cls.state == ca_connected)
-		{
-			IN_Activate();
-			key_dest = key_game;
-		}
-		else
-			key_dest = key_console;
+		IN_Activate();
+		key_dest = key_game;
 		m_state = m_none;
 		return;
 	}
@@ -280,13 +275,8 @@ void M_Main_Key (int key)
 	switch (key)
 	{
 	case K_ESCAPE:
-		if (cls.state == ca_connected)
-		{
-			IN_Activate();
-			key_dest = key_game;
-		}
-		else
-			key_dest = key_console;
+		IN_Activate();
+		key_dest = key_game;
 		m_state = m_none;
 		cls.demonum = m_save_demonum;
 		if (!fitzmode)	/* QuakeSpasm customization: */

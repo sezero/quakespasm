@@ -210,7 +210,8 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	prev_gamekey = (key_dest == key_game || m_keys_bind_grab);
+	prev_gamekey = ((key_dest == key_game && !con_forcedup) ||
+	                (key_dest == key_menu && m_state == m_keys && m_keys_bind_grab));
 	SDL_EnableUNICODE (!prev_gamekey);
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
@@ -306,7 +307,8 @@ void IN_SendKeyEvents (void)
 	int sym, usym, state, modstate;
 	qboolean gamekey;
 
-	gamekey = (key_dest == key_game || m_keys_bind_grab);
+	gamekey = ((key_dest == key_game && !con_forcedup) ||
+	           (key_dest == key_menu && m_state == m_keys && m_keys_bind_grab));
 	if (gamekey != prev_gamekey)
 	{
 		prev_gamekey = gamekey;
