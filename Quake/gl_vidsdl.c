@@ -1336,7 +1336,7 @@ void	VID_Toggle (void)
 		goto vrestart;
 	if (SDL_WM_ToggleFullScreen(draw_context) == 1)
 	{
-		qboolean was_changed = vid_changed;
+		qboolean was_changed;
 
 		Sbar_Changed ();	// Sbar seems to need refreshing
 		windowed = !windowed;
@@ -1360,7 +1360,7 @@ void	VID_Toggle (void)
 	{
 		vid_toggle_works = false;
 		Con_DPrintf ("ToggleFullScreen failed, attempting VID_Restart\n");
-vrestart:
+	vrestart:
 		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
 	}
