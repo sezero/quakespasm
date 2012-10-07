@@ -210,8 +210,7 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	prev_gamekey = ((key_dest == key_game && !con_forcedup) ||
-	                (key_dest == key_menu && m_state == m_keys && m_keys_bind_grab));
+	prev_gamekey = ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
 	SDL_EnableUNICODE (!prev_gamekey);
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
@@ -304,11 +303,10 @@ void IN_ClearStates (void)
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
-	int sym, usym, state, modstate;
+	int sym, state, modstate;
 	qboolean gamekey;
 
-	gamekey = ((key_dest == key_game && !con_forcedup) ||
-	           (key_dest == key_menu && m_state == m_keys && m_keys_bind_grab));
+	gamekey = ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
 	if (gamekey != prev_gamekey)
 	{
 		prev_gamekey = gamekey;
@@ -348,50 +346,33 @@ void IN_SendKeyEvents (void)
 			state = event.key.state;
 			modstate = SDL_GetModState();
 
-			switch (key_dest)
+			if (event.key.keysym.unicode != 0)
 			{
-			case key_game:
-				if (event.key.keysym.unicode != 0)
-				{	/* only use unicode for ~ and ` in game mode */
-					if ((event.key.keysym.unicode & 0xFF80) == 0)
-					{
-						usym = event.key.keysym.unicode & 0x7F;
-						if (usym == '`' || usym == '~')
-							sym = usym;
-					}
-				}
-				break;
-			case key_message:
-			case key_console:
-				if (event.key.keysym.unicode != 0)
+				if ((event.key.keysym.unicode & 0xFF80) == 0)
 				{
+					int usym = event.key.keysym.unicode & 0x7F;
+					if (modstate & KMOD_CTRL && usym < 32 && sym >= 32)
+					{
+						/* control characters */
+						if (modstate & KMOD_SHIFT)
+							usym += 64;
+						else	usym += 96;
+					}
 #if defined(__APPLE__) && defined(__MACH__)
 					if (sym == SDLK_BACKSPACE)
-						break;	/* avoid change to SDLK_DELETE */
+						usym = sym;	/* avoid change to SDLK_DELETE */
 #endif	/* Mac OS X */
 #if defined(__QNX__)
-					if ((sym == SDLK_BACKSPACE) || (sym == SDLK_RETURN))
-						break;	/* S.A: fixes QNX weirdness */
+					if (sym == SDLK_BACKSPACE || sym == SDLK_RETURN)
+						usym = sym;	/* S.A: fixes QNX weirdness */
 #endif	/* __QNX__ */
-					if ((event.key.keysym.unicode & 0xFF80) == 0)
-					{
-						usym = event.key.keysym.unicode & 0x7F;
-						if (modstate & KMOD_CTRL && usym < 32 && sym >= 32)
-						{
-							/* control characters */
-							if (modstate & KMOD_SHIFT)
-								usym += 64;
-							else	usym += 96;
-						}
+					/* only use unicode for ` and ~ in game mode */
+					if (!gamekey || usym == '`' || usym == '~')
 						sym = usym;
-					}
-					/* else: it's an international character */
 				}
-			/*	printf("You pressed %s (%d) (%c)\n", SDL_GetKeyName(sym), sym, sym);*/
-				break;
-			default:
-				break;
+				/* else: it's an international character */
 			}
+			/*printf("You pressed %s (%d) (%c)\n", SDL_GetKeyName(sym), sym, sym);*/
 
 			switch (sym)
 			{

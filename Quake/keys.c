@@ -50,8 +50,6 @@ qboolean	consolekeys[256];	// if true, can't be rebound while in console
 qboolean	menubound[256];	// if true, can't be rebound while in menu
 qboolean	keydown[256];
 
-qboolean	repeatkeys[256]; //johnfitz -- if true, autorepeat is enabled for this key
-
 typedef struct
 {
 	const char	*name;
@@ -834,18 +832,6 @@ void Key_Init (void)
 	consolekeys['`'] = false;
 	consolekeys['~'] = false;
 
-	//johnfitz -- repeating keys
-	for (i = 0; i < 256; i++)
-		repeatkeys[i] = false;
-	repeatkeys[K_BACKSPACE] = true;
-	repeatkeys[K_DEL] = true;
-	repeatkeys[K_PAUSE] = true;
-	repeatkeys[K_PGUP] = true;
-	repeatkeys[K_PGDN] = true;
-	repeatkeys[K_LEFTARROW] = true;
-	repeatkeys[K_RIGHTARROW] = true;
-	//johnfitz
-
 	for (i = 0; i < 256; i++)
 		keyshift[i] = i;
 	for (i = 'a' ; i <= 'z'; i++)
@@ -914,19 +900,13 @@ void Key_Event (int key, qboolean down)
 		key_repeats[key]++;
 		if (key_repeats[key] > 1)
 		{
-			if (key_dest == key_console)
-				goto autorep0;
-			if (key_dest == key_message)
-				goto autorep0;
-			if (!repeatkeys[key]) //johnfitz -- use repeatkeys[]
-				return;	// ignore most autorepeats
+			if ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab)
+				return;	// ignore autorepeats in game mode
 		}
-
-		if (key >= 200 && !keybindings[key])
+		else if (key >= 200 && !keybindings[key])
 			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString (key) );
 	}
 
-autorep0:
 	if (key == K_SHIFT)
 		shift_down = down;
 
