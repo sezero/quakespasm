@@ -100,7 +100,7 @@ these patched libSDL binaries may help.
 <sect1> Changes in 0.85.8<p>
 <itemize>
 <item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
-<item> Fixed control-character handling in unicode mode.
+<item> Fixed control-character handling in unicode mode. Keyboard input tweaks.
 <item> Made the keypad keys to send separate key events in game mode.
 <item> Text pasting support from OS clipboard to console. (windows and macosx.)
 <item> Support for the Apple (Command) key on macosx.

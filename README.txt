@@ -161,7 +161,8 @@
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
 
-  o  Fixed control-character handling in unicode mode.
+  o  Fixed control-character handling in unicode mode. Keyboard input
+     tweaks.
 
   o  Made the keypad keys to send separate key events in game mode.
 
