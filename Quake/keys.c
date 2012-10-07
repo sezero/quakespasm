@@ -900,11 +900,11 @@ void Key_Event (int key, qboolean down)
 		key_repeats[key]++;
 		if (key_repeats[key] > 1)
 		{
-			if ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab)
+			if (key_dest == key_game && !con_forcedup)
 				return;	// ignore autorepeats in game mode
 		}
 		else if (key >= 200 && !keybindings[key])
-			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString (key) );
+			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
 	}
 
 	if (key == K_SHIFT)
