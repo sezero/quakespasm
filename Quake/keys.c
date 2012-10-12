@@ -712,6 +712,9 @@ void Key_WriteBindings (FILE *f)
 {
 	int	i;
 
+	// unbindall before loading stored bindings:
+	if (cfg_unbindall.value)
+		fprintf (f, "unbindall\n");
 	for (i = 0; i < 256; i++)
 	{
 		if (keybindings[i] && *keybindings[i])
@@ -796,8 +799,7 @@ void Key_Init (void)
 {
 	int	i;
 
-	History_Init ();
-#if 0 /* This section of code is now done in History_Init */
+#if 0 /* moved to History_Init() */
 	for (i = 0; i < 32; i++)
 	{
 		key_lines[i][0] = ']';
@@ -805,6 +807,7 @@ void Key_Init (void)
 	}
 	key_linepos = 1;
 #endif
+	History_Init ();
 
 	key_blinktime = realtime; //johnfitz
 

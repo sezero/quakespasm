@@ -33,6 +33,8 @@ cvar_t	cl_color = {"_cl_color", "0", CVAR_ARCHIVE};
 cvar_t	cl_shownet = {"cl_shownet","0",CVAR_NONE};	// can be 0, 1, or 2
 cvar_t	cl_nolerp = {"cl_nolerp","0",CVAR_NONE};
 
+cvar_t	cfg_unbindall = {"cfg_unbindall", "1", CVAR_ARCHIVE};
+
 cvar_t	lookspring = {"lookspring","0", CVAR_ARCHIVE};
 cvar_t	lookstrafe = {"lookstrafe","0", CVAR_ARCHIVE};
 cvar_t	sensitivity = {"sensitivity","3", CVAR_ARCHIVE};
@@ -796,6 +798,8 @@ void CL_Init (void)
 	Cvar_RegisterVariable (&m_yaw);
 	Cvar_RegisterVariable (&m_forward);
 	Cvar_RegisterVariable (&m_side);
+
+	Cvar_RegisterVariable (&cfg_unbindall);
 
 	Cvar_RegisterVariable (&cl_maxpitch); //johnfitz -- variable pitch clamping
 	Cvar_RegisterVariable (&cl_minpitch); //johnfitz -- variable pitch clamping
