@@ -185,8 +185,6 @@ extern	server_t		sv;					// local server
 
 extern	client_t	*host_client;
 
-extern	double		host_time;
-
 extern	edict_t		*sv_player;
 
 //===========================================================
