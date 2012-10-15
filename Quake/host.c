@@ -686,6 +686,9 @@ void _Host_Frame (float time)
 	if (!Host_FilterTime (time))
 		return;			// don't run too fast, or packets will flood out
 
+// Force key_dest
+	Key_ForceDest ();
+
 // get new key events
 	Sys_SendKeyEvents ();
 
