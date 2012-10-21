@@ -142,22 +142,35 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define K_MOUSE5		242
 
 
+#define	MAXCMDLINE	256
+
 typedef enum {key_game, key_console, key_message, key_menu} keydest_t;
 
-#define MAXCMDLINE		256
-
 extern keydest_t	key_dest;
-extern char *keybindings[256];
+extern	char	*keybindings[256];
 extern	int		key_repeats[256];
 extern	int		key_count;			// incremented every key event
 extern	int		key_lastpress;
 
+extern	char	key_lines[32][MAXCMDLINE];
+extern	int		edit_line;
+extern	int		key_linepos;
+extern	int		key_insert;
+extern	double		key_blinktime;
+
 void Key_Event (int key, qboolean down);
 void Key_Init (void);
 void Key_WriteBindings (FILE *f);
-void Key_SetBinding (int keynum, const char *binding);
 void Key_ClearStates (void);
 void Key_ForceDest (void);
+
+void Key_SetBinding (int keynum, const char *binding);
+const char *Key_KeynumToString (int keynum);
+
+extern	qboolean	chat_team;
+void Key_EndChat (void);
+const char *Key_GetChatBuffer (void);
+int Key_GetChatMsgLen (void);
 
 void History_Init (void);
 void History_Shutdown (void);

@@ -321,9 +321,6 @@ void CL_UpdateTEnts (void);
 
 void CL_ClearState (void);
 
-float CL_KeyState (kbutton_t *key);
-const char *Key_KeynumToString (int keynum);
-
 //
 // cl_demo.c
 //

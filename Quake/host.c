@@ -93,7 +93,6 @@ Max_Edicts_f -- johnfitz
 static void Max_Edicts_f (cvar_t *var)
 {
 	//TODO: clamp it here?
-
 	if (cls.state == ca_connected || sv.active)
 		Con_Printf ("Changes to max_edicts will not take effect until the next time a map is loaded.\n");
 }
@@ -686,10 +685,8 @@ void _Host_Frame (float time)
 	if (!Host_FilterTime (time))
 		return;			// don't run too fast, or packets will flood out
 
-// Force key_dest
-	Key_ForceDest ();
-
 // get new key events
+	Key_ForceDest ();
 	Sys_SendKeyEvents ();
 
 // allow mice or other external controllers to add commands

@@ -37,14 +37,15 @@ float		con_cursorspeed = 4;
 
 #define		CON_TEXTSIZE 65536 //johnfitz -- new default size
 #define		CON_MINSIZE  16384 //johnfitz -- old default, now the minimum size
-int			con_buffersize; //johnfitz -- user can now override default
+
+int		con_buffersize; //johnfitz -- user can now override default
 
 qboolean 	con_forcedup;		// because no entities to refresh
 
-int			con_totallines;		// total lines in console scrollback
-int			con_backscroll;		// lines up from bottom to display
-int			con_current;		// where next message will be printed
-int			con_x;				// offset in current line for next print
+int		con_totallines;		// total lines in console scrollback
+int		con_backscroll;		// lines up from bottom to display
+int		con_current;		// where next message will be printed
+int		con_x;				// offset in current line for next print
 char		*con_text = NULL;
 
 cvar_t		con_notifytime = {"con_notifytime","3",CVAR_NONE};	//seconds
@@ -54,15 +55,11 @@ char		con_lastcenterstring[1024]; //johnfitz
 
 #define	NUM_CON_TIMES 4
 float		con_times[NUM_CON_TIMES];	// realtime time the line was generated
-										// for transparent notify lines
+						// for transparent notify lines
 
 int			con_vislines;
 
 qboolean	con_debuglog = false;
-
-extern	char	key_lines[32][MAXCMDLINE];
-extern	int		edit_line;
-extern	int		key_linepos;
 
 qboolean	con_initialized;
 
@@ -108,7 +105,7 @@ extern int history_line; //johnfitz
 
 void Con_ToggleConsole_f (void)
 {
-	if (key_dest == key_console)
+	if (key_dest == key_console/* || (key_dest == key_game && con_forcedup)*/)
 	{
 		if (cls.state == ca_connected)
 		{
@@ -139,7 +136,7 @@ void Con_ToggleConsole_f (void)
 Con_Clear_f
 ================
 */
-void Con_Clear_f (void)
+static void Con_Clear_f (void)
 {
 	if (con_text)
 		Q_memset (con_text, ' ', con_buffersize); //johnfitz -- con_buffersize replaces CON_TEXTSIZE
@@ -151,7 +148,7 @@ void Con_Clear_f (void)
 Con_Dump_f -- johnfitz -- adapted from quake2 source
 ================
 */
-void Con_Dump_f (void)
+static void Con_Dump_f (void)
 {
 	int		l, x;
 	const char	*line;
@@ -235,7 +232,7 @@ void Con_ClearNotify (void)
 {
 	int		i;
 
-	for (i=0 ; i<NUM_CON_TIMES ; i++)
+	for (i = 0; i < NUM_CON_TIMES; i++)
 		con_times[i] = 0;
 }
 
@@ -245,12 +242,12 @@ void Con_ClearNotify (void)
 Con_MessageMode_f
 ================
 */
-extern qboolean team_message;
-
-void Con_MessageMode_f (void)
+static void Con_MessageMode_f (void)
 {
+	if (cls.state != ca_connected || cls.demoplayback)
+		return;
+	chat_team = false;
 	key_dest = key_message;
-	team_message = false;
 }
 
 
@@ -259,10 +256,12 @@ void Con_MessageMode_f (void)
 Con_MessageMode2_f
 ================
 */
-void Con_MessageMode2_f (void)
+static void Con_MessageMode2_f (void)
 {
+	if (cls.state != ca_connected || cls.demoplayback)
+		return;
+	chat_team = true;
 	key_dest = key_message;
-	team_message = true;
 }
 
 
@@ -275,7 +274,7 @@ If the line width has changed, reformat the buffer.
 */
 void Con_CheckResize (void)
 {
-	int		i, j, width, oldwidth, oldtotallines, numlines, numchars;
+	int	i, j, width, oldwidth, oldtotallines, numlines, numchars;
 	char	*tbuf; //johnfitz -- tbuf no longer a static array
 	int mark; //johnfitz
 
@@ -304,9 +303,9 @@ void Con_CheckResize (void)
 	Q_memcpy (tbuf, con_text, con_buffersize);//johnfitz -- con_buffersize replaces CON_TEXTSIZE
 	Q_memset (con_text, ' ', con_buffersize);//johnfitz -- con_buffersize replaces CON_TEXTSIZE
 
-	for (i=0 ; i<numlines ; i++)
+	for (i = 0; i < numlines; i++)
 	{
-		for (j=0 ; j<numchars ; j++)
+		for (j = 0; j < numchars; j++)
 		{
 			con_text[(con_totallines - 1 - i) * con_linewidth + j] =
 					tbuf[((con_current - i + oldtotallines) % oldtotallines) * oldwidth + j];
@@ -372,7 +371,7 @@ void Con_Init (void)
 Con_Linefeed
 ===============
 */
-void Con_Linefeed (void)
+static void Con_Linefeed (void)
 {
 	//johnfitz -- improved scrolling
 	if (con_backscroll)
@@ -383,8 +382,7 @@ void Con_Linefeed (void)
 
 	con_x = 0;
 	con_current++;
-	Q_memset (&con_text[(con_current%con_totallines)*con_linewidth]
-	, ' ', con_linewidth);
+	Q_memset (&con_text[(con_current%con_totallines)*con_linewidth], ' ', con_linewidth);
 }
 
 /*
@@ -396,7 +394,7 @@ All console printing must go through this in order to be logged to disk
 If no console is visible, the notify window will pop up.
 ================
 */
-void Con_Print (const char *txt)
+static void Con_Print (const char *txt)
 {
 	int		y;
 	int		c, l;
@@ -517,7 +515,7 @@ void Con_Printf (const char *fmt, ...)
 	char		msg[MAXPRINTMSG];
 	static qboolean	inupdate;
 
-	va_start (argptr,fmt);
+	va_start (argptr, fmt);
 	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
@@ -561,7 +559,7 @@ void Con_Warning (const char *fmt, ...)
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
 
-	va_start (argptr,fmt);
+	va_start (argptr, fmt);
 	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
@@ -584,7 +582,7 @@ void Con_DPrintf (const char *fmt, ...)
 	if (!developer.value)
 		return;			// don't confuse non-developers with techie stuff...
 
-	va_start (argptr,fmt);
+	va_start (argptr, fmt);
 	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
@@ -605,10 +603,9 @@ void Con_DPrintf2 (const char *fmt, ...)
 
 	if (developer.value >= 2)
 	{
-		va_start (argptr,fmt);
+		va_start (argptr, fmt);
 		q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 		va_end (argptr);
-
 		Con_Printf ("%s", msg);
 	}
 }
@@ -625,9 +622,9 @@ void Con_SafePrintf (const char *fmt, ...)
 {
 	va_list		argptr;
 	char		msg[1024];
-	int			temp;
+	int		temp;
 
-	va_start (argptr,fmt);
+	va_start (argptr, fmt);
 	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
@@ -652,7 +649,7 @@ void Con_CenterPrintf (int linewidth, const char *fmt, ...)
 	char	*src, *dst;
 	int		len, s;
 
-	va_start (argptr,fmt);
+	va_start (argptr, fmt);
 	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
 	va_end (argptr);
 
@@ -1064,19 +1061,16 @@ Con_DrawNotify
 Draws the last few lines of output transparently over the game top
 ================
 */
-extern	char chat_buffer[];
-
 void Con_DrawNotify (void)
 {
-	int	x, v;
-	char	*text;
-	int	i;
+	int	i, x, v;
+	const char	*text;
 	float	time;
 
 	GL_SetCanvas (CANVAS_CONSOLE); //johnfitz
 	v = vid.conheight; //johnfitz
 
-	for (i= con_current-NUM_CON_TIMES+1 ; i<=con_current ; i++)
+	for (i = con_current-NUM_CON_TIMES+1; i <= con_current; i++)
 	{
 		if (i < 0)
 			continue;
@@ -1090,8 +1084,8 @@ void Con_DrawNotify (void)
 
 		clearnotify = 0;
 
-		for (x = 0 ; x < con_linewidth ; x++)
-			Draw_Character ( (x+1)<<3, v, text[x]);
+		for (x = 0; x < con_linewidth; x++)
+			Draw_Character ((x+1)<<3, v, text[x]);
 
 		v += 8;
 
@@ -1100,37 +1094,32 @@ void Con_DrawNotify (void)
 
 	if (key_dest == key_message)
 	{
-		// modified by S.A to support longer lines
-
-		char	c[MAXCMDLINE+1]; // extra space == +1
-		const char	*say_prompt;
-		int	say_length, len;
-
 		clearnotify = 0;
-		x = 0;
 
-		if (team_message)
-			say_prompt = "say_team:";
-		else
-			say_prompt = "say:";
-
-		say_length = strlen(say_prompt);
-
-		Draw_String (8, v, say_prompt); //johnfitz
-
-		text = strcpy(c, chat_buffer);
-		len  = strlen(chat_buffer);
-		text[len] = ' ';
-		text[len+1] = 0;
-		if (len >= con_linewidth - say_length)
-			text += 1 + len + say_length - con_linewidth;
-
-		while(*text)
+		if (chat_team)
 		{
-			Draw_Character ( (x+say_length+2)<<3, v, *text); //johnfitz
-			x++; text++;
+			Draw_String (8, v, "say_team:");
+			x = 11;
 		}
-		Draw_Character ( (x+say_length+1)<<3, v, 10+((int)(realtime*con_cursorspeed)&1)); 
+		else
+		{
+			Draw_String (8, v, "say:");
+			x = 6;
+		}
+
+		text = Key_GetChatBuffer();
+		i = Key_GetChatMsgLen();
+		if (i > con_linewidth - x - 1)
+			text += i - con_linewidth + x + 1;
+
+		while (*text)
+		{
+			Draw_Character (x<<3, v, *text);
+			x++;
+			text++;
+		}
+
+		Draw_Character (x<<3, v, 10 + ((int)(realtime*con_cursorspeed)&1));
 		v += 8;
 
 		scr_tileclear_updates = 0; //johnfitz
@@ -1145,8 +1134,6 @@ The input line scrolls horizontally if typing goes beyond the right edge
 ================
 */
 extern	qpic_t *pic_ovr, *pic_ins; //johnfitz -- new cursor handling
-extern	double key_blinktime;
-extern	int key_insert;
 
 void Con_DrawInput (void)
 {
@@ -1184,8 +1171,8 @@ The typing input line at the bottom should only be drawn if typing is allowed
 void Con_DrawConsole (int lines, qboolean drawinput)
 {
 	int	i, x, y, j, sb, rows;
+	const char	*text;
 	char	ver[32];
-	char	*text;
 
 	if (lines <= 0)
 		return;

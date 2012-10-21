@@ -112,6 +112,9 @@ This is also called on Host_Error, so it shouldn't cause any errors
 */
 void CL_Disconnect (void)
 {
+	if (key_dest == key_message)
+		Key_EndChat ();	// don't get stuck in chat mode
+
 // stop sounds (especially looping!)
 	S_StopAllSounds (true);
 	BGM_Stop();

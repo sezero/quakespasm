@@ -39,13 +39,11 @@ void Con_DrawCharacter (int cx, int line, int num);
 void Con_CheckResize (void);
 void Con_Init (void);
 void Con_DrawConsole (int lines, qboolean drawinput);
-void Con_Print (const char *txt);
 void Con_Printf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
 void Con_Warning (const char *fmt, ...) __attribute__((__format__(__printf__,1,2))); //johnfitz
 void Con_DPrintf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
 void Con_DPrintf2 (const char *fmt, ...) __attribute__((__format__(__printf__,1,2))); //johnfitz
 void Con_SafePrintf (const char *fmt, ...) __attribute__((__format__(__printf__,1,2)));
-void Con_Clear_f (void);
 void Con_DrawNotify (void);
 void Con_ClearNotify (void);
 void Con_ToggleConsole_f (void);

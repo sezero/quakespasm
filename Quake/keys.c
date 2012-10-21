@@ -466,33 +466,45 @@ void Key_Console (int key)
 
 //============================================================================
 
-char chat_buffer[MAXCMDLINE];
-qboolean team_message = false;
+qboolean	chat_team = false;
+static char	chat_buffer[MAXCMDLINE];
+static int	chat_bufferlen = 0;
+
+const char *Key_GetChatBuffer (void)
+{
+	return chat_buffer;
+}
+
+int Key_GetChatMsgLen (void)
+{
+	return chat_bufferlen;
+}
+
+void Key_EndChat (void)
+{
+	key_dest = key_game;
+	chat_bufferlen = 0;
+	chat_buffer[0] = 0;
+}
 
 void Key_Message (int key)
 {
-	static int chat_bufferlen = 0;
-
 	if (key == K_ENTER)
 	{
-		if (team_message)
+		if (chat_team)
 			Cbuf_AddText ("say_team \"");
 		else
 			Cbuf_AddText ("say \"");
 		Cbuf_AddText(chat_buffer);
 		Cbuf_AddText("\"\n");
 
-		key_dest = key_game;
-		chat_bufferlen = 0;
-		chat_buffer[0] = 0;
+		Key_EndChat ();
 		return;
 	}
 
 	if (key == K_ESCAPE)
 	{
-		key_dest = key_game;
-		chat_bufferlen = 0;
-		chat_buffer[0] = 0;
+		Key_EndChat ();
 		return;
 	}
 
@@ -1051,19 +1063,16 @@ void Key_ForceDest (void)
 			IN_Activate();
 			key_dest = key_game;
 		}
-		return;
+		break;
 	case key_game:
-	case key_message:
 		if (cls.state != ca_connected)
 		{
 			forced = true;
-			if (key_dest == key_message)
-				Key_Message(K_ESCAPE);
 			IN_Deactivate(vid.type == MODE_WINDOWED);
 			key_dest = key_console;
-			return;
+			break;
 		}
-		/* fallthrough */
+	/* fallthrough */
 	default:
 		forced = false;
 		break;
