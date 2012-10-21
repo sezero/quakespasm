@@ -268,9 +268,12 @@ void R_ReadPointFile_f (void)
 	int		r;
 	int		c;
 	particle_t	*p;
-	char	name[MAX_OSPATH];
+	char	name[MAX_QPATH];
 
-	q_snprintf (name, sizeof(name), "maps/%s.pts", sv.name);
+	if (cls.state != ca_connected)
+		return;			// need an active map.
+
+	q_snprintf (name, sizeof(name), "maps/%s.pts", cl.mapname);
 
 	COM_FOpenFile (name, &f, NULL);
 	if (!f)
