@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #endif
 
-static qboolean	prev_gamekey;
+static qboolean	prev_gamekey, gamekey;
 
 #ifdef __APPLE__
 /* Mouse acceleration needs to be disabled on OS X */
@@ -300,12 +300,8 @@ void IN_ClearStates (void)
 {
 }
 
-void IN_SendKeyEvents (void)
+void IN_UpdateForKeydest (void)
 {
-	SDL_Event event;
-	int sym, state, modstate;
-	qboolean gamekey;
-
 	gamekey = ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
 	if (gamekey != prev_gamekey)
 	{
@@ -313,6 +309,12 @@ void IN_SendKeyEvents (void)
 		Key_ClearStates();
 		SDL_EnableUNICODE(!gamekey);
 	}
+}
+
+void IN_SendKeyEvents (void)
+{
+	SDL_Event event;
+	int sym, state, modstate;
 
 	while (SDL_PollEvent(&event))
 	{

@@ -687,6 +687,7 @@ void _Host_Frame (float time)
 
 // get new key events
 	Key_ForceDest ();
+	//IN_UpdateForKeydest ();
 	Sys_SendKeyEvents ();
 
 // allow mice or other external controllers to add commands
@@ -726,9 +727,7 @@ void _Host_Frame (float time)
 
 // fetch results from server
 	if (cls.state == ca_connected)
-	{
 		CL_ReadFromServer ();
-	}
 
 // update video
 	if (host_speeds.value)

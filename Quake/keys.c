@@ -1077,5 +1077,7 @@ void Key_ForceDest (void)
 		forced = false;
 		break;
 	}
+
+	IN_UpdateForKeydest ();
 }
 
