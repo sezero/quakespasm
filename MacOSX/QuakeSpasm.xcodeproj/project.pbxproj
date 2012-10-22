@@ -148,7 +148,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeSpasm_Prefix.pch; sourceTree = "<group>"; };
 		48134A1412102F400015BF15 /* net_bsd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_bsd.c; path = ../Quake/net_bsd.c; sourceTree = SOURCE_ROOT; };
 		48134A1512102F400015BF15 /* net_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_defs.h; path = ../Quake/net_defs.h; sourceTree = SOURCE_ROOT; };
 		48134A1612102F400015BF15 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
@@ -385,7 +384,6 @@
 			children = (
 				48B9E7A50D340BEA0001CACF /* AppController.h */,
 				48B9E7A60D340BEA0001CACF /* AppController.m */,
-				32CA4F630368D1EE00C91783 /* QuakeSpasm_Prefix.pch */,
 				48FE58590D3A82C8006BB491 /* QuakeArguments.h */,
 				48FE585A0D3A82C8006BB491 /* QuakeArguments.m */,
 				489D8D2D0D3A630D00AA4471 /* ScreenInfo.h */,
