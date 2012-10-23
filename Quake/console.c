@@ -63,7 +63,6 @@ qboolean	con_debuglog = false;
 
 qboolean	con_initialized;
 
-extern void M_Menu_Main_f (void);
 
 /*
 ================
@@ -250,7 +249,6 @@ static void Con_MessageMode_f (void)
 	key_dest = key_message;
 }
 
-
 /*
 ================
 Con_MessageMode2_f
@@ -351,9 +349,6 @@ void Con_Init (void)
 
 	Con_Printf ("Console initialized.\n");
 
-//
-// register our commands
-//
 	Cvar_RegisterVariable (&con_notifytime);
 	Cvar_RegisterVariable (&con_logcenterprint); //johnfitz
 
@@ -407,8 +402,7 @@ static void Con_Print (const char *txt)
 	if (txt[0] == 1)
 	{
 		mask = 128;		// go to colored text
-		S_LocalSound ("misc/talk.wav");
-	// play talk wav
+		S_LocalSound ("misc/talk.wav");	// play talk wav
 		txt++;
 	}
 	else if (txt[0] == 2)

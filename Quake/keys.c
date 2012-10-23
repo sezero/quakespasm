@@ -1047,7 +1047,7 @@ void Key_ClearStates (void)
 Key_ForceDest
 ===================
 */
-void Key_ForceDest (void)
+void Key_UpdateForDest (void)
 {
 	static qboolean forced = false;
 

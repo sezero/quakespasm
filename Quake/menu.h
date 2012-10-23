@@ -22,15 +22,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _QUAKE_MENU_H
 #define _QUAKE_MENU_H
 
-//
-// the net drivers should just set the apropriate bits in m_activenet,
-// instead of having the menu code look through their internal tables
-//
-#define	MNET_IPX		1
-#define	MNET_TCP		2
-
-extern	int	m_activenet;
-
 enum m_state_e {
 	m_none,
 	m_main,
@@ -63,17 +54,20 @@ extern qboolean m_keys_bind_grab;
 //
 void M_Init (void);
 void M_Keydown (int key);
-void M_Draw (void);
-
 void M_ToggleMenu_f (void);
+
+void M_Menu_Main_f (void);
 void M_Menu_Options_f (void);
 void M_Menu_Quit_f (void);
 
 void M_Print (int cx, int cy, const char *str);
 void M_PrintWhite (int cx, int cy, const char *str);
+
+void M_Draw (void);
 void M_DrawCharacter (int cx, int line, int num);
-void M_DrawTransPic (int x, int y, qpic_t *pic);
+
 void M_DrawPic (int x, int y, qpic_t *pic);
+void M_DrawTransPic (int x, int y, qpic_t *pic);
 void M_DrawCheckbox (int x, int y, int on);
 
 #endif	/* _QUAKE_MENU_H */
