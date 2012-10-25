@@ -1,4 +1,4 @@
-# GNU Makefile for QuakeSpasm unix targets, May 30, 2012
+# GNU Makefile for QuakeSpasm unix targets, Oct. 25, 2012
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
@@ -18,22 +18,22 @@ MP3LIB=mad
 # which library to use for ogg decoding: vorbis or tremor
 VORBISLIB=vorbis
 
-# ============================================================================
+# ---------------------------
 # Helper functions
-# ============================================================================
+# ---------------------------
 
-check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
+check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
 
-# ============================================================================
+# ---------------------------
 
 HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 
 DEBUG   ?= 0
 SDLNET  ?= 0
 
-# ---------------------------------------
+# ---------------------------
 # build variables
-# ---------------------------------------
+# ---------------------------
 
 CC ?= gcc
 LINKER = $(CC)

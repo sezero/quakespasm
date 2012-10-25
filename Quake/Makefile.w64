@@ -1,5 +1,5 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win64: MinGW-w64)
-# using cross-toolchains on a linux host, May 30, 2012
+# using cross-toolchains on a linux host, Oct. 25, 2012
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=0" to use the old WinSock 1.1 api (NOT recommended).
@@ -19,21 +19,21 @@ MP3LIB=mad
 # which library to use for ogg decoding: vorbis or tremor
 VORBISLIB=vorbis
 
-# ============================================================================
+# ---------------------------
 # Helper functions
-# ============================================================================
+# ---------------------------
 
-check_gcc = $(shell if echo | $(CC) $(1) -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
+check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi;)
 
-# ============================================================================
+# ---------------------------
 
 DEBUG   ?= 0
 WINSOCK2?= 1
 SDLNET  ?= 0
 
-# ---------------------------------------
+# ---------------------------
 # build variables
-# ---------------------------------------
+# ---------------------------
 
 TARGET=x86_64-w64-mingw32
 
