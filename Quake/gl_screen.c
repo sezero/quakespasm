@@ -90,6 +90,7 @@ cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 
 cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
 cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
+cvar_t		scr_fov_adaptive = {"fov_adaptive","1",CVAR_ARCHIVE};
 cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE};
 cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE};
 cvar_t		scr_showram = {"showram","1",CVAR_NONE};
@@ -229,6 +230,31 @@ void SCR_CheckDrawCenterString (void)
 
 /*
 ====================
+AdaptFovx
+
+Adapts a 4:3 horizontal FOV to the current screen size (Hor+).
+====================
+*/
+float AdaptFovx (float fov43, float w, float h)
+{
+	static const float pi = M_PI; /* float instead of double. */
+
+	if (w <= 0 || h <= 0)
+		return fov43;
+
+	/*
+	 * Formula:
+	 *
+	 * fov = 2.0 * atan(width / height * 3.0 / 4.0 * tan(fov43 / 2.0))
+	 *
+	 * The code below is equivalent but precalculates a few values and
+	 * converts between degrees and radians when needed.
+	 */
+	return (atanf(tanf(fov43 / 360.0f * pi) * (w / h) * 0.75f) / pi * 360.0f);
+}
+
+/*
+====================
 CalcFovy
 ====================
 */
@@ -297,7 +323,11 @@ static void SCR_CalcRefdef (void)
 	r_refdef.vrect.y = (glheight - sb_lines - r_refdef.vrect.height)/2;
 	//johnfitz
 
-	r_refdef.fov_x = scr_fov.value;
+	if (scr_fov_adaptive.value)
+		r_refdef.fov_x = AdaptFovx(scr_fov.value, r_refdef.vrect.width, r_refdef.vrect.height);
+	else
+		r_refdef.fov_x = scr_fov.value;
+	r_refdef.fov_x = CLAMP (10, r_refdef.fov_x, 170);
 	r_refdef.fov_y = CalcFovy (r_refdef.fov_x, r_refdef.vrect.width, r_refdef.vrect.height);
 
 	scr_vrect = r_refdef.vrect;
@@ -382,8 +412,10 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_clock);
 	//johnfitz
 	Cvar_SetCallback (&scr_fov, SCR_Callback_refdef);
+	Cvar_SetCallback (&scr_fov_adaptive, SCR_Callback_refdef);
 	Cvar_SetCallback (&scr_viewsize, SCR_Callback_refdef);
 	Cvar_RegisterVariable (&scr_fov);
+	Cvar_RegisterVariable (&scr_fov_adaptive);
 	Cvar_RegisterVariable (&scr_viewsize);
 	Cvar_RegisterVariable (&scr_conspeed);
 	Cvar_RegisterVariable (&scr_showram);
