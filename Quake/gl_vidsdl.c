@@ -459,12 +459,7 @@ VID_Unlock -- johnfitz
 static void VID_Unlock (void)
 {
 	vid_locked = false;
-
-	//sync up cvars in case they were changed during the lock
-	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
-	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
-	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
-	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
+	VID_SyncCvars();
 }
 
 /*
@@ -1120,7 +1115,8 @@ void	VID_Init (void)
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
 					 "vid_height",
-					 "vid_bpp" };
+					 "vid_bpp",
+					 "vid_vsync" };
 #define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
 	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
