@@ -761,6 +761,13 @@ static void GL_Init (void)
 #endif
 
 	GL_SetupState (); //johnfitz
+	
+	// set vertical sync
+	if (gl_swap_control)
+	{
+		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
+			Con_Printf ("Unable to set swap control\n");
+	}
 }
 
 /*
