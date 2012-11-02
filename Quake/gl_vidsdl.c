@@ -739,10 +739,6 @@ static void GL_Init (void)
 
 	Cmd_AddCommand ("gl_info", GL_Info_f); //johnfitz
 
-	Cvar_RegisterVariable (&vid_vsync); //johnfitz
-	if (gl_swap_control)
-		Cvar_SetCallback (&vid_vsync, VID_Changed_f);
-
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
 		fullsbardraw = true;
 	if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
@@ -1123,10 +1119,12 @@ void	VID_Init (void)
 	Cvar_RegisterVariable (&vid_width); //johnfitz
 	Cvar_RegisterVariable (&vid_height); //johnfitz
 	Cvar_RegisterVariable (&vid_bpp); //johnfitz
+	Cvar_RegisterVariable (&vid_vsync); //johnfitz
 	Cvar_SetCallback (&vid_fullscreen, VID_Changed_f);
 	Cvar_SetCallback (&vid_width, VID_Changed_f);
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
+	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
 //	Cvar_RegisterVariable (&vid_refreshrate); //johnfitz
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
