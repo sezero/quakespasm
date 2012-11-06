@@ -307,6 +307,7 @@ static int VID_SetMode (int modenum)
 	vid.recalc_refdef = 1;
 
 // with SDL, this needs to be done every time the render context is recreated, so I moved it here
+	GL_Init ();
 	TexMgr_ReloadImages ();
 	GL_SetupState ();
 
@@ -699,7 +700,6 @@ static void GL_CheckExtensions (void)
 GL_SetupState -- johnfitz
 
 does all the stuff from GL_Init that needs to be done every time a new GL render context is created
-GL_Init will still do the stuff that only needs to be done once
 ===============
 */
 static void GL_SetupState (void)
@@ -737,8 +737,6 @@ static void GL_Init (void)
 
 	GL_CheckExtensions (); //johnfitz
 
-	Cmd_AddCommand ("gl_info", GL_Info_f); //johnfitz
-
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
 		fullsbardraw = true;
 	if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
@@ -759,9 +757,6 @@ static void GL_Init (void)
 	else
 		Con_Printf ("%i bit stencil buffer\n", gl_stencilbits);
 #endif
-
-	GL_SetupState (); //johnfitz
-	
 	// set vertical sync
 	if (gl_swap_control)
 	{
@@ -1307,6 +1302,8 @@ void	VID_Init (void)
 	VID_SetMode (vid_default);
 
 	GL_Init ();
+	GL_SetupState ();
+	Cmd_AddCommand ("gl_info", GL_Info_f); //johnfitz
 
 	//johnfitz -- removed code creating "glquake" subdirectory
 
