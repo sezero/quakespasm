@@ -368,12 +368,14 @@ void SV_BroadcastPrintf (const char *fmt, ...)
 	q_vsnprintf (string, sizeof(string), fmt, argptr);
 	va_end (argptr);
 
-	for (i=0 ; i<svs.maxclients ; i++)
+	for (i = 0; i < svs.maxclients; i++)
+	{
 		if (svs.clients[i].active && svs.clients[i].spawned)
 		{
 			MSG_WriteByte (&svs.clients[i].message, svc_print);
 			MSG_WriteString (&svs.clients[i].message, string);
 		}
+	}
 }
 
 /*
@@ -443,7 +445,7 @@ void SV_DropClient (qboolean crash)
 	net_activeconnections--;
 
 // send notification to all clients
-	for (i=0, client = svs.clients ; i<svs.maxclients ; i++, client++)
+	for (i = 0, client = svs.clients; i < svs.maxclients; i++, client++)
 	{
 		if (!client->active)
 			continue;
@@ -518,14 +520,14 @@ void Host_ShutdownServer(qboolean crash)
 	if (count)
 		Con_Printf("Host_ShutdownServer: NET_SendToAll failed for %u clients\n", count);
 
-	for (i=0, host_client = svs.clients ; i<svs.maxclients ; i++, host_client++)
+	for (i = 0, host_client = svs.clients; i < svs.maxclients; i++, host_client++)
 		if (host_client->active)
 			SV_DropClient(crash);
 
 //
 // clear structures
 //
-	memset (&sv, 0, sizeof(sv));
+//	memset (&sv, 0, sizeof(sv)); // ServerSpawn already do this by Host_ClearMemory
 	memset (svs.clients, 0, svs.maxclientslimit*sizeof(client_t));
 }
 
@@ -792,7 +794,7 @@ void Host_Frame (float time)
 	timecount = 0;
 	timetotal = 0;
 	c = 0;
-	for (i=0 ; i<svs.maxclients ; i++)
+	for (i = 0; i < svs.maxclients; i++)
 	{
 		if (svs.clients[i].active)
 			c++;
@@ -810,8 +812,7 @@ void Host_Init (void)
 {
 	if (standard_quake)
 		minimum_memory = MINIMUM_MEMORY;
-	else
-		minimum_memory = MINIMUM_MEMORY_LEVELPAK;
+	else	minimum_memory = MINIMUM_MEMORY_LEVELPAK;
 
 	if (COM_CheckParm ("-minmemory"))
 		host_parms->memsize = minimum_memory;
@@ -856,7 +857,7 @@ void Host_Init (void)
 		ExtraMaps_Init (); //johnfitz
 		Modlist_Init (); //johnfitz
 		VID_Init ();
-		IN_Init (); // moved here, SDL inits the input system with the video system -- kristian
+		IN_Init ();
 		TexMgr_Init (); //johnfitz
 		Draw_Init ();
 		SCR_Init ();
@@ -926,7 +927,7 @@ void Host_Shutdown(void)
 		BGM_Shutdown();
 		CDAudio_Shutdown ();
 		S_Shutdown ();
-		IN_Shutdown (); // input is only initialized in Host_Init if we're not dedicated -- kristian
+		IN_Shutdown ();
 		VID_Shutdown();
 	}
 
