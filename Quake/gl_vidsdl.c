@@ -75,6 +75,7 @@ static const char *gl_vendor;
 static const char *gl_renderer;
 static const char *gl_version;
 static const char *gl_extensions;
+static char * gl_extensions_nice;
 
 static vmode_t	modelist[MAX_MODE_LIST];
 static int		nummodes;
@@ -488,7 +489,7 @@ static char *GL_MakeNiceExtensionsList (const char *in)
 	char *copy, *token, *out;
 	int i, count;
 
-	if (!in) return NULL;
+	if (!in) return Z_Strdup("(none)");
 
 	//each space will be replaced by 4 chars, so count the spaces before we malloc
 	for (i = 0, count = 1; i < (int) strlen(in); i++)
@@ -518,11 +519,6 @@ GL_Info_f -- johnfitz
 */
 static void GL_Info_f (void)
 {
-	static char *gl_extensions_nice = NULL;
-
-	if (!gl_extensions_nice)
-		gl_extensions_nice = GL_MakeNiceExtensionsList (gl_extensions);
-
 	Con_SafePrintf ("GL_VENDOR: %s\n", gl_vendor);
 	Con_SafePrintf ("GL_RENDERER: %s\n", gl_renderer);
 	Con_SafePrintf ("GL_VERSION: %s\n", gl_version);
@@ -759,6 +755,10 @@ static void GL_Init (void)
 	gl_renderer = (const char *) glGetString (GL_RENDERER);
 	gl_version = (const char *) glGetString (GL_VERSION);
 	gl_extensions = (const char *) glGetString (GL_EXTENSIONS);
+
+	if (gl_extensions_nice != NULL)
+		Z_Free (gl_extensions_nice);
+	gl_extensions_nice = GL_MakeNiceExtensionsList (gl_extensions);
 
 	GL_CheckExtensions (); //johnfitz
 
