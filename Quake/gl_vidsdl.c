@@ -489,6 +489,8 @@ static char *GL_MakeNiceExtensionsList (const char *in)
 	char *copy, *token, *out;
 	int i, count;
 
+	if (!in) return NULL;
+
 	//each space will be replaced by 4 chars, so count the spaces before we malloc
 	for (i = 0, count = 1; i < (int) strlen(in); i++)
 	{
@@ -530,9 +532,33 @@ static void GL_Info_f (void)
 
 /*
 ===============
-GL_CheckExtensions -- johnfitz
+GL_CheckExtensions
 ===============
 */
+static qboolean GL_ParseExtensionList (const char *list, const char *name)
+{
+	const char	*start;
+	const char	*where, *terminator;
+
+	if (!list || !name || !*name)
+		return false;
+	if (strchr(name, ' ') != NULL)
+		return false;	// extension names must not have spaces
+
+	start = list;
+	while (1) {
+		where = strstr (start, name);
+		if (!where)
+			break;
+		terminator = where + strlen (name);
+		if (where == start || where[-1] == ' ')
+			if (*terminator == ' ' || *terminator == '\0')
+				return true;
+		start = terminator;
+	}
+	return false;
+}
+
 static void GL_CheckExtensions (void)
 {
 	int swap_control;
@@ -542,7 +568,7 @@ static void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-nomtex"))
 		Con_Warning ("Mutitexture disabled at command line\n");
-	else if (strstr(gl_extensions, "GL_ARB_multitexture"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_multitexture"))
 	{
 		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
 		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glActiveTextureARB");
@@ -558,7 +584,7 @@ static void GL_CheckExtensions (void)
 			Con_Warning ("Couldn't link to multitexture functions\n");
 		}
 	}
-	else if (strstr(gl_extensions, "GL_SGIS_multitexture"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_SGIS_multitexture"))
 	{
 		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
 		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glSelectTextureSGIS");
@@ -584,12 +610,12 @@ static void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-nocombine"))
 		Con_Warning ("texture_env_combine disabled at command line\n");
-	else if (strstr(gl_extensions, "GL_ARB_texture_env_combine"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_texture_env_combine"))
 	{
 		Con_Printf("FOUND: ARB_texture_env_combine\n");
 		gl_texture_env_combine = true;
 	}
-	else if (strstr(gl_extensions, "GL_EXT_texture_env_combine"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_EXT_texture_env_combine"))
 	{
 		Con_Printf("FOUND: EXT_texture_env_combine\n");
 		gl_texture_env_combine = true;
@@ -604,12 +630,12 @@ static void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-noadd"))
 		Con_Warning ("texture_env_add disabled at command line\n");
-	else if (strstr(gl_extensions, "GL_ARB_texture_env_add"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_texture_env_add"))
 	{
 		Con_Printf("FOUND: ARB_texture_env_add\n");
 		gl_texture_env_add = true;
 	}
-	else if (strstr(gl_extensions, "GL_EXT_texture_env_add"))
+	else if (GL_ParseExtensionList(gl_extensions, "GL_EXT_texture_env_add"))
 	{
 		Con_Printf("FOUND: EXT_texture_env_add\n");
 		gl_texture_env_add = true;
@@ -622,7 +648,7 @@ static void GL_CheckExtensions (void)
 	//
 	// swap control
 	//
-	if (strstr(gl_extensions, "GL_EXT_swap_control"))
+	if (GL_ParseExtensionList(gl_extensions, "GL_EXT_swap_control"))
 	{
 		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1)
 		{
@@ -654,7 +680,7 @@ static void GL_CheckExtensions (void)
 	//
 	// anisotropic filtering
 	//
-	if (strstr(gl_extensions, "GL_EXT_texture_filter_anisotropic"))
+	if (GL_ParseExtensionList(gl_extensions, "GL_EXT_texture_filter_anisotropic"))
 	{
 		float test1,test2;
 		GLuint tex;
