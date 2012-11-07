@@ -306,11 +306,6 @@ static int VID_SetMode (int modenum)
 
 	vid.recalc_refdef = 1;
 
-// with SDL, this needs to be done every time the render context is recreated, so I moved it here
-	GL_Init ();
-	TexMgr_ReloadImages ();
-	GL_SetupState ();
-
 // no pending changes
 	vid_changed = false;
 
@@ -394,6 +389,10 @@ static void VID_Restart (void)
 // set new mode
 //
 	VID_SetMode (vid_default);
+
+	GL_Init ();
+	TexMgr_ReloadImages ();
+	GL_SetupState ();
 
 	vid_canalttab = true;
 
