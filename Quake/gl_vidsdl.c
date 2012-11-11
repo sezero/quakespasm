@@ -253,11 +253,13 @@ static int VID_SetMode (int modenum)
 	CDAudio_Pause ();
 	BGM_Pause ();
 
-	// set vertical sync
-	if (gl_swap_control)
+	//
+	// swap control (the "before SDL_SetVideoMode" part)
+	//
+	gl_swap_control = true;
+	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
 	{
-		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
-			Con_Printf ("Unable to set swap control\n");
+		gl_swap_control = false;
 	}
 
 	if (modelist[modenum].type == MODE_WINDOWED)
@@ -641,35 +643,25 @@ static void GL_CheckExtensions (void)
 	}
 
 	//
-	// swap control
+	// swap control (the "after SDL_SetVideoMode" part)
 	//
-	if (GL_ParseExtensionList(gl_extensions, "GL_EXT_swap_control"))
+	if (!gl_swap_control)
 	{
-		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, 0) == -1)
-		{
-			Con_Warning ("vertical sync not supported (SDL_GL_SetAttribute failed)\n");
-		}
-		else
-		{
-			if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
-			{
-				Con_Warning ("vertical sync not supported (SDL_GL_GetAttribute failed). Make sure you don't have vertical sync disabled in your driver settings.\n");
-			}
-			else if (swap_control == -1)
-			{
-			// TODO: check if this is correct - I don't know what SDL returns if vertical sync is disabled
-				Con_Warning ("vertical sync not supported (swap interval is -1.) Make sure you don't have vertical sync disabled in your driver settings.\n");
-			}
-			else
-			{
-				Con_Printf("FOUND: GL_EXT_swap_control\n");
-				gl_swap_control = true;
-			}
-		}
+		Con_Warning ("vertical sync not supported (SDL_GL_SetAttribute failed)\n");
+	}
+	else if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
+	{
+		gl_swap_control = false;
+		Con_Warning ("vertical sync not supported (SDL_GL_GetAttribute failed)\n");
+	}
+	else if ((vid_vsync.value && swap_control != 1) || (!vid_vsync.value && swap_control != 0))
+	{
+		gl_swap_control = false;
+		Con_Warning ("vertical sync not supported (swap_control doesn't match vid_vsync)\n");
 	}
 	else
 	{
-		Con_Warning ("vertical sync not supported (extension not found)\n");
+		Con_Printf("FOUND: SDL_GL_SWAP_CONTROL\n");
 	}
 
 	//
@@ -782,12 +774,6 @@ static void GL_Init (void)
 	else
 		Con_Printf ("%i bit stencil buffer\n", gl_stencilbits);
 #endif
-	// set vertical sync
-	if (gl_swap_control)
-	{
-		if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
-			Con_Printf ("Unable to set swap control\n");
-	}
 }
 
 /*
