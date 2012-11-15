@@ -124,7 +124,7 @@ edict_t *ED_Alloc (void)
 	}
 
 	if (i == sv.max_edicts) //johnfitz -- use sv.max_edicts instead of MAX_EDICTS
-		Host_Error ("ED_Alloc: no free edicts (max_edicts is %i)", sv.max_edicts); //johnfitz -- was Sys_Error
+		Host_Error ("ED_Alloc: no free edicts (max_edicts is %i)", sv.max_edicts);
 
 	sv.num_edicts++;
 	e = EDICT_NUM(i);
@@ -576,6 +576,9 @@ void ED_PrintEdicts (void)
 {
 	int		i;
 
+	if (!sv.active)
+		return;
+
 	Con_Printf ("%i entities\n", sv.num_edicts);
 	for (i = 0; i < sv.num_edicts; i++)
 		ED_PrintNum (i);
@@ -592,8 +595,11 @@ static void ED_PrintEdict_f (void)
 {
 	int		i;
 
+	if (!sv.active)
+		return;
+
 	i = Q_atoi (Cmd_Argv(1));
-	if (i >= sv.num_edicts)
+	if (i < 0 || i >= sv.num_edicts)
 	{
 		Con_Printf("Bad edict number\n");
 		return;
@@ -610,9 +616,11 @@ For debugging
 */
 static void ED_Count (void)
 {
-	int		i;
 	edict_t	*ent;
-	int		active, models, solid, step;
+	int	i, active, models, solid, step;
+
+	if (!sv.active)
+		return;
 
 	active = models = solid = step = 0;
 	for (i = 0; i < sv.num_edicts; i++)
@@ -694,17 +702,17 @@ void ED_ParseGlobals (const char *data)
 		if (com_token[0] == '}')
 			break;
 		if (!data)
-			Sys_Error ("ED_ParseEntity: EOF without closing brace");
+			Host_Error ("ED_ParseEntity: EOF without closing brace");
 
 		strcpy (keyname, com_token);
 
 	// parse value
 		data = COM_Parse (data);
 		if (!data)
-			Sys_Error ("ED_ParseEntity: EOF without closing brace");
+			Host_Error ("ED_ParseEntity: EOF without closing brace");
 
 		if (com_token[0] == '}')
-			Sys_Error ("ED_ParseEntity: closing brace without data");
+			Host_Error ("ED_ParseEntity: closing brace without data");
 
 		key = ED_FindGlobal (keyname);
 		if (!key)
@@ -840,10 +848,9 @@ Used for initial level load and for savegames.
 const char *ED_ParseEdict (const char *data, edict_t *ent)
 {
 	ddef_t		*key;
-	qboolean	anglehack;
-	qboolean	init;
 	char		keyname[256];
-	int			n;
+	qboolean	anglehack, init;
+	int		n;
 
 	init = false;
 
@@ -859,7 +866,7 @@ const char *ED_ParseEdict (const char *data, edict_t *ent)
 		if (com_token[0] == '}')
 			break;
 		if (!data)
-			Sys_Error ("ED_ParseEntity: EOF without closing brace");
+			Host_Error ("ED_ParseEntity: EOF without closing brace");
 
 		// anglehack is to allow QuakeEd to write single scalar angles
 		// and allow them to be turned into vectors. (FIXME...)
@@ -888,10 +895,10 @@ const char *ED_ParseEdict (const char *data, edict_t *ent)
 		// parse value
 		data = COM_Parse (data);
 		if (!data)
-			Sys_Error ("ED_ParseEntity: EOF without closing brace");
+			Host_Error ("ED_ParseEntity: EOF without closing brace");
 
 		if (com_token[0] == '}')
-			Sys_Error ("ED_ParseEntity: closing brace without data");
+			Host_Error ("ED_ParseEntity: closing brace without data");
 
 		init = true;
 
@@ -963,7 +970,7 @@ void ED_LoadFromFile (const char *data)
 		if (!data)
 			break;
 		if (com_token[0] != '{')
-			Sys_Error ("ED_LoadFromFile: found %s when expecting {",com_token);
+			Host_Error ("ED_LoadFromFile: found %s when expecting {",com_token);
 
 		if (!ent)
 			ent = EDICT_NUM(0);
@@ -1037,7 +1044,7 @@ void PR_LoadProgs (void)
 
 	progs = (dprograms_t *)COM_LoadHunkFile ("progs.dat", NULL);
 	if (!progs)
-		Sys_Error ("PR_LoadProgs: couldn't load progs.dat");
+		Host_Error ("PR_LoadProgs: couldn't load progs.dat");
 	Con_DPrintf ("Programs occupy %iK.\n", com_filesize/1024);
 
 	for (i = 0; i < com_filesize; i++)
@@ -1048,9 +1055,9 @@ void PR_LoadProgs (void)
 		((int *)progs)[i] = LittleLong ( ((int *)progs)[i] );
 
 	if (progs->version != PROG_VERSION)
-		Sys_Error ("progs.dat has wrong version number (%i should be %i)", progs->version, PROG_VERSION);
+		Host_Error ("progs.dat has wrong version number (%i should be %i)", progs->version, PROG_VERSION);
 	if (progs->crc != PROGHEADER_CRC)
-		Sys_Error ("progs.dat system vars have been modified, progdefs.h is out of date");
+		Host_Error ("progs.dat system vars have been modified, progdefs.h is out of date");
 
 	pr_functions = (dfunction_t *)((byte *)progs + progs->ofs_functions);
 	pr_strings = (char *)progs + progs->ofs_strings;
@@ -1105,7 +1112,7 @@ void PR_LoadProgs (void)
 	{
 		pr_fielddefs[i].type = LittleShort (pr_fielddefs[i].type);
 		if (pr_fielddefs[i].type & DEF_SAVEGLOBAL)
-			Sys_Error ("PR_LoadProgs: pr_fielddefs[i].type & DEF_SAVEGLOBAL");
+			Host_Error ("PR_LoadProgs: pr_fielddefs[i].type & DEF_SAVEGLOBAL");
 		pr_fielddefs[i].ofs = LittleShort (pr_fielddefs[i].ofs);
 		pr_fielddefs[i].s_name = LittleLong (pr_fielddefs[i].s_name);
 
@@ -1155,7 +1162,7 @@ void PR_Init (void)
 edict_t *EDICT_NUM(int n)
 {
 	if (n < 0 || n >= sv.max_edicts)
-		Sys_Error ("EDICT_NUM: bad number %i", n);
+		Host_Error ("EDICT_NUM: bad number %i", n);
 	return (edict_t *)((byte *)sv.edicts + (n)*pr_edict_size);
 }
 
@@ -1167,7 +1174,7 @@ int NUM_FOR_EDICT(edict_t *e)
 	b = b / pr_edict_size;
 
 	if (b < 0 || b >= sv.num_edicts)
-		Sys_Error ("NUM_FOR_EDICT: bad pointer");
+		Host_Error ("NUM_FOR_EDICT: bad pointer");
 	return b;
 }
 

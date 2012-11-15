@@ -323,7 +323,7 @@ static int PR_LeaveFunction (void)
 	int	i, c;
 
 	if (pr_depth <= 0)
-		Sys_Error("prog stack underflow");
+		Host_Error("prog stack underflow");
 
 	// Restore locals from the stack
 	c = pr_xfunction->locals;
