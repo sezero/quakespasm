@@ -34,13 +34,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
 #define MAX_BPPS_LIST	5
-#define VID_ROW_SIZE	3
 #define WARP_WIDTH		320
 #define WARP_HEIGHT		200
 #define MAXWIDTH		10000
 #define MAXHEIGHT		10000
-#define BASEWIDTH		320
-#define BASEHEIGHT		200
 
 #define SDL_DEFAULT_FLAGS	SDL_OPENGL
 
@@ -57,20 +54,6 @@ typedef struct {
 	char		modedesc[17];
 } vmode_t;
 
-#if 0
-typedef struct {
-	int			width;
-	int			height;
-} lmode_t;
-
-static lmode_t	lowresmodes[] = {
-	{320, 200},
-	{320, 240},
-	{400, 300},
-	{512, 384},
-};
-#endif
-
 static const char *gl_vendor;
 static const char *gl_renderer;
 static const char *gl_version;
@@ -83,7 +66,6 @@ static vmode_t	badmode;
 
 static qboolean	vid_initialized = false;
 static qboolean	windowed;
-static qboolean vid_canalttab = false;
 static qboolean vid_toggle_works = true;
 
 static SDL_Surface	*draw_context;
@@ -92,7 +74,6 @@ static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
 
 static int	vid_modenum = NO_MODE;
-static int	vid_realmode;
 static int	vid_default = MODE_WINDOWED;
 static qboolean	fullsbardraw = false;
 
@@ -111,7 +92,6 @@ viddef_t	vid;				// global video state
 modestate_t	modestate = MODE_WINDOWED;
 qboolean	scr_skipupdate;
 
-qboolean isPermedia = false;
 qboolean isIntelVideo = false; //johnfitz -- intel video workarounds from Baker
 qboolean gl_mtexable = false;
 qboolean gl_texture_env_combine = false; //johnfitz
@@ -131,7 +111,6 @@ static cvar_t	vid_fullscreen = {"vid_fullscreen", "0", CVAR_ARCHIVE};	// QuakeSp
 static cvar_t	vid_width = {"vid_width", "800", CVAR_ARCHIVE};		// QuakeSpasm, was 640
 static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, was 480
 static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
-//static cvar_t	vid_refreshrate = {"vid_refreshrate", "60", CVAR_ARCHIVE};
 static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
 //johnfitz
 
@@ -397,8 +376,6 @@ static void VID_Restart (void)
 	TexMgr_ReloadImages ();
 	GL_SetupState ();
 
-	vid_canalttab = true;
-
 	//warpimages needs to be recalculated
 	TexMgr_RecalcWarpImageSize ();
 
@@ -472,7 +449,6 @@ VID_UpdateWindowStatus
 */
 static void VID_UpdateWindowStatus (void)
 {
-//	IN_UpdateClipCursor ();
 }
 
 //==============================================================================
@@ -756,8 +732,6 @@ static void GL_Init (void)
 
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
 		fullsbardraw = true;
-	if (SDL_strncasecmp(gl_renderer,"Permedia",8)==0)
-		isPermedia = true;
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
 	{
@@ -765,15 +739,6 @@ static void GL_Init (void)
 		isIntelVideo = true;
 	}
 	//johnfitz
-
-#if 0
-	//johnfitz -- confirm presence of stencil buffer
-	glGetIntegerv(GL_STENCIL_BITS, &gl_stencilbits);
-	if(!gl_stencilbits)
-		Con_Warning ("Could not create stencil buffer\n");
-	else
-		Con_Printf ("%i bit stencil buffer\n", gl_stencilbits);
-#endif
 }
 
 /*
@@ -807,7 +772,6 @@ void	VID_Shutdown (void)
 {
 	if (vid_initialized)
 	{
-		vid_canalttab = false;
 		VID_Gamma_Shutdown (); //johnfitz
 
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
@@ -1318,14 +1282,11 @@ void	VID_Init (void)
 
 	//johnfitz -- removed code creating "glquake" subdirectory
 
-	vid_realmode = vid_modenum;
-
 	vid_menucmdfn = VID_Menu_f; //johnfitz
 	vid_menudrawfn = VID_MenuDraw;
 	vid_menukeyfn = VID_MenuKey;
 
 	strcpy (badmode.modedesc, "Bad mode");
-	vid_canalttab = true;
 
 	if (COM_CheckParm("-fullsbar"))
 		fullsbardraw = true;
@@ -1402,8 +1363,8 @@ void VID_SyncCvars (void)
 //
 //==========================================================================
 
-#define VIDEO_OPTIONS_ITEMS 7
-static int	video_cursor_table[] = {48, 56, 64, 72, 80, 96, 104};
+#define VIDEO_OPTIONS_ITEMS 6
+static int	video_cursor_table[] = {48, 56, 64, 72, 88, 96};
 static int	video_options_cursor = 0;
 
 typedef struct {
@@ -1416,11 +1377,6 @@ static int vid_menu_nummodes = 0;
 
 static int vid_menu_bpps[MAX_BPPS_LIST];
 static int vid_menu_numbpps = 0;
-
-#if 0
-static int vid_menu_rates[20];
-static int vid_menu_numrates = 0;
-#endif
 
 /*
 ================
@@ -1584,44 +1540,6 @@ static void VID_Menu_ChooseNextBpp (int dir)
 
 /*
 ================
-VID_Menu_ChooseNextRate
-
-chooses next refresh rate in order, then updates vid_refreshrate cvar
-================
-*/
-static void VID_Menu_ChooseNextRate (int dir)
-{
-#if 0	/* not implemented for SDL */
-	int i;
-
-	if (vid_menu_numrates)
-	{
-		for (i = 0; i < vid_menu_numrates; i++)
-		{
-			if (vid_menu_rates[i] == vid_refreshrate.value)
-				break;
-		}
-
-		if (i == vid_menu_numrates) //can't find it in list
-		{
-			i = 0;
-		}
-		else
-		{
-			i += dir;
-			if (i >= vid_menu_numrates)
-				i = 0;
-			else if (i < 0)
-				i = vid_menu_numrates-1;
-		}
-
-		Cvar_SetValueQuick (&vid_refreshrate, (float)vid_menu_rates[i]);
-	}
-#endif
-}
-
-/*
-================
 VID_MenuKey
 ================
 */
@@ -1660,16 +1578,11 @@ static void VID_MenuKey (int key)
 			VID_Menu_ChooseNextBpp (1);
 			break;
 		case 2:
-			VID_Menu_ChooseNextRate (1);
-			break;
-		case 3:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 4:
+		case 3:
 			Cbuf_AddText ("toggle vid_vsync\n"); // kristian
 			break;
-		case 5:
-		case 6:
 		default:
 			break;
 		}
@@ -1686,16 +1599,11 @@ static void VID_MenuKey (int key)
 			VID_Menu_ChooseNextBpp (-1);
 			break;
 		case 2:
-			VID_Menu_ChooseNextRate (-1);
-			break;
-		case 3:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 4:
+		case 3:
 			Cbuf_AddText ("toggle vid_vsync\n");
 			break;
-		case 5:
-		case 6:
 		default:
 			break;
 		}
@@ -1712,18 +1620,15 @@ static void VID_MenuKey (int key)
 			VID_Menu_ChooseNextBpp (1);
 			break;
 		case 2:
-			VID_Menu_ChooseNextRate (1);
-			break;
-		case 3:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 4:
+		case 3:
 			Cbuf_AddText ("toggle vid_vsync\n");
 			break;
-		case 5:
+		case 4:
 			Cbuf_AddText ("vid_test\n");
 			break;
-		case 6:
+		case 5:
 			Cbuf_AddText ("vid_restart\n");
 			key_dest = key_game;
 			m_state = m_none;
@@ -1767,12 +1672,6 @@ static void VID_MenuDraw (void)
 
 	M_Print (16, video_cursor_table[i], "       Color depth");
 	M_Print (184, video_cursor_table[i], va("%i", (int)vid_bpp.value));
-	i++;
-
-	M_Print (16, video_cursor_table[i], "      Refresh rate");
-// refresh rates not implemented -- kristian
-//	M_Print (184, video_cursor_table[i], va("%i Hz", (int)vid_refreshrate.value));
-	M_Print (184, video_cursor_table[i], "N/A");
 	i++;
 
 	M_Print (16, video_cursor_table[i], "        Fullscreen");
