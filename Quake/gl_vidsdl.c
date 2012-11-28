@@ -46,10 +46,8 @@ typedef struct {
 	int			width;
 	int			height;
 	int			modenum;
-	int			dib;
 	int			fullscreen;
 	int			bpp;
-//	int			refreshrate; //johnfitz
 	int			halfscreen;
 	char		modedesc[17];
 } vmode_t;
@@ -84,7 +82,6 @@ static void VID_MenuKey (int key);
 
 static const char *VID_GetModeDescription (int mode);
 static void ClearAllStates (void);
-static void VID_UpdateWindowStatus (void);
 static void GL_Init (void);
 static void GL_SetupState (void); //johnfitz
 
@@ -99,7 +96,6 @@ qboolean gl_texture_env_add = false; //johnfitz
 qboolean gl_swap_control = false; //johnfitz
 qboolean gl_anisotropy_able = false; //johnfitz
 float gl_max_anisotropy; //johnfitz
-int	gl_stencilbits; //johnfitz
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -273,8 +269,6 @@ static int VID_SetMode (int modenum)
 	vid.numpages = 2;
 	vid.type = modelist[modenum].type;
 
-	VID_UpdateWindowStatus ();
-
 	CDAudio_Resume ();
 	BGM_Resume ();
 	scr_disabled_for_loading = temp;
@@ -440,15 +434,6 @@ static void VID_Unlock (void)
 {
 	vid_locked = false;
 	VID_SyncCvars();
-}
-
-/*
-================
-VID_UpdateWindowStatus
-================
-*/
-static void VID_UpdateWindowStatus (void)
-{
 }
 
 //==============================================================================
@@ -979,7 +964,6 @@ static void VID_InitDIB (void)
 			 modelist[0].bpp); //johnfitz -- added bpp
 
 	modelist[0].modenum = MODE_WINDOWED;
-	modelist[0].dib = 1;
 	modelist[0].fullscreen = 0;
 	modelist[0].halfscreen = 0;
 
@@ -1026,7 +1010,6 @@ static void VID_InitFullDIB (void)
 			modelist[nummodes].height = modes[j]->h;
 			modelist[nummodes].modenum = 0;
 			modelist[nummodes].halfscreen = 0;
-			modelist[nummodes].dib = 1;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpps[i];
 
@@ -1188,7 +1171,6 @@ void	VID_Init (void)
 			modelist[nummodes].height = height;
 			modelist[nummodes].modenum = 0;
 			modelist[nummodes].halfscreen = 0;
-			modelist[nummodes].dib = 1;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpp;
 			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",

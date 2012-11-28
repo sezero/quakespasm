@@ -367,7 +367,6 @@ void R_Clear (void)
 
 	clearbits = GL_DEPTH_BUFFER_BIT;
 	if (gl_clear.value || isIntelVideo) clearbits |= GL_COLOR_BUFFER_BIT; //intel video workarounds from Baker
-	if (gl_stencilbits) clearbits |= GL_STENCIL_BUFFER_BIT;
 	glClear (clearbits);
 }
 

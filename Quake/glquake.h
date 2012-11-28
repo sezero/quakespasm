@@ -149,8 +149,6 @@ extern	float	load_subdivide_size; //johnfitz -- remember what subdivide_size val
 
 extern	float	r_world_matrix[16];
 
-extern	int	gl_stencilbits; //johnfitz
-
 // Multitexture
 extern	qboolean	mtexenabled;
 extern	qboolean	gl_mtexable;
