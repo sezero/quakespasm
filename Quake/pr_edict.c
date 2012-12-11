@@ -307,7 +307,7 @@ Returns a string describing *data in a type specific manner
 */
 static const char *PR_ValueString (int type, eval_t *val)
 {
-	static char	line[256];
+	static char	line[512];
 	ddef_t		*def;
 	dfunction_t	*f;
 
@@ -360,7 +360,7 @@ Easier to parse than PR_ValueString
 */
 static const char *PR_UglyValueString (int type, eval_t *val)
 {
-	static char	line[256];
+	static char	line[512];
 	ddef_t		*def;
 	dfunction_t	*f;
 
@@ -409,11 +409,11 @@ padded to 20 field width
 */
 const char *PR_GlobalString (int ofs)
 {
+	static char	line[512];
 	const char	*s;
 	int		i;
 	ddef_t		*def;
 	void		*val;
-	static char	line[128];
 
 	val = (void *)&pr_globals[ofs];
 	def = ED_GlobalAtOfs(ofs);
@@ -435,9 +435,9 @@ const char *PR_GlobalString (int ofs)
 
 const char *PR_GlobalStringNoContents (int ofs)
 {
+	static char	line[512];
 	int		i;
 	ddef_t		*def;
-	static char	line[128];
 
 	def = ED_GlobalAtOfs(ofs);
 	if (!def)
