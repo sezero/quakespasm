@@ -59,11 +59,11 @@ static char *PF_VarString (int	first)
 		s = q_strlcat(out, G_STRING((OFS_PARM0+i*3)), sizeof(out));
 		if (s >= sizeof(out))
 		{
-			Con_Printf("PF_VarString: overflow (string truncated)\n");
+			Con_Warning("PF_VarString: overflow (string truncated)\n");
 			return out;
 		}
 	}
-	if (s > 255)
+	if (s > 255 && developer.value)
 		Con_Warning("PF_VarString: %i characters exceeds standard limit of 255.\n", (int) s);
 	return out;
 }
