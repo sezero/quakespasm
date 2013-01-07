@@ -364,7 +364,7 @@ void IN_SendKeyEvents (void)
 					if (sym == SDLK_BACKSPACE)
 						usym = sym;	/* avoid change to SDLK_DELETE */
 #endif	/* Mac OS X */
-#if defined(__QNX__)
+#if defined(__QNX__) || defined(__QNXNTO__)
 					if (sym == SDLK_BACKSPACE || sym == SDLK_RETURN)
 						usym = sym;	/* S.A: fixes QNX weirdness */
 #endif	/* __QNX__ */

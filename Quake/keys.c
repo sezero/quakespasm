@@ -410,7 +410,7 @@ void Key_Console (int key)
 
 	case 'v':
 	case 'V':
-#if defined(__MACOSX__) || defined(__MACOS__)
+#if defined(PLATFORM_OSX) || defined(PLATFORM_MAC)
 		if (keydown[K_COMMAND]) {	/* Cmd+v paste (Mac-only) */
 			PasteToConsole();
 			return;

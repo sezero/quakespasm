@@ -58,10 +58,8 @@
 #include <stddef.h>
 #include <limits.h>
 
-#if defined(__FreeBSD__) || defined(__DragonFly__)	|| \
-    defined(__OpenBSD__) || defined(__NetBSD__)		|| \
+#if defined(PLATFORM_BSD) || defined(PLATFORM_OSX)	|| \
     defined(PLATFORM_AMIGA) /* bsdsocket.library */	|| \
-    defined(__MACOSX__)  || defined(__FreeBSD_kernel__)	|| \
     defined(__GNU__) /* GNU/Hurd */ || defined(__riscos__)
 /* struct sockaddr has unsigned char sa_len as the first member in BSD
  * variants and the family member is also an unsigned char instead of an
