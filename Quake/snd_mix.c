@@ -276,7 +276,7 @@ void SND_InitScaletable (void)
 		   See: http://gcc.gnu.org/bugzilla/show_bug.cgi?id=26719
 		*/
 		//	snd_scaletable[i][j] = ((signed char)j) * scale;
-			snd_scaletable[i][j] = ((j < 128) ? j : j - 0xff) * scale;
+			snd_scaletable[i][j] = ((j < 128) ?  j : j - 256) * scale;
 		}
 	}
 }
