@@ -189,10 +189,10 @@ static void Con_Dump_f (void)
 	}
 
 	// skip initial empty lines
-	for (l = con_current - con_totallines + 1 ; l <= con_current ; l++)
+	for (l = con_current - con_totallines + 1; l <= con_current; l++)
 	{
-		line = con_text + (l%con_totallines)*con_linewidth;
-		for (x=0 ; x<con_linewidth ; x++)
+		line = con_text + (l % con_totallines)*con_linewidth;
+		for (x = 0; x < con_linewidth; x++)
 			if (line[x] != ' ')
 				break;
 		if (x != con_linewidth)
@@ -201,18 +201,18 @@ static void Con_Dump_f (void)
 
 	// write the remaining lines
 	buffer[con_linewidth] = 0;
-	for ( ; l <= con_current ; l++)
+	for ( ; l <= con_current; l++)
 	{
 		line = con_text + (l%con_totallines)*con_linewidth;
 		strncpy (buffer, line, con_linewidth);
-		for (x=con_linewidth-1 ; x>=0 ; x--)
+		for (x = con_linewidth - 1; x >= 0; x--)
 		{
 			if (buffer[x] == ' ')
 				buffer[x] = 0;
 			else
 				break;
 		}
-		for (x=0; buffer[x]; x++)
+		for (x = 0; buffer[x]; x++)
 			buffer[x] &= 0x7f;
 
 		fprintf (f, "%s\n", buffer);
@@ -443,7 +443,6 @@ static void Con_Print (const char *txt)
 			cr = false;
 		}
 
-
 		if (!con_x)
 		{
 			Con_Linefeed ();
@@ -471,7 +470,6 @@ static void Con_Print (const char *txt)
 				con_x = 0;
 			break;
 		}
-
 	}
 }
 
@@ -881,7 +879,7 @@ void BuildTabList (const char *partial)
 	cmdalias_t		*alias;
 	cvar_t			*cvar;
 	cmd_function_t		*cmd;
-	int				len;
+	int		len;
 
 	tablist = NULL;
 	len = strlen(partial);
@@ -910,11 +908,11 @@ Con_TabComplete -- johnfitz
 */
 void Con_TabComplete (void)
 {
-	char		partial[MAXCMDLINE];
+	char	partial[MAXCMDLINE];
 	const char	*match;
 	static char	*c;
 	tab_t		*t;
-	int			mark, i;
+	int		mark, i;
 
 // if editline is empty, return
 	if (key_lines[edit_line][1] == 0)
@@ -1246,7 +1244,7 @@ void Con_NotifyBox (const char *text)
 	Con_Printf ("\n");
 	IN_Activate();
 	key_dest = key_game;
-	realtime = 0;				// put the cursor back to invisible
+	realtime = 0;		// put the cursor back to invisible
 }
 
 

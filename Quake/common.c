@@ -718,7 +718,7 @@ int MSG_ReadShort (void)
 	}
 
 	c = (short)(net_message.data[msg_readcount]
-	+ (net_message.data[msg_readcount+1]<<8));
+			+ (net_message.data[msg_readcount+1]<<8));
 
 	msg_readcount += 2;
 
@@ -736,9 +736,9 @@ int MSG_ReadLong (void)
 	}
 
 	c = net_message.data[msg_readcount]
-	+ (net_message.data[msg_readcount+1]<<8)
-	+ (net_message.data[msg_readcount+2]<<16)
-	+ (net_message.data[msg_readcount+3]<<24);
+			+ (net_message.data[msg_readcount+1]<<8)
+			+ (net_message.data[msg_readcount+2]<<16)
+			+ (net_message.data[msg_readcount+3]<<24);
 
 	msg_readcount += 4;
 
@@ -876,15 +876,16 @@ void SZ_Write (sizebuf_t *buf, const void *data, int length)
 
 void SZ_Print (sizebuf_t *buf, const char *data)
 {
-	int		len;
+	int		len = Q_strlen(data) + 1;
 
-	len = Q_strlen(data) + 1;
-
-// byte * cast to keep VC++ happy
 	if (buf->data[buf->cursize-1])
-		Q_memcpy ((byte *)SZ_GetSpace(buf, len),data,len); // no trailing 0
+	{	/* no trailing 0 */
+		Q_memcpy ((byte *)SZ_GetSpace(buf, len  )  , data, len);
+	}
 	else
-		Q_memcpy ((byte *)SZ_GetSpace(buf, len-1)-1,data,len); // write over trailing 0
+	{	/* write over trailing 0 */
+		Q_memcpy ((byte *)SZ_GetSpace(buf, len-1)-1, data, len);
+	}
 }
 
 
@@ -1059,21 +1060,31 @@ const char *COM_Parse (const char *data)
 
 // skip whitespace
 skipwhite:
-	while ( (c = *data) <= ' ')
+	while ((c = *data) <= ' ')
 	{
 		if (c == 0)
-			return NULL;			// end of file;
+			return NULL;	// end of file
 		data++;
 	}
 
 // skip // comments
-	if (c=='/' && data[1] == '/')
+	if (c == '/' && data[1] == '/')
 	{
 		while (*data && *data != '\n')
 			data++;
 		goto skipwhite;
 	}
 
+// skip /*..*/ comments
+	if (c == '/' && data[1] == '*')
+	{
+		data += 2;
+		while (*data && !(*data == '*' && data[1] == '/'))
+			data++;
+		if (*data)
+			data += 2;
+		goto skipwhite;
+	}
 
 // handle quoted strings specially
 	if (c == '\"')
@@ -1081,8 +1092,9 @@ skipwhite:
 		data++;
 		while (1)
 		{
-			c = *data++;
-			if (c=='\"' || !c)
+			if ((c = *data) != 0)
+				++data;
+			if (c == '\"' || !c)
 			{
 				com_token[len] = 0;
 				return data;
@@ -1093,7 +1105,7 @@ skipwhite:
 	}
 
 // parse single characters
-	if (c=='{' || c=='}'|| c==')'|| c=='(' || c=='\'' || c==':')
+	if (c == '{' || c == '}'|| c == '('|| c == ')' || c == '\'' || c == ':')
 	{
 		com_token[len] = c;
 		len++;
@@ -1109,7 +1121,7 @@ skipwhite:
 		len++;
 		c = *data;
 		/* commented out the check for ':' so that ip:port works */
-		if (c == '{' || c == '}'|| c == ')'|| c == '(' || c == '\'' /* || c == ':' */)
+		if (c == '{' || c == '}'|| c == '('|| c == ')' || c == '\''/* || c == ':' */)
 			break;
 	} while (c > 32);
 
