@@ -90,7 +90,7 @@ cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 
 cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
 cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
-cvar_t		scr_fov_adaptive = {"fov_adaptive","1",CVAR_ARCHIVE};
+cvar_t		scr_fov_adapt = {"fov_adapt","1",CVAR_ARCHIVE};
 cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE};
 cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE};
 cvar_t		scr_showram = {"showram","1",CVAR_NONE};
@@ -323,7 +323,7 @@ static void SCR_CalcRefdef (void)
 	r_refdef.vrect.y = (glheight - sb_lines - r_refdef.vrect.height)/2;
 	//johnfitz
 
-	if (scr_fov_adaptive.value)
+	if (scr_fov_adapt.value)
 		r_refdef.fov_x = AdaptFovx(scr_fov.value, r_refdef.vrect.width, r_refdef.vrect.height);
 	else
 		r_refdef.fov_x = scr_fov.value;
@@ -412,10 +412,10 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_clock);
 	//johnfitz
 	Cvar_SetCallback (&scr_fov, SCR_Callback_refdef);
-	Cvar_SetCallback (&scr_fov_adaptive, SCR_Callback_refdef);
+	Cvar_SetCallback (&scr_fov_adapt, SCR_Callback_refdef);
 	Cvar_SetCallback (&scr_viewsize, SCR_Callback_refdef);
 	Cvar_RegisterVariable (&scr_fov);
-	Cvar_RegisterVariable (&scr_fov_adaptive);
+	Cvar_RegisterVariable (&scr_fov_adapt);
 	Cvar_RegisterVariable (&scr_viewsize);
 	Cvar_RegisterVariable (&scr_conspeed);
 	Cvar_RegisterVariable (&scr_showram);
