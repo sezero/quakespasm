@@ -48,7 +48,6 @@ typedef struct {
 	int			modenum;
 	int			fullscreen;
 	int			bpp;
-	int			halfscreen;
 	char		modedesc[17];
 } vmode_t;
 
@@ -965,7 +964,6 @@ static void VID_InitDIB (void)
 
 	modelist[0].modenum = MODE_WINDOWED;
 	modelist[0].fullscreen = 0;
-	modelist[0].halfscreen = 0;
 
 	nummodes = 1;
 }
@@ -1009,7 +1007,6 @@ static void VID_InitFullDIB (void)
 			modelist[nummodes].width = modes[j]->w;
 			modelist[nummodes].height = modes[j]->h;
 			modelist[nummodes].modenum = 0;
-			modelist[nummodes].halfscreen = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpps[i];
 
@@ -1017,21 +1014,6 @@ static void VID_InitFullDIB (void)
 					modelist[nummodes].width,
 					modelist[nummodes].height,
 					modelist[nummodes].bpp);
-
-			// if the width is more than twice the height, reduce it by half because this
-			// is probably a dual-screen monitor
-			if (!COM_CheckParm("-noadjustaspect"))
-			{
-				if (modelist[nummodes].width > (modelist[nummodes].height << 1))
-				{
-					modelist[nummodes].width >>= 1;
-					modelist[nummodes].halfscreen = 1;
-					sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-							modelist[nummodes].width,
-							modelist[nummodes].height,
-							modelist[nummodes].bpp);
-				}
-			}
 
 			for (k=originalnummodes, existingmode = 0 ; k < nummodes ; k++)
 			{
@@ -1170,7 +1152,6 @@ void	VID_Init (void)
 			modelist[nummodes].width = width;
 			modelist[nummodes].height = height;
 			modelist[nummodes].modenum = 0;
-			modelist[nummodes].halfscreen = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpp;
 			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
