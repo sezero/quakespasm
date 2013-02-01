@@ -246,7 +246,7 @@ void CL_AdjustAngles (void)
 	float	speed;
 	float	up, down;
 
-	if (in_speed.state & 1)
+	if ((cl_forwardspeed.value > 200) ^ (in_speed.state & 1))
 		speed = host_frametime * cl_anglespeedkey.value;
 	else
 		speed = host_frametime;
@@ -324,7 +324,11 @@ void CL_BaseMove (usercmd_t *cmd)
 //
 // adjust for speed key
 //
-	if (in_speed.state & 1)
+	if (cl_forwardspeed.value > 200 && cl_movespeedkey.value != 0)
+	{
+		cmd->forwardmove /= cl_movespeedkey.value;
+	}
+	if ((cl_forwardspeed.value > 200) ^ (in_speed.state & 1))
 	{
 		cmd->forwardmove *= cl_movespeedkey.value;
 		cmd->sidemove *= cl_movespeedkey.value;

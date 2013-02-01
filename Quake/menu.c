@@ -1037,15 +1037,15 @@ void M_AdjustSliders (int dir)
 		break;
 
 	case OPT_ALWAYRUN:	// always run
-		if (cl_forwardspeed.value > 200)
+		if (cl_forwardspeed.value > 200 || cl_movespeedkey.value <= 1)
 		{
-			Cvar_Set ("cl_forwardspeed", "200");
-			Cvar_Set ("cl_backspeed", "200");
+			Cvar_SetValue ("cl_forwardspeed", 200);
+			Cvar_SetValue ("cl_backspeed", 200);
 		}
 		else
 		{
-			Cvar_Set ("cl_forwardspeed", "400");
-			Cvar_Set ("cl_backspeed", "400");
+			Cvar_SetValue ("cl_forwardspeed", 200 * cl_movespeedkey.value);
+			Cvar_SetValue ("cl_backspeed", 200 * cl_movespeedkey.value);
 		}
 		break;
 
