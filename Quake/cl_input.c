@@ -324,10 +324,8 @@ void CL_BaseMove (usercmd_t *cmd)
 //
 // adjust for speed key
 //
-	if (cl_forwardspeed.value > 200 && cl_movespeedkey.value != 0)
-	{
+	if (cl_forwardspeed.value > 200 && cl_movespeedkey.value)
 		cmd->forwardmove /= cl_movespeedkey.value;
-	}
 	if ((cl_forwardspeed.value > 200) ^ (in_speed.state & 1))
 	{
 		cmd->forwardmove *= cl_movespeedkey.value;
