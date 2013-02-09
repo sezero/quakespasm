@@ -79,7 +79,6 @@ static void VID_Menu_f (void); //johnfitz
 static void VID_MenuDraw (void);
 static void VID_MenuKey (int key);
 
-static const char *VID_GetModeDescription (int mode);
 static void ClearAllStates (void);
 static void GL_Init (void);
 static void GL_SetupState (void); //johnfitz
@@ -277,7 +276,7 @@ static int VID_SetMode (int modenum)
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
-	Con_SafePrintf ("Video mode %s initialized\n", VID_GetModeDescription (vid_modenum));
+	Con_SafePrintf ("Video mode %s initialized\n", modelist[modenum].modedesc);
 
 	vid.recalc_refdef = 1;
 
@@ -796,86 +795,20 @@ static void ClearAllStates (void)
 
 /*
 =================
-VID_NumModes
-=================
-*/
-static int VID_NumModes (void)
-{
-	return nummodes;
-}
-
-
-/*
-=================
-VID_GetModePtr
-=================
-*/
-static vmode_t *VID_GetModePtr (int modenum)
-{
-	if ((modenum >= 0) && (modenum < nummodes))
-		return &modelist[modenum];
-	else
-		return &badmode;
-}
-
-
-/*
-=================
-VID_GetModeDescription
-=================
-*/
-static const char *VID_GetModeDescription (int mode)
-{
-	const char	*pinfo;
-	vmode_t		*pv;
-
-	if ((mode < 0) || (mode >= nummodes))
-		return NULL;
-
-	pv = VID_GetModePtr (mode);
-	pinfo = pv->modedesc;
-
-	return pinfo;
-}
-
-// KJB: Added this to return the mode driver name in description for console
-/*
-=================
-VID_GetExtModeDescription
-=================
-*/
-static const char *VID_GetExtModeDescription (int mode)
-{
-	static char	pinfo[40];
-	vmode_t		*pv;
-
-	if ((mode < 0) || (mode >= nummodes))
-		return NULL;
-
-	pv = VID_GetModePtr (mode);
-	if (modelist[mode].type == MODE_FULLSCREEN_DEFAULT)
-	{
-		sprintf(pinfo,"%s fullscreen", pv->modedesc);
-	}
-	else
-	{
-		if (modestate == MODE_WINDOWED)
-			sprintf(pinfo, "%s windowed", pv->modedesc);
-		else
-			sprintf(pinfo, "windowed");
-	}
-
-	return pinfo;
-}
-
-/*
-=================
 VID_DescribeCurrentMode_f
 =================
 */
 static void VID_DescribeCurrentMode_f (void)
 {
-	Con_Printf ("%s\n", VID_GetExtModeDescription (vid_modenum));
+	if (vid_modenum >= 0 && vid_modenum < nummodes)
+	{
+		if (modelist[vid_modenum].type == MODE_FULLSCREEN_DEFAULT)
+			Con_Printf("%s fullscreen\n", modelist[vid_modenum].modedesc);
+		else if (modestate == MODE_WINDOWED)
+			Con_Printf("%s windowed\n", modelist[vid_modenum].modedesc);
+		else
+			Con_Printf("windowed\n");
+	}
 }
 
 /*
@@ -885,24 +818,21 @@ VID_DescribeModes_f -- johnfitz -- changed formatting, and added refresh rates a
 */
 static void VID_DescribeModes_f (void)
 {
-	vmode_t	*pv;
-	int	i, lnummodes;
+	int	i;
 	int	lastwidth, lastheight, lastbpp, count;
 
-	lnummodes = VID_NumModes ();
 	lastwidth = lastheight = lastbpp = count = 0;
 
-	for (i = 1; i < lnummodes; i++)
+	for (i = 1; i < nummodes; i++)
 	{
-		pv = VID_GetModePtr (i);
-		if (lastwidth != pv->width || lastheight != pv->height || lastbpp != pv->bpp)
+		if (lastwidth != modelist[i].width || lastheight != modelist[i].height || lastbpp != modelist[i].bpp)
 		{
 			if (count > 0)
 				Con_SafePrintf ("\n");
-			Con_SafePrintf ("   %4i x %4i x %i", pv->width, pv->height, pv->bpp);
-			lastwidth = pv->width;
-			lastheight = pv->height;
-			lastbpp = pv->bpp;
+			Con_SafePrintf ("   %4i x %4i x %i", modelist[i].width, modelist[i].height, modelist[i].bpp);
+			lastwidth = modelist[i].width;
+			lastheight = modelist[i].height;
+			lastbpp = modelist[i].bpp;
 			count++;
 		}
 	}
