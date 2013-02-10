@@ -59,7 +59,6 @@ static char * gl_extensions_nice;
 
 static vmode_t	modelist[MAX_MODE_LIST];
 static int		nummodes;
-static vmode_t	badmode;
 
 static qboolean	vid_initialized = false;
 static qboolean	windowed;
@@ -1178,8 +1177,6 @@ void	VID_Init (void)
 	vid_menucmdfn = VID_Menu_f; //johnfitz
 	vid_menudrawfn = VID_MenuDraw;
 	vid_menukeyfn = VID_MenuKey;
-
-	strcpy (badmode.modedesc, "Bad mode");
 
 	if (COM_CheckParm("-fullsbar"))
 		fullsbardraw = true;
