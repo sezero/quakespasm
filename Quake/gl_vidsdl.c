@@ -48,7 +48,6 @@ typedef struct {
 	int			modenum;
 	int			fullscreen;
 	int			bpp;
-	char		modedesc[17];
 } vmode_t;
 
 static const char *gl_vendor;
@@ -275,7 +274,10 @@ static int VID_SetMode (int modenum)
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
-	Con_SafePrintf ("Video mode %s initialized\n", modelist[modenum].modedesc);
+	Con_SafePrintf ("Video mode %dx%dx%d initialized\n",
+				modelist[modenum].width,
+				modelist[modenum].height,
+				modelist[modenum].bpp);
 
 	vid.recalc_refdef = 1;
 
@@ -350,10 +352,6 @@ static void VID_Restart (void)
 
 		modelist[0].width = (int)vid_width.value;
 		modelist[0].height = (int)vid_height.value;
-		sprintf (modelist[0].modedesc, "%dx%dx%d",
-				 modelist[0].width,
-				 modelist[0].height,
-				 modelist[0].bpp);
 
 		windowed = true;
 		vid_default = 0;
@@ -801,12 +799,11 @@ static void VID_DescribeCurrentMode_f (void)
 {
 	if (vid_modenum >= 0 && vid_modenum < nummodes)
 	{
-		if (modelist[vid_modenum].type == MODE_FULLSCREEN_DEFAULT)
-			Con_Printf("%s fullscreen\n", modelist[vid_modenum].modedesc);
-		else if (modestate == MODE_WINDOWED)
-			Con_Printf("%s windowed\n", modelist[vid_modenum].modedesc);
-		else
-			Con_Printf("windowed\n");
+		Con_Printf("%dx%dx%d %s\n",
+			modelist[vid_modenum].width,
+			modelist[vid_modenum].height,
+			modelist[vid_modenum].bpp,
+			(modelist[vid_modenum].type == MODE_FULLSCREEN_DEFAULT) ? "fullscreen" : "windowed");
 	}
 }
 
@@ -886,11 +883,6 @@ static void VID_InitDIB (void)
 	info = SDL_GetVideoInfo();
 	modelist[0].bpp = info->vfmt->BitsPerPixel;
 
-	sprintf (modelist[0].modedesc, "%dx%dx%d", //johnfitz -- added bpp
-			 modelist[0].width,
-			 modelist[0].height,
-			 modelist[0].bpp); //johnfitz -- added bpp
-
 	modelist[0].modenum = MODE_WINDOWED;
 	modelist[0].fullscreen = 0;
 
@@ -938,11 +930,6 @@ static void VID_InitFullDIB (void)
 			modelist[nummodes].modenum = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpps[i];
-
-			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-					modelist[nummodes].width,
-					modelist[nummodes].height,
-					modelist[nummodes].bpp);
 
 			for (k=originalnummodes, existingmode = 0 ; k < nummodes ; k++)
 			{
@@ -1083,10 +1070,6 @@ void	VID_Init (void)
 			modelist[nummodes].modenum = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpp;
-			sprintf (modelist[nummodes].modedesc, "%dx%dx%d",
-					 modelist[nummodes].width,
-					 modelist[nummodes].height,
-					 modelist[nummodes].bpp);
 
 			for (i=nummodes, existingmode = 0 ; i<nummodes ; i++)
 			{
