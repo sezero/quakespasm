@@ -45,7 +45,6 @@ typedef struct {
 	modestate_t	type;
 	int			width;
 	int			height;
-	int			modenum;
 	int			fullscreen;
 	int			bpp;
 } vmode_t;
@@ -883,7 +882,6 @@ static void VID_InitDIB (void)
 	info = SDL_GetVideoInfo();
 	modelist[0].bpp = info->vfmt->BitsPerPixel;
 
-	modelist[0].modenum = MODE_WINDOWED;
 	modelist[0].fullscreen = 0;
 
 	nummodes = 1;
@@ -927,7 +925,6 @@ static void VID_InitFullDIB (void)
 			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
 			modelist[nummodes].width = modes[j]->w;
 			modelist[nummodes].height = modes[j]->h;
-			modelist[nummodes].modenum = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpps[i];
 
@@ -1067,7 +1064,6 @@ void	VID_Init (void)
 			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
 			modelist[nummodes].width = width;
 			modelist[nummodes].height = height;
-			modelist[nummodes].modenum = 0;
 			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpp;
 
