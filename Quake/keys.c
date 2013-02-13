@@ -1068,7 +1068,7 @@ void Key_UpdateForDest (void)
 		if (cls.state != ca_connected)
 		{
 			forced = true;
-			IN_Deactivate(vid.type == MODE_WINDOWED);
+			IN_Deactivate(modestate == MODE_WINDOWED);
 			key_dest = key_console;
 			break;
 		}

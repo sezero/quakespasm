@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define VID_GRADES	(1 << VID_CBITS)
 
 // moved here for global use -- kristian
-typedef enum { NO_MODE=-1, MODE_WINDOWED, MODE_FULLSCREEN_DEFAULT } modestate_t;
+typedef enum { NO_MODE, MODE_WINDOWED, MODE_FULLSCREEN_DEFAULT } modestate_t;
 
 extern modestate_t	modestate;
 
@@ -61,8 +61,6 @@ typedef struct
 	int		maxwarpwidth;
 	int		maxwarpheight;
 	pixel_t		*direct;	// direct drawing to framebuffer, if not NULL
-
-	int		type;	// kristian
 } viddef_t;
 
 extern	viddef_t	vid;				// global video state

@@ -122,7 +122,7 @@ void Con_ToggleConsole_f (void)
 	}
 	else
 	{
-		IN_Deactivate(vid.type == MODE_WINDOWED);
+		IN_Deactivate(modestate == MODE_WINDOWED);
 		key_dest = key_console;
 	}
 
@@ -1229,7 +1229,7 @@ void Con_NotifyBox (const char *text)
 	Con_Printf ("%s", Con_Quakebar(40)); //johnfitz
 
 	key_count = -2;		// wait for a key down and up
-	IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(modestate == MODE_WINDOWED);
 	key_dest = key_console;
 
 	do

@@ -262,7 +262,6 @@ static int VID_SetMode (int modenum)
 	vid.conwidth = vid.width & 0xFFFFFFF8;
 	vid.conheight = vid.conwidth * vid.height / vid.width;
 	vid.numpages = 2;
-	vid.type = modelist[modenum].type;
 
 	CDAudio_Resume ();
 	BGM_Resume ();
@@ -385,7 +384,7 @@ static void VID_Restart (void)
 	if (vid_fullscreen.value)
 		IN_Activate();
 	else if (key_dest == key_console || key_dest == key_menu)
-		IN_Deactivate(vid.type == MODE_WINDOWED);
+		IN_Deactivate(modestate == MODE_WINDOWED);
 }
 
 /*
@@ -1181,10 +1180,10 @@ void	VID_Toggle (void)
 
 		Sbar_Changed ();	// Sbar seems to need refreshing
 		windowed = !windowed;
-		if (vid.type == MODE_FULLSCREEN_DEFAULT)
-		    vid.type = MODE_WINDOWED;
+		if (modestate == MODE_FULLSCREEN_DEFAULT)
+		    modestate = MODE_WINDOWED;
 		else
-		    vid.type = MODE_FULLSCREEN_DEFAULT;
+		    modestate = MODE_FULLSCREEN_DEFAULT;
 
 		// since we succeeded, ignore the vid_fullscreen
 		// callback function setting vid_changed to true.
@@ -1196,7 +1195,7 @@ void	VID_Toggle (void)
 		if (vid_fullscreen.value)
 			IN_Activate();
 		else if (key_dest == key_console || key_dest == key_menu)
-			IN_Deactivate(vid.type == MODE_WINDOWED);
+			IN_Deactivate(modestate == MODE_WINDOWED);
 	}
 	else
 	{
@@ -1577,7 +1576,7 @@ VID_Menu_f
 */
 static void VID_Menu_f (void)
 {
-	IN_Deactivate(vid.type == MODE_WINDOWED);
+	IN_Deactivate(modestate == MODE_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_video;
 	m_entersound = true;
