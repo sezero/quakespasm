@@ -1399,7 +1399,7 @@ ErrorReturn2:
 	dfunc.Close_Socket(newsock);
 	if (m_return_onerror)
 	{
-		IN_Deactivate(modestate == MODE_WINDOWED);
+		IN_Deactivate(modestate == MS_WINDOWED);
 		key_dest = key_menu;
 		m_state = m_return_state;
 		m_return_onerror = false;

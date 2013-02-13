@@ -67,8 +67,8 @@ static SDL_Surface	*draw_context;
 static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
 
-static int	vid_modenum = NO_MODE;
-static int	vid_default = MODE_WINDOWED;
+static int	vid_modenum = MS_UNINIT;
+static int	vid_default = MS_WINDOWED;
 static qboolean	fullsbardraw = false;
 
 static void VID_Menu_Init (void); //johnfitz
@@ -81,7 +81,7 @@ static void GL_Init (void);
 static void GL_SetupState (void); //johnfitz
 
 viddef_t	vid;				// global video state
-modestate_t	modestate = MODE_WINDOWED;
+modestate_t	modestate = MS_WINDOWED;
 qboolean	scr_skipupdate;
 
 qboolean isIntelVideo = false; //johnfitz -- intel video workarounds from Baker
@@ -232,14 +232,14 @@ static int VID_SetMode (int modenum)
 		gl_swap_control = false;
 	}
 
-	if (modelist[modenum].type == MODE_WINDOWED)
+	if (modelist[modenum].type == MS_WINDOWED)
 	{
-		modestate = MODE_WINDOWED;
+		modestate = MS_WINDOWED;
 	}
-	else if (modelist[modenum].type == MODE_FULLSCREEN_DEFAULT)
+	else if (modelist[modenum].type == MS_FULLSCREEN)
 	{
 		flags |= SDL_FULLSCREEN;
-		modestate = MODE_FULLSCREEN_DEFAULT;
+		modestate = MS_FULLSCREEN;
 	}
 	else
 	{
@@ -384,7 +384,7 @@ static void VID_Restart (void)
 	if (vid_fullscreen.value)
 		IN_Activate();
 	else if (key_dest == key_console || key_dest == key_menu)
-		IN_Deactivate(modestate == MODE_WINDOWED);
+		IN_Deactivate(modestate == MS_WINDOWED);
 }
 
 /*
@@ -413,7 +413,7 @@ static void VID_Test (void)
 		Cvar_SetValueQuick (&vid_width, oldmode.width);
 		Cvar_SetValueQuick (&vid_height, oldmode.height);
 		Cvar_SetValueQuick (&vid_bpp, oldmode.bpp);
-		Cvar_SetQuick (&vid_fullscreen, (oldmode.type == MODE_WINDOWED) ? "0" : "1");
+		Cvar_SetQuick (&vid_fullscreen, (oldmode.type == MS_WINDOWED) ? "0" : "1");
 		VID_Restart ();
 	}
 }
@@ -801,7 +801,7 @@ static void VID_DescribeCurrentMode_f (void)
 			modelist[vid_modenum].width,
 			modelist[vid_modenum].height,
 			modelist[vid_modenum].bpp,
-			(modelist[vid_modenum].type == MODE_FULLSCREEN_DEFAULT) ? "fullscreen" : "windowed");
+			(modelist[vid_modenum].type == MS_FULLSCREEN) ? "fullscreen" : "windowed");
 	}
 }
 
@@ -849,7 +849,7 @@ static void VID_InitDIB (void)
 	const SDL_VideoInfo *info;
 	int i;
 
-	modelist[0].type = MODE_WINDOWED;
+	modelist[0].type = MS_WINDOWED;
 
 	modelist[0].width = vid_width.value;
 	modelist[0].height = vid_height.value;
@@ -921,7 +921,7 @@ static void VID_InitFullDIB (void)
 			if (modes[j]->w > MAXWIDTH || modes[j]->h > MAXHEIGHT || nummodes >= MAX_MODE_LIST)
 				continue;
 
-			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
+			modelist[nummodes].type = MS_FULLSCREEN;
 			modelist[nummodes].width = modes[j]->w;
 			modelist[nummodes].height = modes[j]->h;
 			modelist[nummodes].fullscreen = 1;
@@ -1014,12 +1014,12 @@ void	VID_Init (void)
 	if (!vid_fullscreen.value)
 	{
 		windowed = true;
-		vid_default = MODE_WINDOWED;
+		vid_default = MS_WINDOWED;
 	}
 	else
 	{
 		windowed = false;
-		vid_default = NO_MODE;
+		vid_default = MS_UNINIT;
 
 		width = vid_width.value;
 		height = vid_height.value;
@@ -1060,7 +1060,7 @@ void	VID_Init (void)
 		// if they want to force it, add the specified mode to the list
 		if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
 		{
-			modelist[nummodes].type = MODE_FULLSCREEN_DEFAULT;
+			modelist[nummodes].type = MS_FULLSCREEN;
 			modelist[nummodes].width = width;
 			modelist[nummodes].height = height;
 			modelist[nummodes].fullscreen = 1;
@@ -1084,7 +1084,7 @@ void	VID_Init (void)
 		}
 
 		// Try to find a mode with matching width, height and bpp
-		if (vid_default == NO_MODE)
+		if (vid_default == MS_UNINIT)
 		{
 			for (i = 1; i < nummodes; i++)
 			{
@@ -1099,7 +1099,7 @@ void	VID_Init (void)
 		}
 
 		// Try to find a mode with matching width and height
-		if (vid_default == NO_MODE)
+		if (vid_default == MS_UNINIT)
 		{
 			for (i = 1; i < nummodes; i++)
 			{
@@ -1113,7 +1113,7 @@ void	VID_Init (void)
 		}
 
 		// Try to find a mode with matching width
-		if (vid_default == NO_MODE)
+		if (vid_default == MS_UNINIT)
 		{
 			for (i = 1; i < nummodes; i++)
 			{
@@ -1126,11 +1126,11 @@ void	VID_Init (void)
 		}
 
 		// Still no luck? Default to windowed mode
-		if (vid_default == NO_MODE)
+		if (vid_default == MS_UNINIT)
 		{
 			Cvar_SetQuick (&vid_fullscreen, "0");
 			windowed = true;
-			vid_default = MODE_WINDOWED;
+			vid_default = MS_WINDOWED;
 		}
 	}
 
@@ -1180,10 +1180,10 @@ void	VID_Toggle (void)
 
 		Sbar_Changed ();	// Sbar seems to need refreshing
 		windowed = !windowed;
-		if (modestate == MODE_FULLSCREEN_DEFAULT)
-		    modestate = MODE_WINDOWED;
+		if (modestate == MS_FULLSCREEN)
+		    modestate = MS_WINDOWED;
 		else
-		    modestate = MODE_FULLSCREEN_DEFAULT;
+		    modestate = MS_FULLSCREEN;
 
 		// since we succeeded, ignore the vid_fullscreen
 		// callback function setting vid_changed to true.
@@ -1195,7 +1195,7 @@ void	VID_Toggle (void)
 		if (vid_fullscreen.value)
 			IN_Activate();
 		else if (key_dest == key_console || key_dest == key_menu)
-			IN_Deactivate(modestate == MODE_WINDOWED);
+			IN_Deactivate(modestate == MS_WINDOWED);
 	}
 	else
 	{
@@ -1576,7 +1576,7 @@ VID_Menu_f
 */
 static void VID_Menu_f (void)
 {
-	IN_Deactivate(modestate == MODE_WINDOWED);
+	IN_Deactivate(modestate == MS_WINDOWED);
 	key_dest = key_menu;
 	m_state = m_video;
 	m_entersound = true;
