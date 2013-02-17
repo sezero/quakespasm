@@ -67,7 +67,6 @@ static SDL_Surface	*draw_context;
 static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
 
-static int	vid_modenum = MS_UNINIT;
 static int	vid_default = MS_WINDOWED;
 static qboolean	fullsbardraw = false;
 
@@ -266,8 +265,6 @@ static int VID_SetMode (int modenum)
 	CDAudio_Resume ();
 	BGM_Resume ();
 	scr_disabled_for_loading = temp;
-
-	vid_modenum = modenum;
 
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
@@ -795,14 +792,12 @@ VID_DescribeCurrentMode_f
 */
 static void VID_DescribeCurrentMode_f (void)
 {
-	if (vid_modenum >= 0 && vid_modenum < nummodes)
-	{
+	if (draw_context)
 		Con_Printf("%dx%dx%d %s\n",
-			modelist[vid_modenum].width,
-			modelist[vid_modenum].height,
-			modelist[vid_modenum].bpp,
-			(modelist[vid_modenum].type == MS_FULLSCREEN) ? "fullscreen" : "windowed");
-	}
+			draw_context->w,
+			draw_context->h,
+			draw_context->format->BitsPerPixel,
+			draw_context->flags & SDL_FULLSCREEN ? "fullscreen" : "windowed");
 }
 
 /*
