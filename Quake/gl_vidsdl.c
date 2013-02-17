@@ -371,10 +371,7 @@ static void VID_Restart (void)
 //
 // keep cvars in line with actual mode
 //
-	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
-	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
-	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
-	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
+	VID_SyncCvars();
 //
 // update mouse grab
 //
@@ -1211,13 +1208,16 @@ void VID_SyncCvars (void)
 {
 	int swap_control;
 
-	Cvar_SetValueQuick (&vid_width, modelist[vid_default].width);
-	Cvar_SetValueQuick (&vid_height, modelist[vid_default].height);
-	Cvar_SetValueQuick (&vid_bpp, modelist[vid_default].bpp);
-	Cvar_SetQuick (&vid_fullscreen, (windowed) ? "0" : "1");
+	if (draw_context)
+	{
+		Cvar_SetValueQuick (&vid_width, draw_context->w);
+		Cvar_SetValueQuick (&vid_height, draw_context->h);
+		Cvar_SetValueQuick (&vid_bpp, draw_context->format->BitsPerPixel);
+		Cvar_SetQuick (&vid_fullscreen, draw_context->flags & SDL_FULLSCREEN ? "1" : "0");
 
-	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
-		Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
+		if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
+			Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
+	}
 }
 
 //==========================================================================
