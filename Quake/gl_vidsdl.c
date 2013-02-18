@@ -201,21 +201,19 @@ static void VID_Gamma_Init (void)
 VID_SetMode
 ================
 */
-static int VID_SetMode (int modenum)
+static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 {
 	int		temp;
 	Uint32	flags = SDL_DEFAULT_FLAGS;
 	char		caption[50];
 
-// TODO: check if video mode is supported using SDL_VideoModeOk
-	if ((windowed && (modenum != 0)) ||
-		(!windowed && (modenum < 1)) ||
-		(!windowed && (modenum >= nummodes)))
-	{
-		Sys_Error ("Bad video mode\n");
-	}
+	if (fullscreen)
+		flags |= SDL_FULLSCREEN;
 
-// so Con_Printfs don't mess us up by forcing vid and snd updates
+	if (!SDL_VideoModeOK(width, height, bpp, flags))
+		Sys_Error ("Bad video mode\n");
+
+	// so Con_Printfs don't mess us up by forcing vid and snd updates
 	temp = scr_disabled_for_loading;
 	scr_disabled_for_loading = true;
 
@@ -227,40 +225,22 @@ static int VID_SetMode (int modenum)
 	//
 	gl_swap_control = true;
 	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
-	{
 		gl_swap_control = false;
-	}
 
-	if (modelist[modenum].type == MS_WINDOWED)
-	{
-		modestate = MS_WINDOWED;
-	}
-	else if (modelist[modenum].type == MS_FULLSCREEN)
-	{
-		flags |= SDL_FULLSCREEN;
-		modestate = MS_FULLSCREEN;
-	}
-	else
-	{
-		Sys_Error ("VID_SetMode: Bad mode type in modelist");
-	}
-
-	draw_context = SDL_SetVideoMode(modelist[modenum].width,
-					modelist[modenum].height,
-					modelist[modenum].bpp, flags);
+	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
 	if (!draw_context)
-	{
 		Sys_Error ("Couldn't set video mode");
-	}
 
 	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption(caption, caption);
 
-	vid.width = modelist[modenum].width;
-	vid.height = modelist[modenum].height;
+	vid.width = draw_context->w;
+	vid.height = draw_context->h;
 	vid.conwidth = vid.width & 0xFFFFFFF8;
 	vid.conheight = vid.conwidth * vid.height / vid.width;
 	vid.numpages = 2;
+
+	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
 	CDAudio_Resume ();
 	BGM_Resume ();
@@ -270,9 +250,9 @@ static int VID_SetMode (int modenum)
 	ClearAllStates ();
 
 	Con_SafePrintf ("Video mode %dx%dx%d initialized\n",
-				modelist[modenum].width,
-				modelist[modenum].height,
-				modelist[modenum].bpp);
+				draw_context->w,
+				draw_context->h,
+				draw_context->format->BitsPerPixel);
 
 	vid.recalc_refdef = 1;
 
@@ -354,7 +334,10 @@ static void VID_Restart (void)
 //
 // set new mode
 //
-	VID_SetMode (vid_default);
+	VID_SetMode (modelist[vid_default].width,
+			modelist[vid_default].height,
+			modelist[vid_default].bpp,
+			modelist[vid_default].type == MS_FULLSCREEN);
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
@@ -1136,7 +1119,10 @@ void	VID_Init (void)
 	// set window icon
 	PL_SetWindowIcon();
 
-	VID_SetMode (vid_default);
+	VID_SetMode (modelist[vid_default].width,
+			modelist[vid_default].height,
+			modelist[vid_default].bpp,
+			modelist[vid_default].type == MS_FULLSCREEN);
 
 	GL_Init ();
 	GL_SetupState ();
