@@ -59,8 +59,6 @@ static vmode_t	modelist[MAX_MODE_LIST];
 static int		nummodes;
 
 static qboolean	vid_initialized = false;
-static qboolean	windowed;
-static qboolean vid_toggle_works = true;
 
 static SDL_Surface	*draw_context;
 
@@ -231,7 +229,7 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	if (!draw_context)
 		Sys_Error ("Couldn't set video mode");
 
-	sprintf(caption, "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
+	q_snprintf(caption, sizeof(caption), "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption(caption, caption);
 
 	vid.width = draw_context->w;
@@ -308,7 +306,6 @@ static void VID_Restart (void)
 			return;
 		}
 
-		windowed = false;
 		vid_default = i;
 	}
 	else //not fullscreen
@@ -328,7 +325,6 @@ static void VID_Restart (void)
 		modelist[0].width = (int)vid_width.value;
 		modelist[0].height = (int)vid_height.value;
 
-		windowed = true;
 		vid_default = 0;
 	}
 //
@@ -358,7 +354,7 @@ static void VID_Restart (void)
 //
 // update mouse grab
 //
-	if (vid_fullscreen.value)
+	if (modestate == MS_FULLSCREEN)
 		IN_Activate();
 	else if (key_dest == key_console || key_dest == key_menu)
 		IN_Deactivate(modestate == MS_WINDOWED);
@@ -988,12 +984,10 @@ void	VID_Init (void)
 
 	if (!vid_fullscreen.value)
 	{
-		windowed = true;
 		vid_default = MS_WINDOWED;
 	}
 	else
 	{
-		windowed = false;
 		vid_default = MS_UNINIT;
 
 		width = vid_width.value;
@@ -1104,7 +1098,6 @@ void	VID_Init (void)
 		if (vid_default == MS_UNINIT)
 		{
 			Cvar_SetQuick (&vid_fullscreen, "0");
-			windowed = true;
 			vid_default = MS_WINDOWED;
 		}
 	}
@@ -1148,6 +1141,8 @@ void	VID_Init (void)
 // new proc by S.A., called by alt-return key binding.
 void	VID_Toggle (void)
 {
+	static qboolean vid_toggle_works = true;
+
 	S_ClearBuffer ();
 
 	if (!vid_toggle_works)
@@ -1157,20 +1152,17 @@ void	VID_Toggle (void)
 		qboolean was_changed;
 
 		Sbar_Changed ();	// Sbar seems to need refreshing
-		windowed = !windowed;
-		if (modestate == MS_FULLSCREEN)
-		    modestate = MS_WINDOWED;
-		else
-		    modestate = MS_FULLSCREEN;
+
+		modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
 		// since we succeeded, ignore the vid_fullscreen
 		// callback function setting vid_changed to true.
 		was_changed = vid_changed;
-		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
+		Cvar_SetQuick (&vid_fullscreen, draw_context->flags & SDL_FULLSCREEN ? "1" : "0");
 		vid_changed = was_changed;
 
 		// update mouse grab
-		if (vid_fullscreen.value)
+		if (modestate == MS_FULLSCREEN)
 			IN_Activate();
 		else if (key_dest == key_console || key_dest == key_menu)
 			IN_Deactivate(modestate == MS_WINDOWED);
@@ -1178,7 +1170,7 @@ void	VID_Toggle (void)
 	else
 	{
 		vid_toggle_works = false;
-		Con_DPrintf ("ToggleFullScreen failed, attempting VID_Restart\n");
+		Con_DPrintf ("SDL_WM_ToggleFullScreen failed, attempting VID_Restart\n");
 	vrestart:
 		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
