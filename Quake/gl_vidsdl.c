@@ -196,6 +196,24 @@ static void VID_Gamma_Init (void)
 
 /*
 ================
+VID_ValidMode
+================
+*/
+static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscreen)
+{
+	Uint32 flags = SDL_DEFAULT_FLAGS;
+
+	if (fullscreen)
+		flags |= SDL_FULLSCREEN;
+
+	if (width < 320 || height < 200 || !SDL_VideoModeOK(width, height, bpp, flags))
+		return false;
+
+	return true;
+}
+
+/*
+================
 VID_SetMode
 ================
 */
@@ -207,9 +225,6 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 
 	if (fullscreen)
 		flags |= SDL_FULLSCREEN;
-
-	if (!SDL_VideoModeOK(width, height, bpp, flags))
-		Sys_Error ("Bad video mode\n");
 
 	// so Con_Printfs don't mess us up by forcing vid and snd updates
 	temp = scr_disabled_for_loading;
@@ -277,63 +292,32 @@ VID_Restart -- johnfitz -- change video modes on the fly
 */
 static void VID_Restart (void)
 {
-	int		i;
-
 	if (vid_locked || !vid_changed)
 		return;
 
 //
-// decide which mode to set
+// validate new mode
 //
-	if (vid_fullscreen.value)
+	if (!VID_ValidMode ((int)vid_width.value,
+				(int)vid_height.value,
+				(int)vid_bpp.value,
+				vid_fullscreen.value ? true : false))
 	{
-		for (i = 1; i < nummodes; i++)
-		{
-			if (modelist[i].width == (int)vid_width.value &&
-			    modelist[i].height == (int)vid_height.value &&
-			    modelist[i].bpp == (int)vid_bpp.value)
-			{
-				break;
-			}
-		}
-
-		if (i == nummodes)
-		{
-			Con_Printf ("%dx%dx%d is not a valid fullscreen mode\n",
-						(int)vid_width.value,
-						(int)vid_height.value,
-						(int)vid_bpp.value);
-			return;
-		}
-
-		vid_default = i;
+		Con_Printf ("%dx%dx%d %s is not a valid mode\n",
+				(int)vid_width.value,
+				(int)vid_height.value,
+				(int)vid_bpp.value,
+				vid_fullscreen.value ? "fullscreen" : "windowed");
+		return;
 	}
-	else //not fullscreen
-	{
-		if (vid_width.value < 320)
-		{
-			Con_Printf ("Window width can't be less than 320\n");
-			return;
-		}
 
-		if (vid_height.value < 200)
-		{
-			Con_Printf ("Window height can't be less than 200\n");
-			return;
-		}
-
-		modelist[0].width = (int)vid_width.value;
-		modelist[0].height = (int)vid_height.value;
-
-		vid_default = 0;
-	}
 //
 // set new mode
 //
-	VID_SetMode (modelist[vid_default].width,
-			modelist[vid_default].height,
-			modelist[vid_default].bpp,
-			modelist[vid_default].type == MS_FULLSCREEN);
+	VID_SetMode ((int)vid_width.value,
+			(int)vid_height.value,
+			(int)vid_bpp.value,
+			vid_fullscreen.value ? true : false);
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
