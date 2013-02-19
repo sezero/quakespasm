@@ -367,14 +367,17 @@ VID_Test -- johnfitz -- like vid_restart, but asks for confirmation after switch
 */
 static void VID_Test (void)
 {
-	vmode_t oldmode;
+	int old_width, old_height, old_bpp, old_fullscreen;
 
 	if (vid_locked || !vid_changed)
 		return;
 //
 // now try the switch
 //
-	oldmode = modelist[vid_default];
+	old_width = draw_context->w;
+	old_height = draw_context->h;
+	old_bpp = draw_context->format->BitsPerPixel;
+	old_fullscreen = draw_context->flags & SDL_FULLSCREEN;
 
 	VID_Restart ();
 	SCR_UpdateScreen ();
@@ -383,10 +386,10 @@ static void VID_Test (void)
 	if (!SCR_ModalMessage("Would you like to keep this\nvideo mode? (y/n)\n", 5.0f))
 	{
 		//revert cvars and mode
-		Cvar_SetValueQuick (&vid_width, oldmode.width);
-		Cvar_SetValueQuick (&vid_height, oldmode.height);
-		Cvar_SetValueQuick (&vid_bpp, oldmode.bpp);
-		Cvar_SetQuick (&vid_fullscreen, (oldmode.type == MS_WINDOWED) ? "0" : "1");
+		Cvar_SetValueQuick (&vid_width, old_width);
+		Cvar_SetValueQuick (&vid_height, old_height);
+		Cvar_SetValueQuick (&vid_bpp, old_bpp);
+		Cvar_SetQuick (&vid_fullscreen, old_fullscreen ? "1" : "0");
 		VID_Restart ();
 	}
 }
