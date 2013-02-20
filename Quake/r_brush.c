@@ -884,13 +884,17 @@ void GL_BuildLightmaps (void)
 		lightmap_textures[i] = NULL;
 	//johnfitz
 
-	gl_lightmap_format = GL_RGB; //johnfitz
+	gl_lightmap_format = GL_RGBA; //johnfitz
 
 	//johnfitz -- only support GL_RGB lightmaps
+	//kristian -- now with GL_BGRA support
 	switch (gl_lightmap_format)
 	{
-	case GL_RGB:
-		lightmap_bytes = 3;
+	case GL_RGBA:
+		lightmap_bytes = 4;
+		break;
+	case GL_BGRA:
+		lightmap_bytes = 4;
 		break;
 	default:
 		Sys_Error ("GL_BuildLightmaps: bad lightmap format");
@@ -1040,7 +1044,7 @@ Combine and scale multiple lightmaps into the 8.8 format in blocklights
 void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 {
 	int			smax, tmax;
-	int			t;
+	int			r,g,b;
 	int			i, j, size;
 	byte		*lightmap;
 	unsigned	scale;
@@ -1093,8 +1097,8 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	//johnfitz -- only support GL_RGB lightmaps
 	switch (gl_lightmap_format)
 	{
-	case GL_RGB:
-		stride -= smax * 3;
+	case GL_RGBA:
+		stride -= smax * 4;
 		bl = blocklights;
 		for (i=0 ; i<tmax ; i++, dest += stride)
 		{
@@ -1102,16 +1106,46 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 			{
 				if (gl_overbright.value)
 				{
-					t = *bl++ >> 8;if (t > 255) t = 255;*dest++ = t;
-					t = *bl++ >> 8;if (t > 255) t = 255;*dest++ = t;
-					t = *bl++ >> 8;if (t > 255) t = 255;*dest++ = t;
+					r = *bl++ >> 8;
+					g = *bl++ >> 8;
+					b = *bl++ >> 8;
 				}
 				else
 				{
-					t = *bl++ >> 7;if (t > 255) t = 255;*dest++ = t;
-					t = *bl++ >> 7;if (t > 255) t = 255;*dest++ = t;
-					t = *bl++ >> 7;if (t > 255) t = 255;*dest++ = t;
+					r = *bl++ >> 7;
+					g = *bl++ >> 7;
+					b = *bl++ >> 7;
 				}
+				if (r > 255) r = 255; *dest++ = r;
+				if (g > 255) g = 255; *dest++ = g;
+				if (b > 255) b = 255; *dest++ = b;
+				*dest++ = 255;
+			}
+		}
+		break;
+	case GL_BGRA:
+		stride -= smax * 4;
+		bl = blocklights;
+		for (i=0 ; i<tmax ; i++, dest += stride)
+		{
+			for (j=0 ; j<smax ; j++)
+			{
+				if (gl_overbright.value)
+				{
+					r = *bl++ >> 8;
+					g = *bl++ >> 8;
+					b = *bl++ >> 8;
+				}
+				else
+				{
+					r = *bl++ >> 7;
+					g = *bl++ >> 7;
+					b = *bl++ >> 7;
+				}
+				if (b > 255) b = 255; *dest++ = b;
+				if (g > 255) g = 255; *dest++ = g;
+				if (r > 255) r = 255; *dest++ = r;
+				*dest++ = 255;
 			}
 		}
 		break;
