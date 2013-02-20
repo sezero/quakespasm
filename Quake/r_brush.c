@@ -24,14 +24,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater; //johnfitz
-
 extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 
 int		gl_lightmap_format;
 int		lightmap_bytes;
 
-#define	BLOCK_WIDTH		128 //johnfitz -- was 128
-#define	BLOCK_HEIGHT	128 //johnfitz -- was 128
+#define	BLOCK_WIDTH	128
+#define	BLOCK_HEIGHT	128
 
 gltexture_t	*lightmap_textures[MAX_LIGHTMAPS]; //johnfitz -- changed to an array
 
@@ -563,7 +562,6 @@ void R_DrawBrushModel (entity_t *e)
 	//
 	// draw it
 	//
-
 	if (r_drawflat_cheatsafe) //johnfitz
 		glDisable(GL_TEXTURE_2D);
 
@@ -622,7 +620,7 @@ void R_DrawBrushModel_ShowTris (entity_t *e)
 
 	psurf = &clmodel->surfaces[clmodel->firstmodelsurface];
 
-    glPushMatrix ();
+	glPushMatrix ();
 	e->angles[0] = -e->angles[0];	// stupid quake bug
 	R_RotateForEntity (e->origin, e->angles);
 	e->angles[0] = -e->angles[0];	// stupid quake bug
@@ -630,7 +628,6 @@ void R_DrawBrushModel_ShowTris (entity_t *e)
 	//
 	// draw it
 	//
-
 	for (i=0 ; i<clmodel->nummodelsurfaces ; i++, psurf++)
 	{
 		pplane = psurf->plane;
@@ -793,7 +790,6 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 {
 	int			i, lindex, lnumverts;
 	medge_t		*pedges, *r_pedge;
-//	int		vertpage;
 	float		*vec;
 	float		s, t;
 	glpoly_t	*poly;
@@ -801,7 +797,6 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 // reconstruct the polygon
 	pedges = currentmodel->edges;
 	lnumverts = fa->numedges;
-//	vertpage = 0;
 
 	//
 	// draw texture
@@ -857,7 +852,6 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 	//johnfitz -- removed gl_keeptjunctions code
 
 	poly->numverts = lnumverts;
-
 }
 
 /*
@@ -884,10 +878,8 @@ void GL_BuildLightmaps (void)
 		lightmap_textures[i] = NULL;
 	//johnfitz
 
-	gl_lightmap_format = GL_RGBA; //johnfitz
+	gl_lightmap_format = GL_RGBA;//FIXME: hardcoded for now!
 
-	//johnfitz -- only support GL_RGB lightmaps
-	//kristian -- now with GL_BGRA support
 	switch (gl_lightmap_format)
 	{
 	case GL_RGBA:
@@ -899,7 +891,6 @@ void GL_BuildLightmaps (void)
 	default:
 		Sys_Error ("GL_BuildLightmaps: bad lightmap format");
 	}
-	//johnfitz
 
 	for (j=1 ; j<MAX_MODELS ; j++)
 	{
@@ -1093,8 +1084,6 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 
 // bound, invert, and shift
 // store:
-
-	//johnfitz -- only support GL_RGB lightmaps
 	switch (gl_lightmap_format)
 	{
 	case GL_RGBA:
@@ -1152,7 +1141,6 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 	default:
 		Sys_Error ("R_BuildLightMap: bad lightmap format");
 	}
-	//johnfitz
 }
 
 /*
