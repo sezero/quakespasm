@@ -308,32 +308,31 @@ VID_Restart -- johnfitz -- change video modes on the fly
 */
 static void VID_Restart (void)
 {
+	int width, height, bpp;
+	qboolean fullscreen;
+
 	if (vid_locked || !vid_changed)
 		return;
+
+	width = (int)vid_width.value;
+	height = (int)vid_height.value;
+	bpp = (int)vid_bpp.value;
+	fullscreen = vid_fullscreen.value ? true : false;
 
 //
 // validate new mode
 //
-	if (!VID_ValidMode ((int)vid_width.value,
-				(int)vid_height.value,
-				(int)vid_bpp.value,
-				vid_fullscreen.value ? true : false))
+	if (!VID_ValidMode (width, height, bpp, fullscreen))
 	{
 		Con_Printf ("%dx%dx%d %s is not a valid mode\n",
-				(int)vid_width.value,
-				(int)vid_height.value,
-				(int)vid_bpp.value,
-				vid_fullscreen.value ? "fullscreen" : "windowed");
+				width, height, bpp, fullscreen? "fullscreen" : "windowed");
 		return;
 	}
 
 //
 // set new mode
 //
-	VID_SetMode ((int)vid_width.value,
-			(int)vid_height.value,
-			(int)vid_bpp.value,
-			vid_fullscreen.value ? true : false);
+	VID_SetMode (width, height, bpp, fullscreen);
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
@@ -357,7 +356,7 @@ static void VID_Restart (void)
 	if (modestate == MS_FULLSCREEN)
 		IN_Activate();
 	else if (key_dest == key_console || key_dest == key_menu)
-		IN_Deactivate(modestate == MS_WINDOWED);
+		IN_Deactivate(true);
 }
 
 /*
@@ -377,7 +376,7 @@ static void VID_Test (void)
 	old_width = draw_context->w;
 	old_height = draw_context->h;
 	old_bpp = draw_context->format->BitsPerPixel;
-	old_fullscreen = draw_context->flags & SDL_FULLSCREEN;
+	old_fullscreen = draw_context->flags & SDL_FULLSCREEN ? true : false;
 
 	VID_Restart ();
 	SCR_UpdateScreen ();
@@ -1152,23 +1151,17 @@ void	VID_Toggle (void)
 		goto vrestart;
 	if (SDL_WM_ToggleFullScreen(draw_context) == 1)
 	{
-		qboolean was_changed;
-
 		Sbar_Changed ();	// Sbar seems to need refreshing
 
 		modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
-		// since we succeeded, ignore the vid_fullscreen
-		// callback function setting vid_changed to true.
-		was_changed = vid_changed;
-		Cvar_SetQuick (&vid_fullscreen, draw_context->flags & SDL_FULLSCREEN ? "1" : "0");
-		vid_changed = was_changed;
+		VID_SyncCvars();
 
 		// update mouse grab
 		if (modestate == MS_FULLSCREEN)
 			IN_Activate();
 		else if (key_dest == key_console || key_dest == key_menu)
-			IN_Deactivate(modestate == MS_WINDOWED);
+			IN_Deactivate(true);
 	}
 	else
 	{
@@ -1199,6 +1192,8 @@ void VID_SyncCvars (void)
 		if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
 			Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
 	}
+
+	vid_changed = false;
 }
 
 //==========================================================================
