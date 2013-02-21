@@ -203,10 +203,26 @@ static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscre
 {
 	Uint32 flags = SDL_DEFAULT_FLAGS;
 
+	if (width < 320)
+		return false;
+
+	if (height < 200)
+		return false;
+
+	switch (bpp)
+	{
+	case 16:
+	case 24:
+	case 32:
+		break;
+	default:
+		return false;
+	}
+
 	if (fullscreen)
 		flags |= SDL_FULLSCREEN;
 
-	if (width < 320 || height < 200 || !SDL_VideoModeOK(width, height, bpp, flags))
+	if (!SDL_VideoModeOK(width, height, bpp, flags))
 		return false;
 
 	return true;
