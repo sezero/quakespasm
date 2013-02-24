@@ -879,6 +879,7 @@ VID_Init
 */
 void	VID_Init (void)
 {
+	static char vid_center[32] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
 	int		width, height, bpp;
 	qboolean	fullscreen;
@@ -906,7 +907,7 @@ void	VID_Init (void)
 	Cmd_AddCommand ("vid_describecurrentmode", VID_DescribeCurrentMode_f);
 	Cmd_AddCommand ("vid_describemodes", VID_DescribeModes_f);
 
-	putenv ("SDL_VIDEO_CENTERED=center");	/* SDL_putenv is problematic in versions <= 1.2.9 */
+	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
 		Sys_Error("Could not initialize SDL Video");
