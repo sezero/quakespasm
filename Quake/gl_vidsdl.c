@@ -880,7 +880,7 @@ VID_Init
 void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
-	const SDL_VideoInfo *info = SDL_GetVideoInfo();
+	const SDL_VideoInfo *info;
 	int		width, height, bpp;
 	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
@@ -909,6 +909,8 @@ void	VID_Init (void)
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
 		Sys_Error("Could not initialize SDL Video");
+
+	info = SDL_GetVideoInfo();
 
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
