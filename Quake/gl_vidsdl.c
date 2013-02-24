@@ -42,10 +42,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SDL_DEFAULT_FLAGS	SDL_OPENGL
 
 typedef struct {
-	modestate_t	type;
 	int			width;
 	int			height;
-	int			fullscreen;
 	int			bpp;
 } vmode_t;
 
@@ -789,7 +787,7 @@ static void VID_DescribeModes_f (void)
 
 	lastwidth = lastheight = lastbpp = count = 0;
 
-	for (i = 1; i < nummodes; i++)
+	for (i = 0; i < nummodes; i++)
 	{
 		if (lastwidth != modelist[i].width || lastheight != modelist[i].height || lastbpp != modelist[i].bpp)
 		{
@@ -813,66 +811,18 @@ static void VID_DescribeModes_f (void)
 
 /*
 =================
-VID_InitDIB
+VID_InitModelist
 =================
 */
-static void VID_InitDIB (void)
-{
-	const SDL_VideoInfo *info;
-	int i;
-
-	modelist[0].type = MS_WINDOWED;
-
-	modelist[0].width = vid_width.value;
-	modelist[0].height = vid_height.value;
-
-	i = COM_CheckParm("-width");
-	if (i && i < com_argc-1)
-	{
-		modelist[0].width = Q_atoi(com_argv[i+1]);
-		
-		if (!COM_CheckParm("-height"))
-			modelist[0].height = modelist[0].width * 3 / 4;
-	}
-
-	i = COM_CheckParm("-height");
-	if (i && i < com_argc-1)
-	{
-		modelist[0].height = Q_atoi(com_argv[i+1]);
-
-		if (!COM_CheckParm("-width"))
-			modelist[0].width = modelist[0].height * 4 / 3;
-	}
-
-	if (modelist[0].width < 320)
-		modelist[0].width = 320;
-
-	if (modelist[0].height < 200) //johnfitz -- was 240
-		modelist[0].height = 200; //johnfitz -- was 240
-
-	info = SDL_GetVideoInfo();
-	modelist[0].bpp = info->vfmt->BitsPerPixel;
-
-	modelist[0].fullscreen = 0;
-
-	nummodes = 1;
-}
-
-/*
-=================
-VID_InitFullDIB
-=================
-*/
-static void VID_InitFullDIB (void)
+static void VID_InitModelist (void)
 {
 	SDL_PixelFormat	format;
 	SDL_Rect	**modes;
 	Uint32		flags;
-	int		i, j, k, modenum, originalnummodes, existingmode;
+	int		i, j, k, originalnummodes, existingmode;
 	int		bpps[] = {16, 24, 32}; // enumerate >8 bpp modes
 
-	originalnummodes = nummodes;
-	modenum = 0;
+	originalnummodes = nummodes = 0;
 	format.palette = NULL;
 
 	// enumerate fullscreen modes
@@ -893,10 +843,8 @@ static void VID_InitFullDIB (void)
 			if (modes[j]->w > MAXWIDTH || modes[j]->h > MAXHEIGHT || nummodes >= MAX_MODE_LIST)
 				continue;
 
-			modelist[nummodes].type = MS_FULLSCREEN;
 			modelist[nummodes].width = modes[j]->w;
 			modelist[nummodes].height = modes[j]->h;
-			modelist[nummodes].fullscreen = 1;
 			modelist[nummodes].bpp = bpps[i];
 
 			for (k=originalnummodes, existingmode = 0 ; k < nummodes ; k++)
@@ -915,7 +863,6 @@ static void VID_InitFullDIB (void)
 				nummodes++;
 			}
 		}
-		modenum++;
 	}
 
 	if (nummodes == originalnummodes)
@@ -969,8 +916,7 @@ void	VID_Init (void)
 	}
 	CFG_ReadCvarOverrides(read_vars, num_readvars);
 
-	VID_InitDIB();
-	VID_InitFullDIB();
+	VID_InitModelist();
 
 	width = (int)vid_width.value;
 	height = (int)vid_height.value;
@@ -1151,7 +1097,7 @@ static void VID_Menu_Init (void)
 {
 	int i, j, h, w;
 
-	for (i = 1; i < nummodes; i++) //start i at mode 1 because 0 is windowed mode
+	for (i = 0; i < nummodes; i++)
 	{
 		w = modelist[i].width;
 		h = modelist[i].height;
@@ -1185,7 +1131,7 @@ static void VID_Menu_RebuildBppList (void)
 
 	vid_menu_numbpps = 0;
 
-	for (i = 1; i < nummodes; i++) //start i at mode 1 because 0 is windowed mode
+	for (i = 0; i < nummodes; i++)
 	{
 		if (vid_menu_numbpps >= MAX_BPPS_LIST)
 			break;
