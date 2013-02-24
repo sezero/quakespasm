@@ -65,7 +65,6 @@ static SDL_Surface	*draw_context;
 static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
 
-static int	vid_default = MS_WINDOWED;
 static qboolean	fullsbardraw = false;
 
 static void VID_Menu_Init (void); //johnfitz
@@ -931,10 +930,9 @@ VID_Init
 void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
-	const SDL_VideoInfo *info;
-	int		i, existingmode;
+	const SDL_VideoInfo *info = SDL_GetVideoInfo();
 	int		width, height, bpp;
-	int		p;
+	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
 					 "vid_height",
@@ -952,7 +950,6 @@ void	VID_Init (void)
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
 	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
-//	Cvar_RegisterVariable (&vid_refreshrate); //johnfitz
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
@@ -975,133 +972,64 @@ void	VID_Init (void)
 	VID_InitDIB();
 	VID_InitFullDIB();
 
-	if (COM_CheckParm("-window") || COM_CheckParm("-w"))
-	{
-		Cvar_SetQuick (&vid_fullscreen, "0");
-	}
-	else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
-	{
-		Cvar_SetQuick (&vid_fullscreen, "1");
-	}
+	width = (int)vid_width.value;
+	height = (int)vid_height.value;
+	bpp = (int)vid_bpp.value;
+	fullscreen = (int)vid_fullscreen.value;
 
-	if (!vid_fullscreen.value)
+	if (COM_CheckParm("-current"))
 	{
-		vid_default = MS_WINDOWED;
+		width = info->current_w;
+		height = info->current_h;
+		bpp = info->vfmt->BitsPerPixel;
+		fullscreen = true;
 	}
 	else
 	{
-		vid_default = MS_UNINIT;
+		int p;
 
-		width = vid_width.value;
-		height = vid_height.value;
-		bpp = vid_bpp.value;
-
-		if (COM_CheckParm("-current"))
+		p = COM_CheckParm("-width");
+		if (p && p < com_argc-1)
 		{
-			info = SDL_GetVideoInfo();
-			width = info->current_w;
-			height = info->current_h;
-			bpp = info->vfmt->BitsPerPixel;
-		}
-		else
-		{
-			p = COM_CheckParm("-width");
-			if (p && p < com_argc-1)
-			{
-				width = Q_atoi(com_argv[p+1]);
+			width = Q_atoi(com_argv[p+1]);
 
-				if(!COM_CheckParm("-height"))
-					height = width * 3 / 4;
-			}
-
-			p = COM_CheckParm("-height");
-			if (p && p < com_argc-1)
-			{
-				height = Q_atoi(com_argv[p+1]);
-
-				if(!COM_CheckParm("-width"))
-					width = height * 4 / 3;
-			}
-
-			p = COM_CheckParm("-bpp");
-			if (p && p < com_argc-1)
-				bpp = Q_atoi(com_argv[p+1]);
+			if(!COM_CheckParm("-height"))
+				height = width * 3 / 4;
 		}
 
-		// if they want to force it, add the specified mode to the list
-		if (COM_CheckParm("-force") && (nummodes < MAX_MODE_LIST))
+		p = COM_CheckParm("-height");
+		if (p && p < com_argc-1)
 		{
-			modelist[nummodes].type = MS_FULLSCREEN;
-			modelist[nummodes].width = width;
-			modelist[nummodes].height = height;
-			modelist[nummodes].fullscreen = 1;
-			modelist[nummodes].bpp = bpp;
+			height = Q_atoi(com_argv[p+1]);
 
-			for (i=nummodes, existingmode = 0 ; i<nummodes ; i++)
-			{
-				if ((modelist[nummodes].width == modelist[i].width)   &&
-					(modelist[nummodes].height == modelist[i].height) &&
-					(modelist[nummodes].bpp == modelist[i].bpp))
-				{
-					existingmode = 1;
-					break;
-				}
-			}
-
-			if (!existingmode)
-			{
-				nummodes++;
-			}
+			if(!COM_CheckParm("-width"))
+				width = height * 4 / 3;
 		}
 
-		// Try to find a mode with matching width, height and bpp
-		if (vid_default == MS_UNINIT)
-		{
-			for (i = 1; i < nummodes; i++)
-			{
-				if ((modelist[i].width == width) &&
-					(modelist[i].height == height) &&
-					(modelist[i].bpp == bpp))
-				{
-					vid_default = i;
-					break;
-				}
-			}
-		}
+		p = COM_CheckParm("-bpp");
+		if (p && p < com_argc-1)
+			bpp = Q_atoi(com_argv[p+1]);
 
-		// Try to find a mode with matching width and height
-		if (vid_default == MS_UNINIT)
-		{
-			for (i = 1; i < nummodes; i++)
-			{
-				if ((modelist[i].width == width) &&
-					(modelist[i].height == height))
-				{
-					vid_default = i;
-					break;
-				}
-			}
-		}
+		if (COM_CheckParm("-window") || COM_CheckParm("-w"))
+			fullscreen = false;
+		else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
+			fullscreen = true;
+	}
 
-		// Try to find a mode with matching width
-		if (vid_default == MS_UNINIT)
-		{
-			for (i = 1; i < nummodes; i++)
-			{
-				if (modelist[i].width == width)
-				{
-					vid_default = i;
-					break;
-				}
-			}
-		}
+	if (!VID_ValidMode(width, height, bpp, fullscreen))
+	{
+		width = (int)vid_width.value;
+		height = (int)vid_height.value;
+		bpp = (int)vid_bpp.value;
+		fullscreen = (int)vid_fullscreen.value;
+	}
 
-		// Still no luck? Default to windowed mode
-		if (vid_default == MS_UNINIT)
-		{
-			Cvar_SetQuick (&vid_fullscreen, "0");
-			vid_default = MS_WINDOWED;
-		}
+	if (!VID_ValidMode(width, height, bpp, fullscreen))
+	{
+		width = 640;
+		height = 480;
+		bpp = info->vfmt->BitsPerPixel;
+		fullscreen = false;
 	}
 
 	vid_initialized = true;
@@ -1114,10 +1042,7 @@ void	VID_Init (void)
 	// set window icon
 	PL_SetWindowIcon();
 
-	VID_SetMode (modelist[vid_default].width,
-			modelist[vid_default].height,
-			modelist[vid_default].bpp,
-			modelist[vid_default].type == MS_FULLSCREEN);
+	VID_SetMode (width, height, bpp, fullscreen);
 
 	GL_Init ();
 	GL_SetupState ();
