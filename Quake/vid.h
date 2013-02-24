@@ -29,7 +29,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define VID_GRADES	(1 << VID_CBITS)
 
 // moved here for global use -- kristian
-typedef enum { MS_UNINIT = -1, MS_WINDOWED, MS_FULLSCREEN } modestate_t;
+typedef enum { MS_UNINIT, MS_WINDOWED, MS_FULLSCREEN } modestate_t;
 
 extern modestate_t	modestate;
 

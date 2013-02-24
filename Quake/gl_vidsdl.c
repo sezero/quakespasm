@@ -75,7 +75,7 @@ static void GL_Init (void);
 static void GL_SetupState (void); //johnfitz
 
 viddef_t	vid;				// global video state
-modestate_t	modestate = MS_WINDOWED;
+modestate_t	modestate = MS_UNINIT;
 qboolean	scr_skipupdate;
 
 qboolean isIntelVideo = false; //johnfitz -- intel video workarounds from Baker
@@ -350,10 +350,13 @@ static void VID_Restart (void)
 //
 // update mouse grab
 //
-	if (modestate == MS_FULLSCREEN)
-		IN_Activate();
-	else if (key_dest == key_console || key_dest == key_menu)
-		IN_Deactivate(true);
+	if (key_dest == key_console || key_dest == key_menu)
+	{
+		if (modestate == MS_WINDOWED)
+			IN_Deactivate(true);
+		else if (modestate == MS_FULLSCREEN)
+			IN_Activate();
+	}
 }
 
 /*
@@ -1029,10 +1032,13 @@ void	VID_Toggle (void)
 		VID_SyncCvars();
 
 		// update mouse grab
-		if (modestate == MS_FULLSCREEN)
-			IN_Activate();
-		else if (key_dest == key_console || key_dest == key_menu)
-			IN_Deactivate(true);
+		if (key_dest == key_console || key_dest == key_menu)
+		{
+			if (modestate == MS_WINDOWED)
+				IN_Deactivate(true);
+			else if (modestate == MS_FULLSCREEN)
+				IN_Activate();
+		}
 	}
 	else
 	{
