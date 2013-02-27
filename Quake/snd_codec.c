@@ -4,7 +4,7 @@
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
  * Copyright (C) 2005 Stuart Dalton <badcdev@gmail.com>
- * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2012 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,9 +65,8 @@ void S_CodecInit (void)
 	S_CodecRegister(&mp3_codec);
 #endif
 #ifdef USE_CODEC_VORBIS
-	S_CodecRegister(&ogg_codec);
+	S_CodecRegister(&vorbis_codec);
 #endif
-
 	codec = codecs;
 	while (codec)
 	{

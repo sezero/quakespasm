@@ -4,7 +4,7 @@
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
  * Copyright (C) 2005 Stuart Dalton <badcdev@gmail.com>
- * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2012 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -87,9 +87,8 @@ void S_CodecUtilClose(snd_stream_t **stream);
 #define CODECTYPE_FLAC		(1U << 2)
 #define CODECTYPE_WAV		(1U << 3)
 #define CODECTYPE_MP3		(1U << 4)
-#define CODECTYPE_OGG		(1U << 5)
+#define CODECTYPE_VORBIS	(1U << 5)
 
-#define CODECTYPE_VORBIS	CODECTYPE_OGG
 #define CODECTYPE_WAVE		CODECTYPE_WAV
 #define CODECTYPE_MIDI		CODECTYPE_MID
 

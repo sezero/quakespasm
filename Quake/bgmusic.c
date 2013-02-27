@@ -3,7 +3,7 @@
  * Handles streaming music as raw sound samples and runs the midi driver
  *
  * Copyright (C) 1999-2005 Id Software, Inc.
- * Copyright (C) 2010-2011 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2012 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ typedef struct music_handler_s
 
 static music_handler_t wanted_handlers[] =
 {
-	{ CODECTYPE_OGG,  BGM_STREAMER, -1,  "ogg", MUSIC_DIRNAME, NULL },
+	{ CODECTYPE_VORBIS,BGM_STREAMER,-1,  "ogg", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_MP3,  BGM_STREAMER, -1,  "mp3", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_FLAC, BGM_STREAMER, -1, "flac", MUSIC_DIRNAME, NULL },
 	{ CODECTYPE_WAV,  BGM_STREAMER, -1,  "wav", MUSIC_DIRNAME, NULL },
@@ -63,7 +63,7 @@ static music_handler_t wanted_handlers[] =
 static music_handler_t *music_handlers = NULL;
 
 #define ANY_CODECTYPE	0xFFFFFFFF
-#define CDRIP_TYPES	(CODECTYPE_OGG | CODECTYPE_MP3 | CODECTYPE_FLAC | CODECTYPE_WAV)
+#define CDRIP_TYPES	(CODECTYPE_VORBIS | CODECTYPE_MP3 | CODECTYPE_FLAC | CODECTYPE_WAV)
 #define CDRIPTYPE(x)	(((x) & CDRIP_TYPES) != 0)
 
 static snd_stream_t *bgmstream = NULL;
