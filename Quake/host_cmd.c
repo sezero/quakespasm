@@ -866,7 +866,6 @@ Goes to a new map, taking all clients along
 void Host_Changelevel_f (void)
 {
 	char	level[MAX_QPATH];
-	int		i; //johnfitz
 
 	if (Cmd_Argc() != 2)
 	{
@@ -881,7 +880,7 @@ void Host_Changelevel_f (void)
 
 	//johnfitz -- check for client having map before anything else
 	q_snprintf (level, sizeof(level), "maps/%s.bsp", Cmd_Argv(1));
-	if (COM_OpenFile (level, &i, NULL) == -1)
+	if (!COM_FileExists(level, NULL))
 		Host_Error ("cannot find map %s", level);
 	//johnfitz
 
