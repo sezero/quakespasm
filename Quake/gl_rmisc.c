@@ -176,9 +176,6 @@ void R_Init (void)
 
 	Sky_Init (); //johnfitz
 	Fog_Init (); //johnfitz
-
-	if (isIntelVideo) //intel video workarounds from Baker
-		Cvar_SetQuick (&gl_clear, "1");
 }
 
 /*

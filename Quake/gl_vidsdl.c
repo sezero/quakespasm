@@ -63,8 +63,6 @@ static SDL_Surface	*draw_context;
 static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
 
-static qboolean	fullsbardraw = false;
-
 static void VID_Menu_Init (void); //johnfitz
 static void VID_Menu_f (void); //johnfitz
 static void VID_MenuDraw (void);
@@ -78,7 +76,6 @@ viddef_t	vid;				// global video state
 modestate_t	modestate = MS_UNINIT;
 qboolean	scr_skipupdate;
 
-qboolean isIntelVideo = false; //johnfitz -- intel video workarounds from Baker
 qboolean gl_mtexable = false;
 qboolean gl_texture_env_combine = false; //johnfitz
 qboolean gl_texture_env_add = false; //johnfitz
@@ -683,12 +680,12 @@ static void GL_Init (void)
 	GL_CheckExtensions (); //johnfitz
 
 	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
-		fullsbardraw = true;
+		Cbuf_AddText ("gl_clear 1");
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
 	{
 		Con_Printf ("Intel Display Adapter detected\n");
-		isIntelVideo = true;
+		Cbuf_AddText ("gl_clear 1");
 	}
 	//johnfitz
 }
