@@ -652,7 +652,7 @@ void Draw_ConsoleBackground (void)
 
 	alpha = (con_forcedup) ? 1.0 : scr_conalpha.value;
 
-//	GL_SetCanvas (CANVAS_CONSOLE); //in case this is called from weird places
+	GL_SetCanvas (CANVAS_CONSOLE); //in case this is called from weird places
 
 	if (alpha > 0.0)
 	{

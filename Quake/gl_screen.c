@@ -1035,7 +1035,10 @@ void SCR_UpdateScreen (void)
 
 	if (scr_drawdialog) //new game confirm
 	{
-		Sbar_Draw ();
+		if (con_forcedup)
+			Draw_ConsoleBackground ();
+		else
+			Sbar_Draw ();
 		Draw_FadeScreen ();
 		SCR_DrawNotifyString ();
 	}

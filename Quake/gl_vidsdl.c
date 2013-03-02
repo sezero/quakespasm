@@ -379,7 +379,6 @@ static void VID_Test (void)
 	old_fullscreen = draw_context->flags & SDL_FULLSCREEN ? true : false;
 
 	VID_Restart ();
-	SCR_UpdateScreen ();
 
 	//pop up confirmation dialoge
 	if (!SCR_ModalMessage("Would you like to keep this\nvideo mode? (y/n)\n", 5.0f))
