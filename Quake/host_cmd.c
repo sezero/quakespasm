@@ -914,7 +914,7 @@ void Host_Restart_f (void)
 	q_strlcpy (mapname, sv.name, sizeof(mapname));	// mapname gets cleared in spawnserver
 	SV_SpawnServer (mapname);
 	if (!sv.active)
-		Host_Error ("cannot restart map %s", level);
+		Host_Error ("cannot restart map %s", mapname);
 }
 
 /*
