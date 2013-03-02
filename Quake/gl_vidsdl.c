@@ -682,7 +682,7 @@ static void GL_Init (void)
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
 	{
-		Con_Printf ("Intel Display Adapter detected\n");
+		Con_Printf ("Intel Display Adapter detected, enabling gl_clear\n");
 		Cbuf_AddText ("gl_clear 1");
 	}
 	//johnfitz
