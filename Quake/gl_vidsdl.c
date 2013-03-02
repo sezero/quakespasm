@@ -711,9 +711,6 @@ void GL_EndRendering (void)
 {
 	if (!scr_skipupdate)
 		SDL_GL_SwapBuffers();
-
-	if (fullsbardraw)
-		Sbar_Changed();
 }
 
 
@@ -1001,9 +998,6 @@ void	VID_Init (void)
 	vid_menucmdfn = VID_Menu_f; //johnfitz
 	vid_menudrawfn = VID_MenuDraw;
 	vid_menukeyfn = VID_MenuKey;
-
-	if (COM_CheckParm("-fullsbar"))
-		fullsbardraw = true;
 
 	VID_Gamma_Init(); //johnfitz
 	VID_Menu_Init(); //johnfitz
