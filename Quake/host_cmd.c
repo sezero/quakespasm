@@ -835,7 +835,7 @@ void Host_Map_f (void)
 
 	svs.serverflags = 0;			// haven't completed an episode yet
 	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
-	// remove (any) trailing ".bsp" from mapname S.A.
+	// remove (any) trailing ".bsp" from mapname -- S.A.
 	p = strstr(name, ".bsp");
 	if (p && p[4] == '\0')
 		*p = '\0';
@@ -1297,16 +1297,13 @@ void Host_Say(qboolean teamonly)
 
 	if (cmd_source == src_command)
 	{
-		if (cls.state == ca_dedicated)
-		{
-			fromServer = true;
-			teamonly = false;
-		}
-		else
+		if (cls.state != ca_dedicated)
 		{
 			Cmd_ForwardToServer ();
 			return;
 		}
+		fromServer = true;
+		teamonly = false;
 	}
 
 	if (Cmd_Argc () < 2)
@@ -1621,12 +1618,9 @@ void Host_Spawn_f (void)
 		ent->v.netname = PR_SetEngineString(host_client->name);
 
 		// copy spawn parms out of the client_t
-
 		for (i=0 ; i< NUM_SPAWN_PARMS ; i++)
 			(&pr_global_struct->parm1)[i] = host_client->spawn_parms[i];
-
 		// call the spawn function
-
 		pr_global_struct->time = sv.time;
 		pr_global_struct->self = EDICT_TO_PROG(sv_player);
 		PR_ExecuteProgram (pr_global_struct->ClientConnect);
@@ -1684,7 +1678,6 @@ void Host_Spawn_f (void)
 	MSG_WriteByte (&host_client->message, svc_updatestat);
 	MSG_WriteByte (&host_client->message, STAT_MONSTERS);
 	MSG_WriteLong (&host_client->message, pr_global_struct->killed_monsters);
-
 
 //
 // send a fixangle
@@ -1792,10 +1785,10 @@ void Host_Kick_f (void)
 			message = COM_Parse(Cmd_Args());
 			if (byNumber)
 			{
-				message++;							// skip the #
-				while (*message == ' ')				// skip white space
+				message++;			// skip the #
+				while (*message == ' ')		// skip white space
 					message++;
-				message += Q_strlen(Cmd_Argv(2));	// skip the number
+				message += strlen(Cmd_Argv(2));	// skip the number
 			}
 			while (*message && *message == ' ')
 				message++;
