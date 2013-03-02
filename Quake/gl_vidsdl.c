@@ -679,8 +679,6 @@ static void GL_Init (void)
 
 	GL_CheckExtensions (); //johnfitz
 
-	if (SDL_strncasecmp(gl_renderer,"PowerVR",7)==0)
-		Cbuf_AddText ("gl_clear 1");
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
 	{
