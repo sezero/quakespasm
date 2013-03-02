@@ -203,6 +203,11 @@ static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscre
 	if (height < 200)
 		return false;
 
+	if (fullscreen)
+		flags |= SDL_FULLSCREEN;
+
+	bpp = SDL_VideoModeOK(width, height, bpp, flags);
+
 	switch (bpp)
 	{
 	case 16:
@@ -212,12 +217,6 @@ static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscre
 	default:
 		return false;
 	}
-
-	if (fullscreen)
-		flags |= SDL_FULLSCREEN;
-
-	if (!SDL_VideoModeOK(width, height, bpp, flags))
-		return false;
 
 	return true;
 }
@@ -249,6 +248,8 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	gl_swap_control = true;
 	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
 		gl_swap_control = false;
+
+	bpp = SDL_VideoModeOK(width, height, bpp, flags);
 
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
 	if (!draw_context)
