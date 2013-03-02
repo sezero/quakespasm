@@ -1044,7 +1044,7 @@ void Key_ClearStates (void)
 
 /*
 ===================
-Key_ForceDest
+Key_UpdateForDest
 ===================
 */
 void Key_UpdateForDest (void)
