@@ -231,26 +231,24 @@ void SCR_CheckDrawCenterString (void)
 /*
 ====================
 AdaptFovx
-
-Adapts a 4:3 horizontal FOV to the current screen size (Hor+).
+Adapt a 4:3 horizontal FOV to the current screen size using the "Hor+" scaling:
+2.0 * atan(width / height * 3.0 / 4.0 * tan(fov_x / 2.0))
 ====================
 */
-float AdaptFovx (float fov43, float w, float h)
+float AdaptFovx (float fov_x, float width, float height)
 {
-	static const float pi = M_PI; /* float instead of double. */
+	float	a, x;
 
-	if (w <= 0 || h <= 0)
-		return fov43;
+	if (fov_x < 1 || fov_x > 179)
+		Sys_Error ("Bad fov: %f", fov_x);
 
-	/*
-	 * Formula:
-	 *
-	 * fov = 2.0 * atan(width / height * 3.0 / 4.0 * tan(fov43 / 2.0))
-	 *
-	 * The code below is equivalent but precalculates a few values and
-	 * converts between degrees and radians when needed.
-	 */
-	return (atanf(tanf(fov43 / 360.0f * pi) * (w / h) * 0.75f) / pi * 360.0f);
+	if (!scr_fov_adapt.value)
+		return fov_x;
+	if ((x = height / width) == 0.75)
+		return fov_x;
+	a = atan(0.75 / x * tan(fov_x / 360 * M_PI));
+	a = a * 360 / M_PI;
+	return a;
 }
 
 /*
@@ -260,15 +258,15 @@ CalcFovy
 */
 float CalcFovy (float fov_x, float width, float height)
 {
-    float   a, x;
+	float	a, x;
 
-    if (fov_x < 1 || fov_x > 179)
-            Sys_Error ("Bad fov: %f", fov_x);
+	if (fov_x < 1 || fov_x > 179)
+		Sys_Error ("Bad fov: %f", fov_x);
 
-    x = width/tan(fov_x/360*M_PI);
-    a = atan (height/x);
-    a = a*360/M_PI;
-    return a;
+	x = width / tan(fov_x / 360 * M_PI);
+	a = atan(height / x);
+	a = a * 360 / M_PI;
+	return a;
 }
 
 /*
@@ -323,11 +321,7 @@ static void SCR_CalcRefdef (void)
 	r_refdef.vrect.y = (glheight - sb_lines - r_refdef.vrect.height)/2;
 	//johnfitz
 
-	if (scr_fov_adapt.value)
-		r_refdef.fov_x = AdaptFovx(scr_fov.value, r_refdef.vrect.width, r_refdef.vrect.height);
-	else
-		r_refdef.fov_x = scr_fov.value;
-	r_refdef.fov_x = CLAMP (10, r_refdef.fov_x, 170);
+	r_refdef.fov_x = AdaptFovx(scr_fov.value, r_refdef.vrect.width, r_refdef.vrect.height);
 	r_refdef.fov_y = CalcFovy (r_refdef.fov_x, r_refdef.vrect.width, r_refdef.vrect.height);
 
 	scr_vrect = r_refdef.vrect;
