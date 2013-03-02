@@ -930,7 +930,7 @@ void Sbar_Draw (void)
 	if (cl.intermission)
 		return; //johnfitz -- never draw sbar during intermission
 
-	if (sb_updates >= vid.numpages && !gl_clear.value && scr_sbaralpha.value >= 1 && !isIntelVideo) //johnfitz -- gl_clear, scr_sbaralpha, intel workarounds from baker
+	if (sb_updates >= vid.numpages && !gl_clear.value && scr_sbaralpha.value >= 1) //johnfitz -- gl_clear, scr_sbaralpha
 		return;
 
 	sb_updates++;

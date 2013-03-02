@@ -950,7 +950,7 @@ SCR_TileClear -- johnfitz -- modified to use glwidth/glheight instead of vid.wid
 */
 void SCR_TileClear (void)
 {
-	if (scr_tileclear_updates >= vid.numpages && !gl_clear.value && !isIntelVideo) //intel video workarounds from Baker
+	if (scr_tileclear_updates >= vid.numpages && !gl_clear.value)
 		return;
 	scr_tileclear_updates++;
 
