@@ -1036,7 +1036,7 @@ void	VID_Toggle (void)
 		vid_toggle_works = false;
 		Con_DPrintf ("SDL_WM_ToggleFullScreen failed, attempting VID_Restart\n");
 	vrestart:
-		Cvar_SetQuick (&vid_fullscreen, vid_fullscreen.value ? "0" : "1");
+		Cvar_SetQuick (&vid_fullscreen, draw_context-> flags & SDL_FULLSCREEN ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
 	}
 }
