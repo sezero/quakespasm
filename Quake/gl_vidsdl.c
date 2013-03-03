@@ -39,7 +39,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAXWIDTH		10000
 #define MAXHEIGHT		10000
 
-#define SDL_DEFAULT_FLAGS	SDL_OPENGL
+#define DEFAULT_SDL_FLAGS	SDL_OPENGL
 
 typedef struct {
 	int			width;
@@ -195,7 +195,7 @@ VID_ValidMode
 */
 static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscreen)
 {
-	Uint32 flags = SDL_DEFAULT_FLAGS;
+	Uint32 flags = DEFAULT_SDL_FLAGS;
 
 	if (width < 320)
 		return false;
@@ -229,7 +229,7 @@ VID_SetMode
 static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 {
 	int		temp;
-	Uint32	flags = SDL_DEFAULT_FLAGS;
+	Uint32	flags = DEFAULT_SDL_FLAGS;
 	char		caption[50];
 
 	if (fullscreen)
@@ -821,7 +821,7 @@ static void VID_InitModelist (void)
 	format.palette = NULL;
 
 	// enumerate fullscreen modes
-	flags = SDL_DEFAULT_FLAGS | SDL_FULLSCREEN;
+	flags = DEFAULT_SDL_FLAGS | SDL_FULLSCREEN;
 	for (i = 0; i < (int)(sizeof(bpps)/sizeof(bpps[0])); i++)
 	{
 		if (nummodes >= MAX_MODE_LIST)
@@ -871,7 +871,7 @@ VID_Init
 */
 void	VID_Init (void)
 {
-	static char vid_center[32] = "SDL_VIDEO_CENTERED=center";
+	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
 	int		width, height, bpp;
 	qboolean	fullscreen;
@@ -1222,7 +1222,7 @@ static void VID_Menu_ChooseNextMode (int dir)
 ================
 VID_Menu_ChooseNextBpp
 
-chooses next bpp in order, then updates vid_bpp cvar, then updates refreshrate list
+chooses next bpp in order, then updates vid_bpp cvar
 ================
 */
 static void VID_Menu_ChooseNextBpp (int dir)
