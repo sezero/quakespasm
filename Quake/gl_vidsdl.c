@@ -1071,8 +1071,16 @@ void VID_SyncCvars (void)
 //
 //==========================================================================
 
-#define VIDEO_OPTIONS_ITEMS 6
-static int	video_cursor_table[] = {48, 56, 64, 72, 88, 96};
+enum {
+	VID_OPT_MODE,
+	VID_OPT_BPP,
+	VID_OPT_FULLSCREEN,
+	VID_OPT_VSYNC,
+	VID_OPT_TEST,
+	VID_OPT_APPLY,
+	VIDEO_OPTIONS_ITEMS
+};
+
 static int	video_options_cursor = 0;
 
 typedef struct {
@@ -1279,16 +1287,16 @@ static void VID_MenuKey (int key)
 		S_LocalSound ("misc/menu3.wav");
 		switch (video_options_cursor)
 		{
-		case 0:
+		case VID_OPT_MODE:
 			VID_Menu_ChooseNextMode (1);
 			break;
-		case 1:
+		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (1);
 			break;
-		case 2:
+		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 3:
+		case VID_OPT_VSYNC:
 			Cbuf_AddText ("toggle vid_vsync\n"); // kristian
 			break;
 		default:
@@ -1300,16 +1308,16 @@ static void VID_MenuKey (int key)
 		S_LocalSound ("misc/menu3.wav");
 		switch (video_options_cursor)
 		{
-		case 0:
+		case VID_OPT_MODE:
 			VID_Menu_ChooseNextMode (-1);
 			break;
-		case 1:
+		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (-1);
 			break;
-		case 2:
+		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 3:
+		case VID_OPT_VSYNC:
 			Cbuf_AddText ("toggle vid_vsync\n");
 			break;
 		default:
@@ -1321,22 +1329,22 @@ static void VID_MenuKey (int key)
 		m_entersound = true;
 		switch (video_options_cursor)
 		{
-		case 0:
+		case VID_OPT_MODE:
 			VID_Menu_ChooseNextMode (1);
 			break;
-		case 1:
+		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (1);
 			break;
-		case 2:
+		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
-		case 3:
+		case VID_OPT_VSYNC:
 			Cbuf_AddText ("toggle vid_vsync\n");
 			break;
-		case 4:
+		case VID_OPT_TEST:
 			Cbuf_AddText ("vid_test\n");
 			break;
-		case 5:
+		case VID_OPT_APPLY:
 			Cbuf_AddText ("vid_restart\n");
 			key_dest = key_game;
 			m_state = m_none;
@@ -1359,54 +1367,66 @@ VID_MenuDraw
 */
 static void VID_MenuDraw (void)
 {
-	int i = 0;
+	int i, y;
 	qpic_t *p;
 	const char *title;
 
-	M_DrawTransPic (16, 4, Draw_CachePic ("gfx/qplaque.lmp"));
+	y = 4;
+
+	// plaque
+	p = Draw_CachePic ("gfx/qplaque.lmp");
+	M_DrawTransPic (16, y, p);
 
 	//p = Draw_CachePic ("gfx/vidmodes.lmp");
 	p = Draw_CachePic ("gfx/p_option.lmp");
-	M_DrawPic ( (320-p->width)/2, 4, p);
+	M_DrawPic ( (320-p->width)/2, y, p);
+
+	y += 28;
 
 	// title
 	title = "Video Options";
-	M_PrintWhite ((320-8*strlen(title))/2, 32, title);
+	M_PrintWhite ((320-8*strlen(title))/2, y, title);
+
+	y += 16;
 
 	// options
-	M_Print (16, video_cursor_table[i], "        Video mode");
-	M_Print (184, video_cursor_table[i], va("%ix%i", (int)vid_width.value, (int)vid_height.value));
-	i++;
+	for (i = 0; i < VIDEO_OPTIONS_ITEMS; i++)
+	{
+		switch (i)
+		{
+		case VID_OPT_MODE:
+			M_Print (16, y, "        Video mode");
+			M_Print (184, y, va("%ix%i", (int)vid_width.value, (int)vid_height.value));
+			break;
+		case VID_OPT_BPP:
+			M_Print (16, y, "       Color depth");
+			M_Print (184, y, va("%i", (int)vid_bpp.value));
+			break;
+		case VID_OPT_FULLSCREEN:
+			M_Print (16, y, "        Fullscreen");
+			M_DrawCheckbox (184, y, (int)vid_fullscreen.value);
+			break;
+		case VID_OPT_VSYNC:
+			M_Print (16, y, "     Vertical sync");
+			if (gl_swap_control)
+				M_DrawCheckbox (184, y, (int)vid_vsync.value);
+			else
+				M_Print (184, y, "N/A");
+			break;
+		case VID_OPT_TEST:
+			y += 8; //separate the test and apply items
+			M_Print (16, y, "      Test changes");
+			break;
+		case VID_OPT_APPLY:
+			M_Print (16, y, "     Apply changes");
+			break;
+		}
 
-	M_Print (16, video_cursor_table[i], "       Color depth");
-	M_Print (184, video_cursor_table[i], va("%i", (int)vid_bpp.value));
-	i++;
+		if (video_options_cursor == i)
+			M_DrawCharacter (168, y, 12+((int)(realtime*4)&1));
 
-	M_Print (16, video_cursor_table[i], "        Fullscreen");
-	M_DrawCheckbox (184, video_cursor_table[i], (int)vid_fullscreen.value);
-	i++;
-
-	// added vsync to the video menu -- kristian
-	M_Print (16, video_cursor_table[i], "     Vertical Sync");
-	if (gl_swap_control)
-		M_DrawCheckbox (184, video_cursor_table[i], (int)vid_vsync.value);
-	else
-		M_Print (184, video_cursor_table[i], "N/A");
-
-	i++;
-
-	M_Print (16, video_cursor_table[i], "      Test changes");
-	i++;
-
-	M_Print (16, video_cursor_table[i], "     Apply changes");
-
-	// cursor
-	M_DrawCharacter (168, video_cursor_table[video_options_cursor], 12+((int)(realtime*4)&1));
-
-	// notes          "345678901234567890123456789012345678"
-//	M_Print (16, 172, "Windowed modes always use the desk- ");
-//	M_Print (16, 180, "top color depth, and can never be   ");
-//	M_Print (16, 188, "larger than the desktop resolution. ");
+		y += 8;
+	}
 }
 
 /*
