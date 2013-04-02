@@ -508,20 +508,17 @@ void Key_Message (int key)
 		return;
 	}
 
-	if (key < 32 || key > 127)
-		return;	// non printable
-
 	if (key == K_BACKSPACE)
 	{
 		if (chat_bufferlen)
-		{
-			chat_bufferlen--;
-			chat_buffer[chat_bufferlen] = 0;
-		}
+			chat_buffer[--chat_bufferlen] = 0;
 		return;
 	}
 
-	if (chat_bufferlen == sizeof(chat_buffer)-1)
+	if (key < 32 || key > 127)
+		return; // non printable
+
+	if (chat_bufferlen == sizeof(chat_buffer) - 1)
 		return; // all full
 
 	chat_buffer[chat_bufferlen++] = key;
