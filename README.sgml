@@ -55,7 +55,7 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 <sect> Compiling <p>
 <p>To check-out the latest version of QuakeSpasm, use :
 <newline>
-<em>svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk</em></p>
+<em>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</em></p>
 
 <sect1> Linux/Unix <p>
 After extracting the source tarball, browse the Makefile and edit the music streaming options, then

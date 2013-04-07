@@ -99,7 +99,7 @@
   4.  Compiling
 
   To check-out the latest version of QuakeSpasm, use :
-  svn co https://quakespasm.svn.sourceforge.net/svnroot/quakespasm/trunk
+  svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
 
   4.1.  Linux/Unix
 
