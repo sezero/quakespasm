@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Oct. 07, 2012</em>
+<em>Page last edited Apr. 12, 2013</em>
 
 <sect> About <p>
 
@@ -96,6 +96,27 @@ these patched libSDL binaries may help.
 </p>
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.85.9<p>
+<itemize>
+<item> Fixes for several undefined behaviors in C code (gcc-4.8 support.)
+<item> Implemented Hor+ style field of view (FOV) scaling, useful for widescreen resolutions. Configured by new cvar fov_adapt: set it to 1 and your fov will be scaled automatically according to the resolution. Enabled by default.
+<item> Adjusted string buffers for PR_ValueString and friends to fix crashes with excessively long global strings seen in some rude mods.
+<item> Toned down warning messages from PF_VarString() a bit.
+<item> Fixed Fitzquake's map existence check in changelevel (used to leak file handles which would end up in a Sys_Error() due to consuming all free handles if many maps reside not in pak files.)
+<item> Fixes/cleanups in chat mode handling. Client no longer gets stuck in chat mode upon disconnect.
+<item> Mouse grab/key_dest fixes and key cleanups.
+<item> The "speedkey" now acts as "slowkey" when "always run" is on.
+<item> Corner case fixes in COM_Parse() for quoted strings and support for C-style /*..*/ comments.
+<item> Changed lightmaps to GL_RGBA instead of GL_RGB.
+<item> Better parse for opengl extensions list (from quakeforge.)
+<item> Vsync saving/loading fixes.
+<item> Fixed pointfile loading.
+<item> Multiple cleanups in gl_vidsdl.c.
+<item> Opus music decoding support (as an optional patch only.)
+<item> Several other minor fixes/cleanups.
+</itemize>
+</p>
 
 <sect1> Changes in 0.85.8<p>
 <itemize>

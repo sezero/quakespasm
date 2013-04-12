@@ -17,14 +17,15 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.85.8
-     6.2 Changes in 0.85.7
-     6.3 Changes in 0.85.6
-     6.4 Changes in 0.85.5
-     6.5 Changes in 0.85.4
-     6.6 Changes in 0.85.3
-     6.7 Changes in 0.85.2
-     6.8 Changes in 0.85.1
+     6.1 Changes in 0.85.9
+     6.2 Changes in 0.85.8
+     6.3 Changes in 0.85.7
+     6.4 Changes in 0.85.6
+     6.5 Changes in 0.85.5
+     6.6 Changes in 0.85.4
+     6.7 Changes in 0.85.3
+     6.8 Changes in 0.85.2
+     6.9 Changes in 0.85.1
 
   7. Todo
   8. Copyright
@@ -34,7 +35,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Oct. 07, 2012
+  Page last edited Apr. 12, 2013
 
 
   1.  About
@@ -156,7 +157,51 @@
 
   6.  Changes
 
-  6.1.  Changes in 0.85.8
+  6.1.  Changes in 0.85.9
+
+  o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
+
+  o  Implemented Hor+ style field of view (FOV) scaling, useful for
+     widescreen resolutions. Configured by new cvar fov_adapt: set it
+     to 1 and your fov will be scaled automatically according to the
+     resolution. Enabled by default.
+
+  o  Adjusted string buffers for PR_ValueString and friends to fix
+     crashes with excessively long global strings seen in some rude
+     mods.
+
+  o  Toned down warning messages from PF_VarString() a bit.
+
+  o  Fixed Fitzquake's map existence check in changelevel (used to leak
+     file handles which would end up in a Sys_Error() due to consuming
+     all free handles if many maps reside not in pak files.)
+
+  o  Fixes/cleanups in chat mode handling. Client no longer gets stuck
+     in chat mode upon disconnect.
+
+  o  Mouse grab/key_dest fixes and key cleanups.
+
+  o  The "speedkey" now acts as "slowkey" when "always run" is on.
+
+  o  Corner case fixes in COM_Parse() for quoted strings and support for
+     C-style /*..*/ comments.
+
+  o  Changed lightmaps to GL_RGBA instead of GL_RGB.
+
+  o  Better parse for opengl extensions list (from quakeforge.)
+
+  o  Vsync saving/loading fixes.
+
+  o  Fixed pointfile loading.
+
+  o  Multiple cleanups in gl_vidsdl.c.
+
+  o  Opus music decoding support (as an optional patch only.)
+
+  o  Several other minor fixes/cleanups.
+
+
+  6.2.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -203,7 +248,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  6.2.  Changes in 0.85.7
+  6.3.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -229,7 +274,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  6.3.  Changes in 0.85.6
+  6.4.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -242,7 +287,7 @@
   o  Minor SDL video fixes.
 
 
-  6.4.  Changes in 0.85.5
+  6.5.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -273,7 +318,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  6.5.  Changes in 0.85.4
+  6.6.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -301,7 +346,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  6.6.  Changes in 0.85.3
+  6.7.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -338,7 +383,7 @@
      some other CD tweaks.
 
 
-  6.7.  Changes in 0.85.2
+  6.8.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -366,7 +411,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  6.8.  Changes in 0.85.1
+  6.9.  Changes in 0.85.1
 
   o  64 bit CPU support
 
