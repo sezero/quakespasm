@@ -183,6 +183,9 @@
 
   o  The "speedkey" now acts as "slowkey" when "always run" is on.
 
+  o  Support for demo recording after connection to server. (thanks to
+     Baker for a patch)
+
   o  Corner case fixes in COM_Parse() for quoted strings and support for
      C-style /*..*/ comments.
 

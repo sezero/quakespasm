@@ -107,6 +107,7 @@ these patched libSDL binaries may help.
 <item> Fixes/cleanups in chat mode handling. Client no longer gets stuck in chat mode upon disconnect.
 <item> Mouse grab/key_dest fixes and key cleanups.
 <item> The "speedkey" now acts as "slowkey" when "always run" is on.
+<item> Support for demo recording after connection to server. (thanks to Baker for a patch)
 <item> Corner case fixes in COM_Parse() for quoted strings and support for C-style /*..*/ comments.
 <item> Changed lightmaps to GL_RGBA instead of GL_RGB.
 <item> Better parse for opengl extensions list (from quakeforge.)

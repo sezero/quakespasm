@@ -35,6 +35,10 @@ read from the demo file.
 ==============================================================================
 */
 
+// from ProQuake: space to fill out the demo header for record at any time
+static byte	demo_head[3][MAX_MSGLEN];
+static int	demo_head_size[2];
+
 /*
 ==============
 CL_StopPlayback
@@ -164,6 +168,14 @@ int CL_GetMessage (void)
 	if (cls.demorecording)
 		CL_WriteDemoMessage ();
 
+	if (cls.signon < 2)
+	{
+	// record messages before full connection, so that a
+	// demo record can happen after connection is done
+		memcpy(demo_head[cls.signon], net_message.data, net_message.cursize);
+		demo_head_size[cls.signon] = net_message.cursize;
+	}
+
 	return r;
 }
 
@@ -214,6 +226,12 @@ void CL_Record_f (void)
 	if (cmd_source != src_command)
 		return;
 
+	if (cls.demoplayback)
+	{
+		Con_Printf ("Can't record during demo playback\n");
+		return;
+	}
+
 	if (cls.demorecording)
 		CL_Stop_f();
 
@@ -232,8 +250,15 @@ void CL_Record_f (void)
 
 	if (c == 2 && cls.state == ca_connected)
 	{
+#if 0
 		Con_Printf("Can not record - already connected to server\nClient demo recording must be started before connecting\n");
 		return;
+#endif
+		if (cls.signon < 2)
+		{
+			Con_Printf("Can't record - try again when connected\n");
+			return;
+		}
 	}
 
 // write the forced cd track number, or -1
@@ -272,6 +297,77 @@ void CL_Record_f (void)
 	fprintf (cls.demofile, "%i\n", cls.forcetrack);
 
 	cls.demorecording = true;
+
+	// from ProQuake: initialize the demo file if we're already connected
+	if (c == 2 && cls.state == ca_connected)
+	{
+		byte *data = net_message.data;
+		int cursize = net_message.cursize;
+		int i;
+
+		for (i = 0; i < 2; i++)
+		{
+			net_message.data = demo_head[i];
+			net_message.cursize = demo_head_size[i];
+			CL_WriteDemoMessage();
+		}
+
+		net_message.data = demo_head[2];
+		SZ_Clear (&net_message);
+
+		// current names, colors, and frag counts
+		for (i = 0; i < cl.maxclients; i++)
+		{
+			MSG_WriteByte (&net_message, svc_updatename);
+			MSG_WriteByte (&net_message, i);
+			MSG_WriteString (&net_message, cl.scores[i].name);
+			MSG_WriteByte (&net_message, svc_updatefrags);
+			MSG_WriteByte (&net_message, i);
+			MSG_WriteShort (&net_message, cl.scores[i].frags);
+			MSG_WriteByte (&net_message, svc_updatecolors);
+			MSG_WriteByte (&net_message, i);
+			MSG_WriteByte (&net_message, cl.scores[i].colors);
+		}
+
+		// send all current light styles
+		for (i = 0; i < MAX_LIGHTSTYLES; i++)
+		{
+			MSG_WriteByte (&net_message, svc_lightstyle);
+			MSG_WriteByte (&net_message, i);
+			MSG_WriteString (&net_message, cl_lightstyle[i].map);
+		}
+
+		// what about the CD track or SVC fog... future consideration.
+		MSG_WriteByte (&net_message, svc_updatestat);
+		MSG_WriteByte (&net_message, STAT_TOTALSECRETS);
+		MSG_WriteLong (&net_message, cl.stats[STAT_TOTALSECRETS]);
+
+		MSG_WriteByte (&net_message, svc_updatestat);
+		MSG_WriteByte (&net_message, STAT_TOTALMONSTERS);
+		MSG_WriteLong (&net_message, cl.stats[STAT_TOTALMONSTERS]);
+
+		MSG_WriteByte (&net_message, svc_updatestat);
+		MSG_WriteByte (&net_message, STAT_SECRETS);
+		MSG_WriteLong (&net_message, cl.stats[STAT_SECRETS]);
+
+		MSG_WriteByte (&net_message, svc_updatestat);
+		MSG_WriteByte (&net_message, STAT_MONSTERS);
+		MSG_WriteLong (&net_message, cl.stats[STAT_MONSTERS]);
+
+		// view entity
+		MSG_WriteByte (&net_message, svc_setview);
+		MSG_WriteShort (&net_message, cl.viewentity);
+
+		// signon
+		MSG_WriteByte (&net_message, svc_signonnum);
+		MSG_WriteByte (&net_message, 3);
+
+		CL_WriteDemoMessage();
+
+		// restore net_message
+		net_message.data = data;
+		net_message.cursize = cursize;
+	}
 }
 
 
