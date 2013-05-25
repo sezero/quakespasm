@@ -1,0 +1,4 @@
+configured using:
+--disable-modules --disable-debug --disable-fifo --disable-ipv6 --disable-network --disable-messages --disable-string --disable-icy --disable-lfs-alias
+edited src/config.h to read:
+#undef WANT_WIN32_UNICODE
