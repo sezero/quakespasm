@@ -1,4 +1,20 @@
 ------------------------------------------------------------------------
+r29 | 2013-05-25 02:36:43 +0400 | 2 lines
+
+Fix Issue 9: Surround (U)INTMAX_C with #ifndef's to prevent compiler warnings.
+
+------------------------------------------------------------------------
+r28 | 2013-05-25 02:32:18 +0400 | 2 lines
+
+Fix Issue 10: Use system <stdint.h> for Visual Studio 2010 and later.
+
+------------------------------------------------------------------------
+r27 | 2013-05-25 02:24:11 +0400 | 2 lines
+
+Fix license bug - the name of the product and the names of contributors
+must not be used for promotion.
+
+------------------------------------------------------------------------
 r26 | 2009-10-02 13:36:47 +0400 | 2 lines
 
 [Issue 5] Change <stdint.h> to "stdint.h" to let compiler search for it in local directory.
@@ -16,7 +32,7 @@ Forgot about #ifdef __cplusplus guard around 'extern "C"', so inclusion to C fil
 ------------------------------------------------------------------------
 r23 | 2009-05-12 01:27:45 +0400 | 3 lines
 
-[Issue 2] Always wrap <wcharîàž with external "C" {}.
+[Issue 2] Always wrap <wchar.h> with 'extern "C" {}'.
 It turns out that not only Visual Studio 6 requires this, but also newer versions when compiling for ARM.
 
 ------------------------------------------------------------------------
