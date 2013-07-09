@@ -22,7 +22,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+#if defined(_LP64) || defined(__LP64__) || defined(_WIN64)
+#define	DYNAMIC_SIZE	0x80000	// 512*1024
+#else
 #define	DYNAMIC_SIZE	0x60000	// 384*1024
+#endif
 
 #define	ZONEID	0x1d4a11
 #define MINFRAGMENT	64

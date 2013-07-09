@@ -52,7 +52,11 @@ static void Sys_CheckSDL (void)
 	}
 }
 
+#if defined(_LP64) || defined(__LP64__) || defined(_WIN64)
+#define DEFAULT_MEMORY 0x4800000
+#else
 #define DEFAULT_MEMORY 0x4000000
+#endif
 
 static quakeparms_t	parms;
 static Uint8		appState;
