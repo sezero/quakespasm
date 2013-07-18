@@ -12,6 +12,7 @@ USE_QS_CONBACK=1
 USE_CODEC_WAVE=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
+USE_CODEC_OPUS=0
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
@@ -135,6 +136,14 @@ CODECLIBS  :=
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
+ifeq ($(USE_CODEC_OPUS),1)
+# opus and opusfile put their *.h under <includedir>/opus,
+# but they include the headers without the opus directory
+# prefix and rely on pkg-config. ewww...
+CFLAGS+= -DUSE_CODEC_OPUS
+CFLAGS+= $(shell pkg-config --cflags opusfile)
+CODECLIBS+= $(shell pkg-config --libs   opusfile)
+endif
 ifeq ($(USE_CODEC_VORBIS),1)
 CFLAGS+= -DUSE_CODEC_VORBIS $(cpp_vorbisdec)
 CODECLIBS+= $(lib_vorbisdec)
@@ -171,6 +180,7 @@ MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
 	snd_wave.o \
 	snd_vorbis.o \
+	snd_opus.o \
 	$(mp3_obj)
 COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
 SYSOBJ_SND := snd_sdl.o

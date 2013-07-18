@@ -263,6 +263,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Quake/snd_mp3.h" />
+		<Unit filename="../../Quake/snd_opus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_opus.h" />
 		<Unit filename="../../Quake/snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>

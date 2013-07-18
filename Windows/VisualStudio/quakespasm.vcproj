@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_OPUS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libogg.lib libmad.lib wsock32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -116,7 +116,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_OPUS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -135,7 +135,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WSOCK32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libogg.lib libmad.lib wsock32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x86;C:\SDL\lib"
 				GenerateDebugInformation="true"
@@ -190,7 +190,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_OPUS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -210,7 +210,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libogg.lib libmad.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -266,7 +266,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_OPUS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -285,7 +285,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libogg.lib libmad.lib WS2_32.lib OPENGL32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libogg.lib libmad.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x64;C:\SDL\lib64"
 				GenerateDebugInformation="true"
@@ -558,6 +558,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_opus.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_sdl.c"
 				>
 			</File>
@@ -817,6 +821,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_mp3.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_opus.h"
 				>
 			</File>
 			<File

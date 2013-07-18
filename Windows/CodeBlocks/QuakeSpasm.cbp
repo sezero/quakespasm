@@ -36,6 +36,7 @@
 			<Add option="-DUSE_CODEC_MP3" />
 			<Add option="-DUSE_CODEC_VORBIS" />
 			<Add option="-DUSE_CODEC_WAVE" />
+			<Add option="-DUSE_CODEC_OPUS" />
 			<Add directory="..\codecs\include" />
 			<Add directory="C:\SDL\include" />
 		</Compiler>
@@ -44,6 +45,8 @@
 			<Add library="SDL" />
 			<Add library="vorbisfile" />
 			<Add library="vorbis" />
+			<Add library="opusfile" />
+			<Add library="opus" />
 			<Add library="ogg" />
 			<Add library="mad" />
 			<Add library="winmm" />
@@ -272,6 +275,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\..\Quake\snd_mp3.h" />
+		<Unit filename="..\..\Quake\snd_opus.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_opus.h" />
 		<Unit filename="..\..\Quake\snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>

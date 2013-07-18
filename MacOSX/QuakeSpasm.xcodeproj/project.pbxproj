@@ -79,6 +79,11 @@
 		486577CD0D31A22A00E7920A /* snd_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577CA0D31A22A00E7920A /* snd_mix.c */; };
 		48728D2D0D3004A80004D61B /* net_dgrm.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D280D3004A70004D61B /* net_dgrm.c */; };
 		48728D2E0D3004A80004D61B /* net_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D2A0D3004A80004D61B /* net_loop.c */; };
+		4885A84C179740A0000EC703 /* snd_opus.c in Sources */ = {isa = PBXBuildFile; fileRef = 4885A84A179740A0000EC703 /* snd_opus.c */; };
+		4885A84F179740CA000EC703 /* libopus.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; };
+		4885A850179740CA000EC703 /* libopusfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; };
+		4885A851179740D7000EC703 /* libopus.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; };
+		4885A852179740D7000EC703 /* libopusfile.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; };
 		48895DB90D4914A000849ABF /* pl_osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 48895DB80D4914A000849ABF /* pl_osx.m */; };
 		489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 489D8D2E0D3A630D00AA4471 /* ScreenInfo.m */; };
 		48A7C1FC14AA34940011B754 /* strlcat.c in Sources */ = {isa = PBXBuildFile; fileRef = 48A7C1FA14AA34940011B754 /* strlcat.c */; };
@@ -129,6 +134,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				4885A851179740D7000EC703 /* libopus.dylib in CopyFiles */,
+				4885A852179740D7000EC703 /* libopusfile.dylib in CopyFiles */,
 				48E2EC8615FB516600B8D476 /* libmad.dylib in CopyFiles */,
 				48E2EC8715FB516600B8D476 /* libogg.dylib in CopyFiles */,
 				48E2EC8815FB516600B8D476 /* libvorbis.dylib in CopyFiles */,
@@ -268,6 +275,10 @@
 		48728D290D3004A80004D61B /* net_dgrm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_dgrm.h; path = ../Quake/net_dgrm.h; sourceTree = SOURCE_ROOT; };
 		48728D2A0D3004A80004D61B /* net_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_loop.c; path = ../Quake/net_loop.c; sourceTree = SOURCE_ROOT; };
 		48728D2B0D3004A80004D61B /* net_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_loop.h; path = ../Quake/net_loop.h; sourceTree = SOURCE_ROOT; };
+		4885A84A179740A0000EC703 /* snd_opus.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_opus.c; path = ../Quake/snd_opus.c; sourceTree = "<group>"; };
+		4885A84B179740A0000EC703 /* snd_opus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_opus.h; path = ../Quake/snd_opus.h; sourceTree = "<group>"; };
+		4885A84D179740CA000EC703 /* libopus.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopus.dylib; path = codecs/lib/libopus.dylib; sourceTree = "<group>"; };
+		4885A84E179740CA000EC703 /* libopusfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libopusfile.dylib; path = codecs/lib/libopusfile.dylib; sourceTree = "<group>"; };
 		48895DB80D4914A000849ABF /* pl_osx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = pl_osx.m; path = ../Quake/pl_osx.m; sourceTree = SOURCE_ROOT; };
 		488EF23614B83A370021DD41 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		489D8D2D0D3A630D00AA4471 /* ScreenInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenInfo.h; sourceTree = "<group>"; };
@@ -299,6 +310,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4885A84F179740CA000EC703 /* libopus.dylib in Frameworks */,
+				4885A850179740CA000EC703 /* libopusfile.dylib in Frameworks */,
 				48E2EC7D15FB507A00B8D476 /* libmad.dylib in Frameworks */,
 				48E2EC7E15FB507A00B8D476 /* libogg.dylib in Frameworks */,
 				48E2EC7F15FB507A00B8D476 /* libvorbis.dylib in Frameworks */,
@@ -346,6 +359,8 @@
 		29B97314FDCFA39411CA2CEA /* QuakeSpasm */ = {
 			isa = PBXGroup;
 			children = (
+				4885A84D179740CA000EC703 /* libopus.dylib */,
+				4885A84E179740CA000EC703 /* libopusfile.dylib */,
 				48E2EC7915FB507A00B8D476 /* libmad.dylib */,
 				48E2EC7A15FB507A00B8D476 /* libogg.dylib */,
 				48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */,
@@ -494,6 +509,7 @@
 				486577CA0D31A22A00E7920A /* snd_mix.c */,
 				483A78540D2EEAC300CB2E4C /* snd_sdl.c */,
 				4854B1B01340C646004C9F45 /* snd_mp3.c */,
+				4885A84A179740A0000EC703 /* snd_opus.c */,
 				4818B0B212D5BA1A006DD66E /* snd_vorbis.c */,
 				4818B0B412D5BA1A006DD66E /* snd_wave.c */,
 			);
@@ -582,6 +598,7 @@
 				4818B0AD12D5B9ED006DD66E /* snd_codec.h */,
 				4818B0AF12D5BA1A006DD66E /* snd_codeci.h */,
 				4818B0B112D5BA1A006DD66E /* snd_mp3.h */,
+				4885A84B179740A0000EC703 /* snd_opus.h */,
 				4818B0B312D5BA1A006DD66E /* snd_vorbis.h */,
 				4818B0B512D5BA1A006DD66E /* snd_wave.h */,
 			);
@@ -755,6 +772,7 @@
 				B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */,
 				48A7C1FC14AA34940011B754 /* strlcat.c in Sources */,
 				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
+				4885A84C179740A0000EC703 /* snd_opus.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -839,6 +857,7 @@
 					USE_CODEC_MP3,
 					USE_CODEC_VORBIS,
 					USE_CODEC_WAVE,
+					USE_CODEC_OPUS,
 					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);
@@ -928,6 +947,7 @@
 					USE_CODEC_MP3,
 					USE_CODEC_VORBIS,
 					USE_CODEC_WAVE,
+					USE_CODEC_OPUS,
 					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);

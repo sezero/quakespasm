@@ -31,6 +31,7 @@
 #include "snd_wave.h"
 #include "snd_mp3.h"
 #include "snd_vorbis.h"
+#include "snd_opus.h"
 
 
 static snd_codec_t *codecs;
@@ -66,6 +67,9 @@ void S_CodecInit (void)
 #endif
 #ifdef USE_CODEC_VORBIS
 	S_CodecRegister(&vorbis_codec);
+#endif
+#ifdef USE_CODEC_OPUS
+	S_CodecRegister(&opus_codec);
 #endif
 	codec = codecs;
 	while (codec)
