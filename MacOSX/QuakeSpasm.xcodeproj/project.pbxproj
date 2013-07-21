@@ -19,6 +19,9 @@
 		4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B212D5BA1A006DD66E /* snd_vorbis.c */; };
 		4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B412D5BA1A006DD66E /* snd_wave.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
+		482812FD179C3EF4004E1D61 /* libFLAC.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
+		482812FE179C3EFF004E1D61 /* libFLAC.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
+		48281301179C3F13004E1D61 /* snd_flac.c in Sources */ = {isa = PBXBuildFile; fileRef = 482812FF179C3F13004E1D61 /* snd_flac.c */; };
 		483A78230D2EEA5400CB2E4C /* chase.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78100D2EEA5400CB2E4C /* chase.c */; };
 		483A78240D2EEA5400CB2E4C /* cmd.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78110D2EEA5400CB2E4C /* cmd.c */; };
 		483A78250D2EEA5400CB2E4C /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78120D2EEA5400CB2E4C /* common.c */; };
@@ -134,6 +137,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
+				482812FE179C3EFF004E1D61 /* libFLAC.dylib in CopyFiles */,
 				4885A851179740D7000EC703 /* libopus.dylib in CopyFiles */,
 				4885A852179740D7000EC703 /* libopusfile.dylib in CopyFiles */,
 				48E2EC8615FB516600B8D476 /* libmad.dylib in CopyFiles */,
@@ -170,6 +174,9 @@
 		4818B0B412D5BA1A006DD66E /* snd_wave.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_wave.c; path = ../Quake/snd_wave.c; sourceTree = SOURCE_ROOT; };
 		4818B0B512D5BA1A006DD66E /* snd_wave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_wave.h; path = ../Quake/snd_wave.h; sourceTree = SOURCE_ROOT; };
 		48243B130D33F01A00C29F8F /* main_sdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main_sdl.c; path = ../Quake/main_sdl.c; sourceTree = SOURCE_ROOT; };
+		482812FC179C3EF4004E1D61 /* libFLAC.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libFLAC.dylib; path = codecs/lib/libFLAC.dylib; sourceTree = "<group>"; };
+		482812FF179C3F13004E1D61 /* snd_flac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_flac.c; path = ../Quake/snd_flac.c; sourceTree = "<group>"; };
+		48281300179C3F13004E1D61 /* snd_flac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_flac.h; path = ../Quake/snd_flac.h; sourceTree = "<group>"; };
 		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
 		483A77E60D2EE97700CB2E4C /* cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cmd.h; path = ../Quake/cmd.h; sourceTree = SOURCE_ROOT; };
 		483A77E70D2EE97700CB2E4C /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../Quake/common.h; sourceTree = SOURCE_ROOT; };
@@ -310,6 +317,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				482812FD179C3EF4004E1D61 /* libFLAC.dylib in Frameworks */,
 				4885A84F179740CA000EC703 /* libopus.dylib in Frameworks */,
 				4885A850179740CA000EC703 /* libopusfile.dylib in Frameworks */,
 				48E2EC7D15FB507A00B8D476 /* libmad.dylib in Frameworks */,
@@ -359,6 +367,7 @@
 		29B97314FDCFA39411CA2CEA /* QuakeSpasm */ = {
 			isa = PBXGroup;
 			children = (
+				482812FC179C3EF4004E1D61 /* libFLAC.dylib */,
 				4885A84D179740CA000EC703 /* libopus.dylib */,
 				4885A84E179740CA000EC703 /* libopusfile.dylib */,
 				48E2EC7915FB507A00B8D476 /* libmad.dylib */,
@@ -505,6 +514,7 @@
 				483A78500D2EEAC300CB2E4C /* cd_sdl.c */,
 				4818B0AC12D5B9ED006DD66E /* snd_codec.c */,
 				486577C80D31A22A00E7920A /* snd_dma.c */,
+				482812FF179C3F13004E1D61 /* snd_flac.c */,
 				486577C90D31A22A00E7920A /* snd_mem.c */,
 				486577CA0D31A22A00E7920A /* snd_mix.c */,
 				483A78540D2EEAC300CB2E4C /* snd_sdl.c */,
@@ -597,6 +607,7 @@
 				483A77FE0D2EE9BD00CB2E4C /* q_sound.h */,
 				4818B0AD12D5B9ED006DD66E /* snd_codec.h */,
 				4818B0AF12D5BA1A006DD66E /* snd_codeci.h */,
+				48281300179C3F13004E1D61 /* snd_flac.h */,
 				4818B0B112D5BA1A006DD66E /* snd_mp3.h */,
 				4885A84B179740A0000EC703 /* snd_opus.h */,
 				4818B0B312D5BA1A006DD66E /* snd_vorbis.h */,
@@ -773,6 +784,7 @@
 				48A7C1FC14AA34940011B754 /* strlcat.c in Sources */,
 				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
 				4885A84C179740A0000EC703 /* snd_opus.c in Sources */,
+				48281301179C3F13004E1D61 /* snd_flac.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -857,6 +869,7 @@
 					USE_CODEC_MP3,
 					USE_CODEC_VORBIS,
 					USE_CODEC_WAVE,
+					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
 					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
@@ -947,6 +960,7 @@
 					USE_CODEC_MP3,
 					USE_CODEC_VORBIS,
 					USE_CODEC_WAVE,
+					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
 					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
