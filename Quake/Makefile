@@ -10,6 +10,7 @@ USE_QS_CONBACK=1
 
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
+USE_CODEC_FLAC=0
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=0
@@ -136,6 +137,10 @@ CODECLIBS  :=
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
+ifeq ($(USE_CODEC_FLAC),1)
+CFLAGS+= -DUSE_CODEC_FLAC
+CODECLIBS+= -lFLAC
+endif
 ifeq ($(USE_CODEC_OPUS),1)
 # opus and opusfile put their *.h under <includedir>/opus,
 # but they include the headers without the opus directory
@@ -178,6 +183,7 @@ DEFAULT_TARGET := quakespasm
 
 MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
+	snd_flac.o \
 	snd_wave.o \
 	snd_vorbis.o \
 	snd_opus.o \

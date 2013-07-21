@@ -36,6 +36,7 @@
 			<Add option="-DUSE_CODEC_MP3" />
 			<Add option="-DUSE_CODEC_VORBIS" />
 			<Add option="-DUSE_CODEC_WAVE" />
+			<Add option="-DUSE_CODEC_FLAC" />
 			<Add option="-DUSE_CODEC_OPUS" />
 			<Add directory="..\codecs\include" />
 			<Add directory="C:\SDL\include" />
@@ -47,6 +48,7 @@
 			<Add library="vorbis" />
 			<Add library="opusfile" />
 			<Add library="opus" />
+			<Add library="FLAC" />
 			<Add library="ogg" />
 			<Add library="mad" />
 			<Add library="winmm" />
@@ -265,6 +267,10 @@
 		<Unit filename="..\..\Quake\snd_dma.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\..\Quake\snd_flac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_flac.h" />
 		<Unit filename="..\..\Quake\snd_mem.c">
 			<Option compilerVar="CC" />
 		</Unit>

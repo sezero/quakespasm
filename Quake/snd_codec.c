@@ -29,6 +29,7 @@
 
 /* headers for individual codecs */
 #include "snd_wave.h"
+#include "snd_flac.h"
 #include "snd_mp3.h"
 #include "snd_vorbis.h"
 #include "snd_opus.h"
@@ -61,6 +62,9 @@ void S_CodecInit (void)
 	 * of codec choice preference: */
 #ifdef USE_CODEC_WAVE
 	S_CodecRegister(&wav_codec);
+#endif
+#ifdef USE_CODEC_FLAC
+	S_CodecRegister(&flac_codec);
 #endif
 #ifdef USE_CODEC_MP3
 	S_CodecRegister(&mp3_codec);

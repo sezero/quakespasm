@@ -11,6 +11,7 @@ USE_QS_CONBACK=1
 
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
+USE_CODEC_FLAC=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=1
@@ -124,6 +125,12 @@ CODECLIBS  :=
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
+ifeq ($(USE_CODEC_FLAC),1)
+CFLAGS+= -DUSE_CODEC_FLAC
+CODEC_INC = -I../MacOSX/codecs/include
+CODEC_LINK= -L../MacOSX/codecs/lib
+CODECLIBS+= -lFLAC
+endif
 ifeq ($(USE_CODEC_OPUS),1)
 CFLAGS+= -DUSE_CODEC_OPUS
 CODEC_INC = -I../MacOSX/codecs/include
@@ -173,6 +180,7 @@ DEFAULT_TARGET := quakespasm
 
 MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
+	snd_flac.o \
 	snd_wave.o \
 	snd_vorbis.o \
 	snd_opus.o \

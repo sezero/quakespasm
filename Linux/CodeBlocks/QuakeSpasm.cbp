@@ -253,6 +253,10 @@
 		<Unit filename="../../Quake/snd_dma.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../Quake/snd_flac.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/snd_flac.h" />
 		<Unit filename="../../Quake/snd_mem.c">
 			<Option compilerVar="CC" />
 		</Unit>
