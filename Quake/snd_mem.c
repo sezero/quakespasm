@@ -297,7 +297,10 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	info.channels = GetLittleShort();
 	info.rate = GetLittleLong();
 	data_p += 4 + 2;
-	info.width = GetLittleShort() / 8;
+	i = GetLittleShort();
+	if (i != 8 && i != 16)
+		return info;
+	info.width = i / 8;
 
 // get cue chunk
 	FindChunk("cue ");

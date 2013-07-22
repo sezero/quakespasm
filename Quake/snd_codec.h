@@ -29,9 +29,10 @@
 typedef struct snd_info_s
 {
 	int rate;
-	int width;
+	int bits, width;
 	int channels;
 	int samples;
+	int blocksize;
 	int size;
 	int dataofs;
 } snd_info_t;

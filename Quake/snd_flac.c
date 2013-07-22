@@ -68,7 +68,7 @@
 typedef struct {
 	FLAC__StreamDecoder *decoder;
 	fshandle_t *file;
-	FLAC__StreamMetadata_StreamInfo info;
+	snd_info_t *info;
 	byte *buffer;
 	int size, pos, error;
 } flacfile_t;
@@ -144,26 +144,25 @@ flac_write_func (const FLAC__StreamDecoder *decoder,
 		 void *client_data)
 {
 	flacfile_t *ff = (flacfile_t *) client_data;
-	int bps = ff->info.bits_per_sample / 8;
 
 	if (!ff->buffer) {
 #if 1 /*!defined(CODECS_USE_ZONE)*/
-		ff->buffer = (byte *) malloc (ff->info.max_blocksize * ff->info.channels * bps);
+		ff->buffer = (byte *) malloc (ff->info->blocksize * ff->info->channels * ff->info->width);
 		if (!ff->buffer) {
 			ff->error = -1; /* needn't set this here, but... */
 			Con_Printf("Insufficient memory for fLaC audio\n");
 			return FLAC__STREAM_DECODER_WRITE_STATUS_ABORT;
 		}
 #else
-		ff->buffer = (byte *) Z_Malloc (ff->info.max_blocksize * ff->info.channels * bps);
+		ff->buffer = (byte *) Z_Malloc (ff->info->blocksize * ff->info->channels * ff->info->width);
 #endif
 	}
-	if (ff->info.channels == 1)
+	if (ff->info->channels == 1)
 	{
 		unsigned i;
 		const FLAC__int32 *in = buffer[0];
 
-		if (ff->info.bits_per_sample == 8)
+		if (ff->info->bits == 8)
 		{
 			byte  *out = ff->buffer;
 			for (i = 0; i < frame->header.blocksize; i++)
@@ -182,7 +181,7 @@ flac_write_func (const FLAC__StreamDecoder *decoder,
 		const FLAC__int32 *li = buffer[0];
 		const FLAC__int32 *ri = buffer[1];
 
-		if (ff->info.bits_per_sample == 8)
+		if (ff->info->bits == 8)
 		{
 			char  *lo = (char *) ff->buffer + 0;
 			char  *ro = (char *) ff->buffer + 1;
@@ -204,7 +203,7 @@ flac_write_func (const FLAC__StreamDecoder *decoder,
 		}
 	}
 
-	ff->size = frame->header.blocksize * bps * ff->info.channels;
+	ff->size = frame->header.blocksize * ff->info->width * ff->info->channels;
 	ff->pos = 0;
 	return FLAC__STREAM_DECODER_WRITE_STATUS_CONTINUE;
 }
@@ -215,7 +214,14 @@ flac_meta_func (const FLAC__StreamDecoder *decoder,
 {
 	flacfile_t *ff = (flacfile_t *) client_data;
 	if (metadata->type == FLAC__METADATA_TYPE_STREAMINFO)
-		ff->info = metadata->data.stream_info;
+	{
+		ff->info->rate = metadata->data.stream_info.sample_rate;
+		ff->info->bits = metadata->data.stream_info.bits_per_sample;
+		ff->info->width = ff->info->bits / 8;
+		ff->info->channels = metadata->data.stream_info.channels;
+		ff->info->blocksize = metadata->data.stream_info.max_blocksize;
+		ff->info->dataofs = 0;	/* got the STREAMINFO metadata */
+	}
 }
 
 
@@ -248,7 +254,9 @@ static snd_stream_t *S_FLAC_CodecOpenStream (const char *filename)
 	}
 
 	stream->priv = ff;
+	ff->info = & stream->info;
 	ff->file = & stream->fh;
+	ff->info->dataofs = -1; /* check for STREAMINFO metadata existence */
 
 #ifdef LEGACY_FLAC
 	FLAC__seekable_stream_decoder_set_error_callback (ff->decoder, flac_error_func);
@@ -280,31 +288,30 @@ static snd_stream_t *S_FLAC_CodecOpenStream (const char *filename)
 	}
 
 	rc = FLAC__stream_decoder_process_until_end_of_metadata (ff->decoder);
-	if (rc == false)
+	if (rc == false || ff->error)
 	{
 		rc = FLAC__stream_decoder_get_state(ff->decoder);
-		Con_Printf("%s not a valid fLaC file? (error %i)\n",
+		Con_Printf("%s not a valid flac file? (decoder state %i)\n",
 				filename, rc);
 		goto _fail;
 	}
-	if (ff->error)		/* set by flac_error_func(). can we hit it here?? */
-		goto _fail;
 
-	if (ff->info.total_samples == 0)
+	if (ff->info->dataofs < 0)
 	{
-		Con_Printf("Zero sample count in %s\n", filename);
+		Con_Printf("%s has no STREAMINFO\n", filename);
 		goto _fail;
 	}
-	if (ff->info.channels != 1 && ff->info.channels != 2)
+	if (ff->info->bits != 8 && ff->info->bits != 16)
+	{
+		Con_Printf("%s is not 8 or 16 bit\n", filename);
+		goto _fail;
+	}
+	if (ff->info->channels != 1 && ff->info->channels != 2)
 	{
 		Con_Printf("Unsupported number of channels %d in %s\n",
-					ff->info.channels, filename);
+					ff->info->channels, filename);
 		goto _fail;
 	}
-
-	stream->info.rate = ff->info.sample_rate;
-	stream->info.width = ff->info.bits_per_sample / 8;
-	stream->info.channels = ff->info.channels;
 
 	return stream;
 _fail:

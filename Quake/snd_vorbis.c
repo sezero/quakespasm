@@ -39,6 +39,7 @@
 
 /* Vorbis codec can return the samples in a number of different
  * formats, we use the standard signed short format. */
+#define VORBIS_SAMPLEBITS 16
 #define VORBIS_SAMPLEWIDTH 2
 #define VORBIS_SIGNED_DATA 1
 
@@ -87,6 +88,7 @@ static snd_stream_t *S_VORBIS_CodecOpenStream (const char *filename)
 		return NULL;
 
 	ovFile = (OggVorbis_File *) Z_Malloc(sizeof(OggVorbis_File));
+	stream->priv = ovFile;
 	res = OV_OPEN_CALLBACKS(&stream->fh, ovFile, NULL, 0, ovc_qfs);
 	if (res != 0)
 	{
@@ -94,8 +96,6 @@ static snd_stream_t *S_VORBIS_CodecOpenStream (const char *filename)
 				filename, res);
 		goto _fail;
 	}
-
-	stream->priv = ovFile;
 
 	if (!ov_seekable(ovFile))
 	{
@@ -128,6 +128,7 @@ static snd_stream_t *S_VORBIS_CodecOpenStream (const char *filename)
 
 	stream->info.rate = ovf_info->rate;
 	stream->info.channels = ovf_info->channels;
+	stream->info.bits = VORBIS_SAMPLEBITS;
 	stream->info.width = VORBIS_SAMPLEWIDTH;
 
 	return stream;

@@ -141,6 +141,7 @@ static snd_stream_t *S_OPUS_CodecOpenStream (const char *filename)
 	stream->info.rate = 48000;
 	stream->info.channels = op_info->channel_count;
 	/* op_read() yields 16-bit output using native endian ordering: */
+	stream->info.bits = 16;
 	stream->info.width = 2;
 
 	return stream;

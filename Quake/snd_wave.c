@@ -117,7 +117,6 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 {
 	char dump[16];
 	int wav_format;
-	int bits;
 	int fmtlen = 0;
 
 	if (fread(dump, 1, 12, file) < 12 ||
@@ -147,15 +146,15 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 	info->rate = FGetLittleLong(file);
 	FGetLittleLong(file);
 	FGetLittleShort(file);
-	bits = FGetLittleShort(file);
+	info->bits = FGetLittleShort(file);
 
-	if (bits != 8 && bits != 16)
+	if (info->bits != 8 && info->bits != 16)
 	{
 		Con_Printf("%s is not 8 or 16 bit\n", name);
 		return false;
 	}
 
-	info->width = bits / 8;
+	info->width = info->bits / 8;
 	info->dataofs = 0;
 
 	/* Skip the rest of the format chunk if required */
@@ -172,6 +171,12 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 		return false;
 	}
 
+	if (info->channels != 1 && info->channels != 2)
+	{
+		Con_Printf("Unsupported number of channels %d in %s\n",
+						info->channels, name);
+		return false;
+	}
 	info->samples = (info->size / info->width) / info->channels;
 	if (info->samples == 0)
 	{
@@ -204,12 +209,6 @@ snd_stream_t *S_WAV_CodecOpenStream(const char *filename)
 	 * file by ourselves from now on. */
 	if (!WAV_ReadRIFFHeader(filename, stream->fh.file, &stream->info))
 		goto _fail;
-	if (stream->info.channels != 1 && stream->info.channels != 2)
-	{
-		Con_Printf("Unsupported number of channels %d in %s\n",
-					stream->info.channels, filename);
-		goto _fail;
-	}
 
 	stream->fh.start = ftell(stream->fh.file); /* reset to data position */
 	if (stream->fh.start - start + stream->info.size > stream->fh.length)

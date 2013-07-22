@@ -139,19 +139,23 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	switch (encoding)
 	{
 	case MPG123_ENC_UNSIGNED_8:
+		stream->info.bits = 8;
 		stream->info.width = 1;
 		break;
 	case MPG123_ENC_SIGNED_8:
 	/* unsupported: force mpg123 to convert */
+		stream->info.bits = 8;
 		stream->info.width = 1;
 		encoding = MPG123_ENC_UNSIGNED_8;
 		break;
 	case MPG123_ENC_SIGNED_16:
+		stream->info.bits = 16;
 		stream->info.width = 2;
 		break;
 	case MPG123_ENC_UNSIGNED_16:
 	default:
 	/* unsupported: force mpg123 to convert */
+		stream->info.bits = 16;
 		stream->info.width = 2;
 		encoding = MPG123_ENC_SIGNED_16;
 		break;
