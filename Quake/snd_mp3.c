@@ -8,7 +8,7 @@
  * functions were adapted from the GPL-licensed libid3tag library, see at
  * http://www.underbit.com/products/mad/.  Adapted to Quake and Hexen II
  * game engines by O.Sezer :
- * Copyright (C) 2010-2012 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2013 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,7 +49,7 @@ static mad_timer_t const mad_timer_zero_stub = {0, 0};
    not certain that all of them are meaningful. Default to 16 bits to
    align with most users expectation of output file should be 16 bits. */
 #define MP3_MAD_SAMPLEBITS	16
-#define MP3_MAD_SAMPLEWIDTH	(MP3_MAD_SAMPLEBITS / 8)
+#define MP3_MAD_SAMPLEWIDTH	2
 #define MP3_BUFFER_SIZE		(5 * 8192)
 
 /* Private data */
@@ -67,7 +67,7 @@ typedef struct _mp3_priv_t
 /* This function merges the functions tagtype() and id3_tag_query()
  * from MAD's libid3tag, so we don't have to link to it
  * Returns 0 if the frame is not an ID3 tag, tag length if it is */
-static qboolean tag_is_id3v1(const unsigned char *data, size_t length)
+static inline qboolean tag_is_id3v1(const unsigned char *data, size_t length)
 {
 	if (length >= 3 &&
 	     data[0] == 'T' && data[1] == 'A' && data[2] == 'G')
@@ -77,7 +77,7 @@ static qboolean tag_is_id3v1(const unsigned char *data, size_t length)
 	return false;
 }
 
-static qboolean tag_is_id3v2(const unsigned char *data, size_t length)
+static inline qboolean tag_is_id3v2(const unsigned char *data, size_t length)
 {
 	if (length >= 10 &&
 	    (data[0] == 'I' && data[1] == 'D' && data[2] == '3') &&
@@ -174,9 +174,7 @@ static int mp3_inputdata(snd_stream_t *stream)
 	bytes_read = FS_fread(p->mp3_buffer + remaining, 1,
 				MP3_BUFFER_SIZE - remaining, &stream->fh);
 	if (bytes_read == 0)
-	{
 		return -1;
-	}
 
 	mad_stream_buffer(&p->Stream, p->mp3_buffer, bytes_read+remaining);
 	p->Stream.error = MAD_ERROR_NONE;
@@ -199,11 +197,8 @@ static int mp3_startread(snd_stream_t *stream)
 	 * can be processed later.
 	 */
 	ReadSize = FS_fread(p->mp3_buffer, 1, MP3_BUFFER_SIZE, &stream->fh);
-	if (ReadSize != MP3_BUFFER_SIZE)
-	{
-		if (FS_feof(&stream->fh) || FS_ferror(&stream->fh))
-			return -1;
-	}
+	if (!ReadSize || FS_ferror(&stream->fh))
+		return -1;
 
 	mad_stream_buffer(&p->Stream, p->mp3_buffer, ReadSize);
 
@@ -218,7 +213,7 @@ static int mp3_startread(snd_stream_t *stream)
 		if (p->Stream.error == MAD_ERROR_BUFLEN)
 		{
 			if (mp3_inputdata(stream) == -1)
-				return -1;
+				return -1;/* EOF with no valid data */
 
 			continue;
 		}
