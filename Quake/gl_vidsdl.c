@@ -104,6 +104,9 @@ cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from 
 //
 //==========================================================================
 
+#define	USE_GAMMA_RAMPS			0
+
+#if USE_GAMMA_RAMPS
 static unsigned short vid_gamma_red[256];
 static unsigned short vid_gamma_green[256];
 static unsigned short vid_gamma_blue[256];
@@ -111,6 +114,7 @@ static unsigned short vid_gamma_blue[256];
 static unsigned short vid_sysgamma_red[256];
 static unsigned short vid_sysgamma_green[256];
 static unsigned short vid_sysgamma_blue[256];
+#endif
 
 static int vid_gammaworks;
 
@@ -123,8 +127,20 @@ static void VID_Gamma_SetGamma (void)
 {
 	if (draw_context && vid_gammaworks)
 	{
+#if USE_GAMMA_RAMPS
 		if (SDL_SetGammaRamp(&vid_gamma_red[0], &vid_gamma_green[0], &vid_gamma_blue[0]) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
+#else
+		float	value;
+
+		if (vid_gamma.value > (1.0f / GAMMA_MAX))
+			value = 1.0f / vid_gamma.value;
+		else
+			value = GAMMA_MAX;
+
+		if (SDL_SetGamma(value,value,value) == -1)
+			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGamma\n");
+#endif
 	}
 }
 
@@ -137,8 +153,13 @@ static void VID_Gamma_Restore (void)
 {
 	if (draw_context && vid_gammaworks)
 	{
+#if USE_GAMMA_RAMPS
 		if (SDL_SetGammaRamp(&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
+#else
+		if (SDL_SetGamma(1, 1, 1) == -1)
+			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGamma\n");
+#endif
 	}
 }
 
@@ -159,6 +180,7 @@ VID_Gamma_f -- callback when the cvar changes
 */
 static void VID_Gamma_f (cvar_t *var)
 {
+#if USE_GAMMA_RAMPS
 	int i;
 
 	for (i = 0; i < 256; i++)
@@ -168,7 +190,7 @@ static void VID_Gamma_f (cvar_t *var)
 		vid_gamma_green[i] = vid_gamma_red[i];
 		vid_gamma_blue[i] = vid_gamma_red[i];
 	}
-
+#endif
 	VID_Gamma_SetGamma ();
 }
 
@@ -181,7 +203,11 @@ static void VID_Gamma_Init (void)
 {
 	vid_gammaworks = false;
 
+#if USE_GAMMA_RAMPS
 	if (SDL_GetGammaRamp (&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) != -1)
+#else
+	if (SDL_SetGamma(1, 1, 1) != -1)
+#endif
 		vid_gammaworks = true;
 
 	Cvar_RegisterVariable (&vid_gamma);
