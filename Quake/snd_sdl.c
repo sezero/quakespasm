@@ -22,6 +22,7 @@
  */
 
 #include "quakedef.h"
+
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
 #include <SDL/SDL.h>
 #else
@@ -94,8 +95,10 @@ qboolean SNDDMA_Init (dma_t *dma)
 		desired.samples = 512;
 	else if (desired.freq <= 44100)
 		desired.samples = 1024;
+	else if (desired.freq <= 56000)
+		desired.samples = 2048; /* for 48 kHz */
 	else
-		desired.samples = 2048;	/* shrug */
+		desired.samples = 4096; /* for 96 kHz */
 	desired.callback = paint_audio;
 	desired.userdata = NULL;
 
