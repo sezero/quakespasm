@@ -157,6 +157,7 @@ flac_write_func (const FLAC__StreamDecoder *decoder,
 		ff->buffer = (byte *) Z_Malloc (ff->info->blocksize * ff->info->channels * ff->info->width);
 #endif
 	}
+
 	if (ff->info->channels == 1)
 	{
 		unsigned i;
@@ -197,8 +198,8 @@ flac_write_func (const FLAC__StreamDecoder *decoder,
 			short *ro = (short *) ff->buffer + 1;
 			for (i = 0; i < frame->header.blocksize; i++, lo++, ro++)
 			{
-				*lo++ = LittleShort (*li++);
-				*ro++ = LittleShort (*ri++);
+				*lo++ = *li++;
+				*ro++ = *ri++;
 			}
 		}
 	}
