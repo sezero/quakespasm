@@ -116,7 +116,7 @@ static unsigned short vid_sysgamma_green[256];
 static unsigned short vid_sysgamma_blue[256];
 #endif
 
-static int vid_gammaworks;
+static qboolean	gammaworks = false;	// whether hw-gamma works
 
 /*
 ================
@@ -125,10 +125,10 @@ VID_Gamma_SetGamma -- apply gamma correction
 */
 static void VID_Gamma_SetGamma (void)
 {
-	if (draw_context && vid_gammaworks)
+	if (draw_context && gammaworks)
 	{
 #if USE_GAMMA_RAMPS
-		if (SDL_SetGammaRamp(&vid_gamma_red[0], &vid_gamma_green[0], &vid_gamma_blue[0]) == -1)
+		if (SDL_SetGammaRamp(vid_gamma_red, vid_gamma_green, vid_gamma_blue) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
 #else
 		float	value;
@@ -151,10 +151,10 @@ VID_Gamma_Restore -- restore system gamma
 */
 static void VID_Gamma_Restore (void)
 {
-	if (draw_context && vid_gammaworks)
+	if (draw_context && gammaworks)
 	{
 #if USE_GAMMA_RAMPS
-		if (SDL_SetGammaRamp(&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) == -1)
+		if (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
 #else
 		if (SDL_SetGamma(1, 1, 1) == -1)
@@ -201,14 +201,16 @@ VID_Gamma_Init -- call on init
 */
 static void VID_Gamma_Init (void)
 {
-	vid_gammaworks = false;
-
 #if USE_GAMMA_RAMPS
-	if (SDL_GetGammaRamp (&vid_sysgamma_red[0], &vid_sysgamma_green[0], &vid_sysgamma_blue[0]) != -1)
+	gammaworks	= (SDL_GetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
+	if (gammaworks)
+	    gammaworks	= (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 #else
-	if (SDL_SetGamma(1, 1, 1) != -1)
+	gammaworks	= (SDL_SetGamma(1, 1, 1) == 0);
 #endif
-		vid_gammaworks = true;
+
+	if (!gammaworks)
+		Con_SafePrintf("gamma adjustment not available\n");
 
 	Cvar_RegisterVariable (&vid_gamma);
 	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
