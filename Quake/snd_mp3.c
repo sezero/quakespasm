@@ -252,8 +252,9 @@ static int mp3_startread(snd_stream_t *stream)
 
 	mad_timer_add(&p->Timer,p->Frame.header.duration);
 	mad_synth_frame(&p->Synth,&p->Frame);
-	stream->info.width = MP3_MAD_SAMPLEWIDTH;
 	stream->info.rate = p->Synth.pcm.samplerate;
+	stream->info.bits = MP3_MAD_SAMPLEBITS;
+	stream->info.width = MP3_MAD_SAMPLEWIDTH;
 
 	p->cursamp = 0;
 
