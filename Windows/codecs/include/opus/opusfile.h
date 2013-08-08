@@ -630,6 +630,10 @@ struct OpusFileCallbacks{
                      If there is an error opening the file, nothing will be
                       filled in here.
    \param      _path The path to the file to open.
+                     On Windows, this string must be UTF-8 (to allow access to
+                      files whose names cannot be represented in the current
+                      MBCS code page).
+                     All other systems use the native character encoding.
    \param      _mode The mode to open the file in.
    \return A stream handle to use with the callbacks, or <code>NULL</code> on
             error.*/
@@ -663,6 +667,10 @@ OP_WARN_UNUSED_RESULT void *op_fdopen(OpusFileCallbacks *_cb,
                        If there is an error opening the file, nothing will be
                         filled in here.
    \param      _path   The path to the file to open.
+                       On Windows, this string must be UTF-8 (to allow access
+                        to files whose names cannot be represented in the
+                        current MBCS code page).
+                       All other systems use the native character encoding.
    \param      _mode   The mode to open the file in.
    \param      _stream A stream previously returned by op_fopen(), op_fdopen(),
                         or op_freopen().
