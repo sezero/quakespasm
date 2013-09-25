@@ -21,6 +21,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // common.c -- misc functions used in client and server
 
 #include "quakedef.h"
+#include "q_ctype.h"
 #include <errno.h>
 
 static char	*largv[MAX_NUM_ARGVS + 1];
@@ -148,6 +149,79 @@ void InsertLinkAfter (link_t *l, link_t *after)
 
 ============================================================================
 */
+
+int q_strcasecmp(const char * s1, const char * s2)
+{
+	const char * p1 = s1;
+	const char * p2 = s2;
+	char c1, c2;
+
+	if (p1 == p2)
+		return 0;
+
+	do
+	{
+		c1 = q_tolower (*p1++);
+		c2 = q_tolower (*p2++);
+		if (c1 == '\0')
+			break;
+	} while (c1 == c2);
+
+	return (int)(c1 - c2);
+}
+
+int q_strncasecmp(const char *s1, const char *s2, size_t n)
+{
+	const char * p1 = s1;
+	const char * p2 = s2;
+	char c1, c2;
+
+	if (p1 == p2 || n == 0)
+		return 0;
+
+	do
+	{
+		c1 = q_tolower (*p1++);
+		c2 = q_tolower (*p2++);
+		if (c1 == '\0' || c1 != c2)
+			break;
+	} while (--n > 0);
+
+	return (int)(c1 - c2);
+}
+
+char *q_strlwr (char *str)
+{
+	char	*c;
+	c = str;
+	while (*c)
+	{
+		*c = q_tolower(*c);
+		c++;
+	}
+	return str;
+}
+
+char *q_strupr (char *str)
+{
+	char	*c;
+	c = str;
+	while (*c)
+	{
+		*c = q_toupper(*c);
+		c++;
+	}
+	return str;
+}
+
+/* platform dependant (v)snprintf function names: */
+#if defined(_WIN32)
+#define	snprintf_func		_snprintf
+#define	vsnprintf_func		_vsnprintf
+#else
+#define	snprintf_func		snprintf
+#define	vsnprintf_func		vsnprintf
+#endif
 
 int q_vsnprintf(char *str, size_t size, const char *format, va_list args)
 {
@@ -297,42 +371,6 @@ int Q_strncmp (const char *s1, const char *s2, int count)
 	}
 
 	return -1;
-}
-
-int Q_strncasecmp (const char *s1, const char *s2, int n)
-{
-	int		c1, c2;
-
-	if (s1 == s2 || n <= 0)
-		return 0;
-
-	while (1)
-	{
-		c1 = *s1++;
-		c2 = *s2++;
-
-		if (!n--)
-			return 0;		// strings are equal until end point
-
-		if (c1 != c2)
-		{
-			if (c1 >= 'a' && c1 <= 'z')
-				c1 -= ('a' - 'A');
-			if (c2 >= 'a' && c2 <= 'z')
-				c2 -= ('a' - 'A');
-		}
-		if (!c1)
-			return (c2 == 0) ? 0 : -1;
-		if (c1 < c2)
-			return -1;
-		if (c1 > c2)
-			return 1;
-	}
-}
-
-int Q_strcasecmp (const char *s1, const char *s2)
-{
-	return Q_strncasecmp (s1, s2, 99999);
 }
 
 int Q_atoi (const char *str)

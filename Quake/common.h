@@ -133,24 +133,21 @@ char *Q_strrchr (const char *s, char c);
 void Q_strcat (char *dest, const char *src);
 int Q_strcmp (const char *s1, const char *s2);
 int Q_strncmp (const char *s1, const char *s2, int count);
-int Q_strcasecmp (const char *s1, const char *s2);
-int Q_strncasecmp (const char *s1, const char *s2, int n);
 int	Q_atoi (const char *str);
 float Q_atof (const char *str);
 
 
 #include "strl_fn.h"
 
-/* snprintf, vsnprintf : always use our versions. */
-/* platform dependant (v)snprintf function names: */
-#if defined(_WIN32)
-#define	snprintf_func		_snprintf
-#define	vsnprintf_func		_vsnprintf
-#else
-#define	snprintf_func		snprintf
-#define	vsnprintf_func		vsnprintf
-#endif
+/* locale-insensitive strcasecmp replacement functions: */
+extern int q_strcasecmp (const char * s1, const char * s2);
+extern int q_strncasecmp (const char *s1, const char *s2, size_t n);
 
+/* locale-insensitive strlwr/upr replacement functions: */
+extern char *q_strlwr (char *str);
+extern char *q_strupr (char *str);
+
+/* snprintf, vsnprintf : always use our versions. */
 extern int q_snprintf (char *str, size_t size, const char *format, ...) __attribute__((__format__(__printf__,3,4)));
 extern int q_vsnprintf(char *str, size_t size, const char *format, va_list args)
 									__attribute__((__format__(__printf__,3,0)));

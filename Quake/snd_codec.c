@@ -165,7 +165,7 @@ snd_stream_t *S_CodecOpenStreamExt (const char *filename)
 	codec = codecs;
 	while (codec)
 	{
-		if (!Q_strcasecmp(ext, codec->ext))
+		if (!q_strcasecmp(ext, codec->ext))
 			break;
 		codec = codec->next;
 	}
@@ -216,7 +216,7 @@ snd_stream_t *S_CodecOpenStreamAny (const char *filename)
 		codec = codecs;
 		while (codec)
 		{
-			if (!Q_strcasecmp(ext, codec->ext))
+			if (!q_strcasecmp(ext, codec->ext))
 				break;
 			codec = codec->next;
 		}

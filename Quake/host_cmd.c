@@ -149,7 +149,7 @@ void Host_Game_f (void)
 		}
 
 		q_strlcpy (pakfile, va("%s/%s", host_parms->basedir, Cmd_Argv(1)), sizeof(pakfile));
-		if (!Q_strcasecmp(pakfile, com_gamedir)) //no change
+		if (!q_strcasecmp(pakfile, com_gamedir)) //no change
 		{
 			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
 			return;
@@ -170,7 +170,7 @@ void Host_Game_f (void)
 
 		q_strlcpy (com_gamedir, pakfile, sizeof(com_gamedir));
 
-		if (Q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
+		if (q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
 		{
 			// assign a path_id to this game directory
 			if (com_searchpaths)
@@ -242,7 +242,7 @@ void ExtraMaps_Add (const char *name)
 
 	// insert each entry in alphabetical order
 	if (extralevels == NULL ||
-	    Q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
+	    q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
 	{
 		level->next = extralevels;
 		extralevels = level;
@@ -251,7 +251,7 @@ void ExtraMaps_Add (const char *name)
 	{
 		prev = extralevels;
 		cursor = extralevels->next;
-		while (cursor && (Q_strcasecmp(level->name, cursor->name) > 0))
+		while (cursor && (q_strcasecmp(level->name, cursor->name) > 0))
 		{
 			prev = cursor;
 			cursor = cursor->next;
@@ -378,7 +378,7 @@ void Modlist_Add (const char *name)
 
 	//insert each entry in alphabetical order
 	if (modlist == NULL ||
-	    Q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
+	    q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
 	{
 		mod->next = modlist;
 		modlist = mod;
@@ -387,7 +387,7 @@ void Modlist_Add (const char *name)
 	{
 		prev = modlist;
 		cursor = modlist->next;
-		while (cursor && (Q_strcasecmp(mod->name, cursor->name) > 0))
+		while (cursor && (q_strcasecmp(mod->name, cursor->name) > 0))
 		{
 			prev = cursor;
 			cursor = cursor->next;
@@ -430,7 +430,7 @@ void Modlist_Init (void)
 		{
 			if ((strcmp(mod_dir_t->d_name, ".") == 0) || (strcmp(mod_dir_t->d_name, "..") == 0))
 				continue;
-			if (Q_strcasecmp(mod_dir_t->d_name, "progs.dat") == 0)
+			if (q_strcasecmp(mod_dir_t->d_name, "progs.dat") == 0)
 				progs_found = true;
 			if (strstr(mod_dir_t->d_name, ".pak") || strstr(mod_dir_t->d_name, ".PAK"))
 				pak_found = true;
@@ -1430,7 +1430,7 @@ void Host_Tell_f(void)
 	{
 		if (!client->active || !client->spawned)
 			continue;
-		if (Q_strcasecmp(client->name, Cmd_Argv(1)))
+		if (q_strcasecmp(client->name, Cmd_Argv(1)))
 			continue;
 		host_client = client;
 		SV_ClientPrintf("%s", text);
@@ -1761,7 +1761,7 @@ void Host_Kick_f (void)
 		{
 			if (!host_client->active)
 				continue;
-			if (Q_strcasecmp(host_client->name, Cmd_Argv(1)) == 0)
+			if (q_strcasecmp(host_client->name, Cmd_Argv(1)) == 0)
 				break;
 		}
 	}

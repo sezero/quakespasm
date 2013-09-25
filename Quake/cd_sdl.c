@@ -208,13 +208,13 @@ static void CD_f (void)
 
 	command = Cmd_Argv (1);
 
-	if (Q_strcasecmp(command, "on") == 0)
+	if (q_strcasecmp(command, "on") == 0)
 	{
 		enabled = true;
 		return;
 	}
 
-	if (Q_strcasecmp(command, "off") == 0)
+	if (q_strcasecmp(command, "off") == 0)
 	{
 		if (playing)
 			CDAudio_Stop();
@@ -222,7 +222,7 @@ static void CD_f (void)
 		return;
 	}
 
-	if (Q_strcasecmp(command, "reset") == 0)
+	if (q_strcasecmp(command, "reset") == 0)
 	{
 		enabled = true;
 		if (playing)
@@ -233,7 +233,7 @@ static void CD_f (void)
 		return;
 	}
 
-	if (Q_strcasecmp(command, "remap") == 0)
+	if (q_strcasecmp(command, "remap") == 0)
 	{
 		ret = Cmd_Argc() - 2;
 		if (ret <= 0)
@@ -258,37 +258,37 @@ static void CD_f (void)
 		}
 	}
 
-	if (Q_strcasecmp(command, "play") == 0)
+	if (q_strcasecmp(command, "play") == 0)
 	{
 		CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
 		return;
 	}
 
-	if (Q_strcasecmp(command, "loop") == 0)
+	if (q_strcasecmp(command, "loop") == 0)
 	{
 		CDAudio_Play((byte)atoi(Cmd_Argv (2)), true);
 		return;
 	}
 
-	if (Q_strcasecmp(command, "stop") == 0)
+	if (q_strcasecmp(command, "stop") == 0)
 	{
 		CDAudio_Stop();
 		return;
 	}
 
-	if (Q_strcasecmp(command, "pause") == 0)
+	if (q_strcasecmp(command, "pause") == 0)
 	{
 		CDAudio_Pause();
 		return;
 	}
 
-	if (Q_strcasecmp(command, "resume") == 0)
+	if (q_strcasecmp(command, "resume") == 0)
 	{
 		CDAudio_Resume();
 		return;
 	}
 
-	if (Q_strcasecmp(command, "eject") == 0)
+	if (q_strcasecmp(command, "eject") == 0)
 	{
 		if (playing)
 			CDAudio_Stop();
@@ -297,7 +297,7 @@ static void CD_f (void)
 		return;
 	}
 
-	if (Q_strcasecmp(command, "info") == 0)
+	if (q_strcasecmp(command, "info") == 0)
 	{
 		int	current_min, current_sec, current_frame;
 		int	length_min, length_sec, length_frame;
@@ -482,7 +482,7 @@ int CDAudio_Init(void)
 		}
 		for (i = 0; i < sdl_num_drives; i++)
 		{
-			if (!Q_strcasecmp(SDL_CDName(i), userdev))
+			if (!q_strcasecmp(SDL_CDName(i), userdev))
 			{
 				cd_dev = i;
 				break;

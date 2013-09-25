@@ -15,7 +15,7 @@ Index: Quake/gl_model.c
 @@ -438,7 +440,17 @@ void Mod_LoadTextures (lump_t *l)
  		if (!isDedicated) //no texture uploading for dedicated server
  		{
- 			if (!Q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
+ 			if (!q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
 +			{
 +				//mk -- begin
 +				if (r_externaltexture_fix.value) {

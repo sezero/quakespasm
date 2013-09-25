@@ -29,6 +29,7 @@
 #include "snd_umx.h"
 
 #define UPKG_HDR_TAG	0x9e2a83c1
+
 #pragma pack(1)
 struct upkg_hdr {
 	uint32_t tag;	/* UPKG_HDR_TAG */
@@ -244,7 +245,7 @@ static int probe_umx   (fshandle_t *f, const struct upkg_hdr *hdr,
 
 	if (read_typname(f, hdr, t, buf) < 0) return -1;
 	for (i = 0; mustype[i] != NULL; i++) {
-		if (!strcasecmp(buf, mustype[i])) {
+		if (!q_strcasecmp(buf, mustype[i])) {
 			t = i;
 			break;
 		}

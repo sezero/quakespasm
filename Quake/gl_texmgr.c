@@ -144,7 +144,7 @@ static void TexMgr_TextureMode_f (cvar_t *var)
 
 	for (i = 0; i < NUM_GLMODES; i++)
 	{
-		if (!Q_strcasecmp (glmodes[i].name, gl_texturemode.string))
+		if (!q_strcasecmp (glmodes[i].name, gl_texturemode.string))
 		{
 			Cvar_SetQuick (&gl_texturemode, glmodes[i].name);
 			return;

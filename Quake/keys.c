@@ -548,7 +548,7 @@ int Key_StringToKeynum (const char *str)
 
 	for (kn=keynames ; kn->name ; kn++)
 	{
-		if (!Q_strcasecmp(str,kn->name))
+		if (!q_strcasecmp(str,kn->name))
 			return kn->keynum;
 	}
 	return -1;

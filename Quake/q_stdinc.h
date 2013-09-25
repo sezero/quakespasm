@@ -1,32 +1,30 @@
 /*
-	q_stdinc.h
-	includes the minimum necessary stdc headers,
-	defines common and / or missing types.
-	NOTE:	for net stuff use net_sys.h,
-		for byte order use q_endian.h,
-		for math stuff use mathlib.h.
-
-	Copyright (C) 1996-1997  Id Software, Inc.
-	Copyright (C) 2007-2011  O.Sezer <sezero@users.sourceforge.net>
-
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-
-	See the GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to:
-
-		Free Software Foundation, Inc.
-		51 Franklin St, Fifth Floor,
-		Boston, MA  02110-1301  USA
-*/
+ * q_stdinc.h - includes the minimum necessary stdc headers,
+ *		defines common and / or missing types.
+ *
+ * NOTE:	for net stuff use net_sys.h,
+ *		for byte order use q_endian.h,
+ *		for math stuff use mathlib.h,
+ *		for locale-insensitive ctype.h functions use q_ctype.h.
+ *
+ * Copyright (C) 1996-1997  Id Software, Inc.
+ * Copyright (C) 2007-2011  O.Sezer <sezero@users.sourceforge.net>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ */
 
 #ifndef __QSTDINC_H
 #define __QSTDINC_H
@@ -62,9 +60,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
-#if !defined(_WIN32)
-#include <strings.h>	/* strcasecmp and strncasecmp	*/
-#endif	/* ! PLATFORM_WINDOWS */
 
 /*==========================================================================*/
 
@@ -143,6 +138,7 @@ COMPILE_TIME_ASSERT(qboolean, sizeof(qboolean) == 4);
 /* math */
 typedef float	vec_t;
 typedef vec_t	vec3_t[3];
+typedef vec_t	vec4_t[4];
 typedef vec_t	vec5_t[5];
 typedef int	fixed4_t;
 typedef int	fixed8_t;

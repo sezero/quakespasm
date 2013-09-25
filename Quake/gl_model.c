@@ -437,7 +437,7 @@ void Mod_LoadTextures (lump_t *l)
 		//johnfitz -- lots of changes
 		if (!isDedicated) //no texture uploading for dedicated server
 		{
-			if (!Q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
+			if (!q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
 				Sky_LoadTexture (tx);
 			else if (tx->name[0] == '*') //warping texture
 			{
@@ -1083,7 +1083,7 @@ void Mod_LoadFaces (lump_t *l)
 			out->samples = loadmodel->lightdata + (i * 3); //johnfitz -- lit support via lordhavoc (was "+ i")
 
 		//johnfitz -- this section rewritten
-		if (!Q_strncasecmp(out->texinfo->texture->name,"sky",3)) // sky surface //also note -- was Q_strncmp, changed to match qbsp
+		if (!q_strncasecmp(out->texinfo->texture->name,"sky",3)) // sky surface //also note -- was Q_strncmp, changed to match qbsp
 		{
 			out->flags |= (SURF_DRAWSKY | SURF_DRAWTILED);
 			Mod_PolyForUnlitSurface (out); //no more subdivision

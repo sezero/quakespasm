@@ -101,13 +101,13 @@ static void BGM_Loop_f (void)
 {
 	if (Cmd_Argc() == 2)
 	{
-		if (Q_strcasecmp(Cmd_Argv(1),  "0") == 0 ||
-		    Q_strcasecmp(Cmd_Argv(1),"off") == 0)
+		if (q_strcasecmp(Cmd_Argv(1),  "0") == 0 ||
+		    q_strcasecmp(Cmd_Argv(1),"off") == 0)
 			bgmloop = false;
-		else if (Q_strcasecmp(Cmd_Argv(1), "1") == 0 ||
-		         Q_strcasecmp(Cmd_Argv(1),"on") == 0)
+		else if (q_strcasecmp(Cmd_Argv(1), "1") == 0 ||
+		         q_strcasecmp(Cmd_Argv(1),"on") == 0)
 			bgmloop = true;
-		else if (Q_strcasecmp(Cmd_Argv(1),"toggle") == 0)
+		else if (q_strcasecmp(Cmd_Argv(1),"toggle") == 0)
 			bgmloop = !bgmloop;
 	}
 
@@ -248,7 +248,7 @@ void BGM_Play (const char *filename)
 	while (handler)
 	{
 		if (handler->is_available &&
-		    !Q_strcasecmp(ext, handler->ext))
+		    !q_strcasecmp(ext, handler->ext))
 			break;
 		handler = handler->next;
 	}
