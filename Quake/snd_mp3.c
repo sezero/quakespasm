@@ -491,14 +491,9 @@ static void S_MP3_CodecShutdown (void)
 {
 }
 
-static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
+static qboolean S_MP3_CodecOpenStream (snd_stream_t *stream)
 {
-	snd_stream_t *stream;
 	int err;
-
-	stream = S_CodecUtilOpen(filename, &mp3_codec);
-	if (!stream)
-		return NULL;
 
 #if 0 /*defined(CODECS_USE_ZONE)*/
 	stream->priv = Z_Malloc(sizeof(mp3_priv_t));
@@ -506,34 +501,30 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	stream->priv = calloc(1, sizeof(mp3_priv_t));
 	if (!stream->priv)
 	{
-		S_CodecUtilClose(&stream);
 		Con_Printf("Insufficient memory for MP3 audio\n");
-		return NULL;
+		return false;
 	}
 #endif
-
 	err = mp3_startread(stream);
 	if (err != 0)
 	{
-		Con_Printf("%s is not a valid mp3 file\n", filename);
+		Con_Printf("%s is not a valid mp3 file\n", stream->name);
 	}
 	else if (stream->info.channels != 1 && stream->info.channels != 2)
 	{
 		Con_Printf("Unsupported number of channels %d in %s\n",
-					stream->info.channels, filename);
+					stream->info.channels, stream->name);
 	}
 	else
 	{
-		return stream;
+		return true;
 	}
-
 #if 0 /*defined(CODECS_USE_ZONE)*/
 	Z_Free(stream->priv);
 #else
 	free(stream->priv);
 #endif
-	S_CodecUtilClose(&stream);
-	return NULL;
+	return false;
 }
 
 static int S_MP3_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)

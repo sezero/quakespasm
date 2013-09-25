@@ -86,16 +86,11 @@ static void S_MP3_CodecShutdown (void)
 	}
 }
 
-static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
+static qboolean S_MP3_CodecOpenStream (snd_stream_t *stream)
 {
-	snd_stream_t *stream;
 	long rate = 0;
 	int encoding = 0, channels = 0;
 	mp3_priv_t *priv = NULL;
-
-	stream = S_CodecUtilOpen(filename, &mp3_codec);
-	if (!stream)
-		return NULL;
 
 	stream->priv = Z_Malloc(sizeof(mp3_priv_t));
 	priv = (mp3_priv_t *) stream->priv;
@@ -117,7 +112,7 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 
 	if (mpg123_getformat(priv->handle, &rate, &channels, &encoding) != MPG123_OK)
 	{
-		Con_Printf("Unable to retrieve mpg123 format for %s\n", filename);
+		Con_Printf("Unable to retrieve mpg123 format for %s\n", stream->name);
 		goto _fail;
 	}
 
@@ -130,7 +125,7 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 		stream->info.channels = 2;
 		break;
 	default:
-		Con_Printf("Unsupported number of channels %d in %s\n", channels, filename);
+		Con_Printf("Unsupported number of channels %d in %s\n", channels, stream->name);
 		goto _fail;
 	}
 
@@ -162,13 +157,13 @@ static snd_stream_t *S_MP3_CodecOpenStream (const char *filename)
 	}
 	if (mpg123_format_support(priv->handle, rate, encoding) == 0)
 	{
-		Con_Printf("Unsupported format for %s\n", filename);
+		Con_Printf("Unsupported format for %s\n", stream->name);
 		goto _fail;
 	}
 	mpg123_format_none(priv->handle);
 	mpg123_format(priv->handle, rate, channels, encoding);
 
-	return stream;
+	return true;
 _fail:
 	if (priv)
 	{
@@ -178,8 +173,7 @@ _fail:
 			mpg123_delete(priv->handle);
 		Z_Free(stream->priv);
 	}
-	S_CodecUtilClose(&stream);
-	return NULL;
+	return false;
 }
 
 static int S_MP3_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)

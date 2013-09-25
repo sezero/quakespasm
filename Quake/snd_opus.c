@@ -83,23 +83,18 @@ static void S_OPUS_CodecShutdown (void)
 {
 }
 
-static snd_stream_t *S_OPUS_CodecOpenStream (const char *filename)
+static qboolean S_OPUS_CodecOpenStream (snd_stream_t *stream)
 {
-	snd_stream_t *stream;
 	OggOpusFile *opFile;
 	const OpusHead *op_info;
 	long numstreams;
 	int res;
 
-	stream = S_CodecUtilOpen(filename, &opus_codec);
-	if (!stream)
-		return NULL;
-
 	opFile = op_open_callbacks(&stream->fh, &opc_qfs, NULL, 0, &res);
 	if (!opFile)
 	{
 		Con_Printf("%s is not a valid Opus file (error %i).\n",
-				filename, res);
+				stream->name, res);
 		goto _fail;
 	}
 
@@ -107,14 +102,14 @@ static snd_stream_t *S_OPUS_CodecOpenStream (const char *filename)
 
 	if (!op_seekable(opFile))
 	{
-		Con_Printf("Opus stream %s not seekable.\n", filename);
+		Con_Printf("Opus stream %s not seekable.\n", stream->name);
 		goto _fail;
 	}
 
 	op_info = op_head(opFile, -1);
 	if (!op_info)
 	{
-		Con_Printf("Unable to get stream information for %s.\n", filename);
+		Con_Printf("Unable to get stream information for %s.\n", stream->name);
 		goto _fail;
 	}
 
@@ -123,14 +118,14 @@ static snd_stream_t *S_OPUS_CodecOpenStream (const char *filename)
 	if (numstreams != 1)
 	{
 		Con_Printf("More than one (%ld) stream in %s\n",
-					(long)op_info->stream_count, filename);
+					(long)op_info->stream_count, stream->name);
 		goto _fail;
 	}
 
 	if (op_info->channel_count != 1 && op_info->channel_count != 2)
 	{
 		Con_Printf("Unsupported number of channels %d in %s\n",
-					op_info->channel_count, filename);
+					op_info->channel_count, stream->name);
 		goto _fail;
 	}
 
@@ -144,12 +139,11 @@ static snd_stream_t *S_OPUS_CodecOpenStream (const char *filename)
 	stream->info.bits = 16;
 	stream->info.width = 2;
 
-	return stream;
+	return true;
 _fail:
 	if (opFile)
 		op_free(opFile);
-	S_CodecUtilClose(&stream);
-	return NULL;
+	return false;
 }
 
 static int S_OPUS_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)

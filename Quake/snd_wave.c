@@ -192,35 +192,25 @@ static qboolean WAV_ReadRIFFHeader(const char *name, FILE *file, snd_info_t *inf
 S_WAV_CodecOpenStream
 =================
 */
-snd_stream_t *S_WAV_CodecOpenStream(const char *filename)
+static qboolean S_WAV_CodecOpenStream(snd_stream_t *stream)
 {
-	snd_stream_t *stream;
-	long start;
-
-	stream = S_CodecUtilOpen(filename, &wav_codec);
-	if (!stream)
-		return NULL;
-
-	start = stream->fh.start;
+	long start = stream->fh.start;
 
 	/* Read the RIFF header */
 	/* The file reads are sequential, therefore no need
 	 * for the FS_*() functions: We will manipulate the
 	 * file by ourselves from now on. */
-	if (!WAV_ReadRIFFHeader(filename, stream->fh.file, &stream->info))
-		goto _fail;
+	if (!WAV_ReadRIFFHeader(stream->name, stream->fh.file, &stream->info))
+		return false;
 
 	stream->fh.start = ftell(stream->fh.file); /* reset to data position */
 	if (stream->fh.start - start + stream->info.size > stream->fh.length)
 	{
-		Con_Printf("%s data size mismatch\n", filename);
-		goto _fail;
+		Con_Printf("%s data size mismatch\n", stream->name);
+		return false;
 	}
 
-	return stream;
-_fail:
-	S_CodecUtilClose(&stream);
-	return NULL;
+	return true;
 }
 
 /*

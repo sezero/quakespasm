@@ -126,7 +126,7 @@ flac_length_func (const FLAC__StreamDecoder *decoder,
 		  FLAC__uint64 *stream_length, void *client_data)
 {
 	flacfile_t *ff = (flacfile_t *) client_data;
-	*stream_length = (FLAC__uint64) ff->file->length;
+	*stream_length = (FLAC__uint64) FS_filelength (ff->file);
 	return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
 
@@ -235,15 +235,10 @@ static void S_FLAC_CodecShutdown (void)
 {
 }
 
-static snd_stream_t *S_FLAC_CodecOpenStream (const char *filename)
+static qboolean S_FLAC_CodecOpenStream (snd_stream_t *stream)
 {
-	snd_stream_t *stream;
 	flacfile_t *ff;
 	int rc;
-
-	stream = S_CodecUtilOpen(filename, &flac_codec);
-	if (!stream)
-		return NULL;
 
 	ff = (flacfile_t *) Z_Malloc(sizeof(flacfile_t));
 
@@ -293,28 +288,29 @@ static snd_stream_t *S_FLAC_CodecOpenStream (const char *filename)
 	{
 		rc = FLAC__stream_decoder_get_state(ff->decoder);
 		Con_Printf("%s not a valid flac file? (decoder state %i)\n",
-				filename, rc);
+						stream->name, rc);
 		goto _fail;
 	}
 
 	if (ff->info->dataofs < 0)
 	{
-		Con_Printf("%s has no STREAMINFO\n", filename);
+		Con_Printf("%s has no STREAMINFO\n", stream->name);
 		goto _fail;
 	}
 	if (ff->info->bits != 8 && ff->info->bits != 16)
 	{
-		Con_Printf("%s is not 8 or 16 bit\n", filename);
+		Con_Printf("%s is not 8 or 16 bit\n", stream->name);
 		goto _fail;
 	}
 	if (ff->info->channels != 1 && ff->info->channels != 2)
 	{
 		Con_Printf("Unsupported number of channels %d in %s\n",
-					ff->info->channels, filename);
+					ff->info->channels, stream->name);
 		goto _fail;
 	}
 
-	return stream;
+	return true;
+
 _fail:
 	if (ff->decoder)
 	{
@@ -322,8 +318,7 @@ _fail:
 		FLAC__stream_decoder_delete (ff->decoder);
 	}
 	Z_Free(ff);
-	S_CodecUtilClose(&stream);
-	return NULL;
+	return false;
 }
 
 static int S_FLAC_CodecReadStream (snd_stream_t *stream, int len, void *buffer)

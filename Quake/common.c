@@ -2008,21 +2008,16 @@ size_t FS_fread(void *ptr, size_t size, size_t nmemb, fshandle_t *fh)
 	long bytes_read;
 	size_t nmemb_read;
 
-	if (!ptr)
-	{
+	if (!fh) {
+		errno = EBADF;
+		return 0;
+	}
+	if (!ptr) {
 		errno = EFAULT;
 		return 0;
 	}
-
-	if (!(size && nmemb))	/* not an error, just zero bytes wanted */
-	{
+	if (!size || !nmemb) {	/* no error, just zero bytes wanted */
 		errno = 0;
-		return 0;
-	}
-
-	if (!fh)
-	{
-		errno = EBADF;
 		return 0;
 	}
 
@@ -2049,8 +2044,7 @@ int FS_fseek(fshandle_t *fh, long offset, int whence)
  * the quake/hexen2 file system is 32 bits, anyway. */
 	int ret;
 
-	if (!fh)
-	{
+	if (!fh) {
 		errno = EBADF;
 		return -1;
 	}
@@ -2072,8 +2066,7 @@ int FS_fseek(fshandle_t *fh, long offset, int whence)
 		return -1;
 	}
 
-	if (offset < 0)
-	{
+	if (offset < 0) {
 		errno = EINVAL;
 		return -1;
 	}
@@ -2091,32 +2084,25 @@ int FS_fseek(fshandle_t *fh, long offset, int whence)
 
 int FS_fclose(fshandle_t *fh)
 {
-	if (!fh)
-	{
+	if (!fh) {
 		errno = EBADF;
 		return -1;
 	}
-
 	return fclose(fh->file);
 }
 
 long FS_ftell(fshandle_t *fh)
 {
-	if (!fh)
-	{
+	if (!fh) {
 		errno = EBADF;
 		return -1;
 	}
-
-	/* send the relative file position */
 	return fh->pos;
 }
 
 void FS_rewind(fshandle_t *fh)
 {
-	if (!fh)
-		return;
-
+	if (!fh) return;
 	clearerr(fh->file);
 	fseek(fh->file, fh->start, SEEK_SET);
 	fh->pos = 0;
@@ -2124,6 +2110,10 @@ void FS_rewind(fshandle_t *fh)
 
 int FS_feof(fshandle_t *fh)
 {
+	if (!fh) {
+		errno = EBADF;
+		return -1;
+	}
 	if (fh->pos >= fh->length)
 		return -1;
 	return 0;
@@ -2131,6 +2121,10 @@ int FS_feof(fshandle_t *fh)
 
 int FS_ferror(fshandle_t *fh)
 {
+	if (!fh) {
+		errno = EBADF;
+		return -1;
+	}
 	return ferror(fh->file);
 }
 
@@ -2148,5 +2142,14 @@ char *FS_fgets(char *s, int size, fshandle_t *fh)
 	fh->pos = ftell(fh->file) - fh->start;
 
 	return ret;
+}
+
+long FS_filelength (fshandle_t *fh)
+{
+	if (!fh) {
+		errno = EBADF;
+		return -1;
+	}
+	return fh->length;
 }
 

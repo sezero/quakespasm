@@ -50,6 +50,7 @@ typedef struct snd_stream_s
 {
 	fshandle_t fh;
 	qboolean pak;
+	char name[MAX_QPATH];	/* name of the source file */
 	snd_info_t info;
 	stream_status_t status;
 	snd_codec_t *codec;	/* codec handling this stream */
@@ -90,6 +91,7 @@ void S_CodecUtilClose(snd_stream_t **stream);
 #define CODECTYPE_MP3		(1U << 4)
 #define CODECTYPE_VORBIS	(1U << 5)
 #define CODECTYPE_OPUS		(1U << 6)
+#define CODECTYPE_UMX		(1U << 7)
 
 #define CODECTYPE_WAVE		CODECTYPE_WAV
 #define CODECTYPE_MIDI		CODECTYPE_MID

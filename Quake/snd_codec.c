@@ -28,6 +28,9 @@
 #include "snd_codeci.h"
 
 /* headers for individual codecs */
+#include "snd_mikmod.h"
+#include "snd_modplug.h"
+#include "snd_umx.h"
 #include "snd_wave.h"
 #include "snd_flac.h"
 #include "snd_mp3.h"
@@ -60,6 +63,15 @@ void S_CodecInit (void)
 
 	/* Register in the inverse order
 	 * of codec choice preference: */
+#ifdef USE_CODEC_UMX
+	S_CodecRegister(&umx_codec);
+#endif
+#ifdef USE_CODEC_MODPLUG
+	S_CodecRegister(&modplug_codec);
+#endif
+#ifdef USE_CODEC_MIKMOD
+	S_CodecRegister(&mikmod_codec);
+#endif
 #ifdef USE_CODEC_WAVE
 	S_CodecRegister(&wav_codec);
 #endif
@@ -75,6 +87,7 @@ void S_CodecInit (void)
 #ifdef USE_CODEC_OPUS
 	S_CodecRegister(&opus_codec);
 #endif
+
 	codec = codecs;
 	while (codec)
 	{
@@ -127,9 +140,12 @@ snd_stream_t *S_CodecOpenStreamType (const char *filename, unsigned int type)
 		Con_Printf("Unknown type for %s\n", filename);
 		return NULL;
 	}
-	stream = codec->codec_open(filename);
-	if (stream)
-		stream->status = STREAM_PLAY;
+	stream = S_CodecUtilOpen(filename, codec);
+	if (stream) {
+		if (codec->codec_open(stream))
+			stream->status = STREAM_PLAY;
+		else	S_CodecUtilClose(&stream);
+	}
 	return stream;
 }
 
@@ -158,9 +174,12 @@ snd_stream_t *S_CodecOpenStreamExt (const char *filename)
 		Con_Printf("Unknown extension for %s\n", filename);
 		return NULL;
 	}
-	stream = codec->codec_open(filename);
-	if (stream)
-		stream->status = STREAM_PLAY;
+	stream = S_CodecUtilOpen(filename, codec);
+	if (stream) {
+		if (codec->codec_open(stream))
+			stream->status = STREAM_PLAY;
+		else	S_CodecUtilClose(&stream);
+	}
 	return stream;
 }
 
@@ -179,11 +198,13 @@ snd_stream_t *S_CodecOpenStreamAny (const char *filename)
 		while (codec)
 		{
 			q_snprintf(tmp, sizeof(tmp), "%s.%s", filename, codec->ext);
-			stream = codec->codec_open(tmp);
-			if (stream)
-			{
-				stream->status = STREAM_PLAY;
-				return stream;
+			stream = S_CodecUtilOpen(tmp, codec);
+			if (stream) {
+				if (codec->codec_open(stream)) {
+					stream->status = STREAM_PLAY;
+					return stream;
+				}
+				S_CodecUtilClose(&stream);
 			}
 			codec = codec->next;
 		}
@@ -204,11 +225,29 @@ snd_stream_t *S_CodecOpenStreamAny (const char *filename)
 			Con_Printf("Unknown extension for %s\n", filename);
 			return NULL;
 		}
-		stream = codec->codec_open(filename);
-		if (stream)
-			stream->status = STREAM_PLAY;
+		stream = S_CodecUtilOpen(filename, codec);
+		if (stream) {
+			if (codec->codec_open(stream))
+				stream->status = STREAM_PLAY;
+			else	S_CodecUtilClose(&stream);
+		}
 		return stream;
 	}
+}
+
+qboolean S_CodecForwardStream (snd_stream_t *stream, unsigned int type)
+{
+	snd_codec_t *codec = codecs;
+
+	while (codec)
+	{
+		if (type == codec->type)
+			break;
+		codec = codec->next;
+	}
+	if (!codec) return false;
+	stream->codec = codec;
+	return codec->codec_open(stream);
 }
 
 void S_CodecCloseStream (snd_stream_t *stream)
@@ -253,6 +292,8 @@ snd_stream_t *S_CodecUtilOpen(const char *filename, snd_codec_t *codec)
 	stream->fh.pos = 0;
 	stream->fh.length = length;
 	stream->fh.pak = stream->pak = pak;
+	q_strlcpy(stream->name, filename, MAX_QPATH);
+
 	return stream;
 }
 

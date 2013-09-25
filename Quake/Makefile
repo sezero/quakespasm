@@ -14,6 +14,10 @@ USE_CODEC_FLAC=0
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=0
+# either mikmod (preferred) or modplug, not both
+USE_CODEC_MIKMOD=0
+USE_CODEC_MODPLUG=0
+USE_CODEC_UMX=0
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
@@ -157,6 +161,17 @@ ifeq ($(USE_CODEC_MP3),1)
 CFLAGS+= -DUSE_CODEC_MP3
 CODECLIBS+= $(lib_mp3dec)
 endif
+ifeq ($(USE_CODEC_MIKMOD),1)
+CFLAGS+= -DUSE_CODEC_MIKMOD
+CODECLIBS+= -lmikmod
+endif
+ifeq ($(USE_CODEC_MODPLUG),1)
+CFLAGS+= -DUSE_CODEC_MODPLUG
+CODECLIBS+= -lmodplug
+endif
+ifeq ($(USE_CODEC_UMX),1)
+CFLAGS+= -DUSE_CODEC_UMX
+endif
 
 COMMON_LIBS:= -lm -lGL
 
@@ -187,7 +202,10 @@ MUSIC_OBJS:= bgmusic.o \
 	snd_wave.o \
 	snd_vorbis.o \
 	snd_opus.o \
-	$(mp3_obj)
+	$(mp3_obj) \
+	snd_mikmod.o \
+	snd_modplug.o \
+	snd_umx.o
 COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
 SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
