@@ -1212,9 +1212,6 @@ static void COM_CheckRegistered (void)
 	if (h == -1)
 	{
 		Cvar_SetROM ("registered", "0");
-#if WINDED
-		Sys_Error ("This dedicated server requires a full registered copy of Quake");
-#endif
 		Con_Printf ("Playing shareware version.\n");
 		if (com_modified)
 			Sys_Error ("You must have the registered version to use modified games");
@@ -2164,6 +2161,18 @@ int FS_ferror(fshandle_t *fh)
 		return -1;
 	}
 	return ferror(fh->file);
+}
+
+int FS_fgetc(fshandle_t *fh)
+{
+	if (!fh) {
+		errno = EBADF;
+		return EOF;
+	}
+	if (fh->pos >= fh->length)
+		return EOF;
+	fh->pos += 1;
+	return fgetc(fh->file);
 }
 
 char *FS_fgets(char *s, int size, fshandle_t *fh)

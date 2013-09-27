@@ -44,12 +44,12 @@ typedef struct _mik_priv {
 
 static BOOL MIK_Seek (MREADER *r, long ofs, int whence)
 {
-	return FS_fseek (((mik_priv_t *)r)->fh, ofs, whence);
+	return FS_fseek(((mik_priv_t *)r)->fh, ofs, whence);
 }
 
 static long MIK_Tell (MREADER *r)
 {
-	return FS_ftell (((mik_priv_t *)r)->fh);
+	return FS_ftell(((mik_priv_t *)r)->fh);
 }
 
 static BOOL MIK_Read (MREADER *r, void *ptr, size_t siz)
@@ -59,12 +59,7 @@ static BOOL MIK_Read (MREADER *r, void *ptr, size_t siz)
 
 static int MIK_Get (MREADER *r)
 {
-	unsigned char c;
-	if (FS_feof(((mik_priv_t *)r)->fh))
-		return EOF;
-	if (FS_fread(&c, 1, 1, ((mik_priv_t *)r)->fh))
-		return (int)c;
-	return EOF;
+	return FS_fgetc(((mik_priv_t *)r)->fh);
 }
 
 static BOOL MIK_Eof (MREADER *r)
@@ -94,10 +89,10 @@ static qboolean S_MIKMOD_CodecInitialize (void)
 	 * md_pansep (stereo channels separation) default 128 is OK.
 	 * no reverbation (md_reverb 0 (up to 15)) is OK.
 	 * md_musicvolume and md_sndfxvolume defaults are 128: OK.
-	 * just tone down overall volume md_volume from 128 to 96: */
+	 * just tone down overall volume md_volume from 128 to 96? */
 	md_volume = 96;
 
-	MikMod_RegisterDriver(&drv_nos);
+	MikMod_RegisterDriver(&drv_nos);	/* only need the "nosound" driver, none else */
 	MikMod_RegisterAllLoaders();
 	if (MikMod_Init(NULL))
 	{
