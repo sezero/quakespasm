@@ -1,0 +1,4 @@
+libmodplug-0.8.8.x from modplug-xmms mercurial repository / 2013-08-28.
+only the C-interface is exported in the dlls and the import libraries,
+which is what we use. the dll is compiled using mingw[-w64] and it is
+statically linked to libstdc++ and libgcc, so no C++ dependencies exist.

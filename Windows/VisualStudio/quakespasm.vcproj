@@ -554,7 +554,15 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_mikmod.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_mix.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_modplug.c"
 				>
 			</File>
 			<File
@@ -567,6 +575,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_sdl.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_umx.c"
 				>
 			</File>
 			<File
@@ -828,11 +840,23 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_mikmod.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_modplug.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_mp3.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_opus.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_umx.h"
 				>
 			</File>
 			<File

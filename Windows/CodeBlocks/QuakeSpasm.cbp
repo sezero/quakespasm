@@ -274,7 +274,15 @@
 		<Unit filename="..\..\Quake\snd_mem.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\..\Quake\snd_mikmod.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_mikmod.h" />
 		<Unit filename="..\..\Quake\snd_mix.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_modplug.c">
+		<Unit filename="..\..\Quake\snd_modplug.h" />
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\..\Quake\snd_mp3.c">
@@ -288,6 +296,10 @@
 		<Unit filename="..\..\Quake\snd_sdl.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="..\..\Quake\snd_umx.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="..\..\Quake\snd_umx.h" />
 		<Unit filename="..\..\Quake\snd_vorbis.c">
 			<Option compilerVar="CC" />
 		</Unit>
