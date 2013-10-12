@@ -17,15 +17,16 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.85.9
-     6.2 Changes in 0.85.8
-     6.3 Changes in 0.85.7
-     6.4 Changes in 0.85.6
-     6.5 Changes in 0.85.5
-     6.6 Changes in 0.85.4
-     6.7 Changes in 0.85.3
-     6.8 Changes in 0.85.2
-     6.9 Changes in 0.85.1
+     6.1 Changes in 0.85.10
+     6.2 Changes in 0.85.9
+     6.3 Changes in 0.85.8
+     6.4 Changes in 0.85.7
+     6.5 Changes in 0.85.6
+     6.6 Changes in 0.85.5
+     6.7 Changes in 0.85.4
+     6.8 Changes in 0.85.3
+     6.9 Changes in 0.85.2
+     6.10 Changes in 0.85.1
 
   7. Todo
   8. Copyright
@@ -35,7 +36,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Apr. 12, 2013
+  Page last edited Oct. 12, 2013
 
 
   1.  About
@@ -157,7 +158,16 @@
 
   6.  Changes
 
-  6.1.  Changes in 0.85.9
+  6.1.  Changes in 0.85.10
+
+
+  o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
+     time options).
+
+  o  Better Hor+ field of view (FOV) scaling behavior.
+
+
+  6.2.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -204,7 +214,7 @@
   o  Several other minor fixes/cleanups.
 
 
-  6.2.  Changes in 0.85.8
+  6.3.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -251,7 +261,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  6.3.  Changes in 0.85.7
+  6.4.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -277,7 +287,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  6.4.  Changes in 0.85.6
+  6.5.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -290,7 +300,7 @@
   o  Minor SDL video fixes.
 
 
-  6.5.  Changes in 0.85.5
+  6.6.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -321,7 +331,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  6.6.  Changes in 0.85.4
+  6.7.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -349,7 +359,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  6.7.  Changes in 0.85.3
+  6.8.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -386,7 +396,7 @@
      some other CD tweaks.
 
 
-  6.8.  Changes in 0.85.2
+  6.9.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -414,7 +424,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  6.9.  Changes in 0.85.1
+  6.10.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -501,4 +511,5 @@
 
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
 
+  o  Sander's email <mailto:gmail - dot - com - username - a.h.vandijk>
 

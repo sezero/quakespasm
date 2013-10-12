@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Apr. 12, 2013</em>
+<em>Page last edited Oct. 12, 2013</em>
 
 <sect> About <p>
 
@@ -96,6 +96,13 @@ these patched libSDL binaries may help.
 </p>
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.85.10<p>
+<itemize>
+<item> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).
+<item> Better Hor+ field of view (FOV) scaling behavior.
+</itemize>
+</p>
 
 <sect1> Changes in 0.85.9<p>
 <itemize>
@@ -283,6 +290,7 @@ these patched libSDL binaries may help.
 <item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan's email">
 <item><url url="mailto:yahoo - dot - com - username - stevenaaus" name="Stevenaaus email">
 <item><url url="mailto:gmail - dot - com - username - inveigle" name="Kristian's email">
+<item><url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander's email">
 </itemize>
 
 </article>
