@@ -160,7 +160,6 @@
 
   6.1.  Changes in 0.85.10
 
-
   o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
      time options).
 
@@ -512,4 +511,5 @@
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
 
   o  Sander's email <mailto:gmail - dot - com - username - a.h.vandijk>
+
 
