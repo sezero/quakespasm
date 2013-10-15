@@ -27,6 +27,9 @@
 #include "snd_mikmod.h"
 #include <mikmod.h>
 
+#ifndef DMODE_NOISEREDUCTION
+#define DMODE_NOISEREDUCTION 0x1000 /* Low pass filtering */
+#endif
 #ifndef DMODE_SIMDMIXER
 #define DMODE_SIMDMIXER 0x0800 /* enable SIMD mixing */
 #endif
@@ -42,7 +45,7 @@ typedef struct _mik_priv {
 	MODULE *module;
 } mik_priv_t;
 
-static BOOL MIK_Seek (MREADER *r, long ofs, int whence)
+static int MIK_Seek (MREADER *r, long ofs, int whence)
 {
 	return FS_fseek(((mik_priv_t *)r)->fh, ofs, whence);
 }
@@ -88,8 +91,8 @@ static qboolean S_MIKMOD_CodecInitialize (void)
 	 * only register drv_nos, and it will be the only one found.)
 	 * md_pansep (stereo channels separation) default 128 is OK.
 	 * no reverbation (md_reverb 0 (up to 15)) is OK.
-	 * md_musicvolume and md_sndfxvolume defaults are 128: OK.
-	 * just tone down overall volume md_volume from 128 to 96? */
+	 * md_musicvolume and md_sndfxvolume defaults are 128: OK. */
+	/* just tone down overall volume md_volume from 128 to 96? */
 	md_volume = 96;
 
 	MikMod_RegisterDriver(&drv_nos);	/* only need the "nosound" driver, none else */
@@ -141,8 +144,8 @@ static qboolean S_MIKMOD_CodecOpenStream (snd_stream_t *stream)
 	 * position of the module is being played), extspd (1: do process Protracker
 	 * extended speed effect), panflag (1: do process panning effects), wrap (0:
 	 * don't wrap to restart position when module is finished) are OK with us as
-	 * set internally by libmikmod::Player_Init().  just change the loop setting
-	 * to 0, i.e. don't process in-module loops: */
+	 * set internally by libmikmod::Player_Init(). */
+	/* just change the loop setting to 0, i.e. don't process in-module loops: */
 	priv->module->loop	= 0;
 	Player_Start(priv->module);
 

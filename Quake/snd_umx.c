@@ -1,9 +1,15 @@
 /*
- * Unreal UMX container support.  UMX parsing is based on Unreal Media
- * Ripper (UMR) v0.3 by Andy Ward <wardwh@swbell.net>, with additional
- * updates by O. Sezer - see git repo at https://github.com/sezero/umr/
+ * Unreal UMX container support.
+ * UPKG parsing partially based on Unreal Media Ripper (UMR) v0.3
+ * by Andy Ward <wardwh@swbell.net>, with additional updates
+ * by O. Sezer - see git repo at https://github.com/sezero/umr/
  *
- * Copyright (C) 2013 O.Sezer <sezero@users.sourceforge.net>
+ * The cheaper way, i.e. linear search of music object like libxmp
+ * and libmodplug does, is possible. With this however we're using
+ * the embedded offset, size and object type directly from the umx
+ * file, and I feel safer with it.
+ *
+ * Copyright (C) 2013 O. Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,33 +39,31 @@
 #pragma pack(1)
 struct upkg_hdr {
 	uint32_t tag;	/* UPKG_HDR_TAG */
-	int32_t file_version,	/* 61 for original unreal */
-		pkg_flags,	/* bitflags - none needed */
-		name_count,	/* number of names in name table (>= 0) */
-		name_offset,		/* offset to name table  (>= 0) */
-		export_count,	/* num. exports in export table  (>= 0) */
-		export_offset,		/* offset to export table (>= 0) */
-		import_count,	/* num. imports in export table  (>= 0) */
-		import_offset;		/* offset to import table (>= 0) */
+	int32_t file_version;	/* 61 for original unreal */
+	int32_t pkg_flags;	/* bitflags - none needed */
+	int32_t name_count;	/* number of names in name table (>= 0) */
+	int32_t name_offset;		/* offset to name table  (>= 0) */
+	int32_t export_count;	/* num. exports in export table  (>= 0) */
+	int32_t export_offset;		/* offset to export table (>= 0) */
+	int32_t import_count;	/* num. imports in export table  (>= 0) */
+	int32_t import_offset;		/* offset to import table (>= 0) */
 
 	/* number of GUIDs in heritage table (>= 1) and table's offset:
 	 * only with versions < 68. */
-	int32_t heritage_count, heritage_offset;
+	int32_t heritage_count;
+	int32_t heritage_offset;
 #if 0
 	/* with versions >= 68:  a GUID, a dword for generation count
 	 * and export_count and name_count dwords for each generation: */
 	uint32_t guid[4];
 	int32_t generation_count;
 	struct _genhist {
-		int32_t export_count,
-			name_count;
+		int32_t export_count;
+		int32_t name_count;
 	} genhist[0/* generation_count */];
 #endif
 };
 #pragma pack()
-
-/* read Little Endian data in an endian-neutral way */
-#define READ_INT32(b) ((b)[0] | ((b)[1] << 8) | ((b)[2] << 16) | ((b)[3] << 24))
 
 #define UMUSIC_IT	0
 #define UMUSIC_S3M	1
@@ -124,9 +128,13 @@ _retry:
 		return -1;
 	}
 	if (type == UMUSIC_XM) {
-		if (memcmp(sig, "Extended Module:", 16) == 0)
-			return UMUSIC_XM;
-		return -1;
+		if (memcmp(sig, "Extended Module:", 16) != 0)
+			return -1;
+		FS_fread(sig, 16, 1, f);
+		if (sig[0] != ' ') return -1;
+		FS_fread(sig, 16, 1, f);
+		if (sig[5] != 0x1a) return -1;
+		return UMUSIC_XM;
 	}
 	if (type == UMUSIC_MP2) {
 		unsigned char *p = (unsigned char *)sig;
@@ -269,7 +277,7 @@ static int32_t probe_header (void *header)
 	p = (unsigned char *) header;
 	swp = (uint32_t *) header;
 	for (i = 0; i < (int)sizeof(struct upkg_hdr)/4; i++, p += 4) {
-		swp[i] = READ_INT32(p);
+		swp[i] = p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24);
 	}
 
 	hdr = (struct upkg_hdr *) header;
@@ -286,6 +294,7 @@ static int32_t probe_header (void *header)
 		Con_DPrintf("Negative values in header\n");
 		return -1;
 	}
+
 	switch (hdr->file_version) {
 	case 61:/* Unreal */
 	case 62:/* Unreal Tournament */
@@ -327,8 +336,8 @@ static void S_UMX_CodecShutdown (void)
 
 static qboolean S_UMX_CodecOpenStream (snd_stream_t *stream)
 {
-	int32_t ofs, size;
 	int type;
+	int32_t ofs = 0, size = 0;
 
 	type = process_upkg(&stream->fh, &ofs, &size);
 	if (type < 0) {
