@@ -270,8 +270,8 @@ void CL_ParseServerInfo (void)
 	i = MSG_ReadLong ();
 	//johnfitz -- support multiple protocols
 	if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE) {
-		Con_Printf ("\n"); //becuase there's no newline after serverinfo print
-		Host_Error ("Server returned version %i, not %i or %i\n", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
+		Con_Printf ("\n"); //because there's no newline after serverinfo print
+		Host_Error ("Server returned version %i, not %i or %i", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
 	}
 	cl.protocol = i;
 	//johnfitz
@@ -280,8 +280,7 @@ void CL_ParseServerInfo (void)
 	cl.maxclients = MSG_ReadByte ();
 	if (cl.maxclients < 1 || cl.maxclients > MAX_SCOREBOARD)
 	{
-		Con_Printf("Bad maxclients (%u) from server\n", cl.maxclients);
-		return;
+		Host_Error ("Bad maxclients (%u) from server", cl.maxclients);
 	}
 	cl.scores = (scoreboard_t *) Hunk_AllocName (cl.maxclients*sizeof(*cl.scores), "scores");
 
@@ -312,8 +311,7 @@ void CL_ParseServerInfo (void)
 			break;
 		if (nummodels==MAX_MODELS)
 		{
-			Con_Printf ("Server sent too many model precaches\n");
-			return;
+			Host_Error ("Server sent too many model precaches");
 		}
 		q_strlcpy (model_precache[nummodels], str, MAX_QPATH);
 		Mod_TouchModel (str);
@@ -333,8 +331,7 @@ void CL_ParseServerInfo (void)
 			break;
 		if (numsounds==MAX_SOUNDS)
 		{
-			Con_Printf ("Server sent too many sound precaches\n");
-			return;
+			Host_Error ("Server sent too many sound precaches");
 		}
 		q_strlcpy (sound_precache[numsounds], str, MAX_QPATH);
 		S_TouchSound (str);
@@ -357,8 +354,7 @@ void CL_ParseServerInfo (void)
 		cl.model_precache[i] = Mod_ForName (model_precache[i], false);
 		if (cl.model_precache[i] == NULL)
 		{
-			Con_Printf("Model %s not found\n", model_precache[i]);
-			return;
+			Host_Error ("Model %s not found", model_precache[i]);
 		}
 		CL_KeepaliveMessage ();
 	}
@@ -962,7 +958,7 @@ void CL_ParseServerMessage (void)
 		switch (cmd)
 		{
 		default:
-			Host_Error ("Illegible server message, previous was %s\n", svc_strings[lastcmd]); //johnfitz -- added svc_strings[lastcmd]
+			Host_Error ("Illegible server message, previous was %s", svc_strings[lastcmd]); //johnfitz -- added svc_strings[lastcmd]
 			break;
 
 		case svc_nop:
@@ -982,7 +978,7 @@ void CL_ParseServerMessage (void)
 			i = MSG_ReadLong ();
 			//johnfitz -- support multiple protocols
 			if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE)
-				Host_Error ("Server returned version %i, not %i or %i\n", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
+				Host_Error ("Server returned version %i, not %i or %i", i, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
 			cl.protocol = i;
 			//johnfitz
 			break;
