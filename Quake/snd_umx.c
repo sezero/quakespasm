@@ -201,15 +201,15 @@ static int read_typname(fshandle_t *f, const struct upkg_hdr *hdr,
 	char buf[64];
 
 	if (idx >= hdr->name_count) return -1;
+	buf[63] = '\0';
 	for (i = 0, l = 0; i <= idx; i++) {
 		FS_fseek(f, hdr->name_offset + l, SEEK_SET);
-		FS_fread(buf, 1, 64, f);
+		FS_fread(buf, 1, 63, f);
 		if (hdr->file_version >= 64) {
 			s = *(signed char *)buf; /* numchars *including* terminator */
-			if (s <= 0 || s >= 64) return -1;
+			if (s <= 0 || s > 64) return -1;
 			l += s + 5;	/* 1 for buf[0], 4 for int32_t name_flags */
 		} else {
-			buf[63] = 0;
 			l += (long)strlen(buf);
 			l +=  5;	/* 1 for terminator, 4 for int32_t name_flags */
 		}
