@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Oct. 12, 2013</EM></P>
+<P><EM>Page last edited Dec. 27, 2013</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
@@ -158,7 +158,8 @@ Compile time options include
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Known Bugs </A></H2>
 
-<P>Some versions of Xorg and SDL have brightness issues. If you have Xorg >= 7.5 and broken brightness,
+<P>Some versions of Xorg and SDL have brightness issues.<BR>
+Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
 these patched libSDL binaries may help.
 <UL>
 <LI>
@@ -167,6 +168,7 @@ these patched libSDL binaries may help.
 <A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
 </UL>
 </P>
+<P>OS X has a well known gamma issue where the screen turns dark, but we currently have no fix.</P>
 <H2><A NAME="s6">6.</A> <A HREF="#toc6">Changes</A></H2>
 
 
@@ -416,4 +418,3 @@ these patched libSDL binaries may help.
 
 </BODY>
 </HTML>
-

@@ -1,0 +1,4 @@
+#!/bin/bash
+sgml2txt -b 2 "$1"
+cat "$1.txt" | sed -e 's/[^m]*m//g' -e 's/.//g' >tmp$$
+mv tmp$$ "$1.txt"
