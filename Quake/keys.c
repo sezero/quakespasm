@@ -322,16 +322,15 @@ void Key_Console (int key)
 		return;
 
 	case K_PGUP:
-	// Mouse events never reach the console, especially in windowed mode
-	// when mouse is released to the window manager
-	// case K_MWHEELUP:
+	// To allow (some) mouse events to reach the console, we selectively alter FilterMouseEvents
+	case K_MWHEELUP:
 		con_backscroll += keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll > con_totallines - (vid.height>>3) - 1)
 			con_backscroll = con_totallines - (vid.height>>3) - 1;
 		return;
 
 	case K_PGDN:
-	// case K_MWHEELDOWN:
+	case K_MWHEELDOWN:
 		con_backscroll -= keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll < 0)
 			con_backscroll = 0;

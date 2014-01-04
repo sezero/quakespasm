@@ -66,8 +66,8 @@ static int FilterMouseEvents (const SDL_Event *event)
 	switch (event->type)
 	{
 	case SDL_MOUSEMOTION:
-	case SDL_MOUSEBUTTONDOWN:
-	case SDL_MOUSEBUTTONUP:
+	// case SDL_MOUSEBUTTONDOWN:
+	// case SDL_MOUSEBUTTONUP:
 		return 0;
 	}
 
