@@ -68,7 +68,7 @@ extern "C" {
 
 #define LIBMIKMOD_VERSION_MAJOR 3L
 #define LIBMIKMOD_VERSION_MINOR 3L
-#define LIBMIKMOD_REVISION      4L
+#define LIBMIKMOD_REVISION      5L
 
 #define LIBMIKMOD_VERSION \
     ((LIBMIKMOD_VERSION_MAJOR<<16)| \
@@ -243,6 +243,16 @@ enum {
     MMERR_OPENAL_SOURCEPLAY,
     MMERR_OPENAL_SOURCESTOP,
 
+    MMERR_ALSA_NOCONFIG,
+    MMERR_ALSA_SETPARAMS,
+    MMERR_ALSA_SETFORMAT,
+    MMERR_ALSA_SETRATE,
+    MMERR_ALSA_SETCHANNELS,
+    MMERR_ALSA_BUFFERSIZE,
+    MMERR_ALSA_PCM_START,
+    MMERR_ALSA_PCM_WRITE,
+    MMERR_ALSA_PCM_RECOVER,
+
     MMERR_MAX
 };
 
@@ -289,7 +299,7 @@ MIKMODAPI extern void*  MikMod_malloc(size_t);
 MIKMODAPI extern void*  MikMod_calloc(size_t,size_t);
 MIKMODAPI extern void*  MikMod_realloc(void*,size_t);
 MIKMODAPI extern CHAR*  MikMod_strdup(const CHAR*);
-MIKMODAPI extern void   MikMod_free(void*);
+MIKMODAPI extern void   MikMod_free(void*);  /* frees if ptr != NULL */
 
 /*
  *  ========== Reader, Writer
@@ -761,6 +771,7 @@ MIKMODAPI extern struct MDRIVER drv_AF;     /* Dec Alpha AudioFile */
 MIKMODAPI extern struct MDRIVER drv_aix;    /* AIX audio device */
 MIKMODAPI extern struct MDRIVER drv_alsa;   /* Advanced Linux Sound Architecture (ALSA) */
 MIKMODAPI extern struct MDRIVER drv_esd;    /* Enlightened sound daemon (EsounD) */
+MIKMODAPI extern struct MDRIVER drv_pulseaudio; /* PulseAudio  */
 MIKMODAPI extern struct MDRIVER drv_hp;     /* HP-UX audio device */
 MIKMODAPI extern struct MDRIVER drv_nas;    /* Network Audio System (NAS) */
 MIKMODAPI extern struct MDRIVER drv_oss;    /* OpenSound System (Linux,FreeBSD...) */
