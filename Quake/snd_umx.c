@@ -183,8 +183,8 @@ static int read_export (fshandle_t *f, const struct upkg_hdr *hdr,
 		return -1;
 
 	if (hdr->file_version < 40) idx += 8;	/* 00 00 00 00 00 00 00 00 */
+	if (hdr->file_version < 60) idx += 16;	/* 81 00 00 00 00 00 FF FF FF FF FF FF FF FF 00 00 */
 	get_fci(&buf[idx], &idx);		/* skip junk */
-	if (hdr->file_version < 60) idx += 16;	/* 00 00 00 00 00 FF FF FF FF FF FF FF FF 00 00 00 */
 	t = get_fci(&buf[idx], &idx);		/* type_name */
 	if (hdr->file_version > 61) idx += 4;	/* skip export size */
 	*objsize = get_fci(&buf[idx], &idx);
