@@ -158,8 +158,8 @@ CHANNEL MIXING
 ===============================================================================
 */
 
-static void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int endtime);
-static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int endtime);
+static void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int endtime, int paintbufferstart);
+static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int endtime, int paintbufferstart);
 
 void S_PaintChannels (int endtime)
 {
@@ -228,10 +228,12 @@ void S_PaintChannels (int endtime)
 
 				if (count > 0)
 				{
+					// the last param to SND_PaintChannelFrom is the index
+					// to start painting to in the paintbuffer, usually 0.
 					if (sc->width == 1)
-						SND_PaintChannelFrom8(ch, sc, count);
+						SND_PaintChannelFrom8(ch, sc, count, ltime - paintedtime);
 					else
-						SND_PaintChannelFrom16(ch, sc, count);
+						SND_PaintChannelFrom16(ch, sc, count, ltime - paintedtime);
 
 					ltime += count;
 				}
@@ -282,7 +284,7 @@ void SND_InitScaletable (void)
 }
 
 
-static void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int count)
+static void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int count, int paintbufferstart)
 {
 	int	data;
 	int		*lscale, *rscale;
@@ -301,14 +303,14 @@ static void SND_PaintChannelFrom8 (channel_t *ch, sfxcache_t *sc, int count)
 	for (i = 0; i < count; i++)
 	{
 		data = sfx[i];
-		paintbuffer[i].left += lscale[data];
-		paintbuffer[i].right += rscale[data];
+		paintbuffer[paintbufferstart + i].left += lscale[data];
+		paintbuffer[paintbufferstart + i].right += rscale[data];
 	}
 
 	ch->pos += count;
 }
 
-static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int count)
+static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int count, int paintbufferstart)
 {
 	int	data;
 	int	left, right;
@@ -331,8 +333,8 @@ static void SND_PaintChannelFrom16 (channel_t *ch, sfxcache_t *sc, int count)
 	//	right = (data * rightvol) >> 8;
 		left = data * leftvol;
 		right = data * rightvol;
-		paintbuffer[i].left += left;
-		paintbuffer[i].right += right;
+		paintbuffer[paintbufferstart + i].left += left;
+		paintbuffer[paintbufferstart + i].right += right;
 	}
 
 	ch->pos += count;
