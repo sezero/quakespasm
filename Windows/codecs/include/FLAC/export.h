@@ -59,11 +59,11 @@
 #if defined(FLAC__NO_DLL)
 #define FLAC_API
 
-#elif defined(_MSC_VER)
+#elif defined(_WIN32) /*defined(_MSC_VER)*/
 #ifdef FLAC_API_EXPORTS
-#define	FLAC_API	_declspec(dllexport)
+#define FLAC_API __declspec(dllexport)
 #else
-#define FLAC_API	_declspec(dllimport)
+#define FLAC_API __declspec(dllimport)
 #endif
 
 #elif defined(FLAC__USE_VISIBILITY_ATTR)
