@@ -34,13 +34,19 @@
 #include "snd_codeci.h"
 #include "snd_umx.h"
 
+typedef int32_t fci_t;		/* FCompactIndex */
+
 #define UPKG_HDR_TAG	0x9e2a83c1
 
-#pragma pack(1)
+struct _genhist {	/* for upkg versions >= 68 */
+	int32_t export_count;
+	int32_t name_count;
+};
+
 struct upkg_hdr {
 	uint32_t tag;	/* UPKG_HDR_TAG */
-	int32_t file_version;	/* 61 for original unreal */
-	int32_t pkg_flags;	/* bitflags - none needed */
+	int32_t file_version;
+	uint32_t pkg_flags;
 	int32_t name_count;	/* number of names in name table (>= 0) */
 	int32_t name_offset;		/* offset to name table  (>= 0) */
 	int32_t export_count;	/* num. exports in export table  (>= 0) */
@@ -52,18 +58,15 @@ struct upkg_hdr {
 	 * only with versions < 68. */
 	int32_t heritage_count;
 	int32_t heritage_offset;
-#if 0
 	/* with versions >= 68:  a GUID, a dword for generation count
 	 * and export_count and name_count dwords for each generation: */
 	uint32_t guid[4];
 	int32_t generation_count;
-	struct _genhist {
-		int32_t export_count;
-		int32_t name_count;
-	} genhist[0/* generation_count */];
-#endif
+#define UPKG_HDR_SIZE 64			/* 64 bytes up until here */
+	/*struct _genhist *gen;*/
 };
-#pragma pack()
+/*COMPILE_TIME_ASSERT(upkg_hdr, offsetof(struct upkg_hdr, gen) == UPKG_HDR_SIZE);*/
+COMPILE_TIME_ASSERT(upkg_hdr, sizeof(struct upkg_hdr) == UPKG_HDR_SIZE);
 
 #define UMUSIC_IT	0
 #define UMUSIC_S3M	1
@@ -77,10 +80,13 @@ static const char *mustype[] = {
 	"WAV", "MP2", NULL
 };
 
-/* decode an FCompactIndex. original documentation by Tim Sweeney
- * was at http://unreal.epicgames.com/Packages.htm
+/* decode an FCompactIndex.
+ * original documentation by Tim Sweeney was at
+ * http://unreal.epicgames.com/Packages.htm
+ * also see Unreal Wiki:
+ * http://wiki.beyondunreal.com/Legacy:Package_File_Format/Data_Details
  */
-static int32_t get_fci (const char *in, int *pos)
+static fci_t get_fci (const char *in, int *pos)
 {
 	int32_t a;
 	int size;
@@ -228,7 +234,7 @@ static int probe_umx   (fshandle_t *f, const struct upkg_hdr *hdr,
 	char buf[64];
 
 	idx = 0;
-	fsiz = f->length;
+	fsiz = FS_filelength (f);
 
 	/* Find the offset and size of the first IT, S3M or XM
 	 * by parsing the exports table. The umx files should
@@ -278,7 +284,7 @@ static int32_t probe_header (void *header)
 	/* byte swap the header - all members are 32 bit LE values */
 	p = (unsigned char *) header;
 	swp = (uint32_t *) header;
-	for (i = 0; i < (int)sizeof(struct upkg_hdr)/4; i++, p += 4) {
+	for (i = 0; i < UPKG_HDR_SIZE/4; i++, p += 4) {
 		swp[i] = p[0] | (p[1] << 8) | (p[2] << 16) | (p[3] << 24);
 	}
 
@@ -319,9 +325,9 @@ static int32_t probe_header (void *header)
 
 static int process_upkg (fshandle_t *f, int32_t *ofs, int32_t *objsize)
 {
-	char header[64];
+	char header[UPKG_HDR_SIZE];
 
-	if (FS_fread(header, 1, 64, f) < 64)
+	if (FS_fread(header, 1, UPKG_HDR_SIZE, f) < UPKG_HDR_SIZE)
 		return -1;
 	if (probe_header(header) < 0)
 		return -1;
@@ -352,7 +358,7 @@ static qboolean S_UMX_CodecOpenStream (snd_stream_t *stream)
 	Con_DPrintf("%s: %s data @ 0x%x, %d bytes\n", stream->name, mustype[type], ofs, size);
 	/* hack the fshandle_t start pos and length members so
 	 * that only the relevant data is accessed from now on */
-	stream->fh.start = ofs;
+	stream->fh.start += ofs;
 	stream->fh.length = size;
 	FS_fseek(&stream->fh, 0, SEEK_SET);
 
