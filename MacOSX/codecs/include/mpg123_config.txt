@@ -1,4 +1,4 @@
-mpg123-1.18.0, configured using:
+mpg123-1.18.1, configured using:
 --disable-modules --disable-debug --disable-fifo --disable-ipv6 --disable-network --disable-messages --disable-string --disable-icy --disable-lfs-alias
 edited src/config.h and undefined macro WANT_WIN32_UNICODE
 edited src/libmpg123/mpg123lib_intern.h and changed macros
