@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	NET_NAMELEN		64
 
-#define NET_MAXMESSAGE		32000	/* johnfitz -- was 8192 */
+#define NET_MAXMESSAGE		 65536	/* ericw -- was 32000 */
 
 extern int		DEFAULTnet_hostport;
 extern int		net_hostport;
