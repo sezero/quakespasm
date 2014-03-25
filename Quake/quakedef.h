@@ -71,7 +71,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	DIST_EPSILON		(0.03125)		// 1/32 epsilon to keep floating point happy (moved from world.c)
 
-#define	MAX_MSGLEN		65536	// max length of a reliable message //ericw -- was 32000
+#define	MAX_MSGLEN		64000	// max length of a reliable message //ericw -- was 32000
 #define	MAX_DATAGRAM		32000	// max length of unreliable message //johnfitz -- was 1024
 
 #define	DATAGRAM_MTU		1400	// johnfitz -- actual limit for unreliable messages to nonlocal clients
