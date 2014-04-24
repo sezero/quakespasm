@@ -152,7 +152,11 @@ void Sys_mkdir (const char *path)
 {
 	int rc = mkdir (path, 0777);
 	if (rc != 0 && errno == EEXIST)
-		rc = 0;
+	{
+		struct stat st;
+		if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+			rc = 0;
+	}
 	if (rc != 0)
 	{
 		rc = errno;
@@ -263,17 +267,5 @@ void Sys_Sleep (unsigned long msecs)
 void Sys_SendKeyEvents (void)
 {
 	IN_SendKeyEvents();
-}
-
-void Sys_LowFPPrecision (void)
-{
-}
-
-void Sys_HighFPPrecision (void)
-{
-}
-
-void Sys_SetFPCW (void)
-{
 }
 

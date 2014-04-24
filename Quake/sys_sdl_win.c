@@ -153,7 +153,7 @@ void Sys_Init (void)
 	OSVERSIONINFO	vinfo;
 
 	host_parms->userdir = host_parms->basedir;
-		/* user directories not really necessary for windows guys.
+		/* userdirs not really necessary for windows guys.
 		 * can be done if necessary, though... */
 
 	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
@@ -356,17 +356,5 @@ void Sys_Sleep (unsigned long msecs)
 void Sys_SendKeyEvents (void)
 {
 	IN_SendKeyEvents();
-}
-
-void Sys_LowFPPrecision (void)
-{
-}
-
-void Sys_HighFPPrecision (void)
-{
-}
-
-void Sys_SetFPCW (void)
-{
 }
 
