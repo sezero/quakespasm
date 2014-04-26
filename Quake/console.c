@@ -174,7 +174,7 @@ static void Con_Dump_f (void)
 			return;
 		}
 		q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
-		COM_DefaultExtension (name, ".txt", sizeof(name));
+		COM_AddExtension (name, ".txt", sizeof(name));
 	}
 	else
 		q_snprintf (name, sizeof(name), "%s/condump.txt", com_gamedir);

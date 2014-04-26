@@ -179,6 +179,7 @@ void COM_InitFilesystem (void);
 const char *COM_SkipPath (const char *pathname);
 void COM_StripExtension (const char *in, char *out, size_t outsize);
 void COM_FileBase (const char *in, char *out, size_t outsize);
+void COM_AddExtension (char *path, const char *extension, size_t len);
 void COM_DefaultExtension (char *path, const char *extension, size_t len);
 const char *COM_FileGetExtension (const char *in); /* doesn't return NULL */
 void COM_ExtractExtension (const char *in, char *out, size_t outsize);

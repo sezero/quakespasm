@@ -1052,29 +1052,38 @@ void COM_FileBase (const char *in, char *out, size_t outsize)
 /*
 ==================
 COM_DefaultExtension
+if path doesn't have a .EXT, append extension
+(extension should include the leading ".")
 ==================
 */
 void COM_DefaultExtension (char *path, const char *extension, size_t len)
 {
 	char	*src;
-	size_t	l;
-//
-// if path doesn't have a .EXT, append extension
-// (extension should include the .)
-//
-	if (!*path)
-		return;
-	l = strlen(path);
-	src = path + l - 1;
 
-	while (*src != '/' && src != path)
+	if (!*path) return;
+	src = path + strlen(path) - 1;
+
+	while (*src != '/' && *src != '\\' && src != path)
 	{
 		if (*src == '.')
-			return;		// it has an extension
+			return; // it has an extension
 		src--;
 	}
 
 	q_strlcat(path, extension, len);
+}
+
+/*
+==================
+COM_AddExtension
+if path extension doesn't match .EXT, append it
+(extension should include the leading ".")
+==================
+*/
+void COM_AddExtension (char *path, const char *extension, size_t len)
+{
+	if (strcmp(COM_FileGetExtension(path), extension + 1) != 0)
+		q_strlcat(path, extension, len);
 }
 
 

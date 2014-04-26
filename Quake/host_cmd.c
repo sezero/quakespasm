@@ -136,19 +136,21 @@ void Host_Game_f (void)
 
 	if (Cmd_Argc() > 1)
 	{
+		const char *p = Cmd_Argv(1);
+
 		if (!registered.value) //disable command for shareware quake
 		{
 			Con_Printf("You must have the registered version to use modified games\n");
 			return;
 		}
 
-		if (strstr(Cmd_Argv(1), ".."))
+		if (!strcmp(p, ".") || strstr(p, ".."))
 		{
 			Con_Printf ("Relative pathnames are not allowed.\n");
 			return;
 		}
 
-		q_strlcpy (pakfile, va("%s/%s", host_parms->basedir, Cmd_Argv(1)), sizeof(pakfile));
+		q_strlcpy (pakfile, va("%s/%s", host_parms->basedir, p), sizeof(pakfile));
 		if (!q_strcasecmp(pakfile, com_gamedir)) //no change
 		{
 			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
@@ -170,7 +172,7 @@ void Host_Game_f (void)
 
 		q_strlcpy (com_gamedir, pakfile, sizeof(com_gamedir));
 
-		if (q_strcasecmp(Cmd_Argv(1), GAMENAME)) //game is not id1
+		if (q_strcasecmp(p, GAMENAME)) //game is not id1
 		{
 			// assign a path_id to this game directory
 			if (com_searchpaths)
@@ -1046,7 +1048,7 @@ void Host_Savegame_f (void)
 	}
 
 	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
-	COM_DefaultExtension (name, ".sav", sizeof(name));
+	COM_AddExtension (name, ".sav", sizeof(name));
 
 	Con_Printf ("Saving game to %s...\n", name);
 	f = fopen (name, "w");
@@ -1118,7 +1120,7 @@ void Host_Loadgame_f (void)
 	cls.demonum = -1;		// stop demo loop in case this fails
 
 	q_snprintf (name, sizeof(name), "%s/%s", com_gamedir, Cmd_Argv(1));
-	COM_DefaultExtension (name, ".sav", sizeof(name));
+	COM_AddExtension (name, ".sav", sizeof(name));
 
 // we can't call SCR_BeginLoadingPlaque, because too much stack space has
 // been used.  The menu calls it before stuffing loadgame command
