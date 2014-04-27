@@ -1056,6 +1056,7 @@ if path doesn't have a .EXT, append extension
 (extension should include the leading ".")
 ==================
 */
+#if 0 /* can be dangerous */
 void COM_DefaultExtension (char *path, const char *extension, size_t len)
 {
 	char	*src;
@@ -1072,6 +1073,7 @@ void COM_DefaultExtension (char *path, const char *extension, size_t len)
 
 	q_strlcat(path, extension, len);
 }
+#endif
 
 /*
 ==================

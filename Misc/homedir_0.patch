@@ -1,11 +1,11 @@
 support for user directories, based on uhexen2 and tyrquake:
-** against quakespasm svn revision 904.
+** against quakespasm svn revision 905.
 ** on-the-fly game directory switching not supported yet.
 ** minimally tested, needs more work.
 
 Index: Quake/sys_sdl_unix.c
 ===================================================================
---- Quake/sys_sdl_unix.c	(revision 904)
+--- Quake/sys_sdl_unix.c	(revision 905)
 +++ Quake/sys_sdl_unix.c	(working copy)
 @@ -20,6 +20,8 @@
  
@@ -73,9 +73,9 @@ Index: Quake/sys_sdl_unix.c
  void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 904)
+--- Quake/common.c	(revision 905)
 +++ Quake/common.c	(working copy)
-@@ -1917,6 +1917,7 @@ static void COM_AddGameDirectory (const 
+@@ -1919,6 +1919,7 @@ static void COM_AddGameDirectory (const 
  	searchpath_t *search;
  	pack_t *pak, *qspak;
  	char pakfile[MAX_OSPATH];
@@ -83,7 +83,7 @@ Index: Quake/common.c
  
  	q_strlcpy (com_gamedir, va("%s/%s", base, dir), sizeof(com_gamedir));
  
-@@ -1925,6 +1926,7 @@ static void COM_AddGameDirectory (const 
+@@ -1927,6 +1928,7 @@ static void COM_AddGameDirectory (const 
  		path_id = com_searchpaths->path_id << 1;
  	else	path_id = 1U;
  
@@ -91,7 +91,7 @@ Index: Quake/common.c
  	// add the directory to the search path
  	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
  	search->path_id = path_id;
-@@ -1961,6 +1963,14 @@ static void COM_AddGameDirectory (const 
+@@ -1963,6 +1965,14 @@ static void COM_AddGameDirectory (const 
  		}
  		if (!pak) break;
  	}
