@@ -197,7 +197,6 @@ struct cache_user_s;
 extern	char	com_basedir[MAX_OSPATH];
 extern	char	com_gamedir[MAX_OSPATH];
 extern	int	file_from_pak;	// global indicating that file came from a pak
-extern	const char *com_pakfile; // global indicating the filename of the pak if file_from_pak is 1
 
 void COM_WriteFile (const char *filename, const void *data, int len);
 int COM_OpenFile (const char *filename, int *handle, unsigned int *path_id);

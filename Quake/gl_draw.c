@@ -342,66 +342,6 @@ qpic_t	*Draw_CachePic (const char *path)
 
 /*
 ================
-Draw_ConbackPic -- QuakeSpasm custom conback drawing.
-================
-*/
-#if !defined(USE_QS_CONBACK)
-static inline qpic_t *Draw_ConbackPic (void)
-{
-	return Draw_CachePic ("gfx/conback.lmp");
-}
-#else
-extern char *get_conback(void);
-static qboolean have_mod_conback;
-void Draw_CheckConback (void)
-{
-	have_mod_conback = (COM_LoadTempFile("gfx/conback.lmp", NULL) != NULL);
-}
-qpic_t *Draw_ConbackPic (void)
-{
-    if (fitzmode) {
-	return Draw_CachePic ("gfx/conback.lmp");
-    } else if (have_mod_conback) {
-	/* even if we are running in custom mode
-	   allow for mod-provided conback images */
-	return Draw_CachePic ("gfx/conback.lmp");
-    } else {
-	/* QuakeSpasm customization: */
-	cachepic_t	*pic;
-	int			i;
-	qpic_t		*dat;
-	glpic_t		gl;
-
-	for (pic=menu_cachepics, i=0 ; i<menu_numcachepics ; pic++, i++)
-	{
-		if (!strcmp ("gfx/conback.lmp", pic->name))
-			return &pic->pic;
-	}
-	if (menu_numcachepics == MAX_CACHED_PICS)
-		Sys_Error ("menu_numcachepics == MAX_CACHED_PICS");
-	menu_numcachepics++;
-	strcpy (pic->name, "gfx/conback.lmp");
-	/* load custom conback, image in memory */
-	dat = (qpic_t *)get_conback ();
-	SwapPic (dat);
-	pic->pic.width = dat->width;
-	pic->pic.height = dat->height;
-	gl.gltexture = TexMgr_LoadImage (NULL, "gfx/conback.lmp", dat->width, dat->height, SRC_INDEXED, dat->data,
-					  "", (src_offset_t)dat->data,
-					  TEXPREF_ALPHA | TEXPREF_PAD | TEXPREF_NOPICMIP); //johnfitz -- TexMgr
-	gl.sl = 0;
-	gl.sh = (float)dat->width/(float)TexMgr_PadConditional(dat->width); //johnfitz
-	gl.tl = 0;
-	gl.th = (float)dat->height/(float)TexMgr_PadConditional(dat->height); //johnfitz
-	memcpy (pic->pic.data, &gl, sizeof(glpic_t));
-
-	return &pic->pic;
-    }	/* -- QuakeSpasm */
-}
-#endif	/* USE_QS_CONBACK */
-
-/*
-================
 Draw_MakePic -- johnfitz -- generate pics from internal data
 ================
 */
@@ -646,7 +586,7 @@ void Draw_ConsoleBackground (void)
 	qpic_t *pic;
 	float alpha;
 
-	pic = Draw_ConbackPic ();
+	pic = Draw_CachePic ("gfx/conback.lmp");
 	pic->width = vid.conwidth;
 	pic->height = vid.conheight;
 

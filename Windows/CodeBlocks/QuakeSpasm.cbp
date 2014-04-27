@@ -32,7 +32,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add option="-DUSE_QS_CONBACK" />
 			<Add option="-DUSE_CODEC_MP3" />
 			<Add option="-DUSE_CODEC_VORBIS" />
 			<Add option="-DUSE_CODEC_WAVE" />
@@ -100,10 +99,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="..\..\Quake\common.h" />
-		<Unit filename="..\..\Quake\conback.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="..\..\Quake\conback.h" />
 		<Unit filename="..\..\Quake\console.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -6,9 +6,6 @@
 # "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
 # specific code.
 
-### Embed custom Quakespasm console background picture
-USE_QS_CONBACK=1
-
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=1
@@ -92,10 +89,6 @@ NET_LIBS   :=-Wl,-framework,SDL_net
 CFLAGS     +=-D_USE_SDLNET
 else
 NET_LIBS   :=
-endif
-
-ifeq ($(USE_QS_CONBACK),1)
-CFLAGS+= -DUSE_QS_CONBACK
 endif
 
 ifneq ($(VORBISLIB),vorbis)
@@ -281,7 +274,6 @@ OBJS := strlcat.o \
 	sv_phys.o \
 	sv_user.o \
 	world.o \
-	conback.o \
 	zone.o \
 	$(SYSOBJ_SYS) $(SYSOBJ_LAUNCHER) $(SYSOBJ_MAIN)
 

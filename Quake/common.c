@@ -1452,7 +1452,6 @@ typedef struct
 char	com_gamedir[MAX_OSPATH];
 char	com_basedir[MAX_OSPATH];
 int	file_from_pak;		// ZOID: global indicating that file came from a pak
-const char *com_pakfile; // if file_from_pak is 1, the filename of the pak
 
 typedef struct searchpath_s
 {
@@ -1574,8 +1573,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 		Sys_Error ("COM_FindFile: both handle and file set");
 
 	file_from_pak = 0;
-	com_pakfile = NULL;
-	
+
 //
 // search through the path, one element at a time
 //
@@ -1591,7 +1589,6 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 				// found it!
 				com_filesize = pak->files[i].filelen;
 				file_from_pak = 1;
-				com_pakfile = pak->filename;
 				if (path_id)
 					*path_id = search->path_id;
 				if (handle)
@@ -1913,15 +1910,15 @@ pack_t *COM_LoadPackFile (const char *packfile)
 COM_AddGameDirectory -- johnfitz -- modified based on topaz's tutorial
 =================
 */
-static void COM_AddGameDirectory (const char *dir)
+static void COM_AddGameDirectory (const char *base, const char *dir)
 {
 	int i;
 	unsigned int path_id;
 	searchpath_t *search;
-	pack_t *pak;
+	pack_t *pak, *qspak;
 	char pakfile[MAX_OSPATH];
 
-	q_strlcpy (com_gamedir, dir, sizeof(com_gamedir));
+	q_strlcpy (com_gamedir, va("%s/%s", base, dir), sizeof(com_gamedir));
 
 	// assign a path_id to this game directory
 	if (com_searchpaths)
@@ -1931,49 +1928,40 @@ static void COM_AddGameDirectory (const char *dir)
 	// add the directory to the search path
 	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 	search->path_id = path_id;
-	q_strlcpy (search->filename, dir, sizeof(search->filename));
+	q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
 	search->next = com_searchpaths;
 	com_searchpaths = search;
 
 	// add any pak files in the format pak0.pak pak1.pak, ...
 	for (i = 0; ; i++)
 	{
-		q_snprintf (pakfile, sizeof(pakfile), "%s/pak%i.pak", dir, i);
+		q_snprintf (pakfile, sizeof(pakfile), "%s/pak%i.pak", com_gamedir, i);
 		pak = COM_LoadPackFile (pakfile);
-		if (!pak)
-			break;
-		search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
-		search->path_id = path_id;
-		search->pack = pak;
-		search->next = com_searchpaths;
-		com_searchpaths = search;
-	}
-}
-
-#if defined(USE_QS_CONBACK)
-static void kill_id1_conback (void)  /* QuakeSpasm customization: */
-{
-	searchpath_t	*search;
-	int			i;
-
-	for (search = com_searchpaths; search; search = search->next)
-	{
-		if (!search->pack)
-			continue;
-		if (!strstr(search->pack->filename, "/id1/pak0.pak"))
-			continue;
-		for (i = 0 ; i < search->pack->numfiles ; i++)
-		{
-			if (strcmp(search->pack->files[i].name,
-					"gfx/conback.lmp") == 0)
-			{
-				search->pack->files[i].name[0] = '$';
-				return;
-			}
+		if (i != 0 || path_id != 1 || fitzmode)
+			qspak = NULL;
+		else {
+			qboolean old = com_modified;
+			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", com_gamedir);
+			qspak = COM_LoadPackFile (pakfile);
+			com_modified = old;/* make quakespasm customization pak to not set com_modified. */
 		}
+		if (pak) {
+			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+			search->path_id = path_id;
+			search->pack = pak;
+			search->next = com_searchpaths;
+			com_searchpaths = search;
+		}
+		if (qspak) {
+			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+			search->path_id = path_id;
+			search->pack = qspak;
+			search->next = com_searchpaths;
+			com_searchpaths = search;
+		}
+		if (!pak) break;
 	}
 }
-#endif	/* USE_QS_CONBACK */
 
 /*
 =================
@@ -2002,32 +1990,24 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	}
 
 	// start up with GAMENAME by default (id1)
-	COM_AddGameDirectory (va("%s/"GAMENAME, com_basedir));
-	q_strlcpy (com_gamedir, va("%s/"GAMENAME, com_basedir), sizeof(com_gamedir));
-
-#if defined(USE_QS_CONBACK)
-	if (!fitzmode)
-	{ /* QuakeSpasm customization: */
-		kill_id1_conback ();
-	}
-#endif	/* USE_QS_CONBACK */
+	COM_AddGameDirectory (com_basedir, GAMENAME);
 
 	//johnfitz -- track number of mission packs added
 	//since we don't want to allow the "game" command to strip them away
 	com_nummissionpacks = 0;
 	if (COM_CheckParm ("-rogue"))
 	{
-		COM_AddGameDirectory (va("%s/rogue", com_basedir));
+		COM_AddGameDirectory (com_basedir, "rogue");
 		com_nummissionpacks++;
 	}
 	if (COM_CheckParm ("-hipnotic"))
 	{
-		COM_AddGameDirectory (va("%s/hipnotic", com_basedir));
+		COM_AddGameDirectory (com_basedir, "hipnotic");
 		com_nummissionpacks++;
 	}
 	if (COM_CheckParm ("-quoth"))
 	{
-		COM_AddGameDirectory (va("%s/quoth", com_basedir));
+		COM_AddGameDirectory (com_basedir, "quoth");
 		com_nummissionpacks++;
 	}
 	//johnfitz
@@ -2036,7 +2016,7 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	if (i && i < com_argc-1)
 	{
 		com_modified = true;
-		COM_AddGameDirectory (va("%s/%s", com_basedir, com_argv[i + 1]));
+		COM_AddGameDirectory (com_basedir, com_argv[i + 1]);
 	}
 
 	COM_CheckRegistered ();

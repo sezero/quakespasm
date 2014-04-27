@@ -267,20 +267,6 @@ void Cmd_Exec_f (void)
 	}
 	Con_Printf ("execing %s\n",Cmd_Argv(1));
 
-	// Override some key bindings in id1/pak0.pak/default.cfg
-	if (com_pakfile != NULL
-		&& strstr (com_pakfile, "id1/pak0.pak") != NULL // FIXME: Case-sensitive
-		&& strcmp (Cmd_Argv(1), "default.cfg") == 0)
-	{
-		Cbuf_InsertText ("bind w +forward\n");
-		Cbuf_InsertText ("bind a +moveleft\n");
-		Cbuf_InsertText ("bind s +back\n");
-		Cbuf_InsertText ("bind d +moveright\n");
-		Cbuf_InsertText ("bind MWHEELUP \"impulse 12\"\n");
-		Cbuf_InsertText ("bind MWHEELDOWN \"impulse 10\"\n");
-		Cbuf_InsertText ("+mlook\n");
-	}
-	
 	Cbuf_InsertText (f);
 	Hunk_FreeToLowMark (mark);
 }

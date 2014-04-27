@@ -64,7 +64,6 @@
 		483A78750D2EEAF000CB2E4C /* gl_rmisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78610D2EEAF000CB2E4C /* gl_rmisc.c */; };
 		483A78760D2EEAF000CB2E4C /* gl_screen.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78620D2EEAF000CB2E4C /* gl_screen.c */; };
 		483A78770D2EEAF000CB2E4C /* gl_sky.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78630D2EEAF000CB2E4C /* gl_sky.c */; };
-		483A78780D2EEAF000CB2E4C /* conback.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78640D2EEAF000CB2E4C /* conback.c */; };
 		483A78790D2EEAF000CB2E4C /* gl_texmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78650D2EEAF000CB2E4C /* gl_texmgr.c */; };
 		483A787A0D2EEAF000CB2E4C /* gl_vidsdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78660D2EEAF000CB2E4C /* gl_vidsdl.c */; };
 		483A787B0D2EEAF000CB2E4C /* gl_warp.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78670D2EEAF000CB2E4C /* gl_warp.c */; };
@@ -177,7 +176,6 @@
 		482812FC179C3EF4004E1D61 /* libFLAC.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libFLAC.dylib; path = codecs/lib/libFLAC.dylib; sourceTree = "<group>"; };
 		482812FF179C3F13004E1D61 /* snd_flac.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_flac.c; path = ../Quake/snd_flac.c; sourceTree = "<group>"; };
 		48281300179C3F13004E1D61 /* snd_flac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_flac.h; path = ../Quake/snd_flac.h; sourceTree = "<group>"; };
-		48305B530D8AF8EC00A29C24 /* conback.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = conback.h; path = ../Quake/conback.h; sourceTree = SOURCE_ROOT; };
 		483A77E60D2EE97700CB2E4C /* cmd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cmd.h; path = ../Quake/cmd.h; sourceTree = SOURCE_ROOT; };
 		483A77E70D2EE97700CB2E4C /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../Quake/common.h; sourceTree = SOURCE_ROOT; };
 		483A77E80D2EE97700CB2E4C /* console.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = console.h; path = ../Quake/console.h; sourceTree = SOURCE_ROOT; };
@@ -261,7 +259,6 @@
 		483A78610D2EEAF000CB2E4C /* gl_rmisc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_rmisc.c; path = ../Quake/gl_rmisc.c; sourceTree = SOURCE_ROOT; };
 		483A78620D2EEAF000CB2E4C /* gl_screen.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_screen.c; path = ../Quake/gl_screen.c; sourceTree = SOURCE_ROOT; };
 		483A78630D2EEAF000CB2E4C /* gl_sky.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_sky.c; path = ../Quake/gl_sky.c; sourceTree = SOURCE_ROOT; };
-		483A78640D2EEAF000CB2E4C /* conback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = conback.c; path = ../Quake/conback.c; sourceTree = SOURCE_ROOT; };
 		483A78650D2EEAF000CB2E4C /* gl_texmgr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_texmgr.c; path = ../Quake/gl_texmgr.c; sourceTree = SOURCE_ROOT; };
 		483A78660D2EEAF000CB2E4C /* gl_vidsdl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_vidsdl.c; path = ../Quake/gl_vidsdl.c; sourceTree = SOURCE_ROOT; };
 		483A78670D2EEAF000CB2E4C /* gl_warp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_warp.c; path = ../Quake/gl_warp.c; sourceTree = SOURCE_ROOT; };
@@ -492,7 +489,6 @@
 				483A78610D2EEAF000CB2E4C /* gl_rmisc.c */,
 				483A78620D2EEAF000CB2E4C /* gl_screen.c */,
 				483A78630D2EEAF000CB2E4C /* gl_sky.c */,
-				483A78640D2EEAF000CB2E4C /* conback.c */,
 				483A78650D2EEAF000CB2E4C /* gl_texmgr.c */,
 				483A78660D2EEAF000CB2E4C /* gl_vidsdl.c */,
 				483A78670D2EEAF000CB2E4C /* gl_warp.c */,
@@ -587,7 +583,6 @@
 			isa = PBXGroup;
 			children = (
 				483A77F90D2EE9A900CB2E4C /* client.h */,
-				48305B530D8AF8EC00A29C24 /* conback.h */,
 				483A77FA0D2EE9A900CB2E4C /* net.h */,
 				48134A1512102F400015BF15 /* net_defs.h */,
 				48728D290D3004A80004D61B /* net_dgrm.h */,
@@ -750,7 +745,6 @@
 				483A78750D2EEAF000CB2E4C /* gl_rmisc.c in Sources */,
 				483A78760D2EEAF000CB2E4C /* gl_screen.c in Sources */,
 				483A78770D2EEAF000CB2E4C /* gl_sky.c in Sources */,
-				483A78780D2EEAF000CB2E4C /* conback.c in Sources */,
 				483A78790D2EEAF000CB2E4C /* gl_texmgr.c in Sources */,
 				483A787A0D2EEAF000CB2E4C /* gl_vidsdl.c in Sources */,
 				483A787B0D2EEAF000CB2E4C /* gl_warp.c in Sources */,
@@ -828,7 +822,6 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -871,7 +864,6 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -919,7 +911,6 @@
 				);
 				GCC_MODEL_TUNING = G3;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = 4.0;
@@ -962,7 +953,6 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_QS_CONBACK,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = 4.0;

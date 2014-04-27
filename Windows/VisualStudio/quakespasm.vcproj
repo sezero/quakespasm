@@ -41,7 +41,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -116,7 +116,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -190,7 +190,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -266,7 +266,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="C:\SDL\include;..\codecs\include;..\..\Quake;.;.."
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_QS_CONBACK;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USE_WINSOCK2;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;USE_CODEC_MP3;USE_CODEC_VORBIS;USE_CODEC_WAVE;USE_CODEC_FLAC;USE_CODEC_OPUS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -367,10 +367,6 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\common.c"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Quake\conback.c"
 				>
 			</File>
 			<File
@@ -673,10 +669,6 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\common.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\Quake\conback.h"
 				>
 			</File>
 			<File
