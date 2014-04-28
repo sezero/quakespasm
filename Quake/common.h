@@ -35,9 +35,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #  pragma warning(disable:4267)
 	/* 'var'	: conversion from 'size_t' to 'type',
 			  possible loss of data (/Wp64 warning) */
-/* MSC doesn't have fmin() / fmax(), use the min/max macros: */
+/* MSC has fmin() / fmax() in VS2013, and according to the
+ * docs, VS2012. Use the min/max macros on earlier versions: */
+#if _MSC_VER < 1700
 #define fmax q_max
 #define fmin q_min
+#endif
 #endif	/* _MSC_VER */
 #endif	/* _WIN32 */
 
