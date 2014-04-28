@@ -1943,9 +1943,9 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 			qspak = NULL;
 		else {
 			qboolean old = com_modified;
-			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", com_gamedir);
+			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
 			qspak = COM_LoadPackFile (pakfile);
-			com_modified = old;/* make quakespasm customization pak to not set com_modified. */
+			com_modified = old;
 		}
 		if (pak) {
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
