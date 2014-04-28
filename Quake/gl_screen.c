@@ -118,7 +118,6 @@ float		scr_disabled_time;
 
 int	scr_tileclear_updates = 0; //johnfitz
 
-static GLint gl_pack_alignment = 4;
 void SCR_ScreenShot_f (void);
 
 /*
@@ -426,7 +425,6 @@ void SCR_Init (void)
 
 	SCR_LoadPics (); //johnfitz
 
-	glGetIntegerv (GL_PACK_ALIGNMENT, &gl_pack_alignment);
 	scr_initialized = true;
 }
 
@@ -788,9 +786,9 @@ void SCR_ScreenShot_f (void)
 		Con_Printf ("SCR_ScreenShot_f: Couldn't allocate memory\n");
 		return;
 	}
+
 	glPixelStorei (GL_PACK_ALIGNMENT, 1);/* for widths that aren't a multiple of 4 */
 	glReadPixels (glx, gly, glwidth, glheight, GL_RGB, GL_UNSIGNED_BYTE, buffer);
-	glPixelStorei (GL_PACK_ALIGNMENT, gl_pack_alignment);
 
 // now write the file
 	if (Image_WriteTGA (tganame, buffer, glwidth, glheight, 24, false))
