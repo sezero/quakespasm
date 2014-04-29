@@ -38,6 +38,7 @@
 
   Page last edited Dec. 27, 2013
 
+
   1.  About
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
@@ -46,10 +47,11 @@
 
   <http://quakespasm.sourceforge.net>
 
+
   2.  Downloads
 
-
   o  <http://quakespasm.sourceforge.net/download.htm>
+
 
   3.  Hints
 
@@ -92,6 +94,7 @@
   o  Use the "-noextmusic" option to disable this feature.
 
   o  See  <README.music> for more details.
+
 
   4.  Compiling
 
@@ -137,6 +140,7 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
+
   5.  Known Bugs
 
   Some versions of Xorg and SDL have brightness issues.
@@ -154,18 +158,31 @@
   OS X has a well known gamma issue where the screen turns dark, but we
   currently have no fix.
 
+
   6.  Changes
 
   6.1.  Changes in 0.85.10
 
+  o  Support for BSP2 and 2PSB map formats.
 
   o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
      time options).
 
   o  Better Hor+ field of view (FOV) scaling behavior.
 
-  6.2.  Changes in 0.85.9
+  o  Fix screenshots when screen width isn't a multiple of 4.
 
+  o  Fix a lighting glitch due to floating point precision.
+
+  o  Fix a looping sounds glitch.
+
+  o  Quakespasm content customization moved from engine-embedded into a
+     new optional quakespasm.pak file.
+
+  o  Other fixes and clean-ups.
+
+
+  6.2.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -210,8 +227,8 @@
 
   o  Several other minor fixes/cleanups.
 
-  6.3.  Changes in 0.85.8
 
+  6.3.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -260,7 +277,6 @@
 
   6.4.  Changes in 0.85.7
 
-
   o  Added support for cross-level demo playback
 
   o  gl_texturemode is reimplemented as a cvar with a callback and the
@@ -284,8 +300,8 @@
 
   o  Several other small changes mostly invisible to the end-user
 
-  6.5.  Changes in 0.85.6
 
+  6.5.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -297,8 +313,8 @@
 
   o  Minor SDL video fixes.
 
-  6.6.  Changes in 0.85.5
 
+  6.6.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -328,8 +344,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-  6.7.  Changes in 0.85.4
 
+  6.7.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -356,8 +372,8 @@
 
   o  Other minor sound and cdaudio updates
 
-  6.8.  Changes in 0.85.3
 
+  6.8.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -393,8 +409,8 @@
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
 
-  6.9.  Changes in 0.85.2
 
+  6.9.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -421,8 +437,8 @@
 
   o  Add OSX Makefile (tested?)
 
-  6.10.  Changes in 0.85.1
 
+  6.10.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -459,8 +475,8 @@
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
-  7.  Todo
 
+  7.  Todo
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -471,8 +487,8 @@
 
   o  Complete the unix user directories support
 
-  8.  Copyright
 
+  8.  Copyright
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
@@ -481,8 +497,8 @@
      CREATIVE COMMONS PUBLIC LICENSE
      <http://creativecommons.org/licenses/by/3.0/legalcode>
 
-  9.  Links
 
+  9.  Links
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
@@ -510,5 +526,4 @@
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
 
   o  Sander's email <mailto:gmail - dot - com - username - a.h.vandijk>
-
 
