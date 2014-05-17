@@ -68,7 +68,7 @@ extern "C" {
 
 #define LIBMIKMOD_VERSION_MAJOR 3L
 #define LIBMIKMOD_VERSION_MINOR 3L
-#define LIBMIKMOD_REVISION      5L
+#define LIBMIKMOD_REVISION      6L
 
 #define LIBMIKMOD_VERSION \
     ((LIBMIKMOD_VERSION_MAJOR<<16)| \
@@ -790,10 +790,12 @@ MIKMODAPI extern struct MDRIVER drv_win;    /* Win32 multimedia API driver */
 MIKMODAPI extern struct MDRIVER drv_mac;    /* Macintosh Sound Manager driver */
 MIKMODAPI extern struct MDRIVER drv_osx;    /* MacOS X CoreAudio Driver */
 
+MIKMODAPI extern struct MDRIVER drv_dc;     /* Dreamcast driver */
+
 MIKMODAPI extern struct MDRIVER drv_gp32;   /* GP32 Sound driver */
 
 MIKMODAPI extern struct MDRIVER drv_wss;    /* DOS WSS driver */
-MIKMODAPI extern struct MDRIVER drv_sb;     /* DOS SB driver */
+MIKMODAPI extern struct MDRIVER drv_sb;     /* DOS S/B driver */
 
 /*========== Virtual channel mixer interface (for user-supplied drivers only) */
 
