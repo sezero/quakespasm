@@ -1,4 +1,4 @@
-libmodplug - version 0.8.8.5 (release 2014-03-10.)
+libmodplug - v0.8.8.5 release + git (2014-06-10.)
 
 only the C-interface is exported in the dlls and the import libraries,
 which is what we use. the dll is compiled using mingw (gcc-3.4.5/x86)
