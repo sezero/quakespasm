@@ -1,3 +1,3 @@
-libmodplug - v0.8.8.5 release + git (2014-06-10.)
+libmodplug - v0.8.8.5 release + git (2014-06-15.)
 
 only the C-interface is exported in the dylibs, which is what we use.
