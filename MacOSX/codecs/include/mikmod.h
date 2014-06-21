@@ -1,5 +1,5 @@
 /*  MikMod sound library
-    (c) 1998, 1999, 2000 Miodrag Vallat and others - see file AUTHORS
+    (c) 1998-2014 Miodrag Vallat and others - see the AUTHORS file
     for complete list.
 
     This library is free software; you can redistribute it and/or modify
@@ -51,6 +51,12 @@ extern "C" {
 # else
 #   define MIKMODAPI __declspec(dllimport)                      /* using libmikmod dll for windows */
 # endif
+#elif defined(__OS2__) && defined(__WATCOMC__)
+# if defined(MIKMOD_BUILD) && defined(__SW_BD)          /* building libmikmod as a dll for os/2 */
+#   define MIKMODAPI __declspec(dllexport)
+# else
+#   define MIKMODAPI                                    /* using dll or static libmikmod for os/2 */
+# endif
 /* SYM_VISIBILITY should be defined if both the compiler
  * and the target support the visibility attributes. the
  * configury does that automatically. for the standalone
@@ -88,50 +94,51 @@ MIKMODAPI extern long MikMod_GetVersion(void);
 #include <windows.h>
 #include <io.h>
 #include <mmsystem.h>
-/* Avoid conflicts with windef.h */
-#define SBYTE   _mm_SBYTE
-#define UBYTE   _mm_UBYTE
-#define SWORD   _mm_SWORD
-#define UWORD   _mm_UWORD
-#define SLONG   _mm_SLONG
-#define ULONG   _mm_ULONG
-#define BOOL    _mm_BOOL
-#define CHAR    _mm_CHAR
 #endif
 
 #if defined(__OS2__)||defined(__EMX__)
 #define INCL_DOSSEMAPHORES
 #include <os2.h>
-#else
-typedef char CHAR;
+#include <io.h>
 #endif
 
-
-
-#if defined (_LP64) || defined(__arch64__) || defined(__alpha) || defined(__x86_64) || defined(__powerpc64__)
-/* 64 bit architectures */
-
-typedef signed char     SBYTE;  /* 1 byte, signed */
-typedef unsigned char   UBYTE;  /* 1 byte, unsigned */
-typedef signed short    SWORD;  /* 2 bytes, signed */
-typedef unsigned short  UWORD;  /* 2 bytes, unsigned */
-typedef signed int      SLONG;  /* 4 bytes, signed */
-typedef unsigned int    ULONG;  /* 4 bytes, unsigned */
+#if !defined(__OS2__) && !defined(__EMX__) && !defined(_WIN32)
 typedef int             BOOL;   /* 0=false, <>0 true */
+typedef char            CHAR;
+#endif
 
-#else
-/* 32 bit architectures */
+ /* 1 byte, signed and unsigned: */
+typedef signed char     SBYTE;
+typedef unsigned char   UBYTE;
 
-typedef signed char     SBYTE;  /* 1 byte, signed */
-typedef unsigned char   UBYTE;  /* 1 byte, unsigned */
-typedef signed short    SWORD;  /* 2 bytes, signed */
-typedef unsigned short  UWORD;  /* 2 bytes, unsigned */
-typedef signed long     SLONG;  /* 4 bytes, signed */
-#if !defined(__OS2__)&&!defined(__EMX__)
-typedef unsigned long   ULONG;  /* 4 bytes, unsigned */
-typedef int             BOOL;   /* 0=false, <>0 true */
+/* 2 bytes, signed and unsigned: */
+typedef signed short    SWORD;
+typedef unsigned short  UWORD;
+
+/* 4 bytes, signed and unsigned: */
+#if defined(_LP64) || defined(__arch64__) || defined(__alpha) || defined(__x86_64) || defined(__powerpc64__)
+        /* 64 bit architectures: */
+typedef signed int      SLONG;
+#ifndef _WIN32
+typedef unsigned int    ULONG;
+#endif
+
+#else  /* 32 bit architectures: */
+typedef signed long     SLONG;
+#if !defined(__OS2__) && !defined(__EMX__) && !defined(_WIN32)
+typedef unsigned long   ULONG;
 #endif
 #endif
+
+/* make sure types are of correct sizes: */
+typedef int __mikmod_typetest [
+   (
+        (sizeof(SBYTE)==1) && (sizeof(UBYTE)==1)
+     && (sizeof(SWORD)==2) && (sizeof(UWORD)==2)
+     && (sizeof(SLONG)==4) && (sizeof(ULONG)==4)
+     && (sizeof(BOOL) == sizeof(int))
+     && (sizeof(CHAR) == sizeof(char))
+   ) * 2 - 1 ];
 
 /*
  *  ========== Error codes
@@ -791,7 +798,6 @@ MIKMODAPI extern struct MDRIVER drv_mac;    /* Macintosh Sound Manager driver */
 MIKMODAPI extern struct MDRIVER drv_osx;    /* MacOS X CoreAudio Driver */
 
 MIKMODAPI extern struct MDRIVER drv_dc;     /* Dreamcast driver */
-
 MIKMODAPI extern struct MDRIVER drv_gp32;   /* GP32 Sound driver */
 
 MIKMODAPI extern struct MDRIVER drv_wss;    /* DOS WSS driver */

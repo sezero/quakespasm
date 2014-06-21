@@ -1,5 +1,5 @@
 /*
-	libmpg123: MPEG Audio Decoder library (version 1.18.1)
+	libmpg123: MPEG Audio Decoder library (version 1.20.1)
 
 	copyright 1995-2010 by the mpg123 project - free software under the terms of the LGPL 2.1
 	see COPYING and AUTHORS files in distribution or http://mpg123.org
@@ -12,7 +12,7 @@
 
 /* A macro to check at compile time which set of API functions to expect.
    This should be incremented at least each time a new symbol is added to the header. */
-#define MPG123_API_VERSION 39
+#define MPG123_API_VERSION 40
 
 /* These aren't actually in use... seems to work without using libtool. */
 #ifdef BUILD_MPG123_DLL
@@ -1089,7 +1089,10 @@ EXPORT int mpg123_getpar(mpg123_pars *mp, enum mpg123_parms type, long *val, dou
   * @{ */
 
 /** Replace default internal buffer with user-supplied buffer.
-  * Instead of working on it's own private buffer, mpg123 will directly use the one you provide for storing decoded audio. */
+  * Instead of working on it's own private buffer, mpg123 will directly use the one you provide for storing decoded audio.
+  * Note that the required buffer size could be bigger than expected from output
+  * encoding if libmpg123 has to convert from primary decoder output (p.ex. 32 bit
+  * storage for 24 bit output. */
 EXPORT int mpg123_replace_buffer(mpg123_handle *mh, unsigned char *data, size_t size);
 
 /** The max size of one frame's decoded output with current settings.
