@@ -19,6 +19,7 @@
 		4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B212D5BA1A006DD66E /* snd_vorbis.c */; };
 		4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B412D5BA1A006DD66E /* snd_wave.c */; };
 		483A78780D2EEAF000CB2E4C /* snd_mikmod.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78640D2EEAF000CB2E4C /* snd_mikmod.c */; };
+		32CA4F630368D1EE00C91783 /* snd_umx.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B012D5BA1A006DD66E /* snd_umx.c */; };
 		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
 		482812FD179C3EF4004E1D61 /* libFLAC.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
 		482812FE179C3EFF004E1D61 /* libFLAC.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
@@ -277,6 +278,7 @@
 		484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = QuakeSpasm.icns; sourceTree = "<group>"; };
 		4854B1B01340C646004C9F45 /* snd_mp3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3.c; path = ../Quake/snd_mp3.c; sourceTree = SOURCE_ROOT; };
 		483A78640D2EEAF000CB2E4C /* snd_mikmod.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mikmod.c; path = ../Quake/snd_mikmod.c; sourceTree = SOURCE_ROOT; };
+		4818B0B012D5BA1A006DD66E /* snd_umx.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_umx.c; path = ../Quake/snd_umx.c; sourceTree = SOURCE_ROOT; };
 		486577C80D31A22A00E7920A /* snd_dma.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_dma.c; path = ../Quake/snd_dma.c; sourceTree = SOURCE_ROOT; };
 		486577C90D31A22A00E7920A /* snd_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mem.c; path = ../Quake/snd_mem.c; sourceTree = SOURCE_ROOT; };
 		486577CA0D31A22A00E7920A /* snd_mix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mix.c; path = ../Quake/snd_mix.c; sourceTree = SOURCE_ROOT; };
@@ -525,6 +527,7 @@
 				4854B1B01340C646004C9F45 /* snd_mp3.c */,
 				4885A84A179740A0000EC703 /* snd_opus.c */,
 				483A78640D2EEAF000CB2E4C /* snd_mikmod.c */,
+				4818B0B012D5BA1A006DD66E /* snd_umx.c */,
 				4818B0B212D5BA1A006DD66E /* snd_vorbis.c */,
 				4818B0B412D5BA1A006DD66E /* snd_wave.c */,
 			);
@@ -784,6 +787,7 @@
 				4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */,
 				4854B1B11340C646004C9F45 /* snd_mp3.c in Sources */,
 				483A78780D2EEAF000CB2E4C /* snd_mikmod.c in Sources */,
+				32CA4F630368D1EE00C91783 /* snd_umx.c in Sources */,
 				B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */,
 				48A7C1FC14AA34940011B754 /* strlcat.c in Sources */,
 				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
@@ -875,6 +879,7 @@
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
 					USE_CODEC_MIKMOD,
+					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
@@ -965,6 +970,7 @@
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
 					USE_CODEC_MIKMOD,
+					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = 4.0;
