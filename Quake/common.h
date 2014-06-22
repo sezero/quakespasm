@@ -35,9 +35,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #  pragma warning(disable:4267)
 	/* 'var'	: conversion from 'size_t' to 'type',
 			  possible loss of data (/Wp64 warning) */
-/* MSC doesn't have fmin() / fmax(), use the min/max macros: */
-#define fmax q_max
-#define fmin q_min
 #endif	/* _MSC_VER */
 #endif	/* _WIN32 */
 

@@ -146,14 +146,14 @@ void Fog_FogCommand_f (void)
 				   0.0);
 		break;
 	case 5:
-		Fog_Update(fmax(0.0, atof(Cmd_Argv(1))),
+		Fog_Update(q_max(0.0, atof(Cmd_Argv(1))),
 				   CLAMP(0.0, atof(Cmd_Argv(2)), 1.0),
 				   CLAMP(0.0, atof(Cmd_Argv(3)), 1.0),
 				   CLAMP(0.0, atof(Cmd_Argv(4)), 1.0),
 				   0.0);
 		break;
 	case 6: //TEST
-		Fog_Update(fmax(0.0, atof(Cmd_Argv(1))),
+		Fog_Update(q_max(0.0, atof(Cmd_Argv(1))),
 				   CLAMP(0.0, atof(Cmd_Argv(2)), 1.0),
 				   CLAMP(0.0, atof(Cmd_Argv(3)), 1.0),
 				   CLAMP(0.0, atof(Cmd_Argv(4)), 1.0),
