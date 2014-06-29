@@ -183,6 +183,8 @@ void SCR_DrawCenterString (void) //actually do the drawing
 		y = 200*0.35;	//johnfitz -- 320x200 coordinate system
 	else
 		y = 48;
+	if (crosshair.value)
+		y -= 8;
 
 	do
 	{
