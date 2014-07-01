@@ -314,7 +314,7 @@
 		8D1107320486CEB800E47090 /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B021C20714A5FF7E003F18D6 /* cfgfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cfgfile.c; path = ../Quake/cfgfile.c; sourceTree = SOURCE_ROOT; };
 		B021C20814A5FF7E003F18D6 /* cfgfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cfgfile.h; path = ../Quake/cfgfile.h; sourceTree = SOURCE_ROOT; };
-		F5F5DE80017CB4370103A810 /* libmikmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libmikmod.dylib; path = codecs/lib/libmikmod.dylib; sourceTree = "<group>"; };
+		F5F5DE80017CB4370103A810 /* libmikmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmikmod.dylib; path = codecs/lib/libmikmod.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
