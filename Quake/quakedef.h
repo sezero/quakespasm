@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 // quakedef.h -- primary header for client
 
-#define	QUAKE_GAME			// as opposed to utilities
+#define	QUAKE_GAME		// as opposed to utilities
 
 #define	VERSION			1.09
 #define	GLQUAKE_VERSION		1.00
@@ -55,41 +55,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MAX_NUM_ARGVS	50
 
 // up / down
-#define	PITCH	0
+#define	PITCH		0
 
 // left / right
 #define	YAW		1
 
 // fall over
-#define	ROLL	2
+#define	ROLL		2
 
 
-#define	MAX_QPATH		64			// max length of a quake game pathname
-#define	MAX_OSPATH		256			// max length of a filesystem pathname
+#define	MAX_QPATH	64		// max length of a quake game pathname
 
-#define	ON_EPSILON		0.1			// point on plane side epsilon
+#define	ON_EPSILON	0.1		// point on plane side epsilon
 
-#define	DIST_EPSILON		(0.03125)		// 1/32 epsilon to keep floating point happy (moved from world.c)
+#define	DIST_EPSILON	(0.03125)	// 1/32 epsilon to keep floating point happy (moved from world.c)
 
-#define	MAX_MSGLEN		64000	// max length of a reliable message //ericw -- was 32000
-#define	MAX_DATAGRAM		32000	// max length of unreliable message //johnfitz -- was 1024
+#define	MAX_MSGLEN	64000		// max length of a reliable message //ericw -- was 32000
+#define	MAX_DATAGRAM	32000		// max length of unreliable message //johnfitz -- was 1024
 
-#define	DATAGRAM_MTU		1400	// johnfitz -- actual limit for unreliable messages to nonlocal clients
+#define	DATAGRAM_MTU	1400		// johnfitz -- actual limit for unreliable messages to nonlocal clients
 
 //
 // per-level limits
 //
-
-#define	MIN_EDICTS		256			// johnfitz -- lowest allowed value for max_edicts cvar
-#define	MAX_EDICTS		32000		// johnfitz -- highest allowed value for max_edicts cvar
-									// ents past 8192 can't play sounds in the standard protocol
+#define	MIN_EDICTS	256		// johnfitz -- lowest allowed value for max_edicts cvar
+#define	MAX_EDICTS	32000		// johnfitz -- highest allowed value for max_edicts cvar
+						// ents past 8192 can't play sounds in the standard protocol
 #define	MAX_LIGHTSTYLES	64
-#define	MAX_MODELS		2048		// johnfitz -- was 256
-#define	MAX_SOUNDS		2048		// johnfitz -- was 256
+#define	MAX_MODELS	2048		// johnfitz -- was 256
+#define	MAX_SOUNDS	2048		// johnfitz -- was 256
 
 #define	SAVEGAME_COMMENT_LENGTH	39
 
-#define	MAX_STYLESTRING	64
+#define	MAX_STYLESTRING		64
 
 //
 // stats are integers communicated to the client by the server
@@ -108,11 +106,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	STAT_ACTIVEWEAPON	10
 #define	STAT_TOTALSECRETS	11
 #define	STAT_TOTALMONSTERS	12
-#define	STAT_SECRETS		13		// bumped on client side by svc_foundsecret
-#define	STAT_MONSTERS		14		// bumped by svc_killedmonster
+#define	STAT_SECRETS		13	// bumped on client side by svc_foundsecret
+#define	STAT_MONSTERS		14	// bumped by svc_killedmonster
 
 // stock defines
-
+//
 #define	IT_SHOTGUN		1
 #define	IT_SUPER_SHOTGUN	2
 #define	IT_NAILGUN		4
@@ -287,9 +285,9 @@ void Host_WriteConfiguration (void);
 void ExtraMaps_Init (void);
 void Modlist_Init (void);
 
-extern int		current_skill;		// skill level for currently loaded level (in case
-						//  the user changes the cvar while the level is
-						//  running, this reflects the level actually in use)
+extern int		current_skill;	// skill level for currently loaded level (in case
+					//  the user changes the cvar while the level is
+					//  running, this reflects the level actually in use)
 
 extern qboolean		isDedicated;
 

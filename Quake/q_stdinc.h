@@ -32,6 +32,9 @@
 #include <sys/types.h>
 #include <stddef.h>
 #include <limits.h>
+#ifndef _WIN32 /* others we support without sys/param.h? */
+#include <sys/param.h>
+#endif
 
 /* NOTES on TYPE SIZES:
    Quake/Hexen II engine relied on 32 bit int type size
@@ -144,6 +147,28 @@ typedef int	fixed4_t;
 typedef int	fixed8_t;
 typedef int	fixed16_t;
 
+
+/*==========================================================================*/
+
+/* MAX_OSPATH (max length of a filesystem pathname, i.e. PATH_MAX)
+ * Note: See GNU Hurd and others' notes about brokenness of this:
+ * http://www.gnu.org/software/hurd/community/gsoc/project_ideas/maxpath.html
+ * http://insanecoding.blogspot.com/2007/11/pathmax-simply-isnt.html */
+
+#if !defined(PATH_MAX)
+/* equivalent values? */
+#if defined(MAXPATHLEN)
+#define PATH_MAX	MAXPATHLEN
+#elif defined(_WIN32) && defined(_MAX_PATH)
+#define PATH_MAX	_MAX_PATH
+#elif defined(_WIN32) && defined(MAX_PATH)
+#define PATH_MAX	MAX_PATH
+#else /* fallback */
+#define PATH_MAX	1024
+#endif
+#endif	/* PATH_MAX */
+
+#define MAX_OSPATH	PATH_MAX
 
 /*==========================================================================*/
 
