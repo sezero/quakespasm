@@ -82,6 +82,7 @@ qboolean gl_texture_env_add = false; //johnfitz
 qboolean gl_swap_control = false; //johnfitz
 qboolean gl_anisotropy_able = false; //johnfitz
 float gl_max_anisotropy; //johnfitz
+qboolean gl_texture_NPOT = false; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -659,6 +660,21 @@ static void GL_CheckExtensions (void)
 	{
 		gl_max_anisotropy = 1;
 		Con_Warning ("texture_filter_anisotropic not supported\n");
+	}
+
+	//
+	// texture_non_power_of_two
+	//
+	if (COM_CheckParm("-notexturenpot"))
+		Con_Warning ("texture_non_power_of_two disabled at command line\n");
+	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_texture_non_power_of_two"))
+	{
+		Con_Printf("FOUND: GL_ARB_texture_non_power_of_two\n");
+		gl_texture_NPOT = true;
+	}
+	else
+	{
+		Con_Warning ("texture_non_power_of_two not supported\n");
 	}
 }
 

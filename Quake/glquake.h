@@ -167,6 +167,10 @@ extern	float		gl_max_anisotropy;
 extern	qboolean	gl_anisotropy_able;
 //johnfitz
 
+//ericw -- NPOT texture support
+extern	qboolean	gl_texture_NPOT;
+//ericw
+
 //johnfitz -- polygon offset
 #define OFFSET_BMODEL 1
 #define OFFSET_NONE 0

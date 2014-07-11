@@ -981,10 +981,13 @@ static void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 {
 	int	internalformat,	miplevel, mipwidth, mipheight, picmip;
 
-	// resample up
-	data = TexMgr_ResampleTexture (data, glt->width, glt->height, glt->flags & TEXPREF_ALPHA);
-	glt->width = TexMgr_Pad(glt->width);
-	glt->height = TexMgr_Pad(glt->height);
+	if (!gl_texture_NPOT)
+	{
+		// resample up
+		data = TexMgr_ResampleTexture (data, glt->width, glt->height, glt->flags & TEXPREF_ALPHA);
+		glt->width = TexMgr_Pad(glt->width);
+		glt->height = TexMgr_Pad(glt->height);
+	}
 
 	// mipmap down
 	picmip = (glt->flags & TEXPREF_NOPICMIP) ? 0 : q_max((int)gl_picmip.value, 0);
