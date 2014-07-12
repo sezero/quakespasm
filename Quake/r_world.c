@@ -103,7 +103,7 @@ void R_MarkSurfaces (void)
 	// set all chains to null
 	for (i=0 ; i<cl.worldmodel->numtextures ; i++)
 		if (cl.worldmodel->textures[i])
- 			cl.worldmodel->textures[i]->texturechain = NULL;
+			cl.worldmodel->textures[i]->texturechain = NULL;
 
 	// rebuild chains
 
@@ -614,7 +614,7 @@ void R_DrawWorld (void)
 // mh dynamic lightmap speedup: upload all modified lightmaps from the last
 // frame in a single batch
 	R_UploadLightmaps ();
-	
+
 	if (r_drawflat_cheatsafe)
 	{
 		glDisable (GL_TEXTURE_2D);

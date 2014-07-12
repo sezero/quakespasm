@@ -782,7 +782,7 @@ void Mod_LoadVertexes (lump_t *l)
 	loadmodel->vertexes = out;
 	loadmodel->numvertexes = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		out->position[0] = LittleFloat (in->point[0]);
 		out->position[1] = LittleFloat (in->point[1]);
@@ -813,7 +813,7 @@ void Mod_LoadEdges (lump_t *l, int bsp2)
 		loadmodel->edges = out;
 		loadmodel->numedges = count;
 
-		for ( i=0 ; i<count ; i++, in++, out++)
+		for (i=0 ; i<count ; i++, in++, out++)
 		{
 			out->v[0] = LittleLong(in->v[0]);
 			out->v[1] = LittleLong(in->v[1]);
@@ -832,7 +832,7 @@ void Mod_LoadEdges (lump_t *l, int bsp2)
 		loadmodel->edges = out;
 		loadmodel->numedges = count;
 
-		for ( i=0 ; i<count ; i++, in++, out++)
+		for (i=0 ; i<count ; i++, in++, out++)
 		{
 			out->v[0] = (unsigned short)LittleShort(in->v[0]);
 			out->v[1] = (unsigned short)LittleShort(in->v[1]);
@@ -862,7 +862,7 @@ void Mod_LoadTexinfo (lump_t *l)
 	loadmodel->texinfo = out;
 	loadmodel->numtexinfo = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<4 ; j++)
 		{
@@ -884,7 +884,7 @@ void Mod_LoadTexinfo (lump_t *l)
 		if (len1 + len2 < 0.001)
 			out->mipadjust = 1;		// don't crash
 		else
-			out->mipadjust = 1 / floor( (len1+len2)/2 + 0.1 );
+			out->mipadjust = 1 / floor((len1+len2)/2 + 0.1);
 #endif
 
 		miptex = LittleLong (in->miptex);
@@ -1106,7 +1106,7 @@ void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 	loadmodel->surfaces = out;
 	loadmodel->numsurfaces = count;
 
-	for ( surfnum=0 ; surfnum<count ; surfnum++, out++)
+	for (surfnum=0 ; surfnum<count ; surfnum++, out++)
 	{
 		if (bsp2)
 		{
@@ -1204,7 +1204,7 @@ void Mod_LoadNodes_S (lump_t *l)
 {
 	int			i, j, count, p;
 	dsnode_t	*in;
-	mnode_t 	*out;
+	mnode_t		*out;
 
 	in = (dsnode_t *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -1220,7 +1220,7 @@ void Mod_LoadNodes_S (lump_t *l)
 	loadmodel->nodes = out;
 	loadmodel->numnodes = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1260,7 +1260,7 @@ void Mod_LoadNodes_L1 (lump_t *l)
 {
 	int			i, j, count, p;
 	dl1node_t	*in;
-	mnode_t 	*out;
+	mnode_t		*out;
 
 	in = (dl1node_t *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -1272,7 +1272,7 @@ void Mod_LoadNodes_L1 (lump_t *l)
 	loadmodel->nodes = out;
 	loadmodel->numnodes = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1312,7 +1312,7 @@ void Mod_LoadNodes_L2 (lump_t *l)
 {
 	int			i, j, count, p;
 	dl2node_t	*in;
-	mnode_t 	*out;
+	mnode_t		*out;
 
 	in = (dl2node_t *)(mod_base + l->fileofs);
 	if (l->filelen % sizeof(*in))
@@ -1324,7 +1324,7 @@ void Mod_LoadNodes_L2 (lump_t *l)
 	loadmodel->nodes = out;
 	loadmodel->numnodes = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1374,7 +1374,7 @@ void Mod_LoadNodes (lump_t *l, int bsp2)
 
 void Mod_ProcessLeafs_S (dsleaf_t *in, int filelen)
 {
-	mleaf_t 	*out;
+	mleaf_t		*out;
 	int			i, j, count, p;
 
 	if (filelen % sizeof(*in))
@@ -1390,7 +1390,7 @@ void Mod_ProcessLeafs_S (dsleaf_t *in, int filelen)
 	loadmodel->leafs = out;
 	loadmodel->numleafs = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1420,7 +1420,7 @@ void Mod_ProcessLeafs_S (dsleaf_t *in, int filelen)
 
 void Mod_ProcessLeafs_L1 (dl1leaf_t *in, int filelen)
 {
-	mleaf_t 	*out;
+	mleaf_t		*out;
 	int			i, j, count, p;
 
 	if (filelen % sizeof(*in))
@@ -1434,10 +1434,10 @@ void Mod_ProcessLeafs_L1 (dl1leaf_t *in, int filelen)
 	if (count > MAX_MAP_LEAFS)
 		Host_Error ("Mod_LoadLeafs: %i leafs exceeds limit of %i.\n", count, MAX_MAP_LEAFS);
 
-	loadmodel->leafs		= out;
-	loadmodel->numleafs		= count;
+	loadmodel->leafs = out;
+	loadmodel->numleafs = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1445,18 +1445,18 @@ void Mod_ProcessLeafs_L1 (dl1leaf_t *in, int filelen)
 			out->minmaxs[3+j] = LittleShort (in->maxs[j]);
 		}
 
-		p					= LittleLong(in->contents);
-		out->contents		= p;
+		p = LittleLong(in->contents);
+		out->contents = p;
 
 		out->firstmarksurface = loadmodel->marksurfaces + LittleLong(in->firstmarksurface); //johnfitz -- unsigned short
 		out->nummarksurfaces = LittleLong(in->nummarksurfaces); //johnfitz -- unsigned short
 
-		p					= LittleLong(in->visofs);
+		p = LittleLong(in->visofs);
 		if (p == -1)
 			out->compressed_vis = NULL;
 		else
 			out->compressed_vis = loadmodel->visdata + p;
-		out->efrags			= NULL;
+		out->efrags = NULL;
 
 		for (j=0 ; j<4 ; j++)
 			out->ambient_sound_level[j] = in->ambient_level[j];
@@ -1467,7 +1467,7 @@ void Mod_ProcessLeafs_L1 (dl1leaf_t *in, int filelen)
 
 void Mod_ProcessLeafs_L2 (dl2leaf_t *in, int filelen)
 {
-	mleaf_t 	*out;
+	mleaf_t		*out;
 	int			i, j, count, p;
 
 	if (filelen % sizeof(*in))
@@ -1481,10 +1481,10 @@ void Mod_ProcessLeafs_L2 (dl2leaf_t *in, int filelen)
 	if (count > MAX_MAP_LEAFS)
 		Host_Error ("Mod_LoadLeafs: %i leafs exceeds limit of %i.\n", count, MAX_MAP_LEAFS);
 
-	loadmodel->leafs		= out;
-	loadmodel->numleafs		= count;
+	loadmodel->leafs = out;
+	loadmodel->numleafs = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{
@@ -1492,18 +1492,18 @@ void Mod_ProcessLeafs_L2 (dl2leaf_t *in, int filelen)
 			out->minmaxs[3+j] = LittleFloat (in->maxs[j]);
 		}
 
-		p					= LittleLong(in->contents);
-		out->contents		= p;
+		p = LittleLong(in->contents);
+		out->contents = p;
 
 		out->firstmarksurface = loadmodel->marksurfaces + LittleLong(in->firstmarksurface); //johnfitz -- unsigned short
 		out->nummarksurfaces = LittleLong(in->nummarksurfaces); //johnfitz -- unsigned short
 
-		p					= LittleLong(in->visofs);
+		p = LittleLong(in->visofs);
 		if (p == -1)
 			out->compressed_vis = NULL;
 		else
 			out->compressed_vis = loadmodel->visdata + p;
-		out->efrags			= NULL;
+		out->efrags = NULL;
 
 		for (j=0 ; j<4 ; j++)
 			out->ambient_sound_level[j] = in->ambient_level[j];
@@ -1519,14 +1519,14 @@ Mod_LoadLeafs
 */
 void Mod_LoadLeafs (lump_t *l, int bsp2)
 {
-	void 	*in = (void *)(mod_base + l->fileofs);
+	void *in = (void *)(mod_base + l->fileofs);
 
 	if (bsp2 == 2)
-		Mod_ProcessLeafs_L2 (in, l->filelen);
+		Mod_ProcessLeafs_L2 ((dl2leaf_t *)in, l->filelen);
 	else if (bsp2)
-		Mod_ProcessLeafs_L1 (in, l->filelen);
+		Mod_ProcessLeafs_L1 ((dl1leaf_t *)in, l->filelen);
 	else
-		Mod_ProcessLeafs_S (in, l->filelen);
+		Mod_ProcessLeafs_S  ((dsleaf_t *) in, l->filelen);
 }
 
 /*
@@ -1685,7 +1685,7 @@ void Mod_LoadMarksurfaces (lump_t *l, int bsp2)
 	msurface_t **out;
 	if (bsp2)
 	{
-		unsigned int		*in = (unsigned int *)(mod_base + l->fileofs);
+		unsigned int *in = (unsigned int *)(mod_base + l->fileofs);
 
 		if (l->filelen % sizeof(*in))
 			Host_Error ("Mod_LoadMarksurfaces: funny lump size in %s",loadmodel->name);
@@ -1696,7 +1696,7 @@ void Mod_LoadMarksurfaces (lump_t *l, int bsp2)
 		loadmodel->marksurfaces = out;
 		loadmodel->nummarksurfaces = count;
 
-		for ( i=0 ; i<count ; i++)
+		for (i=0 ; i<count ; i++)
 		{
 			j = LittleLong(in[i]);
 			if (j >= loadmodel->numsurfaces)
@@ -1706,7 +1706,7 @@ void Mod_LoadMarksurfaces (lump_t *l, int bsp2)
 	}
 	else
 	{
-		short		*in = (short *)(mod_base + l->fileofs);
+		short *in = (short *)(mod_base + l->fileofs);
 
 		if (l->filelen % sizeof(*in))
 			Host_Error ("Mod_LoadMarksurfaces: funny lump size in %s",loadmodel->name);
@@ -1720,10 +1720,9 @@ void Mod_LoadMarksurfaces (lump_t *l, int bsp2)
 		//johnfitz -- warn mappers about exceeding old limits
 		if (count > 32767)
 			Con_Warning ("%i marksurfaces exceeds standard limit of 32767.\n", count);
-		
 		//johnfitz
 
-		for ( i=0 ; i<count ; i++)
+		for (i=0 ; i<count ; i++)
 		{
 			j = (unsigned short)LittleShort(in[i]); //johnfitz -- explicit cast as unsigned short
 			if (j >= loadmodel->numsurfaces)
@@ -1752,7 +1751,7 @@ void Mod_LoadSurfedges (lump_t *l)
 	loadmodel->surfedges = out;
 	loadmodel->numsurfedges = count;
 
-	for ( i=0 ; i<count ; i++)
+	for (i=0 ; i<count ; i++)
 		out[i] = LittleLong (in[i]);
 }
 
@@ -1779,7 +1778,7 @@ void Mod_LoadPlanes (lump_t *l)
 	loadmodel->planes = out;
 	loadmodel->numplanes = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		bits = 0;
 		for (j=0 ; j<3 ; j++)
@@ -1833,7 +1832,7 @@ void Mod_LoadSubmodels (lump_t *l)
 	loadmodel->submodels = out;
 	loadmodel->numsubmodels = count;
 
-	for ( i=0 ; i<count ; i++, in++, out++)
+	for (i=0 ; i<count ; i++, in++, out++)
 	{
 		for (j=0 ; j<3 ; j++)
 		{	// spread the mins / maxs by a pixel
