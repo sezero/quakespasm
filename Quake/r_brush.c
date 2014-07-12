@@ -207,7 +207,6 @@ void R_DrawSequentialPoly (msurface_t *s)
 
 		R_RenderDynamicLightmaps (s);
 		GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-		R_UploadLightmap(s->lightmaptexturenum);
 		if (!gl_overbright.value)
 		{
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -317,7 +316,6 @@ void R_DrawSequentialPoly (msurface_t *s)
 			GL_EnableMultitexture(); // selects TEXTURE1
 			GL_Bind (lightmap_textures[s->lightmaptexturenum]);
 			R_RenderDynamicLightmaps (s);
-			R_UploadLightmap(s->lightmaptexturenum);
 			glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
 			glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_MODULATE);
 			glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB_EXT, GL_PREVIOUS_EXT);
@@ -355,7 +353,6 @@ void R_DrawSequentialPoly (msurface_t *s)
 			//second pass -- lightmap with black fog, modulate blended
 			R_RenderDynamicLightmaps (s);
 			GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-			R_UploadLightmap(s->lightmaptexturenum);
 			glDepthMask (GL_FALSE);
 			glEnable (GL_BLEND);
 			glBlendFunc(GL_DST_COLOR, GL_SRC_COLOR); //2x modulate
@@ -398,7 +395,6 @@ void R_DrawSequentialPoly (msurface_t *s)
 			GL_EnableMultitexture(); // selects TEXTURE1
 			GL_Bind (lightmap_textures[s->lightmaptexturenum]);
 			R_RenderDynamicLightmaps (s);
-			R_UploadLightmap(s->lightmaptexturenum);
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glBegin(GL_POLYGON);
 			v = s->polys->verts[0];
@@ -430,7 +426,6 @@ void R_DrawSequentialPoly (msurface_t *s)
 			//second pass -- lightmap with black fog, modulate blended
 			R_RenderDynamicLightmaps (s);
 			GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-			R_UploadLightmap(s->lightmaptexturenum);
 			glDepthMask (GL_FALSE);
 			glEnable (GL_BLEND);
 			glBlendFunc (GL_ZERO, GL_SRC_COLOR); //modulate
@@ -1150,7 +1145,7 @@ R_UploadLightmap -- johnfitz -- uploads the modified lightmap to opengl if neces
 assumes lightmap texture is already bound
 ===============
 */
-void R_UploadLightmap(int lmap)
+static void R_UploadLightmap(int lmap)
 {
 	glRect_t	*theRect;
 
@@ -1168,6 +1163,20 @@ void R_UploadLightmap(int lmap)
 	theRect->w = 0;
 
 	rs_dynamiclightmaps++;
+}
+
+void R_UploadLightmaps (void)
+{
+	int lmap;
+
+	for (lmap = 0; lmap < MAX_LIGHTMAPS; lmap++)
+	{
+		if (!lightmap_modified[lmap])
+			continue;
+
+		GL_Bind (lightmap_textures[lmap]);
+		R_UploadLightmap(lmap);
+	}
 }
 
 /*

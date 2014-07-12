@@ -373,7 +373,6 @@ void R_DrawTextureChains_Multitexture (void)
 				}
 				R_RenderDynamicLightmaps (s);
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-				R_UploadLightmap(s->lightmaptexturenum);
 				glBegin(GL_POLYGON);
 				v = s->polys->verts[0];
 				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
@@ -587,7 +586,6 @@ void R_DrawLightmapChains (void)
 			continue;
 
 		GL_Bind (lightmap_textures[i]);
-		R_UploadLightmap(i);
 		for (p = lightmap_polys[i]; p; p=p->chain)
 		{
 			glBegin (GL_POLYGON);
@@ -613,6 +611,10 @@ void R_DrawWorld (void)
 	if (!r_drawworld_cheatsafe)
 		return;
 
+// mh dynamic lightmap speedup: upload all modified lightmaps from the last
+// frame in a single batch
+	R_UploadLightmaps ();
+	
 	if (r_drawflat_cheatsafe)
 	{
 		glDisable (GL_TEXTURE_2D);
