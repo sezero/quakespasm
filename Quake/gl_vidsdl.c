@@ -260,6 +260,7 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	int		temp;
 	Uint32	flags = DEFAULT_SDL_FLAGS;
 	char		caption[50];
+	int		depthbits;
 
 	if (fullscreen)
 		flags |= SDL_FULLSCREEN;
@@ -280,9 +281,21 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 
 	bpp = SDL_VideoModeOK(width, height, bpp, flags);
 
+	//
+	// z-buffer depth
+	//
+	if (bpp == 16)
+		depthbits = 16;
+	else	depthbits = 24;
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthbits);
+
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
-	if (!draw_context)
-		Sys_Error ("Couldn't set video mode");
+	if (!draw_context) { // scale back SDL_GL_DEPTH_SIZE
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+		if (!draw_context)
+			Sys_Error ("Couldn't set video mode");
+	}
 
 	q_snprintf(caption, sizeof(caption), "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption(caption, caption);
@@ -293,6 +306,10 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	vid.conheight = vid.conwidth * vid.height / vid.width;
 	vid.numpages = 2;
 
+// read the obtained z-buffer depth
+	if (SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depthbits) == -1)
+		depthbits = 0;
+
 	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
 	CDAudio_Resume ();
@@ -302,10 +319,11 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
-	Con_SafePrintf ("Video mode %dx%dx%d initialized\n",
+	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer) initialized\n",
 				draw_context->w,
 				draw_context->h,
-				draw_context->format->BitsPerPixel);
+				draw_context->format->BitsPerPixel,
+				depthbits);
 
 	vid.recalc_refdef = 1;
 
