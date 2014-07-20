@@ -1,4 +1,8 @@
-libmodplug - v0.8.8.5 release + git (2014-06-15.)
+libmodplug - v0.8.8.5 release + git (2014-07-18) using sezero's fork
+at https://github.com/sezero/libmodplug/
+
+midi formats (*.abc, *.mid) and GUS patches (*.pat) loading disabled.
+wav format loading disabled.
 
 only the C-interface is exported in the dlls and the import libraries,
 which is what we use. the dll is compiled using mingw (gcc-3.4.5/x86)
