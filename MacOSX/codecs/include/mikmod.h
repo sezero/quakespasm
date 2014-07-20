@@ -84,7 +84,7 @@ extern "C" {
 MIKMODAPI extern long MikMod_GetVersion(void);
 
 /*
- *  ========== Platform independent-type definitions
+ *  ========== Dependency platform headers
  */
 
 #ifdef _WIN32
@@ -94,39 +94,65 @@ MIKMODAPI extern long MikMod_GetVersion(void);
 #include <windows.h>
 #include <io.h>
 #include <mmsystem.h>
+#define _MIKMOD_WIN32
 #endif
 
-#if defined(__OS2__)||defined(__EMX__)
+#if defined(__DJGPP__) || defined(MSDOS) || defined(__MSDOS__) || defined(__DOS__)
+#define _MIKMOD_DOS
+#endif
+
+#if defined(__OS2__) || defined(__EMX__)
 #define INCL_DOSSEMAPHORES
 #include <os2.h>
 #include <io.h>
+#define _MIKMOD_OS2
 #endif
 
-#if !defined(__OS2__) && !defined(__EMX__) && !defined(_WIN32)
-typedef int             BOOL;   /* 0=false, <>0 true */
-typedef char            CHAR;
+#if defined(__MORPHOS__) || defined(__AROS__) || defined(AMIGA) || defined(__amigaos__) || defined(AMIGAOS)
+#include <exec/types.h>
+#define _MIKMOD_AMIGA
 #endif
 
- /* 1 byte, signed and unsigned: */
-typedef signed char     SBYTE;
-typedef unsigned char   UBYTE;
+/*
+ *  ========== Platform independent-type definitions
+ * (pain when it comes to cross-platform maintenance..)
+ */
+
+#if !(defined(_MIKMOD_OS2) || defined(_MIKMOD_WIN32))
+typedef char               CHAR;
+#endif
+
+/* BOOL:  0=false, <>0 true -- 16 bits on Amiga, int-wide on others. */
+#if !(defined(_MIKMOD_OS2) || defined(_MIKMOD_WIN32) || defined(_MIKMOD_AMIGA))
+typedef int                BOOL;
+#endif
+
+/* 1 byte, signed and unsigned: */
+typedef signed char        SBYTE;
+#ifndef _MIKMOD_AMIGA
+typedef unsigned char      UBYTE;
+#endif
 
 /* 2 bytes, signed and unsigned: */
-typedef signed short    SWORD;
-typedef unsigned short  UWORD;
+#ifndef __LCC__
+typedef signed short int   SWORD;
+#endif
+#if !(defined(__LCC__) || defined(_MIKMOD_AMIGA))
+typedef unsigned short int UWORD;
+#endif
 
 /* 4 bytes, signed and unsigned: */
-#if defined(_LP64) || defined(__arch64__) || defined(__alpha) || defined(__x86_64) || defined(__powerpc64__)
+#if defined(_LP64) || defined(__LP64__) || defined(__arch64__) || defined(__alpha) || defined(__x86_64) || defined(__powerpc64__)
         /* 64 bit architectures: */
-typedef signed int      SLONG;
-#ifndef _WIN32
-typedef unsigned int    ULONG;
+typedef signed int         SLONG;
+#if !(defined(_WIN32) || defined(__AROS__))
+typedef unsigned int       ULONG;
 #endif
 
 #else  /* 32 bit architectures: */
-typedef signed long     SLONG;
-#if !defined(__OS2__) && !defined(__EMX__) && !defined(_WIN32)
-typedef unsigned long   ULONG;
+typedef signed long int    SLONG;
+#if !(defined(_MIKMOD_OS2) || defined(_MIKMOD_WIN32) || defined(_MIKMOD_AMIGA))
+typedef unsigned long int  ULONG;
 #endif
 #endif
 
@@ -136,7 +162,9 @@ typedef int __mikmod_typetest [
         (sizeof(SBYTE)==1) && (sizeof(UBYTE)==1)
      && (sizeof(SWORD)==2) && (sizeof(UWORD)==2)
      && (sizeof(SLONG)==4) && (sizeof(ULONG)==4)
+#ifndef _MIKMOD_AMIGA
      && (sizeof(BOOL) == sizeof(int))
+#endif
      && (sizeof(CHAR) == sizeof(char))
    ) * 2 - 1 ];
 
