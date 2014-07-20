@@ -133,10 +133,12 @@ typedef int	sys_socket_t;
 #define	INVALID_SOCKET	(-1)
 #define	SOCKET_ERROR	(-1)
 
-#if !defined(__AROS__)
+#if !(defined(__AROS__) || defined(__amigaos4__))
 typedef int	socklen_t;
 #endif
+#if !defined(__amigaos4__)
 typedef unsigned int	in_addr_t;	/* u_int32_t */
+#endif
 
 #define	SOCKETERRNO	Errno()
 #define	ioctlsocket	IoctlSocket
@@ -144,6 +146,10 @@ typedef unsigned int	in_addr_t;	/* u_int32_t */
 #define	selectsocket(_N,_R,_W,_E,_T)		\
 	WaitSelect((_N),(_R),(_W),(_E),(_T),NULL)
 #define	IOCTLARG_P(x)	(char *) x
+#if defined(__AMIGA__) && !defined(__MORPHOS__)
+#define	inet_ntoa(x) Inet_NtoA((ULONG *)&x)
+#define	h_errno Errno()
+#endif
 
 #define	NET_EWOULDBLOCK		EWOULDBLOCK
 #define	NET_ECONNREFUSED	ECONNREFUSED
