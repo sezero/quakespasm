@@ -43,9 +43,5 @@ void Draw_NewGame (void);
 
 void GL_SetCanvas (canvastype newcanvas); //johnfitz
 
-#if defined(USE_QS_CONBACK)
-void Draw_CheckConback (void); // QuakeSpasm customization
-#endif /* USE_QS_CONBACK */
-
 #endif	/* _QUAKE_DRAW_H */
 

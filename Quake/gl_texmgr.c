@@ -507,10 +507,6 @@ void TexMgr_NewGame (void)
 {
 	TexMgr_FreeTextures (0, TEXPREF_PERSIST); //deletes all textures where TEXPREF_PERSIST is unset
 	TexMgr_LoadPalette ();
-#if defined(USE_QS_CONBACK)
-	/* QuakeSpasm customization: */
-	Draw_CheckConback ();
-#endif	/* USE_QS_CONBACK */
 }
 
 /*

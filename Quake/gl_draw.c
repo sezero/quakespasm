@@ -441,11 +441,6 @@ void Draw_Init (void)
 
 	// load game pics
 	Draw_LoadPics ();
-
-#if defined(USE_QS_CONBACK)
-	/* QuakeSpasm customization: */
-	Draw_CheckConback ();
-#endif	/* USE_QS_CONBACK */
 }
 
 //==============================================================================
