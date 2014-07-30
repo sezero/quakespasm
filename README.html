@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Apr. 29, 2014</EM></P>
+<P><EM>Page last edited July 30, 2014</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
@@ -178,12 +178,20 @@ these patched libSDL binaries may help.
 
 <P>
 <UL>
+<LI> Support for opengl non-power-of-two-textures extension.</LI>
+<LI> Dynamic light speedup.</LI>
 <LI> Support for BSP2 and 2PSB map formats.</LI>
 <LI> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).</LI>
 <LI> Better Hor+ field of view (FOV) scaling behavior.</LI>
 <LI> Fix screenshots when screen width isn't a multiple of 4.</LI>
 <LI> Fix a lighting glitch due to floating point precision.</LI>
 <LI> Fix a looping sounds glitch.</LI>
+<LI> Fix a vulnerability in file extension handling. Tighten path handling safety.</LI>
+<LI> Initialize opengl with 24-bit depth buffer at 32 bpp.</LI>
+<LI> Reset all models upon gamedir changes. (Fixes failures with mods using custom content.)</LI>
+<LI> Fix broken behavior upon gamedir changes if -basedir is specified on the command line.</LI>
+<LI> NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.</LI>
+<LI> Host_Error upon missing models. (Prevents segmentation faults.)</LI>
 <LI> Quakespasm content customization moved from engine-embedded into a new optional quakespasm.pak file.</LI>
 <LI> Other fixes and clean-ups.</LI>
 </UL>

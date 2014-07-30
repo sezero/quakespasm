@@ -36,7 +36,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Apn. 29, 2014
+  Page last edited July 30, 2014
 
 
   1.  About
@@ -163,6 +163,10 @@
 
   6.1.  Changes in 0.85.10
 
+  o  Support for opengl non-power-of-two-textures extension.
+
+  o  Dynamic light speedup.
+
   o  Support for BSP2 and 2PSB map formats.
 
   o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
@@ -175,6 +179,21 @@
   o  Fix a lighting glitch due to floating point precision.
 
   o  Fix a looping sounds glitch.
+
+  o  Fix a vulnerability in file extension handling. Tighten path
+     handling safety.
+
+  o  Initialize opengl with 24-bit depth buffer at 32 bpp.
+
+  o  Reset all models upon gamedir changes. (Fixes failures with mods
+     using custom content.)
+
+  o  Fix broken behavior upon gamedir changes if -basedir is specified
+     on the command line.
+
+  o  NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
+
+  o  Host_Error upon missing models. (Prevents segmentation faults.)
 
   o  Quakespasm content customization moved from engine-embedded into a
      new optional quakespasm.pak file.

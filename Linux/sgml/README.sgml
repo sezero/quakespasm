@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Apr. 29, 2014</em>
+<em>Page last edited July 30, 2014</em>
 
 <sect> About <p>
 
@@ -104,12 +104,20 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 
 <sect1> Changes in 0.85.10<p>
 <itemize>
+<item> Support for opengl non-power-of-two-textures extension.
+<item> Dynamic light speedup.
 <item> Support for BSP2 and 2PSB map formats.
 <item> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).
 <item> Better Hor+ field of view (FOV) scaling behavior.
 <item> Fix screenshots when screen width isn't a multiple of 4.
 <item> Fix a lighting glitch due to floating point precision.
 <item> Fix a looping sounds glitch.
+<item> Fix a vulnerability in file extension handling. Tighten path handling safety.
+<item> Initialize opengl with 24-bit depth buffer at 32 bpp.
+<item> Reset all models upon gamedir changes. (Fixes failures with mods using custom content.)
+<item> Fix broken behavior upon gamedir changes if -basedir is specified on the command line.
+<item> NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
+<item> Host_Error upon missing models. (Prevents segmentation faults.)
 <item> Quakespasm content customization moved from engine-embedded into a new optional quakespasm.pak file.
 <item> Other fixes and clean-ups.
 </itemize>
