@@ -195,6 +195,20 @@ void Mod_ClearAll (void)
 		}
 }
 
+void Mod_ResetAll (void)
+{
+	int		i;
+	qmodel_t	*mod;
+
+	for (i=0 , mod=mod_known ; i<mod_numknown ; i++, mod++)
+	{
+		if (!mod->needload) //otherwise Mod_ClearAll() did it already
+			TexMgr_FreeTexturesForOwner (mod);
+		memset(mod, 0, sizeof(qmodel_t));
+	}
+	mod_numknown = 0;
+}
+
 /*
 ==================
 Mod_FindName

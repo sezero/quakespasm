@@ -201,6 +201,7 @@ void Host_Game_f (void)
 
 		//clear out and reload appropriate data
 		Cache_Flush ();
+		Mod_ResetAll();
 		if (!isDedicated)
 		{
 			TexMgr_NewGame ();
