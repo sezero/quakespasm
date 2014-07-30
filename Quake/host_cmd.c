@@ -406,7 +406,6 @@ void Modlist_Init (void)
 	struct dirent	*dir_t, *mod_dir_t;
 	qboolean	progs_found, pak_found;
 	char		dir_string[MAX_OSPATH], mod_dir_string[MAX_OSPATH];
-	int		i;
 
 	q_snprintf (dir_string, sizeof(dir_string), "%s/", com_basedir);
 	dir_p = opendir(dir_string);
