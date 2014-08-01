@@ -21,7 +21,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "quakedef.h"
+#ifndef _WIN32
 #include <dirent.h>
+#endif
 
 extern cvar_t	pausable;
 
@@ -266,8 +268,13 @@ void ExtraMaps_Add (const char *name)
 
 void ExtraMaps_Init (void)
 {
+#ifdef _WIN32
+	WIN32_FIND_DATA	fdat;
+	HANDLE		fhnd;
+#else
 	DIR		*dir_p;
 	struct dirent	*dir_t;
+#endif
 	char		filestring[MAX_OSPATH];
 	char		mapname[32];
 	char		ignorepakdir[32];
@@ -283,6 +290,18 @@ void ExtraMaps_Init (void)
 	{
 		if (*search->filename) //directory
 		{
+#ifdef _WIN32
+			q_snprintf (filestring, sizeof(filestring), "%s/maps/*.bsp", search->filename);
+			fhnd = FindFirstFile(filestring, &fdat);
+			if (fhnd == INVALID_HANDLE_VALUE)
+				continue;
+			do
+			{
+				COM_StripExtension(fdat.cFileName, mapname, sizeof(mapname));
+				ExtraMaps_Add (mapname);
+			} while (FindNextFile(fhnd, &fdat));
+			FindClose(fhnd);
+#else
 			q_snprintf (filestring, sizeof(filestring), "%s/maps/", search->filename);
 			dir_p = opendir(filestring);
 			if (dir_p == NULL)
@@ -295,6 +314,7 @@ void ExtraMaps_Init (void)
 				ExtraMaps_Add (mapname);
 			}
 			closedir(dir_p);
+#endif
 		}
 		else //pakfile
 		{
@@ -400,6 +420,39 @@ void Modlist_Add (const char *name)
 	}
 }
 
+#ifdef _WIN32
+void Modlist_Init (void)
+{
+	WIN32_FIND_DATA	fdat, mod_fdat;
+	HANDLE		fhnd, mod_fhnd;
+	char		dir_string[MAX_OSPATH], mod_string[MAX_OSPATH];
+
+	q_snprintf (dir_string, sizeof(dir_string), "%s/*", com_basedir);
+	fhnd = FindFirstFile(dir_string, &fdat);
+	if (fhnd == INVALID_HANDLE_VALUE)
+		return;
+
+	do
+	{
+		q_snprintf (mod_string, sizeof(mod_string), "%s/%s/progs.dat", com_basedir, fdat.cFileName);
+		mod_fhnd = FindFirstFile(mod_string, &mod_fdat);
+		if (mod_fhnd != INVALID_HANDLE_VALUE) {
+			FindClose(mod_fhnd);
+			Modlist_Add(fdat.cFileName);
+		}
+		else {
+			q_snprintf (mod_string, sizeof(mod_string), "%s/%s/*.pak", com_basedir, fdat.cFileName);
+			mod_fhnd = FindFirstFile(mod_string, &mod_fdat);
+			if (mod_fhnd != INVALID_HANDLE_VALUE) {
+				FindClose(mod_fhnd);
+				Modlist_Add(fdat.cFileName);
+			}
+		}
+	} while (FindNextFile(fhnd, &fdat));
+
+	FindClose(fhnd);
+}
+#else
 void Modlist_Init (void)
 {
 	DIR		*dir_p, *mod_dir_p;
@@ -436,6 +489,7 @@ void Modlist_Init (void)
 
 	closedir(dir_p);
 }
+#endif
 
 /*
 ==================
