@@ -382,10 +382,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dirent.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\Quake\gl_draw.c"
 				>
 			</File>
@@ -685,10 +681,6 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\cvar.h"
-				>
-			</File>
-			<File
-				RelativePath=".\dirent.h"
 				>
 			</File>
 			<File
