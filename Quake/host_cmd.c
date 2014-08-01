@@ -289,7 +289,7 @@ void ExtraMaps_Init (void)
 				continue;
 			while ((dir_t = readdir(dir_p)) != NULL)
 			{
-				if (!strstr(dir_t->d_name, ".bsp") && !strstr(dir_t->d_name, ".BSP"))
+				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "bsp") != 0)
 					continue;
 				COM_StripExtension(dir_t->d_name, mapname, sizeof(mapname));
 				ExtraMaps_Add (mapname);
@@ -302,7 +302,7 @@ void ExtraMaps_Init (void)
 			{ //don't list standard id maps
 				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
-					if (strstr(pak->files[i].name, ".bsp"))
+					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "bsp"))
 					{
 						if (pak->files[i].filelen > 32*1024)
 						{ // don't list files under 32k (ammo boxes etc)
@@ -404,8 +404,7 @@ void Modlist_Init (void)
 {
 	DIR		*dir_p, *mod_dir_p;
 	struct dirent	*dir_t, *mod_dir_t;
-	qboolean	progs_found, pak_found;
-	char		dir_string[MAX_OSPATH], mod_dir_string[MAX_OSPATH];
+	char		dir_string[MAX_OSPATH], mod_string[MAX_OSPATH];
 
 	q_snprintf (dir_string, sizeof(dir_string), "%s/", com_basedir);
 	dir_p = opendir(dir_string);
@@ -414,30 +413,25 @@ void Modlist_Init (void)
 
 	while ((dir_t = readdir(dir_p)) != NULL)
 	{
-		if ((strcmp(dir_t->d_name, ".") == 0) || (strcmp(dir_t->d_name, "..") == 0))
+		if (!strcmp(dir_t->d_name, ".") || !strcmp(dir_t->d_name, ".."))
 			continue;
-		q_snprintf(mod_dir_string, sizeof(mod_dir_string), "%s%s/", dir_string, dir_t->d_name);
-		mod_dir_p = opendir(mod_dir_string);
+		q_snprintf(mod_string, sizeof(mod_string), "%s%s/", dir_string, dir_t->d_name);
+		mod_dir_p = opendir(mod_string);
 		if (mod_dir_p == NULL)
 			continue;
-		progs_found = false;
-		pak_found = false;
 		// find progs.dat and pak file(s)
 		while ((mod_dir_t = readdir(mod_dir_p)) != NULL)
 		{
-			if ((strcmp(mod_dir_t->d_name, ".") == 0) || (strcmp(mod_dir_t->d_name, "..") == 0))
-				continue;
-			if (q_strcasecmp(mod_dir_t->d_name, "progs.dat") == 0)
-				progs_found = true;
-			if (strstr(mod_dir_t->d_name, ".pak") || strstr(mod_dir_t->d_name, ".PAK"))
-				pak_found = true;
-			if (progs_found || pak_found)
+			if (!q_strcasecmp(mod_dir_t->d_name, "progs.dat")) {
+				Modlist_Add(dir_t->d_name);
 				break;
+			}
+			if (!q_strcasecmp(COM_FileGetExtension(mod_dir_t->d_name), "pak")) {
+				Modlist_Add(dir_t->d_name);
+				break;
+			}
 		}
 		closedir(mod_dir_p);
-		if (!progs_found && !pak_found)
-			continue;
-		Modlist_Add(dir_t->d_name);
 	}
 
 	closedir(dir_p);
