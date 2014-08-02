@@ -145,11 +145,10 @@ int CDAudio_Play(byte track, qboolean looping)
 
 /* We have two types of stop
  *
- * On many devices, CDROMSTOP
- * ioctl causes any ioctls following immediately to
- * fail for a considerable time.
- * So avoid dead stops if playback may be resume shortly */
-
+ * On some devices, the CDROMSTOP ioctl causes any followup
+ * ioctls to fail for a considerable time.
+ * So avoid dead stops if playback may be resumed shortly.
+ */
 void CDAudio_Stop(void)
 {
 	if (!cd_handle || !enabled)
@@ -157,7 +156,6 @@ void CDAudio_Stop(void)
 
 	if (!playing)
 		return;
-
 
 	if (SDL_CDPause(cd_handle) == -1)
 		Con_Printf ("CDAudio_Stop: Unable to pause CD-ROM (%s)\n", SDL_GetError());
@@ -177,7 +175,7 @@ void CDAudio_ReallyStop(void)
 		return;
 
 	if (SDL_CDStop(cd_handle) == -1)
-		Con_Printf ("CDAudio_ReallyStop: Unable to stop CD-ROM (%s)\n", SDL_GetError());
+		Con_Printf ("CDAudio_Stop: Unable to stop CD-ROM (%s)\n", SDL_GetError());
 
 	wasPlaying = false;
 	playing = false;
@@ -353,8 +351,7 @@ static void CD_f (void)
 		return;
 	}
 
-	Con_Printf("cd: \"%s\" unknown command.\n",command);
-        return;
+	Con_Printf("cd: unknown command \"%s\".\n",command);
 }
 
 static qboolean CD_GetVolume (void *unused)
@@ -564,9 +561,10 @@ void CDAudio_Shutdown(void)
 {
 	if (!cd_handle)
 		return;
-	CDAudio_ReallyStop();
+	CDAudio_Stop();
 	if (hw_vol_works)
 		CD_SetVolume (NULL); /* no SDL support at present. */
+	CDAudio_ReallyStop();
 	SDL_CDClose(cd_handle);
 	cd_handle = NULL;
 	cd_dev = -1;
