@@ -219,6 +219,15 @@ void CDAudio_Resume(void)
 	pausetime = -1.0;
 }
 
+static int get_first_audiotrk (void)
+{
+	int i;
+	for (i = 0; i < cd_handle->numtracks; ++i)
+		if (cd_handle->track[i].type != SDL_DATA_TRACK)
+			return ++i;
+	return 1;
+}
+
 static void CD_f (void)
 {
 	const char	*command;
@@ -356,15 +365,15 @@ static void CD_f (void)
 
 	if (q_strcasecmp(command, "next") == 0)
 	{
-		if (playTrack == cd_handle->numtracks) 
-			playTrack = 0;
+		if (playTrack == cd_handle->numtracks)
+			playTrack = get_first_audiotrk() - 1;
 		CDAudio_Play(playTrack + 1, playLooping);
 		return;
 	}
 
 	if (q_strcasecmp(command, "prev") == 0)
 	{
-		if (playTrack == 1) 
+		if (playTrack == get_first_audiotrk())
 			playTrack = cd_handle->numtracks + 1;
 		CDAudio_Play(playTrack - 1, playLooping);
 		return;
