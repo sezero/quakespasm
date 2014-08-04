@@ -229,7 +229,7 @@ static void CD_f (void)
 		Con_Printf("commands:");
 		Con_Printf("on, off, reset, remap, \n");
 		Con_Printf("play, stop, loop, pause, resume\n");
-		Con_Printf("eject, info\n");
+		Con_Printf("eject, info, next, prev\n");
 		return;
 	}
 
@@ -287,7 +287,10 @@ static void CD_f (void)
 
 	if (q_strcasecmp(command, "play") == 0)
 	{
-		CDAudio_Play((byte)atoi(Cmd_Argv (2)), false);
+		n = atoi(Cmd_Argv (2));
+		if (n == 0)
+			n = 1;
+		CDAudio_Play((byte)n, false);
 		return;
 	}
 
@@ -348,6 +351,22 @@ static void CD_f (void)
 		}
 		Con_Printf("Volume is %f\n", bgmvolume.value);
 
+		return;
+	}
+
+	if (q_strcasecmp(command, "next") == 0)
+	{
+		if (playTrack == cd_handle->numtracks) 
+			playTrack = 0;
+		CDAudio_Play(playTrack + 1, playLooping);
+		return;
+	}
+
+	if (q_strcasecmp(command, "prev") == 0)
+	{
+		if (playTrack == 1) 
+			playTrack = cd_handle->numtracks + 1;
+		CDAudio_Play(playTrack - 1, playLooping);
 		return;
 	}
 

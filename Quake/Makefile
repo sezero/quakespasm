@@ -291,3 +291,5 @@ debug:
 clean:
 	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
 
+install:	quakespasm
+	cp quakespasm /usr/local/games/quake
