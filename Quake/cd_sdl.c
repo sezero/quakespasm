@@ -44,7 +44,6 @@
 
 static qboolean cdValid = false;
 static qboolean	playing = false;
-static qboolean	active = false;
 static qboolean	wasPlaying = false;
 static qboolean	enabled = true;
 static qboolean playLooping = false;
@@ -125,7 +124,6 @@ int CDAudio_Play(byte track, qboolean looping)
 	playLooping = looping;
 	playTrack = track;
 	playing = true;
-	active = true;
 
 	FRAMES_TO_MSF(cd_handle->track[track-1].length, &len_m, &len_s, &len_f);
 	endOfTrack = realtime + ((double)len_m * 60.0) + (double)len_s + (double)len_f / (double)CD_FPS;
@@ -143,12 +141,6 @@ int CDAudio_Play(byte track, qboolean looping)
 	return 0;
 }
 
-/* We have two types of stop
- *
- * On some devices, the CDROMSTOP ioctl causes any followup
- * ioctls to fail for a considerable time.
- * So avoid dead stops if playback may be resumed shortly.
- */
 void CDAudio_Stop(void)
 {
 	if (!cd_handle || !enabled)
@@ -157,29 +149,11 @@ void CDAudio_Stop(void)
 	if (!playing)
 		return;
 
-	if (SDL_CDPause(cd_handle) == -1)
-		Con_Printf ("CDAudio_Stop: Unable to pause CD-ROM (%s)\n", SDL_GetError());
-
-	wasPlaying = false;
-	playing = false;
-	pausetime = -1.0;
-	endOfTrack = -1.0;
-}
-
-void CDAudio_ReallyStop(void)
-{
-	if (!cd_handle || !enabled)
-		return;
-
-	if (!active)
-		return;
-
 	if (SDL_CDStop(cd_handle) == -1)
 		Con_Printf ("CDAudio_Stop: Unable to stop CD-ROM (%s)\n", SDL_GetError());
 
 	wasPlaying = false;
 	playing = false;
-	active = false;
 	pausetime = -1.0;
 	endOfTrack = -1.0;
 }
@@ -214,7 +188,6 @@ void CDAudio_Resume(void)
 	if (SDL_CDResume(cd_handle) == -1)
 		Con_Printf ("Unable to resume CD-ROM: %s\n", SDL_GetError());
 	playing = true;
-	active = true;
 	endOfTrack += realtime - pausetime;
 	pausetime = -1.0;
 }
@@ -253,7 +226,7 @@ static void CD_f (void)
 	if (q_strcasecmp(command, "off") == 0)
 	{
 		if (playing)
-			CDAudio_ReallyStop();
+			CDAudio_Stop();
 		enabled = false;
 		return;
 	}
@@ -262,7 +235,7 @@ static void CD_f (void)
 	{
 		enabled = true;
 		if (playing)
-			CDAudio_ReallyStop();
+			CDAudio_Stop();
 		for (n = 0; n < 100; n++)
 			remap[n] = n;
 		CDAudio_GetAudioDiskInfo();
@@ -329,8 +302,8 @@ static void CD_f (void)
 
 	if (q_strcasecmp(command, "eject") == 0)
 	{
-		if (playing || active)
-			CDAudio_ReallyStop();
+		if (playing)
+			CDAudio_Stop();
 		CDAudio_Eject();
 		cdValid = false;
 		return;
@@ -378,8 +351,6 @@ static void CD_f (void)
 		CDAudio_Play(playTrack - 1, playLooping);
 		return;
 	}
-
-	Con_Printf("cd: unknown command \"%s\".\n",command);
 }
 
 static qboolean CD_GetVolume (void *unused)
@@ -592,7 +563,6 @@ void CDAudio_Shutdown(void)
 	CDAudio_Stop();
 	if (hw_vol_works)
 		CD_SetVolume (NULL); /* no SDL support at present. */
-	CDAudio_ReallyStop();
 	SDL_CDClose(cd_handle);
 	cd_handle = NULL;
 	cd_dev = -1;
