@@ -24,6 +24,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 static char loadfilename[MAX_OSPATH]; //file scope so that error messages can use it
 
+typedef struct stdio_buffer_s {
+	FILE *f;
+	unsigned char buffer[1024];
+	int size;
+	int pos;
+} stdio_buffer_t;
+
+static stdio_buffer_t *Buf_Alloc(FILE *f)
+{
+	stdio_buffer_t *buf = calloc(1, sizeof(stdio_buffer_t));
+	buf->f = f;
+	return buf;
+}
+
+static void Buf_Free(stdio_buffer_t *buf)
+{
+	free(buf);
+}
+
+static inline int Buf_GetC(stdio_buffer_t *buf)
+{
+	if (buf->pos >= buf->size)
+	{
+		buf->size = fread(buf->buffer, 1, sizeof(buf->buffer), buf->f);
+		buf->pos = 0;
+		
+		if (buf->size == 0)
+			return EOF;
+	}
+	
+	return buf->buffer[buf->pos++];
+}
+
 /*
 ============
 Image_LoadImage
@@ -151,6 +184,7 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 	byte			*targa_rgba;
 	int				realrow; //johnfitz -- fix for upside-down targas
 	qboolean		upside_down; //johnfitz -- fix for upside-down targas
+	stdio_buffer_t	*buf;
 
 	targa_header.id_length = fgetc(fin);
 	targa_header.colormap_type = fgetc(fin);
@@ -182,6 +216,8 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 	if (targa_header.id_length != 0)
 		fseek(fin, targa_header.id_length, SEEK_CUR);  // skip TARGA image comment
 
+	buf = Buf_Alloc(fin);
+
 	if (targa_header.image_type==2) // Uncompressed, RGB images
 	{
 		for(row=rows-1; row>=0; row--)
@@ -196,19 +232,19 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 				switch (targa_header.pixel_size)
 				{
 				case 24:
-					blue = getc(fin);
-					green = getc(fin);
-					red = getc(fin);
+					blue = Buf_GetC(buf);
+					green = Buf_GetC(buf);
+					red = Buf_GetC(buf);
 					*pixbuf++ = red;
 					*pixbuf++ = green;
 					*pixbuf++ = blue;
 					*pixbuf++ = 255;
 					break;
 				case 32:
-					blue = getc(fin);
-					green = getc(fin);
-					red = getc(fin);
-					alphabyte = getc(fin);
+					blue = Buf_GetC(buf);
+					green = Buf_GetC(buf);
+					red = Buf_GetC(buf);
+					alphabyte = Buf_GetC(buf);
 					*pixbuf++ = red;
 					*pixbuf++ = green;
 					*pixbuf++ = blue;
@@ -229,23 +265,23 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 			//johnfitz
 			for(column=0; column<columns; )
 			{
-				packetHeader=getc(fin);
+				packetHeader=Buf_GetC(buf);
 				packetSize = 1 + (packetHeader & 0x7f);
 				if (packetHeader & 0x80) // run-length packet
 				{
 					switch (targa_header.pixel_size)
 					{
 					case 24:
-						blue = getc(fin);
-						green = getc(fin);
-						red = getc(fin);
+						blue = Buf_GetC(buf);
+						green = Buf_GetC(buf);
+						red = Buf_GetC(buf);
 						alphabyte = 255;
 						break;
 					case 32:
-						blue = getc(fin);
-						green = getc(fin);
-						red = getc(fin);
-						alphabyte = getc(fin);
+						blue = Buf_GetC(buf);
+						green = Buf_GetC(buf);
+						red = Buf_GetC(buf);
+						alphabyte = Buf_GetC(buf);
 						break;
 					default: /* avoid compiler warnings */
 						blue = red = green = alphabyte = 0;
@@ -279,19 +315,19 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 						switch (targa_header.pixel_size)
 						{
 						case 24:
-							blue = getc(fin);
-							green = getc(fin);
-							red = getc(fin);
+							blue = Buf_GetC(buf);
+							green = Buf_GetC(buf);
+							red = Buf_GetC(buf);
 							*pixbuf++ = red;
 							*pixbuf++ = green;
 							*pixbuf++ = blue;
 							*pixbuf++ = 255;
 							break;
 						case 32:
-							blue = getc(fin);
-							green = getc(fin);
-							red = getc(fin);
-							alphabyte = getc(fin);
+							blue = Buf_GetC(buf);
+							green = Buf_GetC(buf);
+							red = Buf_GetC(buf);
+							alphabyte = Buf_GetC(buf);
 							*pixbuf++ = red;
 							*pixbuf++ = green;
 							*pixbuf++ = blue;
@@ -320,6 +356,7 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 		}
 	}
 
+	Buf_Free(buf);
 	fclose(fin);
 
 	*width = (int)(targa_header.width);
@@ -360,6 +397,7 @@ byte *Image_LoadPCX (FILE *f, int *width, int *height)
 	int			x, y, w, h, readbyte, runlength, start;
 	byte		*p, *data;
 	byte		palette[768];
+	stdio_buffer_t  *buf;
 
 	start = ftell (f); //save start of file (since we might be inside a pak file, SEEK_SET might not be the start of the pcx)
 
@@ -391,18 +429,20 @@ byte *Image_LoadPCX (FILE *f, int *width, int *height)
 	//back to start of image data
 	fseek (f, start + sizeof(pcx), SEEK_SET);
 
+	buf = Buf_Alloc(f);
+
 	for (y=0; y<h; y++)
 	{
 		p = data + y * w * 4;
 
 		for (x=0; x<(pcx.bytes_per_line); ) //read the extra padding byte if necessary
 		{
-			readbyte = fgetc(f);
+			readbyte = Buf_GetC(buf);
 
 			if(readbyte >= 0xC0)
 			{
 				runlength = readbyte & 0x3F;
-				readbyte = fgetc(f);
+				readbyte = Buf_GetC(buf);
 			}
 			else
 				runlength = 1;
@@ -418,6 +458,8 @@ byte *Image_LoadPCX (FILE *f, int *width, int *height)
 			}
 		}
 	}
+	
+	Buf_Free(buf);
 
 	fclose(f);
 
