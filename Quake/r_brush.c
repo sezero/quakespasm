@@ -45,6 +45,7 @@ qboolean	lightmap_modified[MAX_LIGHTMAPS];
 glRect_t	lightmap_rectchange[MAX_LIGHTMAPS];
 
 int			allocated[MAX_LIGHTMAPS][BLOCK_WIDTH];
+int			last_lightmap_allocated; //ericw -- optimization: remember the index of the last lightmap AllocBlock stored a surf in
 
 // the lightmap texture data needs to be kept in
 // main memory so texsubimage can update properly
@@ -716,7 +717,12 @@ int AllocBlock (int w, int h, int *x, int *y)
 	int		best, best2;
 	int		texnum;
 
-	for (texnum=0 ; texnum<MAX_LIGHTMAPS ; texnum++)
+	// ericw -- rather than searching starting at lightmap 0 every time,
+	// start at the last lightmap we allocated a surface in.
+	// This makes AllocBlock much faster on large levels (can shave off 3+ seconds
+	// of load time on a level with 180 lightmaps), at a cost of not quite packing
+	// lightmaps as tightly vs. not doing this (uses ~5% more lightmaps)
+	for (texnum=last_lightmap_allocated ; texnum<MAX_LIGHTMAPS ; texnum++, last_lightmap_allocated++)
 	{
 		best = BLOCK_HEIGHT;
 
@@ -865,6 +871,7 @@ void GL_BuildLightmaps (void)
 	qmodel_t	*m;
 
 	memset (allocated, 0, sizeof(allocated));
+	last_lightmap_allocated = 0;
 
 	r_framecount = 1; // no dlightcache
 
