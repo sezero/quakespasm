@@ -365,6 +365,8 @@ static void CD_f (void)
 		CDAudio_Play(playTrack - 1, playLooping);
 		return;
 	}
+
+	Con_Printf ("cd: unknown command \"%s\"\n", command);
 }
 
 static qboolean CD_GetVolume (void *unused)
