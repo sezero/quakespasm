@@ -86,7 +86,7 @@ qboolean SNDDMA_Init (dma_t *dma)
 	}
 
 	/* Set up the desired format */
-	desired.freq = tmp = sndspeed.value;
+	desired.freq = tmp = snd_mixspeed.value;
 	desired.format = (loadas8bit.value) ? AUDIO_U8 : AUDIO_S16SYS;
 	desired.channels = 2; /* = desired_channels; */
 	if (desired.freq <= 11025)

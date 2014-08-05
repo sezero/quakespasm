@@ -76,6 +76,16 @@ cvar_t		precache = {"precache", "1", CVAR_NONE};
 cvar_t		loadas8bit = {"loadas8bit", "0", CVAR_NONE};
 
 cvar_t		sndspeed = {"sndspeed", "11025", CVAR_NONE};
+cvar_t		snd_mixspeed = {"snd_mixspeed", "44100", CVAR_NONE};
+
+#if defined(_WIN32)
+#define SND_FILTERQUALITY_DEFAULT "5"
+#else
+#define SND_FILTERQUALITY_DEFAULT "1"
+#endif
+
+cvar_t		snd_filterquality = {"snd_filterquality", SND_FILTERQUALITY_DEFAULT,
+								 CVAR_NONE};
 
 static	cvar_t	nosound = {"nosound", "0", CVAR_NONE};
 static	cvar_t	ambient_level = {"ambient_level", "0.3", CVAR_NONE};
@@ -108,6 +118,14 @@ static void SND_Callback_sfxvolume (cvar_t *var)
 	SND_InitScaletable ();
 }
 
+static void SND_Callback_snd_filterquality (cvar_t *var)
+{
+	if (snd_filterquality.value < 1 || snd_filterquality.value > 5)
+	{
+		Con_Printf ("snd_filterquality must be between 1 and 5\n");
+		Cvar_SetQuick (&snd_filterquality, SND_FILTERQUALITY_DEFAULT);
+	}
+}
 
 /*
 ================
@@ -161,7 +179,9 @@ void S_Init (void)
 	Cvar_RegisterVariable(&snd_show);
 	Cvar_RegisterVariable(&_snd_mixahead);
 	Cvar_RegisterVariable(&sndspeed);
-
+	Cvar_RegisterVariable(&snd_mixspeed);
+	Cvar_RegisterVariable(&snd_filterquality);
+	
 	if (safemode || COM_CheckParm("-nosound"))
 		return;
 
@@ -178,6 +198,12 @@ void S_Init (void)
 	{
 		Cvar_SetQuick (&sndspeed, com_argv[i+1]);
 	}
+	
+	i = COM_CheckParm("-mixspeed");
+	if (i && i < com_argc-1)
+	{
+		Cvar_SetQuick (&snd_mixspeed, com_argv[i+1]);
+	}
 
 	if (host_parms->memsize < 0x800000)
 	{
@@ -186,6 +212,7 @@ void S_Init (void)
 	}
 
 	Cvar_SetCallback(&sfxvolume, SND_Callback_sfxvolume);
+	Cvar_SetCallback(&snd_filterquality, &SND_Callback_snd_filterquality);
 
 	SND_InitScaletable ();
 
