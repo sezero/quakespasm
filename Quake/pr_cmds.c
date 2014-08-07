@@ -1325,7 +1325,7 @@ Pick a vector for the player to shoot along
 vector aim(entity, missilespeed)
 =============
 */
-cvar_t	sv_aim = {"sv_aim", "0.93", CVAR_ARCHIVE};
+cvar_t	sv_aim = {"sv_aim", "1", CVAR_NONE}; // ericw -- turn autoaim off by default. was 0.93
 static void PF_aim (void)
 {
 	edict_t	*ent, *check, *bestent;
