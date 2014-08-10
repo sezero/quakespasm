@@ -84,7 +84,7 @@ typedef struct
 	vec3_t	start, end;
 } beam_t;
 
-#define	MAX_EFRAGS		2048 //johnfitz -- was 640
+#define	MAX_EFRAGS		4096 //ericw -- was 2048 //johnfitz -- was 640
 
 #define	MAX_MAPSTRING	2048
 #define	MAX_DEMOS		8
