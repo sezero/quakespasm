@@ -41,13 +41,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define DEFAULT_SDL_FLAGS	SDL_OPENGL
 
-/* multisampling was added to SDL beginning from v1.2.6 */
-#define SDL_VER_WITH_MULTISAMPLING	(SDL_VERSIONNUM(1,2,6))
-#if SDL_COMPILEDVERSION < SDL_VER_WITH_MULTISAMPLING
-#define SDL_GL_MULTISAMPLEBUFFERS	(SDL_GL_ACCUM_ALPHA_SIZE+2)
-#define SDL_GL_MULTISAMPLESAMPLES	(SDL_GL_ACCUM_ALPHA_SIZE+3)
-#endif	/* SDL_VER_WITH_MULTISAMPLING */
-
 typedef struct {
 	int			width;
 	int			height;
@@ -126,7 +119,6 @@ static unsigned short vid_sysgamma_blue[256];
 #endif
 
 static qboolean	gammaworks = false;	// whether hw-gamma works
-static qboolean	sdl_has_multisample = false; // whether linked sdl version supports multisampling
 
 /*
 ================
@@ -301,17 +293,9 @@ static int VID_SetMode (int width, int height, int bpp, int multisample, qboolea
 	//
 	// multisampling
 	//
-	if (multisample && !sdl_has_multisample)
-	{
-		multisample = 0;
-		Con_SafePrintf ("SDL ver < %d, multisampling disabled\n", SDL_VER_WITH_MULTISAMPLING);
-	}
-	if (sdl_has_multisample)
-	{
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, multisample > 0 ? 1 : 0);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, multisample);
-	}
-	
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, multisample > 0 ? 1 : 0);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, multisample);
+
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
 	if (!draw_context) { // scale back multisampling
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
@@ -339,11 +323,8 @@ static int VID_SetMode (int width, int height, int bpp, int multisample, qboolea
 		depthbits = 0;
 
 // read obtained multisample samples
-	if (sdl_has_multisample)
-	{
-		if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == -1)
-			multisample = 0;
-	}
+	if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == -1)
+		multisample = 0;
 
 	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
@@ -459,8 +440,7 @@ static void VID_Test (void)
 	old_height = draw_context->h;
 	old_bpp = draw_context->format->BitsPerPixel;
 	old_multisample = 0;
-	if (sdl_has_multisample)
-		SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &old_multisample);
+	SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &old_multisample);
 	old_fullscreen = draw_context->flags & SDL_FULLSCREEN ? true : false;
 
 	VID_Restart ();
@@ -976,8 +956,7 @@ void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
-	const SDL_version	*sdl_version;
-	int		width, height, bpp, multisample;
+	int		p, width, height, bpp, multisample;
 	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
@@ -1006,11 +985,6 @@ void	VID_Init (void)
 	Cmd_AddCommand ("vid_describecurrentmode", VID_DescribeCurrentMode_f);
 	Cmd_AddCommand ("vid_describemodes", VID_DescribeModes_f);
 
-	// see if the SDL version we linked to is multisampling-capable
-	sdl_version = SDL_Linked_Version();
-	if (SDL_VERSIONNUM(sdl_version->major,sdl_version->minor,sdl_version->patch) >= SDL_VER_WITH_MULTISAMPLING)
-		sdl_has_multisample = true;
-
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
@@ -1033,7 +1007,7 @@ void	VID_Init (void)
 	bpp = (int)vid_bpp.value;
 	fullscreen = (int)vid_fullscreen.value;
 	multisample = (int)vid_multisample.value;
-	
+
 	if (COM_CheckParm("-current"))
 	{
 		width = info->current_w;
@@ -1043,8 +1017,6 @@ void	VID_Init (void)
 	}
 	else
 	{
-		int p;
-
 		p = COM_CheckParm("-width");
 		if (p && p < com_argc-1)
 		{
@@ -1072,14 +1044,10 @@ void	VID_Init (void)
 		else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
 			fullscreen = true;
 	}
-	
-	{
-		int p;
-		
-		p = COM_CheckParm ("-fsaa");
-		if (p && p < com_argc-1)
-			multisample = atoi(com_argv[p+1]);
-	}
+
+	p = COM_CheckParm ("-fsaa");
+	if (p && p < com_argc-1)
+		multisample = atoi(com_argv[p+1]);
 
 	if (!VID_ValidMode(width, height, bpp, fullscreen))
 	{
@@ -1181,8 +1149,8 @@ void VID_SyncCvars (void)
 
 		if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
 			Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
-			
-		if (sdl_has_multisample && SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == 0)
+
+		if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == 0)
 			Cvar_SetValueQuick (&vid_multisample, multisample);
 	}
 
@@ -1392,13 +1360,13 @@ chooses next antialiasing level in order, then updates the vid_samples cvar
 static void VID_Menu_ChooseNextMultisample (int dir)
 {
 	int i;
-	
+
 	for (i = 0; i < vid_menu_nummultisamples; i++)
 	{
 		if (vid_menu_multisamples[i] == vid_multisample.value)
 			break;
 	}
-	
+
 	if (i == vid_menu_nummultisamples) //can't find it in list
 	{
 		i = 0;
@@ -1411,7 +1379,7 @@ static void VID_Menu_ChooseNextMultisample (int dir)
 		else if (i < 0)
 			i = vid_menu_nummultisamples-1;
 	}
-	
+
 	Cvar_SetValueQuick (&vid_multisample, (float)vid_menu_multisamples[i]);
 }
 
