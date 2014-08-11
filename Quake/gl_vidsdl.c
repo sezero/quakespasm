@@ -41,6 +41,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define DEFAULT_SDL_FLAGS	SDL_OPENGL
 
+/* multisampling was added to SDL beginning from v1.2.6 */
+#define SDL_VER_WITH_MULTISAMPLING	(SDL_VERSIONNUM(1,2,6))
+#if SDL_COMPILEDVERSION < SDL_VER_WITH_MULTISAMPLING
+#define SDL_GL_MULTISAMPLEBUFFERS	(SDL_GL_ACCUM_ALPHA_SIZE+2)
+#define SDL_GL_MULTISAMPLESAMPLES	(SDL_GL_ACCUM_ALPHA_SIZE+3)
+#endif	/* SDL_VER_WITH_MULTISAMPLING */
+
 typedef struct {
 	int			width;
 	int			height;
@@ -95,6 +102,7 @@ static cvar_t	vid_width = {"vid_width", "800", CVAR_ARCHIVE};		// QuakeSpasm, wa
 static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, was 480
 static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
 static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
+static cvar_t	vid_multisample = {"vid_multisample", "0", CVAR_ARCHIVE}; // QuakeSpasm
 //johnfitz
 
 cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
@@ -118,6 +126,7 @@ static unsigned short vid_sysgamma_blue[256];
 #endif
 
 static qboolean	gammaworks = false;	// whether hw-gamma works
+static qboolean	sdl_has_multisample = false; // whether linked sdl version supports multisampling
 
 /*
 ================
@@ -255,7 +264,7 @@ static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscre
 VID_SetMode
 ================
 */
-static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
+static int VID_SetMode (int width, int height, int bpp, int multisample, qboolean fullscreen)
 {
 	int		temp;
 	Uint32	flags = DEFAULT_SDL_FLAGS;
@@ -289,7 +298,26 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	else	depthbits = 24;
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthbits);
 
+	//
+	// multisampling
+	//
+	if (multisample && !sdl_has_multisample)
+	{
+		multisample = 0;
+		Con_SafePrintf ("SDL ver < %d, multisampling disabled\n", SDL_VER_WITH_MULTISAMPLING);
+	}
+	if (sdl_has_multisample)
+	{
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, multisample > 0 ? 1 : 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, multisample);
+	}
+	
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+	if (!draw_context) { // scale back multisampling
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+	}
 	if (!draw_context) { // scale back SDL_GL_DEPTH_SIZE
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
@@ -310,6 +338,13 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	if (SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depthbits) == -1)
 		depthbits = 0;
 
+// read obtained multisample samples
+	if (sdl_has_multisample)
+	{
+		if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == -1)
+			multisample = 0;
+	}
+
 	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
 	CDAudio_Resume ();
@@ -319,11 +354,12 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
-	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer) initialized\n",
+	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer, %dx multisampling) initialized\n",
 				draw_context->w,
 				draw_context->h,
 				draw_context->format->BitsPerPixel,
-				depthbits);
+				depthbits,
+				multisample);
 
 	vid.recalc_refdef = 1;
 
@@ -350,7 +386,7 @@ VID_Restart -- johnfitz -- change video modes on the fly
 */
 static void VID_Restart (void)
 {
-	int width, height, bpp;
+	int width, height, bpp, multisample;
 	qboolean fullscreen;
 
 	if (vid_locked || !vid_changed)
@@ -360,6 +396,7 @@ static void VID_Restart (void)
 	height = (int)vid_height.value;
 	bpp = (int)vid_bpp.value;
 	fullscreen = vid_fullscreen.value ? true : false;
+	multisample = (int)vid_multisample.value;
 
 //
 // validate new mode
@@ -374,7 +411,7 @@ static void VID_Restart (void)
 //
 // set new mode
 //
-	VID_SetMode (width, height, bpp, fullscreen);
+	VID_SetMode (width, height, bpp, multisample, fullscreen);
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
@@ -411,7 +448,7 @@ VID_Test -- johnfitz -- like vid_restart, but asks for confirmation after switch
 */
 static void VID_Test (void)
 {
-	int old_width, old_height, old_bpp, old_fullscreen;
+	int old_width, old_height, old_bpp, old_multisample, old_fullscreen;
 
 	if (vid_locked || !vid_changed)
 		return;
@@ -421,6 +458,9 @@ static void VID_Test (void)
 	old_width = draw_context->w;
 	old_height = draw_context->h;
 	old_bpp = draw_context->format->BitsPerPixel;
+	old_multisample = 0;
+	if (sdl_has_multisample)
+		SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &old_multisample);
 	old_fullscreen = draw_context->flags & SDL_FULLSCREEN ? true : false;
 
 	VID_Restart ();
@@ -432,6 +472,7 @@ static void VID_Test (void)
 		Cvar_SetValueQuick (&vid_width, old_width);
 		Cvar_SetValueQuick (&vid_height, old_height);
 		Cvar_SetValueQuick (&vid_bpp, old_bpp);
+		Cvar_SetValueQuick (&vid_multisample, old_multisample);
 		Cvar_SetQuick (&vid_fullscreen, old_fullscreen ? "1" : "0");
 		VID_Restart ();
 	}
@@ -935,13 +976,15 @@ void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
-	int		width, height, bpp;
+	const SDL_version	*sdl_version;
+	int		width, height, bpp, multisample;
 	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
 					 "vid_height",
 					 "vid_bpp",
-					 "vid_vsync" };
+					 "vid_vsync",
+					 "vid_multisample" };
 #define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
 	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
@@ -949,17 +992,24 @@ void	VID_Init (void)
 	Cvar_RegisterVariable (&vid_height); //johnfitz
 	Cvar_RegisterVariable (&vid_bpp); //johnfitz
 	Cvar_RegisterVariable (&vid_vsync); //johnfitz
+	Cvar_RegisterVariable (&vid_multisample); //QuakeSpasm
 	Cvar_SetCallback (&vid_fullscreen, VID_Changed_f);
 	Cvar_SetCallback (&vid_width, VID_Changed_f);
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
 	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
+	Cvar_SetCallback (&vid_multisample, VID_Changed_f);
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
 	Cmd_AddCommand ("vid_test", VID_Test); //johnfitz
 	Cmd_AddCommand ("vid_describecurrentmode", VID_DescribeCurrentMode_f);
 	Cmd_AddCommand ("vid_describemodes", VID_DescribeModes_f);
+
+	// see if the SDL version we linked to is multisampling-capable
+	sdl_version = SDL_Linked_Version();
+	if (SDL_VERSIONNUM(sdl_version->major,sdl_version->minor,sdl_version->patch) >= SDL_VER_WITH_MULTISAMPLING)
+		sdl_has_multisample = true;
 
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
@@ -982,7 +1032,8 @@ void	VID_Init (void)
 	height = (int)vid_height.value;
 	bpp = (int)vid_bpp.value;
 	fullscreen = (int)vid_fullscreen.value;
-
+	multisample = (int)vid_multisample.value;
+	
 	if (COM_CheckParm("-current"))
 	{
 		width = info->current_w;
@@ -1021,6 +1072,14 @@ void	VID_Init (void)
 		else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
 			fullscreen = true;
 	}
+	
+	{
+		int p;
+		
+		p = COM_CheckParm ("-fsaa");
+		if (p && p < com_argc-1)
+			multisample = atoi(com_argv[p+1]);
+	}
 
 	if (!VID_ValidMode(width, height, bpp, fullscreen))
 	{
@@ -1048,7 +1107,7 @@ void	VID_Init (void)
 	// set window icon
 	PL_SetWindowIcon();
 
-	VID_SetMode (width, height, bpp, fullscreen);
+	VID_SetMode (width, height, bpp, multisample, fullscreen);
 
 	GL_Init ();
 	GL_SetupState ();
@@ -1111,7 +1170,7 @@ VID_SyncCvars -- johnfitz -- set vid cvars to match current video mode
 */
 void VID_SyncCvars (void)
 {
-	int swap_control;
+	int swap_control, multisample;
 
 	if (draw_context)
 	{
@@ -1122,6 +1181,9 @@ void VID_SyncCvars (void)
 
 		if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
 			Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
+			
+		if (sdl_has_multisample && SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &multisample) == 0)
+			Cvar_SetValueQuick (&vid_multisample, multisample);
 	}
 
 	vid_changed = false;
@@ -1138,6 +1200,7 @@ enum {
 	VID_OPT_BPP,
 	VID_OPT_FULLSCREEN,
 	VID_OPT_VSYNC,
+	VID_OPT_MULTISAMPLE,
 	VID_OPT_TEST,
 	VID_OPT_APPLY,
 	VIDEO_OPTIONS_ITEMS
@@ -1316,6 +1379,42 @@ static void VID_Menu_ChooseNextBpp (int dir)
 	}
 }
 
+static int vid_menu_multisamples[] = {0, 8, 4, 2};
+static int vid_menu_nummultisamples = sizeof(vid_menu_multisamples) / sizeof(int);
+
+/*
+================
+VID_Menu_ChooseNextMultisample
+
+chooses next antialiasing level in order, then updates the vid_samples cvar
+================
+*/
+static void VID_Menu_ChooseNextMultisample (int dir)
+{
+	int i;
+	
+	for (i = 0; i < vid_menu_nummultisamples; i++)
+	{
+		if (vid_menu_multisamples[i] == vid_multisample.value)
+			break;
+	}
+	
+	if (i == vid_menu_nummultisamples) //can't find it in list
+	{
+		i = 0;
+	}
+	else
+	{
+		i += dir;
+		if (i >= vid_menu_nummultisamples)
+			i = 0;
+		else if (i < 0)
+			i = vid_menu_nummultisamples-1;
+	}
+	
+	Cvar_SetValueQuick (&vid_multisample, (float)vid_menu_multisamples[i]);
+}
+
 /*
 ================
 VID_MenuKey
@@ -1355,6 +1454,9 @@ static void VID_MenuKey (int key)
 		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (1);
 			break;
+		case VID_OPT_MULTISAMPLE:
+			VID_Menu_ChooseNextMultisample (1);
+			break;
 		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
@@ -1376,6 +1478,9 @@ static void VID_MenuKey (int key)
 		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (-1);
 			break;
+		case VID_OPT_MULTISAMPLE:
+			VID_Menu_ChooseNextMultisample (-1);
+			break;
 		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
 			break;
@@ -1396,6 +1501,9 @@ static void VID_MenuKey (int key)
 			break;
 		case VID_OPT_BPP:
 			VID_Menu_ChooseNextBpp (1);
+			break;
+		case VID_OPT_MULTISAMPLE:
+			VID_Menu_ChooseNextMultisample (1);
 			break;
 		case VID_OPT_FULLSCREEN:
 			Cbuf_AddText ("toggle vid_fullscreen\n");
@@ -1463,6 +1571,10 @@ static void VID_MenuDraw (void)
 		case VID_OPT_BPP:
 			M_Print (16, y, "       Color depth");
 			M_Print (184, y, va("%i", (int)vid_bpp.value));
+			break;
+		case VID_OPT_MULTISAMPLE:
+			M_Print (16, y, "      Antialiasing");
+			M_Print (184, y, va("%ix", (int)vid_multisample.value));
 			break;
 		case VID_OPT_FULLSCREEN:
 			M_Print (16, y, "        Fullscreen");
