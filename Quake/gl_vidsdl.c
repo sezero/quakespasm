@@ -95,6 +95,7 @@ static cvar_t	vid_width = {"vid_width", "800", CVAR_ARCHIVE};		// QuakeSpasm, wa
 static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, was 480
 static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
 static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
+static cvar_t	vid_fsaa = {"vid_fsaa", "0", CVAR_ARCHIVE}; // QuakeSpasm
 //johnfitz
 
 cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
@@ -118,6 +119,7 @@ static unsigned short vid_sysgamma_blue[256];
 #endif
 
 static qboolean	gammaworks = false;	// whether hw-gamma works
+static int fsaa;
 
 /*
 ================
@@ -261,7 +263,8 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	Uint32	flags = DEFAULT_SDL_FLAGS;
 	char		caption[50];
 	int		depthbits;
-
+	int		fsaa_obtained;
+	
 	if (fullscreen)
 		flags |= SDL_FULLSCREEN;
 
@@ -289,7 +292,18 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	else	depthbits = 24;
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthbits);
 
+	//
+	// fsaa
+	//
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, fsaa > 0 ? 1 : 0);
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fsaa);
+
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+	if (!draw_context) { // scale back fsaa
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+	}
 	if (!draw_context) { // scale back SDL_GL_DEPTH_SIZE
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
@@ -310,6 +324,10 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	if (SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depthbits) == -1)
 		depthbits = 0;
 
+// read obtained fsaa samples
+	if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &fsaa_obtained) == -1)
+		fsaa_obtained = 0;
+
 	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
 
 	CDAudio_Resume ();
@@ -319,11 +337,12 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 // fix the leftover Alt from any Alt-Tab or the like that switched us away
 	ClearAllStates ();
 
-	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer) initialized\n",
+	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer, %dx FSAA) initialized\n",
 				draw_context->w,
 				draw_context->h,
 				draw_context->format->BitsPerPixel,
-				depthbits);
+				depthbits,
+				fsaa_obtained);
 
 	vid.recalc_refdef = 1;
 
@@ -860,6 +879,16 @@ static void VID_DescribeModes_f (void)
 	Con_Printf ("\n%i modes\n", count);
 }
 
+/*
+===================
+VID_FSAA_f -- ericw -- warn that vid_fsaa requires engine restart
+===================
+*/
+static void VID_FSAA_f (cvar_t *var)
+{
+	Con_Printf("%s %d requires engine restart to take effect", var->name, (int)var->value);
+}
+
 //==========================================================================
 //
 //  INIT
@@ -935,13 +964,14 @@ void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
 	const SDL_VideoInfo *info;
-	int		width, height, bpp;
+	int		p, width, height, bpp;
 	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
 					 "vid_height",
 					 "vid_bpp",
-					 "vid_vsync" };
+					 "vid_vsync",
+					 "vid_fsaa" };
 #define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
 	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
@@ -949,11 +979,13 @@ void	VID_Init (void)
 	Cvar_RegisterVariable (&vid_height); //johnfitz
 	Cvar_RegisterVariable (&vid_bpp); //johnfitz
 	Cvar_RegisterVariable (&vid_vsync); //johnfitz
+	Cvar_RegisterVariable (&vid_fsaa); //QuakeSpasm
 	Cvar_SetCallback (&vid_fullscreen, VID_Changed_f);
 	Cvar_SetCallback (&vid_width, VID_Changed_f);
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
 	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
+	Cvar_SetCallback (&vid_fsaa, VID_FSAA_f);
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
@@ -982,6 +1014,7 @@ void	VID_Init (void)
 	height = (int)vid_height.value;
 	bpp = (int)vid_bpp.value;
 	fullscreen = (int)vid_fullscreen.value;
+	fsaa = (int)vid_fsaa.value;
 
 	if (COM_CheckParm("-current"))
 	{
@@ -992,8 +1025,6 @@ void	VID_Init (void)
 	}
 	else
 	{
-		int p;
-
 		p = COM_CheckParm("-width");
 		if (p && p < com_argc-1)
 		{
@@ -1021,6 +1052,10 @@ void	VID_Init (void)
 		else if (COM_CheckParm("-fullscreen") || COM_CheckParm("-f"))
 			fullscreen = true;
 	}
+
+	p = COM_CheckParm ("-fsaa");
+	if (p && p < com_argc-1)
+		fsaa = atoi(com_argv[p+1]);
 
 	if (!VID_ValidMode(width, height, bpp, fullscreen))
 	{
