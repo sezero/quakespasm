@@ -467,6 +467,41 @@ void R_DrawSequentialPoly (msurface_t *s)
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 		glColor3f(1, 1, 1);
 	}
+	
+fullbrights:
+	return; // ericw - optimization: moved to a separate pass through the polys
+			// so we're not constantly thrashing the texture bound in TEXTURE0
+}
+
+/*
+================
+R_DrawSequentialPoly_Fullbrights -- ericw - moved from R_DrawSequentialPoly
+================
+*/
+void R_DrawSequentialPoly_Fullbrights (msurface_t *s)
+{
+	texture_t	*t;
+	float		entalpha;
+
+	t = R_TextureAnimation (s->texinfo->texture, currententity->frame);
+	entalpha = ENTALPHA_DECODE(currententity->alpha);
+
+// drawflat
+	if (r_drawflat_cheatsafe)
+		return;
+
+// fullbright
+	if ((r_fullbright_cheatsafe) && !(s->flags & SURF_DRAWTILED))
+		goto fullbrights;
+
+// other cases
+	if (r_lightmap_cheatsafe
+		|| s->flags & SURF_DRAWSKY
+		|| s->flags & SURF_DRAWTURB
+		|| s->flags & SURF_NOTEXTURE)
+		return;
+
+// lightmapped poly
 
 fullbrights:
 	if (gl_fullbrights.value && t->fullbright)
@@ -570,6 +605,20 @@ void R_DrawBrushModel (entity_t *e)
 		{
 			R_DrawSequentialPoly (psurf);
 			rs_brushpolys++;
+		}
+	}
+
+// ericw -- second pass to draw the fullbrights
+
+	psurf = &clmodel->surfaces[clmodel->firstmodelsurface];
+	for (i=0 ; i<clmodel->nummodelsurfaces ; i++, psurf++)
+	{
+		pplane = psurf->plane;
+		dot = DotProduct (modelorg, pplane->normal) - pplane->dist;
+		if (((psurf->flags & SURF_PLANEBACK) && (dot < -BACKFACE_EPSILON)) ||
+			(!(psurf->flags & SURF_PLANEBACK) && (dot > BACKFACE_EPSILON)))
+		{
+			R_DrawSequentialPoly_Fullbrights (psurf);
 		}
 	}
 
