@@ -145,14 +145,14 @@ void Cvar_Cycle_f (void)
 		//zero is assumed to be a string, even though it could actually be zero.  The worst case
 		//is that the first time you call this command, it won't match on zero when it should, but after that,
 		//it will be comparing strings that all had the same source (the user) so it will work.
-		if (atof(Cmd_Argv(i)) == 0)
+		if (Q_atof(Cmd_Argv(i)) == 0)
 		{
 			if (!strcmp(Cmd_Argv(i), Cvar_VariableString(Cmd_Argv(1))))
 				break;
 		}
 		else
 		{
-			if (atof(Cmd_Argv(i)) == Cvar_VariableValue(Cmd_Argv(1)))
+			if (Q_atof(Cmd_Argv(i)) == Cvar_VariableValue(Cmd_Argv(1)))
 				break;
 		}
 	}
