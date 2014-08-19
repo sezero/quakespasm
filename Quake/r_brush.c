@@ -181,9 +181,17 @@ void R_DrawSequentialPoly (msurface_t *s)
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 			glColor4f(1, 1, 1, entalpha);
 		}
+		
+		if (s->flags & SURF_DRAWFENCE)
+			glEnable (GL_ALPHA_TEST); // Flip on alpha test
+			
 		GL_Bind (t->gltexture);
 		DrawGLPoly (s->polys);
 		rs_brushpasses++;
+		
+		if (s->flags & SURF_DRAWFENCE)
+			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
+				
 		if (entalpha < 1)
 		{
 			glDepthMask(GL_TRUE);
@@ -307,6 +315,10 @@ void R_DrawSequentialPoly (msurface_t *s)
 	}
 	else
 		glColor3f(1, 1, 1);
+		
+	if (s->flags & SURF_DRAWFENCE)
+		glEnable (GL_ALPHA_TEST); // Flip on alpha test
+		
 	if (gl_overbright.value)
 	{
 		if (gl_texture_env_combine && gl_mtexable) //case 1: texture and lightmap in one pass, overbright using texture combiners
@@ -336,7 +348,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 			GL_DisableMultitexture ();
 			rs_brushpasses++;
 		}
-		else if (entalpha < 1) //case 2: can't do multipass if entity has alpha, so just draw the texture
+		else if (entalpha < 1 || (s->flags & SURF_DRAWFENCE)) //case 2: can't do multipass if entity has alpha, so just draw the texture
 		{
 			GL_Bind (t->gltexture);
 			DrawGLPoly (s->polys);
@@ -409,7 +421,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 			GL_DisableMultitexture ();
 			rs_brushpasses++;
 		}
-		else if (entalpha < 1) //case 5: can't do multipass if entity has alpha, so just draw the texture
+		else if (entalpha < 1 || (s->flags & SURF_DRAWFENCE)) //case 5: can't do multipass if entity has alpha, so just draw the texture
 		{
 			GL_Bind (t->gltexture);
 			DrawGLPoly (s->polys);
@@ -467,6 +479,9 @@ void R_DrawSequentialPoly (msurface_t *s)
 		glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 		glColor3f(1, 1, 1);
 	}
+	
+	if (s->flags & SURF_DRAWFENCE)
+		glDisable (GL_ALPHA_TEST); // Flip alpha test back off
 	
 fullbrights:
 	return; // ericw - optimization: moved to a separate pass through the polys

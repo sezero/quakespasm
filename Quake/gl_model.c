@@ -491,6 +491,14 @@ void Mod_LoadTextures (lump_t *l)
 			}
 			else //regular texture
 			{
+				// ericw -- fence textures
+				int	extraflags;
+				
+				extraflags = 0;
+				if (tx->name[0] == '{')
+					extraflags |= TEXPREF_ALPHA;
+				// ericw
+
 				//external textures -- first look in "textures/mapname/" then look in "textures/"
 				mark = Hunk_LowMark ();
 				COM_StripExtension (loadmodel->name + 5, mapname, sizeof(mapname));
@@ -506,7 +514,7 @@ void Mod_LoadTextures (lump_t *l)
 				if (data) //load external image
 				{
 					tx->gltexture = TexMgr_LoadImage (loadmodel, filename, fwidth, fheight,
-						SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP);
+						SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP | extraflags );
 
 					//now try to load glow/luma image from the same place
 					Hunk_FreeToLowMark (mark);
@@ -518,7 +526,7 @@ void Mod_LoadTextures (lump_t *l)
 
 					if (data)
 						tx->fullbright = TexMgr_LoadImage (loadmodel, filename2, fwidth, fheight,
-							SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP );
+							SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP | extraflags );
 				}
 				else //use the texture from the bsp file
 				{
@@ -527,15 +535,15 @@ void Mod_LoadTextures (lump_t *l)
 					if (Mod_CheckFullbrights ((byte *)(tx+1), pixels))
 					{
 						tx->gltexture = TexMgr_LoadImage (loadmodel, texturename, tx->width, tx->height,
-							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP | TEXPREF_NOBRIGHT);
+							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP | TEXPREF_NOBRIGHT | extraflags);
 						q_snprintf (texturename, sizeof(texturename), "%s:%s_glow", loadmodel->name, tx->name);
 						tx->fullbright = TexMgr_LoadImage (loadmodel, texturename, tx->width, tx->height,
-							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP | TEXPREF_FULLBRIGHT);
+							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP | TEXPREF_FULLBRIGHT | extraflags);
 					}
 					else
 					{
 						tx->gltexture = TexMgr_LoadImage (loadmodel, texturename, tx->width, tx->height,
-							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP);
+							SRC_INDEXED, (byte *)(tx+1), loadmodel->name, offset, TEXPREF_MIPMAP | extraflags);
 					}
 				}
 				Hunk_FreeToLowMark (mark);
@@ -1177,6 +1185,10 @@ void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 			out->flags |= (SURF_DRAWTURB | SURF_DRAWTILED);
 			Mod_PolyForUnlitSurface (out);
 			GL_SubdivideSurface (out);
+		}
+		else if (out->texinfo->texture->name[0] == '{') // ericw -- fence textures
+		{
+			out->flags |= SURF_DRAWFENCE;
 		}
 		else if (out->texinfo->flags & TEX_MISSING) // texture is missing from bsp
 		{

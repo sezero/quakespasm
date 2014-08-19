@@ -39,7 +39,9 @@ gltexture_t		*notexture, *nulltexture;
 
 unsigned int d_8to24table[256];
 unsigned int d_8to24table_fbright[256];
+unsigned int d_8to24table_fbright_fence[256];
 unsigned int d_8to24table_nobright[256];
+unsigned int d_8to24table_nobright_fence[256];
 unsigned int d_8to24table_conchars[256];
 unsigned int d_8to24table_shirt[256];
 unsigned int d_8to24table_pants[256];
@@ -490,6 +492,14 @@ void TexMgr_LoadPalette (void)
 		dst[3] = 255;
 		dst[2] = dst[1] = dst[0] = 0;
 	}
+
+	//fullbright palette, for fence textures
+	memcpy(d_8to24table_fbright_fence, d_8to24table_fbright, 256*4);
+	d_8to24table_fbright_fence[255] = 0; // Alpha of zero.
+
+	//nobright palette, for fence textures
+	memcpy(d_8to24table_nobright_fence, d_8to24table_nobright, 256*4);
+	d_8to24table_nobright_fence[255] = 0; // Alpha of zero.
 
 	//conchars palette, 0 and 255 are transparent
 	memcpy(d_8to24table_conchars, d_8to24table, 256*4);
@@ -1072,12 +1082,19 @@ static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	// choose palette and padbyte
 	if (glt->flags & TEXPREF_FULLBRIGHT)
 	{
-		usepal = d_8to24table_fbright;
+		if (glt->flags & TEXPREF_ALPHA)
+			usepal = d_8to24table_fbright_fence;
+		else
+			usepal = d_8to24table_fbright;
 		padbyte = 0;
 	}
 	else if (glt->flags & TEXPREF_NOBRIGHT && gl_fullbrights.value)
 	{
-		usepal = d_8to24table_nobright;
+		if (glt->flags & TEXPREF_ALPHA)
+			usepal = d_8to24table_nobright_fence;
+		else
+			usepal = d_8to24table_nobright;
+
 		padbyte = 0;
 	}
 	else if (glt->flags & TEXPREF_CONCHARS)
