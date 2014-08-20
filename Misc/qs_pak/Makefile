@@ -9,3 +9,4 @@ $(OUTPUT): $(INPUT)
 .PHONY: clean
 clean:
 	rm -f $(OUTPUT)
+
