@@ -38,7 +38,6 @@
 
   Page last edited July 30, 2014
 
-
   1.  About
 
   QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
@@ -47,11 +46,13 @@
 
   <http://quakespasm.sourceforge.net>
 
-
   2.  Downloads
 
-  o  <http://quakespasm.sourceforge.net/download.htm>
 
+  o  Project Download Page
+     <http://quakespasm.sourceforge.net/download.htm>
+
+  o  Automatic Builds <http://quakespasm.ericwa.com/job/quakespasm/>
 
   3.  Hints
 
@@ -63,6 +64,7 @@
 
   o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
      ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
+
   o  Shift+Escape draws the Console.
 
   o  From the console, use UP to browse the command line history and TAB
@@ -95,7 +97,6 @@
 
   o  See  <README.music> for more details.
 
-
   4.  Compiling
 
   To check-out the latest version of QuakeSpasm, use :
@@ -125,11 +126,11 @@
 
   The project can also be built with Codeblocks (project files
   included).
-
   4.2.  Windows
 
   The QuakeSpasm developers cross-compile windows binaries using MinGW
   <http://www.mingw.org> and Mingw-w64 <http://mingw-w64.sf.net>.
+
   The project can also be built using Visual Studio 2005 (or newer).
 
   4.3.  Mac OS X
@@ -139,7 +140,6 @@
 
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
-
 
   5.  Known Bugs
 
@@ -158,10 +158,10 @@
   OS X has a well known gamma issue where the screen turns dark, but we
   currently have no fix.
 
-
   6.  Changes
 
   6.1.  Changes in 0.85.10
+
 
   o  Support for opengl non-power-of-two-textures extension.
 
@@ -191,6 +191,7 @@
   o  Fix broken behavior upon gamedir changes if -basedir is specified
      on the command line.
 
+
   o  NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
 
   o  Host_Error upon missing models. (Prevents segmentation faults.)
@@ -200,8 +201,8 @@
 
   o  Other fixes and clean-ups.
 
-
   6.2.  Changes in 0.85.9
+
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -229,6 +230,7 @@
 
   o  Support for demo recording after connection to server. (thanks to
      Baker for a patch)
+
   o  Corner case fixes in COM_Parse() for quoted strings and support for
      C-style /*..*/ comments.
 
@@ -246,14 +248,15 @@
 
   o  Several other minor fixes/cleanups.
 
-
   6.3.  Changes in 0.85.8
+
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
 
   o  Fixed control-character handling in unicode mode. Keyboard input
      tweaks.
+
 
   o  Made the keypad keys to send separate key events in game mode.
 
@@ -293,8 +296,8 @@
 
   o  Miscellaneous source code cleanups.
 
-
   6.4.  Changes in 0.85.7
+
 
   o  Added support for cross-level demo playback
 
@@ -322,6 +325,7 @@
 
   6.5.  Changes in 0.85.6
 
+
   o  More work for string buffer safety
 
   o  Reverted v0.85.5 change of not allowing deathmatch and coop cvars
@@ -332,8 +336,8 @@
 
   o  Minor SDL video fixes.
 
-
   6.6.  Changes in 0.85.5
+
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -363,8 +367,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-
   6.7.  Changes in 0.85.4
+
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -391,8 +395,8 @@
 
   o  Other minor sound and cdaudio updates
 
-
   6.8.  Changes in 0.85.3
+
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -428,8 +432,8 @@
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
 
-
   6.9.  Changes in 0.85.2
+
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -451,13 +455,12 @@
   o  Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an
      old fitzquake-0.85 bug which used to cause segfaults depending on
      the compiler.
-
   o  Accept commandline options like "+connect ip:port"
 
   o  Add OSX Makefile (tested?)
 
-
   6.10.  Changes in 0.85.1
+
 
   o  64 bit CPU support
 
@@ -494,8 +497,8 @@
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
-
   7.  Todo
+
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -506,8 +509,8 @@
 
   o  Complete the unix user directories support
 
-
   8.  Copyright
+
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
@@ -518,6 +521,7 @@
 
 
   9.  Links
+
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
@@ -545,4 +549,5 @@
   o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
 
   o  Sander's email <mailto:gmail - dot - com - username - a.h.vandijk>
+
 

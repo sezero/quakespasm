@@ -17,7 +17,8 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <sect> Downloads <p>
 
 <itemize>
-<item><url url="http://quakespasm.sourceforge.net/download.htm">
+<item><url url="http://quakespasm.sourceforge.net/download.htm" name="Project Download Page">
+<item><url url="http://quakespasm.ericwa.com/job/quakespasm/" name="Automatic Builds">
 </itemize>
 
 
