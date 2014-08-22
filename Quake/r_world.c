@@ -368,6 +368,10 @@ void R_DrawTextureChains_Multitexture (void)
 				if (!bound) //only bind once we are sure we need this texture
 				{
 					GL_Bind ((R_TextureAnimation(t,0))->gltexture);
+					
+					if (t->texturechain->flags & SURF_DRAWFENCE)
+						glEnable (GL_ALPHA_TEST); // Flip alpha test back on
+					
 					GL_EnableMultitexture(); // selects TEXTURE1
 					bound = true;
 				}
@@ -385,6 +389,9 @@ void R_DrawTextureChains_Multitexture (void)
 				rs_brushpasses++;
 			}
 		GL_DisableMultitexture(); // selects TEXTURE0
+		
+		if (bound && t->texturechain->flags & SURF_DRAWFENCE)
+			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
 	}
 }
 
@@ -452,12 +459,19 @@ void R_DrawTextureChains_TextureOnly (void)
 				if (!bound) //only bind once we are sure we need this texture
 				{
 					GL_Bind ((R_TextureAnimation(t,0))->gltexture);
+					
+					if (t->texturechain->flags & SURF_DRAWFENCE)
+						glEnable (GL_ALPHA_TEST); // Flip alpha test back on
+					
 					bound = true;
 				}
 				R_RenderDynamicLightmaps (s); //adds to lightmap chain
 				DrawGLPoly (s->polys);
 				rs_brushpasses++;
 			}
+			
+		if (bound && t->texturechain->flags & SURF_DRAWFENCE)
+			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
 	}
 }
 
