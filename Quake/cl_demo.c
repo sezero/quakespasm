@@ -92,13 +92,6 @@ static int CL_GetDemoMessage (void)
 	// decide if it is time to grab the next message
 	if (cls.signon == SIGNONS)	// always grab until fully connected
 	{
-		// Wait for full frame update on stufftext messages:
-		// If the server stuffs a "reconnect", failing to wait
-		// for the client to re-initialize before accepting
-		// further messages freezes demo playback.  -- Pa3PyX
-		if (host_framecount == cls.stufftext_frame)
-			return 0;
-
 		if (cls.timedemo)
 		{
 			if (host_framecount == cls.td_lastframe)
@@ -446,10 +439,6 @@ void CL_PlayDemo_f (void)
 
 // get rid of the menu and/or console
 	key_dest = key_game;
-
-// Get a new message on playback start.
-// Moved from CL_TimeDemo_f to here, Pa3PyX.
-	cls.td_lastframe = -1;
 }
 
 /*
@@ -500,7 +489,6 @@ void CL_TimeDemo_f (void)
 
 	cls.timedemo = true;
 	cls.td_startframe = host_framecount;
-//	cls.td_lastframe = -1;	// get a new message this frame
-				// Moved to CL_PlayDemo_f(), Pa3PyX.
+	cls.td_lastframe = -1;
 }
 

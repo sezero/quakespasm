@@ -120,7 +120,6 @@ typedef struct
 	FILE		*demofile;
 	int		td_lastframe;		// to meter out one message a frame
 	int		td_startframe;		// host_framecount at start
-	int		stufftext_frame;	// host_framecount when svc_stufftext is received
 	float		td_starttime;		// realtime at second frame of timedemo
 
 // connection information

@@ -999,18 +999,7 @@ void CL_ParseServerMessage (void)
 			break;
 
 		case svc_stufftext:
-			str = MSG_ReadString ();
-			// ericw -- hack - only wait for the full frame update if the stufftext
-			// contains "reconnect". some mods, e.g. honey, send stufftext every frame;
-			// if we were to set cls.stufftext_frame every frame, that would break
-			// the playback rate control (causing demos to play back in slow-motion
-			// if the client can't keep up)
-			if (strstr (str, "reconnect") != NULL)
-			{
-				cls.stufftext_frame = host_framecount;	// allow full frame update
-									// in demo playback -- Pa3PyX
-			}
-			Cbuf_AddText (str);
+			Cbuf_AddText (MSG_ReadString ());
 			break;
 
 		case svc_damage:
