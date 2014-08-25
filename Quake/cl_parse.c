@@ -261,6 +261,12 @@ void CL_ParseServerInfo (void)
 	char	sound_precache[MAX_SOUNDS][MAX_QPATH];
 
 	Con_DPrintf ("Serverinfo packet received.\n");
+
+// ericw -- bring up loading plaque for map changes within a demo.
+//          it will be hidden in CL_SignonReply.
+	if (cls.demoplayback)
+		SCR_BeginLoadingPlaque();
+
 //
 // wipe the client_state_t struct
 //
