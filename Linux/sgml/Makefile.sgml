@@ -3,4 +3,4 @@ default:	README.sgml
 	sgml2html -s 0 -T 2 README.sgml 2>/dev/null
 all:	default text
 text txt:	README.sgml
-	sgml2rawtxt README
+	./sgml2rawtxt README

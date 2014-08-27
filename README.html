@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited July 30, 2014</EM></P>
+<P><EM>Page last edited Aug. 27, 2014</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="README.html#s1">About </A></H2>
@@ -78,7 +78,7 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <P>
 <UL>
 <LI>
-<A HREF="http://quakespasm.sourceforge.net/download.htm">Project Download Page</A></LI>
+<A HREF="http://quakespasm.sourceforge.net/download.htm">Project Downloads</A></LI>
 <LI>
 <A HREF="http://quakespasm.ericwa.com/job/quakespasm/">Automatic Builds</A></LI>
 </UL>
@@ -181,10 +181,14 @@ these patched libSDL binaries may help.
 <P>
 <UL>
 <LI> Support for opengl non-power-of-two-textures extension.</LI>
-<LI> Dynamic light speedup.</LI>
+<LI> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 2, 4 or 8).</LI>
+<LI> Fence texture support.</LI>
+<LI> Dynamic light speedup. Speedup loading of tga and pcx external images.</LI>
 <LI> Support for BSP2 and 2PSB map formats.</LI>
 <LI> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).</LI>
+<LI> Sfx low-pass filter support.  The -sndspeed command-line option now control whether the low-pass filter is applied: if set to 11025 you get the lowpass filter, otherwise not used.  New -mixspeed command-line option, defaulting to 44100, to control the sample rate.  New snd_filterquality cvar, value can be 1-5, the 5 setting closely matches the Windows resampler and the 1 setting closely matches the OS X resampler.</LI>
 <LI> Better Hor+ field of view (FOV) scaling behavior.</LI>
+<LI> Better cross-map demo playback support.</LI>
 <LI> Fix screenshots when screen width isn't a multiple of 4.</LI>
 <LI> Fix a lighting glitch due to floating point precision.</LI>
 <LI> Fix a looping sounds glitch.</LI>
@@ -193,7 +197,13 @@ these patched libSDL binaries may help.
 <LI> Reset all models upon gamedir changes. (Fixes failures with mods using custom content.)</LI>
 <LI> Fix broken behavior upon gamedir changes if -basedir is specified on the command line.</LI>
 <LI> NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.</LI>
+<LI> MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.</LI>
+<LI> MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing/flickering bmodels in some situations.</LI>
+<LI> Fix cvar cycle command not working sometimes.</LI>
 <LI> Host_Error upon missing models. (Prevents segmentation faults.)</LI>
+<LI> Change sv_aim default value to 1 (i.e. turn off autoaim)</LI>
+<LI> Add 'prev' and 'next' keywords to the 'cd' command.</LI>
+<LI> Work around a linux cdrom issue (playback might not start for a while after a stop).</LI>
 <LI> Quakespasm content customization moved from engine-embedded into a new optional quakespasm.pak file.</LI>
 <LI> Other fixes and clean-ups.</LI>
 </UL>
