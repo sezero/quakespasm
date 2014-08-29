@@ -443,6 +443,10 @@ void R_SetupView (void)
 		else if (r_lightmap.value) r_lightmap_cheatsafe = true;
 	}
 	//johnfitz
+	
+// mh dynamic lightmap speedup: upload all modified lightmaps from the last
+// frame in a single batch
+	R_UploadLightmaps ();
 }
 
 //==============================================================================
@@ -643,7 +647,7 @@ void R_ShowTris (void)
 
 	if (r_drawworld.value)
 	{
-		R_DrawTextureChains_ShowTris ();
+		R_DrawWorld_ShowTris ();
 	}
 
 	if (r_drawentities.value)
@@ -750,7 +754,7 @@ void R_RenderScene (void)
 
 	R_DrawEntitiesOnList (false); //johnfitz -- false means this is the pass for nonalpha entities
 
-	R_DrawTextureChains_Water (); //johnfitz -- drawn here since they might have transparency
+	R_DrawWorld_Water (); //johnfitz -- drawn here since they might have transparency
 
 	R_DrawEntitiesOnList (true); //johnfitz -- true means this is the pass for alpha entities
 

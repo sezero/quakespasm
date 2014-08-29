@@ -133,6 +133,7 @@ void DrawGLTriangleFan (glpoly_t *p)
 =============================================================
 */
 
+#if 0
 /*
 ================
 R_DrawSequentialPoly -- johnfitz -- rewritten
@@ -503,7 +504,7 @@ fullbrights:
 		rs_brushpasses++;
 	}
 }
-
+#endif
 /*
 =================
 R_DrawBrushModel
@@ -570,12 +571,7 @@ void R_DrawBrushModel (entity_t *e)
 	}
 	e->angles[0] = -e->angles[0];	// stupid quake bug
 
-	//
-	// draw it
-	//
-	if (r_drawflat_cheatsafe) //johnfitz
-		glDisable(GL_TEXTURE_2D);
-
+	R_ClearTextureChains (clmodel, chain_model);
 	for (i=0 ; i<clmodel->nummodelsurfaces ; i++, psurf++)
 	{
 		pplane = psurf->plane;
@@ -583,15 +579,13 @@ void R_DrawBrushModel (entity_t *e)
 		if (((psurf->flags & SURF_PLANEBACK) && (dot < -BACKFACE_EPSILON)) ||
 			(!(psurf->flags & SURF_PLANEBACK) && (dot > BACKFACE_EPSILON)))
 		{
-			R_DrawSequentialPoly (psurf);
+			R_ChainSurface (psurf, chain_model);
 			rs_brushpolys++;
 		}
 	}
 
-	if (r_drawflat_cheatsafe) //johnfitz
-		glEnable(GL_TEXTURE_2D);
-
-	GL_DisableMultitexture(); // selects TEXTURE0
+	R_DrawTextureChains (clmodel, e, chain_model);
+	R_DrawTextureChains_Water (clmodel, e, chain_model);
 
 	glPopMatrix ();
 }
