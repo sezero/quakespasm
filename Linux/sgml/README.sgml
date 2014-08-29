@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Aug. 27, 2014</em>
+<em>Page last edited Aug. 29, 2014</em>
 
 <sect> About <p>
 
@@ -106,9 +106,10 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <sect1> Changes in 0.85.10<p>
 <itemize>
 <item> Support for opengl non-power-of-two-textures extension.
-<item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 2, 4 or 8).
+<item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).
 <item> Fence texture support.
 <item> Dynamic light speedup. Speedup loading of tga and pcx external images.
+<item> Brush model drawing speedup.
 <item> Support for BSP2 and 2PSB map formats.
 <item> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).
 <item> Sfx low-pass filter support.  The -sndspeed command-line option now control whether the low-pass filter is applied: if set to 11025 you get the lowpass filter, otherwise not used.  New -mixspeed command-line option, defaulting to 44100, to control the sample rate.  New snd_filterquality cvar, value can be 1-5, the 5 setting closely matches the Windows resampler and the 1 setting closely matches the OS X resampler.

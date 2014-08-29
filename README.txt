@@ -36,7 +36,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Aug. 27, 2014
+  Page last edited Aug. 29, 2014
 
 
   1.  About
@@ -168,12 +168,14 @@
   o  Support for opengl non-power-of-two-textures extension.
 
   o  Antialiasing (FSAA) support (command line: -fsaa x, where x can be
-     2, 4 or 8).
+     0, 2, 4, 8).
 
   o  Fence texture support.
 
   o  Dynamic light speedup. Speedup loading of tga and pcx external
      images.
+
+  o  Brush model drawing speedup.
 
   o  Support for BSP2 and 2PSB map formats.
 
