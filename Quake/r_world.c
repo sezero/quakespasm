@@ -33,6 +33,39 @@ int vis_changed; //if true, force pvs to be refreshed
 
 //==============================================================================
 //
+// VERTEX ARRAY SUPPORT
+//
+//==============================================================================
+
+#define VERTEXBYTES (VERTEXSIZE * sizeof (float))
+
+// qbsp guarantees no more than 64 verts per surf
+#define MAX_VERTS_PER_SURF 64
+
+static float r_surfvertexarray[MAX_VERTS_PER_SURF * VERTEXSIZE];
+
+void R_VertexArrayMultitexturedSetup (void)
+{
+	glVertexPointer(3, GL_FLOAT, VERTEXBYTES, &r_surfvertexarray[0]);
+	glEnableClientState(GL_VERTEX_ARRAY);
+							
+	GL_ClientActiveTextureFunc(TEXTURE0);
+	glTexCoordPointer(2, GL_FLOAT, VERTEXBYTES, &r_surfvertexarray[3]);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	GL_ClientActiveTextureFunc(TEXTURE1);
+	glTexCoordPointer(2, GL_FLOAT, VERTEXBYTES, &r_surfvertexarray[5]);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+void R_VertexArrayMultitexturedDrawGLPoly (glpoly_t *p)
+{
+	memcpy(r_surfvertexarray, p->verts, p->numverts * VERTEXBYTES);
+	glDrawArrays(GL_POLYGON, 0, p->numverts);
+}
+
+//==============================================================================
+//
 // SETUP CHAINS
 //
 //==============================================================================
@@ -410,11 +443,12 @@ R_DrawTextureChains_Multitexture -- johnfitz
 */
 void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_t chain)
 {
-	int			i, j;
+	int			i;
 	msurface_t	*s;
 	texture_t	*t;
-	float		*v;
 	qboolean	bound;
+
+	R_VertexArrayMultitexturedSetup ();
 
 	for (i=0 ; i<model->numtextures ; i++)
 	{
@@ -439,15 +473,8 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 				}
 				R_RenderDynamicLightmaps (s);
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-				glBegin(GL_POLYGON);
-				v = s->polys->verts[0];
-				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
-				{
-					GL_MTexCoord2fFunc (TEXTURE0, v[3], v[4]);
-					GL_MTexCoord2fFunc (TEXTURE1, v[5], v[6]);
-					glVertex3fv (v);
-				}
-				glEnd ();
+				R_VertexArrayMultitexturedDrawGLPoly (s->polys);
+					
 				rs_brushpasses++;
 			}
 		GL_DisableMultitexture(); // selects TEXTURE0
