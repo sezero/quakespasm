@@ -872,7 +872,9 @@ VID_FSAA_f -- ericw -- warn that vid_fsaa requires engine restart
 */
 static void VID_FSAA_f (cvar_t *var)
 {
-	Con_Printf("%s %d requires engine restart to take effect", var->name, (int)var->value);
+	// don't print the warning if vid_fsaa is set during startup
+	if (vid_initialized)
+		Con_Printf("%s %d requires engine restart to take effect\n", var->name, (int)var->value);
 }
 
 //==========================================================================
