@@ -123,8 +123,8 @@ void GL_DrawAliasFrame (aliashdr_t *paliashdr, lerpdata_t lerpdata)
 			v = ((float *)commands)[1];
 			if (mtexenabled)
 			{
-				GL_MTexCoord2fFunc (TEXTURE0, u, v);
-				GL_MTexCoord2fFunc (TEXTURE1, u, v);
+				GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, u, v);
+				GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, u, v);
 			}
 			else
 				glTexCoord2f (u, v);
@@ -404,7 +404,7 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// transform it
 	//
-    glPushMatrix ();
+	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin, lerpdata.angles);
 	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
 	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);
@@ -675,7 +675,7 @@ void GL_DrawAliasShadow (entity_t *e)
 	lheight = currententity->origin[2] - lightspot[2];
 
 // set up matrix
-    glPushMatrix ();
+	glPushMatrix ();
 	glTranslatef (lerpdata.origin[0],  lerpdata.origin[1],  lerpdata.origin[2]);
 	glTranslatef (0,0,-lheight);
 	glMultMatrixf (shadowmatrix);
@@ -719,7 +719,7 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 	R_SetupAliasFrame (paliashdr, e->frame, &lerpdata);
 	R_SetupEntityTransform (e, &lerpdata);
 
-    glPushMatrix ();
+	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin,lerpdata.angles);
 	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
 	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);

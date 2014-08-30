@@ -339,8 +339,8 @@ void R_DrawSequentialPoly (msurface_t *s)
 			v = s->polys->verts[0];
 			for (i=0 ; i<s->polys->numverts ; i++, v+= VERTEXSIZE)
 			{
-				GL_MTexCoord2fFunc (TEXTURE0, v[3], v[4]);
-				GL_MTexCoord2fFunc (TEXTURE1, v[5], v[6]);
+				GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
+				GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
 				glVertex3fv (v);
 			}
 			glEnd ();
@@ -414,8 +414,8 @@ void R_DrawSequentialPoly (msurface_t *s)
 			v = s->polys->verts[0];
 			for (i=0 ; i<s->polys->numverts ; i++, v+= VERTEXSIZE)
 			{
-				GL_MTexCoord2fFunc (TEXTURE0, v[3], v[4]);
-				GL_MTexCoord2fFunc (TEXTURE1, v[5], v[6]);
+				GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
+				GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
 				glVertex3fv (v);
 			}
 			glEnd ();

@@ -800,9 +800,9 @@ void Sky_DrawFaceQuad (glpoly_t *p)
 		for (i=0, v=p->verts[0] ; i<4 ; i++, v+=VERTEXSIZE)
 		{
 			Sky_GetTexCoord (v, 8, &s, &t);
-			GL_MTexCoord2fFunc (TEXTURE0, s, t);
+			GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, s, t);
 			Sky_GetTexCoord (v, 16, &s, &t);
-			GL_MTexCoord2fFunc (TEXTURE1, s, t);
+			GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, s, t);
 			glVertex3fv (v);
 		}
 		glEnd ();

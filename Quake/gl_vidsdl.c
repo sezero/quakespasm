@@ -552,7 +552,6 @@ static void GL_CheckExtensions (void)
 {
 	int swap_control;
 
-	//
 	// multitexture
 	//
 	if (COM_CheckParm("-nomtex"))
@@ -564,24 +563,6 @@ static void GL_CheckExtensions (void)
 		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
 		{
 			Con_Printf("FOUND: ARB_multitexture\n");
-			TEXTURE0 = GL_TEXTURE0_ARB;
-			TEXTURE1 = GL_TEXTURE1_ARB;
-			gl_mtexable = true;
-		}
-		else
-		{
-			Con_Warning ("Couldn't link to multitexture functions\n");
-		}
-	}
-	else if (GL_ParseExtensionList(gl_extensions, "GL_SGIS_multitexture"))
-	{
-		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
-		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glSelectTextureSGIS");
-		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
-		{
-			Con_Printf("FOUND: SGIS_multitexture\n");
-			TEXTURE0 = TEXTURE0_SGIS;
-			TEXTURE1 = TEXTURE1_SGIS;
 			gl_mtexable = true;
 		}
 		else
@@ -594,7 +575,6 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("multitexture not supported (extension not found)\n");
 	}
 
-	//
 	// texture_env_combine
 	//
 	if (COM_CheckParm("-nocombine"))
@@ -614,7 +594,6 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("texture_env_combine not supported\n");
 	}
 
-	//
 	// texture_env_add
 	//
 	if (COM_CheckParm("-noadd"))
@@ -634,7 +613,6 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("texture_env_add not supported\n");
 	}
 
-	//
 	// swap control (the "after SDL_SetVideoMode" part)
 	//
 	if (!gl_swap_control)
@@ -656,7 +634,6 @@ static void GL_CheckExtensions (void)
 		Con_Printf("FOUND: SDL_GL_SWAP_CONTROL\n");
 	}
 
-	//
 	// anisotropic filtering
 	//
 	if (GL_ParseExtensionList(gl_extensions, "GL_EXT_texture_filter_anisotropic"))
@@ -699,7 +676,6 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("texture_filter_anisotropic not supported\n");
 	}
 
-	//
 	// texture_non_power_of_two
 	//
 	if (COM_CheckParm("-notexturenpot"))

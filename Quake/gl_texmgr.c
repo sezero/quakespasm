@@ -1402,7 +1402,6 @@ void TexMgr_ReloadNobrightImages (void)
 */
 
 static GLuint	currenttexture = (GLuint)-1; // to avoid unnecessary texture sets
-GLenum		TEXTURE0, TEXTURE1; //johnfitz
 qboolean	mtexenabled = false;
 
 /*
@@ -1420,12 +1419,12 @@ static void GL_SelectTexture (GLenum target)
 
 	GL_SelectTextureFunc(target);
 
-	if (target == TEXTURE0)
+	if (target == GL_TEXTURE0_ARB)
 	{
 		ct1 = currenttexture;
 		currenttexture = ct0;
 	}
-	else //target == TEXTURE1
+	else //target == GL_TEXTURE1_ARB
 	{
 		ct0 = currenttexture;
 		currenttexture = ct1;
@@ -1444,7 +1443,7 @@ void GL_DisableMultitexture(void)
 	if (mtexenabled)
 	{
 		glDisable(GL_TEXTURE_2D);
-		GL_SelectTexture(TEXTURE0); //johnfitz -- no longer SGIS specific
+		GL_SelectTexture(GL_TEXTURE0_ARB);
 		mtexenabled = false;
 	}
 }
@@ -1458,7 +1457,7 @@ void GL_EnableMultitexture(void)
 {
 	if (gl_mtexable)
 	{
-		GL_SelectTexture(TEXTURE1); //johnfitz -- no longer SGIS specific
+		GL_SelectTexture(GL_TEXTURE1_ARB);
 		glEnable(GL_TEXTURE_2D);
 		mtexenabled = true;
 	}

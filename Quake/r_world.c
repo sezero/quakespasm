@@ -443,15 +443,15 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 				v = s->polys->verts[0];
 				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
 				{
-					GL_MTexCoord2fFunc (TEXTURE0, v[3], v[4]);
-					GL_MTexCoord2fFunc (TEXTURE1, v[5], v[6]);
+					GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
+					GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
 					glVertex3fv (v);
 				}
 				glEnd ();
 				rs_brushpasses++;
 			}
 		GL_DisableMultitexture(); // selects TEXTURE0
-		
+
 		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)
 			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
 	}
