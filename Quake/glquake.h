@@ -157,7 +157,6 @@ extern	qboolean	gl_mtexable;
 //johnfitz -- modified multitexture support
 extern PFNGLMULTITEXCOORD2FARBPROC  GL_MTexCoord2fFunc;
 extern PFNGLACTIVETEXTUREARBPROC    GL_SelectTextureFunc;
-extern PFNGLCLIENTACTIVETEXTUREARBPROC	GL_ClientActiveTextureFunc;
 extern GLenum TEXTURE0, TEXTURE1;
 //johnfitz
 

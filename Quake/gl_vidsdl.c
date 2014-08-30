@@ -86,7 +86,6 @@ qboolean gl_texture_NPOT = false; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
-PFNGLCLIENTACTIVETEXTUREARBPROC GL_ClientActiveTextureFunc = NULL; //ericw
 
 //====================================
 
@@ -562,12 +561,27 @@ static void GL_CheckExtensions (void)
 	{
 		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
 		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glActiveTextureARB");
-		GL_ClientActiveTextureFunc = (PFNGLCLIENTACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glClientActiveTextureARB");
-		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc && GL_ClientActiveTextureFunc)
+		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
 		{
 			Con_Printf("FOUND: ARB_multitexture\n");
 			TEXTURE0 = GL_TEXTURE0_ARB;
 			TEXTURE1 = GL_TEXTURE1_ARB;
+			gl_mtexable = true;
+		}
+		else
+		{
+			Con_Warning ("Couldn't link to multitexture functions\n");
+		}
+	}
+	else if (GL_ParseExtensionList(gl_extensions, "GL_SGIS_multitexture"))
+	{
+		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMTexCoord2fSGIS");
+		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glSelectTextureSGIS");
+		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
+		{
+			Con_Printf("FOUND: SGIS_multitexture\n");
+			TEXTURE0 = TEXTURE0_SGIS;
+			TEXTURE1 = TEXTURE1_SGIS;
 			gl_mtexable = true;
 		}
 		else
