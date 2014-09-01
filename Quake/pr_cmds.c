@@ -49,7 +49,7 @@ static char *PR_GetTempString (void)
 static char *PF_VarString (int	first)
 {
 	int		i;
-	static char out[384];
+	static char out[1024];
 	size_t s;
 
 	out[0] = 0;
