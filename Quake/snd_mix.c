@@ -177,7 +177,7 @@ static void S_MakeBlackmanWindowKernel(float *kernel, int M, float f_c)
 				   + 0.08*cos(4 * M_PI * i / (double)M) );
 		}
 	}
-	
+
 // normalize the kernel so all of the values sum to 1
 	{
 		float sum = 0;
@@ -185,7 +185,7 @@ static void S_MakeBlackmanWindowKernel(float *kernel, int M, float f_c)
 		{
 			sum += kernel[i];
 		}
-		
+
 		for (i = 0; i <= M; i++)
 		{
 			kernel[i] /= sum;
@@ -208,15 +208,15 @@ static void S_UpdateFilter(filter_t *filter, int M, float f_c)
 	{
 		if (filter->memory != NULL) free(filter->memory);
 		if (filter->kernel != NULL) free(filter->kernel);
-		
+
 		filter->M = M;
 		filter->f_c = f_c;
-		
+
 		filter->parity = 0;
 	// M + 1 rounded up to the next multiple of 16
 		filter->kernelsize = (M + 1) + 16 - ((M + 1) % 16);
-		filter->memory = calloc(filter->kernelsize, sizeof(float));
-		filter->kernel = calloc(filter->kernelsize, sizeof(float));
+		filter->memory = (float *) calloc(filter->kernelsize, sizeof(float));
+		filter->kernel = (float *) calloc(filter->kernelsize, sizeof(float));
 		
 		S_MakeBlackmanWindowKernel(filter->kernel, M, f_c);
 	}
@@ -241,32 +241,29 @@ static void S_ApplyFilter(filter_t *filter, int *data, int stride, int count)
 	const int kernelsize = filter->kernelsize;
 	const float *kernel = filter->kernel;
 	int parity;
-	
-	input = malloc(sizeof(float) * (filter->kernelsize + count));
-	
+
+	input = (float *) malloc(sizeof(float) * (filter->kernelsize + count));
+
 // set up the input buffer
 // memory holds the previous filter->kernelsize samples of input.
-	
 	memcpy(input, filter->memory, filter->kernelsize * sizeof(float));
 
 	for (i=0; i<count; i++)
 	{
 		input[filter->kernelsize+i] = data[i * stride] / (32768.0 * 256.0);
 	}
-	
-// copy out the last filter->kernelsize samples to 'memory' for next time
-	
-	memcpy(filter->memory, input + count, filter->kernelsize * sizeof(float));
-	
-// apply the filter
 
+// copy out the last filter->kernelsize samples to 'memory' for next time
+	memcpy(filter->memory, input + count, filter->kernelsize * sizeof(float));
+
+// apply the filter
 	parity = filter->parity;
-	
+
 	for (i=0; i<count; i++)
 	{
 		const float *input_plus_i = input + i;
 		float val[4] = {0, 0, 0, 0};
-		
+
 		for (j = (4 - parity) % 4; j < kernelsize; j+=16)
 		{
 			val[0] += kernel[j] * input_plus_i[j];
@@ -274,15 +271,15 @@ static void S_ApplyFilter(filter_t *filter, int *data, int stride, int count)
 			val[2] += kernel[j+8] * input_plus_i[j+8];
 			val[3] += kernel[j+12] * input_plus_i[j+12];
 		}
-		
+
 	// 4.0 factor is to increase volume by 12 dB; this is to make up the
 	// volume drop caused by the zero-filling this filter does.
 		data[i * stride] = (val[0] + val[1] + val[2] + val[3])
 			* (32768.0 * 256.0 * 4.0);
-		
+
 		parity = (parity + 1) % 4;
 	}
-	
+
 	filter->parity = parity;
 
 	free(input);
@@ -302,24 +299,24 @@ static void S_LowpassFilter(int *data, int stride, int count,
 {
 	int M;
 	float bw, f_c;
-	
+
 	switch ((int)snd_filterquality.value)
 	{
-		case 1:
-			M = 126; bw = 0.900; break;
-		case 2:
-			M = 150; bw = 0.915; break;
-		case 3:
-			M = 174; bw = 0.930; break;
-		case 4:
-			M = 198; bw = 0.945; break;
-		case 5:
-		default:
-			M = 222; bw = 0.960; break;
+	case 1:
+		M = 126; bw = 0.900; break;
+	case 2:
+		M = 150; bw = 0.915; break;
+	case 3:
+		M = 174; bw = 0.930; break;
+	case 4:
+		M = 198; bw = 0.945; break;
+	case 5:
+	default:
+		M = 222; bw = 0.960; break;
 	}
 
 	f_c = (bw * 11025 / 2.0) / 44100.0;
-	
+
 	S_UpdateFilter(memory, M, f_c);
 	S_ApplyFilter(memory, data, stride, count);
 }
@@ -412,7 +409,7 @@ void S_PaintChannels (int endtime)
 			paintbuffer[i].left = CLAMP(-32768 << 8, paintbuffer[i].left, 32767 << 8) >> 1;
 			paintbuffer[i].right = CLAMP(-32768 << 8, paintbuffer[i].right, 32767 << 8) >> 1;
 		}
-		
+
 	// apply a lowpass filter
 		if (sndspeed.value == 11025 && shm->speed == 44100)
 		{
@@ -420,15 +417,15 @@ void S_PaintChannels (int endtime)
 			S_LowpassFilter((int *)paintbuffer,       2, end - paintedtime, &memory_l);
 			S_LowpassFilter(((int *)paintbuffer) + 1, 2, end - paintedtime, &memory_r);
 		}
-		
+
 	// paint in the music
 		if (s_rawend >= paintedtime)
 		{	// copy from the streaming sound source
 			int		s;
 			int		stop;
-			
+
 			stop = (end < s_rawend) ? end : s_rawend;
-			
+
 			for (i = paintedtime; i < stop; i++)
 			{
 				s = i & (MAX_RAW_SAMPLES - 1);
@@ -441,7 +438,7 @@ void S_PaintChannels (int endtime)
 			//	else
 			//		Con_Printf ("full stream\n");
 		}
-		
+
 	// transfer out according to DMA format
 		S_TransferPaintBuffer(end);
 		paintedtime = end;

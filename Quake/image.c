@@ -33,7 +33,7 @@ typedef struct stdio_buffer_s {
 
 static stdio_buffer_t *Buf_Alloc(FILE *f)
 {
-	stdio_buffer_t *buf = calloc(1, sizeof(stdio_buffer_t));
+	stdio_buffer_t *buf = (stdio_buffer_t *) calloc(1, sizeof(stdio_buffer_t));
 	buf->f = f;
 	return buf;
 }
@@ -53,7 +53,7 @@ static inline int Buf_GetC(stdio_buffer_t *buf)
 		if (buf->size == 0)
 			return EOF;
 	}
-	
+
 	return buf->buffer[buf->pos++];
 }
 
@@ -458,9 +458,8 @@ byte *Image_LoadPCX (FILE *f, int *width, int *height)
 			}
 		}
 	}
-	
-	Buf_Free(buf);
 
+	Buf_Free(buf);
 	fclose(f);
 
 	*width = w;
