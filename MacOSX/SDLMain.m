@@ -6,7 +6,11 @@
 */
 
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#import <SDL2/SDL.h>
+#else
 #import <SDL/SDL.h>
+#endif
 #else
 #import "SDL.h"
 #endif

@@ -46,10 +46,17 @@ void PL_SetWindowIcon (void)
 
 	SDL_VERSION(&wminfo.version);
 
+#if defined(USE_SDL2)
+	if (SDL_GetWindowWMInfo(VID_GetWindow(), &wminfo) != SDL_TRUE)
+		return;	/* wrong SDL version */
+
+	hwnd = wminfo.info.win.window;
+#else
 	if (SDL_GetWMInfo(&wminfo) != 1)
 		return;	/* wrong SDL version */
 
 	hwnd = wminfo.window;
+#endif
 #ifdef _WIN64
 	SetClassLongPtr(hwnd, GCLP_HICON, (LONG_PTR) icon);
 #else

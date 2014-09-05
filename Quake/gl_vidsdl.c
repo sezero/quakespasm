@@ -27,7 +27,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "bgmusic.h"
 #include "resource.h"
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#include <SDL2/SDL.h>
+#else
 #include <SDL/SDL.h>
+#endif
 #else
 #include "SDL.h"
 #endif
@@ -58,7 +62,12 @@ static int		nummodes;
 
 static qboolean	vid_initialized = false;
 
+#if defined(USE_SDL2)
+static SDL_Window	*draw_context;
+static SDL_GLContext	gl_context;
+#else
 static SDL_Surface	*draw_context;
+#endif
 
 static qboolean	vid_locked = false; //johnfitz
 static qboolean	vid_changed = false;
@@ -130,10 +139,6 @@ static void VID_Gamma_SetGamma (void)
 {
 	if (draw_context && gammaworks)
 	{
-#if USE_GAMMA_RAMPS
-		if (SDL_SetGammaRamp(vid_gamma_red, vid_gamma_green, vid_gamma_blue) == -1)
-			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
-#else
 		float	value;
 
 		if (vid_gamma.value > (1.0f / GAMMA_MAX))
@@ -141,8 +146,17 @@ static void VID_Gamma_SetGamma (void)
 		else
 			value = GAMMA_MAX;
 
+#if defined(USE_SDL2)
+		if (SDL_SetWindowBrightness(draw_context, value) != 0)
+			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetWindowBrightness\n");
+#else
+#if USE_GAMMA_RAMPS
+		if (SDL_SetGammaRamp(vid_gamma_red, vid_gamma_green, vid_gamma_blue) == -1)
+			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
+#else
 		if (SDL_SetGamma(value,value,value) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGamma\n");
+#endif
 #endif
 	}
 }
@@ -156,12 +170,17 @@ static void VID_Gamma_Restore (void)
 {
 	if (draw_context && gammaworks)
 	{
+#if defined(USE_SDL2)
+		if (SDL_SetWindowBrightness(draw_context, 1) != 0)
+			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetWindowBrightness\n");
+#else
 #if USE_GAMMA_RAMPS
 		if (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
 #else
 		if (SDL_SetGamma(1, 1, 1) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGamma\n");
+#endif
 #endif
 	}
 }
@@ -204,12 +223,16 @@ VID_Gamma_Init -- call on init
 */
 static void VID_Gamma_Init (void)
 {
+#if defined(USE_SDL2)
+	gammaworks	= (SDL_SetWindowBrightness(draw_context, 1) == 0);
+#else
 #if USE_GAMMA_RAMPS
 	gammaworks	= (SDL_GetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 	if (gammaworks)
 	    gammaworks	= (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 #else
 	gammaworks	= (SDL_SetGamma(1, 1, 1) == 0);
+#endif
 #endif
 
 	if (!gammaworks)
@@ -220,24 +243,185 @@ static void VID_Gamma_Init (void)
 }
 
 /*
+======================
+VID_GetCurrentWidth
+======================
+*/
+static int VID_GetCurrentWidth (void)
+{
+#if defined(USE_SDL2)
+	int w = 0, h = 0;
+	SDL_GetWindowSize(draw_context, &w, &h);
+	return w;
+#else
+	return draw_context->w;
+#endif
+}
+
+/*
+=======================
+VID_GetCurrentHeight
+=======================
+*/
+static int VID_GetCurrentHeight (void)
+{
+#if defined(USE_SDL2)
+	int w=0, h=0;
+	SDL_GetWindowSize(draw_context, &w, &h);
+	return h;
+#else
+	return draw_context->h;
+#endif
+}
+
+/*
+====================
+VID_GetCurrentBPP
+====================
+*/
+static int VID_GetCurrentBPP (void)
+{
+#if defined(USE_SDL2)
+	const Uint32 pixelFormat = SDL_GetWindowPixelFormat(draw_context);
+	return SDL_BITSPERPIXEL(pixelFormat);
+#else
+	return draw_context->format->BitsPerPixel;
+#endif
+}
+
+/*
+====================
+VID_GetFullscreen
+====================
+*/
+static qboolean VID_GetFullscreen (void)
+{
+#if defined(USE_SDL2)
+	return (SDL_GetWindowFlags(draw_context) & SDL_WINDOW_FULLSCREEN) != 0;
+#else
+	return (draw_context->flags & SDL_FULLSCREEN) != 0;
+#endif
+}
+
+/*
+====================
+VID_GetVSync
+====================
+*/
+static qboolean VID_GetVSync (void)
+{
+#if defined(USE_SDL2)
+	return SDL_GL_GetSwapInterval() == 1;
+#else
+	int swap_control;
+	if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
+		return swap_control > 0;
+	return false;
+#endif
+}
+
+/*
+====================
+VID_GetWindow
+
+used by pl_win.c
+====================
+*/
+void *VID_GetWindow (void)
+{
+#if defined(USE_SDL2)
+	return draw_context;
+#else
+	return NULL;
+#endif
+}
+
+/*
+====================
+VID_HasMouseOrInputFocus
+====================
+*/
+qboolean VID_HasMouseOrInputFocus (void)
+{
+#if defined(USE_SDL2)
+	return (SDL_GetWindowFlags(draw_context) & (SDL_WINDOW_MOUSE_FOCUS | SDL_WINDOW_INPUT_FOCUS)) != 0;
+#else
+	return (SDL_GetAppState() & (SDL_APPMOUSEFOCUS | SDL_APPINPUTFOCUS)) != 0;
+#endif
+}
+
+/*
+====================
+VID_IsMinimized
+====================
+*/
+qboolean VID_IsMinimized (void)
+{
+#if defined(USE_SDL2)
+	return !(SDL_GetWindowFlags(draw_context) & SDL_WINDOW_SHOWN);
+#else
+	/* SDL_APPACTIVE in SDL 1.x means "not minimized" */
+	return !(SDL_GetAppState() & SDL_APPACTIVE);
+#endif
+}
+
+#if defined(USE_SDL2)
+/*
+================
+VID_SDL2_GetDisplayMode
+
+Returns a pointer to a statically allocated SDL_DisplayMode structure
+if there is one with the requested params on the default display.
+Otherwise returns NULL.
+
+This is passed to SDL_SetWindowDisplayMode to specify a pixel format
+with the requested bpp. If we didn't care about bpp we could just pass NULL.
+================
+*/
+static SDL_DisplayMode *VID_SDL2_GetDisplayMode(int width, int height, int bpp)
+{
+	static SDL_DisplayMode mode;
+	const int sdlmodes = SDL_GetNumDisplayModes(0);
+	int i;
+
+	for (i = 0; i < sdlmodes; i++)
+	{
+		if (SDL_GetDisplayMode(0, i, &mode) == 0
+			&& mode.w == width && mode.h == height
+			&& SDL_BITSPERPIXEL(mode.format) == bpp)
+		{
+			return &mode;
+		}
+	}
+	return NULL;
+}
+#endif
+
+/*
 ================
 VID_ValidMode
 ================
 */
 static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscreen)
 {
-	Uint32 flags = DEFAULT_SDL_FLAGS;
-
 	if (width < 320)
 		return false;
 
 	if (height < 200)
 		return false;
 
-	if (fullscreen)
-		flags |= SDL_FULLSCREEN;
+#if defined(USE_SDL2)
+	if (fullscreen && VID_SDL2_GetDisplayMode(width, height, bpp) == NULL)
+		bpp = 0;
+#else
+	{
+		Uint32 flags = DEFAULT_SDL_FLAGS;
+		if (fullscreen)
+			flags |= SDL_FULLSCREEN;
 
-	bpp = SDL_VideoModeOK(width, height, bpp, flags);
+		bpp = SDL_VideoModeOK(width, height, bpp, flags);
+	}
+#endif
 
 	switch (bpp)
 	{
@@ -260,29 +444,17 @@ VID_SetMode
 static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 {
 	int		temp;
-	Uint32	flags = DEFAULT_SDL_FLAGS;
+	Uint32	flags;
 	char		caption[50];
 	int		depthbits;
 	int		fsaa_obtained;
 	
-	if (fullscreen)
-		flags |= SDL_FULLSCREEN;
-
 	// so Con_Printfs don't mess us up by forcing vid and snd updates
 	temp = scr_disabled_for_loading;
 	scr_disabled_for_loading = true;
 
 	CDAudio_Pause ();
 	BGM_Pause ();
-
-	//
-	// swap control (the "before SDL_SetVideoMode" part)
-	//
-	gl_swap_control = true;
-	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
-		gl_swap_control = false;
-
-	bpp = SDL_VideoModeOK(width, height, bpp, flags);
 
 	//
 	// z-buffer depth
@@ -298,6 +470,71 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, fsaa > 0 ? 1 : 0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fsaa);
 
+	q_snprintf(caption, sizeof(caption), "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
+
+#if defined(USE_SDL2)
+	/* Create the window if needed, hidden */
+	if (!draw_context)
+	{
+		flags = SDL_WINDOW_OPENGL | SDL_WINDOW_HIDDEN;
+		draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		if (!draw_context)
+			Sys_Error ("Couldn't create window");
+
+		gl_context = SDL_GL_CreateContext (draw_context);
+		if (!gl_context) { // scale back fsaa
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
+			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 0);
+			gl_context = SDL_GL_CreateContext (draw_context);
+		}
+		if (!gl_context) { // scale back SDL_GL_DEPTH_SIZE
+			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+			gl_context = SDL_GL_CreateContext (draw_context);
+			if (!gl_context)
+				Sys_Error ("Couldn't craete GL context");
+		}
+	}
+
+	/* Ensure the window is not fullscreen */
+	if (VID_GetFullscreen ())
+	{
+		if (SDL_SetWindowFullscreen (draw_context, 0) != 0)
+			Sys_Error("Couldn't set fullscreen state mode");
+	}
+
+	/* Set window size and display mode */
+	SDL_SetWindowSize (draw_context, width, height);
+	SDL_SetWindowPosition (draw_context, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+	SDL_SetWindowDisplayMode (draw_context, VID_SDL2_GetDisplayMode(width, height, bpp));
+
+	/* Make window fullscreen if needed, and show the window */
+	if (fullscreen)
+	{
+		if (SDL_SetWindowFullscreen (draw_context, SDL_WINDOW_FULLSCREEN) != 0)
+			Sys_Error ("Couldn't set fullscreen state mode");
+	}
+
+	SDL_ShowWindow (draw_context);
+
+	gl_swap_control = true;
+	if (SDL_GL_SetSwapInterval ((vid_vsync.value) ? 1 : 0) == -1)
+		gl_swap_control = false;
+
+#else /* !defined(USE_SDL2) */
+
+	flags = DEFAULT_SDL_FLAGS;
+	if (fullscreen)
+		flags |= SDL_FULLSCREEN;
+
+	//
+	// swap control (the "before SDL_SetVideoMode" part)
+	//
+	gl_swap_control = true;
+	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
+		gl_swap_control = false;
+
+	bpp = SDL_VideoModeOK(width, height, bpp, flags);
+
 	draw_context = SDL_SetVideoMode(width, height, bpp, flags);
 	if (!draw_context) { // scale back fsaa
 		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
@@ -311,11 +548,11 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 			Sys_Error ("Couldn't set video mode");
 	}
 
-	q_snprintf(caption, sizeof(caption), "QuakeSpasm %1.2f.%d", (float)FITZQUAKE_VERSION, QUAKESPASM_VER_PATCH);
 	SDL_WM_SetCaption(caption, caption);
+#endif
 
-	vid.width = draw_context->w;
-	vid.height = draw_context->h;
+	vid.width = VID_GetCurrentWidth();
+	vid.height = VID_GetCurrentHeight();
 	vid.conwidth = vid.width & 0xFFFFFFF8;
 	vid.conheight = vid.conwidth * vid.height / vid.width;
 	vid.numpages = 2;
@@ -328,7 +565,7 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	if (SDL_GL_GetAttribute(SDL_GL_MULTISAMPLESAMPLES, &fsaa_obtained) == -1)
 		fsaa_obtained = 0;
 
-	modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
+	modestate = VID_GetFullscreen() ? MS_FULLSCREEN : MS_WINDOWED;
 
 	CDAudio_Resume ();
 	BGM_Resume ();
@@ -338,9 +575,9 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	ClearAllStates ();
 
 	Con_SafePrintf ("Video mode %dx%dx%d (%d-bit z-buffer, %dx FSAA) initialized\n",
-				draw_context->w,
-				draw_context->h,
-				draw_context->format->BitsPerPixel,
+				VID_GetCurrentWidth(),
+				VID_GetCurrentHeight(),
+				VID_GetCurrentBPP(),
 				depthbits,
 				fsaa_obtained);
 
@@ -437,10 +674,10 @@ static void VID_Test (void)
 //
 // now try the switch
 //
-	old_width = draw_context->w;
-	old_height = draw_context->h;
-	old_bpp = draw_context->format->BitsPerPixel;
-	old_fullscreen = draw_context->flags & SDL_FULLSCREEN ? true : false;
+	old_width = VID_GetCurrentWidth();
+	old_height = VID_GetCurrentHeight();
+	old_bpp = VID_GetCurrentBPP();
+	old_fullscreen = VID_GetFullscreen() ? true : false;
 
 	VID_Restart ();
 
@@ -619,11 +856,19 @@ static void GL_CheckExtensions (void)
 	{
 		Con_Warning ("vertical sync not supported (SDL_GL_SetAttribute failed)\n");
 	}
+#if defined(USE_SDL2)
+	else if ((swap_control = SDL_GL_GetSwapInterval()) == -1)
+	{
+		gl_swap_control = false;
+		Con_Warning ("vertical sync not supported (SDL_GL_GetSwapInterval failed)\n");
+	}
+#else
 	else if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
 	{
 		gl_swap_control = false;
 		Con_Warning ("vertical sync not supported (SDL_GL_GetAttribute failed)\n");
 	}
+#endif
 	else if ((vid_vsync.value && swap_control != 1) || (!vid_vsync.value && swap_control != 0))
 	{
 		gl_swap_control = false;
@@ -766,7 +1011,13 @@ GL_EndRendering
 void GL_EndRendering (void)
 {
 	if (!scr_skipupdate)
+	{
+#if defined(USE_SDL2)
+		SDL_GL_SwapWindow(draw_context);
+#else
 		SDL_GL_SwapBuffers();
+#endif
+	}
 }
 
 
@@ -778,6 +1029,9 @@ void	VID_Shutdown (void)
 
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		draw_context = NULL;
+#if defined(USE_SDL2)
+		gl_context = NULL;
+#endif
 
 		PL_VID_Shutdown();
 	}
@@ -821,10 +1075,10 @@ static void VID_DescribeCurrentMode_f (void)
 {
 	if (draw_context)
 		Con_Printf("%dx%dx%d %s\n",
-			draw_context->w,
-			draw_context->h,
-			draw_context->format->BitsPerPixel,
-			draw_context->flags & SDL_FULLSCREEN ? "fullscreen" : "windowed");
+			VID_GetCurrentWidth(),
+			VID_GetCurrentHeight(),
+			VID_GetCurrentBPP(),
+			VID_GetFullscreen() ? "fullscreen" : "windowed");
 }
 
 /*
@@ -880,6 +1134,26 @@ VID_InitModelist
 */
 static void VID_InitModelist (void)
 {
+#if defined(USE_SDL2)
+	const int sdlmodes = SDL_GetNumDisplayModes(0);
+	int i;
+
+	nummodes = 0;
+	for (i = 0; i < sdlmodes; i++)
+	{
+		if (nummodes >= MAX_MODE_LIST)
+			break;
+
+		SDL_DisplayMode mode;
+		if (SDL_GetDisplayMode(0, i, &mode) == 0)
+		{
+			modelist[nummodes].width = mode.w;
+			modelist[nummodes].height = mode.h;
+			modelist[nummodes].bpp = SDL_BITSPERPIXEL(mode.format);
+			nummodes++;
+		}
+	}
+#else
 	SDL_PixelFormat	format;
 	SDL_Rect	**modes;
 	Uint32		flags;
@@ -931,6 +1205,7 @@ static void VID_InitModelist (void)
 
 	if (nummodes == originalnummodes)
 		Con_SafePrintf ("No fullscreen DIB modes found\n");
+#endif
 }
 
 /*
@@ -941,8 +1216,7 @@ VID_Init
 void	VID_Init (void)
 {
 	static char vid_center[] = "SDL_VIDEO_CENTERED=center";
-	const SDL_VideoInfo *info;
-	int		p, width, height, bpp;
+	int		p, width, height, bpp, display_width, display_height, display_bpp;
 	qboolean	fullscreen;
 	const char	*read_vars[] = { "vid_fullscreen",
 					 "vid_width",
@@ -976,8 +1250,26 @@ void	VID_Init (void)
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
 		Sys_Error("Could not initialize SDL Video");
 
-	info = SDL_GetVideoInfo();
-	Cvar_SetValueQuick (&vid_bpp, (float)info->vfmt->BitsPerPixel);
+#if defined(USE_SDL2)
+	{
+		SDL_DisplayMode mode;
+		if (SDL_GetDesktopDisplayMode(0, &mode) != 0)
+			Sys_Error("Could not get desktop display mode");
+
+		display_width = mode.w;
+		display_height = mode.h;
+		display_bpp = SDL_BITSPERPIXEL(mode.format);
+	}
+#else
+	{
+		const SDL_VideoInfo *info = SDL_GetVideoInfo();
+		display_width = info->current_w;
+		display_height = info->current_h;
+		display_bpp = info->vfmt->BitsPerPixel;
+	}
+#endif
+
+	Cvar_SetValueQuick (&vid_bpp, (float)display_bpp);
 
 	if (CFG_OpenConfig("config.cfg") == 0)
 	{
@@ -996,9 +1288,9 @@ void	VID_Init (void)
 
 	if (COM_CheckParm("-current"))
 	{
-		width = info->current_w;
-		height = info->current_h;
-		bpp = info->vfmt->BitsPerPixel;
+		width = display_width;
+		height = display_height;
+		bpp = display_bpp;
 		fullscreen = true;
 	}
 	else
@@ -1047,7 +1339,7 @@ void	VID_Init (void)
 	{
 		width = 640;
 		height = 480;
-		bpp = info->vfmt->BitsPerPixel;
+		bpp = display_bpp;
 		fullscreen = false;
 	}
 
@@ -1085,16 +1377,24 @@ void	VID_Init (void)
 void	VID_Toggle (void)
 {
 	static qboolean vid_toggle_works = true;
+	qboolean toggleWorked;
 
 	S_ClearBuffer ();
 
 	if (!vid_toggle_works)
 		goto vrestart;
-	if (SDL_WM_ToggleFullScreen(draw_context) == 1)
+
+#if defined(USE_SDL2)
+	toggleWorked = SDL_SetWindowFullscreen(draw_context, VID_GetFullscreen() ? 0 : SDL_WINDOW_FULLSCREEN) == 0;
+#else
+	toggleWorked = SDL_WM_ToggleFullScreen(draw_context) == 1;
+#endif
+
+	if (toggleWorked)
 	{
 		Sbar_Changed ();	// Sbar seems to need refreshing
 
-		modestate = draw_context->flags & SDL_FULLSCREEN ? MS_FULLSCREEN : MS_WINDOWED;
+		modestate = VID_GetFullscreen() ? MS_FULLSCREEN : MS_WINDOWED;
 
 		VID_SyncCvars();
 
@@ -1112,7 +1412,7 @@ void	VID_Toggle (void)
 		vid_toggle_works = false;
 		Con_DPrintf ("SDL_WM_ToggleFullScreen failed, attempting VID_Restart\n");
 	vrestart:
-		Cvar_SetQuick (&vid_fullscreen, draw_context-> flags & SDL_FULLSCREEN ? "0" : "1");
+		Cvar_SetQuick (&vid_fullscreen, VID_GetFullscreen() ? "0" : "1");
 		Cbuf_AddText ("vid_restart\n");
 	}
 }
@@ -1124,17 +1424,13 @@ VID_SyncCvars -- johnfitz -- set vid cvars to match current video mode
 */
 void VID_SyncCvars (void)
 {
-	int swap_control;
-
 	if (draw_context)
 	{
-		Cvar_SetValueQuick (&vid_width, draw_context->w);
-		Cvar_SetValueQuick (&vid_height, draw_context->h);
-		Cvar_SetValueQuick (&vid_bpp, draw_context->format->BitsPerPixel);
-		Cvar_SetQuick (&vid_fullscreen, draw_context->flags & SDL_FULLSCREEN ? "1" : "0");
-
-		if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == 0)
-			Cvar_SetQuick (&vid_vsync, (swap_control > 0)? "1" : "0");
+		Cvar_SetValueQuick (&vid_width, VID_GetCurrentWidth());
+		Cvar_SetValueQuick (&vid_height, VID_GetCurrentHeight());
+		Cvar_SetValueQuick (&vid_bpp, VID_GetCurrentBPP());
+		Cvar_SetQuick (&vid_fullscreen, VID_GetFullscreen() ? "1" : "0");
+		Cvar_SetQuick (&vid_vsync, VID_GetVSync() ? "1" : "0");
 	}
 
 	vid_changed = false;

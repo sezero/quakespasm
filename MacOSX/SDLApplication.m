@@ -20,7 +20,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #import "SDLApplication.h"
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#import <SDL2/SDL.h>
+#else
 #import <SDL/SDL.h>
+#endif
 #else
 #import "SDL.h"
 #endif

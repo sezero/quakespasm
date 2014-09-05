@@ -47,8 +47,13 @@ void PL_SetWindowIcon (void)
 		return;
 	/* make pure magenta (#ff00ff) tranparent */
 	colorkey = SDL_MapRGB(icon->format, 255, 0, 255);
+#if defined(USE_SDL2)
+	SDL_SetColorKey(icon, SDL_TRUE, colorkey);
+	SDL_SetWindowIcon(VID_GetWindow(), icon);
+#else
 	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, colorkey);
 	SDL_WM_SetIcon(icon, NULL);
+#endif
 	SDL_FreeSurface(icon);
 }
 

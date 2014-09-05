@@ -20,7 +20,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #import "AppController.h"
 #import "ScreenInfo.h"
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#import <SDL2/SDL.h>
+#else
 #import <SDL/SDL.h>
+#endif
 #else
 #import "SDL.h"
 #endif
@@ -60,6 +64,21 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
         return self;
     
+#if defined(USE_SDL2)
+    {
+        const int sdlmodes = SDL_GetNumDisplayModes(0);
+        for (i = 0; i < sdlmodes; i++)
+        {
+            SDL_DisplayMode mode;
+            if (SDL_GetDisplayMode(0, i, &mode) == 0)
+            {
+                info = [[ScreenInfo alloc] initWithWidth:mode.w height:mode.h bpp:SDL_BITSPERPIXEL(mode.format)];
+                [screenModes addObject:info];
+                [info release];
+            }
+        }
+    }
+#else
     flags = SDL_OPENGL | SDL_FULLSCREEN;
     format.palette = NULL;
     
@@ -76,6 +95,7 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
             [info release];
         }
     }
+#endif
 
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
     

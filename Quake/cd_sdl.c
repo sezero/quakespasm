@@ -26,7 +26,11 @@
 
 
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#include <SDL2/SDL.h>
+#else
 #include <SDL/SDL.h>
+#endif
 #else
 #include "SDL.h"
 #endif
@@ -35,7 +39,7 @@
 
 /* SDL dropped support for
    cd audio since v1.3.0 */
-#warning SDL CDAudio support disabled
+#pragma message ( "SDL CDAudio support disabled" )
 #include "cd_null.c"
 
 #else	/* SDL_INIT_CDROM */
