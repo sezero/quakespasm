@@ -203,14 +203,21 @@ void R_CullSurfaces (void)
 {
 	msurface_t *s;
 	int i;
+	texture_t *t;
 
 	if (!r_drawworld_cheatsafe)
 		return;
 
-	s = &cl.worldmodel->surfaces[cl.worldmodel->firstmodelsurface];
-	for (i=0 ; i<cl.worldmodel->nummodelsurfaces ; i++, s++)
+// ericw -- instead of testing (s->visframe == r_visframecount) on all world
+// surfaces, use the chained surfaces, which is exactly the same set of sufaces
+	for (i=0 ; i<cl.worldmodel->numtextures ; i++)
 	{
-		if (s->visframe == r_visframecount)
+		t = cl.worldmodel->textures[i];
+
+		if (!t || !t->texturechains[chain_world])
+			continue;
+
+		for (s = t->texturechains[chain_world]; s; s = s->texturechain)
 		{
 			if (R_CullBox(s->mins, s->maxs) || R_BackFaceCull (s))
 				s->culled = true;
