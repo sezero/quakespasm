@@ -1,10 +1,12 @@
 allow plain files to override files inside a PAK file -- Sander van Dijk
 
+might not be compatible with the homedir patch yet -- O.S.
+
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 993)
+--- Quake/common.c	(revision 998)
 +++ Quake/common.c	(working copy)
-@@ -1927,13 +1927,6 @@ static void COM_AddGameDirectory (const 
+@@ -1926,13 +1926,6 @@ static void COM_AddGameDirectory (const 
  		path_id = com_searchpaths->path_id << 1;
  	else	path_id = 1U;
  
@@ -18,7 +20,7 @@ Index: Quake/common.c
  	// add any pak files in the format pak0.pak pak1.pak, ...
  	for (i = 0; ; i++)
  	{
-@@ -1963,6 +1956,13 @@ static void COM_AddGameDirectory (const 
+@@ -1962,6 +1955,13 @@ static void COM_AddGameDirectory (const 
  		}
  		if (!pak) break;
  	}
@@ -32,4 +34,34 @@ Index: Quake/common.c
  }
  
  /*
+Index: Quake/host_cmd.c
+===================================================================
+--- Quake/host_cmd.c	(revision 998)
++++ Quake/host_cmd.c	(working copy)
+@@ -153,11 +153,6 @@ void Host_Game_f (void)
+ 			if (com_searchpaths)
+ 				path_id = com_searchpaths->path_id << 1;
+ 			else	path_id = 1U;
+-			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+-			search->path_id = path_id;
+-			q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
+-			search->next = com_searchpaths;
+-			com_searchpaths = search;
+ 
+ 			//Load the paks if any are found:
+ 			for (i = 0; ; i++)
+@@ -172,6 +167,13 @@ void Host_Game_f (void)
+ 				search->next = com_searchpaths;
+ 				com_searchpaths = search;
+ 			}
++
++			// moved here from before the pakX.pak loop -- svdijk
++			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
++			search->path_id = path_id;
++			q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
++			search->next = com_searchpaths;
++			com_searchpaths = search;
+ 		}
+ 
+ 		//clear out and reload appropriate data
 
