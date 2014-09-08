@@ -1,12 +1,12 @@
 initial experimental support for user directories, based on uhexen2
 and tyrquake:
-** against quakespasm svn revision 906.
+** against quakespasm svn revision 994.
 ** on-the-fly game directory switching not supported yet.
 ** minimally tested, needs more work.
 
 Index: Quake/sys_sdl_unix.c
 ===================================================================
---- Quake/sys_sdl_unix.c	(revision 906)
+--- Quake/sys_sdl_unix.c	(revision 994)
 +++ Quake/sys_sdl_unix.c	(working copy)
 @@ -20,6 +20,8 @@
  
@@ -26,8 +26,8 @@ Index: Quake/sys_sdl_unix.c
 +#endif	/* USE_PASSWORD_FILE */
  
  #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
- #include <SDL/SDL.h>
-@@ -143,9 +148,43 @@
+ #if defined(USE_SDL2)
+@@ -147,9 +152,43 @@ int Sys_FileTime (const char *path)
  	return -1;
  }
  
@@ -74,7 +74,7 @@ Index: Quake/sys_sdl_unix.c
  void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 906)
+--- Quake/common.c	(revision 994)
 +++ Quake/common.c	(working copy)
 @@ -1919,6 +1919,7 @@ static void COM_AddGameDirectory (const
  	searchpath_t *search;
@@ -84,7 +84,7 @@ Index: Quake/common.c
  
  	q_strlcpy (com_gamedir, va("%s/%s", base, dir), sizeof(com_gamedir));
  
-@@ -1927,6 +1928,7 @@ static void COM_AddGameDirectory (const
+@@ -1927,6 +1928,7 @@ static void COM_AddGameDirectory (const 
  		path_id = com_searchpaths->path_id << 1;
  	else	path_id = 1U;
  
@@ -96,7 +96,7 @@ Index: Quake/common.c
  			qspak = NULL;
  		else {
  			qboolean old = com_modified;
-+			if (been_here) base = host_parms->basedir;
++			if (been_here) base = host_parms->userdir;
  			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
  			qspak = COM_LoadPackFile (pakfile);
  			com_modified = old;
