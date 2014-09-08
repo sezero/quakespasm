@@ -146,9 +146,9 @@ void Host_Game_f (void)
 			return;
 		}
 
-		if (!strcmp(p, ".") || strstr(p, ".."))
+		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
 		{
-			Con_Printf ("Relative pathnames are not allowed.\n");
+			Con_Printf ("gamedir should be a single directory name, not a path\n");
 			return;
 		}
 
