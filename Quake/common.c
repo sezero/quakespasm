@@ -1927,6 +1927,13 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 		path_id = com_searchpaths->path_id << 1;
 	else	path_id = 1U;
 
+	// add the directory to the search path
+	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
+	search->path_id = path_id;
+	q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
+	search->next = com_searchpaths;
+	com_searchpaths = search;
+
 	// add any pak files in the format pak0.pak pak1.pak, ...
 	for (i = 0; ; i++)
 	{
@@ -1956,13 +1963,6 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 		}
 		if (!pak) break;
 	}
-
-	// add the directory to the search path -- moved here from before the pakn.pak loop -- svdijk
-	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
-	search->path_id = path_id;
-	q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
-	search->next = com_searchpaths;
-	com_searchpaths = search;
 }
 
 /*
