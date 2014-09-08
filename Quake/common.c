@@ -1990,6 +1990,11 @@ static void COM_Game_f (void)
 
 		if (q_strcasecmp(p, GAMENAME)) //game is not id1
 			COM_AddGameDirectory (com_basedir, p);
+		else // just update com_gamedir
+			q_snprintf (com_gamedir, sizeof(com_gamedir), "%s/%s",
+					(host_parms->userdir != host_parms->basedir)?
+						   host_parms->userdir : com_basedir,
+					GAMENAME);
 
 		//clear out and reload appropriate data
 		Cache_Flush ();
