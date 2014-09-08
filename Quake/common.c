@@ -34,8 +34,6 @@ cvar_t	cmdline = {"cmdline","",CVAR_ROM/*|CVAR_SERVERINFO*/}; /* sending cmdline
 
 qboolean	com_modified;	// set true if using non-id files
 
-int	com_nummissionpacks; //johnfitz
-
 qboolean		fitzmode;
 
 static void COM_Path_f (void);
@@ -1466,6 +1464,7 @@ typedef struct searchpath_s
 } searchpath_t;
 
 searchpath_t	*com_searchpaths;
+searchpath_t	*com_base_searchpaths;
 
 /*
 ============
@@ -1994,25 +1993,20 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (com_basedir, GAMENAME);
 
-	//johnfitz -- track number of mission packs added
-	//since we don't want to allow the "game" command to strip them away
-	com_nummissionpacks = 0;
 	if (COM_CheckParm ("-rogue"))
-	{
 		COM_AddGameDirectory (com_basedir, "rogue");
-		com_nummissionpacks++;
-	}
 	if (COM_CheckParm ("-hipnotic"))
-	{
 		COM_AddGameDirectory (com_basedir, "hipnotic");
-		com_nummissionpacks++;
-	}
 	if (COM_CheckParm ("-quoth"))
-	{
 		COM_AddGameDirectory (com_basedir, "quoth");
-		com_nummissionpacks++;
-	}
-	//johnfitz
+
+/* this is the end of our base searchpath:
+ * any set gamedirs, such as those from -game command line
+ * arguments or by the 'game' console command will be freed
+ * up to here upon a new game command.
+ * Set here instead of just after 'id1', because we don't want
+ * to allow the 'game' command to strip away the mission packs */
+	com_base_searchpaths = com_searchpaths;
 
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)

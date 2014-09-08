@@ -27,8 +27,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t	pausable;
 
-extern int com_nummissionpacks; //johnfitz
-
 int	current_skill;
 
 void Mod_Print (void);
@@ -84,42 +82,8 @@ typedef struct searchpath_s
 
 extern qboolean com_modified;
 extern searchpath_t *com_searchpaths;
+extern searchpath_t *com_base_searchpaths;
 pack_t *COM_LoadPackFile (const char *packfile);
-
-// Kill all the search packs until the game path is found. Kill it, then return
-// the next path to it.
-void KillGameDir(searchpath_t *search)
-{
-	searchpath_t *search_killer;
-	while (search)
-	{
-		if (*search->filename)
-		{
-			com_searchpaths = search->next;
-			Z_Free(search);
-			return; //once you hit the dir, youve already freed the paks
-		}
-		Sys_FileClose (search->pack->handle); //johnfitz
-		search_killer = search->next;
-		Z_Free(search->pack->files);
-		Z_Free(search->pack);
-		Z_Free(search);
-		search = search_killer;
-	}
-}
-
-// Return the number of games in memory
-int NumGames(searchpath_t *search)
-{
-	int found = 0;
-	while (search)
-	{
-		if (*search->filename)
-			found++;
-		search = search->next;
-	}
-	return found;
-}
 
 void ExtraMaps_NewGame (void);
 
@@ -132,7 +96,7 @@ void Host_Game_f (void)
 {
 	int i;
 	unsigned int path_id;
-	searchpath_t *search = com_searchpaths;
+	searchpath_t *search;
 	pack_t *pak;
 	char   pakfile[MAX_OSPATH];
 
@@ -168,8 +132,18 @@ void Host_Game_f (void)
 		Host_WriteConfiguration ();
 
 		//Kill the extra game if it is loaded
-		if (NumGames(com_searchpaths) > 1 + com_nummissionpacks)
-			KillGameDir(com_searchpaths);
+		while (com_searchpaths != com_base_searchpaths)
+		{
+			if (com_searchpaths->pack)
+			{
+				Sys_FileClose (com_searchpaths->pack->handle);
+				Z_Free (com_searchpaths->pack->files);
+				Z_Free (com_searchpaths->pack);
+			}
+			search = com_searchpaths->next;
+			Z_Free (com_searchpaths);
+			com_searchpaths = search;
+		}
 
 		q_strlcpy (com_gamedir, va("%s/%s", com_basedir, p), sizeof(com_gamedir));
 
