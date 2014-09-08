@@ -36,7 +36,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Aug. 29, 2014
+  Page last edited Sep. 08, 2014
 
 
   1.  About
@@ -90,8 +90,8 @@
   o  Unix users may need some extra libraries installed: "libmad" or
      "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
 
-  o  To prevent tracks from being downsampled, use the "-sndspeed"
-     option to set a sufficiently high sample rate.
+  o  As of 0.85.10, music is played back at 44100Hz by default with no
+     need to adjust "-sndspeed".
 
   o  Use the "-noextmusic" option to disable this feature.
 
@@ -165,6 +165,15 @@
 
   6.1.  Changes in 0.85.10
 
+  o  Console speed now resolution-independent.
+
+  o  Disabled gl_zfix, which caused glitches and is undesirable for new
+     maps. Replacement .ent files to fix z-fighting for several id1 maps
+     added to quakespasm.pak.
+
+  o  PF_VarString buffer bumped to 1024, avoids truncating In The
+     Shadows centerprints.
+
   o  Support for opengl non-power-of-two-textures extension.
 
   o  Antialiasing (FSAA) support (command line: -fsaa x, where x can be
@@ -182,13 +191,14 @@
   o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
      time options).
 
-  o  Sfx low-pass filter support.  The -sndspeed command-line option now
-     control whether the low-pass filter is applied: if set to 11025 you
-     get the lowpass filter, otherwise not used.  New -mixspeed command-
-     line option, defaulting to 44100, to control the sample rate.  New
-     snd_filterquality cvar, value can be 1-5, the 5 setting closely
-     matches the Windows resampler and the 1 setting closely matches the
-     OS X resampler.
+  o  Music and sfx now mixed at 44100Hz to avoid downsampling music.
+     Low-pass filter applied to the sfx if -sndspeed is 11025 (the
+     default), to preserve the same sound quality as 0.85.9.  New
+     -mixspeed option sets the rate for mixing sfx and music, and output
+     to the OS (default 44100), setting to 11025 reverts to 0.85.9
+     behaviour. New snd_filterquality cvar, value can be between 1
+     (emulate OS X resampler) and 5 (emulate Windows resampler),
+     controls the sound of the low-pass filter.
 
   o  Better Hor+ field of view (FOV) scaling behavior.
 
