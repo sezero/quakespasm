@@ -22,7 +22,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#include <SDL2/SDL.h>
+#else
 #include <SDL/SDL.h>
+#endif
 #else
 #include "SDL.h"
 #endif
@@ -61,9 +65,27 @@ void PL_VID_Shutdown (void)
 {
 }
 
+#define MAX_CLIPBOARDTXT	MAXCMDLINE	/* 256 */
 char *PL_GetClipboardData (void)
 {
-	return NULL;
+	char *data = NULL;
+#if defined(USE_SDL2)
+	char *cliptext = SDL_GetClipboardText();
+
+	if (cliptext != NULL)
+	{
+		size_t size = strlen(cliptext) + 1;
+	/* this is intended for simple small text copies
+	 * such as an ip address, etc:  do chop the size
+	 * here, otherwise we may experience Z_Malloc()
+	 * failures and all other not-oh-so-fun stuff. */
+		size = q_min(MAX_CLIPBOARDTXT, size);
+		data = (char *) Z_Malloc(size);
+		q_strlcpy (data, cliptext, size);
+	}
+#endif
+
+	return data;
 }
 
 void PL_ErrorDialog (const char *errorMsg)
