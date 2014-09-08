@@ -134,7 +134,7 @@ void Host_Game_f (void)
 	unsigned int path_id;
 	searchpath_t *search = com_searchpaths;
 	pack_t *pak;
-	char   pakfile[MAX_OSPATH]; //FIXME: it's confusing to use this string for two different things
+	char   pakfile[MAX_OSPATH];
 
 	if (Cmd_Argc() > 1)
 	{
@@ -152,8 +152,7 @@ void Host_Game_f (void)
 			return;
 		}
 
-		q_strlcpy (pakfile, va("%s/%s", com_basedir, p), sizeof(pakfile));
-		if (!q_strcasecmp(pakfile, com_gamedir)) //no change
+		if (!q_strcasecmp(p, COM_SkipPath(com_gamedir))) //no change
 		{
 			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
 			return;
@@ -172,7 +171,7 @@ void Host_Game_f (void)
 		if (NumGames(com_searchpaths) > 1 + com_nummissionpacks)
 			KillGameDir(com_searchpaths);
 
-		q_strlcpy (com_gamedir, pakfile, sizeof(com_gamedir));
+		q_strlcpy (com_gamedir, va("%s/%s", com_basedir, p), sizeof(com_gamedir));
 
 		if (q_strcasecmp(p, GAMENAME)) //game is not id1
 		{
@@ -182,7 +181,7 @@ void Host_Game_f (void)
 			else	path_id = 1U;
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 			search->path_id = path_id;
-			q_strlcpy (search->filename, pakfile, sizeof(search->filename));
+			q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
 			search->next = com_searchpaths;
 			com_searchpaths = search;
 
