@@ -65,7 +65,7 @@ cvar_t	m_filter = {"m_filter","0",CVAR_NONE};
  * gets updated from the main game loop via IN_MouseMove */
 static int	total_dx, total_dy = 0;
 
-static int FilterMouseEvents (const SDL_Event *event)
+static int IN_FilterMouseEvents (const SDL_Event *event)
 {
 	switch (event->type)
 	{
@@ -78,10 +78,12 @@ static int FilterMouseEvents (const SDL_Event *event)
 	return 1;
 }
 
-static int FilterMouseEvents_SDL2 (void *userdata, SDL_Event *event)
+#if defined(USE_SDL2)
+static int IN_SDL2_FilterMouseEvents (void *userdata, SDL_Event *event)
 {
-	return FilterMouseEvents (event);
+	return IN_FilterMouseEvents (event);
 }
+#endif
 
 static void IN_BeginIgnoringMouseEvents()
 {
@@ -90,11 +92,11 @@ static void IN_BeginIgnoringMouseEvents()
 	void *currentUserdata = NULL;
 	SDL_GetEventFilter(&currentFilter, &currentUserdata);
 
-	if (currentFilter != FilterMouseEvents_SDL2)
-		SDL_SetEventFilter(FilterMouseEvents_SDL2, NULL);
+	if (currentFilter != IN_SDL2_FilterMouseEvents)
+		SDL_SetEventFilter(IN_SDL2_FilterMouseEvents, NULL);
 #else
-	if (SDL_GetEventFilter() != FilterMouseEvents)
-		SDL_SetEventFilter(FilterMouseEvents);
+	if (SDL_GetEventFilter() != IN_FilterMouseEvents)
+		SDL_SetEventFilter(IN_FilterMouseEvents);
 #endif
 }
 
@@ -367,7 +369,6 @@ void IN_UpdateForKeydest (void)
 }
 
 #if defined(USE_SDL2)
-
 static qboolean IN_SDL2_QuakeKeyHandledAsTextInput(int qkey)
 {
 	return (qkey >= 32 && qkey <= 126) && qkey != '`';
