@@ -4,7 +4,7 @@ initial support for user directories, based on uhexen2 and tyrquake.
 
 Index: Quake/sys_sdl_unix.c
 ===================================================================
---- Quake/sys_sdl_unix.c	(revision 998)
+--- Quake/sys_sdl_unix.c	(revision 1003)
 +++ Quake/sys_sdl_unix.c	(working copy)
 @@ -20,6 +20,8 @@
  
@@ -72,9 +72,9 @@ Index: Quake/sys_sdl_unix.c
  void Sys_mkdir (const char *path)
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 998)
+--- Quake/common.c	(revision 1003)
 +++ Quake/common.c	(working copy)
-@@ -1918,6 +1918,7 @@ static void COM_AddGameDirectory (const 
+@@ -1890,6 +1890,7 @@ static void COM_AddGameDirectory (const 
  	searchpath_t *search;
  	pack_t *pak, *qspak;
  	char pakfile[MAX_OSPATH];
@@ -82,7 +82,7 @@ Index: Quake/common.c
  
  	q_strlcpy (com_gamedir, va("%s/%s", base, dir), sizeof(com_gamedir));
  
-@@ -1926,6 +1927,7 @@ static void COM_AddGameDirectory (const 
+@@ -1898,6 +1899,7 @@ static void COM_AddGameDirectory (const 
  		path_id = com_searchpaths->path_id << 1;
  	else	path_id = 1U;
  
@@ -90,7 +90,7 @@ Index: Quake/common.c
  	// add the directory to the search path
  	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
  	search->path_id = path_id;
-@@ -1942,6 +1944,7 @@ static void COM_AddGameDirectory (const 
+@@ -1914,6 +1916,7 @@ static void COM_AddGameDirectory (const 
  			qspak = NULL;
  		else {
  			qboolean old = com_modified;
@@ -98,7 +98,7 @@ Index: Quake/common.c
  			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
  			qspak = COM_LoadPackFile (pakfile);
  			com_modified = old;
-@@ -1962,6 +1965,14 @@ static void COM_AddGameDirectory (const 
+@@ -1934,6 +1937,14 @@ static void COM_AddGameDirectory (const 
  		}
  		if (!pak) break;
  	}
@@ -112,36 +112,5 @@ Index: Quake/common.c
 +	}
  }
  
- /*
-Index: Quake/host_cmd.c
-===================================================================
---- Quake/host_cmd.c	(revision 998)
-+++ Quake/host_cmd.c	(working copy)
-@@ -149,10 +149,12 @@ void Host_Game_f (void)
- 
- 		if (q_strcasecmp(p, GAMENAME)) //game is not id1
- 		{
-+			qboolean been_here = false;
- 			// assign a path_id to this game directory
- 			if (com_searchpaths)
- 				path_id = com_searchpaths->path_id << 1;
- 			else	path_id = 1U;
-+		_add_path:
- 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
- 			search->path_id = path_id;
- 			q_strlcpy (search->filename, com_gamedir, sizeof(search->filename));
-@@ -172,6 +174,14 @@ void Host_Game_f (void)
- 				search->next = com_searchpaths;
- 				com_searchpaths = search;
- 			}
-+
-+			if (!been_here && host_parms->userdir != host_parms->basedir)
-+			{
-+				been_here = true;
-+				q_strlcpy(com_gamedir, va("%s/%s", host_parms->userdir, p), sizeof(com_gamedir));
-+				Sys_mkdir(com_gamedir);
-+				goto _add_path;
-+			}
- 		}
- 
- 		//clear out and reload appropriate data
+ //==============================================================================
+

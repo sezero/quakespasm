@@ -32,7 +32,7 @@ int		safemode;
 cvar_t	registered = {"registered","1",CVAR_ROM}; /* set to correct value in COM_CheckRegistered() */
 cvar_t	cmdline = {"cmdline","",CVAR_ROM/*|CVAR_SERVERINFO*/}; /* sending cmdline upon CCREQ_RULE_INFO is evil */
 
-qboolean	com_modified;	// set true if using non-id files
+static qboolean		com_modified;	// set true if using non-id files
 
 qboolean		fitzmode;
 
@@ -1414,25 +1414,7 @@ int	com_filesize;
 
 
 //
-// in memory
-//
-
-typedef struct
-{
-	char	name[MAX_QPATH];
-	int		filepos, filelen;
-} packfile_t;
-
-typedef struct pack_s
-{
-	char	filename[MAX_OSPATH];
-	int		handle;
-	int		numfiles;
-	packfile_t	*files;
-} pack_t;
-
-//
-// on disk
+// on-disk pakfile
 //
 typedef struct
 {
@@ -1452,16 +1434,6 @@ typedef struct
 char	com_gamedir[MAX_OSPATH];
 char	com_basedir[MAX_OSPATH];
 int	file_from_pak;		// ZOID: global indicating that file came from a pak
-
-typedef struct searchpath_s
-{
-	unsigned int path_id;	// identifier assigned to the game directory
-					// Note that <install_dir>/game1 and
-					// <userdir>/game1 have the same id.
-	char	filename[MAX_OSPATH];
-	pack_t	*pack;			// only one of filename / pack will be used
-	struct searchpath_s	*next;
-} searchpath_t;
 
 searchpath_t	*com_searchpaths;
 searchpath_t	*com_base_searchpaths;
@@ -1842,7 +1814,7 @@ Loads the header and directory, adding the files at the beginning
 of the list so they override previous pack files.
 =================
 */
-pack_t *COM_LoadPackFile (const char *packfile)
+static pack_t *COM_LoadPackFile (const char *packfile)
 {
 	dpackheader_t	header;
 	int		i;
@@ -1964,6 +1936,79 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 	}
 }
 
+//==============================================================================
+//johnfitz -- dynamic gamedir stuff -- modified by QuakeSpasm team.
+//==============================================================================
+void ExtraMaps_NewGame (void);
+static void COM_Game_f (void)
+{
+	if (Cmd_Argc() > 1)
+	{
+		const char *p = Cmd_Argv(1);
+		searchpath_t *search;
+
+		if (!registered.value) //disable shareware quake
+		{
+			Con_Printf("You must have the registered version to use modified games\n");
+			return;
+		}
+
+		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
+		{
+			Con_Printf ("gamedir should be a single directory name, not a path\n");
+			return;
+		}
+
+		if (!q_strcasecmp(p, COM_SkipPath(com_gamedir))) //no change
+		{
+			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
+			return;
+		}
+
+		com_modified = true;
+
+		//Kill the server
+		CL_Disconnect ();
+		Host_ShutdownServer(true);
+
+		//Write config file
+		Host_WriteConfiguration ();
+
+		//Kill the extra game if it is loaded
+		while (com_searchpaths != com_base_searchpaths)
+		{
+			if (com_searchpaths->pack)
+			{
+				Sys_FileClose (com_searchpaths->pack->handle);
+				Z_Free (com_searchpaths->pack->files);
+				Z_Free (com_searchpaths->pack);
+			}
+			search = com_searchpaths->next;
+			Z_Free (com_searchpaths);
+			com_searchpaths = search;
+		}
+
+		if (q_strcasecmp(p, GAMENAME)) //game is not id1
+			COM_AddGameDirectory (com_basedir, p);
+
+		//clear out and reload appropriate data
+		Cache_Flush ();
+		Mod_ResetAll();
+		if (!isDedicated)
+		{
+			TexMgr_NewGame ();
+			Draw_NewGame ();
+			R_NewGame ();
+		}
+		ExtraMaps_NewGame ();
+		//Cbuf_InsertText ("exec quake.rc\n");
+
+		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
+	}
+	else //Diplay the current gamedir
+		Con_Printf("\"game\" is \"%s\"\n", COM_SkipPath(com_gamedir));
+}
+
 /*
 =================
 COM_InitFilesystem
@@ -1976,6 +2021,7 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	Cvar_RegisterVariable (&registered);
 	Cvar_RegisterVariable (&cmdline);
 	Cmd_AddCommand ("path", COM_Path_f);
+	Cmd_AddCommand ("game", COM_Game_f); //johnfitz
 
 	i = COM_CheckParm ("-basedir");
 	if (i && i < com_argc-1)
@@ -2011,8 +2057,11 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)
 	{
+		const char *p = com_argv[i + 1];
+		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
+			Sys_Error ("gamedir should be a single directory name, not a path\n");
 		com_modified = true;
-		COM_AddGameDirectory (com_basedir, com_argv[i + 1]);
+		COM_AddGameDirectory (com_basedir, p);
 	}
 
 	COM_CheckRegistered ();
