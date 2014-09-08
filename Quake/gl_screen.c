@@ -709,14 +709,16 @@ void SCR_SetUpToDrawConsole (void)
 
 	if (scr_conlines < scr_con_current)
 	{
-		scr_con_current -= scr_conspeed.value*host_frametime/timescale; //johnfitz -- timescale
+		// ericw -- (glheight/600.0) factor makes conspeed resolution independent, using 800x600 as a baseline
+		scr_con_current -= scr_conspeed.value*(glheight/600.0)*host_frametime/timescale; //johnfitz -- timescale
 		if (scr_conlines > scr_con_current)
 			scr_con_current = scr_conlines;
 
 	}
 	else if (scr_conlines > scr_con_current)
 	{
-		scr_con_current += scr_conspeed.value*host_frametime/timescale; //johnfitz -- timescale
+		// ericw -- (glheight/600.0)
+		scr_con_current += scr_conspeed.value*(glheight/600.0)*host_frametime/timescale; //johnfitz -- timescale
 		if (scr_conlines < scr_con_current)
 			scr_con_current = scr_conlines;
 	}
