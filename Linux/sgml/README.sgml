@@ -47,7 +47,7 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 <itemize>
 <item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
-<item>To prevent tracks from being downsampled, use the "-sndspeed" option to set a sufficiently high sample rate.
+<item>As of 0.85.10, music is played back at 44100Hz by default with no need to adjust "-sndspeed".
 <item>Use the "-noextmusic" option to disable this feature.
 <item>See <url url="README.music"> for more details.
 </itemize>
@@ -105,6 +105,9 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 
 <sect1> Changes in 0.85.10<p>
 <itemize>
+<item> Console speed now resolution-independent.
+<item> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.
+<item> PF_VarString buffer bumped to 1024, avoids truncating In The Shadows centerprints.
 <item> Support for opengl non-power-of-two-textures extension.
 <item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).
 <item> Fence texture support.
@@ -112,7 +115,7 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <item> Brush model drawing speedup.
 <item> Support for BSP2 and 2PSB map formats.
 <item> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).
-<item> Sfx low-pass filter support.  The -sndspeed command-line option now control whether the low-pass filter is applied: if set to 11025 you get the lowpass filter, otherwise not used.  New -mixspeed command-line option, defaulting to 44100, to control the sample rate.  New snd_filterquality cvar, value can be 1-5, the 5 setting closely matches the Windows resampler and the 1 setting closely matches the OS X resampler.
+<item> Music and sfx now mixed at 44100Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.
 <item> Better Hor+ field of view (FOV) scaling behavior.
 <item> Better cross-map demo playback support.
 <item> Fix screenshots when screen width isn't a multiple of 4.
