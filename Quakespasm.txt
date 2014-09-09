@@ -4,7 +4,6 @@
 
   Table of Contents
 
-
   1. About
   2. Downloads
   3. Hints
@@ -33,11 +32,11 @@
   9. Contact
   10. Links
 
-
   ______________________________________________________________________
 
 
   Page last edited Sep. 9, 2014
+
 
   1.  About
 
@@ -49,12 +48,13 @@
   includes a new sound driver, some graphical niceities, and numerous
   bug-fixes and minor improvements.
 
-  2.  Downloads
 
+  2.  Downloads
 
   o  Project Downloads <http://quakespasm.sourceforge.net/download.htm>
 
   o  Automatic Builds <http://quakespasm.ericwa.com/job/quakespasm/>
+
 
   3.  Hints
 
@@ -102,6 +102,7 @@
 
   o  See  <Quakespasm-Music.txt> for more details.
 
+
   4.  Compiling and Installation
 
   Quakespasm's (optional) custom data is now stored in the file
@@ -125,7 +126,6 @@
   Compile time options include
 
   o  make DEBUG=1 for debugging
-
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
@@ -152,6 +152,7 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
+
   5.  Known Bugs
 
   Some versions of Xorg and SDL have brightness issues.
@@ -169,10 +170,10 @@
   OS X has a well known gamma issue where the screen turns dark, but we
   currently have no fix.
 
+
   6.  Changes
 
   6.1.  Changes in 0.85.10
-
 
   o  Console speed now resolution-independent.
 
@@ -253,11 +254,10 @@
 
   o  Other fixes and clean-ups.
 
+
   6.2.  Changes in 0.85.9
 
-
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
-
 
   o  Implemented Hor+ style field of view (FOV) scaling, useful for
      widescreen resolutions. Configured by new cvar fov_adapt: set it to
@@ -301,8 +301,8 @@
 
   o  Several other minor fixes/cleanups.
 
-  6.3.  Changes in 0.85.8
 
+  6.3.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -323,7 +323,6 @@
      supported.
 
   o  Support for Solaris.
-
 
   o  Switched to using libmad instead of libmpg123 for MP3 playback on
      Mac OS X.
@@ -349,8 +348,8 @@
 
   o  Miscellaneous source code cleanups.
 
-  6.4.  Changes in 0.85.7
 
+  6.4.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -375,8 +374,8 @@
 
   o  Several other small changes mostly invisible to the end-user
 
-  6.5.  Changes in 0.85.6
 
+  6.5.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -390,7 +389,6 @@
 
 
   6.6.  Changes in 0.85.5
-
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -420,8 +418,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-  6.7.  Changes in 0.85.4
 
+  6.7.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -448,12 +446,11 @@
 
   o  Other minor sound and cdaudio updates
 
-  6.8.  Changes in 0.85.3
 
+  6.8.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
-
 
   o  Much needed OSX framework stuff from Kristian
 
@@ -486,8 +483,8 @@
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
 
-  6.9.  Changes in 0.85.2
 
+  6.9.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -514,8 +511,8 @@
 
   o  Add OSX Makefile (tested?)
 
-  6.10.  Changes in 0.85.1
 
+  6.10.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -532,6 +529,7 @@
      excessively
 
   o  Show helpful info on start-up
+
 
   o  Include real map name (sv.name) and skill in the status bar
 
@@ -552,8 +550,8 @@
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
-  7.  Todo
 
+  7.  Todo
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -574,8 +572,8 @@
      CREATIVE COMMONS PUBLIC LICENSE
      <http://creativecommons.org/licenses/by/3.0/legalcode>
 
-  9.  Contact
 
+  9.  Contact
 
   o  QuakeSpasm Project page
      <http://sourceforge.net/projects/quakespasm>
@@ -587,8 +585,8 @@
      leader), Eric <mailto:gmail - dot - com - username - ewasylishen>,
      Sander <mailto:gmail - dot - com - username - a.h.vandijk>,
      Stevenaaus <mailto:yahoo - dot - com - username - stevenaaus>
-  10.  Links
 
+  10.  Links
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
