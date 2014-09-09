@@ -1945,6 +1945,7 @@ static void COM_Game_f (void)
 	if (Cmd_Argc() > 1)
 	{
 		const char *p = Cmd_Argv(1);
+		const char *p2 = Cmd_Argv(2);
 		searchpath_t *search;
 
 		if (!registered.value) //disable shareware quake
@@ -1959,10 +1960,31 @@ static void COM_Game_f (void)
 			return;
 		}
 
+		if (*p2)
+		{
+			if (strcmp(p2,"-hipnotic") && strcmp(p2,"-rogue") && strcmp(p2,"-quoth")) {
+				Con_Printf ("invalid mission pack argument to \"game\"\n");
+				return;
+			}
+			if (!q_strcasecmp(p, GAMENAME)) {
+				Con_Printf ("no mission pack arguments to %s game\n", GAMENAME);
+				return;
+			}
+		}
+
 		if (!q_strcasecmp(p, COM_SkipPath(com_gamedir))) //no change
 		{
-			Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
-			return;
+			if (com_searchpaths->path_id > 1) { //current game not id1
+				if (*p2 && com_searchpaths->path_id == 2)
+					Con_Printf("reloading game \"%s\" with \"%s\" support\n", p, &p2[1]);
+				else if (!*p2 && com_searchpaths->path_id > 2)
+					Con_Printf("reloading game \"%s\" without mission pack support\n", p);
+				else goto _same;
+			}
+			else { _same:
+				Con_Printf("\"game\" is already \"%s\"\n", COM_SkipPath(com_gamedir));
+				return;
+			}
 		}
 
 		com_modified = true;
@@ -1987,14 +2009,29 @@ static void COM_Game_f (void)
 			Z_Free (com_searchpaths);
 			com_searchpaths = search;
 		}
+		hipnotic = false;
+		rogue = false;
+		standard_quake = true;
 
 		if (q_strcasecmp(p, GAMENAME)) //game is not id1
+		{
+			if (*p2) {
+				COM_AddGameDirectory (com_basedir, &p2[1]);
+				standard_quake = false;
+				if (!strcmp(p2,"-hipnotic") || !strcmp(p2,"-quoth"))
+					hipnotic = true;
+				else if (!strcmp(p2,"-rogue"))
+					rogue = true;
+			}
 			COM_AddGameDirectory (com_basedir, p);
+		}
 		else // just update com_gamedir
+		{
 			q_snprintf (com_gamedir, sizeof(com_gamedir), "%s/%s",
 					(host_parms->userdir != host_parms->basedir)?
 						   host_parms->userdir : com_basedir,
 					GAMENAME);
+		}
 
 		//clear out and reload appropriate data
 		Cache_Flush ();
@@ -2044,6 +2081,13 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (com_basedir, GAMENAME);
 
+	/* this is the end of our base searchpath:
+	 * any set gamedirs, such as those from -game command line
+	 * arguments or by the 'game' console command will be freed
+	 * up to here upon a new game command. */
+	com_base_searchpaths = com_searchpaths;
+
+	// add mission pack requests (only one should be specified)
 	if (COM_CheckParm ("-rogue"))
 		COM_AddGameDirectory (com_basedir, "rogue");
 	if (COM_CheckParm ("-hipnotic"))
@@ -2051,13 +2095,6 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	if (COM_CheckParm ("-quoth"))
 		COM_AddGameDirectory (com_basedir, "quoth");
 
-/* this is the end of our base searchpath:
- * any set gamedirs, such as those from -game command line
- * arguments or by the 'game' console command will be freed
- * up to here upon a new game command.
- * Set here instead of just after 'id1', because we don't want
- * to allow the 'game' command to strip away the mission packs */
-	com_base_searchpaths = com_searchpaths;
 
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)
