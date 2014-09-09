@@ -1975,8 +1975,13 @@ static void COM_Game_f (void)
 		if (!q_strcasecmp(p, COM_SkipPath(com_gamedir))) //no change
 		{
 			if (com_searchpaths->path_id > 1) { //current game not id1
-				if (*p2 && com_searchpaths->path_id == 2)
+				if (*p2 && com_searchpaths->path_id == 2) {
+					// rely on QuakeSpasm extension treating '-game missionpack'
+					// as '-missionpack', otherwise would be a mess
+					if (!q_strcasecmp(p, &p2[1]))
+						goto _same;
 					Con_Printf("reloading game \"%s\" with \"%s\" support\n", p, &p2[1]);
+				}
 				else if (!*p2 && com_searchpaths->path_id > 2)
 					Con_Printf("reloading game \"%s\" without mission pack support\n", p);
 				else goto _same;
@@ -2022,8 +2027,21 @@ static void COM_Game_f (void)
 					hipnotic = true;
 				else if (!strcmp(p2,"-rogue"))
 					rogue = true;
+				if (q_strcasecmp(p, &p2[1])) //don't load twice
+					COM_AddGameDirectory (com_basedir, p);
 			}
-			COM_AddGameDirectory (com_basedir, p);
+			else {
+				COM_AddGameDirectory (com_basedir, p);
+				// QuakeSpasm extension: treat '-game missionpack' as '-missionpack'
+				if (!q_strcasecmp(p,"hipnotic") || !q_strcasecmp(p,"quoth")) {
+					hipnotic = true;
+					standard_quake = false;
+				}
+				else if (!q_strcasecmp(p,"rogue")) {
+					rogue = true;
+					standard_quake = false;
+				}
+			}
 		}
 		else // just update com_gamedir
 		{
@@ -2103,7 +2121,22 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
 			Sys_Error ("gamedir should be a single directory name, not a path\n");
 		com_modified = true;
-		COM_AddGameDirectory (com_basedir, p);
+		// don't load mission packs twice
+		if (COM_CheckParm ("-rogue") && !q_strcasecmp(p, "rogue")) p = NULL;
+		if (COM_CheckParm ("-hipnotic") && !q_strcasecmp(p, "hipnotic")) p = NULL;
+		if (COM_CheckParm ("-quoth") && !q_strcasecmp(p, "quoth")) p = NULL;
+		if (p != NULL) {
+			COM_AddGameDirectory (com_basedir, p);
+			// QuakeSpasm extension: treat '-game missionpack' as '-missionpack'
+			if (!q_strcasecmp(p,"rogue")) {
+				rogue = true;
+				standard_quake = false;
+			}
+			if (!q_strcasecmp(p,"hipnotic") || !q_strcasecmp(p,"quoth")) {
+				hipnotic = true;
+				standard_quake = false;
+			}
+		}
 	}
 
 	COM_CheckRegistered ();
