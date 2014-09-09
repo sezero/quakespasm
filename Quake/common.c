@@ -1954,7 +1954,7 @@ static void COM_Game_f (void)
 			return;
 		}
 
-		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
+		if (!*p || !strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
 		{
 			Con_Printf ("gamedir should be a single directory name, not a path\n");
 			return;
@@ -2090,11 +2090,9 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		q_strlcpy (com_basedir, host_parms->basedir, sizeof(com_basedir));
 
 	j = strlen (com_basedir);
-	if (j > 0)
-	{
-		if ((com_basedir[j-1] == '\\') || (com_basedir[j-1] == '/'))
-			com_basedir[j-1] = 0;
-	}
+	if (j < 1) Sys_Error("Bad argument to -basedir");
+	if ((com_basedir[j-1] == '\\') || (com_basedir[j-1] == '/'))
+		com_basedir[j-1] = 0;
 
 	// start up with GAMENAME by default (id1)
 	COM_AddGameDirectory (com_basedir, GAMENAME);
@@ -2118,7 +2116,7 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 	if (i && i < com_argc-1)
 	{
 		const char *p = com_argv[i + 1];
-		if (!strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
+		if (!*p || !strcmp(p, ".") || strstr(p, "..") || strstr(p, "/") || strstr(p, "\\") || strstr(p, ":"))
 			Sys_Error ("gamedir should be a single directory name, not a path\n");
 		com_modified = true;
 		// don't load mission packs twice
