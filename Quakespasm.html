@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Sep. 08, 2014</EM></P>
+<P><EM>Page last edited Sep. 9, 2014</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -27,7 +27,7 @@
 <LI><A NAME="toc3.1">3.1</A> <A HREF="Quakespasm.html#ss3.1">Music Playback</A>
 </UL>
 <P>
-<H2><A NAME="toc4">4.</A> <A HREF="Quakespasm.html#s4">Compiling </A></H2>
+<H2><A NAME="toc4">4.</A> <A HREF="Quakespasm.html#s4">Compiling and Installation</A></H2>
 
 <UL>
 <LI><A NAME="toc4.1">4.1</A> <A HREF="Quakespasm.html#ss4.1">Linux/Unix </A>
@@ -59,18 +59,22 @@
 <H2><A NAME="toc8">8.</A> <A HREF="Quakespasm.html#s8">Copyright </A></H2>
 
 <P>
-<H2><A NAME="toc9">9.</A> <A HREF="Quakespasm.html#s9">Links </A></H2>
+<H2><A NAME="toc9">9.</A> <A HREF="Quakespasm.html#s9">Contact </A></H2>
+
+<P>
+<H2><A NAME="toc10">10.</A> <A HREF="Quakespasm.html#s10">Links </A></H2>
 
 
 <HR>
 <H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
 
 
-<P>QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.
-It includes 64bit CPU support, a new sound driver, several networking fixes and a few graphical niceities.</P>
 <P>
-<A HREF="http://quakespasm.sourceforge.net">http://quakespasm.sourceforge.net</A></P>
-
+<A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
+is a Quake 1 engine based on the SDL port of
+<A HREF="http://www.celephais.net/fitzquake">FitzQuake</A>.</P>
+<P>It includes support for 64 bit CPUs and custom music playback, and includes a new
+sound driver, some graphical niceities, and numerous bug-fixes and minor improvements.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
 
@@ -94,6 +98,8 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <UL>
 <LI>To disable some changes, use "<B>quakespasm -fitz</B>"
 </LI>
+<LI>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
+</LI>
 <LI>For different sound drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
 , where DRIVER may be alsa, dsp, pulse, esd ...
 </LI>
@@ -103,13 +109,13 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <LI>There is currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
 </LI>
-<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME</EM>"</LI>
+<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"</LI>
 </UL>
 </P>
 <H2><A NAME="ss3.1">3.1</A> <A HREF="#toc3.1">Music Playback</A>
 </H2>
 
-<P>Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music files.
+<P>Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 <UL>
 <LI>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".</LI>
 <LI>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.</LI>
@@ -121,11 +127,11 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 </P>
 
 
-<H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling </A></H2>
+<H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
 
 
-<P>To check-out the latest version of QuakeSpasm, use :<BR>
-<EM>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</EM></P>
+<P>Quakespasm's (optional) custom data is now stored in  the file <B>quakespasm.pak</B>. This file should be placed alongside your quakespasm binary and <B>id1</B> directory.</P>
+<P><EM>To check-out the latest version of QuakeSpasm, use</EM> <B>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</B></P>
 <H2><A NAME="ss4.1">4.1</A> <A HREF="#toc4.1">Linux/Unix </A>
 </H2>
 
@@ -416,7 +422,23 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="s9">9.</A> <A HREF="#toc9">Links </A></H2>
+<H2><A NAME="s9">9.</A> <A HREF="#toc9">Contact </A></H2>
+
+<P>
+<UL>
+<LI>
+<A HREF="http://sourceforge.net/projects/quakespasm">QuakeSpasm Project page</A></LI>
+<LI>
+<A HREF="http://sourceforge.net/p/quakespasm/bugs/?source=navbar">Bug reports</A></LI>
+<LI>
+<A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan</A> (project leader),  
+<A HREF="mailto:gmail - dot - com - username - ewasylishen">Eric</A>,  
+<A HREF="mailto:gmail - dot - com - username - a.h.vandijk">Sander</A>,  
+<A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus</A></LI>
+</UL>
+</P>
+
+<H2><A NAME="s10">10.</A> <A HREF="#toc10">Links </A></H2>
 
 
 <P>
@@ -424,25 +446,13 @@ these patched libSDL binaries may help.
 <LI>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A></LI>
 <LI>
-<A HREF="http://sourceforge.net/projects/quakespasm">QuakeSpasm Project page</A></LI>
+<A HREF="http://quakespasm.sourceforge.net/download.htm">Downloads</A></LI>
 <LI>
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A></LI>
 <LI>
-<A HREF="http://www.kristianduske.com/fitzquake">Sleepwalkr's Original SDL Port</A></LI>
-<LI>
-<A HREF="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">Baker's 0.85 Source Code</A></LI>
-<LI>
 <A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A></LI>
 <LI>
-<A HREF="http://www.celephais.net/board/view_thread.php?id=60172">Func SDL Fitzquake forum</A></LI>
-<LI>
-<A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan's email</A></LI>
-<LI>
-<A HREF="mailto:yahoo - dot - com - username - stevenaaus">Stevenaaus email</A></LI>
-<LI>
-<A HREF="mailto:gmail - dot - com - username - inveigle">Kristian's email</A></LI>
-<LI>
-<A HREF="mailto:gmail - dot - com - username - a.h.vandijk">Sander's email</A></LI>
+<A HREF="http://forums.inside3d.com/viewforum.php?f=14">Inside 3D forums</A></LI>
 </UL>
 </P>
 

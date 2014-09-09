@@ -4,15 +4,16 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Sep. 08, 2014</em>
+<em>Page last edited Sep. 9, 2014</em>
 
 <sect> About <p>
 
-QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.
-It includes 64bit CPU support, a new sound driver, several networking fixes and a few graphical niceities.
-
-<url url="http://quakespasm.sourceforge.net">
-
+<url url="http://quakespasm.sourceforge.net" name="QuakeSpasm">
+is a Quake 1 engine based on the SDL port of
+<url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
+</p><p>
+It includes support for 64 bit CPUs and custom music playback, and includes a new
+sound driver, some graphical niceities, and numerous bug-fixes and minor improvements.
 
 <sect> Downloads <p>
 
@@ -29,6 +30,8 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <itemize>
 <item>To disable some changes, use "<bf>quakespasm -fitz</bf>"
 
+<item>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
+
 <item>For different sound drivers use "<bf>SDL_AUDIODRIVER=</bf><em>DRIVER</em><bf> ./quakespasm</bf>"
 , where DRIVER may be alsa, dsp, pulse, esd ...
 
@@ -38,12 +41,12 @@ It includes 64bit CPU support, a new sound driver, several networking fixes and 
 <item>There is currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..
 <item>In windows, alternative CD drives are accessible by "<bf>quakespasm -cddev F</bf>" (for example)
 
-<item>Quakespasm allows loading new games (mods) on the fly with "<bf>game</bf> <em>GAMENAME</em>"
+<item>Quakespasm allows loading new games (mods) on the fly with "<bf>game</bf> <em>GAMENAME {-quoth/hipnotic/rogue}</em>"
 </itemize>
 </p>
 
 <sect1>Music Playback<p>
-Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music files.
+Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 <itemize>
 <item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
@@ -53,10 +56,9 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 </itemize>
 
 
-<sect> Compiling <p>
-<p>To check-out the latest version of QuakeSpasm, use :
-<newline>
-<em>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</em></p>
+<sect> Compiling and Installation<p>
+<p>Quakespasm's (optional) custom data is now stored in  the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
+<p><em>To check-out the latest version of QuakeSpasm, use</em> <bf>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</bf></p>
 
 <sect1> Linux/Unix <p>
 After extracting the source tarball, browse the Makefile and edit the music streaming options, then
@@ -311,20 +313,24 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <url url="http://creativecommons.org/licenses/by/3.0/legalcode" name="CREATIVE COMMONS PUBLIC LICENSE">
 </itemize>
 
+<sect> Contact <p>
+<itemize>
+<item><url url="http://sourceforge.net/projects/quakespasm" name="QuakeSpasm Project page">
+<item><url url="http://sourceforge.net/p/quakespasm/bugs/?source=navbar" name="Bug reports">
+<item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan"> (project leader),  
+<url url="mailto:gmail - dot - com - username - ewasylishen" name="Eric">,  
+<url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander">,  
+<url url="mailto:yahoo - dot - com - username - stevenaaus" name="Stevenaaus">
+</itemize>
+
 <sect> Links <p>
 
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
-<item><url url="http://sourceforge.net/projects/quakespasm" name="QuakeSpasm Project page">
+<item><url url="http://quakespasm.sourceforge.net/download.htm" name="Downloads">
 <item><url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage">
-<item><url url="http://www.kristianduske.com/fitzquake" name="Sleepwalkr's Original SDL Port">
-<item><url name="Baker's 0.85 Source Code" url="http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip">
 <item><url url="http://www.celephais.net/board/view_thread.php?id=60452" name="Func Quakespasm forum">
-<item><url url="http://www.celephais.net/board/view_thread.php?id=60172" name="Func SDL Fitzquake forum">
-<item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan's email">
-<item><url url="mailto:yahoo - dot - com - username - stevenaaus" name="Stevenaaus email">
-<item><url url="mailto:gmail - dot - com - username - inveigle" name="Kristian's email">
-<item><url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander's email">
+<item><url url="http://forums.inside3d.com/viewforum.php?f=14" name="Inside 3D forums">
 </itemize>
 
 </article>

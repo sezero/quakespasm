@@ -10,7 +10,7 @@
   3. Hints
      3.1 Music Playback
 
-  4. Compiling
+  4. Compiling and Installation
      4.1 Linux/Unix
      4.2 Windows
      4.3 Mac OS X
@@ -30,21 +30,24 @@
 
   7. Todo
   8. Copyright
-  9. Links
+  9. Contact
+  10. Links
 
 
   ______________________________________________________________________
 
 
-  Page last edited Sep. 08, 2014
+  Page last edited Sep. 9, 2014
 
   1.  About
 
-  QuakeSpasm is a Quake 1 engine based on the SDL port of FitzQuake.  It
-  includes 64bit CPU support, a new sound driver, several networking
-  fixes and a few graphical niceities.
+  QuakeSpasm <http://quakespasm.sourceforge.net> is a Quake 1 engine
+  based on the SDL port of FitzQuake
+  <http://www.celephais.net/fitzquake>.
 
-  <http://quakespasm.sourceforge.net>
+  It includes support for 64 bit CPUs and custom music playback, and
+  includes a new sound driver, some graphical niceities, and numerous
+  bug-fixes and minor improvements.
 
   2.  Downloads
 
@@ -58,8 +61,11 @@
    Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
 
-
   o  To disable some changes, use "quakespasm -fitz"
+
+  o  Quakespasm's custom data is stored in "quakespasm.pak". Install
+     this file alongside your id1 directory to enable the custom console
+     background and other minor features.
 
   o  For different sound drivers use "SDL_AUDIODRIVER=DRIVER
      ./quakespasm" , where DRIVER may be alsa, dsp, pulse, esd ...
@@ -76,12 +82,12 @@
      -cddev F" (for example)
 
   o  Quakespasm allows loading new games (mods) on the fly with "game
-     GAMENAME"
+     GAMENAME {-quoth/hipnotic/rogue}"
 
   3.1.  Music Playback
 
-  Since version 0.85.4, Quakespasm can play back external MP3, OGG and
-  Wave music files.
+  Quakespasm can play various external music formats, including MP3, OGG
+  and FLAC.
 
   o  Tracks should be named like "track02.ogg", "track03.ogg" ... (there
      is no track01) and placed into "Quake/id1/music".
@@ -96,10 +102,14 @@
 
   o  See  <Quakespasm-Music.txt> for more details.
 
-  4.  Compiling
+  4.  Compiling and Installation
 
-  To check-out the latest version of QuakeSpasm, use :
-  svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
+  Quakespasm's (optional) custom data is now stored in the file
+  quakespasm.pak. This file should be placed alongside your quakespasm
+  binary and id1 directory.
+
+  To check-out the latest version of QuakeSpasm, use svn co
+  svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
 
   4.1.  Linux/Unix
 
@@ -116,6 +126,7 @@
 
   o  make DEBUG=1 for debugging
 
+
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
@@ -125,7 +136,6 @@
 
   The project can also be built with Codeblocks (project files
   included).
-
 
   4.2.  Windows
 
@@ -248,6 +258,7 @@
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
+
   o  Implemented Hor+ style field of view (FOV) scaling, useful for
      widescreen resolutions. Configured by new cvar fov_adapt: set it to
      1 and your fov will be scaled automatically according to the
@@ -313,6 +324,7 @@
 
   o  Support for Solaris.
 
+
   o  Switched to using libmad instead of libmpg123 for MP3 playback on
      Mac OS X.
 
@@ -323,7 +335,6 @@
 
   o  Increased string buffer size from 256 to 384 for PF_VarString to
      work around broken mods such as UQC.
-
 
   o  Restored original behavior for Quake registered version detection.
 
@@ -377,6 +388,7 @@
 
   o  Minor SDL video fixes.
 
+
   6.6.  Changes in 0.85.5
 
 
@@ -389,7 +401,6 @@
 
   o  Added workaround against GL texture flicker (z fighting),
      controlled by new cvar 'gl_zfix'
-
 
   o  Read video variables early so that a vid_restart isn't necessary
      after init
@@ -443,6 +454,7 @@
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
 
+
   o  Much needed OSX framework stuff from Kristian
 
   o  Add a persistent history feature (thanks Baker)
@@ -455,7 +467,6 @@
   o  Sockaddr fix for FreeBSD/OSX/etc networking
 
   o  Connect status bar size to the scale slider
-
 
   o  Include an ISNAN (is not-a-number) fix to catch the occassional
      quake C bug giving traceline problems
@@ -522,7 +533,6 @@
 
   o  Show helpful info on start-up
 
-
   o  Include real map name (sv.name) and skill in the status bar
 
   o  Remove confirm quit dialog
@@ -564,35 +574,31 @@
      CREATIVE COMMONS PUBLIC LICENSE
      <http://creativecommons.org/licenses/by/3.0/legalcode>
 
-  9.  Links
+  9.  Contact
 
-
-  o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
   o  QuakeSpasm Project page
      <http://sourceforge.net/projects/quakespasm>
 
+  o  Bug reports
+     <http://sourceforge.net/p/quakespasm/bugs/?source=navbar>
+
+  o  Ozkan <mailto:gmail - dot - com - username - sezeroz> (project
+     leader), Eric <mailto:gmail - dot - com - username - ewasylishen>,
+     Sander <mailto:gmail - dot - com - username - a.h.vandijk>,
+     Stevenaaus <mailto:yahoo - dot - com - username - stevenaaus>
+  10.  Links
+
+
+  o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
+
+  o  Downloads <http://quakespasm.sourceforge.net/download.htm>
+
   o  FitzQuake Homepage <http://www.celephais.net/fitzquake>
-
-  o  Sleepwalkr's Original SDL Port
-     <http://www.kristianduske.com/fitzquake>
-
-  o  Baker's 0.85 Source Code
-     <http://quakeone.com/proquake/src_other/fitzquake_sdl_20090510_src_beta_1.zip>
 
   o  Func Quakespasm forum
      <http://www.celephais.net/board/view_thread.php?id=60452>
 
-  o  Func SDL Fitzquake forum
-     <http://www.celephais.net/board/view_thread.php?id=60172>
-
-  o  Ozkan's email <mailto:gmail - dot - com - username - sezeroz>
-
-
-  o  Stevenaaus email <mailto:yahoo - dot - com - username - stevenaaus>
-
-  o  Kristian's email <mailto:gmail - dot - com - username - inveigle>
-
-  o  Sander's email <mailto:gmail - dot - com - username - a.h.vandijk>
+  o  Inside 3D forums <http://forums.inside3d.com/viewforum.php?f=14>
 
 
