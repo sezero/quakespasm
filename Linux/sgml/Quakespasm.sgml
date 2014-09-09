@@ -49,7 +49,7 @@ Since version 0.85.4, Quakespasm can play back external MP3, OGG and Wave music 
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
 <item>As of 0.85.10, music is played back at 44100Hz by default with no need to adjust "-sndspeed".
 <item>Use the "-noextmusic" option to disable this feature.
-<item>See <url url="README.music"> for more details.
+<item>See <url url="Quakespasm-Music.txt"> for more details.
 </itemize>
 
 
