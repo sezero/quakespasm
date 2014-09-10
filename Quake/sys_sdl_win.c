@@ -148,13 +148,37 @@ int Sys_FileTime (const char *path)
 	return -1;
 }
 
+static char	cwd[1024];
+
+static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
+{
+	char		*tmp;
+
+	if (GetCurrentDirectory(dstsize, dst) == 0)
+		Sys_Error ("Couldn't determine current directory");
+
+	tmp = dst;
+	while (*tmp != 0)
+		tmp++;
+	while (*tmp == 0 && tmp != dst)
+	{
+		--tmp;
+		if (tmp != dst && (*tmp == '/' || *tmp == '\\'))
+			*tmp = 0;
+	}
+}
+
 void Sys_Init (void)
 {
 	OSVERSIONINFO	vinfo;
 
-	host_parms->userdir = host_parms->basedir;
-		/* userdirs not really necessary for windows guys.
-		 * can be done if necessary, though... */
+	memset (cwd, 0, sizeof(cwd));
+	Sys_GetBasedir(NULL, cwd, sizeof(cwd));
+	host_parms->basedir = cwd;
+
+	/* userdirs not really necessary for windows guys.
+	 * can be done if necessary, though... */
+	host_parms->userdir = host_parms->basedir; /* code elsewhere relies on this ! */
 
 	vinfo.dwOSVersionInfoSize = sizeof(vinfo);
 

@@ -26,6 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/types.h>
 #include <errno.h>
 #include <unistd.h>
+#ifdef PLATFORM_OSX
+#include <libgen.h>	/* dirname() and basename() */
+#endif
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <fcntl.h>
@@ -151,6 +154,7 @@ int Sys_FileTime (const char *path)
 	return -1;
 }
 
+static char	cwd[MAX_OSPATH];
 #ifdef DO_USERDIRS
 static char	userdir[MAX_OSPATH];
 #ifdef PLATFORM_OSX
@@ -187,11 +191,75 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 }
 #endif	/* DO_USERDIRS */
 
+#ifdef PLATFORM_OSX
+static char *OSX_StripAppBundle (char *dir)
+{ /* based on the ioquake3 project at icculus.org. */
+	static char	osx_path[MAX_OSPATH];
+
+	q_strlcpy (osx_path, dir, sizeof(osx_path));
+	if (strcmp(basename(osx_path), "MacOS"))
+		return dir;
+	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
+	if (strcmp(basename(osx_path), "Contents"))
+		return dir;
+	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
+	if (!strstr(basename(osx_path), ".app"))
+		return dir;
+	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
+	return osx_path;
+}
+
+static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
+{
+	char	*tmp;
+
+	if (realpath(argv0, dst) == NULL)
+	{
+		perror("realpath");
+		if (getcwd(dst, dstsize - 1) == NULL)
+	_fail:		Sys_Error ("Couldn't determine current directory");
+	}
+	else
+	{
+		/* strip off the binary name */
+		if (! (tmp = strdup (dst))) goto _fail;
+		q_strlcpy (dst, dirname(tmp), dstsize);
+		free (tmp);
+	}
+
+	tmp = OSX_StripAppBundle(dst);
+	if (tmp != dst)
+		q_strlcpy (dst, tmp, dstsize);
+}
+#else
+static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
+{
+	char	*tmp;
+
+	if (getcwd(dst, dstsize - 1) == NULL)
+		Sys_Error ("Couldn't determine current directory");
+
+	tmp = dst;
+	while (*tmp != 0)
+		tmp++;
+	while (*tmp == 0 && tmp != dst)
+	{
+		--tmp;
+		if (tmp != dst && *tmp == '/')
+			*tmp = 0;
+	}
+}
+#endif
+
 void Sys_Init (void)
 {
+	memset (cwd, 0, sizeof(cwd));
+	Sys_GetBasedir(host_parms->argv[0], cwd, sizeof(cwd));
+	host_parms->basedir = cwd;
 #ifndef DO_USERDIRS
 	host_parms->userdir = host_parms->basedir; /* code elsewhere relies on this ! */
 #else
+	memset (userdir, 0, sizeof(userdir));
 	Sys_GetUserdir(userdir, sizeof(userdir));
 	Sys_mkdir (userdir);
 	host_parms->userdir = userdir;
