@@ -23,8 +23,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 #include <windows.h>
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
+#if defined(USE_SDL2)
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_syswm.h>
+#else
 #include <SDL/SDL.h>
 #include <SDL/SDL_syswm.h>
+#endif
 #else
 #include "SDL.h"
 #include "SDL_syswm.h"
