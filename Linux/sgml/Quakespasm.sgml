@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Sep. 9, 2014</em>
+<em>Page last edited Sep. 10, 2014</em>
 
 <sect> About <p>
 
@@ -107,6 +107,7 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 
 <sect1> Changes in 0.85.10<p>
 <itemize>
+<item> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.
 <item> Console speed now resolution-independent.
 <item> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.
 <item> PF_VarString buffer bumped to 1024, avoids truncating In The Shadows centerprints.
@@ -303,7 +304,6 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <item>Add uHexen2's first person camera (and menu item)
 <item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls
 <item>Test usb keyboards.
-<item>Complete the unix user directories support
 </itemize>
 
 <sect> Copyright <p>
