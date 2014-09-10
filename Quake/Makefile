@@ -1,9 +1,11 @@
-# GNU Makefile for QuakeSpasm unix targets, Oct. 25, 2012
+# GNU Makefile for QuakeSpasm unix targets, Sep. 10, 2014
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
-# "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
-# specific code.
+# "make DO_USERDIRS=1" to enable user directories support
+
+# Enable/Disable user directories support
+DO_USERDIRS=0
 
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
@@ -52,7 +54,6 @@ LDFLAGS =
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
 CFLAGS += $(CPUFLAGS)
-
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
 CFLAGS += -g
@@ -66,6 +67,10 @@ cmd_strip=$(STRIP) $(1)
 define do_strip
 	$(call cmd_strip,$(1));
 endef
+endif
+
+ifeq ($(DO_USERDIRS),1)
+CFLAGS += -DDO_USERDIRS=1
 endif
 
 ### X11BASE only gets used if its in an unusual place

@@ -29,6 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/time.h>
 #include <fcntl.h>
 #include <time.h>
+#ifdef DO_USERDIRS
+#include <pwd.h>
+#endif
 
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
 #if defined(USE_SDL2)
@@ -147,9 +150,51 @@ int Sys_FileTime (const char *path)
 	return -1;
 }
 
+#ifdef DO_USERDIRS
+static char	userdir[MAX_OSPATH];
+#ifdef PLATFORM_OSX
+#define SYS_USERDIR	"Library/Application Support/QuakeSpasm"
+#else
+#define SYS_USERDIR	".quakespasm"
+#endif
+
+static void Sys_GetUserdir (char *dst, size_t dstsize)
+{
+	size_t		n;
+	const char	*home_dir = NULL;
+	struct passwd	*pwent;
+
+	pwent = getpwuid( getuid() );
+	if (pwent == NULL)
+		perror("getpwuid");
+	else
+		home_dir = pwent->pw_dir;
+	if (home_dir == NULL)
+		home_dir = getenv("HOME");
+	if (home_dir == NULL)
+		Sys_Error ("Couldn't determine userspace directory");
+
+/* what would be a maximum path for a file in the user's directory...
+ * $HOME/SYS_USERDIR/game_dir/dirname1/dirname2/dirname3/filename.ext
+ * still fits in the MAX_OSPATH == 256 definition, but just in case :
+ */
+	n = strlen(home_dir) + strlen(SYS_USERDIR) + 50;
+	if (n >= dstsize)
+		Sys_Error ("Insufficient array size for userspace directory");
+
+	q_snprintf (dst, dstsize, "%s/%s", home_dir, SYS_USERDIR);
+}
+#endif	/* DO_USERDIRS */
+
 void Sys_Init (void)
 {
-	host_parms->userdir = host_parms->basedir; /* TODO: implement properly! */
+#ifndef DO_USERDIRS
+	host_parms->userdir = host_parms->basedir; /* code elsewhere relies on this ! */
+#else
+	Sys_GetUserdir(userdir, sizeof(userdir));
+	Sys_mkdir (userdir);
+	host_parms->userdir = userdir;
+#endif
 }
 
 void Sys_mkdir (const char *path)

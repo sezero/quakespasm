@@ -1890,6 +1890,7 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 	searchpath_t *search;
 	pack_t *pak, *qspak;
 	char pakfile[MAX_OSPATH];
+	qboolean been_here = false;
 
 	q_strlcpy (com_gamedir, va("%s/%s", base, dir), sizeof(com_gamedir));
 
@@ -1898,6 +1899,7 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 		path_id = com_searchpaths->path_id << 1;
 	else	path_id = 1U;
 
+_add_path:
 	// add the directory to the search path
 	search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
 	search->path_id = path_id;
@@ -1914,6 +1916,7 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 			qspak = NULL;
 		else {
 			qboolean old = com_modified;
+			if (been_here) base = host_parms->userdir;
 			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
 			qspak = COM_LoadPackFile (pakfile);
 			com_modified = old;
@@ -1933,6 +1936,14 @@ static void COM_AddGameDirectory (const char *base, const char *dir)
 			com_searchpaths = search;
 		}
 		if (!pak) break;
+	}
+
+	if (!been_here && host_parms->userdir != host_parms->basedir)
+	{
+		been_here = true;
+		q_strlcpy(com_gamedir, va("%s/%s", host_parms->userdir, dir), sizeof(com_gamedir));
+		Sys_mkdir(com_gamedir);
+		goto _add_path;
 	}
 }
 

@@ -1,10 +1,8 @@
 # GNU Makefile for cross-compiling quakespasm.exe (Win32: MinGW)
-# using cross-toolchains on a linux host, Oct. 25, 2012
+# using cross-toolchains on a linux host, Sep. 10, 2014
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=1" to use WinSock2 api instead of old WinSock 1.1.
-# "make SDLNET=1" to use SDL_net (NOT recommended) instead of platform
-# specific code.
 
 ### Enable/disable codecs for streaming music support
 USE_CODEC_WAVE=1
