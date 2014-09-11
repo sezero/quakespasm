@@ -154,12 +154,21 @@ extern	qboolean	mtexenabled;
 extern	qboolean	gl_mtexable;
 extern PFNGLMULTITEXCOORD2FARBPROC  GL_MTexCoord2fFunc;
 extern PFNGLACTIVETEXTUREARBPROC    GL_SelectTextureFunc;
+extern PFNGLCLIENTACTIVETEXTUREARBPROC	GL_ClientActiveTextureFunc;
 
 //johnfitz -- anisotropic filtering
 #define	GL_TEXTURE_MAX_ANISOTROPY_EXT		0x84FE
 #define	GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT	0x84FF
 extern	float		gl_max_anisotropy;
 extern	qboolean	gl_anisotropy_able;
+
+//ericw -- VBO
+extern PFNGLBINDBUFFERARBPROC  GL_BindBufferFunc;
+extern PFNGLBUFFERDATAARBPROC  GL_BufferDataFunc;
+extern PFNGLDELETEBUFFERSARBPROC  GL_DeleteBuffersFunc;
+extern PFNGLGENBUFFERSARBPROC  GL_GenBuffersFunc;
+extern	qboolean	gl_vbo_able;
+//ericw
 
 //ericw -- NPOT texture support
 extern	qboolean	gl_texture_NPOT;
@@ -265,6 +274,7 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 
 void R_RenderDlights (void);
 void GL_BuildLightmaps (void);
+void GL_BuildVBOs (void);
 void R_RebuildAllLightmaps (void);
 
 int R_LightPoint (vec3_t p);

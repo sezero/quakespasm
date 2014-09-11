@@ -410,6 +410,121 @@ void R_DrawTextureChains_Glow (qmodel_t *model, entity_t *ent, texchain_t chain)
 	}
 }
 
+//==============================================================================
+//
+// VBO SUPPORT
+//
+//==============================================================================
+
+/*
+================
+R_MultitexturedDrawGLPoly
+
+Fallback immediate mode code to draw a multitexutred glpoly_t
+================
+*/
+static void R_MultitexturedDrawGLPoly (glpoly_t *p)
+{
+	float	*v;
+	int	j;
+	
+	glBegin(GL_POLYGON);
+	v = p->verts[0];
+	for (j=0 ; j<p->numverts ; j++, v+= VERTEXSIZE)
+	{
+		GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
+		GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
+		glVertex3fv (v);
+	}
+	glEnd ();
+}
+
+static unsigned int R_NumTriangleIndicesForSurf (msurface_t *s)
+{
+	return 3 * (s->numedges - 2);
+}
+
+/*
+================
+R_TriangleIndicesForSurf
+
+Writes out the triangle indices needed to draw s as a triangle list.
+The number of indices it will write is given by R_NumTriangleIndicesForSurf.
+================
+*/
+static void R_TriangleIndicesForSurf (msurface_t *s, unsigned int *dest)
+{
+	int i;
+	for (i=2; i<s->numedges; i++)
+	{
+		*dest++ = s->vbo_firstvert;
+		*dest++ = s->vbo_firstvert + i - 1;
+		*dest++ = s->vbo_firstvert + i;
+	}
+}
+
+#define MAX_BATCH_SIZE 4096
+
+static unsigned int vbo_indices[MAX_BATCH_SIZE];
+static unsigned int num_vbo_indices;
+
+/*
+================
+R_ClearBatch
+================
+*/
+static void R_ClearBatch ()
+{
+	if (!(gl_vbo_able && gl_mtexable)) return;
+	
+	num_vbo_indices = 0;
+}
+
+/*
+================
+R_FlushBatch
+
+Draw the current batch if non-empty and clears it, ready for more R_BatchSurface calls.
+================
+*/
+static void R_FlushBatch ()
+{
+	if (!(gl_vbo_able && gl_mtexable)) return;
+
+	if (num_vbo_indices > 0)
+	{
+		glDrawElements (GL_TRIANGLES, num_vbo_indices, GL_UNSIGNED_INT, vbo_indices);
+		num_vbo_indices = 0;
+	}
+}
+
+/*
+================
+R_BatchSurface
+
+Add the surface to the current batch, or just draw it immediately if we're not
+using VBOs.
+================
+*/
+static void R_BatchSurface (msurface_t *s)
+{
+	int num_surf_indices;
+	
+	if (!(gl_vbo_able && gl_mtexable))
+	{
+		R_MultitexturedDrawGLPoly (s->polys);
+		return;
+	}
+	
+	num_surf_indices = R_NumTriangleIndicesForSurf (s);
+	
+	if (num_vbo_indices + num_surf_indices > MAX_BATCH_SIZE)
+		R_FlushBatch();
+	
+	R_TriangleIndicesForSurf (s, &vbo_indices[num_vbo_indices]);
+	num_vbo_indices += num_surf_indices;
+}
+
 /*
 ================
 R_DrawTextureChains_Multitexture -- johnfitz
@@ -417,11 +532,11 @@ R_DrawTextureChains_Multitexture -- johnfitz
 */
 void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_t chain)
 {
-	int			i, j;
+	int			i;
 	msurface_t	*s;
 	texture_t	*t;
-	float		*v;
 	qboolean	bound;
+	int		lastlightmap;
 
 	for (i=0 ; i<model->numtextures ; i++)
 	{
@@ -430,7 +545,10 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTILED | SURF_NOTEXTURE))
 			continue;
 
+		R_ClearBatch ();
+
 		bound = false;
+		lastlightmap = 0; // avoid compiler warning
 		for (s = t->texturechains[chain]; s; s = s->texturechain)
 			if (!s->culled)
 			{
@@ -443,20 +561,22 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 					
 					GL_EnableMultitexture(); // selects TEXTURE1
 					bound = true;
+					lastlightmap = s->lightmaptexturenum;
 				}
 				R_RenderDynamicLightmaps (s);
+				
+				if (s->lightmaptexturenum != lastlightmap)
+					R_FlushBatch ();
+
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-				glBegin(GL_POLYGON);
-				v = s->polys->verts[0];
-				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
-				{
-					GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
-					GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
-					glVertex3fv (v);
-				}
-				glEnd ();
+				lastlightmap = s->lightmaptexturenum;
+				R_BatchSurface (s);
+
 				rs_brushpasses++;
 			}
+
+		R_FlushBatch ();
+
 		GL_DisableMultitexture(); // selects TEXTURE0
 
 		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)

@@ -155,6 +155,8 @@ typedef struct msurface_s
 	struct	msurface_s	*texturechain;
 
 	mtexinfo_t	*texinfo;
+	
+	int		vbo_firstvert;		// index of this surface's first vert in the VBO
 
 // lighting info
 	int			dlightframe;

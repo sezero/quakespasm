@@ -273,7 +273,8 @@ void R_NewMap (void)
 	R_ClearParticles ();
 
 	GL_BuildLightmaps ();
-
+	GL_BuildVBOs ();
+	
 	r_framecount = 0; //johnfitz -- paranoid?
 	r_visframecount = 0; //johnfitz -- paranoid?
 

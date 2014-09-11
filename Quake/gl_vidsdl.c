@@ -92,9 +92,15 @@ qboolean gl_swap_control = false; //johnfitz
 qboolean gl_anisotropy_able = false; //johnfitz
 float gl_max_anisotropy; //johnfitz
 qboolean gl_texture_NPOT = false; //ericw
+qboolean gl_vbo_able = false; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
+PFNGLCLIENTACTIVETEXTUREARBPROC GL_ClientActiveTextureFunc = NULL; //ericw
+PFNGLBINDBUFFERARBPROC GL_BindBufferFunc = NULL; //ericw
+PFNGLBUFFERDATAARBPROC GL_BufferDataFunc = NULL; //ericw
+PFNGLDELETEBUFFERSARBPROC GL_DeleteBuffersFunc = NULL; //ericw
+PFNGLGENBUFFERSARBPROC GL_GenBuffersFunc = NULL; //ericw
 
 //====================================
 
@@ -634,6 +640,7 @@ static void VID_Restart (void)
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
+	GL_BuildVBOs ();
 	GL_SetupState ();
 
 	//warpimages needs to be recalculated
@@ -788,6 +795,28 @@ static qboolean GL_ParseExtensionList (const char *list, const char *name)
 static void GL_CheckExtensions (void)
 {
 	int swap_control;
+	
+	//
+	// ARB_vertex_buffer_object
+	//
+	if (COM_CheckParm("-novbo"))
+		Con_Warning ("Vertex buffer objects disabled at command line\n");
+	else
+	{
+		GL_BindBufferFunc = (PFNGLBINDBUFFERARBPROC) SDL_GL_GetProcAddress("glBindBufferARB");
+		GL_BufferDataFunc = (PFNGLBUFFERDATAARBPROC) SDL_GL_GetProcAddress("glBufferDataARB");
+		GL_DeleteBuffersFunc = (PFNGLDELETEBUFFERSARBPROC) SDL_GL_GetProcAddress("glDeleteBuffersARB");
+		GL_GenBuffersFunc = (PFNGLGENBUFFERSARBPROC) SDL_GL_GetProcAddress("glGenBuffersARB");
+		if (GL_BindBufferFunc && GL_BufferDataFunc && GL_DeleteBuffersFunc && GL_GenBuffersFunc)
+		{
+			Con_Printf("FOUND: ARB_vertex_buffer_object\n");
+			gl_vbo_able = true;
+		}
+		else
+		{
+			Con_Warning ("ARB_vertex_buffer_object not available\n");
+		}
+	}
 
 	// multitexture
 	//
@@ -797,7 +826,8 @@ static void GL_CheckExtensions (void)
 	{
 		GL_MTexCoord2fFunc = (PFNGLMULTITEXCOORD2FARBPROC) SDL_GL_GetProcAddress("glMultiTexCoord2fARB");
 		GL_SelectTextureFunc = (PFNGLACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glActiveTextureARB");
-		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc)
+		GL_ClientActiveTextureFunc = (PFNGLCLIENTACTIVETEXTUREARBPROC) SDL_GL_GetProcAddress("glClientActiveTextureARB");
+		if (GL_MTexCoord2fFunc && GL_SelectTextureFunc && GL_ClientActiveTextureFunc)
 		{
 			Con_Printf("FOUND: ARB_multitexture\n");
 			gl_mtexable = true;
@@ -1376,7 +1406,13 @@ void	VID_Init (void)
 // new proc by S.A., called by alt-return key binding.
 void	VID_Toggle (void)
 {
-	static qboolean vid_toggle_works = true;
+// disabling the fast path because with SDL 1.2 it invalidates VBOs (using them
+// causes a crash, sugesting that the fullscreen toggle created a new GL context,
+// although texture objects remain valid for some reason).
+//
+// SDL2 does promise window resizes / fullscreen changes preserve the GL context,
+// so we could use the fast path with SDL2. --ericw
+	static qboolean vid_toggle_works = false;
 	qboolean toggleWorked;
 
 	S_ClearBuffer ();
