@@ -7,6 +7,9 @@
 # Enable/Disable user directories support
 DO_USERDIRS=0
 
+### Enable/Disable SDL2
+USE_SDL2=0
+
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=0
@@ -93,12 +96,24 @@ LDFLAGS+= -L$(X11BASE)/lib
 CFLAGS += -I$(X11BASE)/include
 endif
 
+ifeq ($(USE_SDL2),1)
+CFLAGS += -DUSE_SDL2
+endif
+
+ifeq ($(USE_SDL2),1)
+SDL_CONFIG ?= sdl2-config
+else
 SDL_CONFIG ?= sdl-config
+endif
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(SDLNET),1)
+ifeq ($(USE_SDL2),1)
+NET_LIBS   :=-lSDL2_net
+else
 NET_LIBS   :=-lSDL_net
+endif
 CFLAGS     +=-D_USE_SDLNET
 else
 ifeq ($(HOST_OS),sunos)

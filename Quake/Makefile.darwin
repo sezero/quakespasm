@@ -8,6 +8,9 @@
 # Enable/Disable user directories support
 DO_USERDIRS=0
 
+### Enable/Disable SDL2
+USE_SDL2=0
+
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=1
@@ -84,14 +87,27 @@ ifeq ($(DO_USERDIRS),1)
 CFLAGS += -DDO_USERDIRS=1
 endif
 
+ifeq ($(USE_SDL2),1)
+CFLAGS += -DUSE_SDL2
+endif
+
 # not relying on sdl-config command and assuming
 # /Library/Frameworks/SDL.framework is available
 SDL_CFLAGS =-D_GNU_SOURCE=1 -D_THREAD_SAFE
 SDL_CFLAGS+=-DSDL_FRAMEWORK -DNO_SDL_CONFIG
-SDL_LIBS   =-Wl,-framework,SDL -Wl,-framework,Cocoa
+ifeq ($(USE_SDL2),1)
+SDL_LIBS   =-Wl,-framework,SDL2
+else
+SDL_LIBS   =-Wl,-framework,SDL
+endif
+SDL_LIBS  +=-Wl,-framework,Cocoa
 
 ifeq ($(SDLNET),1)
+ifeq ($(USE_SDL2),1)
+NET_LIBS   :=-Wl,-framework,SDL2_net
+else
 NET_LIBS   :=-Wl,-framework,SDL_net
+endif
 CFLAGS     +=-D_USE_SDLNET
 else
 NET_LIBS   :=
