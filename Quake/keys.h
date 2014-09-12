@@ -164,7 +164,8 @@ void Key_Init (void);
 void Key_ClearStates (void);
 void Key_UpdateForDest (void);
 
-void Key_Event (int key, qboolean down, qboolean interpret_shift);
+void Key_Event (int key, qboolean down);
+void Char_Event (int key);
 
 void Key_SetBinding (int keynum, const char *binding);
 const char *Key_KeynumToString (int keynum);

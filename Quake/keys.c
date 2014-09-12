@@ -50,6 +50,12 @@ qboolean	consolekeys[256];	// if true, can't be rebound while in console
 qboolean	menubound[256];	// if true, can't be rebound while in menu
 qboolean	keydown[256];
 
+#if defined(USE_SDL2)
+const qboolean	backend_sends_char_events = true;
+#else
+const qboolean	backend_sends_char_events = false;
+#endif
+
 typedef struct
 {
 	const char	*name;
@@ -229,6 +235,8 @@ Interactive line editing and console scrollback
 */
 extern	char *con_text, key_tabpartial[MAXCMDLINE];
 extern	int con_current, con_linewidth, con_vislines;
+
+void Char_Console (int key);
 
 void Key_Console (int key)
 {
@@ -433,7 +441,16 @@ void Key_Console (int key)
 		}
 		break;
 	}
+	
+	if (!backend_sends_char_events)
+		Char_Console (key);
+}
 
+void Char_Console (int key)
+{
+	size_t		len;
+	char *workline = key_lines[edit_line];
+	
 	if (key < 32 || key > 127)
 		return;	// non printable
 
@@ -486,6 +503,8 @@ void Key_EndChat (void)
 	chat_buffer[0] = 0;
 }
 
+void Char_Message (int key);
+
 void Key_Message (int key)
 {
 	if (key == K_ENTER)
@@ -514,6 +533,12 @@ void Key_Message (int key)
 		return;
 	}
 
+	if (!backend_sends_char_events)
+		Char_Message (key);
+}
+
+void Char_Message (int key)
+{
 	if (key < 32 || key > 127)
 		return; // non printable
 
@@ -888,14 +913,9 @@ Key_Event
 
 Called by the system between frames for both key up and key down events
 Should NOT be called during an interrupt!
-
-If interpret_shift is true, and the shift key is currently down, handles
-mapping to the shifted version of a key following the US keyboard layout
-(e.g. '5' -> '%'). We pass false for SDL_TEXTINPUT events; SDL has already
-processed the shift mapping for these.
 ===================
 */
-void Key_Event (int key, qboolean down, qboolean interpret_shift)
+void Key_Event (int key, qboolean down)
 {
 	char	*kb;
 	char	cmd[1024];
@@ -1006,7 +1026,7 @@ void Key_Event (int key, qboolean down, qboolean interpret_shift)
 	if (!down)
 		return;		// other systems only care about key down events
 
-	if (shift_down && interpret_shift)
+	if (shift_down)
 		key = keyshift[key];
 
 	switch (key_dest)
@@ -1029,6 +1049,31 @@ void Key_Event (int key, qboolean down, qboolean interpret_shift)
 
 /*
 ===================
+Char_Event
+
+Called by the backend when the user has input a character, e.g. coming from
+the SDL_TEXTINPUT event.
+The backend_sends_char_events variable indicates whether the backend calls this
+function.
+===================
+*/
+void Char_Event (int key)
+{
+	switch (key_dest)
+	{
+	case key_message:
+		Char_Message (key);
+		break;
+	case key_console:
+		Char_Console (key);
+		break;
+	default:
+		break;
+	}
+}
+
+/*
+===================
 Key_ClearStates
 ===================
 */
@@ -1039,7 +1084,7 @@ void Key_ClearStates (void)
 	for (i = 0; i < 256; i++)
 	{
 		if (keydown[i])
-			Key_Event (i, false, true);
+			Key_Event (i, false);
 	}
 }
 

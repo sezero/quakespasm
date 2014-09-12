@@ -369,11 +369,6 @@ void IN_UpdateForKeydest (void)
 }
 
 #if defined(USE_SDL2)
-static qboolean IN_SDL2_QuakeKeyHandledAsTextInput(int qkey)
-{
-	return (qkey >= 32 && qkey <= 126) && qkey != '`';
-}
-
 static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 {
 	switch (scancode)
@@ -500,7 +495,8 @@ void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
 	int sym, state, modstate;
-
+	static int lastKeyDown = 0;
+	
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -527,17 +523,12 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
+			if (lastKeyDown != '`') // don't add a ` to the console when the player brings it down
 			{
-				char *ch;
-				for (ch = event.text.text; *ch != '\0'; ch++)
+				unsigned char *ch;
+				for (ch = (unsigned char *)event.text.text; ch[0] != 0 && ch[0] < 128; ch++)
 				{
-					int qkey = *ch;
-
-					if (IN_SDL2_QuakeKeyHandledAsTextInput(qkey) && !gamekey)
-					{
-						Key_Event (qkey, true, false);
-						Key_Event (qkey, false, false);
-					}
+					Char_Event (ch[0]);
 				}
 			}
 			break;
@@ -562,13 +553,13 @@ void IN_SendKeyEvents (void)
 		// layout, so keybindings are based on key position, not the label
 		// on the key cap.
 			sym = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
-
-			if (gamekey || !IN_SDL2_QuakeKeyHandledAsTextInput(sym))
-			{
-				state = event.key.state;
-
-				Key_Event (sym, state, true);
-			}
+			
+			if (event.type == SDL_KEYDOWN)
+				lastKeyDown = sym;
+			else
+				lastKeyDown = 0;
+			
+			Key_Event (sym, event.key.state == SDL_PRESSED);
 			break;
 #else
 			sym = event.key.keysym.sym;
@@ -796,7 +787,7 @@ void IN_SendKeyEvents (void)
 					sym = 0;
 				break;
 			}
-			Key_Event (sym, state, true);
+			Key_Event (sym, state);
 			break;
 #endif
 		case SDL_MOUSEBUTTONDOWN:
@@ -808,20 +799,20 @@ void IN_SendKeyEvents (void)
 							event.button.button);
 				break;
 			}
-			Key_Event(buttonremap[event.button.button - 1], event.button.state == SDL_PRESSED, true);
+			Key_Event(buttonremap[event.button.button - 1], event.button.state == SDL_PRESSED);
 			break;
 
 #if defined(USE_SDL2)
 		case SDL_MOUSEWHEEL:
 			if (event.wheel.y > 0)
 			{
-				Key_Event(K_MWHEELUP, false, true);
-				Key_Event(K_MWHEELUP, true, true);
+				Key_Event(K_MWHEELUP, false);
+				Key_Event(K_MWHEELUP, true);
 			}
 			else if (event.wheel.y < 0)
 			{
-				Key_Event(K_MWHEELDOWN, false, true);
-				Key_Event(K_MWHEELDOWN, true, true);
+				Key_Event(K_MWHEELDOWN, false);
+				Key_Event(K_MWHEELDOWN, true);
 			}
 			break;
 #endif
