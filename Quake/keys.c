@@ -50,12 +50,6 @@ qboolean	consolekeys[256];	// if true, can't be rebound while in console
 qboolean	menubound[256];	// if true, can't be rebound while in menu
 qboolean	keydown[256];
 
-#if defined(USE_SDL2)
-const qboolean	backend_sends_char_events = true;
-#else
-const qboolean	backend_sends_char_events = false;
-#endif
-
 typedef struct
 {
 	const char	*name;
@@ -235,8 +229,6 @@ Interactive line editing and console scrollback
 */
 extern	char *con_text, key_tabpartial[MAXCMDLINE];
 extern	int con_current, con_linewidth, con_vislines;
-
-void Char_Console (int key);
 
 void Key_Console (int key)
 {
@@ -441,9 +433,6 @@ void Key_Console (int key)
 		}
 		break;
 	}
-	
-	if (!backend_sends_char_events)
-		Char_Console (key);
 }
 
 void Char_Console (int key)
@@ -453,6 +442,9 @@ void Char_Console (int key)
 	
 	if (key < 32 || key > 126)
 		return;	// non printable
+
+	if (keydown[K_CTRL])
+		return; // control character
 
 	if (key_linepos < MAXCMDLINE-1)
 	{
@@ -503,8 +495,6 @@ void Key_EndChat (void)
 	chat_buffer[0] = 0;
 }
 
-void Char_Message (int key);
-
 void Key_Message (int key)
 {
 	if (key == K_ENTER)
@@ -532,15 +522,15 @@ void Key_Message (int key)
 			chat_buffer[--chat_bufferlen] = 0;
 		return;
 	}
-
-	if (!backend_sends_char_events)
-		Char_Message (key);
 }
 
 void Char_Message (int key)
 {
 	if (key < 32 || key > 126)
 		return; // non printable
+
+	if (keydown[K_CTRL])
+		return; // control character
 
 	if (chat_bufferlen == sizeof(chat_buffer) - 1)
 		return; // all full
@@ -1051,10 +1041,7 @@ void Key_Event (int key, qboolean down)
 ===================
 Char_Event
 
-Called by the backend when the user has input a character, e.g. coming from
-the SDL_TEXTINPUT event.
-The backend_sends_char_events variable indicates whether the backend calls this
-function.
+Called by the backend when the user has input a character.
 ===================
 */
 void Char_Event (int key)
