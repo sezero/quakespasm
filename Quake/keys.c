@@ -451,7 +451,7 @@ void Char_Console (int key)
 	size_t		len;
 	char *workline = key_lines[edit_line];
 	
-	if (key < 32 || key > 127)
+	if (key < 32 || key > 126)
 		return;	// non printable
 
 	if (key_linepos < MAXCMDLINE-1)
@@ -539,7 +539,7 @@ void Key_Message (int key)
 
 void Char_Message (int key)
 {
-	if (key < 32 || key > 127)
+	if (key < 32 || key > 126)
 		return; // non printable
 
 	if (chat_bufferlen == sizeof(chat_buffer) - 1)
