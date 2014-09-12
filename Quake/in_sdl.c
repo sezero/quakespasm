@@ -788,7 +788,7 @@ void IN_SendKeyEvents (void)
 				break;
 			}
 			Key_Event (sym, state);
-			if (event.type == SDL_KEYDOWN)
+			if (event.type == SDL_KEYDOWN && sym != '`' && sym != '~')
 				Char_Event (sym);
 			break;
 #endif
