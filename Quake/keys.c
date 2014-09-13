@@ -444,7 +444,7 @@ void Char_Console (int key)
 		return;	// non printable
 
 	if (!consolekeys[key])
-		return; // bindable key
+		return; // bindable
 
 	if (keydown[K_CTRL])
 		return; // control character
@@ -1117,3 +1117,15 @@ void Key_UpdateForDest (void)
 	IN_UpdateForKeydest ();
 }
 
+/*
+===================
+Key_ConsoleBindable
+===================
+*/
+qboolean Key_ConsoleBindable(int key)
+{
+	if ((key_dest == key_console && !consolekeys[key]) ||
+	    (key_dest == key_game && con_forcedup && !consolekeys[key]))
+		return true;
+	return false;
+}

@@ -496,7 +496,7 @@ void IN_SendKeyEvents (void)
 	SDL_Event event;
 	int sym;
 #if defined(USE_SDL2)
-	unsigned char *ch;
+	static int lastKeyDown = 0;
 #else
 	int state, modstate;
 #endif
@@ -527,9 +527,11 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
-			for (ch = (unsigned char *)event.text.text; ch[0] != 0 && ch[0] < 128; ch++)
+			if (!Key_ConsoleBindable(lastKeyDown))
 			{
-				Char_Event (ch[0]);
+				unsigned char *ch;
+				for (ch = (unsigned char *)event.text.text; ch[0] != 0 && ch[0] < 128; ch++)
+					Char_Event (ch[0]);
 			}
 			break;
 #endif
@@ -553,6 +555,11 @@ void IN_SendKeyEvents (void)
 		// layout, so keybindings are based on key position, not the label
 		// on the key cap.
 			sym = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
+
+			if (event.type == SDL_KEYDOWN)
+				lastKeyDown = sym;
+			else
+				lastKeyDown = 0;
 			
 			Key_Event (sym, event.key.state == SDL_PRESSED);
 			break;
@@ -783,7 +790,7 @@ void IN_SendKeyEvents (void)
 				break;
 			}
 			Key_Event (sym, state);
-			if (event.type == SDL_KEYDOWN)
+			if (event.type == SDL_KEYDOWN && !Key_ConsoleBindable(sym))
 				Char_Event (sym);
 			break;
 #endif
