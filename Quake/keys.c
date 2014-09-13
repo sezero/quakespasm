@@ -1054,6 +1054,9 @@ void Char_Event (int key)
 	case key_message:
 		Char_Message (key);
 		break;
+	case key_menu:
+		M_Textinput (key);
+		break;
 	case key_console:
 		Char_Console (key);
 		break;

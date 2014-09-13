@@ -726,8 +726,6 @@ void M_Setup_Draw (void)
 
 void M_Setup_Key (int k)
 {
-	int			l;
-
 	switch (k)
 	{
 	case K_ESCAPE:
@@ -799,28 +797,6 @@ forward:
 				setup_myname[strlen(setup_myname)-1] = 0;
 		}
 		break;
-
-	default:
-		if (k < 32 || k > 127)
-			break;
-		if (setup_cursor == 0)
-		{
-			l = strlen(setup_hostname);
-			if (l < 15)
-			{
-				setup_hostname[l+1] = 0;
-				setup_hostname[l] = k;
-			}
-		}
-		if (setup_cursor == 1)
-		{
-			l = strlen(setup_myname);
-			if (l < 15)
-			{
-				setup_myname[l+1] = 0;
-				setup_myname[l] = k;
-			}
-		}
 	}
 
 	if (setup_top > 13)
@@ -831,6 +807,35 @@ forward:
 		setup_bottom = 0;
 	if (setup_bottom < 0)
 		setup_bottom = 13;
+}
+
+
+void M_Setup_Textinput (int k)
+{
+	int l;
+
+	if (k < 32 || k > 126)
+		return;
+
+	switch (setup_cursor)
+	{
+	case 0:
+		l = strlen(setup_hostname);
+		if (l < 15)
+		{
+			setup_hostname[l+1] = 0;
+			setup_hostname[l] = k;
+		}
+		break;
+	case 1:
+		l = strlen(setup_myname);
+		if (l < 15)
+		{
+			setup_myname[l+1] = 0;
+			setup_myname[l] = k;
+		}
+		break;
+	}
 }
 
 //=============================================================================
@@ -1779,32 +1784,6 @@ void M_LanConfig_Key (int key)
 				lanConfig_joinname[strlen(lanConfig_joinname)-1] = 0;
 		}
 		break;
-
-	default:
-		if (key < 32 || key > 127)
-			break;
-
-		if (lanConfig_cursor == 2)
-		{
-			l = strlen(lanConfig_joinname);
-			if (l < 21)
-			{
-				lanConfig_joinname[l+1] = 0;
-				lanConfig_joinname[l] = key;
-			}
-		}
-
-		if (key < '0' || key > '9')
-			break;
-		if (lanConfig_cursor == 0)
-		{
-			l = strlen(lanConfig_portname);
-			if (l < 5)
-			{
-				lanConfig_portname[l+1] = 0;
-				lanConfig_portname[l] = key;
-			}
-		}
 	}
 
 	if (StartingGame && lanConfig_cursor == 2)
@@ -1821,6 +1800,37 @@ void M_LanConfig_Key (int key)
 	else
 		lanConfig_port = l;
 	sprintf(lanConfig_portname, "%u", lanConfig_port);
+}
+
+
+void M_LanConfig_Textinput (int key)
+{
+	int l;
+
+	if (key < 32 || key > 126)
+		return;
+
+	switch (lanConfig_cursor)
+	{
+	case 0:
+		if (key < '0' || key > '9')
+			return;
+		l = strlen(lanConfig_portname);
+		if (l < 5)
+		{
+			lanConfig_portname[l+1] = 0;
+			lanConfig_portname[l] = key;
+		}
+		break;
+	case 2:
+		l = strlen(lanConfig_joinname);
+		if (l < 21)
+		{
+			lanConfig_joinname[l+1] = 0;
+			lanConfig_joinname[l] = key;
+		}
+		break;
+	}
 }
 
 //=============================================================================
@@ -2620,6 +2630,22 @@ void M_Keydown (int key)
 
 	case m_slist:
 		M_ServerList_Key (key);
+		return;
+	}
+}
+
+
+void M_Textinput (int key)
+{
+	switch (m_state)
+	{
+	case m_setup:
+		M_Setup_Textinput (key);
+		return;
+	case m_lanconfig:
+		M_LanConfig_Textinput (key);
+		return;
+	default:
 		return;
 	}
 }
