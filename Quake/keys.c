@@ -443,6 +443,9 @@ void Char_Console (int key)
 	if (key < 32 || key > 126)
 		return;	// non printable
 
+	if (!consolekeys[key])
+		return; // bindable key
+
 	if (keydown[K_CTRL])
 		return; // control character
 
