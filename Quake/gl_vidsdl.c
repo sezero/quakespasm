@@ -1406,19 +1406,24 @@ void	VID_Init (void)
 // new proc by S.A., called by alt-return key binding.
 void	VID_Toggle (void)
 {
-// disabling the fast path because with SDL 1.2 it invalidates VBOs (using them
-// causes a crash, sugesting that the fullscreen toggle created a new GL context,
-// although texture objects remain valid for some reason).
-//
-// SDL2 does promise window resizes / fullscreen changes preserve the GL context,
-// so we could use the fast path with SDL2. --ericw
-	static qboolean vid_toggle_works = false;
+	static qboolean vid_toggle_works = true;
 	qboolean toggleWorked;
 
 	S_ClearBuffer ();
 
 	if (!vid_toggle_works)
 		goto vrestart;
+	else if (gl_vbo_able)
+	{
+		// disabling the fast path because with SDL 1.2 it invalidates VBOs (using them
+		// causes a crash, sugesting that the fullscreen toggle created a new GL context,
+		// although texture objects remain valid for some reason).
+		//
+		// SDL2 does promise window resizes / fullscreen changes preserve the GL context,
+		// so we could use the fast path with SDL2. --ericw
+		vid_toggle_works = false;
+		goto vrestart;
+	}
 
 #if defined(USE_SDL2)
 	toggleWorked = SDL_SetWindowFullscreen(draw_context, VID_GetFullscreen() ? 0 : SDL_WINDOW_FULLSCREEN) == 0;
