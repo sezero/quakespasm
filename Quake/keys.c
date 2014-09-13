@@ -1124,8 +1124,5 @@ Key_ConsoleBindable
 */
 qboolean Key_ConsoleBindable(int key)
 {
-	if ((key_dest == key_console && !consolekeys[key]) ||
-	    (key_dest == key_game && con_forcedup && !consolekeys[key]))
-		return true;
-	return false;
+	return ((key_dest == key_console || (key_dest == key_game && con_forcedup)) && !consolekeys[key]);
 }
