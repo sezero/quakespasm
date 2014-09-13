@@ -258,7 +258,7 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	prev_gamekey = ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
+	prev_gamekey = Key_GameKey();
 
 #if !defined(USE_SDL2)
 	SDL_EnableUNICODE (!prev_gamekey);
@@ -352,7 +352,7 @@ void IN_ClearStates (void)
 
 void IN_UpdateForKeydest (void)
 {
-	gamekey = ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
+	gamekey = Key_GameKey();
 	if (gamekey != prev_gamekey)
 	{
 		prev_gamekey = gamekey;

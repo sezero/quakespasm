@@ -163,6 +163,7 @@ extern	qboolean	chat_team;
 void Key_Init (void);
 void Key_ClearStates (void);
 void Key_UpdateForDest (void);
+qboolean Key_GameKey (void);
 qboolean Key_ConsoleBindable (int key);
 
 void Key_Event (int key, qboolean down);

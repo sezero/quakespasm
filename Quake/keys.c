@@ -1119,6 +1119,16 @@ void Key_UpdateForDest (void)
 
 /*
 ===================
+Key_GameKey
+===================
+*/
+qboolean Key_GameKey(void)
+{
+	return ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
+}
+
+/*
+===================
 Key_ConsoleBindable
 ===================
 */
