@@ -481,12 +481,9 @@ static int PartialIPAddress (const char *in, struct qsockaddr *hostaddr)
 
 int SDLN_GetAddrFromName (const char *name, struct qsockaddr *addr)
 {
-	IPaddress   *ipaddress;
-
 	if (name[0] >= '0' && name[0] <= '9')
 		return PartialIPAddress (name, addr);
 
-	ipaddress = (IPaddress *)&(addr->qsa_data);
 	if (SDLNet_ResolveHost((IPaddress *)(&addr->qsa_data), name, net_hostport) == -1)
 		return -1;
 
