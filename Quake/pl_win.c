@@ -52,7 +52,7 @@ void PL_SetWindowIcon (void)
 	SDL_VERSION(&wminfo.version);
 
 #if defined(USE_SDL2)
-	if (SDL_GetWindowWMInfo(VID_GetWindow(), &wminfo) != SDL_TRUE)
+	if (SDL_GetWindowWMInfo((SDL_Window*) VID_GetWindow(), &wminfo) != SDL_TRUE)
 		return;	/* wrong SDL version */
 
 	hwnd = wminfo.info.win.window;

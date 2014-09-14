@@ -53,7 +53,7 @@ void PL_SetWindowIcon (void)
 	colorkey = SDL_MapRGB(icon->format, 255, 0, 255);
 #if defined(USE_SDL2)
 	SDL_SetColorKey(icon, SDL_TRUE, colorkey);
-	SDL_SetWindowIcon(VID_GetWindow(), icon);
+	SDL_SetWindowIcon((SDL_Window*) VID_GetWindow(), icon);
 #else
 	SDL_SetColorKey(icon, SDL_SRCCOLORKEY, colorkey);
 	SDL_WM_SetIcon(icon, NULL);
