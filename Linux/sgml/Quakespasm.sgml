@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Sep. 10, 2014</em>
+<em>Page last edited Sep. 15, 2014</em>
 
 <sect> About <p>
 
@@ -108,10 +108,13 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <sect1> Changes in 0.85.10<p>
 <itemize>
 <item> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.
+<item> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"
+<item> Command line: "-game {quoth/hipnotic/rogue}" is now treated the same as -quoth, -hipnotic, or -rogue.
 <item> Console speed now resolution-independent.
 <item> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.
-<item> PF_VarString buffer bumped to 1024, avoids truncating In The Shadows centerprints.
+<item> PF_VarString buffer bumped to 1024, avoids truncated centerprints from the 'In The Shadows' mod.
 <item> Support for opengl non-power-of-two-textures extension.
+<item> Support for OpenGL vertex buffer objects (VBO) for world and brush models.
 <item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).
 <item> Fence texture support.
 <item> Dynamic light speedup. Speedup loading of tga and pcx external images.

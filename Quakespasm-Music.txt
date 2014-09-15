@@ -45,7 +45,7 @@ New console commands:
   testing/comparing the same music in different formats.
 
 - music_stop
-  Stops the playing music.
+  Stops the playing music
 
 - music_pause
   Pauses the playing music

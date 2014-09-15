@@ -35,7 +35,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Sep. 10, 2014
+  Page last edited Sep. 15, 2014
 
 
   1.  About
@@ -178,16 +178,27 @@
   o  Unix/Mac user directories support. Disabled by default,
      'make DO_USERDIRS=1' to enable it.
 
+  o  Revised/improved the 'game' command, i.e. on-the-fly mod changing.
+     It now accepts an optional second argument for mission packs or
+     quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for
+     WarpSpasm: "game warp -quoth"
+
+  o  Command line: "-game {quoth/hipnotic/rogue}" is now treated the
+     same as -quoth, -hipnotic, or -rogue.
+
   o  Console speed now resolution-independent.
 
   o  Disabled gl_zfix, which caused glitches and is undesirable for new
      maps. Replacement .ent files to fix z-fighting for several id1 maps
      added to quakespasm.pak.
 
-  o  PF_VarString buffer bumped to 1024, avoids truncating In The
-     Shadows centerprints.
+  o  PF_VarString buffer bumped to 1024, avoids truncated centerprints
+     from the 'In The Shadows' mod.
 
   o  Support for opengl non-power-of-two-textures extension.
+
+  o  Support for OpenGL vertex buffer objects (VBO) for world and brush
+     models.
 
   o  Antialiasing (FSAA) support (command line: -fsaa x, where x can be
      0, 2, 4, 8).
