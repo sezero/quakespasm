@@ -50,7 +50,7 @@ Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 <itemize>
 <item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
-<item>As of 0.85.10, music is played back at 44100Hz by default with no need to adjust "-sndspeed".
+<item>As of 0.90.0, music is played back at 44100Hz by default with no need to adjust "-sndspeed".
 <item>Use the "-noextmusic" option to disable this feature.
 <item>See <url url="Quakespasm-Music.txt"> for more details.
 </itemize>
@@ -105,7 +105,7 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 
 <sect> Changes<p>
 
-<sect1> Changes in 0.85.10<p>
+<sect1> Changes in 0.90.0<p>
 <itemize>
 <item> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.
 <item> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"
@@ -140,6 +140,7 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <item> Add 'prev' and 'next' keywords to the 'cd' command.
 <item> Work around a linux cdrom issue (playback might not start for a while after a stop).
 <item> Quakespasm content customization moved from engine-embedded into a new optional quakespasm.pak file.
+<item> Version bumped to 0.90.0 (because Quakespasm has a decent life of it's own)
 <item> Other fixes and clean-ups.
 </itemize>
 </p>
