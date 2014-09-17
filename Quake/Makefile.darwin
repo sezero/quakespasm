@@ -60,6 +60,13 @@ ifeq ($(MACH_TYPE),ppc64)
 CFLAGS  +=-mmacosx-version-min=10.5
 LDFLAGS +=-mmacosx-version-min=10.5
 endif
+ifeq ($(USE_SDL2),1)
+# sdl2 needs targetting 10.5+
+ifeq ($(MACH_TYPE),x86)
+CFLAGS  +=-mmacosx-version-min=10.5
+LDFLAGS +=-mmacosx-version-min=10.5
+endif
+endif
 ifeq ($(MACH_TYPE),x86_64)
 # require 10.6 for amd64 builds, not 10.5 (SDL's requirement.)
 # bundle1.o is needed for dyld_stub_binding_helper
