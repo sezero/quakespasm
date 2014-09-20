@@ -33,7 +33,6 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 
 DEBUG   ?= 0
 WINSOCK2?= 1
-SDLNET  ?= 0
 
 # ---------------------------
 # build variables
@@ -96,17 +95,8 @@ DEFWINSOCK :=
 LIBWINSOCK := -lwsock32
 endif
 
-ifeq ($(SDLNET),1)
-ifeq ($(USE_SDL2),1)
-NET_LIBS   := -lSDL2_net
-else
-NET_LIBS   := -lSDL_net
-endif
-CFLAGS     +=-D_USE_SDLNET
-else
 CFLAGS     += $(DEFWINSOCK)
 NET_LIBS   := $(LIBWINSOCK)
-endif
 
 ifneq ($(VORBISLIB),vorbis)
 ifneq ($(VORBISLIB),tremor)
@@ -220,11 +210,7 @@ SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
 SYSOBJ_INPUT := in_sdl.o
 SYSOBJ_GL_VID:= gl_vidsdl.o
-ifeq ($(SDLNET),1)
-SYSOBJ_NET := net_sdl.o net_sdlnet.o
-else
 SYSOBJ_NET := net_win.o net_wins.o net_wipx.o
-endif
 SYSOBJ_SYS := pl_win.o sys_sdl_win.o
 SYSOBJ_MAIN:= main_sdl.o
 SYSOBJ_RES := QuakeSpasm.res

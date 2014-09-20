@@ -37,7 +37,6 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 
 DEBUG   ?= 0
-SDLNET  ?= 0
 
 # ---------------------------
 # build variables
@@ -108,19 +107,10 @@ endif
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
-ifeq ($(SDLNET),1)
-ifeq ($(USE_SDL2),1)
-NET_LIBS   :=-lSDL2_net
-else
-NET_LIBS   :=-lSDL_net
-endif
-CFLAGS     +=-D_USE_SDLNET
-else
 ifeq ($(HOST_OS),sunos)
 NET_LIBS   :=-lsocket -lnsl -lresolv
 else
 NET_LIBS   :=
-endif
 endif
 
 ifneq ($(VORBISLIB),vorbis)
@@ -224,11 +214,7 @@ SYSOBJ_SND := snd_sdl.o
 SYSOBJ_CDA := cd_sdl.o
 SYSOBJ_INPUT := in_sdl.o
 SYSOBJ_GL_VID:= gl_vidsdl.o
-ifeq ($(SDLNET),1)
-SYSOBJ_NET := net_sdl.o net_sdlnet.o
-else
 SYSOBJ_NET := net_bsd.o net_udp.o
-endif
 SYSOBJ_SYS := pl_linux.o sys_sdl_unix.o
 SYSOBJ_MAIN:= main_sdl.o
 SYSOBJ_RES :=

@@ -21,35 +21,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#if defined(_USE_SDLNET)
-
-/* can not use the IP banning mechanism in net_dgrm.c with
-   limited SDL_net functionality. */
-#undef	BAN_TEST
-
-#undef	HAVE_SA_LEN
-
-#define	sys_socket_t	int
-#define	INVALID_SOCKET	(-1)
-#define	SOCKET_ERROR	(-1)
-
-#ifndef MAXHOSTNAMELEN
-#define MAXHOSTNAMELEN	256
-#endif
-#ifndef AF_INET
-#define AF_INET		2		/* internet */
-#endif
-#ifndef INADDR_LOOPBACK
-#define INADDR_LOOPBACK	0x7f000001	/* 127.0.0.1 */
-#endif
-
-#ifndef __NET_SYS_H__
-#define __NET_SYS_H__	/* the rest below are not needed. */
-#endif
-
-#endif	/* _USE_SDLNET */
-
-
 #ifndef __NET_SYS_H__
 #define __NET_SYS_H__
 
