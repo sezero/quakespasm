@@ -34,7 +34,6 @@ qpic_t		*draw_backtile;
 gltexture_t *char_texture; //johnfitz
 qpic_t		*pic_ovr, *pic_ins; //johnfitz -- new cursor handling
 qpic_t		*pic_nul; //johnfitz -- for missing gfx, don't crash
-qpic_t		*pic_up, *pic_down; //QuakeSpasm -- menu scrolling
 
 //johnfitz -- new pics
 byte pic_ovr_data[8][8] =
@@ -98,32 +97,6 @@ byte pic_crosshair_data[8][8] =
 	{255,255,255,255,255,255,255,255},
 };
 //johnfitz
-
-//QuakeSpasm -- new pics
-byte pic_up_data[8][8] =
-{
-	{255,255,255,255,255,255,255,255},
-	{255,255,255,255,255,255,255,255},
-	{255,255,255,  7,255,255,255,255},
-	{255,255,  8,  8,  7,255,255,255},
-	{255,  8,  4,  8,  4,  7,255,255},
-	{255,255,  2,  8,  2,  2,  2,255},
-	{255,255,255,  8,  2,255,255,255},
-	{255,255,255,255,  2,255,255,255},
-};
-
-byte pic_down_data[8][8] =
-{
-	{255,255,255,255,255,255,255,255},
-	{255,255,255,255,255,255,255,255},
-	{255,255,255,  8,255,255,255,255},
-	{255,255,255,  8,  2,255,255,255},
-	{255,  8,  4,  8,  4,  7,255,255},
-	{255,255,  8,  8,  7,  2,  2,255},
-	{255,255,255,  7,  2,  2,255,255},
-	{255,255,255,255,  2,255,255,255},
-};
-//QuakeSpasm
 
 typedef struct
 {
@@ -433,11 +406,9 @@ void Draw_Init (void)
 	Scrap_Upload (); //creates 2 empty textures
 
 	// create internal pics
-	pic_ins  = Draw_MakePic ("ins",  8, 9, &pic_ins_data[0][0]);
-	pic_ovr  = Draw_MakePic ("ovr",  8, 8, &pic_ovr_data[0][0]);
-	pic_nul  = Draw_MakePic ("nul",  8, 8, &pic_nul_data[0][0]);
-	pic_up   = Draw_MakePic ("up",   8, 8, &pic_up_data[0][0]);
-	pic_down = Draw_MakePic ("down", 8, 8, &pic_down_data[0][0]);
+	pic_ins = Draw_MakePic ("ins", 8, 9, &pic_ins_data[0][0]);
+	pic_ovr = Draw_MakePic ("ovr", 8, 8, &pic_ovr_data[0][0]);
+	pic_nul = Draw_MakePic ("nul", 8, 8, &pic_nul_data[0][0]);
 
 	// load game pics
 	Draw_LoadPics ();
