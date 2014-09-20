@@ -530,8 +530,9 @@ void IN_SendKeyEvents (void)
 			if (!Key_ConsoleBindable(lastKeyDown))
 			{
 				unsigned char *ch;
-				for (ch = (unsigned char *)event.text.text; ch[0] != 0 && ch[0] < 128; ch++)
-					Char_Event (ch[0]);
+				for (ch = (unsigned char *)event.text.text; ch[0] != 0; ch++)
+					if ((ch[0] & 0x80) == 0)
+						Char_Event (ch[0]);
 			}
 			break;
 #endif
