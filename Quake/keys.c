@@ -913,6 +913,9 @@ void Key_Event (int key, qboolean down)
 	char	*kb;
 	char	cmd[1024];
 
+	if (key < 0 || key > 255)
+		return;
+
 	keydown[key] = down;
 
 	if (!down)
