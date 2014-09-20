@@ -975,7 +975,7 @@ void GL_BuildVBOs (void)
 	qmodel_t	*m;
 	float		*varray;
 
-	if (!(gl_vbo_able && gl_mtexable))
+	if (!(gl_vbo_able && gl_mtexable && gl_max_texture_units >= 3))
 		return;
 
 // ask GL for a name for our VBO
@@ -1024,13 +1024,18 @@ void GL_BuildVBOs (void)
 // setup vertex array. this will need to move if we use vertex arrays for other things
 	glVertexPointer (3, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0));
 	glEnableClientState (GL_VERTEX_ARRAY);
-							
+
 	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
 	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 
 	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
 	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+		
+// TMU 2 is for fullbrights; same texture coordinates as TMU 0
+	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
+	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
 	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
 }
 

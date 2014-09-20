@@ -93,6 +93,7 @@ qboolean gl_anisotropy_able = false; //johnfitz
 float gl_max_anisotropy; //johnfitz
 qboolean gl_texture_NPOT = false; //ericw
 qboolean gl_vbo_able = false; //ericw
+GLint gl_max_texture_units = 0; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -831,6 +832,9 @@ static void GL_CheckExtensions (void)
 		{
 			Con_Printf("FOUND: ARB_multitexture\n");
 			gl_mtexable = true;
+			
+			glGetIntegerv(GL_MAX_TEXTURE_UNITS, &gl_max_texture_units);
+			Con_Printf("GL_MAX_TEXTURE_UNITS: %d\n", (int)gl_max_texture_units);
 		}
 		else
 		{

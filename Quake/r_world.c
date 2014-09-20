@@ -416,29 +416,6 @@ void R_DrawTextureChains_Glow (qmodel_t *model, entity_t *ent, texchain_t chain)
 //
 //==============================================================================
 
-/*
-================
-R_MultitexturedDrawGLPoly
-
-Fallback immediate mode code to draw a multitexutred glpoly_t
-================
-*/
-static void R_MultitexturedDrawGLPoly (glpoly_t *p)
-{
-	float	*v;
-	int	j;
-	
-	glBegin(GL_POLYGON);
-	v = p->verts[0];
-	for (j=0 ; j<p->numverts ; j++, v+= VERTEXSIZE)
-	{
-		GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
-		GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
-		glVertex3fv (v);
-	}
-	glEnd ();
-}
-
 static unsigned int R_NumTriangleIndicesForSurf (msurface_t *s)
 {
 	return 3 * (s->numedges - 2);
@@ -475,8 +452,6 @@ R_ClearBatch
 */
 static void R_ClearBatch ()
 {
-	if (!(gl_vbo_able && gl_mtexable)) return;
-	
 	num_vbo_indices = 0;
 }
 
@@ -489,8 +464,6 @@ Draw the current batch if non-empty and clears it, ready for more R_BatchSurface
 */
 static void R_FlushBatch ()
 {
-	if (!(gl_vbo_able && gl_mtexable)) return;
-
 	if (num_vbo_indices > 0)
 	{
 		glDrawElements (GL_TRIANGLES, num_vbo_indices, GL_UNSIGNED_INT, vbo_indices);
@@ -509,13 +482,7 @@ using VBOs.
 static void R_BatchSurface (msurface_t *s)
 {
 	int num_surf_indices;
-	
-	if (!(gl_vbo_able && gl_mtexable))
-	{
-		R_MultitexturedDrawGLPoly (s->polys);
-		return;
-	}
-	
+
 	num_surf_indices = R_NumTriangleIndicesForSurf (s);
 	
 	if (num_vbo_indices + num_surf_indices > MAX_BATCH_SIZE)
@@ -532,11 +499,11 @@ R_DrawTextureChains_Multitexture -- johnfitz
 */
 void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_t chain)
 {
-	int			i;
+	int			i, j;
 	msurface_t	*s;
 	texture_t	*t;
+	float		*v;
 	qboolean	bound;
-	int		lastlightmap;
 
 	for (i=0 ; i<model->numtextures ; i++)
 	{
@@ -545,10 +512,7 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTILED | SURF_NOTEXTURE))
 			continue;
 
-		R_ClearBatch ();
-
 		bound = false;
-		lastlightmap = 0; // avoid compiler warning
 		for (s = t->texturechains[chain]; s; s = s->texturechain)
 			if (!s->culled)
 			{
@@ -561,22 +525,20 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 					
 					GL_EnableMultitexture(); // selects TEXTURE1
 					bound = true;
-					lastlightmap = s->lightmaptexturenum;
 				}
 				R_RenderDynamicLightmaps (s);
-				
-				if (s->lightmaptexturenum != lastlightmap)
-					R_FlushBatch ();
-
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
-				lastlightmap = s->lightmaptexturenum;
-				R_BatchSurface (s);
-
+				glBegin(GL_POLYGON);
+				v = s->polys->verts[0];
+				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
+				{
+					GL_MTexCoord2fFunc (GL_TEXTURE0_ARB, v[3], v[4]);
+					GL_MTexCoord2fFunc (GL_TEXTURE1_ARB, v[5], v[6]);
+					glVertex3fv (v);
+				}
+				glEnd ();
 				rs_brushpasses++;
 			}
-
-		R_FlushBatch ();
-
 		GL_DisableMultitexture(); // selects TEXTURE0
 
 		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)
@@ -808,6 +770,103 @@ void R_DrawLightmapChains (void)
 }
 
 /*
+================
+R_DrawTextureChains_Multitexture_VBO -- ericw
+
+Draw lightmapped surfaces with fulbrights in one pass, using VBO.
+Requires 3 TMUs, GL_COMBINE_EXT, and GL_ADD.
+================
+*/
+void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texchain_t chain)
+{
+	int			i;
+	msurface_t	*s;
+	texture_t	*t;
+	qboolean	bound;
+	int		lastlightmap;
+	gltexture_t	*fullbright = NULL;
+	
+// Setup TMU 1 (lightmap)
+	GL_SelectTexture (GL_TEXTURE1_ARB);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
+	glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_MODULATE);
+	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB_EXT, GL_PREVIOUS_EXT);
+	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB_EXT, GL_TEXTURE);
+	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE_EXT, gl_overbright.value ? 2.0f : 1.0f);
+	glEnable(GL_TEXTURE_2D);
+	
+// Setup TMU 2 (fullbrights)
+	GL_SelectTexture (GL_TEXTURE2_ARB);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD);
+
+	for (i=0 ; i<model->numtextures ; i++)
+	{
+		t = model->textures[i];
+
+		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTILED | SURF_NOTEXTURE))
+			continue;
+
+	// Enable/disable TMU 2 (fullbrights)
+		GL_SelectTexture (GL_TEXTURE2_ARB);
+		if (gl_fullbrights.value && (fullbright = R_TextureAnimation(t, ent != NULL ? ent->frame : 0)->fullbright))
+		{
+			glEnable(GL_TEXTURE_2D);
+			GL_Bind (fullbright);
+		}
+		else
+			glDisable(GL_TEXTURE_2D);
+
+		R_ClearBatch ();
+
+		bound = false;
+		lastlightmap = 0; // avoid compiler warning
+		for (s = t->texturechains[chain]; s; s = s->texturechain)
+			if (!s->culled)
+			{
+				if (!bound) //only bind once we are sure we need this texture
+				{
+					GL_SelectTexture (GL_TEXTURE0_ARB);
+					GL_Bind ((R_TextureAnimation(t, ent != NULL ? ent->frame : 0))->gltexture);
+					
+					if (t->texturechains[chain]->flags & SURF_DRAWFENCE)
+						glEnable (GL_ALPHA_TEST); // Flip alpha test back on
+										
+					bound = true;
+					lastlightmap = s->lightmaptexturenum;
+				}
+				R_RenderDynamicLightmaps (s);
+				
+				if (s->lightmaptexturenum != lastlightmap)
+					R_FlushBatch ();
+
+				GL_SelectTexture (GL_TEXTURE1_ARB);
+				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
+				lastlightmap = s->lightmaptexturenum;
+				R_BatchSurface (s);
+
+				rs_brushpasses++;
+			}
+
+		R_FlushBatch ();
+
+		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)
+			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
+	}
+	
+// Reset TMU states
+	GL_SelectTexture (GL_TEXTURE2_ARB);
+	glDisable (GL_TEXTURE_2D);
+			
+	GL_SelectTexture (GL_TEXTURE1_ARB);
+	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE_EXT, 1.0f);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	glDisable (GL_TEXTURE_2D);
+	
+	GL_SelectTexture (GL_TEXTURE0_ARB);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+}
+
+/*
 =============
 R_DrawWorld -- johnfitz -- rewritten
 =============
@@ -858,6 +917,13 @@ void R_DrawTextureChains (qmodel_t *model, entity_t *ent, texchain_t chain)
 	R_BeginTransparentDrawing (entalpha);
 
 	R_DrawTextureChains_NoTexture (model, chain);
+
+	if (gl_vbo_able && gl_texture_env_combine && gl_texture_env_add && gl_mtexable && gl_max_texture_units >= 3)
+	{
+		R_DrawTextureChains_Multitexture_VBO (model, ent, chain);
+		R_EndTransparentDrawing (entalpha);
+		return;
+	}
 
 	if (gl_overbright.value)
 	{

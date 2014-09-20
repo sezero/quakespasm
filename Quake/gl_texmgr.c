@@ -1401,7 +1401,8 @@ void TexMgr_ReloadNobrightImages (void)
 ================================================================================
 */
 
-static GLuint	currenttexture = (GLuint)-1; // to avoid unnecessary texture sets
+static GLuint	currenttexture[3] = {-1, -1, -1}; // to avoid unnecessary texture sets
+static GLenum	currenttarget = GL_TEXTURE0_ARB;
 qboolean	mtexenabled = false;
 
 /*
@@ -1409,27 +1410,12 @@ qboolean	mtexenabled = false;
 GL_SelectTexture -- johnfitz -- rewritten
 ================
 */
-static void GL_SelectTexture (GLenum target)
+void GL_SelectTexture (GLenum target)
 {
-	static GLenum currenttarget;
-	static GLuint ct0, ct1;
-
 	if (target == currenttarget)
 		return;
-
+		
 	GL_SelectTextureFunc(target);
-
-	if (target == GL_TEXTURE0_ARB)
-	{
-		ct1 = currenttexture;
-		currenttexture = ct0;
-	}
-	else //target == GL_TEXTURE1_ARB
-	{
-		ct0 = currenttexture;
-		currenttexture = ct1;
-	}
-
 	currenttarget = target;
 }
 
@@ -1473,10 +1459,10 @@ void GL_Bind (gltexture_t *texture)
 	if (!texture)
 		texture = nulltexture;
 
-	if (texture->texnum != currenttexture)
+	if (texture->texnum != currenttexture[currenttarget - GL_TEXTURE0_ARB])
 	{
-		currenttexture = texture->texnum;
-		glBindTexture (GL_TEXTURE_2D, currenttexture);
+		currenttexture[currenttarget - GL_TEXTURE0_ARB] = texture->texnum;
+		glBindTexture (GL_TEXTURE_2D, texture->texnum);
 		texture->visframe = r_framecount;
 	}
 }
