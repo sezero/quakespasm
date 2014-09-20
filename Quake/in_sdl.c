@@ -368,6 +368,82 @@ void IN_UpdateForKeydest (void)
 	}
 }
 
+#if !defined(USE_SDL2)
+static inline int IN_SDL_KeysymToQuakeKey(SDLKey sym)
+{
+	if (sym > SDLK_SPACE && sym < SDLK_DELETE)
+		return sym;
+
+	switch (sym)
+	{
+		case SDLK_TAB: return K_TAB;
+		case SDLK_RETURN: return K_ENTER;
+		case SDLK_ESCAPE: return K_ESCAPE;
+		case SDLK_SPACE: return K_SPACE;
+
+		case SDLK_BACKSPACE: return K_BACKSPACE;
+		case SDLK_UP: return K_UPARROW;
+		case SDLK_DOWN: return K_DOWNARROW;
+		case SDLK_LEFT: return K_LEFTARROW;
+		case SDLK_RIGHT: return K_RIGHTARROW;
+
+		case SDLK_LALT: return K_ALT;
+		case SDLK_RALT: return K_ALT;
+		case SDLK_LCTRL: return K_CTRL;
+		case SDLK_RCTRL: return K_CTRL;
+		case SDLK_LSHIFT: return K_SHIFT;
+		case SDLK_RSHIFT: return K_SHIFT;
+
+		case SDLK_F1: return K_F1;
+		case SDLK_F2: return K_F2;
+		case SDLK_F3: return K_F3;
+		case SDLK_F4: return K_F4;
+		case SDLK_F5: return K_F5;
+		case SDLK_F6: return K_F6;
+		case SDLK_F7: return K_F7;
+		case SDLK_F8: return K_F8;
+		case SDLK_F9: return K_F9;
+		case SDLK_F10: return K_F10;
+		case SDLK_F11: return K_F11;
+		case SDLK_F12: return K_F12;
+		case SDLK_INSERT: return K_INS;
+		case SDLK_DELETE: return K_DEL;
+		case SDLK_PAGEDOWN: return K_PGDN;
+		case SDLK_PAGEUP: return K_PGUP;
+		case SDLK_HOME: return K_HOME;
+		case SDLK_END: return K_END;
+
+		case SDLK_NUMLOCK: return K_KP_NUMLOCK;
+		case SDLK_KP_DIVIDE: return K_KP_SLASH;
+		case SDLK_KP_MULTIPLY: return K_KP_STAR;
+		case SDLK_KP_MINUS:return K_KP_MINUS;
+		case SDLK_KP7: return K_KP_HOME;
+		case SDLK_KP8: return K_KP_UPARROW;
+		case SDLK_KP9: return K_KP_PGUP;
+		case SDLK_KP_PLUS: return K_KP_PLUS;
+		case SDLK_KP4: return K_KP_LEFTARROW;
+		case SDLK_KP5: return K_KP_5;
+		case SDLK_KP6: return K_KP_RIGHTARROW;
+		case SDLK_KP1: return K_KP_END;
+		case SDLK_KP2: return K_KP_DOWNARROW;
+		case SDLK_KP3: return K_KP_PGDN;
+		case SDLK_KP_ENTER: return K_KP_ENTER;
+		case SDLK_KP0: return K_KP_INS;
+		case SDLK_KP_PERIOD: return K_KP_DEL;
+
+		case SDLK_LMETA: return K_COMMAND;
+		case SDLK_RMETA: return K_COMMAND;
+
+		case SDLK_BREAK: return K_PAUSE;
+		case SDLK_PAUSE: return K_PAUSE;
+
+		case SDLK_WORLD_18: return '~'; // the '²' key
+
+		default: return 0;
+	}
+}
+#endif
+
 #if defined(USE_SDL2)
 static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 {
@@ -497,8 +573,6 @@ void IN_SendKeyEvents (void)
 	int sym;
 #if defined(USE_SDL2)
 	static int lastKeyDown = 0;
-#else
-	int state, modstate;
 #endif
 	
 	while (SDL_PollEvent(&event))
@@ -565,234 +639,16 @@ void IN_SendKeyEvents (void)
 			Key_Event (sym, event.key.state == SDL_PRESSED);
 			break;
 #else
-			sym = event.key.keysym.sym;
-			state = event.key.state;
-			modstate = SDL_GetModState();
+			sym = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 
-			if (event.key.keysym.unicode != 0)
-			{
-				if ((event.key.keysym.unicode & 0xFF80) == 0)
-				{
-					int usym = event.key.keysym.unicode & 0x7F;
-					if (modstate & KMOD_CTRL && usym < 32 && sym >= 32)
-					{
-						/* control characters */
-						if (modstate & KMOD_SHIFT)
-							usym += 64;
-						else	usym += 96;
-					}
-#if defined(__APPLE__) && defined(__MACH__)
-					if (sym == SDLK_BACKSPACE)
-						usym = sym;	/* avoid change to SDLK_DELETE */
-#endif	/* Mac OS X */
-#if defined(__QNX__) || defined(__QNXNTO__)
-					if (sym == SDLK_BACKSPACE || sym == SDLK_RETURN)
-						usym = sym;	/* S.A: fixes QNX weirdness */
-#endif	/* __QNX__ */
-					/* only use unicode for ` and ~ in game mode */
-					if (!gamekey || usym == '`' || usym == '~')
-						sym = usym;
-				}
-				/* else: it's an international character */
-			}
-			/*printf("You pressed %s (%d) (%c)\n", SDL_GetKeyName(sym), sym, sym);*/
+			Key_Event (sym, event.key.state == SDL_PRESSED);
 
-			switch (sym)
+			if (event.type == SDL_KEYDOWN && !Key_ConsoleBindable(sym) &&
+			    event.key.keysym.unicode != 0 && (event.key.keysym.unicode & 0xFF80) == 0)
 			{
-			case SDLK_DELETE:
-				sym = K_DEL;
-				break;
-			case SDLK_BACKSPACE:
-				sym = K_BACKSPACE;
-				break;
-			case SDLK_F1:
-				sym = K_F1;
-				break;
-			case SDLK_F2:
-				sym = K_F2;
-				break;
-			case SDLK_F3:
-				sym = K_F3;
-				break;
-			case SDLK_F4:
-				sym = K_F4;
-				break;
-			case SDLK_F5:
-				sym = K_F5;
-				break;
-			case SDLK_F6:
-				sym = K_F6;
-				break;
-			case SDLK_F7:
-				sym = K_F7;
-				break;
-			case SDLK_F8:
-				sym = K_F8;
-				break;
-			case SDLK_F9:
-				sym = K_F9;
-				break;
-			case SDLK_F10:
-				sym = K_F10;
-				break;
-			case SDLK_F11:
-				sym = K_F11;
-				break;
-			case SDLK_F12:
-				sym = K_F12;
-				break;
-			case SDLK_BREAK:
-			case SDLK_PAUSE:
-				sym = K_PAUSE;
-				break;
-			case SDLK_UP:
-				sym = K_UPARROW;
-				break;
-			case SDLK_DOWN:
-				sym = K_DOWNARROW;
-				break;
-			case SDLK_RIGHT:
-				sym = K_RIGHTARROW;
-				break;
-			case SDLK_LEFT:
-				sym = K_LEFTARROW;
-				break;
-			case SDLK_INSERT:
-				sym = K_INS;
-				break;
-			case SDLK_HOME:
-				sym = K_HOME;
-				break;
-			case SDLK_END:
-				sym = K_END;
-				break;
-			case SDLK_PAGEUP:
-				sym = K_PGUP;
-				break;
-			case SDLK_PAGEDOWN:
-				sym = K_PGDN;
-				break;
-			case SDLK_RSHIFT:
-			case SDLK_LSHIFT:
-				sym = K_SHIFT;
-				break;
-			case SDLK_RCTRL:
-			case SDLK_LCTRL:
-				sym = K_CTRL;
-				break;
-			case SDLK_RALT:
-			case SDLK_LALT:
-				sym = K_ALT;
-				break;
-			case SDLK_RMETA:
-			case SDLK_LMETA:
-				sym = K_COMMAND;
-				break;
-			case SDLK_NUMLOCK:
-				if (gamekey)
-					sym = K_KP_NUMLOCK;
-				else	sym = 0;
-				break;
-			case SDLK_KP0:
-				if (gamekey)
-					sym = K_KP_INS;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_0 : K_INS;
-				break;
-			case SDLK_KP1:
-				if (gamekey)
-					sym = K_KP_END;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_1 : K_END;
-				break;
-			case SDLK_KP2:
-				if (gamekey)
-					sym = K_KP_DOWNARROW;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_2 : K_DOWNARROW;
-				break;
-			case SDLK_KP3:
-				if (gamekey)
-					sym = K_KP_PGDN;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_3 : K_PGDN;
-				break;
-			case SDLK_KP4:
-				if (gamekey)
-					sym = K_KP_LEFTARROW;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_4 : K_LEFTARROW;
-				break;
-			case SDLK_KP5:
-				if (gamekey)
-					sym = K_KP_5;
-				else	sym = SDLK_5;
-				break;
-			case SDLK_KP6:
-				if (gamekey)
-					sym = K_KP_RIGHTARROW;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_6 : K_RIGHTARROW;
-				break;
-			case SDLK_KP7:
-				if (gamekey)
-					sym = K_KP_HOME;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_7 : K_HOME;
-				break;
-			case SDLK_KP8:
-				if (gamekey)
-					sym = K_KP_UPARROW;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_8 : K_UPARROW;
-				break;
-			case SDLK_KP9:
-				if (gamekey)
-					sym = K_KP_PGUP;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_9 : K_PGUP;
-				break;
-			case SDLK_KP_PERIOD:
-				if (gamekey)
-					sym = K_KP_DEL;
-				else	sym = (modstate & KMOD_NUM) ? SDLK_PERIOD : K_DEL;
-				break;
-			case SDLK_KP_DIVIDE:
-				if (gamekey)
-					sym = K_KP_SLASH;
-				else	sym = SDLK_SLASH;
-				break;
-			case SDLK_KP_MULTIPLY:
-				if (gamekey)
-					sym = K_KP_STAR;
-				else	sym = SDLK_ASTERISK;
-				break;
-			case SDLK_KP_MINUS:
-				if (gamekey)
-					sym = K_KP_MINUS;
-				else	sym = SDLK_MINUS;
-				break;
-			case SDLK_KP_PLUS:
-				if (gamekey)
-					sym = K_KP_PLUS;
-				else	sym = SDLK_PLUS;
-				break;
-			case SDLK_KP_ENTER:
-				if (gamekey)
-					sym = K_KP_ENTER;
-				else	sym = SDLK_RETURN;
-				break;
-			case SDLK_KP_EQUALS:
-				if (gamekey)
-					sym = 0;
-				else	sym = SDLK_EQUALS;
-				break;
-			case 178: /* the '²' key */
-				sym = '~';
-				break;
-			default:
-			/* If we are not directly handled and still above 255,
-			 * just force it to 0. kill unsupported international
-			 * characters, too.  */
-				if ((sym >= SDLK_WORLD_0 && sym <= SDLK_WORLD_95) ||
-									sym > 255)
-					sym = 0;
-				break;
-			}
-			Key_Event (sym, state);
-			if (event.type == SDL_KEYDOWN && !Key_ConsoleBindable(sym))
+				sym = event.key.keysym.unicode & 0x7F;
 				Char_Event (sym);
+			}
 			break;
 #endif
 		case SDL_MOUSEBUTTONDOWN:
