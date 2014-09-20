@@ -2,7 +2,7 @@
 # Usage: "make -f Makefile.darwin"
 # You need the SDL library fully installed.
 # "make DEBUG=1" to build a debug client.
-# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
+# "make SDL_FRAMEWORK_PATH=/path/to/Frameworks" to specify the directory containing SDL.framework
 # "make DO_USERDIRS=1" to enable user directories support
 
 # Enable/Disable user directories support
@@ -55,16 +55,20 @@ CPUFLAGS=
 LDFLAGS =
 DFLAGS ?=
 CFLAGS ?= -Wall
+# @rpath can be used when targeting 10.5+
+USE_RPATH=0
 # require 10.5 for 64 bit builds
 ifeq ($(MACH_TYPE),ppc64)
 CFLAGS  +=-mmacosx-version-min=10.5
 LDFLAGS +=-mmacosx-version-min=10.5
+USE_RPATH=1
 endif
 ifeq ($(USE_SDL2),1)
 # sdl2 needs targetting 10.5+
 ifeq ($(MACH_TYPE),x86)
 CFLAGS  +=-mmacosx-version-min=10.5
 LDFLAGS +=-mmacosx-version-min=10.5
+USE_RPATH=1
 endif
 endif
 ifeq ($(MACH_TYPE),x86_64)
@@ -72,8 +76,12 @@ ifeq ($(MACH_TYPE),x86_64)
 # bundle1.o is needed for dyld_stub_binding_helper
 CFLAGS  +=-mmacosx-version-min=10.6
 LDFLAGS +=-mmacosx-version-min=10.6 -Wl,-lbundle1.o
+USE_RPATH=1
 endif
 CFLAGS += $(CPUFLAGS)
+ifeq ($(USE_RPATH),1)
+LDFLAGS+=-Wl,-rpath,@executable_path/../Frameworks
+endif
 
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
@@ -103,11 +111,15 @@ endif
 SDL_CFLAGS =-D_GNU_SOURCE=1 -D_THREAD_SAFE
 SDL_CFLAGS+=-DSDL_FRAMEWORK -DNO_SDL_CONFIG
 ifeq ($(USE_SDL2),1)
-SDL_LIBS   =-Wl,-framework,SDL2
+SDL_FRAMEWORK_NAME = SDL2
 else
-SDL_LIBS   =-Wl,-framework,SDL
+SDL_FRAMEWORK_NAME = SDL
 endif
-SDL_LIBS  +=-Wl,-framework,Cocoa
+ifdef SDL_FRAMEWORK_PATH
+SDL_LIBS  +=-Wl,-F,$(SDL_FRAMEWORK_PATH)
+SDL_CFLAGS+=-F$(SDL_FRAMEWORK_PATH)
+endif
+SDL_LIBS  +=-Wl,-framework,$(SDL_FRAMEWORK_NAME) -Wl,-framework,Cocoa
 
 ifeq ($(SDLNET),1)
 ifeq ($(USE_SDL2),1)
