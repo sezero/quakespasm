@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Sep. 15, 2014</em>
+<em>Page last edited Sep. 20, 2014</em>
 
 <sect> About <p>
 
@@ -69,11 +69,12 @@ cp quakespasm /usr/local/games/quake (for example)
 <newline>
 Compile time options include
 <itemize>
+<item><bf>make DO_USERDIRS=1</bf> to include user directories support
 <item><bf>make DEBUG=1</bf> for debugging
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installations
+<item><bf>make USE_SDL2=1</bf> to compile against SDL2 instead of SDL1.2
 </itemize>
 <p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
-<p>HOME directory support can be enabled via <bf>Misc/homedir_0.patch</bf>
 <p>The project can also be built with Codeblocks (project files included).</p>
 
 <sect1> Windows <p>
@@ -108,6 +109,7 @@ OS X has a well known gamma issue where the screen turns dark, but we currently 
 <sect1> Changes in 0.90.0<p>
 <itemize>
 <item> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.
+<item> SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
 <item> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"
 <item> Command line: "-game {quoth/hipnotic/rogue}" is now treated the same as -quoth, -hipnotic, or -rogue.
 <item> Console speed now resolution-independent.

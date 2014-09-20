@@ -7,11 +7,12 @@
 <BODY>
 <H1>QuakeSpasm</H1>
 
-<H2></H2><P>
+<H2></H2>
+<P>
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Sep. 15, 2014</EM></P>
+<P><EM>Page last edited Sep. 20, 2014</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -144,12 +145,13 @@ cp quakespasm /usr/local/games/quake (for example)
 <BR>
 Compile time options include
 <UL>
+<LI><B>make DO_USERDIRS=1</B> to include user directories support</LI>
 <LI><B>make DEBUG=1</B> for debugging</LI>
 <LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installations</LI>
+<LI><B>make USE_SDL2=1</B> to compile against SDL2 instead of SDL1.2</LI>
 </UL>
 </P>
 <P>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</P>
-<P>HOME directory support can be enabled via <B>Misc/homedir_0.patch</B></P>
 <P>The project can also be built with Codeblocks (project files included).</P>
 <H2><A NAME="ss4.2">4.2</A> <A HREF="#toc4.2">Windows </A>
 </H2>
@@ -186,6 +188,7 @@ these patched libSDL binaries may help.
 <P>
 <UL>
 <LI> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.</LI>
+<LI> SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.</LI>
 <LI> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"</LI>
 <LI> Command line: "-game {quoth/hipnotic/rogue}" is now treated the same as -quoth, -hipnotic, or -rogue.</LI>
 <LI> Console speed now resolution-independent.</LI>

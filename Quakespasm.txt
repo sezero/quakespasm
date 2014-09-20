@@ -35,7 +35,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Sep. 15, 2014
+  Page last edited Sep. 20, 2014
 
 
   1.  About
@@ -125,14 +125,16 @@
 
   Compile time options include
 
+  o  make DO_USERDIRS=1 to include user directories support
+
   o  make DEBUG=1 for debugging
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
+  o  make USE_SDL2=1 to compile against SDL2 instead of SDL1.2
+
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
-
-  HOME directory support can be enabled via Misc/homedir_0.patch
 
   The project can also be built with Codeblocks (project files
   included).
@@ -177,6 +179,8 @@
 
   o  Unix/Mac user directories support. Disabled by default,
      'make DO_USERDIRS=1' to enable it.
+
+  o  SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
 
   o  Revised/improved the 'game' command, i.e. on-the-fly mod changing.
      It now accepts an optional second argument for mission packs or
