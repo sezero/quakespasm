@@ -533,9 +533,6 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	if (fullscreen)
 		flags |= SDL_FULLSCREEN;
 
-	//
-	// swap control (the "before SDL_SetVideoMode" part)
-	//
 	gl_swap_control = true;
 	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
 		gl_swap_control = false;
@@ -884,25 +881,29 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("texture_env_add not supported\n");
 	}
 
-	// swap control (the "after SDL_SetVideoMode" part)
+	// swap control
 	//
 	if (!gl_swap_control)
 	{
+#if defined(USE_SDL2)
+		Con_Warning ("vertical sync not supported (SDL_GL_SetSwapInterval failed)\n");
+#else
 		Con_Warning ("vertical sync not supported (SDL_GL_SetAttribute failed)\n");
+#endif
 	}
 #if defined(USE_SDL2)
 	else if ((swap_control = SDL_GL_GetSwapInterval()) == -1)
-	{
-		gl_swap_control = false;
-		Con_Warning ("vertical sync not supported (SDL_GL_GetSwapInterval failed)\n");
-	}
 #else
 	else if (SDL_GL_GetAttribute(SDL_GL_SWAP_CONTROL, &swap_control) == -1)
+#endif
 	{
 		gl_swap_control = false;
+#if defined(USE_SDL2)
+		Con_Warning ("vertical sync not supported (SDL_GL_GetSwapInterval failed)\n");
+#else
 		Con_Warning ("vertical sync not supported (SDL_GL_GetAttribute failed)\n");
-	}
 #endif
+	}
 	else if ((vid_vsync.value && swap_control != 1) || (!vid_vsync.value && swap_control != 0))
 	{
 		gl_swap_control = false;
@@ -910,7 +911,11 @@ static void GL_CheckExtensions (void)
 	}
 	else
 	{
+#if defined(USE_SDL2)
+		Con_Printf("FOUND: SDL_GL_SetSwapInterval\n");
+#else
 		Con_Printf("FOUND: SDL_GL_SWAP_CONTROL\n");
+#endif
 	}
 
 	// anisotropic filtering
