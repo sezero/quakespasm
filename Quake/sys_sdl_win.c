@@ -172,9 +172,31 @@ static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
 	}
 }
 
+typedef BOOL(*SetProcessDPIAwareFunc)();
+
+void Sys_SetDPIAware (void)
+{
+	HMODULE hUser32;
+	SetProcessDPIAwareFunc setDPIAware;
+
+	/* Neither SDL 1.2 nor SDL 2.0.3 can handle the OS scaling our window.
+	  (e.g. https://bugzilla.libsdl.org/show_bug.cgi?id=2713)
+	  Call SetProcessDPIAware() to opt out of scaling.
+	*/
+
+	hUser32 = LoadLibraryA ("user32.dll");
+	setDPIAware = (SetProcessDPIAwareFunc) GetProcAddress (hUser32, "SetProcessDPIAware");
+	if (setDPIAware)
+		setDPIAware ();
+
+	FreeLibrary (hUser32);
+}
+
 void Sys_Init (void)
 {
 	OSVERSIONINFO	vinfo;
+
+	Sys_SetDPIAware ();
 
 	memset (cwd, 0, sizeof(cwd));
 	Sys_GetBasedir(NULL, cwd, sizeof(cwd));
