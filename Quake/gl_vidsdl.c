@@ -2,7 +2,8 @@
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2007-2008 Kristian Duske
-Copyright (C) 2010 Ozkan Sezer and Steven Atkinson
+Copyright (C) 2010-2014 Ozkan Sezer, Steven Atkinson,
+			Sander van Dijk, Eric Wasylishen
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -123,6 +124,10 @@ cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from 
 //==========================================================================
 
 #define	USE_GAMMA_RAMPS			0
+#if (USE_GAMMA_RAMPS) && defined(USE_SDL2)
+#undef USE_GAMMA_RAMPS /* not with SDL2 */
+#define	USE_GAMMA_RAMPS			0
+#endif
 
 #if USE_GAMMA_RAMPS
 static unsigned short vid_gamma_red[256];
@@ -156,14 +161,12 @@ static void VID_Gamma_SetGamma (void)
 #if defined(USE_SDL2)
 		if (SDL_SetWindowBrightness(draw_context, value) != 0)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetWindowBrightness\n");
-#else
-#if USE_GAMMA_RAMPS
+#elif (USE_GAMMA_RAMPS)
 		if (SDL_SetGammaRamp(vid_gamma_red, vid_gamma_green, vid_gamma_blue) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
 #else
 		if (SDL_SetGamma(value,value,value) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGamma\n");
-#endif
 #endif
 	}
 }
@@ -180,14 +183,12 @@ static void VID_Gamma_Restore (void)
 #if defined(USE_SDL2)
 		if (SDL_SetWindowBrightness(draw_context, 1) != 0)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetWindowBrightness\n");
-#else
-#if USE_GAMMA_RAMPS
+#elif (USE_GAMMA_RAMPS)
 		if (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
 #else
 		if (SDL_SetGamma(1, 1, 1) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGamma\n");
-#endif
 #endif
 	}
 }
@@ -232,14 +233,12 @@ static void VID_Gamma_Init (void)
 {
 #if defined(USE_SDL2)
 	gammaworks	= (SDL_SetWindowBrightness(draw_context, 1) == 0);
-#else
-#if USE_GAMMA_RAMPS
+#elif (USE_GAMMA_RAMPS)
 	gammaworks	= (SDL_GetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 	if (gammaworks)
 	    gammaworks	= (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 #else
 	gammaworks	= (SDL_SetGamma(1, 1, 1) == 0);
-#endif
 #endif
 
 	if (!gammaworks)
@@ -402,7 +401,7 @@ static SDL_DisplayMode *VID_SDL2_GetDisplayMode(int width, int height, int bpp)
 	}
 	return NULL;
 }
-#endif
+#endif /* USE_SDL2 */
 
 /*
 ================
@@ -553,7 +552,7 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	}
 
 	SDL_WM_SetCaption(caption, caption);
-#endif
+#endif /* !defined(USE_SDL2) */
 
 	vid.width = VID_GetCurrentWidth();
 	vid.height = VID_GetCurrentHeight();
@@ -793,8 +792,7 @@ static qboolean GL_ParseExtensionList (const char *list, const char *name)
 static void GL_CheckExtensions (void)
 {
 	int swap_control;
-	
-	//
+
 	// ARB_vertex_buffer_object
 	//
 	if (COM_CheckParm("-novbo"))
@@ -1071,7 +1069,6 @@ void	VID_Shutdown (void)
 #if defined(USE_SDL2)
 		gl_context = NULL;
 #endif
-
 		PL_VID_Shutdown();
 	}
 }
@@ -1192,7 +1189,7 @@ static void VID_InitModelist (void)
 			nummodes++;
 		}
 	}
-#else
+#else /* !defined(USE_SDL2) */
 	SDL_PixelFormat	format;
 	SDL_Rect	**modes;
 	Uint32		flags;
@@ -1244,7 +1241,7 @@ static void VID_InitModelist (void)
 
 	if (nummodes == originalnummodes)
 		Con_SafePrintf ("No fullscreen DIB modes found\n");
-#endif
+#endif /* !defined(USE_SDL2) */
 }
 
 /*
