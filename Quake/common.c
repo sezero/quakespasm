@@ -2072,9 +2072,13 @@ static void COM_Game_f (void)
 			R_NewGame ();
 		}
 		ExtraMaps_NewGame ();
-		//Cbuf_InsertText ("exec quake.rc\n");
 
 		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
+
+		//Cbuf_InsertText ("exec quake.rc\n");
+		// full quake.rc can result in unpredictable results, run config.cfg instead.
+		Cbuf_InsertText ("exec config.cfg\n");
+		Cbuf_InsertText ("exec default.cfg\n"); // ... but after default.cfg.
 	}
 	else //Diplay the current gamedir
 		Con_Printf("\"game\" is \"%s\"\n", COM_SkipPath(com_gamedir));
