@@ -124,10 +124,6 @@ cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from 
 //==========================================================================
 
 #define	USE_GAMMA_RAMPS			0
-#if (USE_GAMMA_RAMPS) && defined(USE_SDL2)
-#undef USE_GAMMA_RAMPS /* not with SDL2 */
-#define	USE_GAMMA_RAMPS			0
-#endif
 
 #if USE_GAMMA_RAMPS
 static unsigned short vid_gamma_red[256];
@@ -159,15 +155,22 @@ static void VID_Gamma_SetGamma (void)
 			value = GAMMA_MAX;
 
 #if defined(USE_SDL2)
+# if USE_GAMMA_RAMPS
+		if (SDL_SetWindowGammaRamp(draw_context, vid_gamma_red, vid_gamma_green, vid_gamma_blue) != 0)
+			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetWindowGammaRamp\n");
+# else
 		if (SDL_SetWindowBrightness(draw_context, value) != 0)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetWindowBrightness\n");
-#elif (USE_GAMMA_RAMPS)
+# endif
+#else /* USE_SDL2 */
+# if USE_GAMMA_RAMPS
 		if (SDL_SetGammaRamp(vid_gamma_red, vid_gamma_green, vid_gamma_blue) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGammaRamp\n");
-#else
+# else
 		if (SDL_SetGamma(value,value,value) == -1)
 			Con_Printf ("VID_Gamma_SetGamma: failed on SDL_SetGamma\n");
-#endif
+# endif
+#endif /* USE_SDL2 */
 	}
 }
 
@@ -181,15 +184,22 @@ static void VID_Gamma_Restore (void)
 	if (draw_context && gammaworks)
 	{
 #if defined(USE_SDL2)
+# if USE_GAMMA_RAMPS
+		if (SDL_SetWindowGammaRamp(draw_context, vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) != 0)
+			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetWindowGammaRamp\n");
+# else
 		if (SDL_SetWindowBrightness(draw_context, 1) != 0)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetWindowBrightness\n");
-#elif (USE_GAMMA_RAMPS)
+# endif
+#else /* USE_SDL2 */
+# if USE_GAMMA_RAMPS
 		if (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGammaRamp\n");
-#else
+# else
 		if (SDL_SetGamma(1, 1, 1) == -1)
 			Con_Printf ("VID_Gamma_Restore: failed on SDL_SetGamma\n");
-#endif
+# endif
+#endif /* USE_SDL2 */
 	}
 }
 
@@ -232,14 +242,22 @@ VID_Gamma_Init -- call on init
 static void VID_Gamma_Init (void)
 {
 #if defined(USE_SDL2)
+# if USE_GAMMA_RAMPS
+	gammaworks	= (SDL_GetWindowGammaRamp(draw_context, vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
+	if (gammaworks)
+	    gammaworks	= (SDL_SetWindowGammaRamp(draw_context, vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
+# else
 	gammaworks	= (SDL_SetWindowBrightness(draw_context, 1) == 0);
-#elif (USE_GAMMA_RAMPS)
+# endif
+#else /* USE_SDL2 */
+# if USE_GAMMA_RAMPS
 	gammaworks	= (SDL_GetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
 	if (gammaworks)
 	    gammaworks	= (SDL_SetGammaRamp(vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
-#else
+# else
 	gammaworks	= (SDL_SetGamma(1, 1, 1) == 0);
-#endif
+# endif
+#endif /* USE_SDL2 */
 
 	if (!gammaworks)
 		Con_SafePrintf("gamma adjustment not available\n");
