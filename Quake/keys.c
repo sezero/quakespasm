@@ -1140,7 +1140,10 @@ Key_ConsoleBindable
 */
 qboolean Key_ConsoleBindable(int key)
 {
-	if (key < 1 || key > 255)
+	if (key < 0 || key > 255)
+		return false;
+
+	if (Key_StringToKeynum(Key_KeynumToString(key)) == -1)
 		return false;
 
 	return ((key_dest == key_console || (key_dest == key_game && con_forcedup)) && !consolekeys[key]);
