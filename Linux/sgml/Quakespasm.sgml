@@ -103,6 +103,9 @@ these patched libSDL binaries may help.
 <p>
 OS X has a well known gamma issue where the screen turns dark, but we currently have no fix.
 </p>
+<p>
+High-DPI displays on Windows can break Quakespasm. As a workaround, right-click the quakespasm exe, go to Properties, the Compatibility tab, and check "Disable display scaling on high DPI settings".
+</p>
 
 <sect> Changes<p>
 
