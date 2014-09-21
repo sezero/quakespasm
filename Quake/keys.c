@@ -1140,9 +1140,6 @@ Key_ConsoleBindable
 */
 qboolean Key_ConsoleBindable(int key)
 {
-	if (key < 0 || key > 255)
-		return false;
-
 	if (Key_StringToKeynum(Key_KeynumToString(key)) == -1)
 		return false;
 

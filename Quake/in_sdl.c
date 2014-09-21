@@ -636,12 +636,12 @@ void IN_SendKeyEvents (void)
 			else
 				lastKeyDown = 0;
 			
-			Key_Event (sym, event.key.state == SDL_PRESSED);
+			Key_Event (sym, event.type == SDL_KEYDOWN);
 			break;
 #else
 			sym = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 
-			Key_Event (sym, event.key.state == SDL_PRESSED);
+			Key_Event (sym, event.type == SDL_KEYDOWN);
 
 			if (event.type == SDL_KEYDOWN && !Key_ConsoleBindable(sym) &&
 			    event.key.keysym.unicode != 0 && (event.key.keysym.unicode & 0xFF80) == 0)
