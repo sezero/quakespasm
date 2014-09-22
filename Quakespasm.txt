@@ -176,6 +176,11 @@
   click the quakespasm exe, go to Properties, the Compatibility tab, and check
   "Disable display scaling on high DPI settings".
 
+  The "game" command doesn't execute quake.rc in the new game directory being
+  switched to. This means any custom keybindings in a mod's config.cfg or
+  special settings in a quake.rc won't be loaded. The only workaround is
+  launching the engine with the -game command-line flag instead of using the
+  "game" command.
 
   6.  Changes
 
