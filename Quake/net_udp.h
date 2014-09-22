@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1996-1997 Id Software, Inc.
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,8 +21,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #ifndef __net_udp_h
 #define __net_udp_h
-
-// net_udp.h
 
 sys_socket_t  UDP_Init (void);
 void UDP_Shutdown (void);

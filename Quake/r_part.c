@@ -2,6 +2,7 @@
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
 Copyright (C) 2007-2008 Kristian Duske
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -110,7 +111,6 @@ void R_InitParticleTextures (void)
 			*dst++ = R_ParticleTextureLookup(x, y, 2);
 		}
 	particletexture3 = TexMgr_LoadImage (NULL, "particle3", 64, 64, SRC_RGBA, particle3_data, "", (src_offset_t)particle3_data, TEXPREF_PERSIST | TEXPREF_ALPHA | TEXPREF_LINEAR);
-
 
 	//set default
 	particletexture = particletexture1;
@@ -335,10 +335,10 @@ void R_ParseParticleEffect (void)
 	msgcount = MSG_ReadByte ();
 	color = MSG_ReadByte ();
 
-if (msgcount == 255)
-	count = 1024;
-else
-	count = msgcount;
+	if (msgcount == 255)
+		count = 1024;
+	else
+		count = msgcount;
 
 	R_RunParticleEffect (org, dir, color, count);
 }
@@ -708,7 +708,6 @@ void R_RocketTrail (vec3_t start, vec3_t end, int type)
 				break;
 		}
 
-
 		VectorAdd (start, vec, start);
 	}
 }
@@ -839,7 +838,7 @@ void R_DrawParticles (void)
 	VectorScale (vup, 1.5, up);
 	VectorScale (vright, 1.5, right);
 
-    GL_Bind(particletexture);
+	GL_Bind(particletexture);
 	glEnable (GL_BLEND);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glDepthMask (GL_FALSE); //johnfitz -- fix for particle z-buffer bug

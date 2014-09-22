@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -153,8 +154,6 @@ void CL_Disconnect_f (void)
 }
 
 
-
-
 /*
 =====================
 CL_EstablishConnection
@@ -194,7 +193,7 @@ void CL_SignonReply (void)
 {
 	char 	str[8192];
 
-Con_DPrintf ("CL_SignonReply: %i\n", cls.signon);
+	Con_DPrintf ("CL_SignonReply: %i\n", cls.signon);
 
 	switch (cls.signon)
 	{
@@ -282,8 +281,6 @@ void CL_PrintEntities_f (void)
 		,ent->model->name,ent->frame, ent->origin[0], ent->origin[1], ent->origin[2], ent->angles[0], ent->angles[1], ent->angles[2]);
 	}
 }
-
-//johnfitz -- deleted SetPal()
 
 /*
 ===============
@@ -508,7 +505,6 @@ void CL_RelinkEntities (void)
 					d += 360;
 				ent->angles[j] = ent->msg_angles[1][j] + f*d;
 			}
-
 		}
 
 // rotate binary objects locally
@@ -694,7 +690,6 @@ void CL_SendCmd (void)
 
 	// send the unreliable message
 		CL_SendMove (&cmd);
-
 	}
 
 	if (cls.demoplayback)

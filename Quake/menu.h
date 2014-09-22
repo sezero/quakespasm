@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -46,7 +47,6 @@ extern enum m_state_e m_state;
 extern enum m_state_e m_return_state;
 
 extern qboolean m_entersound;
-
 extern qboolean m_keys_bind_grab;
 
 //

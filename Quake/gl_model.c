@@ -1,7 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
-Copyright (C) 2011 O.Sezer
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -493,7 +493,7 @@ void Mod_LoadTextures (lump_t *l)
 			{
 				// ericw -- fence textures
 				int	extraflags;
-				
+
 				extraflags = 0;
 				if (tx->name[0] == '{')
 					extraflags |= TEXPREF_ALPHA;

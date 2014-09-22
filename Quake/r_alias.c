@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,7 +31,8 @@ gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz -- changed to an array o
 
 #define NUMVERTEXNORMALS	162
 
-float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
+float	r_avertexnormals[NUMVERTEXNORMALS][3] =
+{
 #include "anorms.h"
 };
 
@@ -41,8 +43,9 @@ extern vec3_t	lightcolor; //johnfitz -- replaces "float shadelight" for lit supp
 // precalculated dot products for quantized angles
 #define SHADEDOT_QUANT 16
 float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
+{
 #include "anorm_dots.h"
-;
+};
 
 extern	vec3_t			lightspot;
 

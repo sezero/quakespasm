@@ -1,5 +1,6 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -489,6 +490,6 @@ void CL_TimeDemo_f (void)
 
 	cls.timedemo = true;
 	cls.td_startframe = host_framecount;
-	cls.td_lastframe = -1;
+	cls.td_lastframe = -1;	// get a new message this frame
 }
 

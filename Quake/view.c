@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -95,7 +96,6 @@ float V_CalcRoll (vec3_t angles, vec3_t velocity)
 		side = value;
 
 	return side*sign;
-
 }
 
 
@@ -128,7 +128,6 @@ float V_CalcBob (void)
 	else if (bob < -7)
 		bob = -7;
 	return bob;
-
 }
 
 
@@ -688,7 +687,6 @@ void V_CalcViewRoll (void)
 		r_refdef.viewangles[ROLL] = 80;	// dead view angle
 		return;
 	}
-
 }
 
 /*
@@ -916,5 +914,4 @@ void V_Init (void)
 	Cvar_RegisterVariable (&v_kickpitch);
 	Cvar_RegisterVariable (&v_gunkick); //johnfitz
 }
-
 

@@ -1,6 +1,7 @@
 /*
 Copyright (C) 1996-2001 Id Software, Inc.
 Copyright (C) 2002-2009 John Fitzgibbons and others
+Copyright (C) 2010-2014 QuakeSpasm developers
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -155,7 +156,7 @@ typedef struct msurface_s
 	struct	msurface_s	*texturechain;
 
 	mtexinfo_t	*texinfo;
-	
+
 	int		vbo_firstvert;		// index of this surface's first vert in the VBO
 
 // lighting info
