@@ -298,6 +298,7 @@ void M_Main_Key (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 
 		switch (m_main_cursor)
@@ -378,6 +379,7 @@ void M_SinglePlayer_Key (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 
 		switch (m_singleplayer_cursor)
@@ -515,6 +517,7 @@ void M_Load_Key (int k)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		S_LocalSound ("misc/menu2.wav");
 		if (!loadable[load_cursor])
 			return;
@@ -558,6 +561,7 @@ void M_Save_Key (int k)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_state = m_none;
 		IN_Activate();
 		key_dest = key_game;
@@ -639,6 +643,7 @@ void M_MultiPlayer_Key (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 		switch (m_multiplayer_cursor)
 		{
@@ -767,6 +772,7 @@ forward:
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		if (setup_cursor == 0 || setup_cursor == 1)
 			return;
 
@@ -932,6 +938,7 @@ again:
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 		M_Menu_LanConfig_f ();
 		break;
@@ -1202,6 +1209,7 @@ void M_Options_Key (int k)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 		switch (options_cursor)
 		{
@@ -1436,6 +1444,7 @@ void M_Keys_Key (int k)
 			keys_cursor = 0;
 		break;
 
+	case K_KP_ENTER:
 	case K_ENTER:		// go into bind mode
 		M_FindKeysForCommand (bindnames[keys_cursor][0], keys);
 		S_LocalSound ("misc/menu2.wav");
@@ -1724,6 +1733,7 @@ void M_LanConfig_Key (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		if (lanConfig_cursor == 0)
 			break;
 
@@ -2244,6 +2254,7 @@ void M_GameOptions_Key (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		S_LocalSound ("misc/menu2.wav");
 		if (gameoptions_cursor == 0)
 		{
@@ -2399,6 +2410,7 @@ void M_ServerList_Key (int k)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		S_LocalSound ("misc/menu2.wav");
 		m_return_state = m_state;
 		m_return_onerror = true;

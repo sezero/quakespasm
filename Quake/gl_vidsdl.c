@@ -1762,6 +1762,7 @@ static void VID_MenuKey (int key)
 		break;
 
 	case K_ENTER:
+	case K_KP_ENTER:
 		m_entersound = true;
 		switch (video_options_cursor)
 		{

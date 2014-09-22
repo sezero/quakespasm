@@ -240,6 +240,7 @@ void Key_Console (int key)
 	switch (key)
 	{
 	case K_ENTER:
+	case K_KP_ENTER:
 		key_tabpartial[0] = 0;
 		Cbuf_AddText (workline + 1);	// skip the prompt
 		Cbuf_AddText ("\n");
@@ -500,7 +501,7 @@ void Key_EndChat (void)
 
 void Key_Message (int key)
 {
-	if (key == K_ENTER)
+	if (key == K_ENTER || key == K_KP_ENTER)
 	{
 		if (chat_team)
 			Cbuf_AddText ("say_team \"");
@@ -856,6 +857,7 @@ void Key_Init (void)
 	consolekeys[K_PGUP] = true;
 	consolekeys[K_PGDN] = true;
 	consolekeys[K_SHIFT] = true;
+	consolekeys[K_KP_ENTER] = true;
 	consolekeys[K_MWHEELUP] = true;
 	consolekeys[K_MWHEELDOWN] = true;
 	consolekeys['`'] = false;
