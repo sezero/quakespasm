@@ -2,9 +2,9 @@ allow plain files to override files inside a PAK file -- Sander van Dijk
 
 Index: Quake/common.c
 ===================================================================
---- Quake/common.c	(revision 1013)
+--- Quake/common.c	(revision 1060)
 +++ Quake/common.c	(working copy)
-@@ -1898,15 +1898,7 @@ static void COM_AddGameDirectory (const 
+@@ -1900,15 +1900,7 @@ static void COM_AddGameDirectory (const 
  	if (com_searchpaths)
  		path_id = com_searchpaths->path_id << 1;
  	else	path_id = 1U;
@@ -20,7 +20,7 @@ Index: Quake/common.c
  	// add any pak files in the format pak0.pak pak1.pak, ...
  	for (i = 0; ; i++)
  	{
-@@ -1938,6 +1930,13 @@ _add_path:
+@@ -1940,6 +1932,13 @@ _add_path:
  		if (!pak) break;
  	}
  
