@@ -52,8 +52,10 @@ static int buttonremap[] =
 	K_MOUSE1,
 	K_MOUSE3,	/* right button		*/
 	K_MOUSE2,	/* middle button	*/
+#if !defined(USE_SDL2)	/* mousewheel up/down not counted as buttons in SDL2 */
 	K_MWHEELUP,
 	K_MWHEELDOWN,
+#endif
 	K_MOUSE4,
 	K_MOUSE5
 };
