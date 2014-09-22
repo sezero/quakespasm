@@ -1,9 +1,9 @@
 
 Index: Quake/gl_model.c
 ===================================================================
---- Quake/gl_model.c	(revision 676)
+--- Quake/gl_model.c	(revision 1060)
 +++ Quake/gl_model.c	(working copy)
-@@ -387,6 +387,8 @@ void Mod_LoadTextures (lump_t *l)
+@@ -401,6 +401,8 @@ void Mod_LoadTextures (lump_t *l)
  	extern byte *hunk_base;
  //johnfitz
  
@@ -12,7 +12,7 @@ Index: Quake/gl_model.c
  	//johnfitz -- don't return early if no textures; still need to create dummy texture
  	if (!l->filelen)
  	{
-@@ -438,7 +440,17 @@ void Mod_LoadTextures (lump_t *l)
+@@ -452,7 +454,17 @@ void Mod_LoadTextures (lump_t *l)
  		if (!isDedicated) //no texture uploading for dedicated server
  		{
  			if (!q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
@@ -30,7 +30,7 @@ Index: Quake/gl_model.c
  			else if (tx->name[0] == '*') //warping texture
  			{
  				//external textures -- first look in "textures/mapname/" then look in "textures/"
-@@ -480,6 +492,52 @@ void Mod_LoadTextures (lump_t *l)
+@@ -502,6 +514,52 @@ void Mod_LoadTextures (lump_t *l)
  				//external textures -- first look in "textures/mapname/" then look in "textures/"
  				mark = Hunk_LowMark ();
  				COM_StripExtension (loadmodel->name + 5, mapname, sizeof(mapname));
@@ -85,27 +85,27 @@ Index: Quake/gl_model.c
  				if (!data)
 Index: Quake/gl_rmain.c
 ===================================================================
---- Quake/gl_rmain.c	(revision 660)
+--- Quake/gl_rmain.c	(revision 1060)
 +++ Quake/gl_rmain.c	(working copy)
-@@ -100,6 +100,7 @@
+@@ -101,6 +101,7 @@
  cvar_t	r_nolerp_list = {"r_nolerp_list", "progs/flame.mdl,progs/flame2.mdl,progs/braztall.mdl,progs/brazshrt.mdl,progs/longtrch.mdl,progs/flame_pyre.mdl,progs/v_saw.mdl,progs/v_xfist.mdl,progs/h2stuff/newfire.mdl", CVAR_NONE};
  extern cvar_t	r_vfog;
  //johnfitz
 +cvar_t	r_externaltexture_fix = {"r_externaltexture_fix","0", CVAR_ARCHIVE}; //mk
  
- cvar_t	gl_zfix = {"gl_zfix", "1", CVAR_ARCHIVE}; // QuakeSpasm z-fighting fix
+ cvar_t	gl_zfix = {"gl_zfix", "0", CVAR_NONE}; // QuakeSpasm z-fighting fix
  
 Index: Quake/gl_rmisc.c
 ===================================================================
---- Quake/gl_rmisc.c	(revision 660)
+--- Quake/gl_rmisc.c	(revision 1060)
 +++ Quake/gl_rmisc.c	(working copy)
-@@ -44,6 +44,7 @@
- extern cvar_t r_lerpmove;
+@@ -46,6 +46,7 @@
  extern cvar_t r_nolerp_list;
  //johnfitz
+ extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 +extern cvar_t r_externaltexture_fix; //mk
  
- extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
+ extern gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz
  
 @@ -168,6 +169,7 @@ void R_Init (void)
  	Cvar_RegisterVariable (&r_nolerp_list);
