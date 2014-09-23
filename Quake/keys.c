@@ -1053,7 +1053,7 @@ void Char_Event (int key)
 		Char_Message (key);
 		break;
 	case key_menu:
-		M_Textinput (key);
+		M_Charinput (key);
 		break;
 	case key_console:
 		Char_Console (key);

@@ -817,7 +817,7 @@ forward:
 }
 
 
-void M_Setup_Textinput (int k)
+void M_Setup_Char (int k)
 {
 	int l;
 
@@ -1798,7 +1798,7 @@ void M_LanConfig_Key (int key)
 }
 
 
-void M_LanConfig_Textinput (int key)
+void M_LanConfig_Char (int key)
 {
 	int l;
 
@@ -2632,15 +2632,15 @@ void M_Keydown (int key)
 }
 
 
-void M_Textinput (int key)
+void M_Charinput (int key)
 {
 	switch (m_state)
 	{
 	case m_setup:
-		M_Setup_Textinput (key);
+		M_Setup_Char (key);
 		return;
 	case m_lanconfig:
-		M_LanConfig_Textinput (key);
+		M_LanConfig_Char (key);
 		return;
 	default:
 		return;
