@@ -180,7 +180,7 @@
   config.cfg or special settings in a quake.rc won't be loaded. The only
   workaround is launching the engine with the -game command-line switch
   instead of using the game console command. Or, after running the game
-  command, you can run "exec quake.rc" by yourself (YMMV.)
+  command, you can run "exec quake.rc" by yourself (YMMV).
 
 
   6.  Changes
