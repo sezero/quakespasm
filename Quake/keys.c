@@ -1065,6 +1065,17 @@ void Char_Event (int key)
 
 /*
 ===================
+Key_InputtingText
+===================
+*/
+qboolean Key_InputtingText(void)
+{
+	return (key_dest == key_console || (key_dest == key_game && con_forcedup) ||
+	        key_dest == key_message || (key_dest == key_menu && M_InputtingText()));
+}
+
+/*
+===================
 Key_ClearStates
 ===================
 */
@@ -1114,18 +1125,6 @@ void Key_UpdateForDest (void)
 		forced = false;
 		break;
 	}
-
-	IN_UpdateForKeydest ();
-}
-
-/*
-===================
-Key_GameKey
-===================
-*/
-qboolean Key_GameKey(void)
-{
-	return ((key_dest == key_game && !con_forcedup) || m_keys_bind_grab);
 }
 
 /*

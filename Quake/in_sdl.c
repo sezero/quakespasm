@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #endif
 
-static qboolean	prev_gamekey, gamekey;
+static qboolean	textmode;
 
 #ifdef __APPLE__
 /* Mouse acceleration needs to be disabled on OS X */
@@ -261,10 +261,10 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	prev_gamekey = Key_GameKey();
+	textmode = Key_InputtingText();
 
 #if !defined(USE_SDL2)
-	SDL_EnableUNICODE (!prev_gamekey);
+	SDL_EnableUNICODE (textmode);
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
 #endif
@@ -353,20 +353,19 @@ void IN_ClearStates (void)
 {
 }
 
-void IN_UpdateForKeydest (void)
+void IN_UpdateInputMode (void)
 {
-	gamekey = Key_GameKey();
-	if (gamekey != prev_gamekey)
+	qboolean want_textmode = Key_InputtingText();
+	if (textmode != want_textmode)
 	{
-		prev_gamekey = gamekey;
-		Key_ClearStates();
+		textmode = want_textmode;
 #if !defined(USE_SDL2)
-		SDL_EnableUNICODE(!gamekey);
+		SDL_EnableUNICODE(textmode);
 #else
-		if (gamekey)
-			SDL_StopTextInput();
-		else
+		if (textmode)
 			SDL_StartTextInput();
+		else
+			SDL_StopTextInput();
 #endif
 	}
 }
@@ -629,9 +628,8 @@ void IN_SendKeyEvents (void)
 		/* fallthrough */
 		case SDL_KEYUP:
 #if defined(USE_SDL2)
-		// SDL2: in gamekey mode, we interpret the keyboard as the US
-		// layout, so keybindings are based on key position, not the label
-		// on the key cap.
+		// SDL2: we interpret the keyboard as the US layout, so keybindings
+		// are based on key position, not the label on the key cap.
 			sym = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
 
 			if (event.type == SDL_KEYDOWN)

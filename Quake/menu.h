@@ -47,7 +47,6 @@ extern enum m_state_e m_state;
 extern enum m_state_e m_return_state;
 
 extern qboolean m_entersound;
-extern qboolean m_keys_bind_grab;
 
 //
 // menus
@@ -55,6 +54,7 @@ extern qboolean m_keys_bind_grab;
 void M_Init (void);
 void M_Keydown (int key);
 void M_Charinput (int key);
+qboolean M_InputtingText (void);
 void M_ToggleMenu_f (void);
 
 void M_Menu_Main_f (void);

@@ -845,6 +845,12 @@ void M_Setup_Char (int k)
 	}
 }
 
+
+qboolean M_Setup_InputtingText (void)
+{
+	return (setup_cursor == 0 || setup_cursor == 1);
+}
+
 //=============================================================================
 /* NET MENU */
 
@@ -1299,7 +1305,7 @@ const char *bindnames[][2] =
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
 
 static int	keys_cursor;
-qboolean	m_keys_bind_grab;
+static qboolean	bind_grab;
 
 void M_Menu_Keys_f (void)
 {
@@ -1366,7 +1372,7 @@ void M_Keys_Draw (void)
 	p = Draw_CachePic ("gfx/ttl_cstm.lmp");
 	M_DrawPic ( (320-p->width)/2, 4, p);
 
-	if (m_keys_bind_grab)
+	if (bind_grab)
 		M_Print (12, 32, "Press a key or button for this action");
 	else
 		M_Print (18, 32, "Enter to change, backspace to clear");
@@ -1397,7 +1403,7 @@ void M_Keys_Draw (void)
 		}
 	}
 
-	if (m_keys_bind_grab)
+	if (bind_grab)
 		M_DrawCharacter (130, 48 + keys_cursor*8, '=');
 	else
 		M_DrawCharacter (130, 48 + keys_cursor*8, 12+((int)(realtime*4)&1));
@@ -1409,7 +1415,7 @@ void M_Keys_Key (int k)
 	char	cmd[80];
 	int		keys[2];
 
-	if (m_keys_bind_grab)
+	if (bind_grab)
 	{	// defining a key
 		S_LocalSound ("misc/menu1.wav");
 		if ((k != K_ESCAPE) && (k != '`'))
@@ -1418,7 +1424,7 @@ void M_Keys_Key (int k)
 			Cbuf_InsertText (cmd);
 		}
 
-		m_keys_bind_grab = false;
+		bind_grab = false;
 		IN_Deactivate(modestate == MS_WINDOWED); // deactivate because we're returning to the menu
 		return;
 	}
@@ -1451,7 +1457,7 @@ void M_Keys_Key (int k)
 		S_LocalSound ("misc/menu2.wav");
 		if (keys[1] != -1)
 			M_UnbindCommand (bindnames[keys_cursor][0]);
-		m_keys_bind_grab = true;
+		bind_grab = true;
 		IN_Activate(); // activate to allow mouse key binding
 		break;
 
@@ -1826,6 +1832,12 @@ void M_LanConfig_Char (int key)
 		}
 		break;
 	}
+}
+
+
+qboolean M_LanConfig_InputtingText (void)
+{
+	return (lanConfig_cursor == 0 || lanConfig_cursor == 2);
 }
 
 //=============================================================================
@@ -2644,6 +2656,20 @@ void M_Charinput (int key)
 		return;
 	default:
 		return;
+	}
+}
+
+
+qboolean M_InputtingText (void)
+{
+	switch (m_state)
+	{
+	case m_setup:
+		return M_Setup_InputtingText();
+	case m_lanconfig:
+		return M_LanConfig_InputtingText();
+	default:
+		return false;
 	}
 }
 

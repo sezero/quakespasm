@@ -690,6 +690,7 @@ void _Host_Frame (float time)
 
 // get new key events
 	Key_UpdateForDest ();
+	IN_UpdateInputMode ();
 	Sys_SendKeyEvents ();
 
 // allow mice or other external controllers to add commands
