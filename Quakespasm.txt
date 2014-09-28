@@ -264,7 +264,9 @@
   o  MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.
 
   o  MAX_ENT_LEAFS bumped from 16 to 32 to work around
-     disappearing/flickering bmodels in some situations.
+     disappearing/flickering bmodels in some situations. Also, if an entity
+     is visible from MAX_ENT_LEAFS or more leafs, we now always send it to
+     the client.
 
   o  Fix cvar cycle command not working sometimes.
 

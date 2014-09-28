@@ -140,7 +140,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix broken behavior upon gamedir changes if -basedir is specified on the command line.
 <item> NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
 <item> MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.
-<item> MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing/flickering bmodels in some situations.
+<item> MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing/flickering bmodels in some situations. Also, if an entity is visible from MAX_ENT_LEAFS or more leafs, we now always send it to the client.
 <item> Fix cvar cycle command not working sometimes.
 <item> Host_Error upon missing models. (Prevents segmentation faults.)
 <item> Change sv_aim default value to 1 (i.e. turn off autoaim)
