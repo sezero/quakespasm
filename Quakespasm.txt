@@ -35,7 +35,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Sep. 23, 2014
+  Page last edited Sep. 29, 2014
 
 
   1.  About
@@ -217,7 +217,7 @@
   o  Antialiasing (FSAA) support (command line: -fsaa x, where x can be
      0, 2, 4, 8).
 
-  o  Fence texture support.
+  o  Fence textures support.
 
   o  Dynamic light speedup. Speedup loading of tga and pcx external
      images.
@@ -226,14 +226,14 @@
 
   o  Support for BSP2 and 2PSB map formats.
 
-  o  Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-
-     time options).
+  o  Support for Opus, FLAC, and tracker music (S3M, IT, UMX, etc.), as
+     compile-time options.
 
   o  Music and sfx now mixed at 44100Hz to avoid downsampling music.
      Low-pass filter applied to the sfx if -sndspeed is 11025 (the
      default), to preserve the same sound quality as 0.85.9.  New
      -mixspeed option sets the rate for mixing sfx and music, and output
-     to the OS (default 44100), setting to 11025 reverts to 0.85.9
+     to the OS (default 44100), setting it to 11025 reverts to 0.85.9
      behaviour. New snd_filterquality cvar, value can be between 1
      (emulate OS X resampler) and 5 (emulate Windows resampler),
      controls the sound of the low-pass filter.
@@ -263,9 +263,9 @@
 
   o  MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.
 
-  o  MAX_ENT_LEAFS bumped from 16 to 32 to work around
-     disappearing/flickering bmodels in some situations. Also, if an entity
-     is visible from MAX_ENT_LEAFS or more leafs, we now always send it to
+  o  MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing or
+     flickering brush models in some situations. Also, if an entity is
+     visible from MAX_ENT_LEAFS or more leafs, we now always send it to
      the client.
 
   o  Fix cvar cycle command not working sometimes.

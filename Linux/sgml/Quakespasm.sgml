@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Sep. 23, 2014</em>
+<em>Page last edited Sep. 29, 2014</em>
 
 <sect> About <p>
 
@@ -57,7 +57,7 @@ Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 
 
 <sect> Compiling and Installation<p>
-<p>Quakespasm's (optional) custom data is now stored in  the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
+<p>Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
 <p><em>To check-out the latest version of QuakeSpasm, use</em> <bf>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</bf></p>
 
 <sect1> Linux/Unix <p>
@@ -123,12 +123,12 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Support for opengl non-power-of-two-textures extension.
 <item> Support for OpenGL vertex buffer objects (VBO) for world and brush models.
 <item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).
-<item> Fence texture support.
+<item> Fence textures support.
 <item> Dynamic light speedup. Speedup loading of tga and pcx external images.
 <item> Brush model drawing speedup.
 <item> Support for BSP2 and 2PSB map formats.
-<item> Support for Opus, FLAC, and tracker (S3M/UMX) music (as compile-time options).
-<item> Music and sfx now mixed at 44100Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.
+<item> Support for Opus, FLAC, and tracker music (S3M, IT, UMX, etc.), as compile-time options.
+<item> Music and sfx now mixed at 44100Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting it to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.
 <item> Better Hor+ field of view (FOV) scaling behavior.
 <item> Better cross-map demo playback support.
 <item> Fix screenshots when screen width isn't a multiple of 4.
@@ -140,7 +140,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix broken behavior upon gamedir changes if -basedir is specified on the command line.
 <item> NET_MAXMESSAGE and MAX_MSGLEN limits bumped to 64000.
 <item> MAX_EFRAGS bumped to 4096, and MAX_CHANNELS to 1024.
-<item> MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing/flickering bmodels in some situations. Also, if an entity is visible from MAX_ENT_LEAFS or more leafs, we now always send it to the client.
+<item> MAX_ENT_LEAFS bumped from 16 to 32 to work around disappearing or flickering brush models in some situations. Also, if an entity is visible from MAX_ENT_LEAFS or more leafs, we now always send it to the client.
 <item> Fix cvar cycle command not working sometimes.
 <item> Host_Error upon missing models. (Prevents segmentation faults.)
 <item> Change sv_aim default value to 1 (i.e. turn off autoaim)
