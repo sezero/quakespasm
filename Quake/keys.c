@@ -46,7 +46,7 @@ int		key_count;			// incremented every key event
 char	*keybindings[256];
 int		key_repeats[256];	// if > 1, it is autorepeating
 qboolean	consolekeys[256];	// if true, can't be rebound while in console
-qboolean	menubound[256];	// if true, can be rebound while in menu
+qboolean	menubound[256];	// if true, can't be rebound while in menu
 qboolean	keydown[256];
 
 typedef struct
