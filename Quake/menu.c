@@ -821,9 +821,6 @@ void M_Setup_Char (int k)
 {
 	int l;
 
-	if (k < 32 || k > 126)
-		return;
-
 	switch (setup_cursor)
 	{
 	case 0:
@@ -1807,9 +1804,6 @@ void M_LanConfig_Key (int key)
 void M_LanConfig_Char (int key)
 {
 	int l;
-
-	if (key < 32 || key > 126)
-		return;
 
 	switch (lanConfig_cursor)
 	{

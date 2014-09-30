@@ -43,11 +43,14 @@ keydest_t	key_dest;
 
 int		key_count;			// incremented every key event
 
-char	*keybindings[256];
-int		key_repeats[256];	// if > 1, it is autorepeating
-qboolean	consolekeys[256];	// if true, can't be rebound while in console
-qboolean	menubound[256];	// if true, can't be rebound while in menu
-qboolean	keydown[256];
+#define		MAX_KEYS 256
+
+char		*keybindings[MAX_KEYS];
+int		key_repeats[MAX_KEYS];	// if > 1, it is autorepeating
+qboolean	consolekeys[MAX_KEYS];	// if true, can't be rebound while in console
+qboolean	menubound[MAX_KEYS];	// if true, can't be rebound while in menu
+qboolean	ignoretext[MAX_KEYS];	// if true, should never cause text input
+qboolean	keydown[MAX_KEYS];
 
 typedef struct
 {
@@ -439,15 +442,6 @@ void Char_Console (int key)
 {
 	size_t		len;
 	char *workline = key_lines[edit_line];
-	
-	if (key < 32 || key > 126)
-		return;	// non printable
-
-	if (!consolekeys[key])
-		return; // bindable
-
-	if (keydown[K_CTRL])
-		return; // control character
 
 	if (key_linepos < MAXCMDLINE-1)
 	{
@@ -529,12 +523,6 @@ void Key_Message (int key)
 
 void Char_Message (int key)
 {
-	if (key < 32 || key > 126)
-		return; // non printable
-
-	if (keydown[K_CTRL])
-		return; // control character
-
 	if (chat_bufferlen == sizeof(chat_buffer) - 1)
 		return; // all full
 
@@ -654,7 +642,7 @@ void Key_Unbindall_f (void)
 {
 	int	i;
 
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < MAX_KEYS; i++)
 	{
 		if (keybindings[i])
 			Key_SetBinding (i, "");
@@ -671,7 +659,7 @@ void Key_Bindlist_f (void)
 	int	i, count;
 
 	count = 0;
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < MAX_KEYS; i++)
 	{
 		if (keybindings[i] && *keybindings[i])
 		{
@@ -741,7 +729,7 @@ void Key_WriteBindings (FILE *f)
 	// unbindall before loading stored bindings:
 	if (cfg_unbindall.value)
 		fprintf (f, "unbindall\n");
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < MAX_KEYS; i++)
 	{
 		if (keybindings[i] && *keybindings[i])
 			fprintf (f, "bind \"%s\" \"%s\"\n", Key_KeynumToString(i), keybindings[i]);
@@ -858,6 +846,42 @@ void Key_Init (void)
 	for (i = 0; i < 12; i++)
 		menubound[K_F1+i] = true;
 
+	ignoretext[K_ENTER] = true;
+	ignoretext[K_TAB] = true;
+	ignoretext[K_ESCAPE] = true;
+	ignoretext[K_UPARROW] = true;
+	ignoretext[K_DOWNARROW] = true;
+	ignoretext[K_LEFTARROW] = true;
+	ignoretext[K_RIGHTARROW] = true;
+	ignoretext[K_ALT] = true;
+	ignoretext[K_CTRL] = true;
+	ignoretext[K_SHIFT] = true;
+	for (i = 0; i < 12; i++)
+		ignoretext[K_F1+i] = true;
+	ignoretext[K_BACKSPACE] = true;
+	ignoretext[K_INS] = true;
+	ignoretext[K_DEL] = true;
+	ignoretext[K_PGDN] = true;
+	ignoretext[K_PGUP] = true;
+	ignoretext[K_HOME] = true;
+	ignoretext[K_END] = true;
+	ignoretext[K_KP_NUMLOCK] = true;
+	ignoretext[K_KP_HOME] = true;
+	ignoretext[K_KP_UPARROW] = true;
+	ignoretext[K_KP_PGUP] = true;
+	ignoretext[K_KP_LEFTARROW] = true;
+	ignoretext[K_KP_RIGHTARROW] = true;
+	ignoretext[K_KP_END] = true;
+	ignoretext[K_KP_DOWNARROW] = true;
+	ignoretext[K_KP_PGDN] = true;
+	ignoretext[K_KP_ENTER] = true;
+	ignoretext[K_KP_INS] = true;
+	ignoretext[K_KP_DEL] = true;
+	ignoretext[K_COMMAND] = true;
+	ignoretext[K_PAUSE] = true;
+	ignoretext[K_MWHEELUP] = true;
+	ignoretext[K_MWHEELDOWN] = true;
+
 //
 // register our functions
 //
@@ -880,7 +904,7 @@ void Key_Event (int key, qboolean down)
 	char	*kb;
 	char	cmd[1024];
 
-	if (key < 0 || key > 255)
+	if (key < 0 || key >= MAX_KEYS)
 		return;
 
 	keydown[key] = down;
@@ -1004,6 +1028,9 @@ Called by the backend when the user has input a character.
 */
 void Char_Event (int key)
 {
+	if (key < 32 || key > 126)
+		return;
+
 	switch (key_dest)
 	{
 	case key_message:
@@ -1025,10 +1052,46 @@ void Char_Event (int key)
 Key_InputtingText
 ===================
 */
-qboolean Key_InputtingText(void)
+qboolean Key_InputtingText (void)
 {
 	return (key_dest == key_console || (key_dest == key_game && con_forcedup) ||
 	        key_dest == key_message || (key_dest == key_menu && M_InputtingText()));
+}
+
+/*
+===================
+Key_IgnoreTextInput
+===================
+*/
+qboolean Key_IgnoreTextInput (int key)
+{
+	if (keydown[K_CTRL])
+		return true;
+
+	if (key < 0 || key >= MAX_KEYS)
+		return false;
+
+	if (ignoretext[key])
+		return true;
+
+	if (!keybindings[key])
+		return false;
+
+	switch (key_dest)
+	{
+	case key_message:
+		return false;
+	case key_menu:
+		return menubound[key];
+	case key_game:
+		if (!con_forcedup)
+			return true;
+		/* fallthrough */
+	case key_console:
+		return !consolekeys[key];
+	default:
+		return true;
+	}
 }
 
 /*
@@ -1040,7 +1103,7 @@ void Key_ClearStates (void)
 {
 	int	i;
 
-	for (i = 0; i < 256; i++)
+	for (i = 0; i < MAX_KEYS; i++)
 	{
 		if (keydown[i])
 			Key_Event (i, false);
@@ -1082,17 +1145,4 @@ void Key_UpdateForDest (void)
 		forced = false;
 		break;
 	}
-}
-
-/*
-===================
-Key_ConsoleBindable
-===================
-*/
-qboolean Key_ConsoleBindable(int key)
-{
-	if (Key_StringToKeynum(Key_KeynumToString(key)) == -1)
-		return false;
-
-	return ((key_dest == key_console || (key_dest == key_game && con_forcedup)) && !consolekeys[key]);
 }

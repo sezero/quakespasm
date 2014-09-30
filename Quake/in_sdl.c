@@ -603,7 +603,7 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
-			if (!Key_ConsoleBindable(lastKeyDown))
+			if (!Key_IgnoreTextInput(lastKeyDown))
 			{
 				int i;
 				for (i = 0; event.text.text[i]; i++)
@@ -644,7 +644,7 @@ void IN_SendKeyEvents (void)
 
 			Key_Event (sym, event.type == SDL_KEYDOWN);
 
-			if (event.type == SDL_KEYDOWN && !Key_ConsoleBindable(sym) &&
+			if (event.type == SDL_KEYDOWN && !Key_IgnoreTextInput(sym) &&
 			    event.key.keysym.unicode != 0 && (event.key.keysym.unicode & 0xFF80) == 0)
 			{
 				sym = event.key.keysym.unicode & 0x7F;

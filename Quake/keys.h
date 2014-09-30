@@ -164,11 +164,11 @@ extern	qboolean	chat_team;
 void Key_Init (void);
 void Key_ClearStates (void);
 void Key_UpdateForDest (void);
-qboolean Key_ConsoleBindable (int key);
 
 void Key_Event (int key, qboolean down);
 void Char_Event (int key);
 qboolean Key_InputtingText (void);
+qboolean Key_IgnoreTextInput (int key);
 
 void Key_SetBinding (int keynum, const char *binding);
 const char *Key_KeynumToString (int keynum);
