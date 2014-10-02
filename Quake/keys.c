@@ -263,7 +263,6 @@ void Key_Console (int key)
 		return;
 
 	case K_BACKSPACE:
-
 		key_tabpartial[0] = 0;
 		if (key_linepos > 1)
 		{
@@ -279,6 +278,7 @@ void Key_Console (int key)
 		return;
 
 	case K_DEL:
+	case K_KP_DEL:
 		key_tabpartial[0] = 0;
 		workline += key_linepos;
 		if (*workline)
@@ -293,6 +293,7 @@ void Key_Console (int key)
 		return;
 
 	case K_HOME:
+	case K_KP_HOME:
 		if (keydown[K_CTRL])
 		{
 			//skip initial empty lines
@@ -316,13 +317,14 @@ void Key_Console (int key)
 		return;
 
 	case K_END:
+	case K_KP_END:
 		if (keydown[K_CTRL])
 			con_backscroll = 0;
 		else	key_linepos = strlen(workline);
 		return;
 
 	case K_PGUP:
-	// To allow (some) mouse events to reach the console, we selectively alter FilterMouseEvents
+	case K_KP_PGUP:
 	case K_MWHEELUP:
 		con_backscroll += keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll > con_totallines - (vid.height>>3) - 1)
@@ -330,6 +332,7 @@ void Key_Console (int key)
 		return;
 
 	case K_PGDN:
+	case K_KP_PGDN:
 	case K_MWHEELDOWN:
 		con_backscroll -= keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll < 0)
@@ -337,6 +340,7 @@ void Key_Console (int key)
 		return;
 
 	case K_LEFTARROW:
+	case K_KP_LEFTARROW:
 		if (key_linepos > 1)
 		{
 			key_linepos--;
@@ -345,6 +349,7 @@ void Key_Console (int key)
 		return;
 
 	case K_RIGHTARROW:
+	case K_KP_RIGHTARROW:
 		len = strlen(workline);
 		if ((int)len == key_linepos)
 		{
@@ -364,6 +369,7 @@ void Key_Console (int key)
 		return;
 
 	case K_UPARROW:
+	case K_KP_UPARROW:
 		if (history_line == edit_line)
 			Q_strcpy(current, workline);
 
@@ -385,6 +391,7 @@ void Key_Console (int key)
 		return;
 
 	case K_DOWNARROW:
+	case K_KP_DOWNARROW:
 		if (history_line == edit_line)
 			return;
 
@@ -402,6 +409,7 @@ void Key_Console (int key)
 		return;
 
 	case K_INS:
+	case K_KP_INS:
 		if (keydown[K_SHIFT])		/* Shift-Ins paste */
 			PasteToConsole();
 		else	key_insert ^= 1;
@@ -491,8 +499,10 @@ void Key_EndChat (void)
 
 void Key_Message (int key)
 {
-	if (key == K_ENTER || key == K_KP_ENTER)
+	switch (key)
 	{
+	case K_ENTER:
+	case K_KP_ENTER:
 		if (chat_team)
 			Cbuf_AddText ("say_team \"");
 		else
@@ -502,16 +512,12 @@ void Key_Message (int key)
 
 		Key_EndChat ();
 		return;
-	}
 
-	if (key == K_ESCAPE)
-	{
+	case K_ESCAPE:
 		Key_EndChat ();
 		return;
-	}
 
-	if (key == K_BACKSPACE)
-	{
+	case K_BACKSPACE:
 		if (chat_bufferlen)
 			chat_buffer[--chat_bufferlen] = 0;
 		return;
@@ -833,11 +839,21 @@ void Key_Init (void)
 	consolekeys[K_PGUP] = true;
 	consolekeys[K_PGDN] = true;
 	consolekeys[K_SHIFT] = true;
-	consolekeys[K_KP_ENTER] = true;
 	consolekeys[K_MWHEELUP] = true;
 	consolekeys[K_MWHEELDOWN] = true;
 	consolekeys['`'] = false;
 	consolekeys['~'] = false;
+	consolekeys[K_KP_HOME] = true;
+	consolekeys[K_KP_UPARROW] = true;
+	consolekeys[K_KP_PGUP] = true;
+	consolekeys[K_KP_LEFTARROW] = true;
+	consolekeys[K_KP_RIGHTARROW] = true;
+	consolekeys[K_KP_END] = true;
+	consolekeys[K_KP_DOWNARROW] = true;
+	consolekeys[K_KP_PGDN] = true;
+	consolekeys[K_KP_ENTER] = true;
+	consolekeys[K_KP_INS] = true;
+	consolekeys[K_KP_DEL] = true;
 
 	menubound[K_ESCAPE] = true;
 	for (i = 0; i < 12; i++)
