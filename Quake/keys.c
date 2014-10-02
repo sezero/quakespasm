@@ -32,7 +32,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 char		key_lines[CMDLINES][MAXCMDLINE];
 
 int		key_linepos;
-int		key_lastpress;
 int		key_insert;	//johnfitz -- insert key toggle (for editing)
 double		key_blinktime; //johnfitz -- fudge cursor blinking to make it easier to spot in certain cases
 
@@ -40,8 +39,6 @@ int		edit_line = 0;
 int		history_line = 0;
 
 keydest_t	key_dest;
-
-int		key_count;			// incremented every key event
 
 #define		MAX_KEYS 256
 
@@ -853,11 +850,8 @@ void Key_Init (void)
 	ignoretext[K_DOWNARROW] = true;
 	ignoretext[K_LEFTARROW] = true;
 	ignoretext[K_RIGHTARROW] = true;
-	ignoretext[K_ALT] = true;
 	ignoretext[K_CTRL] = true;
 	ignoretext[K_SHIFT] = true;
-	for (i = 0; i < 12; i++)
-		ignoretext[K_F1+i] = true;
 	ignoretext[K_BACKSPACE] = true;
 	ignoretext[K_INS] = true;
 	ignoretext[K_DEL] = true;
@@ -865,7 +859,6 @@ void Key_Init (void)
 	ignoretext[K_PGUP] = true;
 	ignoretext[K_HOME] = true;
 	ignoretext[K_END] = true;
-	ignoretext[K_KP_NUMLOCK] = true;
 	ignoretext[K_KP_HOME] = true;
 	ignoretext[K_KP_UPARROW] = true;
 	ignoretext[K_KP_PGUP] = true;
@@ -878,7 +871,6 @@ void Key_Init (void)
 	ignoretext[K_KP_INS] = true;
 	ignoretext[K_KP_DEL] = true;
 	ignoretext[K_COMMAND] = true;
-	ignoretext[K_PAUSE] = true;
 	ignoretext[K_MWHEELUP] = true;
 	ignoretext[K_MWHEELDOWN] = true;
 
@@ -889,6 +881,51 @@ void Key_Init (void)
 	Cmd_AddCommand ("bind",Key_Bind_f);
 	Cmd_AddCommand ("unbind",Key_Unbind_f);
 	Cmd_AddCommand ("unbindall",Key_Unbindall_f);
+}
+
+static struct {
+	qboolean active;
+	int lastkey;
+	int lastchar;
+} key_inputgrab;
+
+/*
+===================
+Key_BeginInputGrab
+===================
+*/
+void Key_BeginInputGrab (void)
+{
+	key_inputgrab.active = true;
+	key_inputgrab.lastkey = 0;
+	key_inputgrab.lastchar = 0;
+
+	IN_UpdateInputMode ();
+}
+
+/*
+===================
+Key_EndInputGrab
+===================
+*/
+void Key_EndInputGrab (void)
+{
+	key_inputgrab.active = false;
+
+	IN_UpdateInputMode ();
+}
+
+/*
+===================
+Key_GetGrabbedInput
+===================
+*/
+void Key_GetGrabbedInput (int *lastkey, int *lastchar)
+{
+	if (lastkey)
+		*lastkey = key_inputgrab.lastkey;
+	if (lastchar)
+		*lastchar = key_inputgrab.lastchar;
 }
 
 /*
@@ -910,12 +947,18 @@ void Key_Event (int key, qboolean down)
 	keydown[key] = down;
 
 	if (!down)
-		key_repeats[key] = 0;
+	{
+		if (key_repeats[key] == 0)
+			return;
+		else
+			key_repeats[key] = 0;
+	}
 
-	key_lastpress = key;
-	key_count++;
-	if (key_count <= 0)
-		return;		// just catching keys for Con_NotifyBox
+	if (key_inputgrab.active)
+	{
+		key_inputgrab.lastkey = key;
+		return;
+	}
 
 // update auto-repeat status
 	if (down)
@@ -1031,6 +1074,12 @@ void Char_Event (int key)
 	if (key < 32 || key > 126)
 		return;
 
+	if (key_inputgrab.active)
+	{
+		key_inputgrab.lastchar = key;
+		return;
+	}
+
 	switch (key_dest)
 	{
 	case key_message:
@@ -1054,8 +1103,24 @@ Key_InputtingText
 */
 qboolean Key_InputtingText (void)
 {
-	return (key_dest == key_console || (key_dest == key_game && con_forcedup) ||
-	        key_dest == key_message || (key_dest == key_menu && M_InputtingText()));
+	if (key_inputgrab.active)
+		return true;
+
+	switch (key_dest)
+	{
+	case key_message:
+		return true;
+	case key_menu:
+		return M_InputtingText();
+	case key_game:
+		if (!con_forcedup)
+			return false;
+		/* fallthrough */
+	case key_console:
+		return true;
+	default:
+		return false;
+	}
 }
 
 /*
@@ -1065,6 +1130,11 @@ Key_IgnoreTextInput
 */
 qboolean Key_IgnoreTextInput (int key)
 {
+#if defined(PLATFORM_OSX) || defined(PLATFORM_MAC)
+	if (keydown[K_COMMAND])
+		return true;
+#endif
+
 	if (keydown[K_CTRL])
 		return true;
 

@@ -898,6 +898,7 @@ keypress.
 int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 {
 	double time1, time2; //johnfitz -- timeout
+	int lastkey, lastchar;
 
 	if (cls.state == ca_dedicated)
 		return true;
@@ -914,20 +915,18 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 	time1 = Sys_DoubleTime () + timeout; //johnfitz -- timeout
 	time2 = 0.0f; //johnfitz -- timeout
 
+	Key_BeginInputGrab ();
 	do
 	{
-		key_count = -1;		// wait for a key down and up
 		Sys_SendKeyEvents ();
-		Sys_Sleep(16);
+		Key_GetGrabbedInput (&lastkey, &lastchar);
+		Sys_Sleep (16);
 		if (timeout) time2 = Sys_DoubleTime (); //johnfitz -- zero timeout means wait forever.
-	} while (key_lastpress != 'y' &&
-			 key_lastpress != 'n' &&
-			 key_lastpress != K_ESCAPE &&
-			 time2 <= time1);
-
-	// make sure we don't ignore the next keypress
-	if (key_count < 0)
-		key_count = 0;
+	} while (lastchar != 'y' && lastchar != 'Y' &&
+	         lastchar != 'n' && lastchar != 'N' &&
+	         lastkey != K_ESCAPE &&
+	         time2 <= time1);
+	Key_EndInputGrab ();
 
 //	SCR_UpdateScreen (); //johnfitz -- commented out
 
@@ -936,7 +935,7 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 		return false;
 	//johnfitz
 
-	return key_lastpress == 'y';
+	return (lastchar == 'y' || lastchar == 'Y');
 }
 
 

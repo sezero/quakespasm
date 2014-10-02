@@ -1222,6 +1222,7 @@ Con_NotifyBox
 void Con_NotifyBox (const char *text)
 {
 	double		t1, t2;
+	int		lastkey, lastchar;
 
 // during startup for sound / cd warnings
 	Con_Printf ("\n\n%s", Con_Quakebar(40)); //johnfitz
@@ -1229,18 +1230,21 @@ void Con_NotifyBox (const char *text)
 	Con_Printf ("Press a key.\n");
 	Con_Printf ("%s", Con_Quakebar(40)); //johnfitz
 
-	key_count = -2;		// wait for a key down and up
 	IN_Deactivate(modestate == MS_WINDOWED);
 	key_dest = key_console;
 
+	Key_BeginInputGrab ();
 	do
 	{
 		t1 = Sys_DoubleTime ();
 		SCR_UpdateScreen ();
 		Sys_SendKeyEvents ();
+		Key_GetGrabbedInput (&lastkey, &lastchar);
+		Sys_Sleep (16);
 		t2 = Sys_DoubleTime ();
 		realtime += t2-t1;		// make the cursor blink
-	} while (key_count < 0);
+	} while (lastkey == 0 && lastchar == 0);
+	Key_EndInputGrab ();
 
 	Con_Printf ("\n");
 	IN_Activate();

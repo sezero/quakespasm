@@ -1558,9 +1558,27 @@ void M_Menu_Quit_f (void)
 
 void M_Quit_Key (int key)
 {
+	if (key == K_ESCAPE)
+	{
+		if (wasInMenus)
+		{
+			m_state = m_quit_prevstate;
+			m_entersound = true;
+		}
+		else
+		{
+			IN_Activate();
+			key_dest = key_game;
+			m_state = m_none;
+		}
+	}
+}
+
+
+void M_Quit_Char (int key)
+{
 	switch (key)
 	{
-	case K_ESCAPE:
 	case 'n':
 	case 'N':
 		if (wasInMenus)
@@ -1576,8 +1594,8 @@ void M_Quit_Key (int key)
 		}
 		break;
 
-	case 'Y':
 	case 'y':
+	case 'Y':
 		IN_Deactivate(modestate == MS_WINDOWED);
 		key_dest = key_console;
 		Host_Quit_f ();
@@ -2645,6 +2663,9 @@ void M_Charinput (int key)
 	case m_setup:
 		M_Setup_Char (key);
 		return;
+	case m_quit:
+		M_Quit_Char (key);
+		return;
 	case m_lanconfig:
 		M_LanConfig_Char (key);
 		return;
@@ -2660,6 +2681,8 @@ qboolean M_InputtingText (void)
 	{
 	case m_setup:
 		return M_Setup_InputtingText();
+	case m_quit:
+		return true;
 	case m_lanconfig:
 		return M_LanConfig_InputtingText();
 	default:
