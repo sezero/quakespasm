@@ -966,8 +966,8 @@ void Key_Event (int key, qboolean down)
 	{
 		if (key_repeats[key] == 0)
 			return;
-		else
-			key_repeats[key] = 0;
+
+		key_repeats[key] = 0;
 	}
 
 	if (key_inputgrab.active)
@@ -1161,6 +1161,9 @@ qboolean Key_IgnoreTextInput (int key)
 		return true;
 
 	if (!keybindings[key])
+		return false;
+
+	if (key_inputgrab.active)
 		return false;
 
 	switch (key_dest)
