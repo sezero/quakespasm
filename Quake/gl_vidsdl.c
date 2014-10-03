@@ -54,6 +54,8 @@ typedef struct {
 static const char *gl_vendor;
 static const char *gl_renderer;
 static const char *gl_version;
+static int gl_version_major;
+static int gl_version_minor;
 static const char *gl_extensions;
 static char * gl_extensions_nice;
 
@@ -814,6 +816,8 @@ static void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-novbo"))
 		Con_Warning ("Vertex buffer objects disabled at command line\n");
+	else if (gl_version_major < 1 || (gl_version_major == 1 && gl_version_minor < 5))
+		Con_Warning ("OpenGL version < 1.5, skipping ARB_vertex_buffer_object check\n");
 	else
 	{
 		GL_BindBufferFunc = (PFNGLBINDBUFFERARBPROC) SDL_GL_GetProcAddress("glBindBufferARB");
@@ -1029,6 +1033,12 @@ static void GL_Init (void)
 	gl_renderer = (const char *) glGetString (GL_RENDERER);
 	gl_version = (const char *) glGetString (GL_VERSION);
 	gl_extensions = (const char *) glGetString (GL_EXTENSIONS);
+
+	if (gl_version == NULL || sscanf(gl_version, "%d.%d", &gl_version_major, &gl_version_minor) < 2)
+	{
+		gl_version_major = 0;
+		gl_version_minor = 0;
+	}
 
 	if (gl_extensions_nice != NULL)
 		Z_Free (gl_extensions_nice);
