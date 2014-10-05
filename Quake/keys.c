@@ -43,7 +43,6 @@ keydest_t	key_dest;
 #define		MAX_KEYS 256
 
 char		*keybindings[MAX_KEYS];
-int		key_repeats[MAX_KEYS];	// if > 1, it is autorepeating
 qboolean	consolekeys[MAX_KEYS];	// if true, can't be rebound while in console
 qboolean	menubound[MAX_KEYS];	// if true, can't be rebound while in menu
 qboolean	ignoretext[MAX_KEYS];	// if true, should never cause text input
@@ -912,6 +911,8 @@ Key_BeginInputGrab
 */
 void Key_BeginInputGrab (void)
 {
+	Key_ClearStates ();
+
 	key_inputgrab.active = true;
 	key_inputgrab.lastkey = 0;
 	key_inputgrab.lastchar = 0;
@@ -926,6 +927,8 @@ Key_EndInputGrab
 */
 void Key_EndInputGrab (void)
 {
+	Key_ClearStates ();
+
 	key_inputgrab.active = false;
 
 	IN_UpdateInputMode ();
@@ -960,33 +963,26 @@ void Key_Event (int key, qboolean down)
 	if (key < 0 || key >= MAX_KEYS)
 		return;
 
-	keydown[key] = down;
-
-	if (!down)
+// handle autorepeats and stray key up events
+	if (down)
 	{
-		if (key_repeats[key] == 0)
-			return;
-
-		key_repeats[key] = 0;
+		if (keydown[key])
+		{
+			if (key_dest == key_game && !con_forcedup)
+				return; // ignore autorepeats in game mode
+		}
+		else if (key >= 200 && !keybindings[key])
+			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
 	}
+	else if (!keydown[key])
+		return; // ignore stray key up events
+
+	keydown[key] = down;
 
 	if (key_inputgrab.active)
 	{
 		key_inputgrab.lastkey = key;
 		return;
-	}
-
-// update auto-repeat status
-	if (down)
-	{
-		key_repeats[key]++;
-		if (key_repeats[key] > 1)
-		{
-			if (key_dest == key_game && !con_forcedup)
-				return;	// ignore autorepeats in game mode
-		}
-		else if (key >= 200 && !keybindings[key])
-			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
 	}
 
 // handle escape specialy, so the user can never unbind it
