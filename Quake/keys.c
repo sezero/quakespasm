@@ -612,7 +612,8 @@ void Key_SetBinding (int keynum, const char *binding)
 	}
 
 // allocate memory for new binding
-	keybindings[keynum] = Z_Strdup(binding);
+	if (binding)
+		keybindings[keynum] = Z_Strdup(binding);
 }
 
 /*
@@ -637,7 +638,7 @@ void Key_Unbind_f (void)
 		return;
 	}
 
-	Key_SetBinding (b, "");
+	Key_SetBinding (b, NULL);
 }
 
 void Key_Unbindall_f (void)
@@ -647,7 +648,7 @@ void Key_Unbindall_f (void)
 	for (i = 0; i < MAX_KEYS; i++)
 	{
 		if (keybindings[i])
-			Key_SetBinding (i, "");
+			Key_SetBinding (i, NULL);
 	}
 }
 
