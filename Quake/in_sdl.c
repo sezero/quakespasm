@@ -569,7 +569,7 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
-static qboolean IN_IsNumpadKey (int key)
+static inline qboolean IN_IsNumpadKey (int key)
 {
 	switch (key)
 	{
