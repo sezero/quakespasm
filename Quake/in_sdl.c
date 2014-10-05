@@ -668,13 +668,13 @@ void IN_SendKeyEvents (void)
 		case SDL_MOUSEWHEEL:
 			if (event.wheel.y > 0)
 			{
-				Key_Event(K_MWHEELUP, false);
 				Key_Event(K_MWHEELUP, true);
+				Key_Event(K_MWHEELUP, false);
 			}
 			else if (event.wheel.y < 0)
 			{
-				Key_Event(K_MWHEELDOWN, false);
 				Key_Event(K_MWHEELDOWN, true);
+				Key_Event(K_MWHEELDOWN, false);
 			}
 			break;
 #endif
