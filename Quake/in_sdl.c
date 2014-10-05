@@ -593,7 +593,7 @@ static qboolean IN_IsNumpadKey (int key)
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
-	int sym;
+	int key;
 	qboolean down, numlock;
 #if defined(USE_SDL2)
 	static int lastKeyDown = 0;
@@ -655,9 +655,9 @@ void IN_SendKeyEvents (void)
 #if defined(USE_SDL2)
 		// SDL2: we interpret the keyboard as the US layout, so keybindings
 		// are based on key position, not the label on the key cap.
-			sym = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
+			key = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
 #else
-			sym = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
+			key = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 #endif
 
 		// Filter out key down events for numpad keys when we expect them
@@ -665,23 +665,20 @@ void IN_SendKeyEvents (void)
 		// can generate some stray numpad key up events, but that's much
 		// less problematic than the missing key up events that could be
 		// caused if we'd also filter those out.
-			if (down && textmode && numlock && IN_IsNumpadKey(sym))
-				sym = 0;
+			if (down && textmode && numlock && IN_IsNumpadKey(key))
+				key = 0;
 
 #if defined(USE_SDL2)
-			lastKeyDown = down ? sym : 0;
+			lastKeyDown = down ? key : 0;
 #endif
 			
-			if (sym)
-				Key_Event (sym, down);
+			if (key)
+				Key_Event (key, down);
 
 #if !defined(USE_SDL2)
-			if (down && (!sym || !Key_IgnoreTextInput(sym)) &&
+			if (down && (!key || !Key_IgnoreTextInput(key)) &&
 			    (event.key.keysym.unicode & ~0x7F) == 0)
-			{
-				sym = event.key.keysym.unicode & 0x7F;
-				Char_Event (sym);
-			}
+				Char_Event (event.key.keysym.unicode);
 #endif
 			break;
 		case SDL_MOUSEBUTTONDOWN:
