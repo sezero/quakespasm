@@ -1640,6 +1640,13 @@ void M_Quit_Char (int key)
 
 }
 
+
+qboolean M_Quit_InputtingText (void)
+{
+	return true;
+}
+
+
 void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 {
 	char	msg1[40];
@@ -2723,11 +2730,11 @@ qboolean M_InputtingText (void)
 	switch (m_state)
 	{
 	case m_setup:
-		return M_Setup_InputtingText();
+		return M_Setup_InputtingText ();
 	case m_quit:
-		return true;
+		return M_Quit_InputtingText ();
 	case m_lanconfig:
-		return M_LanConfig_InputtingText();
+		return M_LanConfig_InputtingText ();
 	default:
 		return false;
 	}
