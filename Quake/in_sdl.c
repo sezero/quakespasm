@@ -569,10 +569,32 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
+static qboolean IN_IsNumpadKey (int key)
+{
+	switch (key)
+	{
+		case K_KP_HOME:
+		case K_KP_UPARROW:
+		case K_KP_PGUP:
+		case K_KP_LEFTARROW:
+		case K_KP_5:
+		case K_KP_RIGHTARROW:
+		case K_KP_END:
+		case K_KP_DOWNARROW:
+		case K_KP_PGDN:
+		case K_KP_INS:
+		case K_KP_DEL:
+			return true;
+		default:
+			return false;
+	}
+}
+
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
 	int sym;
+	qboolean down, numlock;
 #if defined(USE_SDL2)
 	static int lastKeyDown = 0;
 #endif
@@ -603,7 +625,7 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
-			if (!Key_IgnoreTextInput(lastKeyDown))
+			if (!lastKeyDown || !Key_IgnoreTextInput(lastKeyDown))
 			{
 				int i;
 				for (i = 0; event.text.text[i]; i++)
@@ -627,31 +649,41 @@ void IN_SendKeyEvents (void)
 			}
 		/* fallthrough */
 		case SDL_KEYUP:
+			down = (event.key.state == SDL_PRESSED);
+			numlock = ((event.key.keysym.mod & KMOD_NUM) != 0);
+
 #if defined(USE_SDL2)
 		// SDL2: we interpret the keyboard as the US layout, so keybindings
 		// are based on key position, not the label on the key cap.
 			sym = IN_SDL2_ScancodeToQuakeKey(event.key.keysym.scancode);
-
-			if (event.type == SDL_KEYDOWN)
-				lastKeyDown = sym;
-			else
-				lastKeyDown = 0;
-			
-			Key_Event (sym, event.type == SDL_KEYDOWN);
-			break;
 #else
 			sym = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
+#endif
 
-			Key_Event (sym, event.type == SDL_KEYDOWN);
+		// Filter out key down events for numpad keys when we expect them
+		// to also send a char event. Doing this only for key down events
+		// can generate some stray numpad key up events, but that's much
+		// less problematic than the missing key up events that could be
+		// caused if we'd also filter those out.
+			if (down && textmode && numlock && IN_IsNumpadKey(sym))
+				sym = 0;
 
-			if (event.type == SDL_KEYDOWN && !Key_IgnoreTextInput(sym) &&
-			    event.key.keysym.unicode != 0 && (event.key.keysym.unicode & 0xFF80) == 0)
+#if defined(USE_SDL2)
+			lastKeyDown = down ? sym : 0;
+#endif
+			
+			if (sym)
+				Key_Event (sym, down);
+
+#if !defined(USE_SDL2)
+			if (down && (!sym || !Key_IgnoreTextInput(sym)) &&
+			    (event.key.keysym.unicode & ~0x7F) == 0)
 			{
 				sym = event.key.keysym.unicode & 0x7F;
 				Char_Event (sym);
 			}
-			break;
 #endif
+			break;
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			if (event.button.button < 1 ||

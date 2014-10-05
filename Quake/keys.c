@@ -878,6 +878,7 @@ void Key_Init (void)
 	ignoretext[K_KP_UPARROW] = true;
 	ignoretext[K_KP_PGUP] = true;
 	ignoretext[K_KP_LEFTARROW] = true;
+	ignoretext[K_KP_5] = true;
 	ignoretext[K_KP_RIGHTARROW] = true;
 	ignoretext[K_KP_END] = true;
 	ignoretext[K_KP_DOWNARROW] = true;
