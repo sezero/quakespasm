@@ -904,7 +904,7 @@ static struct {
 	qboolean active;
 	int lastkey;
 	int lastchar;
-} key_inputgrab;
+} key_inputgrab = { false, -1, -1 };
 
 /*
 ===================
@@ -916,8 +916,8 @@ void Key_BeginInputGrab (void)
 	Key_ClearStates ();
 
 	key_inputgrab.active = true;
-	key_inputgrab.lastkey = 0;
-	key_inputgrab.lastchar = 0;
+	key_inputgrab.lastkey = -1;
+	key_inputgrab.lastchar = -1;
 
 	IN_UpdateInputMode ();
 }
@@ -983,7 +983,8 @@ void Key_Event (int key, qboolean down)
 
 	if (key_inputgrab.active)
 	{
-		key_inputgrab.lastkey = key;
+		if (down)
+			key_inputgrab.lastkey = key;
 		return;
 	}
 

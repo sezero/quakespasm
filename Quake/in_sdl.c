@@ -625,11 +625,11 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
-			if (!lastKeyDown || !Key_IgnoreTextInput(lastKeyDown))
+			if (!Key_IgnoreTextInput(lastKeyDown))
 			{
 				int i;
 				for (i = 0; event.text.text[i]; i++)
-					if ((event.text.text[i] & 0x80) == 0)
+					if ((event.text.text[i] & ~0x7F) == 0)
 						Char_Event (event.text.text[i]);
 			}
 			break;
@@ -660,11 +660,10 @@ void IN_SendKeyEvents (void)
 			key = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 #endif
 
-		// Filter out key down events for numpad keys when we expect them
+		// Filter key down events for numpad keys when we expect them
 		// to also send a char event. Doing this only for key down events
-		// can generate some stray numpad key up events, but that's much
-		// less problematic than the missing key up events that could be
-		// caused if we'd also filter those out.
+		// will generate some stray key up events, but that's much less
+		// problematic than missing key up events.
 			if (down && textmode && numlock && IN_IsNumpadKey(key))
 				key = 0;
 
@@ -672,12 +671,10 @@ void IN_SendKeyEvents (void)
 			lastKeyDown = down ? key : 0;
 #endif
 			
-			if (key)
-				Key_Event (key, down);
+			Key_Event (key, down);
 
 #if !defined(USE_SDL2)
-			if (down && (!key || !Key_IgnoreTextInput(key)) &&
-			    (event.key.keysym.unicode & ~0x7F) == 0)
+			if (down && !Key_IgnoreTextInput(key) && (event.key.keysym.unicode & ~0x7F) == 0)
 				Char_Event (event.key.keysym.unicode);
 #endif
 			break;

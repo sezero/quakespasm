@@ -1243,7 +1243,7 @@ void Con_NotifyBox (const char *text)
 		Sys_Sleep (16);
 		t2 = Sys_DoubleTime ();
 		realtime += t2-t1;		// make the cursor blink
-	} while (lastkey == 0 && lastchar == 0);
+	} while (lastkey == -1 && lastchar == -1);
 	Key_EndInputGrab ();
 
 	Con_Printf ("\n");
