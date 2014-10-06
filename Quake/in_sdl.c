@@ -569,7 +569,17 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
-static inline qboolean IN_IsNumpadKey (int key)
+static inline qboolean IN_NumlockDown (SDL_Event event)
+{
+#if defined(USE_SDL2)
+	return ((event.key.keysym.mod & KMOD_NUM) != 0);
+#else
+	// Workaround for broken numlock state with SDL 1.2.
+	return (event.key.keysym.unicode != 0);
+#endif
+}
+
+static inline qboolean IN_NumpadKey (int key)
 {
 	switch (key)
 	{
@@ -594,7 +604,7 @@ void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
 	int key;
-	qboolean down, numlock;
+	qboolean down;
 #if defined(USE_SDL2)
 	static int lastKeyDown = 0;
 #endif
@@ -650,7 +660,6 @@ void IN_SendKeyEvents (void)
 		/* fallthrough */
 		case SDL_KEYUP:
 			down = (event.key.state == SDL_PRESSED);
-			numlock = ((event.key.keysym.mod & KMOD_NUM) != 0);
 
 #if defined(USE_SDL2)
 		// SDL2: we interpret the keyboard as the US layout, so keybindings
@@ -664,7 +673,7 @@ void IN_SendKeyEvents (void)
 		// to also send a char event. Doing this only for key down events
 		// will generate some stray key up events, but that's much less
 		// problematic than missing key up events.
-			if (down && textmode && numlock && IN_IsNumpadKey(key))
+			if (down && textmode && IN_NumlockDown(event) && IN_NumpadKey(key))
 				key = 0;
 
 #if defined(USE_SDL2)
