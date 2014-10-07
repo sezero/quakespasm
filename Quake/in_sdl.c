@@ -569,17 +569,16 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
-static inline qboolean IN_NumlockDown (SDL_Event event)
+static inline qboolean IN_ExpectingCharEvent (SDL_Event event)
 {
 #if defined(USE_SDL2)
-	return ((event.key.keysym.mod & KMOD_NUM) != 0);
+	return (SDL_PeepEvents(&event, 1, SDL_PEEKEVENT, SDL_TEXTINPUT, SDL_TEXTINPUT) > 0);
 #else
-	// Workaround for broken numlock state with SDL 1.2.
 	return (event.key.keysym.unicode != 0);
 #endif
 }
 
-static inline qboolean IN_NumpadKey (int key)
+static inline qboolean IN_IsNumpadKey (int key)
 {
 	switch (key)
 	{
@@ -673,7 +672,7 @@ void IN_SendKeyEvents (void)
 		// to also send a char event. Doing this only for key down events
 		// will generate some stray key up events, but that's much less
 		// problematic than missing key up events.
-			if (down && textmode && IN_NumlockDown(event) && IN_NumpadKey(key))
+			if (down && textmode && IN_IsNumpadKey(key) && IN_ExpectingCharEvent(event))
 				key = 0;
 
 #if defined(USE_SDL2)
