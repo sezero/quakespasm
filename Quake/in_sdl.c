@@ -261,12 +261,17 @@ void IN_Deactivate (qboolean free_cursor)
 
 void IN_Init (void)
 {
-	textmode = Key_InputtingText();
+	textmode = Key_TextEntry();
 
 #if !defined(USE_SDL2)
 	SDL_EnableUNICODE (textmode);
 	if (SDL_EnableKeyRepeat(SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL) == -1)
 		Con_Printf("Warning: SDL_EnableKeyRepeat() failed.\n");
+#else
+	if (textmode)
+		SDL_StartTextInput();
+	else
+		SDL_StopTextInput();
 #endif
 	if (safemode || COM_CheckParm("-nomouse"))
 	{
@@ -355,7 +360,7 @@ void IN_ClearStates (void)
 
 void IN_UpdateInputMode (void)
 {
-	qboolean want_textmode = Key_InputtingText();
+	qboolean want_textmode = Key_TextEntry();
 	if (textmode != want_textmode)
 	{
 		textmode = want_textmode;
@@ -569,16 +574,7 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
-static inline qboolean IN_ExpectingCharEvent (SDL_Event event)
-{
-#if defined(USE_SDL2)
-	return (SDL_PeepEvents(&event, 1, SDL_PEEKEVENT, SDL_TEXTINPUT, SDL_TEXTINPUT) > 0);
-#else
-	return (event.key.keysym.unicode != 0);
-#endif
-}
-
-static inline qboolean IN_IsNumpadKey (int key)
+static inline qboolean IN_NumpadKey (int key)
 {
 	switch (key)
 	{
@@ -597,6 +593,15 @@ static inline qboolean IN_IsNumpadKey (int key)
 		default:
 			return false;
 	}
+}
+
+static inline qboolean IN_ExpectCharEvent (SDL_Event event)
+{
+#if defined(USE_SDL2)
+	return (SDL_PeepEvents(&event, 1, SDL_PEEKEVENT, SDL_TEXTINPUT, SDL_TEXTINPUT) > 0);
+#else
+	return (event.key.keysym.unicode != 0);
+#endif
 }
 
 void IN_SendKeyEvents (void)
@@ -672,7 +677,7 @@ void IN_SendKeyEvents (void)
 		// to also send a char event. Doing this only for key down events
 		// will generate some stray key up events, but that's much less
 		// problematic than missing key up events.
-			if (down && textmode && IN_IsNumpadKey(key) && IN_ExpectingCharEvent(event))
+			if (down && textmode && IN_NumpadKey(key) && IN_ExpectCharEvent(event))
 				key = 0;
 
 #if defined(USE_SDL2)

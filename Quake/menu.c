@@ -861,7 +861,7 @@ void M_Setup_Char (int k)
 }
 
 
-qboolean M_Setup_InputtingText (void)
+qboolean M_Setup_TextEntry (void)
 {
 	return (setup_cursor == 0 || setup_cursor == 1);
 }
@@ -1641,7 +1641,7 @@ void M_Quit_Char (int key)
 }
 
 
-qboolean M_Quit_InputtingText (void)
+qboolean M_Quit_TextEntry (void)
 {
 	return true;
 }
@@ -1889,7 +1889,7 @@ void M_LanConfig_Char (int key)
 }
 
 
-qboolean M_LanConfig_InputtingText (void)
+qboolean M_LanConfig_TextEntry (void)
 {
 	return (lanConfig_cursor == 0 || lanConfig_cursor == 2);
 }
@@ -2725,16 +2725,16 @@ void M_Charinput (int key)
 }
 
 
-qboolean M_InputtingText (void)
+qboolean M_TextEntry (void)
 {
 	switch (m_state)
 	{
 	case m_setup:
-		return M_Setup_InputtingText ();
+		return M_Setup_TextEntry ();
 	case m_quit:
-		return M_Quit_InputtingText ();
+		return M_Quit_TextEntry ();
 	case m_lanconfig:
-		return M_LanConfig_InputtingText ();
+		return M_LanConfig_TextEntry ();
 	default:
 		return false;
 	}

@@ -1113,10 +1113,10 @@ void Char_Event (int key)
 
 /*
 ===================
-Key_InputtingText
+Key_TextEntry
 ===================
 */
-qboolean Key_InputtingText (void)
+qboolean Key_TextEntry (void)
 {
 	if (key_inputgrab.active)
 		return true;
@@ -1126,7 +1126,7 @@ qboolean Key_InputtingText (void)
 	case key_message:
 		return true;
 	case key_menu:
-		return M_InputtingText();
+		return M_TextEntry();
 	case key_game:
 		if (!con_forcedup)
 			return false;
