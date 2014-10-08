@@ -61,11 +61,7 @@ static int buttonremap[] =
 	K_MOUSE5
 };
 
-/* mouse variables */
-cvar_t	m_filter = {"m_filter","0",CVAR_NONE};
-
-/* total accumulated mouse movement since last frame,
- * gets updated from the main game loop via IN_MouseMove */
+/* total accumulated mouse movement since last frame */
 static int	total_dx, total_dy = 0;
 
 static int IN_FilterMouseEvents (const SDL_Event *event)
@@ -310,14 +306,6 @@ void IN_MouseMove(int dx, int dy)
 void IN_Move (usercmd_t *cmd)
 {
 	int		dmx, dmy;
-
-	/* TODO: fix this
-	if (m_filter.value)
-	{
-		dmx = (2*mx - dmx) * 0.5;
-		dmy = (2*my - dmy) * 0.5;
-	}
-	*/
 
 	dmx = total_dx * sensitivity.value;
 	dmy = total_dy * sensitivity.value;
