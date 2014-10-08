@@ -629,10 +629,10 @@ void IN_SendKeyEvents (void)
 		// (shift for uppercase, etc.) for us.
 			if (!Key_IgnoreTextInput(lastKeyDown))
 			{
-				int i;
-				for (i = 0; event.text.text[i]; i++)
-					if ((event.text.text[i] & ~0x7F) == 0)
-						Char_Event (event.text.text[i]);
+				unsigned char *ch;
+				for (ch = (unsigned char *)event.text.text; *ch; ch++)
+					if ((*ch & ~0x7F) == 0)
+						Char_Event (*ch);
 			}
 			break;
 #endif
