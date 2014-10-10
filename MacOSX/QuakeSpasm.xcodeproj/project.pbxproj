@@ -1088,10 +1088,7 @@
 		664D98F719CF6B78000D395C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1106,7 +1103,7 @@
 					USE_SDL2,
 					SDL_FRAMEWORK,
 				);
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					codecs/include,
 					"$(HEADER_SEARCH_PATHS)",
@@ -1120,7 +1117,7 @@
 				);
 				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.5;
 				PRODUCT_NAME = QuakeSpasm;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -1191,10 +1188,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1206,7 +1200,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = SDL_FRAMEWORK;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = "";
 				HEADER_SEARCH_PATHS = (
 					codecs/include,
 					"$(HEADER_SEARCH_PATHS)",
@@ -1219,7 +1213,7 @@
 					"\"$(SRCROOT)/codecs/lib\"",
 				);
 				PRODUCT_NAME = QuakeSpasm;
-				SDKROOT = macosx10.6;
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
