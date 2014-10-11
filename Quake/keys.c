@@ -965,6 +965,13 @@ void Key_Event (int key, qboolean down)
 	if (key < 0 || key >= MAX_KEYS)
 		return;
 
+// handle fullscreen toggle
+	if (down && (key == K_ENTER || key == K_KP_ENTER) && keydown[K_ALT])
+	{
+		VID_Toggle();
+		return;
+	}
+
 // handle autorepeats and stray key up events
 	if (down)
 	{
@@ -993,6 +1000,13 @@ void Key_Event (int key, qboolean down)
 	{
 		if (!down)
 			return;
+
+		if (keydown[K_SHIFT])
+		{
+			Con_ToggleConsole_f();
+			return;
+		}
+
 		switch (key_dest)
 		{
 		case key_message:
@@ -1008,6 +1022,7 @@ void Key_Event (int key, qboolean down)
 		default:
 			Sys_Error ("Bad key_dest");
 		}
+
 		return;
 	}
 

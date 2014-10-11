@@ -637,19 +637,6 @@ void IN_SendKeyEvents (void)
 			break;
 #endif
 		case SDL_KEYDOWN:
-			if ((event.key.keysym.sym == SDLK_RETURN) &&
-			    (event.key.keysym.mod & KMOD_ALT))
-			{
-				VID_Toggle();
-				break;
-			}
-			if ((event.key.keysym.sym == SDLK_ESCAPE) &&
-			    (event.key.keysym.mod & KMOD_SHIFT))
-			{
-				Con_ToggleConsole_f();
-				break;
-			}
-		/* fallthrough */
 		case SDL_KEYUP:
 			down = (event.key.state == SDL_PRESSED);
 
