@@ -43,9 +43,9 @@ keydest_t	key_dest;
 #define		MAX_KEYS 256
 
 char		*keybindings[MAX_KEYS];
+qboolean	specialkeys[MAX_KEYS];	// if true, hardcoded for console/menu navigation etc.
 qboolean	consolekeys[MAX_KEYS];	// if true, can't be rebound while in console
 qboolean	menubound[MAX_KEYS];	// if true, can't be rebound while in menu
-qboolean	ignoretext[MAX_KEYS];	// if true, should never cause text input
 qboolean	keydown[MAX_KEYS];
 
 typedef struct
@@ -821,75 +821,85 @@ void Key_Init (void)
 	key_blinktime = realtime; //johnfitz
 
 //
-// init ascii characters in console mode
+// initialize specialkeys[]
 //
-	for (i = 32; i < 128; i++)
-		consolekeys[i] = true;
-	consolekeys[K_ENTER] = true;
-	consolekeys[K_TAB] = true;
-	consolekeys[K_LEFTARROW] = true;
-	consolekeys[K_RIGHTARROW] = true;
-	consolekeys[K_UPARROW] = true;
-	consolekeys[K_DOWNARROW] = true;
-	consolekeys[K_BACKSPACE] = true;
-	consolekeys[K_DEL] = true; //johnfitz
-	consolekeys[K_INS] = true; //johnfitz
-	consolekeys[K_HOME] = true; //johnfitz
-	consolekeys[K_END] = true; //johnfitz
-	consolekeys[K_PGUP] = true;
-	consolekeys[K_PGDN] = true;
-	consolekeys[K_SHIFT] = true;
-	consolekeys[K_MWHEELUP] = true;
-	consolekeys[K_MWHEELDOWN] = true;
-	consolekeys['`'] = false;
-	consolekeys['~'] = false;
-	consolekeys[K_KP_HOME] = true;
-	consolekeys[K_KP_UPARROW] = true;
-	consolekeys[K_KP_PGUP] = true;
-	consolekeys[K_KP_LEFTARROW] = true;
-	consolekeys[K_KP_RIGHTARROW] = true;
-	consolekeys[K_KP_END] = true;
-	consolekeys[K_KP_DOWNARROW] = true;
-	consolekeys[K_KP_PGDN] = true;
-	consolekeys[K_KP_ENTER] = true;
-	consolekeys[K_KP_INS] = true;
-	consolekeys[K_KP_DEL] = true;
+	specialkeys[K_TAB] = true;
+	specialkeys[K_ENTER] = true;
+	specialkeys[K_ESCAPE] = true;
+	specialkeys[K_BACKSPACE] = true;
+	specialkeys[K_UPARROW] = true;
+	specialkeys[K_DOWNARROW] = true;
+	specialkeys[K_LEFTARROW] = true;
+	specialkeys[K_RIGHTARROW] = true;
+	specialkeys[K_ALT] = true;
+	specialkeys[K_CTRL] = true;
+	specialkeys[K_SHIFT] = true;
+	specialkeys[K_INS] = true;
+	specialkeys[K_DEL] = true;
+	specialkeys[K_PGDN] = true;
+	specialkeys[K_PGUP] = true;
+	specialkeys[K_HOME] = true;
+	specialkeys[K_END] = true;
+	specialkeys[K_KP_HOME] = true;
+	specialkeys[K_KP_UPARROW] = true;
+	specialkeys[K_KP_PGUP] = true;
+	specialkeys[K_KP_LEFTARROW] = true;
+	specialkeys[K_KP_RIGHTARROW] = true;
+	specialkeys[K_KP_END] = true;
+	specialkeys[K_KP_DOWNARROW] = true;
+	specialkeys[K_KP_PGDN] = true;
+	specialkeys[K_KP_ENTER] = true;
+	specialkeys[K_KP_INS] = true;
+	specialkeys[K_KP_DEL] = true;
+	specialkeys[K_COMMAND] = true;
+	specialkeys[K_MWHEELUP] = true;
+	specialkeys[K_MWHEELDOWN] = true;
 
+//
+// initialize consolekeys[]
+//
+	for (i = 0; i < MAX_KEYS; i++)
+	{
+		switch (i)
+		{
+		case K_KP_NUMLOCK:
+		case K_KP_SLASH:
+		case K_KP_STAR:
+		case K_KP_MINUS:
+		case K_KP_HOME:
+		case K_KP_UPARROW:
+		case K_KP_PGUP:
+		case K_KP_PLUS:
+		case K_KP_LEFTARROW:
+		case K_KP_5:
+		case K_KP_RIGHTARROW:
+		case K_KP_END:
+		case K_KP_DOWNARROW:
+		case K_KP_PGDN:
+		case K_KP_ENTER:
+		case K_KP_INS:
+		case K_KP_DEL:
+			consolekeys[i] = true;
+			break;
+		case '`':
+		case '~':
+			consolekeys[i] = false;
+			break;
+		default:
+			// init ascii characters in console mode
+			if (i >= 32 && i <= 126)
+				consolekeys[i] = true;
+			else	consolekeys[i] = specialkeys[i];
+			break;
+		}
+	}
+
+//
+// initialize menubound[]
+//
 	menubound[K_ESCAPE] = true;
 	for (i = 0; i < 12; i++)
 		menubound[K_F1+i] = true;
-
-	ignoretext[K_ENTER] = true;
-	ignoretext[K_TAB] = true;
-	ignoretext[K_ESCAPE] = true;
-	ignoretext[K_UPARROW] = true;
-	ignoretext[K_DOWNARROW] = true;
-	ignoretext[K_LEFTARROW] = true;
-	ignoretext[K_RIGHTARROW] = true;
-	ignoretext[K_CTRL] = true;
-	ignoretext[K_SHIFT] = true;
-	ignoretext[K_BACKSPACE] = true;
-	ignoretext[K_INS] = true;
-	ignoretext[K_DEL] = true;
-	ignoretext[K_PGDN] = true;
-	ignoretext[K_PGUP] = true;
-	ignoretext[K_HOME] = true;
-	ignoretext[K_END] = true;
-	ignoretext[K_KP_HOME] = true;
-	ignoretext[K_KP_UPARROW] = true;
-	ignoretext[K_KP_PGUP] = true;
-	ignoretext[K_KP_LEFTARROW] = true;
-	ignoretext[K_KP_5] = true;
-	ignoretext[K_KP_RIGHTARROW] = true;
-	ignoretext[K_KP_END] = true;
-	ignoretext[K_KP_DOWNARROW] = true;
-	ignoretext[K_KP_PGDN] = true;
-	ignoretext[K_KP_ENTER] = true;
-	ignoretext[K_KP_INS] = true;
-	ignoretext[K_KP_DEL] = true;
-	ignoretext[K_COMMAND] = true;
-	ignoretext[K_MWHEELUP] = true;
-	ignoretext[K_MWHEELDOWN] = true;
 
 //
 // register our functions
@@ -1171,7 +1181,7 @@ qboolean Key_IgnoreTextInput (int key)
 	if (key < 0 || key >= MAX_KEYS)
 		return false;
 
-	if (ignoretext[key])
+	if (specialkeys[key])
 		return true;
 
 	if (!keybindings[key])
