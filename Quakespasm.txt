@@ -211,10 +211,11 @@
   o  PF_VarString buffer bumped to 1024, avoids truncated centerprints
      from the 'In The Shadows' mod.
 
-  o  Support for opengl non-power-of-two-textures extension.
+  o  Support for opengl non-power-of-two-textures extension (disable
+     with command line: "-notexturenpot".)
 
   o  Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer)
-     for world and brush models.
+     for world and brush models (disable with command line: "-novbo".)
 
   o  Antialiasing (FSAA) support (command line: -fsaa x, where x can be
      0, 2, 4, 8).

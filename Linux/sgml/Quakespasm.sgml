@@ -121,8 +121,8 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Console speed now resolution-independent.
 <item> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.
 <item> PF_VarString buffer bumped to 1024, avoids truncated centerprints from the 'In The Shadows' mod.
-<item> Support for opengl non-power-of-two-textures extension.
-<item> Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer) for world and brush models.
+<item> Support for opengl non-power-of-two-textures extension (disable with command line: "-notexturenpot".)
+<item> Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer) for world and brush models (disable with command line: "-novbo".)
 <item> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).
 <item> Fence textures support.
 <item> Dynamic light speedup. Speedup loading of tga and pcx external images.

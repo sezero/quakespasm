@@ -196,8 +196,8 @@ these patched libSDL binaries may help.
 <LI> Console speed now resolution-independent.</LI>
 <LI> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.</LI>
 <LI> PF_VarString buffer bumped to 1024, avoids truncated centerprints from the 'In The Shadows' mod.</LI>
-<LI> Support for opengl non-power-of-two-textures extension.</LI>
-<LI> Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer) for world and brush models.</LI>
+<LI> Support for opengl non-power-of-two-textures extension (disable with command line: "-notexturenpot".)</LI>
+<LI> Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer) for world and brush models (disable with command line: "-novbo".)</LI>
 <LI> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).</LI>
 <LI> Fence textures support.</LI>
 <LI> Dynamic light speedup. Speedup loading of tga and pcx external images.</LI>
