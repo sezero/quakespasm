@@ -858,41 +858,28 @@ void Key_Init (void)
 //
 // initialize consolekeys[]
 //
-	for (i = 0; i < MAX_KEYS; i++)
-	{
-		switch (i)
-		{
-		case K_KP_NUMLOCK:
-		case K_KP_SLASH:
-		case K_KP_STAR:
-		case K_KP_MINUS:
-		case K_KP_HOME:
-		case K_KP_UPARROW:
-		case K_KP_PGUP:
-		case K_KP_PLUS:
-		case K_KP_LEFTARROW:
-		case K_KP_5:
-		case K_KP_RIGHTARROW:
-		case K_KP_END:
-		case K_KP_DOWNARROW:
-		case K_KP_PGDN:
-		case K_KP_ENTER:
-		case K_KP_INS:
-		case K_KP_DEL:
-			consolekeys[i] = true;
-			break;
-		case '`':
-		case '~':
-			consolekeys[i] = false;
-			break;
-		default:
-			// init ascii characters in console mode
-			if (i >= 32 && i <= 126)
-				consolekeys[i] = true;
-			else	consolekeys[i] = specialkeys[i];
-			break;
-		}
-	}
+	memcpy(consolekeys, specialkeys, MAX_KEYS * sizeof(qboolean));
+	for (i = 32; i < 127; i++) // ascii characters
+		consolekeys[i] = true;
+	consolekeys['`'] = false;
+	consolekeys['~'] = false;
+	consolekeys[K_KP_NUMLOCK] = true;
+	consolekeys[K_KP_SLASH] = true;
+	consolekeys[K_KP_STAR] = true;
+	consolekeys[K_KP_MINUS] = true;
+	consolekeys[K_KP_HOME] = true;
+	consolekeys[K_KP_UPARROW] = true;
+	consolekeys[K_KP_PGUP] = true;
+	consolekeys[K_KP_PLUS] = true;
+	consolekeys[K_KP_LEFTARROW] = true;
+	consolekeys[K_KP_5] = true;
+	consolekeys[K_KP_RIGHTARROW] = true;
+	consolekeys[K_KP_END] = true;
+	consolekeys[K_KP_DOWNARROW] = true;
+	consolekeys[K_KP_PGDN] = true;
+	consolekeys[K_KP_ENTER] = true;
+	consolekeys[K_KP_INS] = true;
+	consolekeys[K_KP_DEL] = true;
 
 //
 // initialize menubound[]
