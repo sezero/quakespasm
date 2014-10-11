@@ -69,7 +69,6 @@ console is:
 	half
 	full
 
-
 */
 
 
@@ -388,6 +387,7 @@ void SCR_LoadPics (void)
 	scr_net = Draw_PicFromWad ("net");
 	scr_turtle = Draw_PicFromWad ("turtle");
 }
+
 /*
 ==================
 SCR_Init
@@ -475,7 +475,6 @@ void SCR_DrawFPS (void)
 		Draw_String (x, y, st);
 		scr_tileclear_updates = 0;
 	}
-
 }
 
 /*
@@ -753,7 +752,7 @@ void SCR_DrawConsole (void)
 /*
 ==============================================================================
 
-						SCREEN SHOTS
+SCREEN SHOTS
 
 ==============================================================================
 */
@@ -923,9 +922,9 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 		Sys_Sleep (16);
 		if (timeout) time2 = Sys_DoubleTime (); //johnfitz -- zero timeout means wait forever.
 	} while (lastchar != 'y' && lastchar != 'Y' &&
-	         lastchar != 'n' && lastchar != 'N' &&
-	         lastkey != K_ESCAPE &&
-	         time2 <= time1);
+		 lastchar != 'n' && lastchar != 'N' &&
+		 lastkey != K_ESCAPE &&
+		 time2 <= time1);
 	Key_EndInputGrab ();
 
 //	SCR_UpdateScreen (); //johnfitz -- commented out
@@ -946,9 +945,10 @@ int SCR_ModalMessage (const char *text, float timeout) //johnfitz -- timeout
 
 /*
 ==================
-SCR_TileClear -- johnfitz -- modified to use glwidth/glheight instead of vid.width/vid.height
-                             also fixed the dimentions of right and top panels
-							 also added scr_tileclear_updates
+SCR_TileClear
+johnfitz -- modified to use glwidth/glheight instead of vid.width/vid.height
+	    also fixed the dimentions of right and top panels
+	    also added scr_tileclear_updates
 ==================
 */
 void SCR_TileClear (void)

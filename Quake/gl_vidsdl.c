@@ -291,7 +291,7 @@ VID_GetCurrentHeight
 static int VID_GetCurrentHeight (void)
 {
 #if defined(USE_SDL2)
-	int w=0, h=0;
+	int w = 0, h = 0;
 	SDL_GetWindowSize(draw_context, &w, &h);
 	return h;
 #else
@@ -481,17 +481,13 @@ static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 	CDAudio_Pause ();
 	BGM_Pause ();
 
-	//
-	// z-buffer depth
-	//
+	/* z-buffer depth */
 	if (bpp == 16)
 		depthbits = 16;
 	else	depthbits = 24;
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthbits);
 
-	//
-	// fsaa
-	//
+	/* fsaa */
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, fsaa > 0 ? 1 : 0);
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, fsaa);
 
@@ -1101,8 +1097,6 @@ void	VID_Shutdown (void)
 	}
 }
 
-//==========================================================================
-
 /*
 ===================================================================
 
@@ -1121,7 +1115,6 @@ static void ClearAllStates (void)
 	Key_ClearStates ();
 	IN_ClearStates ();
 }
-
 
 
 //==========================================================================
