@@ -11,7 +11,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Sep. 29, 2014</EM></P>
+<P><EM>Page last edited Oct. 11, 2014</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -190,13 +190,14 @@ these patched libSDL binaries may help.
 <UL>
 <LI> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.</LI>
 <LI> SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.</LI>
+<LI> Revised keyboard input code.</LI>
 <LI> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"</LI>
 <LI> Command line: "-game {quoth/hipnotic/rogue}" is now treated the same as -quoth, -hipnotic, or -rogue.</LI>
 <LI> Console speed now resolution-independent.</LI>
 <LI> Disabled gl_zfix, which caused glitches and is undesirable for new maps. Replacement .ent files to fix z-fighting for several id1 maps added to quakespasm.pak.</LI>
 <LI> PF_VarString buffer bumped to 1024, avoids truncated centerprints from the 'In The Shadows' mod.</LI>
 <LI> Support for opengl non-power-of-two-textures extension.</LI>
-<LI> Support for OpenGL vertex buffer objects (VBO) for world and brush models.</LI>
+<LI> Support for OpenGL vertex buffer objects (VBO, OpenGL 1.5 or newer) for world and brush models.</LI>
 <LI> Antialiasing (FSAA) support (command line: -fsaa x, where x can be 0, 2, 4, 8).</LI>
 <LI> Fence textures support.</LI>
 <LI> Dynamic light speedup. Speedup loading of tga and pcx external images.</LI>
