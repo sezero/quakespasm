@@ -1198,10 +1198,10 @@ static void VID_InitModelist (void)
 	nummodes = 0;
 	for (i = 0; i < sdlmodes; i++)
 	{
+		SDL_DisplayMode mode;
+
 		if (nummodes >= MAX_MODE_LIST)
 			break;
-
-		SDL_DisplayMode mode;
 		if (SDL_GetDisplayMode(0, i, &mode) == 0)
 		{
 			modelist[nummodes].width = mode.w;

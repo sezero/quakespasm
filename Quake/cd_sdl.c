@@ -36,7 +36,7 @@
 
 /* SDL dropped support for
    cd audio since v1.3.0 */
-#warning SDL CDAudio support disabled
+#pragma message("Warning: SDL CDAudio support disabled")
 #include "cd_null.c"
 
 #else	/* SDL_INIT_CDROM */
