@@ -7,8 +7,8 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="SDL2/bin/Debug/quakespasm-sdl2" prefix_auto="1" extension_auto="1" />
-				<Option object_output="SDL2/obj/Debug/" />
+				<Option output="bin/Debug/quakespasm-sdl2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/SDL2/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option parameters="-window -basedir /home/kristian/Desktop/Quake -sndspeed 48000" />
@@ -17,8 +17,8 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="SDL2/bin/Release/quakespasm-sdl2" prefix_auto="1" extension_auto="1" />
-				<Option object_output="SDL2/obj/Release/" />
+				<Option output="bin/Release/quakespasm-sdl2" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/SDL2/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Option parameters="-window -basedir /home/kristian/Desktop/Quake -sndspeed 48000" />
