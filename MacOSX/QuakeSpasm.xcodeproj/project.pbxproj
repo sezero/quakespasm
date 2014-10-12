@@ -799,9 +799,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		664D988819CF6B78000D395C /* QuakeSpasmSDL2 */ = {
+		664D988819CF6B78000D395C /* QuakeSpasm-SDL2 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 664D98F619CF6B78000D395C /* Build configuration list for PBXNativeTarget "QuakeSpasmSDL2" */;
+			buildConfigurationList = 664D98F619CF6B78000D395C /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2" */;
 			buildPhases = (
 				664D988919CF6B78000D395C /* Resources */,
 				664D988D19CF6B78000D395C /* Sources */,
@@ -813,7 +813,7 @@
 			);
 			dependencies = (
 			);
-			name = QuakeSpasmSDL2;
+			name = "QuakeSpasm-SDL2";
 			productInstallPath = "$(HOME)/Applications";
 			productName = QuakeSpasm;
 			productReference = 664D98F919CF6B78000D395C /* QuakeSpasm.app */;
@@ -862,7 +862,7 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* QuakeSpasm */,
-				664D988819CF6B78000D395C /* QuakeSpasmSDL2 */,
+				664D988819CF6B78000D395C /* QuakeSpasm-SDL2 */,
 			);
 		};
 /* End PBXProject section */
@@ -1380,7 +1380,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		664D98F619CF6B78000D395C /* Build configuration list for PBXNativeTarget "QuakeSpasmSDL2" */ = {
+		664D98F619CF6B78000D395C /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				664D98F719CF6B78000D395C /* Debug */,
