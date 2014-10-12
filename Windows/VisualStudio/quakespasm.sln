@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm", "quakespasm.vcproj", "{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm-sdl2", "quakespasm-sdl2.vcproj", "{AE77266F-0A23-4F08-A491-369DE664B273}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,14 @@ Global
 		{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}.Release|Win32.Build.0 = Release|Win32
 		{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}.Release|x64.ActiveCfg = Release|x64
 		{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}.Release|x64.Build.0 = Release|x64
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Debug|Win32.Build.0 = Debug|Win32
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Debug|x64.ActiveCfg = Debug|x64
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Debug|x64.Build.0 = Debug|x64
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Release|Win32.ActiveCfg = Release|Win32
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Release|Win32.Build.0 = Release|Win32
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Release|x64.ActiveCfg = Release|x64
+		{AE77266F-0A23-4F08-A491-369DE664B273}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
