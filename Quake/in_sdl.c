@@ -624,6 +624,9 @@ void IN_SendKeyEvents (void)
 #endif
 #if defined(USE_SDL2)
 		case SDL_TEXTINPUT:
+#if defined(DEBUG_INPUT)
+			printf ("SDL_TEXTINPUT '%s'\n", event.text.text);
+#endif
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
@@ -639,6 +642,14 @@ void IN_SendKeyEvents (void)
 		case SDL_KEYDOWN:
 		case SDL_KEYUP:
 			down = (event.key.state == SDL_PRESSED);
+
+#if defined(DEBUG_INPUT)
+#if defined(USE_SDL2)
+			printf ("%s '%s'\n", down ? "SDL_KEYDOWN" : "SDL_KEYUP", SDL_GetScancodeName(event.key.keysym.scancode));
+#else
+			printf ("%s '%s'\n", down ? "SDL_KEYDOWN" : "SDL_KEYUP", SDL_GetKeyName(event.key.keysym.sym));
+#endif
+#endif
 
 #if defined(USE_SDL2)
 		// SDL2: we interpret the keyboard as the US layout, so keybindings
