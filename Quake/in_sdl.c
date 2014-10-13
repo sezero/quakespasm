@@ -597,10 +597,7 @@ void IN_SendKeyEvents (void)
 	SDL_Event event;
 	int key;
 	qboolean down;
-#if defined(USE_SDL2)
-	static int lastKeyDown = 0;
-#endif
-	
+
 	while (SDL_PollEvent(&event))
 	{
 		switch (event.type)
@@ -630,7 +627,6 @@ void IN_SendKeyEvents (void)
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
-			if (!Key_IgnoreTextInput(lastKeyDown))
 			{
 				unsigned char *ch;
 				for (ch = (unsigned char *)event.text.text; *ch; ch++)
@@ -666,10 +662,6 @@ void IN_SendKeyEvents (void)
 			if (down && textmode && IN_NumpadKey(key) && IN_ExpectCharEvent(event))
 				key = 0;
 
-#if defined(USE_SDL2)
-			lastKeyDown = down ? key : 0;
-#endif
-			
 			Key_Event (key, down);
 
 #if !defined(USE_SDL2)
