@@ -43,7 +43,6 @@ keydest_t	key_dest;
 #define		MAX_KEYS 256
 
 char		*keybindings[MAX_KEYS];
-qboolean	specialkeys[MAX_KEYS];	// if true, hardcoded for console/menu navigation etc.
 qboolean	consolekeys[MAX_KEYS];	// if true, can't be rebound while in console
 qboolean	menubound[MAX_KEYS];	// if true, can't be rebound while in menu
 qboolean	keydown[MAX_KEYS];
@@ -811,48 +810,29 @@ void Key_Init (void)
 	key_blinktime = realtime; //johnfitz
 
 //
-// initialize specialkeys[]
-//
-	specialkeys[K_TAB] = true;
-	specialkeys[K_ENTER] = true;
-	specialkeys[K_ESCAPE] = true;
-	specialkeys[K_BACKSPACE] = true;
-	specialkeys[K_UPARROW] = true;
-	specialkeys[K_DOWNARROW] = true;
-	specialkeys[K_LEFTARROW] = true;
-	specialkeys[K_RIGHTARROW] = true;
-	specialkeys[K_ALT] = true;
-	specialkeys[K_CTRL] = true;
-	specialkeys[K_SHIFT] = true;
-	specialkeys[K_INS] = true;
-	specialkeys[K_DEL] = true;
-	specialkeys[K_PGDN] = true;
-	specialkeys[K_PGUP] = true;
-	specialkeys[K_HOME] = true;
-	specialkeys[K_END] = true;
-	specialkeys[K_KP_HOME] = true;
-	specialkeys[K_KP_UPARROW] = true;
-	specialkeys[K_KP_PGUP] = true;
-	specialkeys[K_KP_LEFTARROW] = true;
-	specialkeys[K_KP_RIGHTARROW] = true;
-	specialkeys[K_KP_END] = true;
-	specialkeys[K_KP_DOWNARROW] = true;
-	specialkeys[K_KP_PGDN] = true;
-	specialkeys[K_KP_ENTER] = true;
-	specialkeys[K_KP_INS] = true;
-	specialkeys[K_KP_DEL] = true;
-	specialkeys[K_COMMAND] = true;
-	specialkeys[K_MWHEELUP] = true;
-	specialkeys[K_MWHEELDOWN] = true;
-
-//
 // initialize consolekeys[]
 //
-	memcpy(consolekeys, specialkeys, MAX_KEYS * sizeof(qboolean));
 	for (i = 32; i < 127; i++) // ascii characters
 		consolekeys[i] = true;
 	consolekeys['`'] = false;
 	consolekeys['~'] = false;
+	consolekeys[K_TAB] = true;
+	consolekeys[K_ENTER] = true;
+	consolekeys[K_ESCAPE] = true;
+	consolekeys[K_BACKSPACE] = true;
+	consolekeys[K_UPARROW] = true;
+	consolekeys[K_DOWNARROW] = true;
+	consolekeys[K_LEFTARROW] = true;
+	consolekeys[K_RIGHTARROW] = true;
+	consolekeys[K_ALT] = true;
+	consolekeys[K_CTRL] = true;
+	consolekeys[K_SHIFT] = true;
+	consolekeys[K_INS] = true;
+	consolekeys[K_DEL] = true;
+	consolekeys[K_PGDN] = true;
+	consolekeys[K_PGUP] = true;
+	consolekeys[K_HOME] = true;
+	consolekeys[K_END] = true;
 	consolekeys[K_KP_NUMLOCK] = true;
 	consolekeys[K_KP_SLASH] = true;
 	consolekeys[K_KP_STAR] = true;
@@ -870,6 +850,11 @@ void Key_Init (void)
 	consolekeys[K_KP_ENTER] = true;
 	consolekeys[K_KP_INS] = true;
 	consolekeys[K_KP_DEL] = true;
+#if defined(PLATFORM_OSX) || defined(PLATFORM_MAC)
+	consolekeys[K_COMMAND] = true;
+#endif
+	consolekeys[K_MWHEELUP] = true;
+	consolekeys[K_MWHEELDOWN] = true;
 
 //
 // initialize menubound[]

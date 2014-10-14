@@ -562,27 +562,6 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
-static inline qboolean IN_NumpadKey (int key)
-{
-	switch (key)
-	{
-	case K_KP_HOME:
-	case K_KP_UPARROW:
-	case K_KP_PGUP:
-	case K_KP_LEFTARROW:
-	case K_KP_5:
-	case K_KP_RIGHTARROW:
-	case K_KP_END:
-	case K_KP_DOWNARROW:
-	case K_KP_PGDN:
-	case K_KP_INS:
-	case K_KP_DEL:
-		return true;
-	default:
-		return false;
-	}
-}
-
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
@@ -659,6 +638,7 @@ void IN_SendKeyEvents (void)
 				Char_Event (event.key.keysym.unicode);
 #endif
 			break;
+
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEBUTTONUP:
 			if (event.button.button < 1 ||
