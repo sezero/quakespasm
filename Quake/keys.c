@@ -277,7 +277,6 @@ void Key_Console (int key)
 		return;
 
 	case K_DEL:
-	case K_KP_DEL:
 		key_tabpartial[0] = 0;
 		workline += key_linepos;
 		if (*workline)
@@ -292,7 +291,6 @@ void Key_Console (int key)
 		return;
 
 	case K_HOME:
-	case K_KP_HOME:
 		if (keydown[K_CTRL])
 		{
 			//skip initial empty lines
@@ -316,14 +314,12 @@ void Key_Console (int key)
 		return;
 
 	case K_END:
-	case K_KP_END:
 		if (keydown[K_CTRL])
 			con_backscroll = 0;
 		else	key_linepos = strlen(workline);
 		return;
 
 	case K_PGUP:
-	case K_KP_PGUP:
 	case K_MWHEELUP:
 		con_backscroll += keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll > con_totallines - (vid.height>>3) - 1)
@@ -331,7 +327,6 @@ void Key_Console (int key)
 		return;
 
 	case K_PGDN:
-	case K_KP_PGDN:
 	case K_MWHEELDOWN:
 		con_backscroll -= keydown[K_CTRL] ? ((con_vislines>>3) - 4) : 2;
 		if (con_backscroll < 0)
@@ -339,7 +334,6 @@ void Key_Console (int key)
 		return;
 
 	case K_LEFTARROW:
-	case K_KP_LEFTARROW:
 		if (key_linepos > 1)
 		{
 			key_linepos--;
@@ -348,7 +342,6 @@ void Key_Console (int key)
 		return;
 
 	case K_RIGHTARROW:
-	case K_KP_RIGHTARROW:
 		len = strlen(workline);
 		if ((int)len == key_linepos)
 		{
@@ -368,7 +361,6 @@ void Key_Console (int key)
 		return;
 
 	case K_UPARROW:
-	case K_KP_UPARROW:
 		if (history_line == edit_line)
 			Q_strcpy(current, workline);
 
@@ -390,7 +382,6 @@ void Key_Console (int key)
 		return;
 
 	case K_DOWNARROW:
-	case K_KP_DOWNARROW:
 		if (history_line == edit_line)
 			return;
 
@@ -408,7 +399,6 @@ void Key_Console (int key)
 		return;
 
 	case K_INS:
-	case K_KP_INS:
 		if (keydown[K_SHIFT])		/* Shift-Ins paste */
 			PasteToConsole();
 		else	key_insert ^= 1;
@@ -1147,50 +1137,6 @@ qboolean Key_TextEntry (void)
 		return true;
 	default:
 		return false;
-	}
-}
-
-/*
-===================
-Key_IgnoreTextInput
-===================
-*/
-qboolean Key_IgnoreTextInput (int key)
-{
-#if defined(PLATFORM_OSX) || defined(PLATFORM_MAC)
-	if (keydown[K_COMMAND])
-		return true;
-#endif
-
-	if (keydown[K_CTRL])
-		return true;
-
-	if (key < 0 || key >= MAX_KEYS)
-		return false;
-
-	if (specialkeys[key])
-		return true;
-
-	if (!keybindings[key])
-		return false;
-
-	if (key_inputgrab.active)
-		return false;
-
-	switch (key_dest)
-	{
-	case key_message:
-		return false;
-	case key_menu:
-		return menubound[key];
-	case key_game:
-		if (!con_forcedup)
-			return true;
-		/* fallthrough */
-	case key_console:
-		return !consolekeys[key];
-	default:
-		return true;
 	}
 }
 

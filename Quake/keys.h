@@ -169,7 +169,6 @@ void Key_GetGrabbedInput (int *lastkey, int *lastchar);
 void Key_Event (int key, qboolean down);
 void Char_Event (int key);
 qboolean Key_TextEntry (void);
-qboolean Key_IgnoreTextInput (int key);
 
 void Key_SetBinding (int keynum, const char *binding);
 const char *Key_KeynumToString (int keynum);

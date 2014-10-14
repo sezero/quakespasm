@@ -583,15 +583,6 @@ static inline qboolean IN_NumpadKey (int key)
 	}
 }
 
-static inline qboolean IN_ExpectCharEvent (SDL_Event event)
-{
-#if defined(USE_SDL2)
-	return (SDL_PeepEvents(&event, 1, SDL_PEEKEVENT, SDL_TEXTINPUT, SDL_TEXTINPUT) > 0);
-#else
-	return (event.key.keysym.unicode != 0);
-#endif
-}
-
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
@@ -655,17 +646,10 @@ void IN_SendKeyEvents (void)
 			key = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 #endif
 
-		// Filter key down events for numpad keys when we expect them
-		// to also send a char event. Doing this only for key down events
-		// will generate some stray key up events, but that's much less
-		// problematic than missing key up events.
-			if (down && textmode && IN_NumpadKey(key) && IN_ExpectCharEvent(event))
-				key = 0;
-
 			Key_Event (key, down);
 
 #if !defined(USE_SDL2)
-			if (down && !Key_IgnoreTextInput(key) && (event.key.keysym.unicode & ~0x7F) == 0)
+			if (down && (event.key.keysym.unicode & ~0x7F) == 0)
 				Char_Event (event.key.keysym.unicode);
 #endif
 			break;

@@ -1709,7 +1709,6 @@ static void VID_MenuKey (int key)
 		break;
 
 	case K_UPARROW:
-	case K_KP_UPARROW:
 		S_LocalSound ("misc/menu1.wav");
 		video_options_cursor--;
 		if (video_options_cursor < 0)
@@ -1717,7 +1716,6 @@ static void VID_MenuKey (int key)
 		break;
 
 	case K_DOWNARROW:
-	case K_KP_DOWNARROW:
 		S_LocalSound ("misc/menu1.wav");
 		video_options_cursor++;
 		if (video_options_cursor >= VIDEO_OPTIONS_ITEMS)
@@ -1725,7 +1723,6 @@ static void VID_MenuKey (int key)
 		break;
 
 	case K_LEFTARROW:
-	case K_KP_LEFTARROW:
 		S_LocalSound ("misc/menu3.wav");
 		switch (video_options_cursor)
 		{
@@ -1747,7 +1744,6 @@ static void VID_MenuKey (int key)
 		break;
 
 	case K_RIGHTARROW:
-	case K_KP_RIGHTARROW:
 		S_LocalSound ("misc/menu3.wav");
 		switch (video_options_cursor)
 		{
