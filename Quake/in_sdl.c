@@ -632,9 +632,15 @@ void IN_SendKeyEvents (void)
 
 #if defined(DEBUG_INPUT)
 #if defined(USE_SDL2)
-			printf ("%s '%s'\n", down ? "SDL_KEYDOWN" : "SDL_KEYUP", SDL_GetScancodeName(event.key.keysym.scancode));
+			printf ("%s scancode: '%s' keycode: '%s'\n",
+				down ? "SDL_KEYDOWN" : "SDL_KEYUP",
+				SDL_GetScancodeName(event.key.keysym.scancode),
+				SDL_GetKeyName(event.key.keysym.sym));
 #else
-			printf ("%s '%s'\n", down ? "SDL_KEYDOWN" : "SDL_KEYUP", SDL_GetKeyName(event.key.keysym.sym));
+			printf ("%s sym: '%s' unicode: %04x\n",
+				down ? "SDL_KEYDOWN" : "SDL_KEYUP",
+				SDL_GetKeyName(event.key.keysym.sym),
+				(int)event.key.keysym.unicode);
 #endif
 #endif
 
