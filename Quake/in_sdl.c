@@ -34,6 +34,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 static qboolean	textmode;
 
+static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
+
 #ifdef __APPLE__
 /* Mouse acceleration needs to be disabled on OS X */
 #define MACOS_X_ACCELERATION_HACK
@@ -279,6 +281,7 @@ void IN_Init (void)
 #ifdef MACOS_X_ACCELERATION_HACK
 	Cvar_RegisterVariable(&in_disablemacosxmouseaccel);
 #endif
+	Cvar_RegisterVariable(&in_debugkeys);
 
 	IN_Activate();
 }
@@ -562,6 +565,29 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 }
 #endif
 
+#if defined(USE_SDL2)
+static void IN_DebugTextEvent(SDL_Event *event)
+{
+	Con_Printf ("SDL_TEXTINPUT '%s'\n", event->text.text);
+}
+#endif
+
+static void IN_DebugKeyEvent(SDL_Event *event)
+{
+	const char *eventtype = (event->key.state == SDL_PRESSED) ? "SDL_KEYDOWN" : "SDL_KEYUP";
+#if defined(USE_SDL2)
+	Con_Printf ("%s scancode: '%s' keycode: '%s'\n",
+		eventtype,
+		SDL_GetScancodeName(event->key.keysym.scancode),
+		SDL_GetKeyName(event->key.keysym.sym));
+#else
+	Con_Printf ("%s sym: '%s' unicode: %04x\n",
+		eventtype,
+		SDL_GetKeyName(event->key.keysym.sym),
+		(int)event->key.keysym.unicode);
+#endif
+}
+
 void IN_SendKeyEvents (void)
 {
 	SDL_Event event;
@@ -591,9 +617,9 @@ void IN_SendKeyEvents (void)
 #endif
 #if defined(USE_SDL2)
 		case SDL_TEXTINPUT:
-#if defined(DEBUG_INPUT)
-			printf ("SDL_TEXTINPUT '%s'\n", event.text.text);
-#endif
+			if (in_debugkeys.value)
+				IN_DebugTextEvent(&event);
+
 		// SDL2: We use SDL_TEXTINPUT for typing in the console / chat.
 		// SDL2 uses the local keyboard layout and handles modifiers
 		// (shift for uppercase, etc.) for us.
@@ -609,19 +635,8 @@ void IN_SendKeyEvents (void)
 		case SDL_KEYUP:
 			down = (event.key.state == SDL_PRESSED);
 
-#if defined(DEBUG_INPUT)
-#if defined(USE_SDL2)
-			printf ("%s scancode: '%s' keycode: '%s'\n",
-				down ? "SDL_KEYDOWN" : "SDL_KEYUP",
-				SDL_GetScancodeName(event.key.keysym.scancode),
-				SDL_GetKeyName(event.key.keysym.sym));
-#else
-			printf ("%s sym: '%s' unicode: %04x\n",
-				down ? "SDL_KEYDOWN" : "SDL_KEYUP",
-				SDL_GetKeyName(event.key.keysym.sym),
-				(int)event.key.keysym.unicode);
-#endif
-#endif
+			if (in_debugkeys.value)
+				IN_DebugKeyEvent(&event);
 
 #if defined(USE_SDL2)
 		// SDL2: we interpret the keyboard as the US layout, so keybindings
