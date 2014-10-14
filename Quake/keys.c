@@ -1090,6 +1090,10 @@ void Char_Event (int key)
 	case key_menu:
 		M_Charinput (key);
 		break;
+	case key_game:
+		if (!con_forcedup)
+			break;
+		/* fallthrough */
 	case key_console:
 		Char_Console (key);
 		break;
