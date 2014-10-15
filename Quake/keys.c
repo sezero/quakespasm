@@ -1076,6 +1076,13 @@ void Char_Event (int key)
 	if (key < 32 || key > 126)
 		return;
 
+#if defined(PLATFORM_OSX) || defined(PLATFORM_MAC)
+	if (keydown[K_COMMAND])
+		return;
+#endif
+	if (keydown[K_CTRL])
+		return;
+
 	if (key_inputgrab.active)
 	{
 		key_inputgrab.lastchar = key;
