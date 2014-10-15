@@ -160,6 +160,9 @@ keyname_t keynames[] =
 
 	{"SEMICOLON", ';'},	// because a raw semicolon seperates commands
 
+	{"BACKQUOTE", '`'},	// because a raw backquote may toggle the console
+	{"TILDE", '~'},		// because a raw tilde may toggle the console
+
 	{NULL,		0}
 };
 
