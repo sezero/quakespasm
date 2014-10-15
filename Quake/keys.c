@@ -824,7 +824,6 @@ void Key_Init (void)
 	consolekeys[K_DOWNARROW] = true;
 	consolekeys[K_LEFTARROW] = true;
 	consolekeys[K_RIGHTARROW] = true;
-	consolekeys[K_ALT] = true;
 	consolekeys[K_CTRL] = true;
 	consolekeys[K_SHIFT] = true;
 	consolekeys[K_INS] = true;
