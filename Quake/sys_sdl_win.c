@@ -190,8 +190,8 @@ void Sys_SetDPIAware (void)
 
 	hShcore = LoadLibraryA ("Shcore.dll");
 	hUser32 = LoadLibraryA ("user32.dll");
-	setDPIAwareness = (SetProcessDPIAwarenessFunc) GetProcAddress(hShcore, "SetProcessDpiAwareness");
-	setDPIAware = (SetProcessDPIAwareFunc) GetProcAddress (hUser32, "SetProcessDPIAware");
+	setDPIAwareness = (SetProcessDPIAwarenessFunc) (hShcore ? GetProcAddress (hShcore, "SetProcessDpiAwareness") : NULL);
+	setDPIAware = (SetProcessDPIAwareFunc) (hUser32 ? GetProcAddress (hUser32, "SetProcessDPIAware") : NULL);
 
 	if (setDPIAwareness) /* Windows 8.1+ */
 		setDPIAwareness (dpi_monitor_aware);
