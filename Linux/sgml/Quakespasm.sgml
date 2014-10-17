@@ -110,6 +110,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 
 <sect1> Changes in 0.90.0<p>
 <itemize>
+<item> Fix issues on Windows systems with DPI scaling.</item>
 <item> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.
 <item> SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
 <item> Revised keyboard input code.
