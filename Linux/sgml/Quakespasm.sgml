@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Oct. 11, 2014</em>
+<em>Page last edited Oct. 17, 2014</em>
 
 <sect> About <p>
 
@@ -72,7 +72,7 @@ Compile time options include
 <item><bf>make DO_USERDIRS=1</bf> to include user directories support
 <item><bf>make DEBUG=1</bf> for debugging
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installations
-<item><bf>make USE_SDL2=1</bf> to compile against SDL2 instead of SDL1.2
+<item><bf>make USE_SDL2=1</bf> to compile against SDL2 instead of SDL-1.2
 </itemize>
 <p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
 <p>The project can also be built with Codeblocks (project files included).</p>

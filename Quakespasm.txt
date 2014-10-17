@@ -35,7 +35,7 @@
   ______________________________________________________________________
 
 
-  Page last edited Oct. 11, 2014
+  Page last edited Oct. 17, 2014
 
 
   1.  About
@@ -131,7 +131,7 @@
 
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
-  o  make USE_SDL2=1 to compile against SDL2 instead of SDL1.2
+  o  make USE_SDL2=1 to compile against SDL2 instead of SDL-1.2
 
   Streaming music playback requires "libmad" or "libmpg123" for MP3, and
   "libogg" and "libvorbis" for OGG files.
