@@ -54,7 +54,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #endif
 
-static void Sys_CheckSDL (void)
+static void Sys_AtExit (void)
+{
+	SDL_Quit();
+}
+
+static void Sys_InitSDL (void)
 {
 #if defined(USE_SDL2)
 	SDL_version v;
@@ -74,6 +79,12 @@ static void Sys_CheckSDL (void)
 		Sys_Error("Your version of SDL library is incompatible with me.\n"
 			  "You need a library version in the line of %d.%d.%d\n", SDL_MIN_X,SDL_MIN_Y,SDL_MIN_Z);
 	}
+
+	if (SDL_Init(0) < 0)
+	{
+		Sys_Error("SDL failed to initialize.");
+	}
+	atexit(Sys_AtExit);
 }
 
 #if defined(_LP64) || defined(__LP64__) || defined(_WIN64)
@@ -105,7 +116,7 @@ int main(int argc, char *argv[])
 
 	isDedicated = (COM_CheckParm("-dedicated") != 0);
 
-	Sys_CheckSDL ();
+	Sys_InitSDL ();
 
 	Sys_Init();
 
@@ -158,12 +169,12 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		/* If we have no input focus at all, sleep a bit */
-		if ( !VID_HasMouseOrInputFocus() || cl.paused)
+		if (!VID_HasMouseOrInputFocus() || cl.paused)
 		{
 			SDL_Delay(16);
 		}
 		/* If we're minimised, sleep a bit more */
-		if ( VID_IsMinimized() )
+		if (VID_IsMinimized())
 		{
 			scr_skipupdate = 1;
 			SDL_Delay(32);
