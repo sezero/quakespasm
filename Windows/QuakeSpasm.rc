@@ -1,1 +1,3 @@
+#include <winuser.h>
 icon ICON "QuakeSpasm.ico"
+1 RT_MANIFEST "QuakeSpasm.manifest"

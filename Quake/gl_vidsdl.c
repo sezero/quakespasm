@@ -1304,8 +1304,8 @@ void	VID_Init (void)
 
 	putenv (vid_center);	/* SDL_putenv is problematic in versions <= 1.2.9 */
 
-	if (SDL_InitSubSystem(SDL_INIT_VIDEO) == -1)
-		Sys_Error("Could not initialize SDL Video");
+	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
+		Sys_Error("Couldn't init SDL video: %s", SDL_GetError());
 
 #if defined(USE_SDL2)
 	{

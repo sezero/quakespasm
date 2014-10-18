@@ -504,7 +504,7 @@ int CDAudio_Init(void)
 
 	export_cddev_arg();
 
-	if (SDL_InitSubSystem(SDL_INIT_CDROM) == -1)
+	if (SDL_InitSubSystem(SDL_INIT_CDROM) < 0)
 	{
 		Con_Printf("Couldn't init SDL cdrom: %s\n", SDL_GetError());
 		return -1;

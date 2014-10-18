@@ -82,7 +82,7 @@ static void Sys_InitSDL (void)
 
 	if (SDL_Init(0) < 0)
 	{
-		Sys_Error("SDL failed to initialize.");
+		Sys_Error("Couldn't init SDL: %s", SDL_GetError());
 	}
 	atexit(Sys_AtExit);
 }
