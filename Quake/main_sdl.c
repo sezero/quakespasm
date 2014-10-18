@@ -120,10 +120,7 @@ int main(int argc, char *argv[])
 
 	Sys_Init();
 
-	// default memory size
-	// TODO: less mem, eg. 16 mb, for dedicated server??
 	parms.memsize = DEFAULT_MEMORY;
-
 	if (COM_CheckParm("-heapsize"))
 	{
 		t = COM_CheckParm("-heapsize") + 1;
