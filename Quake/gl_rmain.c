@@ -444,10 +444,6 @@ void R_SetupView (void)
 		else if (r_lightmap.value) r_lightmap_cheatsafe = true;
 	}
 	//johnfitz
-	
-// mh dynamic lightmap speedup: upload all modified lightmaps from the last
-// frame in a single batch
-	R_UploadLightmaps ();
 }
 
 //==============================================================================

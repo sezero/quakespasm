@@ -236,10 +236,14 @@ void R_CullSurfaces (void)
 /*
 ================
 R_BuildLightmapChains -- johnfitz -- used for r_lightmap 1
+
+ericw -- now always used at the start of R_DrawTextureChains for the 
+mh dynamic lighting speedup
 ================
 */
-void R_BuildLightmapChains (qmodel_t *model)
+void R_BuildLightmapChains (qmodel_t *model, texchain_t chain)
 {
+	texture_t *t;
 	msurface_t *s;
 	int i;
 
@@ -247,10 +251,17 @@ void R_BuildLightmapChains (qmodel_t *model)
 	memset (lightmap_polys, 0, sizeof(lightmap_polys));
 
 	// now rebuild them
-	s = &model->surfaces[model->firstmodelsurface];
-	for (i=0 ; i<model->nummodelsurfaces ; i++, s++)
-		if (model != cl.worldmodel || (s->visframe == r_visframecount && !R_CullBox(s->mins, s->maxs) && !R_BackFaceCull (s)))
-			R_RenderDynamicLightmaps (s);
+	for (i=0 ; i<model->numtextures ; i++)
+	{
+		t = model->textures[i];
+
+		if (!t || !t->texturechains[chain])
+			continue;
+
+		for (s = t->texturechains[chain]; s; s = s->texturechain)
+			if (!s->culled)
+				R_RenderDynamicLightmaps (s);
+	}
 }
 
 //==============================================================================
@@ -527,7 +538,6 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 					GL_EnableMultitexture(); // selects TEXTURE1
 					bound = true;
 				}
-				R_RenderDynamicLightmaps (s);
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
 				glBegin(GL_POLYGON);
 				v = s->polys->verts[0];
@@ -617,7 +627,6 @@ void R_DrawTextureChains_TextureOnly (qmodel_t *model, entity_t *ent, texchain_t
 					
 					bound = true;
 				}
-				R_RenderDynamicLightmaps (s); //adds to lightmap chain
 				DrawGLPoly (s->polys);
 				rs_brushpasses++;
 			}
@@ -835,7 +844,6 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 					bound = true;
 					lastlightmap = s->lightmaptexturenum;
 				}
-				R_RenderDynamicLightmaps (s);
 				
 				if (s->lightmaptexturenum != lastlightmap)
 					R_FlushBatch ();
@@ -881,6 +889,14 @@ void R_DrawTextureChains (qmodel_t *model, entity_t *ent, texchain_t chain)
 	else
 		entalpha = 1;
 
+// ericw -- the mh dynamic lightmap speedup: make a first pass through all
+// surfaces we are going to draw, and rebuild any lightmaps that need it.
+// this also chains surfaces by lightmap which is used by r_lightmap 1.
+// the previous implementation of the speedup uploaded lightmaps one frame
+// late which was visible under some conditions, this method avoids that.
+	R_BuildLightmapChains (model, chain);
+	R_UploadLightmaps ();
+
 	if (r_drawflat_cheatsafe)
 	{
 		glDisable (GL_TEXTURE_2D);
@@ -899,7 +915,6 @@ void R_DrawTextureChains (qmodel_t *model, entity_t *ent, texchain_t chain)
 
 	if (r_lightmap_cheatsafe)
 	{
-		R_BuildLightmapChains (model);
 		if (!gl_overbright.value)
 		{
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
