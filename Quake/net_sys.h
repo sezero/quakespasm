@@ -105,10 +105,14 @@ typedef int	sys_socket_t;
 #define	SOCKET_ERROR	(-1)
 
 #if !(defined(__AROS__) || defined(__amigaos4__))
-typedef int	socklen_t;
+typedef LONG	socklen_t;	/* int32_t */
 #endif
 #if !defined(__amigaos4__)
+#if (LONG_MAX <= 2147483647L)
+typedef unsigned long	in_addr_t;	/* u_int32_t */
+#else
 typedef unsigned int	in_addr_t;	/* u_int32_t */
+#endif
 #endif
 
 #define	SOCKETERRNO	Errno()

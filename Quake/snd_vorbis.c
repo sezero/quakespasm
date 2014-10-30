@@ -56,7 +56,7 @@ static int ovc_fseek (void *f, ogg_int64_t off, int whence)
 	return FS_fseek((fshandle_t *)f, (long) off, whence);
 }
 
-static const ov_callbacks ovc_qfs =
+static ov_callbacks ovc_qfs =
 {
 	(size_t (*)(void *, size_t, size_t, void *))	FS_fread,
 	(int (*)(void *, ogg_int64_t, int))		ovc_fseek,
@@ -169,7 +169,6 @@ static int S_VORBIS_CodecReadStream (snd_stream_t *stream, int bytes, void *buff
 
 	if (res < 0)
 		return res;
-
 	return cnt;
 }
 

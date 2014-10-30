@@ -466,7 +466,7 @@ static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscre
 VID_SetMode
 ================
 */
-static int VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
+static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen)
 {
 	int		temp;
 	Uint32	flags;
