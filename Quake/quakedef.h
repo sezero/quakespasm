@@ -224,6 +224,9 @@ typedef struct
 #include "SDL.h"
 #include "SDL_opengl.h"
 #endif
+#ifndef APIENTRY
+#define	APIENTRY
+#endif
 
 #include "console.h"
 #include "wad.h"
