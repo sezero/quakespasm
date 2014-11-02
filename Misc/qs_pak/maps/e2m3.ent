@@ -2651,6 +2651,7 @@
 "spawnflags" "2"
 "targetname" "t41"
 "model" "*66"
+"t_length" "65" // svdijk -- added to prevent z-fighting
 }
 {
 "classname" "trigger_multiple"
