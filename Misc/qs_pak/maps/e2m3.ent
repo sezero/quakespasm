@@ -1230,6 +1230,7 @@
 "targetname" "t11"
 "wait" "10"
 "model" "*25"
+"lip" "7" // svdijk -- added to prevent z-fighting
 }
 {
 "classname" "func_door_secret"
@@ -1237,6 +1238,7 @@
 "spawnflags" "8"
 "targetname" "t11"
 "model" "*26"
+"t_length" "65" // svdijk -- added to prevent z-fighting
 }
 {
 "classname" "light"
