@@ -36,6 +36,11 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #endif
 
+//ericw -- for putting the driver into multithreaded mode
+#ifdef __APPLE__
+#include <OpenGL/OpenGL.h>
+#endif
+
 #define MAX_MODE_LIST	600 //johnfitz -- was 30
 #define MAX_BPPS_LIST	5
 #define WARP_WIDTH		320
@@ -1042,6 +1047,15 @@ static void GL_Init (void)
 	gl_extensions_nice = GL_MakeNiceExtensionsList (gl_extensions);
 
 	GL_CheckExtensions (); //johnfitz
+
+#ifdef __APPLE__
+	// ericw -- enable multi-threaded OpenGL, gives a decent FPS boost.
+	// see: https://developer.apple.com/library/mac/technotes/tn2085/_index.html
+	if (kCGLNoError != CGLEnable( CGLGetCurrentContext(), kCGLCEMPEngine))
+	{
+		Con_Warning ("Couldn't enable multi-threaded OpenGL");
+	}
+#endif
 
 	//johnfitz -- intel video workarounds from Baker
 	if (!strcmp(gl_vendor, "Intel"))
