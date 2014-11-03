@@ -1050,8 +1050,9 @@ static void GL_Init (void)
 
 #ifdef __APPLE__
 	// ericw -- enable multi-threaded OpenGL, gives a decent FPS boost.
-	// see: https://developer.apple.com/library/mac/technotes/tn2085/_index.html
-	if (kCGLNoError != CGLEnable( CGLGetCurrentContext(), kCGLCEMPEngine))
+	// https://developer.apple.com/library/mac/technotes/tn2085/
+	if (host_parms->numcpus > 1 &&
+	    kCGLNoError != CGLEnable(CGLGetCurrentContext(), kCGLCEMPEngine))
 	{
 		Con_Warning ("Couldn't enable multi-threaded OpenGL");
 	}
