@@ -177,7 +177,7 @@ typedef enum { dpi_unaware = 0, dpi_system_aware = 1, dpi_monitor_aware = 2 } dp
 typedef BOOL(*SetProcessDPIAwareFunc)();
 typedef HRESULT(*SetProcessDPIAwarenessFunc)(dpi_awareness value);
 
-void Sys_SetDPIAware (void)
+static void Sys_SetDPIAware (void)
 {
 	HMODULE hUser32, hShcore;
 	SetProcessDPIAwarenessFunc setDPIAwareness;
@@ -231,13 +231,19 @@ void Sys_Init (void)
 
 	if (vinfo.dwPlatformId == VER_PLATFORM_WIN32_NT)
 	{
+		SYSTEM_INFO info;
 		WinNT = true;
 		if (vinfo.dwMajorVersion >= 6)
 			WinVista = true;
+		GetSystemInfo(&info);
+		host_parms->numcpus = info.dwNumberOfProcessors;
+		if (host_parms->numcpus < 1)
+			host_parms->numcpus = 1;
 	}
 	else
 	{
 		WinNT = false; /* Win9x or WinME */
+		host_parms->numcpus = 1;
 		if ((vinfo.dwMajorVersion == 4) && (vinfo.dwMinorVersion == 0))
 		{
 			Win95 = true;
@@ -246,6 +252,7 @@ void Sys_Init (void)
 				Win95old = true;
 		}
 	}
+	Sys_Printf("Detected %d CPUs.\n", host_parms->numcpus);
 
 	if (isDedicated)
 	{

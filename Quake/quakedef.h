@@ -193,6 +193,7 @@ typedef struct
 	char	**argv;
 	void	*membase;
 	int	memsize;
+	int	numcpus;
 } quakeparms_t;
 
 #include "common.h"
