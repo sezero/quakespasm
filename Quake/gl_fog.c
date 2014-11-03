@@ -29,6 +29,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 //
 //==============================================================================
 
+#define DEFAULT_DENSITY 0.0
+#define DEFAULT_GRAY 0.3
+
 float fog_density;
 float fog_red;
 float fog_green;
@@ -176,8 +179,16 @@ void Fog_ParseWorldspawn (void)
 	const char *data;
 
 	//initially no fog
-	fog_density = 0.0;
-	old_density = 0.0;
+	fog_density = DEFAULT_DENSITY;
+	fog_red = DEFAULT_GRAY;
+	fog_green = DEFAULT_GRAY;
+	fog_blue = DEFAULT_GRAY;
+
+	old_density = DEFAULT_DENSITY;
+	old_red = DEFAULT_GRAY;
+	old_green = DEFAULT_GRAY;
+	old_blue = DEFAULT_GRAY;
+
 	fade_time = 0.0;
 	fade_done = 0.0;
 
@@ -378,10 +389,10 @@ void Fog_Init (void)
 	//Cvar_RegisterVariable (&r_vfog);
 
 	//set up global fog
-	fog_density = 0.0;
-	fog_red = 0.3;
-	fog_green = 0.3;
-	fog_blue = 0.3;
+	fog_density = DEFAULT_DENSITY;
+	fog_red = DEFAULT_GRAY;
+	fog_green = DEFAULT_GRAY;
+	fog_blue = DEFAULT_GRAY;
 
 	glFogi(GL_FOG_MODE, GL_EXP2);
 }
