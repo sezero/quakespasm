@@ -148,8 +148,6 @@ extern	cvar_t	gl_playermip;
 extern	cvar_t	gl_subdivide_size;
 extern	float	load_subdivide_size; //johnfitz -- remember what subdivide_size value was when this map was loaded
 
-extern	float	r_world_matrix[16];
-
 // Multitexture
 extern	qboolean	mtexenabled;
 extern	qboolean	gl_mtexable;
