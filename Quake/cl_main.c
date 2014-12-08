@@ -142,6 +142,7 @@ void CL_Disconnect (void)
 	}
 
 	cls.demoplayback = cls.timedemo = false;
+	cls.demopaused = false;
 	cls.signon = 0;
 	cl.intermission = 0;
 }

@@ -116,6 +116,11 @@ typedef struct
 // entering a map (and clearing client_state_t)
 	qboolean	demorecording;
 	qboolean	demoplayback;
+
+// did the user pause demo playback? (separate from cl.paused because we don't
+// want a svc_setpause inside the demo to actually pause demo playback).
+	qboolean	demopaused;
+
 	qboolean	timedemo;
 	int		forcetrack;		// -1 = use normal cd track
 	FILE		*demofile;

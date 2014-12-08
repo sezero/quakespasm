@@ -54,6 +54,7 @@ void CL_StopPlayback (void)
 
 	fclose (cls.demofile);
 	cls.demoplayback = false;
+	cls.demopaused = false;
 	cls.demofile = NULL;
 	cls.state = ca_disconnected;
 
@@ -89,6 +90,9 @@ static int CL_GetDemoMessage (void)
 {
 	int	r, i;
 	float	f;
+
+	if (cls.demopaused)
+		return 0;
 
 	// decide if it is time to grab the next message
 	if (cls.signon == SIGNONS)	// always grab until fully connected
@@ -436,6 +440,7 @@ void CL_PlayDemo_f (void)
 		cls.forcetrack = -cls.forcetrack;
 
 	cls.demoplayback = true;
+	cls.demopaused = false;
 	cls.state = ca_connected;
 
 // get rid of the menu and/or console
