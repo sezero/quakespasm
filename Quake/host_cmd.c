@@ -2086,6 +2086,7 @@ void Host_Startdemos_f (void)
 		if (!fitzmode)
 		{  /* QuakeSpasm customization: */
 			/* go straight to menu, no CL_NextDemo */
+			cls.demonum = -1;
 			Cbuf_InsertText("menu_main\n");
 			return;
 		}
