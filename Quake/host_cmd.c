@@ -1055,13 +1055,18 @@ void Host_Loadgame_f (void)
 	entnum = -1;		// -1 is the globals
 	while (!feof(f))
 	{
+		qboolean inside_string = false;
 		for (i = 0; i < (int) sizeof(str) - 1; i++)
 		{
 			r = fgetc (f);
 			if (r == EOF || !r)
 				break;
 			str[i] = r;
-			if (r == '}')
+			if (r == '"')
+			{
+				inside_string = !inside_string;
+			}
+			else if (r == '}' && !inside_string) // only handle } characters outside of quoted strings
 			{
 				i++;
 				break;
