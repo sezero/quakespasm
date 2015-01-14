@@ -74,7 +74,7 @@ extern "C" {
 
 #define LIBMIKMOD_VERSION_MAJOR 3L
 #define LIBMIKMOD_VERSION_MINOR 3L
-#define LIBMIKMOD_REVISION      6L
+#define LIBMIKMOD_REVISION      8L
 
 #define LIBMIKMOD_VERSION \
     ((LIBMIKMOD_VERSION_MAJOR<<16)| \
@@ -287,6 +287,9 @@ enum {
     MMERR_ALSA_PCM_START,
     MMERR_ALSA_PCM_WRITE,
     MMERR_ALSA_PCM_RECOVER,
+
+    MMERR_SNDIO_SETPARAMS,
+    MMERR_SNDIO_BADPARAMS,
 
     MMERR_MAX
 };
@@ -803,6 +806,7 @@ MIKMODAPI extern struct MDRIVER drv_ultra;  /* Linux Ultrasound driver */
 MIKMODAPI extern struct MDRIVER drv_sam9407;/* Linux sam9407 driver */
 
 MIKMODAPI extern struct MDRIVER drv_AF;     /* Dec Alpha AudioFile */
+MIKMODAPI extern struct MDRIVER drv_ahi;    /* Amiga AHI */
 MIKMODAPI extern struct MDRIVER drv_aix;    /* AIX audio device */
 MIKMODAPI extern struct MDRIVER drv_alsa;   /* Advanced Linux Sound Architecture (ALSA) */
 MIKMODAPI extern struct MDRIVER drv_esd;    /* Enlightened sound daemon (EsounD) */
@@ -813,6 +817,7 @@ MIKMODAPI extern struct MDRIVER drv_oss;    /* OpenSound System (Linux,FreeBSD..
 MIKMODAPI extern struct MDRIVER drv_openal; /* OpenAL driver */
 MIKMODAPI extern struct MDRIVER drv_sdl;    /* SDL audio driver */
 MIKMODAPI extern struct MDRIVER drv_sgi;    /* SGI audio library */
+MIKMODAPI extern struct MDRIVER drv_sndio;  /* OpenBSD sndio */
 MIKMODAPI extern struct MDRIVER drv_sun;    /* Sun/NetBSD/OpenBSD audio device */
 
 MIKMODAPI extern struct MDRIVER drv_dart;   /* OS/2 Direct Audio RealTime */
@@ -827,9 +832,12 @@ MIKMODAPI extern struct MDRIVER drv_osx;    /* MacOS X CoreAudio Driver */
 
 MIKMODAPI extern struct MDRIVER drv_dc;     /* Dreamcast driver */
 MIKMODAPI extern struct MDRIVER drv_gp32;   /* GP32 Sound driver */
+MIKMODAPI extern struct MDRIVER drv_psp;    /* PlayStation Portable driver */
 
 MIKMODAPI extern struct MDRIVER drv_wss;    /* DOS WSS driver */
 MIKMODAPI extern struct MDRIVER drv_sb;     /* DOS S/B driver */
+
+MIKMODAPI extern struct MDRIVER drv_osles;  /* OpenSL ES driver for android */
 
 /*========== Virtual channel mixer interface (for user-supplied drivers only) */
 
