@@ -779,6 +779,8 @@ void R_DrawLightmapChains (void)
 	}
 }
 
+extern GLuint gl_bmodel_vbo;
+
 /*
 ================
 R_DrawTextureChains_Multitexture_VBO -- ericw
@@ -796,6 +798,27 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 	int		lastlightmap;
 	gltexture_t	*fullbright = NULL;
 	
+// Bind the buffers
+	GL_BindBuffer (GL_ARRAY_BUFFER, gl_bmodel_vbo);
+	GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0); // indices come from client memory!
+
+// Setup vertex array pointers
+	glVertexPointer (3, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0));
+	glEnableClientState (GL_VERTEX_ARRAY);
+
+	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
+	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+
+	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
+	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+
+// TMU 2 is for fullbrights; same texture coordinates as TMU 0
+	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
+	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
+	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+
 // Setup TMU 1 (lightmap)
 	GL_SelectTexture (GL_TEXTURE1_ARB);
 	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
@@ -804,7 +827,7 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB_EXT, GL_TEXTURE);
 	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE_EXT, gl_overbright.value ? 2.0f : 1.0f);
 	glEnable(GL_TEXTURE_2D);
-	
+
 // Setup TMU 2 (fullbrights)
 	GL_SelectTexture (GL_TEXTURE2_ARB);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD);
@@ -873,6 +896,18 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 	
 	GL_SelectTexture (GL_TEXTURE0_ARB);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+
+// Disable client state
+	glDisableClientState (GL_VERTEX_ARRAY);
+
+	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+
+	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+
+	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
+	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
 }
 
 /*

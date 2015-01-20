@@ -447,6 +447,11 @@ void R_SetupView (void)
 //
 //==============================================================================
 
+static int R_EntitySortFunc(const void *a, const void *b)
+{
+	return (*(entity_t **)a)->model - (*(entity_t **)b)->model;
+}
+
 /*
 =============
 R_DrawEntitiesOnList
@@ -454,15 +459,21 @@ R_DrawEntitiesOnList
 */
 void R_DrawEntitiesOnList (qboolean alphapass) //johnfitz -- added parameter
 {
+	entity_t	*entities_sorted[MAX_VISEDICTS];
 	int		i;
 
 	if (!r_drawentities.value)
 		return;
 
+	//ericw -- draw the entities sorted by model, to eliminate redundant texture binding
+	memcpy (entities_sorted, cl_visedicts, cl_numvisedicts * sizeof(entity_t *));
+	qsort (entities_sorted, cl_numvisedicts, sizeof(entity_t *), R_EntitySortFunc);
+	//ericw --
+
 	//johnfitz -- sprites are not a special case
 	for (i=0 ; i<cl_numvisedicts ; i++)
 	{
-		currententity = cl_visedicts[i];
+		currententity = entities_sorted[i];
 
 		//johnfitz -- if alphapass is true, draw only alpha entites this time
 		//if alphapass is false, draw only nonalpha entities this time

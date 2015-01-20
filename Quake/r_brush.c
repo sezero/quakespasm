@@ -959,7 +959,7 @@ void GL_BuildLightmaps (void)
 =============================================================
 */
 
-static GLuint gl_bmodel_vbo = 0;
+GLuint gl_bmodel_vbo = 0;
 
 /*
 ==================
@@ -1021,23 +1021,9 @@ void GL_BuildVBOs (void)
 	GL_BindBufferFunc (GL_ARRAY_BUFFER, gl_bmodel_vbo);
 	GL_BufferDataFunc (GL_ARRAY_BUFFER, varray_bytes, varray, GL_STATIC_DRAW);
 	free (varray);
-
-// setup vertex array. this will need to move if we use vertex arrays for other things
-	glVertexPointer (3, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0));
-	glEnableClientState (GL_VERTEX_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-		
-// TMU 2 is for fullbrights; same texture coordinates as TMU 0
-	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
+	
+// invalidate the cached bindings
+	GL_ClearBufferBindings ();
 }
 
 /*

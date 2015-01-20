@@ -282,6 +282,26 @@ Alias models are position independent, so the cache manager can move them.
 ==============================================================================
 */
 
+//-- from RMQEngine
+// split out to keep vertex sizes down
+typedef struct aliasmesh_s
+{
+	float st[2];
+	unsigned short vertindex;
+} aliasmesh_t;
+
+typedef struct meshxyz_s
+{
+	byte xyz[4];
+	signed char normal[4];
+} meshxyz_t;
+
+typedef struct meshst_s
+{
+	float st[2];
+} meshst_t;
+//--
+
 typedef struct
 {
 	int					firstpose;
@@ -331,6 +351,14 @@ typedef struct {
 	synctype_t	synctype;
 	int			flags;
 	float		size;
+
+	//ericw -- used to populate vbo
+	int			numverts_vbo;   // number of verts with unique x,y,z,s,t
+	intptr_t		meshdesc;       // offset into extradata: numverts_vbo aliasmesh_t
+	int			numindexes;
+	intptr_t		indexes;        // offset into extradata: numindexes unsigned shorts
+	intptr_t		vertexes;       // offset into extradata: numposes*vertsperframe trivertx_t
+	//ericw --
 
 	int					numposes;
 	int					poseverts;
@@ -448,6 +476,14 @@ typedef struct qmodel_s
 	char		*entities;
 
 	int			bspversion;
+
+//
+// alias model
+//
+
+	int			vboindexofs;    // offset in vbo of the hdr->numindexes unsigned shorts
+	int			vboxyzofs;      // offset in vbo of hdr->numposes*hdr->numverts_vbo meshxyz_t
+	int			vbostofs;       // offset in vbo of hdr->numverts_vbo meshst_t
 
 //
 // additional model data

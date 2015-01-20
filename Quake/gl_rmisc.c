@@ -274,6 +274,7 @@ void R_NewMap (void)
 
 	GL_BuildLightmaps ();
 	GL_BuildVBOs ();
+	GLMesh_LoadVertexBuffers ();
 	
 	r_framecount = 0; //johnfitz -- paranoid?
 	r_visframecount = 0; //johnfitz -- paranoid?
@@ -319,4 +320,186 @@ void R_TimeRefresh_f (void)
 
 void D_FlushCaches (void)
 {
+}
+
+static GLuint gl_programs[16];
+static int gl_num_programs;
+
+static qboolean GL_CheckShader (GLuint shader)
+{
+	GLint status;
+	GL_GetShaderivFunc (shader, GL_COMPILE_STATUS, &status);
+
+	if (status != GL_TRUE)
+	{
+		char infolog[1024];
+
+		memset(infolog, 0, sizeof(infolog));
+		GL_GetShaderInfoLogFunc (shader, sizeof(infolog), NULL, infolog);
+		
+		Con_Warning ("GLSL program failed to compile: %s", infolog);
+
+		return false;
+	}
+	return true;
+}
+
+static qboolean GL_CheckProgram (GLuint program)
+{
+	GLint status;
+	GL_GetProgramivFunc (program, GL_LINK_STATUS, &status);
+
+	if (status != GL_TRUE)
+	{
+		char infolog[1024];
+
+		memset(infolog, 0, sizeof(infolog));
+		GL_GetProgramInfoLogFunc (program, sizeof(infolog), NULL, infolog);
+
+		Con_Warning ("GLSL program failed to link: %s", infolog);
+
+		return false;
+	}
+	return true;
+}
+
+
+/*
+====================
+GL_CreateProgram
+
+Compiles and returns GLSL program.
+====================
+*/
+GLuint GL_CreateProgram (const GLchar *vertSource, const GLchar *fragSource, int numbindings, const glsl_attrib_binding_t *bindings)
+{
+	int i;
+	GLuint program, vertShader, fragShader;
+
+	if (!GLAlias_SupportsShaders())
+		return 0;
+
+	vertShader = GL_CreateShaderFunc (GL_VERTEX_SHADER);
+	GL_ShaderSourceFunc (vertShader, 1, &vertSource, NULL);
+	GL_CompileShaderFunc (vertShader);
+	if (!GL_CheckShader (vertShader))
+	{
+		GL_DeleteShaderFunc (vertShader);
+		return 0;
+	}
+
+	fragShader = GL_CreateShaderFunc (GL_FRAGMENT_SHADER);
+	GL_ShaderSourceFunc (fragShader, 1, &fragSource, NULL);
+	GL_CompileShaderFunc (fragShader);
+	if (!GL_CheckShader (fragShader))
+	{
+		GL_DeleteShaderFunc (vertShader);
+		GL_DeleteShaderFunc (fragShader);
+		return 0;
+	}
+
+	program = GL_CreateProgramFunc ();
+	GL_AttachShaderFunc (program, vertShader);
+	GL_DeleteShaderFunc (vertShader);
+	GL_AttachShaderFunc (program, fragShader);
+	GL_DeleteShaderFunc (fragShader);
+	
+	for (i = 0; i < numbindings; i++)
+	{
+		GL_BindAttribLocationFunc (program, bindings[i].attrib, bindings[i].name);
+	}
+	
+	GL_LinkProgramFunc (program);
+
+	if (!GL_CheckProgram (program))
+	{
+		GL_DeleteProgramFunc (program);
+		return 0;
+	}
+	else
+	{
+		if (gl_num_programs == (sizeof(gl_programs)/sizeof(GLuint)))
+			Host_Error ("gl_programs overflow");
+
+		gl_programs[gl_num_programs] = program;
+		gl_num_programs++;
+
+		return program;
+	}
+}
+
+/*
+====================
+R_DeleteShaders
+
+Deletes any GLSL programs that have been created.
+====================
+*/
+void R_DeleteShaders (void)
+{
+	int i;
+
+	if (!GLAlias_SupportsShaders())
+		return;
+
+	for (i = 0; i < gl_num_programs; i++)
+	{
+		GL_DeleteProgramFunc (gl_programs[i]);
+		gl_programs[i] = 0;
+	}
+	gl_num_programs = 0;
+}
+GLuint current_array_buffer, current_element_array_buffer;
+
+/*
+====================
+GL_BindBuffer
+
+glBindBuffer wrapper
+====================
+*/
+void GL_BindBuffer (GLenum target, GLuint buffer)
+{
+	GLuint *cache;
+
+	if (!gl_vbo_able)
+		return;
+	
+	switch (target)
+	{
+		case GL_ARRAY_BUFFER:
+			cache = &current_array_buffer;
+			break;
+		case GL_ELEMENT_ARRAY_BUFFER:
+			cache = &current_element_array_buffer;
+			break;
+		default:
+			Host_Error("GL_BindBuffer: unsupported target %d", (int)target);
+			return;
+	}
+	
+	if (*cache != buffer)
+	{
+		*cache = buffer;
+		GL_BindBufferFunc (target, *cache);
+	}
+}
+
+/*
+====================
+GL_ClearBufferBindings
+
+This must be called if you do anything that could make the cached bindings
+invalid (e.g. manually binding, destroying the context).
+====================
+*/
+void GL_ClearBufferBindings ()
+{
+	if (!gl_vbo_able)
+		return;
+
+	current_array_buffer = 0;
+	current_element_array_buffer = 0;
+	GL_BindBufferFunc (GL_ARRAY_BUFFER, 0);
+	GL_BindBufferFunc (GL_ELEMENT_ARRAY_BUFFER, 0);
 }
