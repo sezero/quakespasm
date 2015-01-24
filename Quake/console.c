@@ -721,6 +721,7 @@ tablist is a doubly-linked loop, alphabetized by name
 static char	bash_partial[80];
 static qboolean	bash_singlematch;
 static qboolean	map_singlematch;
+static qboolean	mod_singlematch;
 
 void AddToTabList (const char *name, const char *type)
 {
@@ -791,6 +792,14 @@ typedef struct extralevel_s
 
 extern extralevel_t	*extralevels;
 
+typedef struct mod_s
+{
+	char	name[MAX_OSPATH];
+	struct mod_s	*next;
+} mod_t;
+
+extern mod_t	*modlist;
+
 /*
 ============
 BuildMap -- stevenaaus
@@ -840,6 +849,62 @@ const char *BuildMapList (const char *partial)
 		{
 			if (!strncmp(level->name, partial, plen))
 				Con_SafePrintf ("   %s\n", level->name);
+		}
+		Con_SafePrintf ("\n");
+	}
+
+	return matched;
+}
+
+/*
+============
+BuildModList -- ericw
+============
+*/
+const char *BuildModList (const char *partial)
+{
+	static char matched[80];
+	char *i_matched, *i_name;
+	mod_t	*mod;
+	int   init, match, plen;
+
+	memset(matched, 0, 80);
+	plen = strlen(partial);
+	match = 0;
+
+	for (mod = modlist, init = 0; mod; mod = mod->next)
+	{
+		if (!strncmp(mod->name, partial, plen))
+		{
+			if (init == 0)
+			{
+				init = 1;
+				strncpy (matched, mod->name, 79);
+				matched[79] = '\0';
+			}
+			else
+			{ // find max common
+				i_matched = matched;
+				i_name = mod->name;
+				while (*i_matched && (*i_matched == *i_name))
+				{
+					i_matched++;
+					i_name++;
+				}
+				*i_matched = 0;
+			}
+			match++;
+		}
+	}
+
+	mod_singlematch = (match == 1);
+
+	if (match > 1)
+	{
+		for (mod = modlist; mod; mod = mod->next)
+		{
+			if (!strncmp(mod->name, partial, plen))
+				Con_SafePrintf ("   %s\n", mod->name);
 		}
 		Con_SafePrintf ("\n");
 	}
@@ -926,6 +991,29 @@ void Con_TabComplete (void)
 		// if only one match, append a space
 		if (key_linepos < MAXCMDLINE - 1 &&
 		    key_lines[edit_line][key_linepos] == 0 && map_singlematch)
+		{
+			key_lines[edit_line][key_linepos] = ' ';
+			key_linepos++;
+			key_lines[edit_line][key_linepos] = 0;
+		}
+		c = key_lines[edit_line] + key_linepos;
+		return;
+	}
+// Mod autocompletion. Copied from above, probably time to refactor -- ericw
+	if (!strncmp (key_lines[edit_line] + 1, "game ",5))
+	{
+		const char *matched_mod = BuildModList(partial);
+		if (!*matched_mod)
+			return;
+		q_strlcpy (partial, matched_mod, MAXCMDLINE);
+		*c = '\0';
+		q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
+		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_mod); //set new cursor position
+		if (key_linepos >= MAXCMDLINE)
+			key_linepos = MAXCMDLINE - 1;
+		// if only one match, append a space
+		if (key_linepos < MAXCMDLINE - 1 &&
+		    key_lines[edit_line][key_linepos] == 0 && mod_singlematch)
 		{
 			key_lines[edit_line][key_linepos] = ' ';
 			key_linepos++;
