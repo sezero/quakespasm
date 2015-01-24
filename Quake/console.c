@@ -784,52 +784,61 @@ void AddToTabList (const char *name, const char *type)
 }
 
 // This is redefined from host_cmd.c
-typedef struct extralevel_s
+typedef struct filelist_item_s
 {
-	char			name[32];
-	struct extralevel_s	*next;
-} extralevel_t;
+	char			name[MAX_OSPATH];
+	struct filelist_item_s	*next;
+} filelist_item_t;
 
-extern extralevel_t	*extralevels;
+extern filelist_item_t	*extralevels;
+extern filelist_item_t	*modlist;
 
-typedef struct mod_s
+typedef struct arg_completion_type_s
 {
-	char	name[MAX_OSPATH];
-	struct mod_s	*next;
-} mod_t;
+	char		*command;
+	filelist_item_t	**filelist;
+} arg_completion_type_t;
 
-extern mod_t	*modlist;
+static const arg_completion_type_t arg_completion_types[] =
+{
+	{ "map ", &extralevels },
+	{ "changelevel ", &extralevels },
+	{ "game ", &modlist }
+};
+
+static const int num_arg_completion_types =
+	sizeof(arg_completion_types)/sizeof(arg_completion_types[0]);
 
 /*
 ============
-BuildMap -- stevenaaus
+FindCompletion -- stevenaaus
 ============
 */
-const char *BuildMapList (const char *partial)
+const char *FindCompletion (const char *partial, filelist_item_t *filelist, int *nummatches_out)
 {
-	static char matched[80];
+	static char matched[MAX_OSPATH];
 	char *i_matched, *i_name;
-	extralevel_t	*level;
+	filelist_item_t	*file;
 	int   init, match, plen;
 
-	memset(matched, 0, 80);
+	memset(matched, 0, MAX_OSPATH);
 	plen = strlen(partial);
 	match = 0;
 
-	for (level = extralevels, init = 0; level; level = level->next)
+	for (file = filelist, init = 0; file; file = file->next)
 	{
-		if (!strncmp(level->name, partial, plen))
+		if (!strncmp(file->name, partial, plen))
 		{
 			if (init == 0)
 			{
 				init = 1;
-				strncpy (matched, level->name, 79);
-				matched[79] = '\0';
+				strncpy (matched, file->name, MAX_OSPATH-1);
+				matched[MAX_OSPATH-1] = '\0';
 			}
 			else
 			{ // find max common
 				i_matched = matched;
-				i_name = level->name;
+				i_name = file->name;
 				while (*i_matched && (*i_matched == *i_name))
 				{
 					i_matched++;
@@ -841,70 +850,14 @@ const char *BuildMapList (const char *partial)
 		}
 	}
 
-	map_singlematch = (match == 1);
+	*nummatches_out = match;
 
 	if (match > 1)
 	{
-		for (level = extralevels; level; level = level->next)
+		for (file = filelist; file; file = file->next)
 		{
-			if (!strncmp(level->name, partial, plen))
-				Con_SafePrintf ("   %s\n", level->name);
-		}
-		Con_SafePrintf ("\n");
-	}
-
-	return matched;
-}
-
-/*
-============
-BuildModList -- ericw
-============
-*/
-const char *BuildModList (const char *partial)
-{
-	static char matched[80];
-	char *i_matched, *i_name;
-	mod_t	*mod;
-	int   init, match, plen;
-
-	memset(matched, 0, 80);
-	plen = strlen(partial);
-	match = 0;
-
-	for (mod = modlist, init = 0; mod; mod = mod->next)
-	{
-		if (!strncmp(mod->name, partial, plen))
-		{
-			if (init == 0)
-			{
-				init = 1;
-				strncpy (matched, mod->name, 79);
-				matched[79] = '\0';
-			}
-			else
-			{ // find max common
-				i_matched = matched;
-				i_name = mod->name;
-				while (*i_matched && (*i_matched == *i_name))
-				{
-					i_matched++;
-					i_name++;
-				}
-				*i_matched = 0;
-			}
-			match++;
-		}
-	}
-
-	mod_singlematch = (match == 1);
-
-	if (match > 1)
-	{
-		for (mod = modlist; mod; mod = mod->next)
-		{
-			if (!strncmp(mod->name, partial, plen))
-				Con_SafePrintf ("   %s\n", mod->name);
+			if (!strncmp(file->name, partial, plen))
+				Con_SafePrintf ("   %s\n", file->name);
 		}
 		Con_SafePrintf ("\n");
 	}
@@ -976,51 +929,36 @@ void Con_TabComplete (void)
 
 // Map autocomplete function -- S.A
 // Since we don't have argument completion, this hack will do for now...
-	if (!strncmp (key_lines[edit_line] + 1, "map ",4) ||
-	    !strncmp (key_lines[edit_line] + 1, "changelevel ", 12))
+	for (i=0; i<num_arg_completion_types; i++)
 	{
-		const char *matched_map = BuildMapList(partial);
-		if (!*matched_map)
-			return;
-		q_strlcpy (partial, matched_map, MAXCMDLINE);
-		*c = '\0';
-		q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
-		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_map); //set new cursor position
-		if (key_linepos >= MAXCMDLINE)
-			key_linepos = MAXCMDLINE - 1;
-		// if only one match, append a space
-		if (key_linepos < MAXCMDLINE - 1 &&
-		    key_lines[edit_line][key_linepos] == 0 && map_singlematch)
+	// arg_completion contains a command we can complete the arguments
+	// for (like "map ") and a list of all the maps.
+		arg_completion_type_t arg_completion = arg_completion_types[i];
+		const char *command_name = arg_completion.command;
+		
+		if (!strncmp (key_lines[edit_line] + 1, command_name, strlen(command_name)))
 		{
-			key_lines[edit_line][key_linepos] = ' ';
-			key_linepos++;
-			key_lines[edit_line][key_linepos] = 0;
-		}
-		c = key_lines[edit_line] + key_linepos;
-		return;
-	}
-// Mod autocompletion. Copied from above, probably time to refactor -- ericw
-	if (!strncmp (key_lines[edit_line] + 1, "game ",5))
-	{
-		const char *matched_mod = BuildModList(partial);
-		if (!*matched_mod)
+			int nummatches = 0;
+			const char *matched_map = FindCompletion(partial, *arg_completion.filelist, &nummatches);
+			if (!*matched_map)
+				return;
+			q_strlcpy (partial, matched_map, MAXCMDLINE);
+			*c = '\0';
+			q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
+			key_linepos = c - key_lines[edit_line] + Q_strlen(matched_map); //set new cursor position
+			if (key_linepos >= MAXCMDLINE)
+				key_linepos = MAXCMDLINE - 1;
+			// if only one match, append a space
+			if (key_linepos < MAXCMDLINE - 1 &&
+			    key_lines[edit_line][key_linepos] == 0 && (nummatches == 1))
+			{
+				key_lines[edit_line][key_linepos] = ' ';
+				key_linepos++;
+				key_lines[edit_line][key_linepos] = 0;
+			}
+			c = key_lines[edit_line] + key_linepos;
 			return;
-		q_strlcpy (partial, matched_mod, MAXCMDLINE);
-		*c = '\0';
-		q_strlcat (key_lines[edit_line], partial, MAXCMDLINE);
-		key_linepos = c - key_lines[edit_line] + Q_strlen(matched_mod); //set new cursor position
-		if (key_linepos >= MAXCMDLINE)
-			key_linepos = MAXCMDLINE - 1;
-		// if only one match, append a space
-		if (key_linepos < MAXCMDLINE - 1 &&
-		    key_lines[edit_line][key_linepos] == 0 && mod_singlematch)
-		{
-			key_lines[edit_line][key_linepos] = ' ';
-			key_linepos++;
-			key_lines[edit_line][key_linepos] = 0;
 		}
-		c = key_lines[edit_line] + key_linepos;
-		return;
 	}
 
 //if partial is empty, return

@@ -55,17 +55,19 @@ void Host_Quit_f (void)
 //johnfitz -- extramaps management
 //==============================================================================
 
-typedef struct extralevel_s
+// ericw -- was extralevel_t, renamed and now used with mods list as well
+// to simplify completion code
+typedef struct filelist_item_s
 {
-	char			name[32];
-	struct extralevel_s	*next;
-} extralevel_t;
+	char			name[MAX_OSPATH];
+	struct filelist_item_s	*next;
+} filelist_item_t;
 
-extralevel_t	*extralevels;
+filelist_item_t	*extralevels;
 
 void ExtraMaps_Add (const char *name)
 {
-	extralevel_t	*level,*cursor,*prev;
+	filelist_item_t	*level,*cursor,*prev;
 
 	// ignore duplicate
 	for (level = extralevels; level; level = level->next)
@@ -74,7 +76,7 @@ void ExtraMaps_Add (const char *name)
 			return;
 	}
 
-	level = (extralevel_t *) Z_Malloc(sizeof(extralevel_t));
+	level = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
 	q_strlcpy (level->name, name, sizeof(level->name));
 
 	// insert each entry in alphabetical order
@@ -170,7 +172,7 @@ void ExtraMaps_Init (void)
 
 void ExtraMaps_Clear (void)
 {
-	extralevel_t *blah;
+	filelist_item_t *blah;
 
 	while (extralevels)
 	{
@@ -194,7 +196,7 @@ Host_Maps_f
 void Host_Maps_f (void)
 {
 	int i;
-	extralevel_t	*level;
+	filelist_item_t	*level;
 
 	for (level = extralevels, i = 0; level; level = level->next, i++)
 		Con_SafePrintf ("   %s\n", level->name);
@@ -209,17 +211,11 @@ void Host_Maps_f (void)
 //johnfitz -- modlist management
 //==============================================================================
 
-typedef struct mod_s
-{
-	char	name[MAX_OSPATH];
-	struct mod_s	*next;
-} mod_t;
-
-mod_t	*modlist;
+filelist_item_t	*modlist;
 
 void Modlist_Add (const char *name)
 {
-	mod_t	*mod,*cursor,*prev;
+	filelist_item_t	*mod,*cursor,*prev;
 
 	//ingore duplicate
 	for (mod = modlist; mod; mod = mod->next)
@@ -228,7 +224,7 @@ void Modlist_Add (const char *name)
 			return;
 	}
 
-	mod = (mod_t *) Z_Malloc(sizeof(mod_t));
+	mod = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
 	q_strlcpy (mod->name, name, sizeof(mod->name));
 
 	//insert each entry in alphabetical order
@@ -333,7 +329,7 @@ list all potential mod directories (contain either a pak file or a progs.dat)
 void Host_Mods_f (void)
 {
 	int i;
-	mod_t	*mod;
+	filelist_item_t	*mod;
 
 	for (mod = modlist, i=0; mod; mod = mod->next, i++)
 		Con_SafePrintf ("   %s\n", mod->name);
