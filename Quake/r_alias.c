@@ -133,23 +133,6 @@ qboolean GLAlias_SupportsShaders (void)
 
 /*
 =============
-GLAlias_GetUniformLocation
-=============
-*/
-static GLint GLAlias_GetUniformLocation (const char *name)
-{
-	GLint location;
-	location = GL_GetUniformLocationFunc(r_alias_program, name);
-	if (location == -1)
-	{
-		Con_Warning("GL_GetUniformLocationFunc %s failed", name);
-		r_alias_program = 0;
-	}
-	return location;
-}
-
-/*
-=============
 GLAlias_CreateShaders
 =============
 */
@@ -227,13 +210,13 @@ void GLAlias_CreateShaders (void)
 	if (r_alias_program != 0)
 	{
 	// get uniform locations
-		blendLoc = GLAlias_GetUniformLocation ("Blend");
-		shadevectorLoc = GLAlias_GetUniformLocation ("ShadeVector");
-		lightColorLoc = GLAlias_GetUniformLocation ("LightColor");
-		texLoc = GLAlias_GetUniformLocation("Tex");
-		fullbrightTexLoc = GLAlias_GetUniformLocation("FullbrightTex");
-		useFullbrightTexLoc = GLAlias_GetUniformLocation("UseFullbrightTex");
-		useOverbrightLoc = GLAlias_GetUniformLocation("UseOverbright");
+		blendLoc = GL_GetUniformLocation (&r_alias_program, "Blend");
+		shadevectorLoc = GL_GetUniformLocation (&r_alias_program, "ShadeVector");
+		lightColorLoc = GL_GetUniformLocation (&r_alias_program, "LightColor");
+		texLoc = GL_GetUniformLocation (&r_alias_program, "Tex");
+		fullbrightTexLoc = GL_GetUniformLocation (&r_alias_program, "FullbrightTex");
+		useFullbrightTexLoc = GL_GetUniformLocation (&r_alias_program, "UseFullbrightTex");
+		useOverbrightLoc = GL_GetUniformLocation (&r_alias_program, "UseOverbright");
 	}
 }
 

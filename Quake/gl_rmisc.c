@@ -363,6 +363,26 @@ static qboolean GL_CheckProgram (GLuint program)
 	return true;
 }
 
+/*
+=============
+GL_GetUniformLocation
+=============
+*/
+GLint GL_GetUniformLocation (GLuint *programPtr, const char *name)
+{
+	GLint location;
+
+	if (!programPtr)
+		return -1;
+
+	location = GL_GetUniformLocationFunc(*programPtr, name);
+	if (location == -1)
+	{
+		Con_Warning("GL_GetUniformLocationFunc %s failed\n", name);
+		*programPtr = 0;
+	}
+	return location;
+}
 
 /*
 ====================
