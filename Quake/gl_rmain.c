@@ -103,6 +103,140 @@ cvar_t	gl_zfix = {"gl_zfix", "0", CVAR_NONE}; // QuakeSpasm z-fighting fix
 
 qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_drawworld_cheatsafe; //johnfitz
 
+//==============================================================================
+//
+// GLSL GAMMA CORRECTION
+//
+//==============================================================================
+
+static GLuint r_gamma_texture;
+static GLuint r_gamma_program;
+
+// uniforms used in gamma shader
+static GLuint gammaLoc;
+static GLuint textureLoc;
+
+/*
+=============
+GLSLGamma_DeleteTexture
+=============
+*/
+void GLSLGamma_DeleteTexture (void)
+{
+	glDeleteTextures (1, &r_gamma_texture);
+	r_gamma_texture = 0;
+	r_gamma_program = 0; // deleted in R_DeleteShaders
+}
+
+/*
+=============
+GLSLGamma_CreateShaders
+=============
+*/
+static void GLSLGamma_CreateShaders (void)
+{
+	const GLchar *vertSource = \
+		"#version 110\n"
+		"\n"
+		"void main(void) {\n"
+		"	gl_Position = vec4(gl_Vertex.xy, 0.0, 1.0);\n"
+		"	gl_TexCoord[0] = gl_MultiTexCoord0;\n"
+		"}\n";
+
+	const GLchar *fragSource = \
+		"#version 110\n"
+		"\n"
+		"uniform sampler2D GammaTexture;\n"
+		"uniform float GammaValue;\n"
+		"\n"
+		"void main(void) {\n"
+		"	  vec4 frag = texture2D(GammaTexture, gl_TexCoord[0].xy);\n"
+		"	  gl_FragColor = vec4(pow(frag.rgb, vec3(GammaValue)), 1.0);\n"
+		"}\n";
+
+	if (!gl_glsl_gamma_able)
+		return;
+
+	r_gamma_program = GL_CreateProgram (vertSource, fragSource, 0, NULL);
+
+// get uniform locations
+	gammaLoc = GL_GetUniformLocation (&r_gamma_program, "GammaValue");
+	textureLoc = GL_GetUniformLocation (&r_gamma_program, "GammaTexture");
+}
+
+/*
+=============
+GLSLGamma_GammaCorrect
+=============
+*/
+void GLSLGamma_GammaCorrect (void)
+{
+	if (!gl_glsl_gamma_able)
+		return;
+
+	if (vid_gamma.value == 1)
+		return;
+
+// create render-to-texture texture if needed
+	if (!r_gamma_texture)
+	{
+		glGenTextures (1, &r_gamma_texture);
+		glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
+	
+		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, glwidth, glheight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	}
+
+// create shader if needed
+	if (!r_gamma_program)
+	{
+		GLSLGamma_CreateShaders ();
+		if (!r_gamma_program)
+		{
+			Sys_Error("GLSLGamma_CreateShaders failed");
+		}
+	}
+	
+// copy the framebuffer to the texture
+	GL_DisableMultitexture();
+	glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
+	glCopyTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, glx, gly, glwidth, glheight);
+
+	glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+// draw the texture back to the framebuffer with a fragment shader
+	GL_UseProgramFunc (r_gamma_program);
+	GL_Uniform1fFunc (gammaLoc, vid_gamma.value);
+	GL_Uniform1iFunc (textureLoc, 0); // use texture unit 0
+
+	glDisable (GL_ALPHA_TEST);
+	glDisable (GL_DEPTH_TEST);
+
+	glViewport (glx, gly, glwidth, glheight);
+	glMatrixMode (GL_PROJECTION);
+	glLoadIdentity ();
+	glOrtho (0, 1, 1, 0, -99999, 99999);
+	glMatrixMode (GL_MODELVIEW);
+	glLoadIdentity ();
+
+	glBegin (GL_QUADS);
+	glTexCoord2f (0, 0);
+	glVertex2f (-1, -1);
+	glTexCoord2f (1, 0);
+	glVertex2f (1, -1);
+	glTexCoord2f (1, 1);
+	glVertex2f (1, 1);
+	glTexCoord2f (0, 1);
+	glVertex2f (-1, 1);
+	glEnd ();
+	
+	GL_UseProgramFunc (0);
+	
+// clear cached binding
+	GL_Bind (notexture);
+}
+
 /*
 =================
 R_CullBox -- johnfitz -- replaced with new function from lordhavoc

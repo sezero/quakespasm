@@ -102,6 +102,7 @@ qboolean gl_texture_NPOT = false; //ericw
 qboolean gl_vbo_able = false; //ericw
 qboolean gl_glsl_able = false; //ericw
 GLint gl_max_texture_units = 0; //ericw
+qboolean gl_glsl_gamma_able = false; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -177,6 +178,9 @@ VID_Gamma_SetGamma -- apply gamma correction
 */
 static void VID_Gamma_SetGamma (void)
 {
+	if (gl_glsl_gamma_able)
+		return;
+
 	if (draw_context && gammaworks)
 	{
 		float	value;
@@ -213,6 +217,9 @@ VID_Gamma_Restore -- restore system gamma
 */
 static void VID_Gamma_Restore (void)
 {
+	if (gl_glsl_gamma_able)
+		return;
+
 	if (draw_context && gammaworks)
 	{
 #if defined(USE_SDL2)
@@ -252,6 +259,9 @@ VID_Gamma_f -- callback when the cvar changes
 */
 static void VID_Gamma_f (cvar_t *var)
 {
+	if (gl_glsl_gamma_able)
+		return;
+
 #if USE_GAMMA_RAMPS
 	int i;
 
@@ -273,6 +283,12 @@ VID_Gamma_Init -- call on init
 */
 static void VID_Gamma_Init (void)
 {
+	Cvar_RegisterVariable (&vid_gamma);
+	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
+
+	if (gl_glsl_gamma_able)
+		return;
+
 #if defined(USE_SDL2)
 # if USE_GAMMA_RAMPS
 	gammaworks	= (SDL_GetWindowGammaRamp(draw_context, vid_sysgamma_red, vid_sysgamma_green, vid_sysgamma_blue) == 0);
@@ -293,9 +309,6 @@ static void VID_Gamma_Init (void)
 
 	if (!gammaworks)
 		Con_SafePrintf("gamma adjustment not available\n");
-
-	Cvar_RegisterVariable (&vid_gamma);
-	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
 }
 
 /*
@@ -683,6 +696,8 @@ static void VID_Restart (void)
 // memory leak.
 
 	TexMgr_DeleteTextureObjects ();
+	GLSLGamma_DeleteTexture ();
+	R_DeleteShaders ();
 
 //
 // set new mode
@@ -1096,6 +1111,19 @@ static void GL_CheckExtensions (void)
 	{
 		Con_Warning ("OpenGL version < 2, GLSL not available\n");
 	}
+	
+	// GLSL gamma
+	//
+	if (COM_CheckParm("-noglslgamma"))
+		Con_Warning ("GLSL gamma disabled at command line\n");
+	else if (gl_glsl_able && gl_texture_NPOT)
+	{
+		gl_glsl_gamma_able = true;
+	}
+	else
+	{
+		Con_Warning ("GLSL gamma not available, using hardware gamma\n");
+	}
 }
 
 /*
@@ -1168,7 +1196,6 @@ static void GL_Init (void)
 	}
 	//johnfitz
 
-	R_DeleteShaders ();
 	GLAlias_CreateShaders ();
 	GL_ClearBufferBindings ();	
 }

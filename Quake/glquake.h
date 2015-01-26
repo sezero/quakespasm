@@ -222,6 +222,7 @@ extern QS_PFNGLUNIFORM1FPROC GL_Uniform1fFunc;
 extern QS_PFNGLUNIFORM3FPROC GL_Uniform3fFunc;
 extern QS_PFNGLUNIFORM4FPROC GL_Uniform4fFunc;
 extern	qboolean	gl_glsl_able;
+extern	qboolean	gl_glsl_gamma_able;
 // ericw --
 
 //ericw -- NPOT texture support
@@ -376,5 +377,9 @@ void R_DrawWorld_Water (void);
 
 void GL_BindBuffer (GLenum target, GLuint buffer);
 void GL_ClearBufferBindings ();
+
+void GLSLGamma_DeleteTexture (void);
+void GLSLGamma_GammaCorrect (void);
+
 #endif	/* __GLQUAKE_H */
 
