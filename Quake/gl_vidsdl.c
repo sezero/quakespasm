@@ -676,6 +676,13 @@ static void VID_Restart (void)
 				width, height, bpp, fullscreen? "fullscreen" : "windowed");
 		return;
 	}
+	
+// ericw -- depending on platform / SDL version, after a video mode change we
+// can have a new context (all textures are already freed) or the same context
+// as before, in which case we need to delete the old textures to avoid a
+// memory leak.
+
+	TexMgr_DeleteTextureObjects ();
 
 //
 // set new mode

@@ -341,6 +341,8 @@ gltexture_t *TexMgr_NewTexture (void)
 	return glt;
 }
 
+static void GL_DeleteTexture (gltexture_t *texture);
+
 /*
 ================
 TexMgr_FreeTexture
@@ -362,7 +364,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 		kill->next = free_gltextures;
 		free_gltextures = kill;
 
-		glDeleteTextures(1, &kill->texnum);
+		GL_DeleteTexture(kill);
 		numgltextures--;
 		return;
 	}
@@ -375,7 +377,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 			kill->next = free_gltextures;
 			free_gltextures = kill;
 
-			glDeleteTextures(1, &kill->texnum);
+			GL_DeleteTexture(kill);
 			numgltextures--;
 			return;
 		}
@@ -417,6 +419,21 @@ void TexMgr_FreeTexturesForOwner (qmodel_t *owner)
 		next = glt->next;
 		if (glt && glt->owner == owner)
 			TexMgr_FreeTexture (glt);
+	}
+}
+
+/*
+================
+TexMgr_DeleteTextureObjects
+================
+*/
+void TexMgr_DeleteTextureObjects (void)
+{
+	gltexture_t *glt;
+
+	for (glt = active_gltextures; glt; glt = glt->next)
+	{
+		GL_DeleteTexture (glt);
 	}
 }
 
@@ -1465,4 +1482,24 @@ void GL_Bind (gltexture_t *texture)
 		glBindTexture (GL_TEXTURE_2D, texture->texnum);
 		texture->visframe = r_framecount;
 	}
+}
+
+/*
+================
+GL_DeleteTexture -- ericw
+
+Wrapper around glDeleteTextures that also updates our cached current texture
+binding, if necessary.
+================
+*/
+static void GL_DeleteTexture (gltexture_t *texture)
+{
+	glDeleteTextures (1, &texture->texnum);
+
+	if (texture->texnum == currenttexture[currenttarget - GL_TEXTURE0_ARB])
+	{
+		currenttexture[currenttarget - GL_TEXTURE0_ARB] = 0;
+	}
+
+	texture->texnum = 0;
 }
