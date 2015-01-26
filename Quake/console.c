@@ -720,8 +720,6 @@ tablist is a doubly-linked loop, alphabetized by name
 // aka Linux Bash shell. -- S.A.
 static char	bash_partial[80];
 static qboolean	bash_singlematch;
-static qboolean	map_singlematch;
-static qboolean	mod_singlematch;
 
 void AddToTabList (const char *name, const char *type)
 {
@@ -786,7 +784,7 @@ void AddToTabList (const char *name, const char *type)
 // This is redefined from host_cmd.c
 typedef struct filelist_item_s
 {
-	char			name[MAX_OSPATH];
+	char			name[32];
 	struct filelist_item_s	*next;
 } filelist_item_t;
 
@@ -816,12 +814,12 @@ FindCompletion -- stevenaaus
 */
 const char *FindCompletion (const char *partial, filelist_item_t *filelist, int *nummatches_out)
 {
-	static char matched[MAX_OSPATH];
+	static char matched[32];
 	char *i_matched, *i_name;
 	filelist_item_t	*file;
 	int   init, match, plen;
 
-	memset(matched, 0, MAX_OSPATH);
+	memset(matched, 0, sizeof(matched));
 	plen = strlen(partial);
 	match = 0;
 
@@ -832,8 +830,8 @@ const char *FindCompletion (const char *partial, filelist_item_t *filelist, int 
 			if (init == 0)
 			{
 				init = 1;
-				strncpy (matched, file->name, MAX_OSPATH-1);
-				matched[MAX_OSPATH-1] = '\0';
+				strncpy (matched, file->name, sizeof(matched)-1);
+				matched[sizeof(matched)-1] = '\0';
 			}
 			else
 			{ // find max common

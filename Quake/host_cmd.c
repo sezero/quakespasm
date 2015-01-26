@@ -59,7 +59,7 @@ void Host_Quit_f (void)
 // to simplify completion code
 typedef struct filelist_item_s
 {
-	char			name[MAX_OSPATH];
+	char			name[32];
 	struct filelist_item_s	*next;
 } filelist_item_t;
 
