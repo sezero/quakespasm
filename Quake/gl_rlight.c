@@ -267,6 +267,8 @@ mplane_t		*lightplane;
 vec3_t			lightspot;
 vec3_t			lightcolor; //johnfitz -- lit support via lordhavoc
 
+#define DoublePrecisionDotProduct(x,y) ((double)x[0]*y[0]+(double)x[1]*y[1]+(double)x[2]*y[2])
+
 /*
 =============
 RecursiveLightPoint -- johnfitz -- replaced entire function for lit support via lordhavoc
@@ -323,8 +325,11 @@ loc0:
 			if (surf->flags & SURF_DRAWTILED)
 				continue;	// no lightmaps
 
-			ds = (int) ((float) DotProduct (mid, surf->texinfo->vecs[0]) + surf->texinfo->vecs[0][3]);
-			dt = (int) ((float) DotProduct (mid, surf->texinfo->vecs[1]) + surf->texinfo->vecs[1][3]);
+		// ericw -- added double casts to force 64-bit precision.
+		// Without them the zombie at the start of jam3_ericw.bsp was
+		// incorrectly being lit up in SSE builds.
+			ds = (int) ((double) DoublePrecisionDotProduct (mid, surf->texinfo->vecs[0]) + surf->texinfo->vecs[0][3]);
+			dt = (int) ((double) DoublePrecisionDotProduct (mid, surf->texinfo->vecs[1]) + surf->texinfo->vecs[1][3]);
 
 			if (ds < surf->texturemins[0] || dt < surf->texturemins[1])
 				continue;
