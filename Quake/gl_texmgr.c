@@ -1389,6 +1389,13 @@ void TexMgr_ReloadImages (void)
 {
 	gltexture_t *glt;
 
+// ericw -- flush the cache before reloading textures. This avoids an obscure
+// bug where, if the hunk is almost full, an allocation in TexMgr_ReloadImage
+// triggers cache items to be freed, which calls back into TexMgr to free the
+// texture. Calling TexMgr_FreeTexture within the loop below causes things to
+// go haywire. A test case is jam3_tronyn.bsp with -heapsize 65536
+    Cache_Flush();
+
 	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		glGenTextures(1, &glt->texnum);
