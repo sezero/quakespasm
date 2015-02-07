@@ -146,6 +146,7 @@ static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, w
 static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
 static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
 static cvar_t	vid_fsaa = {"vid_fsaa", "0", CVAR_ARCHIVE}; // QuakeSpasm
+static cvar_t	vid_desktopfullscreen = {"vid_desktopfullscreen", "0", CVAR_ARCHIVE}; // QuakeSpasm
 //johnfitz
 
 cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
@@ -374,6 +375,20 @@ static qboolean VID_GetFullscreen (void)
 
 /*
 ====================
+VID_GetDesktopFullscreen
+====================
+*/
+static qboolean VID_GetDesktopFullscreen (void)
+{
+#if defined(USE_SDL2)
+	return (SDL_GetWindowFlags(draw_context) & SDL_WINDOW_FULLSCREEN_DESKTOP) != 0;
+#else
+	return false;
+#endif
+}
+
+/*
+====================
 VID_GetVSync
 ====================
 */
@@ -473,6 +488,10 @@ VID_ValidMode
 */
 static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscreen)
 {
+// ignore width / height / bpp if vid_desktopfullscreen is enabled
+    if (fullscreen && vid_desktopfullscreen.value)
+        return true;
+    
 	if (width < 320)
 		return false;
 
@@ -574,9 +593,12 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 	SDL_SetWindowDisplayMode (draw_context, VID_SDL2_GetDisplayMode(width, height, bpp));
 
 	/* Make window fullscreen if needed, and show the window */
-	if (fullscreen)
-	{
-		if (SDL_SetWindowFullscreen (draw_context, SDL_WINDOW_FULLSCREEN) != 0)
+
+	if (fullscreen) {
+		Uint32 flags = vid_desktopfullscreen.value ?
+			SDL_WINDOW_FULLSCREEN_DESKTOP :
+			SDL_WINDOW_FULLSCREEN;
+		if (SDL_SetWindowFullscreen (draw_context, flags) != 0)
 			Sys_Error ("Couldn't set fullscreen state mode");
 	}
 
@@ -1428,7 +1450,8 @@ void	VID_Init (void)
 					 "vid_height",
 					 "vid_bpp",
 					 "vid_vsync",
-					 "vid_fsaa" };
+					 "vid_fsaa",
+					 "vid_desktopfullscreen" };
 #define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
 
 	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
@@ -1437,12 +1460,14 @@ void	VID_Init (void)
 	Cvar_RegisterVariable (&vid_bpp); //johnfitz
 	Cvar_RegisterVariable (&vid_vsync); //johnfitz
 	Cvar_RegisterVariable (&vid_fsaa); //QuakeSpasm
+	Cvar_RegisterVariable (&vid_desktopfullscreen); //QuakeSpasm
 	Cvar_SetCallback (&vid_fullscreen, VID_Changed_f);
 	Cvar_SetCallback (&vid_width, VID_Changed_f);
 	Cvar_SetCallback (&vid_height, VID_Changed_f);
 	Cvar_SetCallback (&vid_bpp, VID_Changed_f);
 	Cvar_SetCallback (&vid_vsync, VID_Changed_f);
 	Cvar_SetCallback (&vid_fsaa, VID_FSAA_f);
+	Cvar_SetCallback (&vid_desktopfullscreen, VID_Changed_f);
 
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
@@ -1583,6 +1608,7 @@ void	VID_Toggle (void)
 {
 	static qboolean vid_toggle_works = true;
 	qboolean toggleWorked;
+	Uint32 flags = 0;
 
 	S_ClearBuffer ();
 
@@ -1601,7 +1627,12 @@ void	VID_Toggle (void)
 	}
 
 #if defined(USE_SDL2)
-	toggleWorked = SDL_SetWindowFullscreen(draw_context, VID_GetFullscreen() ? 0 : SDL_WINDOW_FULLSCREEN) == 0;
+	if (!VID_GetFullscreen())
+	{
+		flags = vid_desktopfullscreen.value ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_FULLSCREEN;
+	}
+
+	toggleWorked = SDL_SetWindowFullscreen(draw_context, flags) == 0;
 #else
 	toggleWorked = SDL_WM_ToggleFullScreen(draw_context) == 1;
 #endif
@@ -1642,8 +1673,11 @@ void VID_SyncCvars (void)
 {
 	if (draw_context)
 	{
-		Cvar_SetValueQuick (&vid_width, VID_GetCurrentWidth());
-		Cvar_SetValueQuick (&vid_height, VID_GetCurrentHeight());
+        if (!VID_GetDesktopFullscreen())
+        {
+            Cvar_SetValueQuick (&vid_width, VID_GetCurrentWidth());
+            Cvar_SetValueQuick (&vid_height, VID_GetCurrentHeight());
+        }
 		Cvar_SetValueQuick (&vid_bpp, VID_GetCurrentBPP());
 		Cvar_SetQuick (&vid_fullscreen, VID_GetFullscreen() ? "1" : "0");
 		Cvar_SetQuick (&vid_vsync, VID_GetVSync() ? "1" : "0");
