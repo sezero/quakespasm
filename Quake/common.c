@@ -1829,24 +1829,34 @@ static pack_t *COM_LoadPackFile (const char *packfile)
 
 	if (Sys_FileOpenRead (packfile, &packhandle) == -1)
 		return NULL;
+
 	Sys_FileRead (packhandle, (void *)&header, sizeof(header));
 	if (header.id[0] != 'P' || header.id[1] != 'A' || header.id[2] != 'C' || header.id[3] != 'K')
 		Sys_Error ("%s is not a packfile", packfile);
+
 	header.dirofs = LittleLong (header.dirofs);
 	header.dirlen = LittleLong (header.dirlen);
 
 	numpackfiles = header.dirlen / sizeof(dpackfile_t);
 
+	if (header.dirlen < 0 || header.dirofs < 0)
+	{
+		Sys_Error ("Invalid packfile %s (dirlen: %i, dirofs: %i)",
+					packfile, header.dirlen, header.dirofs);
+	}
+	if (!numpackfiles)
+	{
+		Sys_Printf ("WARNING: %s has no files, ignored\n", packfile);
+		Sys_FileClose (packhandle);
+		return NULL;
+	}
 	if (numpackfiles > MAX_FILES_IN_PACK)
 		Sys_Error ("%s has %i files", packfile, numpackfiles);
 
 	if (numpackfiles != PAK0_COUNT)
 		com_modified = true;	// not the original file
 
-	//johnfitz -- dynamic gamedir loading
-	//Hunk_AllocName (numpackfiles * sizeof(packfile_t), "packfile");
 	newfiles = (packfile_t *) Z_Malloc(numpackfiles * sizeof(packfile_t));
-	//johnfitz
 
 	Sys_FileSeek (packhandle, header.dirofs);
 	Sys_FileRead (packhandle, (void *)info, header.dirlen);
@@ -1866,17 +1876,13 @@ static pack_t *COM_LoadPackFile (const char *packfile)
 		newfiles[i].filelen = LittleLong(info[i].filelen);
 	}
 
-	//johnfitz -- dynamic gamedir loading
-	//pack = Hunk_Alloc (sizeof (pack_t));
 	pack = (pack_t *) Z_Malloc (sizeof (pack_t));
-	//johnfitz
-
 	q_strlcpy (pack->filename, packfile, sizeof(pack->filename));
 	pack->handle = packhandle;
 	pack->numfiles = numpackfiles;
 	pack->files = newfiles;
 
-	//Con_Printf ("Added packfile %s (%i files)\n", packfile, numpackfiles);
+	//Sys_Printf ("Added packfile %s (%i files)\n", packfile, numpackfiles);
 	return pack;
 }
 
