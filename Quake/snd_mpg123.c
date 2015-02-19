@@ -203,7 +203,9 @@ static void S_MP3_CodecCloseStream (snd_stream_t *stream)
 static int S_MP3_CodecRewindStream (snd_stream_t *stream)
 {
 	mp3_priv_t *priv = (mp3_priv_t *) stream->priv;
-	return (int) mpg123_seek(priv->handle, 0, SEEK_SET);
+	off_t res = mpg123_seek(priv->handle, 0, SEEK_SET);
+	if (res >= 0) return (0);
+	return res;
 }
 
 snd_codec_t mp3_codec =

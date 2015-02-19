@@ -144,7 +144,7 @@ qboolean BGM_Init (void)
 		switch (wanted_handlers[i].player)
 		{
 		case BGM_MIDIDRV:
-			/* not supported in quake */
+		/* not supported in quake */
 			break;
 		case BGM_STREAMER:
 			wanted_handlers[i].is_available =
@@ -203,7 +203,7 @@ static void BGM_Play_noext (const char *filename, unsigned int allowed_types)
 		switch (handler->player)
 		{
 		case BGM_MIDIDRV:
-			/* not supported in quake */
+		/* not supported in quake */
 			break;
 		case BGM_STREAMER:
 			bgmstream = S_CodecOpenStreamType(tmp, handler->type);
@@ -261,7 +261,7 @@ void BGM_Play (const char *filename)
 	switch (handler->player)
 	{
 	case BGM_MIDIDRV:
-		/* not supported in quake */
+	/* not supported in quake */
 		break;
 	case BGM_STREAMER:
 		bgmstream = S_CodecOpenStreamType(tmp, handler->type);
@@ -420,8 +420,10 @@ static void BGM_UpdateStream (void)
 		{
 			if (bgmloop)
 			{
-				if (S_CodecRewindStream(bgmstream) < 0)
+				res = S_CodecRewindStream(bgmstream);
+				if (res != 0)
 				{
+					Con_Printf("Stream seek error (%i), stopping.\n", res);
 					BGM_Stop();
 					return;
 				}
