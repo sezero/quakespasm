@@ -1496,18 +1496,17 @@ void GL_Bind (gltexture_t *texture)
 ================
 GL_DeleteTexture -- ericw
 
-Wrapper around glDeleteTextures that also updates our cached current texture
-binding, if necessary.
+Wrapper around glDeleteTextures that also clears the given texture number
+from our per-TMU cached texture binding table.
 ================
 */
 static void GL_DeleteTexture (gltexture_t *texture)
 {
 	glDeleteTextures (1, &texture->texnum);
 
-	if (texture->texnum == currenttexture[currenttarget - GL_TEXTURE0_ARB])
-	{
-		currenttexture[currenttarget - GL_TEXTURE0_ARB] = 0;
-	}
+	if (texture->texnum == currenttexture[0]) currenttexture[0] = -1;
+    if (texture->texnum == currenttexture[1]) currenttexture[1] = -1;
+    if (texture->texnum == currenttexture[2]) currenttexture[2] = -1;
 
 	texture->texnum = 0;
 }
