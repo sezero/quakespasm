@@ -396,7 +396,7 @@ GLuint GL_CreateProgram (const GLchar *vertSource, const GLchar *fragSource, int
 	int i;
 	GLuint program, vertShader, fragShader;
 
-	if (!GLAlias_SupportsShaders())
+	if (!gl_glsl_able)
 		return 0;
 
 	vertShader = GL_CreateShaderFunc (GL_VERTEX_SHADER);
@@ -459,7 +459,7 @@ void R_DeleteShaders (void)
 {
 	int i;
 
-	if (!GLAlias_SupportsShaders())
+	if (!gl_glsl_able)
 		return;
 
 	for (i = 0; i < gl_num_programs; i++)
