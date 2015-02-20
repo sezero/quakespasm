@@ -223,6 +223,7 @@ extern QS_PFNGLUNIFORM3FPROC GL_Uniform3fFunc;
 extern QS_PFNGLUNIFORM4FPROC GL_Uniform4fFunc;
 extern	qboolean	gl_glsl_able;
 extern	qboolean	gl_glsl_gamma_able;
+extern	qboolean	gl_glsl_alias_able;
 // ericw --
 
 //ericw -- NPOT texture support
@@ -354,7 +355,6 @@ GLint GL_GetUniformLocation (GLuint *programPtr, const char *name);
 GLuint GL_CreateProgram (const GLchar *vertSource, const GLchar *fragSource, int numbindings, const glsl_attrib_binding_t *bindings);
 void R_DeleteShaders (void);
 
-qboolean GLAlias_SupportsShaders (void);
 void GLAlias_CreateShaders (void);
 void GL_DrawAliasShadow (entity_t *e);
 void DrawGLTriangleFan (glpoly_t *p);

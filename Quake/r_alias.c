@@ -121,18 +121,6 @@ static void *GLARB_GetNormalOffset (aliashdr_t *hdr, int pose)
 
 /*
 =============
-GLAlias_SupportsShaders
-
-Returns whether OpenGL has the capabilities we need for the shader path.
-=============
-*/
-qboolean GLAlias_SupportsShaders (void)
-{
-	return gl_glsl_able && gl_vbo_able && gl_max_texture_units >= 3;
-}
-
-/*
-=============
 GLAlias_CreateShaders
 =============
 */
@@ -202,7 +190,7 @@ void GLAlias_CreateShaders (void)
 		"	gl_FragColor = result;\n"
 		"}\n";
 
-	if (!GLAlias_SupportsShaders())
+	if (!gl_glsl_alias_able)
 		return;
 
 	r_alias_program = GL_CreateProgram (vertSource, fragSource, sizeof(bindings)/sizeof(bindings[0]), bindings);
@@ -748,7 +736,7 @@ void R_DrawAliasModel (entity_t *e)
 	}
 // call fast path if possible. if the shader compliation failed for some reason,
 // r_alias_program will be 0.
-	else if (GLAlias_SupportsShaders() && (r_alias_program != 0))
+	else if (r_alias_program != 0)
 	{
 		GL_DrawAliasFrame_GLSL (paliashdr, lerpdata, tx, fb);
 	}

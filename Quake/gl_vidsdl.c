@@ -103,6 +103,7 @@ qboolean gl_vbo_able = false; //ericw
 qboolean gl_glsl_able = false; //ericw
 GLint gl_max_texture_units = 0; //ericw
 qboolean gl_glsl_gamma_able = false; //ericw
+qboolean gl_glsl_alias_able = false; //ericw
 
 PFNGLMULTITEXCOORD2FARBPROC GL_MTexCoord2fFunc = NULL; //johnfitz
 PFNGLACTIVETEXTUREARBPROC GL_SelectTextureFunc = NULL; //johnfitz
@@ -1059,7 +1060,7 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("texture_non_power_of_two disabled at command line\n");
 	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_texture_non_power_of_two"))
 	{
-		Con_Printf("FOUND: GL_ARB_texture_non_power_of_two\n");
+		Con_Printf("FOUND: ARB_texture_non_power_of_two\n");
 		gl_texture_NPOT = true;
 	}
 	else
@@ -1145,6 +1146,33 @@ static void GL_CheckExtensions (void)
 	else
 	{
 		Con_Warning ("GLSL gamma not available, using hardware gamma\n");
+	}
+    
+    // GLSL alias model rendering
+    //
+	if (COM_CheckParm("-noglslalias"))
+		Con_Warning ("GLSL alias model rendering disabled at command line\n");
+	else if (gl_glsl_able && gl_vbo_able && gl_max_texture_units >= 3)
+	{
+		qboolean broken = false;
+		// Ugly hack to disable GLSL alias renderer on ATI/Win32
+		// (black model bug observed by szo)
+#if defined(_WIN32)
+		if (strstr(gl_vendor, "ATI"))
+			broken = true;
+#endif
+		if (broken && !COM_CheckParm("-glslalias"))
+        {
+            Con_Warning ("Unsupported hardware, GLSL alias rendering disabled (use -glslalias to force enable)\n");
+        }
+		else
+        {
+            gl_glsl_alias_able = true;
+        }
+	}
+	else
+	{
+		Con_Warning ("GLSL alias model rendering not available, using Fitz renderer\n");
 	}
 }
 

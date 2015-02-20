@@ -373,7 +373,7 @@ void GL_MakeAliasModelDisplayLists_VBO (void)
 	unsigned short *indexes;
 	aliasmesh_t *desc;
 
-	if (!GLAlias_SupportsShaders())
+	if (!gl_glsl_alias_able)
 		return;
 
 	// first, copy the verts onto the hunk
@@ -461,7 +461,7 @@ void GLMesh_LoadVertexBuffers (void)
 	int totalindexes = 0;
 	int totalvbosize = 0;
 
-	if (!GLAlias_SupportsShaders())
+	if (!gl_glsl_alias_able)
 		return;
 
 	// pass 1 - count the sizes we need
