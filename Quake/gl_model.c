@@ -2247,11 +2247,11 @@ Mod_LoadAllSkins
 void *Mod_LoadAllSkins (int numskins, daliasskintype_t *pskintype)
 {
 	int			i, j, k, size, groupskins;
-	char			name[32];
+	char			name[MAX_QPATH];
 	byte			*skin, *texels;
 	daliasskingroup_t	*pinskingroup;
 	daliasskininterval_t	*pinskinintervals;
-	char			fbr_mask_name[64]; //johnfitz -- added for fullbright support
+	char			fbr_mask_name[MAX_QPATH]; //johnfitz -- added for fullbright support
 	src_offset_t		offset; //johnfitz
 
 	skin = (byte *)(pskintype + 1);
@@ -2337,9 +2337,8 @@ void *Mod_LoadAllSkins (int numskins, daliasskintype_t *pskintype)
 				pskintype = (daliasskintype_t *)((byte *)(pskintype) + size);
 			}
 			k = j;
-			for (/* */; j < 4; j++)
-				pheader->gltextures[i][j&3] =
-				pheader->gltextures[i][j - k];
+			for (/**/; j < 4; j++)
+				pheader->gltextures[i][j&3] = pheader->gltextures[i][j - k];
 		}
 	}
 
