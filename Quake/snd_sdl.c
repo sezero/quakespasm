@@ -195,12 +195,10 @@ void SNDDMA_Shutdown (void)
 	if (shm)
 	{
 		Con_Printf ("Shutting down SDL sound\n");
-		SDL_PauseAudio(1);
-		SDL_LockAudio ();
 		SDL_CloseAudio();
+		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 		if (shm->buffer)
 			free (shm->buffer);
-		SDL_QuitSubSystem(SDL_INIT_AUDIO);
 		shm->buffer = NULL;
 		shm = NULL;
 	}
