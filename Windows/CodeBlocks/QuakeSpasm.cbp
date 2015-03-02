@@ -43,6 +43,7 @@
 			<Add directory="..\SDL\include" />
 		</Compiler>
 		<Linker>
+			<Add library="mingw32" />
 			<Add library="SDLmain" />
 			<Add library="SDL" />
 			<Add library="vorbisfile" />
