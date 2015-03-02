@@ -117,7 +117,7 @@ endif
 # default to our local SDL[2].framework for build
 SDL_FRAMEWORK_PATH ?=../MacOSX
 ifneq ($(SDL_FRAMEWORK_PATH),)
-SDL_LIBS  +=-Wl,-F,$(SDL_FRAMEWORK_PATH)
+SDL_LIBS  +=-F$(SDL_FRAMEWORK_PATH)
 SDL_CFLAGS+=-F$(SDL_FRAMEWORK_PATH)
 endif
 SDL_LIBS  +=-Wl,-framework,$(SDL_FRAMEWORK_NAME) -Wl,-framework,Cocoa
