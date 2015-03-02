@@ -114,7 +114,9 @@ SDL_FRAMEWORK_NAME = SDL2
 else
 SDL_FRAMEWORK_NAME = SDL
 endif
-ifdef SDL_FRAMEWORK_PATH
+# default to our local SDL[2].framework for build
+SDL_FRAMEWORK_PATH ?=../MacOSX
+ifneq ($(SDL_FRAMEWORK_PATH),)
 SDL_LIBS  +=-Wl,-F,$(SDL_FRAMEWORK_PATH)
 SDL_CFLAGS+=-F$(SDL_FRAMEWORK_PATH)
 endif

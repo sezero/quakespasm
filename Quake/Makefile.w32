@@ -3,6 +3,7 @@
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
 # "make WINSOCK2=1" to use WinSock2 api instead of old WinSock 1.1.
+# "make CROSS_COMPILE=0" to build natively on windows with mingw and msys
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -81,10 +82,11 @@ ifeq ($(USE_SDL2),1)
 CFLAGS += -DUSE_SDL2
 endif
 
+# default to our local SDL[2] for build
 ifeq ($(USE_SDL2),1)
-SDL_CONFIG ?= sdl2-config
+SDL_CONFIG ?=../Windows/SDL2/bin/sdl2-config --prefix=../Windows/SDL2
 else
-SDL_CONFIG ?= sdl-config
+SDL_CONFIG ?=../Windows/SDL/bin/sdl-config --prefix=../Windows/SDL
 endif
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
