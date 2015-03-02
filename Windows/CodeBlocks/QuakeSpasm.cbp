@@ -40,7 +40,7 @@
 			<Add option="-DUSE_CODEC_MIKMOD" />
 			<Add option="-DUSE_CODEC_UMX" />
 			<Add directory="..\codecs\include" />
-			<Add directory="C:\SDL\include" />
+			<Add directory="..\SDL\include" />
 		</Compiler>
 		<Linker>
 			<Add library="SDLmain" />
@@ -57,7 +57,7 @@
 			<Add library="opengl32" />
 			<Add library="wsock32" />
 			<Add directory="..\codecs\x86" />
-			<Add directory="C:\SDL\lib" />
+			<Add directory="..\SDL\lib" />
 		</Linker>
 		<Unit filename="..\..\Quake\anorm_dots.h" />
 		<Unit filename="..\..\Quake\anorms.h" />
