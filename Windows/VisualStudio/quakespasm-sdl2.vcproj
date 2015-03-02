@@ -89,6 +89,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)\..\codecs\x86\*.dll&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\SDL2\lib\*.dll&quot; &quot;$(TargetDir)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -164,6 +165,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)\..\codecs\x86\*.dll&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\SDL2\lib\*.dll&quot; &quot;$(TargetDir)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -238,6 +240,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)\..\codecs\x64\*.dll&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\SDL2\lib64\*.dll&quot; &quot;$(TargetDir)&quot;"
 			/>
 		</Configuration>
 		<Configuration
@@ -314,6 +317,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine="copy &quot;$(SolutionDir)\..\codecs\x64\*.dll&quot; &quot;$(TargetDir)&quot;&#x0D;&#x0A;copy &quot;$(SolutionDir)\..\SDL2\lib64\*.dll&quot; &quot;$(TargetDir)&quot;"
 			/>
 		</Configuration>
 	</Configurations>
