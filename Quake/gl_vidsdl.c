@@ -1154,21 +1154,7 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("GLSL alias model rendering disabled at command line\n");
 	else if (gl_glsl_able && gl_vbo_able && gl_max_texture_units >= 3)
 	{
-		qboolean broken = false;
-		// Ugly hack to disable GLSL alias renderer on ATI/Win32
-		// (black model bug observed by szo)
-#if defined(_WIN32)
-		if (strstr(gl_vendor, "ATI"))
-			broken = true;
-#endif
-		if (broken && !COM_CheckParm("-glslalias"))
-        {
-            Con_Warning ("Unsupported hardware, GLSL alias rendering disabled (use -glslalias to force enable)\n");
-        }
-		else
-        {
-            gl_glsl_alias_able = true;
-        }
+		gl_glsl_alias_able = true;
 	}
 	else
 	{
