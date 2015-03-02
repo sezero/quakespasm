@@ -1,9 +1,9 @@
-# GNU Makefile for cross-compiling quakespasm.exe (Win32: MinGW)
-# using cross-toolchains on a linux host, Sep. 10, 2014
+# GNU Makefile for compiling Win32 quakespasm.exe using MinGW or MinGW-w64.
+# Usage: "make -f Makefile.w32"
+# To cross-compile on Linux hosts, see the "build_cross_win32*.sh" scripts.
 # "make DEBUG=1" to build a debug client.
-# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
+# "make SDL_CONFIG=/path/to/sdl-config" to override the locally included SDL versions.
 # "make WINSOCK2=1" to use WinSock2 api instead of old WinSock 1.1.
-# "make CROSS_COMPILE=0" to build natively on windows with mingw and msys
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -39,21 +39,11 @@ WINSOCK2?= 0
 # build variables
 # ---------------------------
 
-TARGET=i686-pc-mingw32
-
-CROSS_COMPILE=1
-
-ifeq ($(CROSS_COMPILE),1)
-TOOLCHAIN_PREFIX=$(TARGET)-
-else
-TOOLCHAIN_PREFIX=
-endif
-
-CC = $(TOOLCHAIN_PREFIX)gcc
+CC = gcc
 LINKER = $(CC)
-WINDRES = $(TOOLCHAIN_PREFIX)windres
+WINDRES = windres
 
-STRIP = $(TOOLCHAIN_PREFIX)strip
+STRIP = strip
 
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
