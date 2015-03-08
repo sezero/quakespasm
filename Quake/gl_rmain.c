@@ -184,8 +184,8 @@ void GLSLGamma_GammaCorrect (void)
 		glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
 	
 		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, glwidth, glheight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
 
 // create shader if needed
@@ -203,8 +203,6 @@ void GLSLGamma_GammaCorrect (void)
 	glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
 	glCopyTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, glx, gly, glwidth, glheight);
 
-	glClear (GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
 // draw the texture back to the framebuffer with a fragment shader
 	GL_UseProgramFunc (r_gamma_program);
 	GL_Uniform1fFunc (gammaLoc, vid_gamma.value);
@@ -214,11 +212,6 @@ void GLSLGamma_GammaCorrect (void)
 	glDisable (GL_DEPTH_TEST);
 
 	glViewport (glx, gly, glwidth, glheight);
-	glMatrixMode (GL_PROJECTION);
-	glLoadIdentity ();
-	glOrtho (0, 1, 1, 0, -99999, 99999);
-	glMatrixMode (GL_MODELVIEW);
-	glLoadIdentity ();
 
 	glBegin (GL_QUADS);
 	glTexCoord2f (0, 0);
