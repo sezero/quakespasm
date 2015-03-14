@@ -11,7 +11,6 @@
 		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
 		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
 		002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
-		002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
 		32CA4F630368D1EE00C91783 /* snd_umx.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B012D5BA1A006DD66E /* snd_umx.c */; };
 		48134A1812102F400015BF15 /* net_bsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1412102F400015BF15 /* net_bsd.c */; };
 		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
@@ -197,7 +196,6 @@
 		664D98E419CF6B78000D395C /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
 		664D98E519CF6B78000D395C /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
 		664D98E619CF6B78000D395C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
-		664D98E819CF6B78000D395C /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C6009D0951E00EBEB88 /* GLUT.framework */; };
 		664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
 		664D98EE19CF6B78000D395C /* libFLAC.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
@@ -283,7 +281,6 @@
 		002F3A2B09D0888800EBEB88 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
 		002F3A2C09D0888800EBEB88 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
 		002F3C0009D093BD00EBEB88 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
-		002F3C6009D0951E00EBEB88 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = ../../../../../../../../../../System/Library/Frameworks/GLUT.framework; sourceTree = SOURCE_ROOT; };
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
@@ -459,7 +456,6 @@
 				664D98E419CF6B78000D395C /* libvorbisfile.dylib in Frameworks */,
 				664D98E519CF6B78000D395C /* libmikmod.dylib in Frameworks */,
 				664D98E619CF6B78000D395C /* IOKit.framework in Frameworks */,
-				664D98E819CF6B78000D395C /* GLUT.framework in Frameworks */,
 				664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */,
 				664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */,
 				664D990619CF6E16000D395C /* SDL2.framework in Frameworks */,
@@ -480,7 +476,6 @@
 				A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */,
 				48E2EC7815FB500400B8D476 /* IOKit.framework in Frameworks */,
 				002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */,
-				002F3C6109D0951E00EBEB88 /* GLUT.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */,
 			);
@@ -495,7 +490,6 @@
 				488EF23614B83A370021DD41 /* IOKit.framework */,
 				664D990519CF6E16000D395C /* SDL2.framework */,
 				002F39F909D0881F00EBEB88 /* SDL.framework */,
-				002F3C6009D0951E00EBEB88 /* GLUT.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				002F3C0009D093BD00EBEB88 /* OpenGL.framework */,
 			);
