@@ -1,17 +1,18 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
- <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.21">
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.69">
  <TITLE>QuakeSpasm</TITLE>
 </HEAD>
 <BODY>
 <H1>QuakeSpasm</H1>
 
-<H2></H2><P>
+<H2></H2>
+<P>
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Oct. 17, 2014</EM></P>
+<P><EM>Page last edited Mar. 17, 2015</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -40,16 +41,17 @@
 <H2><A NAME="toc6">6.</A> <A HREF="Quakespasm.html#s6">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.90.0</A>
-<LI><A NAME="toc6.2">6.2</A> <A HREF="Quakespasm.html#ss6.2">Changes in 0.85.9</A>
-<LI><A NAME="toc6.3">6.3</A> <A HREF="Quakespasm.html#ss6.3">Changes in 0.85.8</A>
-<LI><A NAME="toc6.4">6.4</A> <A HREF="Quakespasm.html#ss6.4">Changes in 0.85.7</A>
-<LI><A NAME="toc6.5">6.5</A> <A HREF="Quakespasm.html#ss6.5">Changes in 0.85.6</A>
-<LI><A NAME="toc6.6">6.6</A> <A HREF="Quakespasm.html#ss6.6">Changes in 0.85.5</A>
-<LI><A NAME="toc6.7">6.7</A> <A HREF="Quakespasm.html#ss6.7">Changes in 0.85.4</A>
-<LI><A NAME="toc6.8">6.8</A> <A HREF="Quakespasm.html#ss6.8">Changes in 0.85.3</A>
-<LI><A NAME="toc6.9">6.9</A> <A HREF="Quakespasm.html#ss6.9">Changes in 0.85.2</A>
-<LI><A NAME="toc6.10">6.10</A> <A HREF="Quakespasm.html#ss6.10">Changes in 0.85.1</A>
+<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.90.1</A>
+<LI><A NAME="toc6.2">6.2</A> <A HREF="Quakespasm.html#ss6.2">Changes in 0.90.0</A>
+<LI><A NAME="toc6.3">6.3</A> <A HREF="Quakespasm.html#ss6.3">Changes in 0.85.9</A>
+<LI><A NAME="toc6.4">6.4</A> <A HREF="Quakespasm.html#ss6.4">Changes in 0.85.8</A>
+<LI><A NAME="toc6.5">6.5</A> <A HREF="Quakespasm.html#ss6.5">Changes in 0.85.7</A>
+<LI><A NAME="toc6.6">6.6</A> <A HREF="Quakespasm.html#ss6.6">Changes in 0.85.6</A>
+<LI><A NAME="toc6.7">6.7</A> <A HREF="Quakespasm.html#ss6.7">Changes in 0.85.5</A>
+<LI><A NAME="toc6.8">6.8</A> <A HREF="Quakespasm.html#ss6.8">Changes in 0.85.4</A>
+<LI><A NAME="toc6.9">6.9</A> <A HREF="Quakespasm.html#ss6.9">Changes in 0.85.3</A>
+<LI><A NAME="toc6.10">6.10</A> <A HREF="Quakespasm.html#ss6.10">Changes in 0.85.2</A>
+<LI><A NAME="toc6.11">6.11</A> <A HREF="Quakespasm.html#ss6.11">Changes in 0.85.1</A>
 </UL>
 <P>
 <H2><A NAME="toc7">7.</A> <A HREF="Quakespasm.html#s7">Todo </A></H2>
@@ -166,7 +168,9 @@ Compile time options include
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Known Bugs </A></H2>
 
-<P>Some versions of Xorg and SDL have brightness issues.<BR>
+<P>Brightness issues should be fixed with GLSL gamma in 0.90.1, if your system supports OpenGL 2. For reference on older systems:<BR>
+ 
+Some versions of Xorg and SDL have brightness issues.<BR>
 Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
 these patched libSDL binaries may help.
 <UL>
@@ -176,13 +180,58 @@ these patched libSDL binaries may help.
 <A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
 </UL>
 </P>
-<P>OS X has a well known gamma issue where the screen turns dark, but we currently have no fix.</P>
 <P>The "game" command doesn't execute quake.rc in the new game directory being switched to. This means any custom key bindings in a mod's config.cfg or special settings in a quake.rc won't be loaded. The only workaround is launching the engine with the -game command-line switch instead of using the game console command. Or, after running the game command, you can run "exec quake.rc" by yourself (YMMV).</P>
 <H2><A NAME="s6">6.</A> <A HREF="#toc6">Changes</A></H2>
 
 
 
-<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.90.0</A>
+<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.90.1</A>
+</H2>
+
+
+<H3>Bugfixes</H3>
+
+<P>
+<UL>
+<LI> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).</LI>
+<LI> Fix texture memory leak when changing video modes with SDL2.</LI>
+<LI> Fix rare incorrect mdl lighting on 64-bit builds. 
+<A HREF="http://forums.inside3d.com/viewtopic.php?f=3&amp;t=5620">(details here.)</A></LI>
+<LI> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).</LI>
+<LI> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.</LI>
+<LI> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.</LI>
+</UL>
+</P>
+
+<H3>Performance</H3>
+
+<P>
+<UL>
+<LI> Use multithreaded OpenGL on OS X for better performance.</LI>
+<LI> New, faster mdl renderer using GLSL. Disable with "-noglslalias".</LI>
+</UL>
+</P>
+
+<H3>Interface/visual improvements</H3>
+
+<P>
+<UL>
+<LI> Support pausing demo playback with the "pause" command.</LI>
+<LI> Autocompletion of mod names for the "game" command.</LI>
+<LI> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".</LI>
+<LI> Use high-quality water by default (r_oldwater 0).</LI>
+</UL>
+</P>
+
+<H3>Code cleanup</H3>
+
+<P>
+<UL>
+<LI> Clean up IDE project files to build on fresh systems.</LI>
+<LI> Update 3rd-party libraries.</LI>
+</UL>
+</P>
+<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.90.0</A>
 </H2>
 
 <P>
@@ -227,7 +276,7 @@ these patched libSDL binaries may help.
 <LI> Other fixes and clean-ups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.85.9</A>
+<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">Changes in 0.85.9</A>
 </H2>
 
 <P>
@@ -251,7 +300,7 @@ these patched libSDL binaries may help.
 <LI> Several other minor fixes/cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">Changes in 0.85.8</A>
+<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">Changes in 0.85.8</A>
 </H2>
 
 <P>
@@ -276,7 +325,7 @@ these patched libSDL binaries may help.
 <LI> Miscellaneous source code cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">Changes in 0.85.7</A>
+<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">Changes in 0.85.7</A>
 </H2>
 
 <P>
@@ -294,7 +343,7 @@ these patched libSDL binaries may help.
 <LI> Several other small changes mostly invisible to the end-user</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">Changes in 0.85.6</A>
+<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">Changes in 0.85.6</A>
 </H2>
 
 <P>
@@ -305,7 +354,7 @@ these patched libSDL binaries may help.
 <LI> Minor SDL video fixes.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">Changes in 0.85.5</A>
+<H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.85.5</A>
 </H2>
 
 <P>
@@ -324,7 +373,7 @@ these patched libSDL binaries may help.
 <LI> Several code updates from uHexen2 project, several code cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.85.4</A>
+<H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.85.4</A>
 </H2>
 
 <P>
@@ -342,7 +391,7 @@ these patched libSDL binaries may help.
 <LI> Other minor sound and cdaudio updates</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.85.3</A>
+<H2><A NAME="ss6.9">6.9</A> <A HREF="#toc6.9">Changes in 0.85.3</A>
 </H2>
 
 <P>
@@ -365,7 +414,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="ss6.9">6.9</A> <A HREF="#toc6.9">Changes in 0.85.2</A>
+<H2><A NAME="ss6.10">6.10</A> <A HREF="#toc6.10">Changes in 0.85.2</A>
 </H2>
 
 <P>
@@ -384,7 +433,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="ss6.10">6.10</A> <A HREF="#toc6.10">Changes in 0.85.1</A>
+<H2><A NAME="ss6.11">6.11</A> <A HREF="#toc6.11">Changes in 0.85.1</A>
 </H2>
 
 <P>

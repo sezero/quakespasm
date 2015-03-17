@@ -4,6 +4,7 @@
 
   Table of Contents
 
+
   1. About
   2. Downloads
   3. Hints
@@ -16,27 +17,32 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.90.0
-     6.2 Changes in 0.85.9
-     6.3 Changes in 0.85.8
-     6.4 Changes in 0.85.7
-     6.5 Changes in 0.85.6
-     6.6 Changes in 0.85.5
-     6.7 Changes in 0.85.4
-     6.8 Changes in 0.85.3
-     6.9 Changes in 0.85.2
-     6.10 Changes in 0.85.1
+     6.1 Changes in 0.90.1
+        6.1.1 Bugfixes
+        6.1.2 Performance
+        6.1.3 Interface/visual improvements
+        6.1.4 Code cleanup
+     6.2 Changes in 0.90.0
+     6.3 Changes in 0.85.9
+     6.4 Changes in 0.85.8
+     6.5 Changes in 0.85.7
+     6.6 Changes in 0.85.6
+     6.7 Changes in 0.85.5
+     6.8 Changes in 0.85.4
+     6.9 Changes in 0.85.3
+     6.10 Changes in 0.85.2
+     6.11 Changes in 0.85.1
 
   7. Todo
   8. Copyright
   9. Contact
   10. Links
 
+
   ______________________________________________________________________
 
 
-  Page last edited Oct. 17, 2014
-
+  Page last edited Mar. 17, 2015
 
   1.  About
 
@@ -48,18 +54,18 @@
   includes a new sound driver, some graphical niceities, and numerous
   bug-fixes and minor improvements.
 
-
   2.  Downloads
+
 
   o  Project Downloads <http://quakespasm.sourceforge.net/download.htm>
 
   o  Automatic Builds <http://quakespasm.ericwa.com/job/quakespasm/>
 
-
   3.  Hints
 
    Visit the FitzQuake Homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
+
 
   o  To disable some changes, use "quakespasm -fitz"
 
@@ -101,7 +107,6 @@
   o  Use the "-noextmusic" option to disable this feature.
 
   o  See  <Quakespasm-Music.txt> for more details.
-
 
   4.  Compiling and Installation
 
@@ -154,8 +159,10 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
-
   5.  Known Bugs
+
+  Brightness issues should be fixed with GLSL gamma in 0.90.1, if your
+  system supports OpenGL 2. For reference on older systems:
 
   Some versions of Xorg and SDL have brightness issues.
   Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have
@@ -166,10 +173,8 @@
      <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download>
 
   o  Gamma patched libSDL (x86_64-linux)
-     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download>
-
-  OS X has a well known gamma issue where the screen turns dark, but we
-  currently have no fix.
+     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-
+     AMD64.tgz/download>
 
   The "game" command doesn't execute quake.rc in the new game directory
   being switched to. This means any custom key bindings in a mod's
@@ -178,15 +183,65 @@
   instead of using the game console command. Or, after running the game
   command, you can run "exec quake.rc" by yourself (YMMV).
 
-
   6.  Changes
 
-  6.1.  Changes in 0.90.0
+  6.1.  Changes in 0.90.1
+
+  6.1.1.  Bugfixes
+
+
+  o  Fix dynamic light artifact where changing lightmap are rendered one
+     frame late (bug introduced in 0.90.0).
+
+  o  Fix texture memory leak when changing video modes with SDL2.
+
+  o  Fix rare incorrect mdl lighting on 64-bit builds. (details here.)
+     <http://forums.inside3d.com/viewtopic.php?f=3&t=5620>
+
+  o  Fix fullbrights turning black after "kill" command (bug introduced
+     in 0.90.0).
+
+  o  Clear all fog values on map change to prevent colored fog carrying
+     over to jam3_tronyn.bsp.
+
+  o  Allow loading saves with } character in quoted strings, fixes issue
+     with retrojam1_skacky.bsp.
+
+  6.1.2.  Performance
+
+
+  o  Use multithreaded OpenGL on OS X for better performance.
+
+  o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
+
+  6.1.3.  Interface/visual improvements
+
+
+  o  Support pausing demo playback with the "pause" command.
+
+  o  Autocompletion of mod names for the "game" command.
+
+  o  New gamma correction implementation using GLSL. Fixes all known
+     gamma issues (affecting the full display, persisting after
+     quitting, or darkening the screen on OS X). Disable with
+     "-noglslgamma".
+
+  o  Use high-quality water by default (r_oldwater 0).
+
+  6.1.4.  Code cleanup
+
+
+  o  Clean up IDE project files to build on fresh systems.
+
+  o  Update 3rd-party libraries.
+
+  6.2.  Changes in 0.90.0
+
 
   o  Fix issues on Windows systems with DPI scaling.
 
-  o  Unix/Mac user directories support. Disabled by default,
-     'make DO_USERDIRS=1' to enable it.
+  o  Unix/Mac user directories support. Disabled by default, 'make
+     DO_USERDIRS=1' to enable it.
 
   o  SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
 
@@ -232,7 +287,7 @@
 
   o  Music and sfx now mixed at 44100Hz to avoid downsampling music.
      Low-pass filter applied to the sfx if -sndspeed is 11025 (the
-     default), to preserve the same sound quality as 0.85.9.  New
+     default), to preserve the same sound quality as 0.85.9. New
      -mixspeed option sets the rate for mixing sfx and music, and output
      to the OS (default 44100), setting it to 11025 reverts to 0.85.9
      behaviour. New snd_filterquality cvar, value can be between 1
@@ -288,8 +343,8 @@
 
   o  Other fixes and clean-ups.
 
+  6.3.  Changes in 0.85.9
 
-  6.2.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -335,8 +390,8 @@
 
   o  Several other minor fixes/cleanups.
 
+  6.4.  Changes in 0.85.8
 
-  6.3.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -382,8 +437,8 @@
 
   o  Miscellaneous source code cleanups.
 
+  6.5.  Changes in 0.85.7
 
-  6.4.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -408,8 +463,8 @@
 
   o  Several other small changes mostly invisible to the end-user
 
+  6.6.  Changes in 0.85.6
 
-  6.5.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -421,8 +476,8 @@
 
   o  Minor SDL video fixes.
 
+  6.7.  Changes in 0.85.5
 
-  6.6.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -452,8 +507,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
+  6.8.  Changes in 0.85.4
 
-  6.7.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -480,8 +535,8 @@
 
   o  Other minor sound and cdaudio updates
 
+  6.9.  Changes in 0.85.3
 
-  6.8.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -517,8 +572,8 @@
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
 
+  6.10.  Changes in 0.85.2
 
-  6.9.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -545,8 +600,8 @@
 
   o  Add OSX Makefile (tested?)
 
+  6.11.  Changes in 0.85.1
 
-  6.10.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -583,8 +638,8 @@
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
-
   7.  Todo
+
 
   o  Add uHexen2's first person camera (and menu item)
 
@@ -593,8 +648,8 @@
 
   o  Test usb keyboards.
 
-
   8.  Copyright
+
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
@@ -603,8 +658,8 @@
      CREATIVE COMMONS PUBLIC LICENSE
      <http://creativecommons.org/licenses/by/3.0/legalcode>
 
-
   9.  Contact
+
 
   o  QuakeSpasm Project page
      <http://sourceforge.net/projects/quakespasm>
@@ -617,8 +672,8 @@
      Sander <mailto:gmail - dot - com - username - a.h.vandijk>,
      Stevenaaus <mailto:yahoo - dot - com - username - stevenaaus>
 
-
   10.  Links
+
 
   o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
@@ -630,4 +685,5 @@
      <http://www.celephais.net/board/view_thread.php?id=60452>
 
   o  Inside 3D forums <http://forums.inside3d.com/viewforum.php?f=14>
+
 
