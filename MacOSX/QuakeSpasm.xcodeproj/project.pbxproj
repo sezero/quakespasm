@@ -432,7 +432,7 @@
 		48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvorbisfile.dylib; path = codecs/lib/libvorbisfile.dylib; sourceTree = "<group>"; };
 		48FE58590D3A82C8006BB491 /* QuakeArguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeArguments.h; sourceTree = "<group>"; };
 		48FE585A0D3A82C8006BB491 /* QuakeArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuakeArguments.m; sourceTree = "<group>"; };
-		664D98F919CF6B78000D395C /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		664D98FB19CF6B78000D395C /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		664D990519CF6E16000D395C /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -509,7 +509,7 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* QuakeSpasm.app */,
-				664D98F919CF6B78000D395C /* QuakeSpasm.app */,
+				664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -810,7 +810,7 @@
 			name = "QuakeSpasm-SDL2";
 			productInstallPath = "$(HOME)/Applications";
 			productName = QuakeSpasm;
-			productReference = 664D98F919CF6B78000D395C /* QuakeSpasm.app */;
+			productReference = 664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */;
 			productType = "com.apple.product-type.application";
 		};
 		8D1107260486CEB800E47090 /* QuakeSpasm */ = {
@@ -1110,7 +1110,7 @@
 					"$(SRCROOT)/codecs/lib",
 				);
 				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.5;
-				PRODUCT_NAME = QuakeSpasm;
+				PRODUCT_NAME = "QuakeSpasm-SDL2";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -1173,7 +1173,7 @@
 					"-arch",
 					ppc,
 				);
-				PRODUCT_NAME = QuakeSpasm;
+				PRODUCT_NAME = "QuakeSpasm-SDL2";
 				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = app;
 			};
