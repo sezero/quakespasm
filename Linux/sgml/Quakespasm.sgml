@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Oct. 17, 2014</em>
+<em>Page last edited Mar. 17, 2015</em>
 
 <sect> About <p>
 
@@ -89,6 +89,8 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 </p>
 
 <sect> Known Bugs <p>
+Brightness issues should be fixed with GLSL gamma in 0.90.1, if your system supports OpenGL 2. For reference on older systems:
+<newline> 
 Some versions of Xorg and SDL have brightness issues.
 <newline>
 Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
@@ -99,14 +101,42 @@ these patched libSDL binaries may help.
     <item><url url="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download"
     name="Gamma patched libSDL (x86_64-linux)">
 </itemize>
-</p>
-<p>
-OS X has a well known gamma issue where the screen turns dark, but we currently have no fix.
-</p>
 <p>
 The "game" command doesn't execute quake.rc in the new game directory being switched to. This means any custom key bindings in a mod's config.cfg or special settings in a quake.rc won't be loaded. The only workaround is launching the engine with the -game command-line switch instead of using the game console command. Or, after running the game command, you can run "exec quake.rc" by yourself (YMMV).
 </p>
 <sect> Changes<p>
+
+<sect1> Changes in 0.90.1<p>
+<sect2> Bugfixes
+<itemize>
+<item> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).
+<item> Fix texture memory leak when changing video modes with SDL2.
+<item> Fix rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.inside3d.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
+<item> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).
+<item> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.
+<item> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.
+</itemize>
+
+<sect2> Performance
+<itemize>
+<item> Use multithreaded OpenGL on OS X for better performance.
+<item> New, faster mdl renderer using GLSL. Disable with "-noglslalias".
+</itemize>
+
+<sect2> Interface/visual improvements
+<itemize>
+<item> Support pausing demo playback with the "pause" command.
+<item> Autocompletion of mod names for the "game" command.
+<item> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".
+<item> Use high-quality water by default (r_oldwater 0).
+</itemize>
+
+<sect2> Code cleanup
+<itemize>
+<item> Clean up IDE project files to build on fresh systems.
+<item> Update 3rd-party libraries.
+</itemize>
+</p>
 
 <sect1> Changes in 0.90.0<p>
 <itemize>
