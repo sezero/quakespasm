@@ -154,13 +154,13 @@ void NET_FreeQSocket(qsocket_t *sock)
 }
 
 
-double NET_QSocketGetTime (qsocket_t *s)
+double NET_QSocketGetTime (const qsocket_t *s)
 {
 	return s->connecttime;
 }
 
 
-const char *NET_QSocketGetAddressString (qsocket_t *s)
+const char *NET_QSocketGetAddressString (const qsocket_t *s)
 {
 	return s->address;
 }
