@@ -2082,7 +2082,7 @@ static void COM_Game_f (void)
 		ExtraMaps_NewGame ();
 
 		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
-
+		Con_Printf("enter \"exec quake.rc\" to load new configs\n");
 		//Cbuf_InsertText ("exec quake.rc\n");
 	}
 	else //Diplay the current gamedir
