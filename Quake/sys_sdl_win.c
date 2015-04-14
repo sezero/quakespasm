@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define WIN32_LEAN_AND_MEAN
 #endif
 #include <windows.h>
+#include <mmsystem.h>
 
 #include "quakedef.h"
 
@@ -204,10 +205,21 @@ static void Sys_SetDPIAware (void)
 		FreeLibrary (hUser32);
 }
 
+static void Sys_SetTimerResolution(void)
+{
+	/* Set OS timer resolution to 1ms.
+	   Works around buffer underruns with directsound and SDL2, but also
+	   will make Sleep()/SDL_Dleay() accurate to 1ms which should help framerate
+	   stability.
+	*/
+	timeBeginPeriod (1);
+}
+
 void Sys_Init (void)
 {
 	OSVERSIONINFO	vinfo;
 
+	Sys_SetTimerResolution ();
 	Sys_SetDPIAware ();
 
 	memset (cwd, 0, sizeof(cwd));
