@@ -489,6 +489,9 @@ void R_Clear (void)
 	unsigned int clearbits;
 
 	clearbits = GL_DEPTH_BUFFER_BIT;
+	// from mh -- if we get a stencil buffer, we should clear it, even though we don't use it
+	if (gl_stencilbits)
+		clearbits |= GL_STENCIL_BUFFER_BIT;
 	if (gl_clear.value)
 		clearbits |= GL_COLOR_BUFFER_BIT;
 	glClear (clearbits);
