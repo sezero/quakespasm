@@ -835,6 +835,10 @@ void R_DrawParticles (void)
 	if (!r_particles.value)
 		return;
 
+	//ericw -- avoid empty glBegin(),glEnd() pair below; causes issues on AMD
+	if (!active_particles)
+		return;
+
 	VectorScale (vup, 1.5, up);
 	VectorScale (vright, 1.5, right);
 
