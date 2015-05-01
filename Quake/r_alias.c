@@ -621,7 +621,7 @@ R_DrawAliasModel -- johnfitz -- almost completely rewritten
 void R_DrawAliasModel (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
-	int			i, anim;
+	int			i, anim, skinnum;
 	gltexture_t	*tx, *fb;
 	lerpdata_t	lerpdata;
 
@@ -683,8 +683,14 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	GL_DisableMultitexture();
 	anim = (int)(cl.time*10) & 3;
-	tx = paliashdr->gltextures[e->skinnum][anim];
-	fb = paliashdr->fbtextures[e->skinnum][anim];
+	skinnum = e->skinnum;
+	if ((skinnum >= paliashdr->numskins) || (skinnum < 0))
+	{
+		Con_DPrintf ("R_DrawAliasModel: no such skin # %d\n", skinnum);
+		skinnum = 0;
+	}
+	tx = paliashdr->gltextures[skinnum][anim];
+	fb = paliashdr->fbtextures[skinnum][anim];
 	if (e->colormap != vid.colormap && !gl_nocolors.value)
 	{
 		i = e - cl_entities;
