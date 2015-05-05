@@ -621,7 +621,7 @@ R_DrawAliasModel -- johnfitz -- almost completely rewritten
 void R_DrawAliasModel (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
-	int			i, anim, skinnum;
+	int			i, anim;
 	gltexture_t	*tx, *fb;
 	lerpdata_t	lerpdata;
 
@@ -683,14 +683,17 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	GL_DisableMultitexture();
 	anim = (int)(cl.time*10) & 3;
-	skinnum = e->skinnum;
-	if ((skinnum >= paliashdr->numskins) || (skinnum < 0))
+	if ((e->skinnum >= paliashdr->numskins) || (e->skinnum < 0))
 	{
-		Con_DPrintf ("R_DrawAliasModel: no such skin # %d\n", skinnum);
-		skinnum = 0;
+		Con_DPrintf ("R_DrawAliasModel: no such skin # %dn", e->skinnum);
+		tx = NULL; // NULL will give the checkerboard texture
+		fb = NULL;
 	}
-	tx = paliashdr->gltextures[skinnum][anim];
-	fb = paliashdr->fbtextures[skinnum][anim];
+	else
+	{
+		tx = paliashdr->gltextures[e->skinnum][anim];
+		fb = paliashdr->fbtextures[e->skinnum][anim];
+	} 
 	if (e->colormap != vid.colormap && !gl_nocolors.value)
 	{
 		i = e - cl_entities;
