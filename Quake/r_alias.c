@@ -186,7 +186,8 @@ void GLAlias_CreateShaders (void)
 		"	// apply GL_EXP2 fog (from the orange book)\n"
 		"	float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n"
 		"	fog = clamp(fog, 0.0, 1.0);\n"
-		"	result = vec4(mix(gl_Fog.color.rgb, result.rgb, fog), result.a);\n"
+		"	result = mix(gl_Fog.color, result, fog);\n"
+		"	result.a = gl_Color.a;\n"
 		"	gl_FragColor = result;\n"
 		"}\n";
 
