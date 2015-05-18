@@ -536,7 +536,7 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 	int		temp;
 	Uint32	flags;
 	char		caption[50];
-	int		depthbits;
+	int		depthbits, stencilbits;
 	int		fsaa_obtained;
 	
 	// so Con_Printfs don't mess us up by forcing vid and snd updates
@@ -548,9 +548,17 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 
 	/* z-buffer depth */
 	if (bpp == 16)
+	{
 		depthbits = 16;
-	else	depthbits = 24;
+		stencilbits = 0;
+	}
+	else
+	{
+		depthbits = 24;
+		stencilbits = 8;
+	}
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, depthbits);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, stencilbits);
 
 	/* fsaa */
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, fsaa > 0 ? 1 : 0);
@@ -572,6 +580,10 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 		}
 		if (!draw_context) { // scale back SDL_GL_DEPTH_SIZE
 			SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+			draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		}
+		if (!draw_context) { // scale back SDL_GL_STENCIL_SIZE
+			SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 			draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		}
 		if (!draw_context)
@@ -630,6 +642,10 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 	}
 	if (!draw_context) { // scale back SDL_GL_DEPTH_SIZE
 		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
+	}
+	if (!draw_context) { // scale back SDL_GL_STENCIL_SIZE
+		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 0);
 		draw_context = SDL_SetVideoMode(width, height, bpp, flags);
 		if (!draw_context)
 			Sys_Error ("Couldn't set video mode");

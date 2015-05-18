@@ -852,6 +852,15 @@ void R_DrawShadows (void)
 	if (!r_shadows.value || !r_drawentities.value || r_drawflat_cheatsafe || r_lightmap_cheatsafe)
 		return;
 
+	// Use stencil buffer to prevent self-intersecting shadows, from Baker (MarkV)
+	if (gl_stencilbits)
+	{
+		glClear(GL_STENCIL_BUFFER_BIT);
+		glStencilFunc(GL_EQUAL, 0, ~0);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
+		glEnable(GL_STENCIL_TEST);
+	}
+
 	for (i=0 ; i<cl_numvisedicts ; i++)
 	{
 		currententity = cl_visedicts[i];
@@ -863,6 +872,11 @@ void R_DrawShadows (void)
 			return;
 
 		GL_DrawAliasShadow (currententity);
+	}
+
+	if (gl_stencilbits)
+	{
+		glDisable(GL_STENCIL_TEST);
 	}
 }
 
