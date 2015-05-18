@@ -2399,25 +2399,15 @@ void Mod_CalcAliasBounds (aliashdr_t *a)
 	loadmodel->ymaxs[2] = loadmodel->maxs[2];
 }
 
-/*
-=================
-Mod_SetExtraFlags -- johnfitz -- set up extra flags that aren't in the mdl
-=================
-*/
-void Mod_SetExtraFlags (qmodel_t *mod)
+static qboolean
+nameInList(const char *list, const char *name)
 {
-	extern cvar_t r_nolerp_list;
 	const char *s;
 	char tmp[MAX_QPATH];
 	int i;
 
-	if (!mod || !mod->name || mod->type != mod_alias)
-		return;
+	s = list;
 
-	mod->flags &= 0xFF; //only preserve first byte
-
-	// nolerp flag
-	s = r_nolerp_list.string;
 	while (*s)
 	{
 		// make a copy until the next comma or end of string
@@ -2430,23 +2420,37 @@ void Mod_SetExtraFlags (qmodel_t *mod)
 		}
 		tmp[i] = '\0';
 		//compare it to the model name
-		if (!strcmp(mod->name, tmp))
+		if (!strcmp(name, tmp))
 		{
-			mod->flags |= MOD_NOLERP;
-			break;
+			return true;
 		}
 		//search forwards to the next comma or end of string
 		while (*s && *s == ',')
 			s++;
 	}
+	return false;
+}
 
-	// noshadow flag (TODO: make this a cvar list)
-	if (!strcmp (mod->name, "progs/flame2.mdl") ||
-		!strcmp (mod->name, "progs/flame.mdl") ||
-		!strcmp (mod->name, "progs/bolt1.mdl") ||
-		!strcmp (mod->name, "progs/bolt2.mdl") ||
-		!strcmp (mod->name, "progs/bolt3.mdl") ||
-		!strcmp (mod->name, "progs/laser.mdl"))
+/*
+=================
+Mod_SetExtraFlags -- johnfitz -- set up extra flags that aren't in the mdl
+=================
+*/
+void Mod_SetExtraFlags (qmodel_t *mod)
+{
+	extern cvar_t r_nolerp_list, r_noshadow_list;
+
+	if (!mod || !mod->name || mod->type != mod_alias)
+		return;
+
+	mod->flags &= 0xFF; //only preserve first byte
+
+	// nolerp flag
+	if (nameInList(r_nolerp_list.string, mod->name))
+		mod->flags |= MOD_NOLERP;
+
+	// noshadow flag
+	if (nameInList(r_noshadow_list.string, mod->name))
 		mod->flags |= MOD_NOSHADOW;
 
 	// fullbright hack (TODO: make this a cvar list)

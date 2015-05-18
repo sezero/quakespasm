@@ -44,6 +44,7 @@ extern cvar_t r_showbboxes;
 extern cvar_t r_lerpmodels;
 extern cvar_t r_lerpmove;
 extern cvar_t r_nolerp_list;
+extern cvar_t r_noshadow_list;
 //johnfitz
 extern cvar_t gl_zfix; // QuakeSpasm z-fighting fix
 
@@ -98,10 +99,10 @@ static void R_VisChanged (cvar_t *var)
 
 /*
 ===============
-R_NoLerpList_f -- johnfitz -- called when r_nolerp_list cvar changes
+R_Model_ExtraFlags_List_f -- johnfitz -- called when r_nolerp_list or r_noshadow_list cvar changes
 ===============
 */
-static void R_NoLerpList_f (cvar_t *var)
+static void R_Model_ExtraFlags_List_f (cvar_t *var)
 {
 	int i;
 	for (i=0; i < MAX_MODELS; i++)
@@ -166,7 +167,9 @@ void R_Init (void)
 	Cvar_RegisterVariable (&r_lerpmodels);
 	Cvar_RegisterVariable (&r_lerpmove);
 	Cvar_RegisterVariable (&r_nolerp_list);
-	Cvar_SetCallback (&r_nolerp_list, R_NoLerpList_f);
+	Cvar_SetCallback (&r_nolerp_list, R_Model_ExtraFlags_List_f);
+	Cvar_RegisterVariable (&r_noshadow_list);
+	Cvar_SetCallback (&r_noshadow_list, R_Model_ExtraFlags_List_f);
 	//johnfitz
 
 	Cvar_RegisterVariable (&gl_zfix); // QuakeSpasm z-fighting fix
