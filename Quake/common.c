@@ -1619,10 +1619,11 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 		}
 	}
 
-	if (strcmp(COM_FileGetExtension(filename), "pcx") != 0)
+	if (strcmp(COM_FileGetExtension(filename), "pcx") != 0
+		&& strcmp(COM_FileGetExtension(filename), "tga") != 0)
 		Con_DPrintf ("FindFile: can't find %s\n", filename);
 	else	Con_DPrintf2("FindFile: can't find %s\n", filename);
-		// Log pcx texture misses only if (developer.value >= 2)
+		// Log pcx and tga texture misses only if (developer.value >= 2)
 
 	if (handle)
 		*handle = -1;
