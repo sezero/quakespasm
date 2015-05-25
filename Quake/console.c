@@ -521,6 +521,31 @@ void Con_Printf (const char *fmt, ...)
 
 /*
 ================
+Con_DWarning -- ericw
+ 
+same as Con_Warning, but only prints if "developer" cvar is set.
+use for "exceeds standard limit of" messages, which are only relevant for developers
+targetting vanilla engines
+================
+*/
+void Con_DWarning (const char *fmt, ...)
+{
+	va_list		argptr;
+	char		msg[MAXPRINTMSG];
+
+	if (!developer.value)
+		return;			// don't confuse non-developers with techie stuff...
+
+	va_start (argptr, fmt);
+	q_vsnprintf (msg, sizeof(msg), fmt, argptr);
+	va_end (argptr);
+
+	Con_SafePrintf ("\x02Warning: ");
+	Con_Printf ("%s", msg);
+}
+
+/*
+================
 Con_Warning -- johnfitz -- prints a warning to the console
 ================
 */

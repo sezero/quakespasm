@@ -64,8 +64,8 @@ static char *PF_VarString (int	first)
 			return out;
 		}
 	}
-	if (s > 255 && developer.value)
-		Con_Warning("PF_VarString: %i characters exceeds standard limit of 255.\n", (int) s);
+	if (s > 255)
+		Con_DWarning("PF_VarString: %i characters exceeds standard limit of 255.\n", (int) s);
 	return out;
 }
 

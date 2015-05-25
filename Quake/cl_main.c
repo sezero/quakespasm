@@ -633,13 +633,13 @@ int CL_ReadFromServer (void)
 
 	//visedicts
 	if (cl_numvisedicts > 256 && dev_peakstats.visedicts <= 256)
-		Con_Warning ("%i visedicts exceeds standard limit of 256.\n", cl_numvisedicts);
+		Con_DWarning ("%i visedicts exceeds standard limit of 256.\n", cl_numvisedicts);
 	dev_stats.visedicts = cl_numvisedicts;
 	dev_peakstats.visedicts = q_max(cl_numvisedicts, dev_peakstats.visedicts);
 
 	//temp entities
 	if (num_temp_entities > 64 && dev_peakstats.tempents <= 64)
-		Con_Warning ("%i tempentities exceeds standard limit of 64.\n", num_temp_entities);
+		Con_DWarning ("%i tempentities exceeds standard limit of 64.\n", num_temp_entities);
 	dev_stats.tempents = num_temp_entities;
 	dev_peakstats.tempents = q_max(num_temp_entities, dev_peakstats.tempents);
 

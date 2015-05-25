@@ -654,7 +654,7 @@ void Host_ServerFrame (void)
 				active++;
 		}
 		if (active > 600 && dev_peakstats.edicts <= 600)
-			Con_Warning ("%i edicts exceeds standard limit of 600.\n", active);
+			Con_DWarning ("%i edicts exceeds standard limit of 600.\n", active);
 		dev_stats.edicts = active;
 		dev_peakstats.edicts = q_max(active, dev_peakstats.edicts);
 	}

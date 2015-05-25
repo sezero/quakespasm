@@ -700,7 +700,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 	//johnfitz -- devstats
 stats:
 	if (msg->cursize > 1024 && dev_peakstats.packetsize <= 1024)
-		Con_Warning ("%i byte packet exceeds standard limit of 1024.\n", msg->cursize);
+		Con_DWarning ("%i byte packet exceeds standard limit of 1024.\n", msg->cursize);
 	dev_stats.packetsize = msg->cursize;
 	dev_peakstats.packetsize = q_max(msg->cursize, dev_peakstats.packetsize);
 	//johnfitz
@@ -1422,7 +1422,7 @@ void SV_SpawnServer (const char *server)
 
 	//johnfitz -- warn if signon buffer larger than standard server can handle
 	if (sv.signon.cursize > 8000-2) //max size that will fit into 8000-sized client->message buffer with 2 extra bytes on the end
-		Con_Warning ("%i byte signon buffer exceeds standard limit of 7998.\n", sv.signon.cursize);
+		Con_DWarning ("%i byte signon buffer exceeds standard limit of 7998.\n", sv.signon.cursize);
 	//johnfitz
 
 // send serverinfo to all connected clients

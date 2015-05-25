@@ -1122,7 +1122,7 @@ void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 
 	//johnfitz -- warn mappers about exceeding old limits
 	if (count > 32767 && !bsp2)
-		Con_Warning ("%i faces exceeds standard limit of 32767.\n", count);
+		Con_DWarning ("%i faces exceeds standard limit of 32767.\n", count);
 	//johnfitz
 
 	loadmodel->surfaces = out;
@@ -1240,7 +1240,7 @@ void Mod_LoadNodes_S (lump_t *l)
 
 	//johnfitz -- warn mappers about exceeding old limits
 	if (count > 32767)
-		Con_Warning ("%i nodes exceeds standard limit of 32767.\n", count);
+		Con_DWarning ("%i nodes exceeds standard limit of 32767.\n", count);
 	//johnfitz
 
 	loadmodel->nodes = out;
@@ -1591,7 +1591,7 @@ void Mod_LoadClipnodes (lump_t *l, qboolean bsp2)
 
 	//johnfitz -- warn about exceeding old limits
 	if (count > 32767 && !bsp2)
-		Con_Warning ("%i clipnodes exceeds standard limit of 32767.\n", count);
+		Con_DWarning ("%i clipnodes exceeds standard limit of 32767.\n", count);
 	//johnfitz
 
 	loadmodel->clipnodes = out;
@@ -1745,7 +1745,7 @@ void Mod_LoadMarksurfaces (lump_t *l, int bsp2)
 
 		//johnfitz -- warn mappers about exceeding old limits
 		if (count > 32767)
-			Con_Warning ("%i marksurfaces exceeds standard limit of 32767.\n", count);
+			Con_DWarning ("%i marksurfaces exceeds standard limit of 32767.\n", count);
 		//johnfitz
 
 		for (i=0 ; i<count ; i++)
@@ -1880,7 +1880,7 @@ void Mod_LoadSubmodels (lump_t *l)
 		Sys_Error ("Mod_LoadSubmodels: too many visleafs (%d, max = %d) in %s", out->visleafs, MAX_MAP_LEAFS, loadmodel->name);
 
 	if (out->visleafs > 8192)
-		Con_Warning ("%i visleafs exceeds standard limit of 8192.\n", out->visleafs);
+		Con_DWarning ("%i visleafs exceeds standard limit of 8192.\n", out->visleafs);
 	//johnfitz
 }
 
