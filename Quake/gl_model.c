@@ -685,7 +685,7 @@ void Mod_LoadLighting (lump_t *l)
 			i = LittleLong(((int *)data)[1]);
 			if (i == 1)
 			{
-				Con_DPrintf("%s loaded", litfilename);
+				Con_DPrintf("%s loaded\n", litfilename);
 				loadmodel->lightdata = data + 8;
 				return;
 			}
@@ -753,7 +753,7 @@ void Mod_LoadEntities (lump_t *l)
 	q_strlcpy(entfilename, loadmodel->name, sizeof(entfilename));
 	COM_StripExtension(entfilename, entfilename, sizeof(entfilename));
 	q_strlcat(entfilename, ".ent", sizeof(entfilename));
-	Con_DPrintf("trying to load %s\n", entfilename);
+	Con_DPrintf2("trying to load %s\n", entfilename);
 	mark = Hunk_LowMark();
 	ents = (char *) COM_LoadHunkFile (entfilename, &path_id);
 	if (ents)
