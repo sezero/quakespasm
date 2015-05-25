@@ -281,7 +281,7 @@ void BuildTris (void)
 
 	commands[numcommands++] = 0;		// end of list marker
 
-	Con_DPrintf ("%3i tri %3i vert %3i cmd\n", pheader->numtris, numorder, numcommands);
+	Con_DPrintf2 ("%3i tri %3i vert %3i cmd\n", pheader->numtris, numorder, numcommands);
 
 	allverts += numorder;
 	alltris += pheader->numtris;
@@ -312,7 +312,7 @@ void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr)
 	paliashdr = hdr;	// (aliashdr_t *)Mod_Extradata (m);
 
 //johnfitz -- generate meshes
-	Con_DPrintf ("meshing %s...\n",m->name);
+	Con_DPrintf2 ("meshing %s...\n",m->name);
 	BuildTris ();
 
 	// save the data out
