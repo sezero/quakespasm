@@ -63,41 +63,51 @@ typedef struct filelist_item_s
 	struct filelist_item_s	*next;
 } filelist_item_t;
 
-filelist_item_t	*extralevels;
-
-void ExtraMaps_Add (const char *name)
+/*
+==================
+FileList_Add
+==================
+*/
+void FileList_Add (const char *name, filelist_item_t **list)
 {
-	filelist_item_t	*level,*cursor,*prev;
+	filelist_item_t	*item,*cursor,*prev;
 
 	// ignore duplicate
-	for (level = extralevels; level; level = level->next)
+	for (item = *list; item; item = item->next)
 	{
-		if (!Q_strcmp (name, level->name))
+		if (!Q_strcmp (name, item->name))
 			return;
 	}
 
-	level = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
-	q_strlcpy (level->name, name, sizeof(level->name));
+	item = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
+	q_strlcpy (item->name, name, sizeof(item->name));
 
 	// insert each entry in alphabetical order
-	if (extralevels == NULL ||
-	    q_strcasecmp(level->name, extralevels->name) < 0) //insert at front
+	if (*list == NULL ||
+	    q_strcasecmp(item->name, (*list)->name) < 0) //insert at front
 	{
-		level->next = extralevels;
-		extralevels = level;
+		item->next = *list;
+		*list = item;
 	}
 	else //insert later
 	{
-		prev = extralevels;
-		cursor = extralevels->next;
-		while (cursor && (q_strcasecmp(level->name, cursor->name) > 0))
+		prev = *list;
+		cursor = (*list)->next;
+		while (cursor && (q_strcasecmp(item->name, cursor->name) > 0))
 		{
 			prev = cursor;
 			cursor = cursor->next;
 		}
-		level->next = prev->next;
-		prev->next = level;
+		item->next = prev->next;
+		prev->next = item;
 	}
+}
+
+filelist_item_t	*extralevels;
+
+void ExtraMaps_Add (const char *name)
+{
+	FileList_Add(name, &extralevels);
 }
 
 void ExtraMaps_Init (void)
@@ -215,37 +225,7 @@ filelist_item_t	*modlist;
 
 void Modlist_Add (const char *name)
 {
-	filelist_item_t	*mod,*cursor,*prev;
-
-	//ingore duplicate
-	for (mod = modlist; mod; mod = mod->next)
-	{
-		if (!Q_strcmp (name, mod->name))
-			return;
-	}
-
-	mod = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
-	q_strlcpy (mod->name, name, sizeof(mod->name));
-
-	//insert each entry in alphabetical order
-	if (modlist == NULL ||
-	    q_strcasecmp(mod->name, modlist->name) < 0) //insert at front
-	{
-		mod->next = modlist;
-		modlist = mod;
-	}
-	else //insert later
-	{
-		prev = modlist;
-		cursor = modlist->next;
-		while (cursor && (q_strcasecmp(mod->name, cursor->name) > 0))
-		{
-			prev = cursor;
-			cursor = cursor->next;
-		}
-		mod->next = prev->next;
-		prev->next = mod;
-	}
+	FileList_Add(name, &modlist);
 }
 
 #ifdef _WIN32
