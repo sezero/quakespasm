@@ -648,7 +648,7 @@ int CL_ReadFromServer (void)
 		if (b->model && b->endtime >= cl.time)
 			num_beams++;
 	if (num_beams > 24 && dev_peakstats.beams <= 24)
-		Con_Warning ("%i beams exceeded standard limit of 24.\n", num_beams);
+		Con_DWarning ("%i beams exceeded standard limit of 24.\n", num_beams);
 	dev_stats.beams = num_beams;
 	dev_peakstats.beams = q_max(num_beams, dev_peakstats.beams);
 
@@ -657,7 +657,7 @@ int CL_ReadFromServer (void)
 		if (l->die >= cl.time && l->radius)
 			num_dlights++;
 	if (num_dlights > 32 && dev_peakstats.dlights <= 32)
-		Con_Warning ("%i dlights exceeded standard limit of 32.\n", num_dlights);
+		Con_DWarning ("%i dlights exceeded standard limit of 32.\n", num_dlights);
 	dev_stats.dlights = num_dlights;
 	dev_peakstats.dlights = q_max(num_dlights, dev_peakstats.dlights);
 
