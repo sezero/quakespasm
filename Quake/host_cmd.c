@@ -1385,7 +1385,7 @@ Host_Pause_f
 void Host_Pause_f (void)
 {
 //ericw -- demo pause support (inspired by MarkV)
-	if (cls.demoplayback && cls.demonum == -1) // Don't allow startdemos to be paused
+	if (cls.demoplayback)
 	{
 		cls.demopaused = !cls.demopaused;
 		cl.paused = cls.demopaused;
