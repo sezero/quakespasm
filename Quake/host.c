@@ -858,6 +858,7 @@ void Host_Init (void)
 		M_Init ();
 		ExtraMaps_Init (); //johnfitz
 		Modlist_Init (); //johnfitz
+		DemoList_Init (); //ericw
 		VID_Init ();
 		IN_Init ();
 		TexMgr_Init (); //johnfitz

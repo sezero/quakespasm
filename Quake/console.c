@@ -815,6 +815,7 @@ typedef struct filelist_item_s
 
 extern filelist_item_t	*extralevels;
 extern filelist_item_t	*modlist;
+extern filelist_item_t	*demolist;
 
 typedef struct arg_completion_type_s
 {
@@ -826,7 +827,9 @@ static const arg_completion_type_t arg_completion_types[] =
 {
 	{ "map ", &extralevels },
 	{ "changelevel ", &extralevels },
-	{ "game ", &modlist }
+	{ "game ", &modlist },
+	{ "record ", &demolist },
+	{ "playdemo ", &demolist }
 };
 
 static const int num_arg_completion_types =

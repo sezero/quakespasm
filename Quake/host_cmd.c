@@ -103,6 +103,18 @@ void FileList_Add (const char *name, filelist_item_t **list)
 	}
 }
 
+static void FileList_Clear (filelist_item_t **list)
+{
+	filelist_item_t *blah;
+	
+	while (*list)
+	{
+		blah = (*list)->next;
+		Z_Free(*list);
+		*list = blah;
+	}
+}
+
 filelist_item_t	*extralevels;
 
 void ExtraMaps_Add (const char *name)
@@ -180,16 +192,9 @@ void ExtraMaps_Init (void)
 	}
 }
 
-void ExtraMaps_Clear (void)
+static void ExtraMaps_Clear (void)
 {
-	filelist_item_t *blah;
-
-	while (extralevels)
-	{
-		blah = extralevels->next;
-		Z_Free(extralevels);
-		extralevels = blah;
-	}
+	FileList_Clear(&extralevels);
 }
 
 void ExtraMaps_NewGame (void)
@@ -298,6 +303,92 @@ void Modlist_Init (void)
 	closedir(dir_p);
 }
 #endif
+
+//==============================================================================
+//ericw -- demo list management
+//==============================================================================
+
+filelist_item_t	*demolist;
+
+static void DemoList_Clear (void)
+{
+	FileList_Clear (&demolist);
+}
+
+void DemoList_Rebuild (void)
+{
+	DemoList_Clear ();
+	DemoList_Init ();
+}
+
+// TODO: Factor out to a general-purpose file searching function
+void DemoList_Init (void)
+{
+#ifdef _WIN32
+	WIN32_FIND_DATA	fdat;
+	HANDLE		fhnd;
+#else
+	DIR		*dir_p;
+	struct dirent	*dir_t;
+#endif
+	char		filestring[MAX_OSPATH];
+	char		demname[32];
+	char		ignorepakdir[32];
+	searchpath_t	*search;
+	pack_t		*pak;
+	int		i;
+	
+	// we don't want to list the demos in id1 pakfiles,
+	// because these are not "add-on" demos
+	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
+	
+	for (search = com_searchpaths; search; search = search->next)
+	{
+		if (*search->filename) //directory
+		{
+#ifdef _WIN32
+			q_snprintf (filestring, sizeof(filestring), "%s/*.dem", search->filename);
+			fhnd = FindFirstFile(filestring, &fdat);
+			if (fhnd == INVALID_HANDLE_VALUE)
+				continue;
+			do
+			{
+				COM_StripExtension(fdat.cFileName, demname, sizeof(demname));
+				FileList_Add (demname, &demolist);
+			} while (FindNextFile(fhnd, &fdat));
+			FindClose(fhnd);
+#else
+			q_snprintf (filestring, sizeof(filestring), "%s/", search->filename);
+			dir_p = opendir(filestring);
+			if (dir_p == NULL)
+				continue;
+			while ((dir_t = readdir(dir_p)) != NULL)
+			{
+				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "dem") != 0)
+					continue;
+				COM_StripExtension(dir_t->d_name, demname, sizeof(demname));
+				FileList_Add (demname, &demolist);
+			}
+			closedir(dir_p);
+#endif
+		}
+		else //pakfile
+		{
+			if (!strstr(search->pack->filename, ignorepakdir))
+			{ //don't list standard id demos
+				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
+				{
+					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "dem"))
+					{
+						COM_StripExtension(pak->files[i].name, demname, sizeof(demname));
+						FileList_Add (demname, &demolist);
+					}
+				}
+			}
+		}
+	}
+}
+
 
 /*
 ==================
