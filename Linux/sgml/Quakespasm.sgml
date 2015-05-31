@@ -115,6 +115,8 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).
 <item> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.
 <item> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.
+<item> Fix viewmodel not lerping on extended-limit maps.
+<item> Fix crash on out-of-bounds skin number.
 </itemize>
 
 <sect2> Performance
@@ -123,12 +125,21 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 </itemize>
 
-<sect2> Interface/visual improvements
+<sect2> Visual improvements
 <itemize>
-<item> Support pausing demo playback with the "pause" command.
-<item> Autocompletion of mod names for the "game" command.
 <item> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".
 <item> Use high-quality water by default (r_oldwater 0).
+<item> Shadows use stencil buffer to avoid overlapping artifacts (from MarkV.)
+<item> r_noshadow_list cvar added (from MarkV.)
+</itemize>
+
+<sect2> Interface improvements
+<itemize>
+<item> Support pausing demo playback with the "pause" command.
+<item> Autocompletion for "game", "record", "playdemo".
+<item> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (takes effect upon entering fullscreen mode the next time.)
+<item> Silence "exceeded standard limit" messages unless developer cvar is >= 1.
+<item> Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
 </itemize>
 
 <sect2> Code cleanup
