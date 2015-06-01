@@ -19,8 +19,9 @@
      6.1 Changes in 0.90.1
         6.1.1 Bugfixes
         6.1.2 Performance
-        6.1.3 Interface/visual improvements
-        6.1.4 Code cleanup
+        6.1.3 Visual improvements
+        6.1.4 Interface improvements
+        6.1.5 Code cleanup
      6.2 Changes in 0.90.0
      6.3 Changes in 0.85.9
      6.4 Changes in 0.85.8
@@ -88,6 +89,9 @@
 
   o  Quakespasm allows loading new games (mods) on the fly with "game
      GAMENAME {-quoth/hipnotic/rogue}"
+
+  o  Use "quakespasm -condebug" to save console log to "qconsole.log".
+     SDL2 builds no longer generate stdout.txt/stderr.txt.
 
   3.1.  Music Playback
 
@@ -209,6 +213,9 @@
   o  Allow loading saves with } character in quoted strings, fixes issue
      with retrojam1_skacky.bsp.
 
+  o  Fix viewmodel not lerping on extended-limit maps.
+
+  o  Fix crash on out-of-bounds skin number.
 
   6.1.2.  Performance
 
@@ -216,12 +223,8 @@
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
+  6.1.3.  Visual improvements
 
-  6.1.3.  Interface/visual improvements
-
-  o  Support pausing demo playback with the "pause" command.
-
-  o  Autocompletion of mod names for the "game" command.
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -230,8 +233,31 @@
 
   o  Use high-quality water by default (r_oldwater 0).
 
+  o  Shadows use stencil buffer to avoid overlapping artifacts (from
+     MarkV.)
 
-  6.1.4.  Code cleanup
+  o  r_noshadow_list cvar added (from MarkV.)
+
+  6.1.4.  Interface improvements
+
+
+  o  Support pausing demo playback with the "pause" command.
+
+  o  Autocompletion for "game", "record", "playdemo".
+
+  o  Experimental windowed fullscreen mode available with
+     vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon
+     entering fullscreen mode the next time.)
+
+  o  Silence "exceeded standard limit" messages unless developer cvar is
+     >= 1.
+
+  o  Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent",
+     "trying to load ent", "bad chunk length", "meshing",
+     "PR_AlocStringSlots: realloc'ing"
+
+  6.1.5.  Code cleanup
+
 
   o  Clean up IDE project files to build on fresh systems.
 

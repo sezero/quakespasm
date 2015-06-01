@@ -111,6 +111,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and minor improve
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
 </LI>
 <LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"</LI>
+<LI>Use "<B>quakespasm -condebug</B>" to save console log to "qconsole.log". SDL2 builds no longer generate stdout.txt/stderr.txt.</LI>
 </UL>
 </P>
 <H2><A NAME="ss3.1">3.1</A> <A HREF="#toc3.1">Music Playback</A>
@@ -200,6 +201,8 @@ these patched libSDL binaries may help.
 <LI> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).</LI>
 <LI> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.</LI>
 <LI> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.</LI>
+<LI> Fix viewmodel not lerping on extended-limit maps.</LI>
+<LI> Fix crash on out-of-bounds skin number.</LI>
 </UL>
 </P>
 
@@ -212,14 +215,26 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H3>Interface/visual improvements</H3>
+<H3>Visual improvements</H3>
+
+<P>
+<UL>
+<LI> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".</LI>
+<LI> Use high-quality water by default (r_oldwater 0).</LI>
+<LI> Shadows use stencil buffer to avoid overlapping artifacts (from MarkV.)</LI>
+<LI> r_noshadow_list cvar added (from MarkV.)</LI>
+</UL>
+</P>
+
+<H3>Interface improvements</H3>
 
 <P>
 <UL>
 <LI> Support pausing demo playback with the "pause" command.</LI>
-<LI> Autocompletion of mod names for the "game" command.</LI>
-<LI> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".</LI>
-<LI> Use high-quality water by default (r_oldwater 0).</LI>
+<LI> Autocompletion for "game", "record", "playdemo".</LI>
+<LI> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)</LI>
+<LI> Silence "exceeded standard limit" messages unless developer cvar is >= 1.</LI>
+<LI> Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
 </UL>
 </P>
 
