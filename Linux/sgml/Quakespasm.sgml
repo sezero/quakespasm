@@ -42,6 +42,8 @@ sound driver, some graphical niceities, and numerous bug-fixes and minor improve
 <item>In windows, alternative CD drives are accessible by "<bf>quakespasm -cddev F</bf>" (for example)
 
 <item>Quakespasm allows loading new games (mods) on the fly with "<bf>game</bf> <em>GAMENAME {-quoth/hipnotic/rogue}</em>"
+
+<item>Use "<bf>quakespasm -condebug</bf>" to save console log to "qconsole.log". SDL2 builds no longer generate stdout.txt/stderr.txt.
 </itemize>
 </p>
 
@@ -137,7 +139,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <itemize>
 <item> Support pausing demo playback with the "pause" command.
 <item> Autocompletion for "game", "record", "playdemo".
-<item> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (takes effect upon entering fullscreen mode the next time.)
+<item> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)
 <item> Silence "exceeded standard limit" messages unless developer cvar is >= 1.
 <item> Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
 </itemize>
