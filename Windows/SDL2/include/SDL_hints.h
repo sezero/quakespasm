@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -243,6 +243,9 @@ extern "C" {
  *  this is problematic. This functionality can be disabled by setting this
  *  hint.
  *
+ *  As of SDL 2.0.4, SDL_EnableScreenSaver and SDL_DisableScreenSaver accomplish
+ *  the same thing on iOS. They should be preferred over this hint.
+ *
  *  This variable can be set to the following values:
  *    "0"       - Enable idle timer
  *    "1"       - Disable idle timer
@@ -261,8 +264,9 @@ extern "C" {
 #define SDL_HINT_ORIENTATIONS "SDL_IOS_ORIENTATIONS"
     
 /**
- *  \brief  A variable controlling whether an Android built-in accelerometer should be
- *  listed as a joystick device, rather than listing actual joysticks only.
+ *  \brief  A variable controlling whether the Android / iOS built-in
+ *  accelerometer should be listed as a joystick device, rather than listing
+ *  actual joysticks only.
  *
  *  This variable can be set to the following values:
  *    "0"       - List only real joysticks and accept input from them
@@ -344,8 +348,19 @@ extern "C" {
 #define SDL_HINT_TIMER_RESOLUTION "SDL_TIMER_RESOLUTION"
 
 
+
 /**
- *  \brief If set to 1, then do not allow high-DPI windows. ("Retina" on Mac)
+*  \brief  A string specifying SDL's threads stack size in bytes or "0" for the backend's default size
+*
+*  Use this hint in case you need to set SDL's threads stack size to other than the default.
+*  This is specially useful if you build SDL against a non glibc libc library (such as musl) which
+*  provides a relatively small default thread stack size (a few kilobytes versus the default 8MB glibc uses).
+*  Support for this hint is currently available only in the pthread backend.
+*/
+#define SDL_HINT_THREAD_STACK_SIZE              "SDL_THREAD_STACK_SIZE"
+
+/**
+ *  \brief If set to 1, then do not allow high-DPI windows. ("Retina" on Mac and iOS)
  */
 #define SDL_HINT_VIDEO_HIGHDPI_DISABLED "SDL_VIDEO_HIGHDPI_DISABLED"
 
@@ -532,6 +547,18 @@ extern "C" {
  */
 #define SDL_HINT_IME_INTERNAL_EDITING "SDL_IME_INTERNAL_EDITING"
 
+ /**
+ * \brief A variable to control whether mouse and touch events are to be treated together or separately
+ *
+ * The variable can be set to the following values:
+ *   "0"       - Mouse events will be handled as touch events, and touch will raise fake mouse
+ *               events. This is the behaviour of SDL <= 2.0.3. (default)
+ *   "1"       - Mouse events will be handled separately from pure touch events.
+ *
+ * The value of this hint is used at runtime, so it can be changed at any time.
+ */
+#define SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH "SDL_ANDROID_SEPARATE_MOUSE_AND_TOUCH"
+
 /**
  *  \brief override the binding element for keyboard inputs for Emscripten builds
  *
@@ -545,6 +572,18 @@ extern "C" {
  *    any other string without a leading # sign applies to the element on the page with that ID.
  */
 #define SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT   "SDL_EMSCRIPTEN_KEYBOARD_ELEMENT"
+
+/**
+ *  \brief Tell SDL not to catch the SIGINT or SIGTERM signals.
+ *
+ * This hint only applies to Unix-like platforms.
+ *
+ * The variable can be set to the following values:
+ *   "0"       - SDL will install a SIGINT and SIGTERM handler, and when it
+ *               catches a signal, convert it into an SDL_QUIT event.
+ *   "1"       - SDL will not install a signal handler at all.
+ */
+#define SDL_HINT_NO_SIGNAL_HANDLERS   "SDL_NO_SIGNAL_HANDLERS"
 
 /**
  *  \brief  An enumeration of hint priorities
