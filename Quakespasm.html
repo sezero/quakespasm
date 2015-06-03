@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited Mar. 17, 2015</EM></P>
+<P><EM>Page last edited June 3, 2015</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -75,7 +75,7 @@
 is a Quake 1 engine based on the SDL port of
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake</A>.</P>
 <P>It includes support for 64 bit CPUs and custom music playback, and includes a new
-sound driver, some graphical niceities, and numerous bug-fixes and minor improvements.</P>
+sound driver, some graphical niceities, and numerous bug-fixes and other improvements.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
 
@@ -93,8 +93,8 @@ sound driver, some graphical niceities, and numerous bug-fixes and minor improve
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
 
 
-<P><EM> Visit the 
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A> for a full run-down of the engine's commands and variables.</EM></P>
+<P><EM>Visit the 
+<A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM></P>
 <P>
 <UL>
 <LI>To disable some changes, use "<B>quakespasm -fitz</B>"
@@ -121,7 +121,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and minor improve
 <UL>
 <LI>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".</LI>
 <LI>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.</LI>
-<LI>As of 0.90.0, music is played back at 44100Hz by default with no need to adjust "-sndspeed".</LI>
+<LI>As of 0.90.0, music is played back at 44100 Hz by default with no need to adjust "-sndspeed".</LI>
 <LI>Use the "-noextmusic" option to disable this feature.</LI>
 <LI>See 
 <A HREF="Quakespasm-Music.txt">Quakespasm-Music.txt</A> for more details.</LI>
@@ -234,7 +234,7 @@ these patched libSDL binaries may help.
 <LI> Autocompletion for "game", "record", "playdemo".</LI>
 <LI> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)</LI>
 <LI> Silence "exceeded standard limit" messages unless developer cvar is >= 1.</LI>
-<LI> Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
+<LI> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
 </UL>
 </P>
 
@@ -268,7 +268,7 @@ these patched libSDL binaries may help.
 <LI> Brush model drawing speedup.</LI>
 <LI> Support for BSP2 and 2PSB map formats.</LI>
 <LI> Support for Opus, FLAC, and tracker music (S3M, IT, UMX, etc.), as compile-time options.</LI>
-<LI> Music and sfx now mixed at 44100Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting it to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.</LI>
+<LI> Music and sfx now mixed at 44100 Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting it to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.</LI>
 <LI> Better Hor+ field of view (FOV) scaling behavior.</LI>
 <LI> Better cross-map demo playback support.</LI>
 <LI> Fix screenshots when screen width isn't a multiple of 4.</LI>

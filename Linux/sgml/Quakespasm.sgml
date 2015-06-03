@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited Mar. 17, 2015</em>
+<em>Page last edited June 3, 2015</em>
 
 <sect> About <p>
 
@@ -13,7 +13,7 @@ is a Quake 1 engine based on the SDL port of
 <url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
 </p><p>
 It includes support for 64 bit CPUs and custom music playback, and includes a new
-sound driver, some graphical niceities, and numerous bug-fixes and minor improvements.
+sound driver, some graphical niceities, and numerous bug-fixes and other improvements.
 
 <sect> Downloads <p>
 
@@ -25,7 +25,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and minor improve
 
 <sect> Hints <p>
 
-<em> Visit the <url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage"> for a full run-down of the engine's commands and variables.</em>
+<em>Visit the <url url="http://www.celephais.net/fitzquake" name="FitzQuake homepage"> for a full run-down of the engine's commands and variables.</em>
 
 <itemize>
 <item>To disable some changes, use "<bf>quakespasm -fitz</bf>"
@@ -52,7 +52,7 @@ Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 <itemize>
 <item>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".
 <item>Unix users may need some extra libraries installed: "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG.
-<item>As of 0.90.0, music is played back at 44100Hz by default with no need to adjust "-sndspeed".
+<item>As of 0.90.0, music is played back at 44100 Hz by default with no need to adjust "-sndspeed".
 <item>Use the "-noextmusic" option to disable this feature.
 <item>See <url url="Quakespasm-Music.txt"> for more details.
 </itemize>
@@ -141,7 +141,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Autocompletion for "game", "record", "playdemo".
 <item> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)
 <item> Silence "exceeded standard limit" messages unless developer cvar is >= 1.
-<item> Some spam moved from delvoper 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
+<item> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
 </itemize>
 
 <sect2> Code cleanup
@@ -170,7 +170,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Brush model drawing speedup.
 <item> Support for BSP2 and 2PSB map formats.
 <item> Support for Opus, FLAC, and tracker music (S3M, IT, UMX, etc.), as compile-time options.
-<item> Music and sfx now mixed at 44100Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting it to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.
+<item> Music and sfx now mixed at 44100 Hz to avoid downsampling music. Low-pass filter applied to the sfx if -sndspeed is 11025 (the default), to preserve the same sound quality as 0.85.9.  New -mixspeed option sets the rate for mixing sfx and music, and output to the OS (default 44100), setting it to 11025 reverts to 0.85.9 behaviour. New snd_filterquality cvar, value can be between 1 (emulate OS X resampler) and 5 (emulate Windows resampler), controls the sound of the low-pass filter.
 <item> Better Hor+ field of view (FOV) scaling behavior.
 <item> Better cross-map demo playback support.
 <item> Fix screenshots when screen width isn't a multiple of 4.
