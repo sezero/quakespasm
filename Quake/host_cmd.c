@@ -247,6 +247,9 @@ void Modlist_Init (void)
 
 	do
 	{
+		if (!strcmp(fdat.cFileName, "."))
+			continue;
+
 		q_snprintf (mod_string, sizeof(mod_string), "%s/%s/progs.dat", com_basedir, fdat.cFileName);
 		mod_fhnd = FindFirstFile(mod_string, &mod_fdat);
 		if (mod_fhnd != INVALID_HANDLE_VALUE) {
