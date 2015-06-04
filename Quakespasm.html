@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited June 3, 2015</EM></P>
+<P><EM>Page last edited June 4, 2015</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -107,7 +107,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 <LI><B>Shift+Escape</B> draws the Console.</LI>
 <LI>From the console, use <B>UP</B> to browse the command line history and
 <B>TAB</B> to autocomplete command and map names.</LI>
-<LI>There is currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
+<LI>There is currently no CD Music volume support and SDL2 doesn't support CD audio. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
 </LI>
 <LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"</LI>
@@ -478,8 +478,7 @@ these patched libSDL binaries may help.
 <P>
 <UL>
 <LI>Add uHexen2's first person camera (and menu item)</LI>
-<LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls</LI>
-<LI>Test usb keyboards.</LI>
+<LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls and SDL2 doesn't support CD audio</LI>
 </UL>
 </P>
 

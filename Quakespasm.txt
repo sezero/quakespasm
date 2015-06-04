@@ -41,7 +41,7 @@
   ______________________________________________________________________
 
 
-  Page last edited June 3, 2015
+  Page last edited June 4, 2015
 
 
   1.  About
@@ -81,8 +81,9 @@
   o  From the console, use UP to browse the command line history and TAB
      to autocomplete command and map names.
 
-  o  There is currently no CD Music volume support. cd_sdl.c needs
-     replacing with cd_linux.c, cd_bsd.c etc..
+  o  There is currently no CD Music volume support and SDL2 doesn't
+     support CD audio. cd_sdl.c needs replacing with cd_linux.c,
+     cd_bsd.c etc..
 
   o  In windows, alternative CD drives are accessible by "quakespasm
      -cddev F" (for example)
@@ -118,8 +119,8 @@
   quakespasm.pak. This file should be placed alongside your quakespasm
   binary and id1 directory.
 
-  To check-out the latest version of QuakeSpasm, use svn co
-  svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
+  To check-out the latest version of QuakeSpasm, use
+  svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
 
   4.1.  Linux/Unix
 
@@ -200,8 +201,8 @@
 
   o  Fix texture memory leak when changing video modes with SDL2.
 
-  o  Fix rare incorrect mdl lighting on 64-bit builds. (details here.)
-     http://forums.inside3d.com/viewtopic.php?f=3&t=5620
+  o  Fix rare incorrect mdl lighting on 64-bit builds. (details here:
+     http://forums.inside3d.com/viewtopic.php?f=3&t=5620)
 
   o  Fix fullbrights turning black after "kill" command (bug introduced
      in 0.90.0).
@@ -668,27 +669,25 @@
   o  Add uHexen2's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
-     volume controls
-
-  o  Test usb keyboards.
+     volume controls and SDL2 doesn't support CD audio
 
 
   8.  Copyright
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
-     LICENSE Version 2 http://www.gnu.org/licenses/gpl-2.0.html
+     LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
 
   o  Quakespasm console background image by AAS, released under the
-     CREATIVE COMMONS PUBLIC LICENSE
+     CREATIVE COMMONS PUBLIC LICENSE:
      http://creativecommons.org/licenses/by/3.0/legalcode
 
 
   9.  Contact
 
-  o  QuakeSpasm Project page
+  o  QuakeSpasm Project page:
      http://sourceforge.net/projects/quakespasm
 
-  o  Bug reports
+  o  Bug reports:
      http://sourceforge.net/p/quakespasm/bugs/?source=navbar
 
   o  Ozkan <mailto:gmail - dot - com - username - sezeroz> (project
@@ -709,4 +708,3 @@
      http://www.celephais.net/board/view_thread.php?id=60452
 
   o  Inside 3D forums: http://forums.inside3d.com/viewforum.php?f=14
-

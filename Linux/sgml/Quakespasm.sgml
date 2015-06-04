@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited June 3, 2015</em>
+<em>Page last edited June 4, 2015</em>
 
 <sect> About <p>
 
@@ -38,7 +38,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 <item><bf>Shift+Escape</bf> draws the Console.
 <item>From the console, use <bf>UP</bf> to browse the command line history and
 <bf>TAB</bf> to autocomplete command and map names.
-<item>There is currently no CD Music volume support. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..
+<item>There is currently no CD Music volume support and SDL2 doesn't support CD audio. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..
 <item>In windows, alternative CD drives are accessible by "<bf>quakespasm -cddev F</bf>" (for example)
 
 <item>Quakespasm allows loading new games (mods) on the fly with "<bf>game</bf> <em>GAMENAME {-quoth/hipnotic/rogue}</em>"
@@ -355,8 +355,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <sect> Todo <p>
 <itemize>
 <item>Add uHexen2's first person camera (and menu item)
-<item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls
-<item>Test usb keyboards.
+<item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls and SDL2 doesn't support CD audio
 </itemize>
 
 <sect> Copyright <p>
