@@ -442,6 +442,16 @@ void Mod_LoadTextures (lump_t *l)
 		for (j=0 ; j<MIPLEVELS ; j++)
 			tx->offsets[j] = mt->offsets[j] + sizeof(texture_t) - sizeof(miptex_t);
 		// the pixels immediately follow the structures
+
+		// ericw -- check for pixels extending past the end of the lump.
+		// appears in the wild; e.g. jam2_tronyn.bsp (func_mapjam2),
+		// kellbase1.bsp (quoth), and can lead to a segfault if we read past
+		// the end of the .bsp file buffer
+		if (((byte*)(mt+1) + pixels) > (mod_base + l->fileofs + l->filelen))
+		{
+			Con_DPrintf("Texture %s extends past end of lump\n", mt->name);
+			pixels = q_max(0, (mod_base + l->fileofs + l->filelen) - (byte*)(mt+1));
+		}
 		memcpy ( tx+1, mt+1, pixels);
 
 		tx->update_warp = false; //johnfitz
