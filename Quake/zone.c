@@ -804,6 +804,19 @@ void Cache_Flush (void)
 		Cache_Free ( cache_head.next->user, true); // reclaim the space //johnfitz -- added second argument
 }
 
+/*
+============
+Cache_FlushReload
+
+ericw -- "flush" command is used by modders to view modified mdl files. need to
+call GLMesh_LoadVertexBuffers to keep that use case working with GLSL renderer.
+============
+*/
+static void Cache_FlushReload (void)
+{
+	Cache_Flush ();
+	GLMesh_LoadVertexBuffers ();
+}
 
 /*
 ============
@@ -843,7 +856,7 @@ void Cache_Init (void)
 	cache_head.next = cache_head.prev = &cache_head;
 	cache_head.lru_next = cache_head.lru_prev = &cache_head;
 
-	Cmd_AddCommand ("flush", Cache_Flush);
+	Cmd_AddCommand ("flush", Cache_FlushReload);
 }
 
 /*
