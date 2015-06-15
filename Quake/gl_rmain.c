@@ -113,6 +113,7 @@ qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_d
 
 static GLuint r_gamma_texture;
 static GLuint r_gamma_program;
+static int r_gamma_texture_width, r_gamma_texture_height;
 
 // uniforms used in gamma shader
 static GLuint gammaLoc;
@@ -173,6 +174,8 @@ GLSLGamma_GammaCorrect
 */
 void GLSLGamma_GammaCorrect (void)
 {
+	float smax, tmax;
+
 	if (!gl_glsl_gamma_able)
 		return;
 
@@ -184,8 +187,17 @@ void GLSLGamma_GammaCorrect (void)
 	{
 		glGenTextures (1, &r_gamma_texture);
 		glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
+
+		r_gamma_texture_width = glwidth;
+		r_gamma_texture_height = glheight;
+
+		if (!gl_texture_NPOT)
+		{
+			r_gamma_texture_width = TexMgr_Pad(r_gamma_texture_width);
+			r_gamma_texture_height = TexMgr_Pad(r_gamma_texture_height);
+		}
 	
-		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, glwidth, glheight, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
+		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, r_gamma_texture_width, r_gamma_texture_height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	}
@@ -215,14 +227,17 @@ void GLSLGamma_GammaCorrect (void)
 
 	glViewport (glx, gly, glwidth, glheight);
 
+	smax = glwidth/(float)r_gamma_texture_width;
+	tmax = glheight/(float)r_gamma_texture_height;
+
 	glBegin (GL_QUADS);
 	glTexCoord2f (0, 0);
 	glVertex2f (-1, -1);
-	glTexCoord2f (1, 0);
+	glTexCoord2f (smax, 0);
 	glVertex2f (1, -1);
-	glTexCoord2f (1, 1);
+	glTexCoord2f (smax, tmax);
 	glVertex2f (1, 1);
-	glTexCoord2f (0, 1);
+	glTexCoord2f (0, tmax);
 	glVertex2f (-1, 1);
 	glEnd ();
 	

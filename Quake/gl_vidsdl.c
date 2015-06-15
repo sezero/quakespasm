@@ -1160,7 +1160,7 @@ static void GL_CheckExtensions (void)
 	//
 	if (COM_CheckParm("-noglslgamma"))
 		Con_Warning ("GLSL gamma disabled at command line\n");
-	else if (gl_glsl_able && gl_texture_NPOT)
+	else if (gl_glsl_able)
 	{
 		gl_glsl_gamma_able = true;
 	}
