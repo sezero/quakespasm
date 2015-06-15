@@ -953,7 +953,8 @@ johnfitz -- modified to use glwidth/glheight instead of vid.width/vid.height
 */
 void SCR_TileClear (void)
 {
-	if (scr_tileclear_updates >= vid.numpages && !gl_clear.value)
+	//ericw -- added check for glsl gamma. TODO: remove this ugly optimization?
+	if (scr_tileclear_updates >= vid.numpages && !gl_clear.value && !(gl_glsl_gamma_able && vid_gamma.value != 1))
 		return;
 	scr_tileclear_updates++;
 
