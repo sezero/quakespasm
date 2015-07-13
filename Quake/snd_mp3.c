@@ -89,6 +89,26 @@ static inline qboolean tag_is_id3v2(const unsigned char *data, size_t length)
 	return false;
 }
 
+/* http://wiki.hydrogenaud.io/index.php?title=APEv1_specification
+ * http://wiki.hydrogenaud.io/index.php?title=APEv2_specification
+ * Detect an APEv2 tag. (APEv1 has no header, so no luck.)
+ */
+static inline qboolean tag_is_apetag(const unsigned char *data, size_t length)
+{
+	unsigned int v;
+
+	if (length < 32) return false;
+	if (memcmp(data,"APETAGEX",8) != 0)
+		return false;
+	v = (data[11]<<24) | (data[10]<<16) | (data[9]<<8) | data[8];
+	if (v != 2000U/* && v != 1000U*/)
+		return false;
+	v = 0;
+	if (memcmp(&data[24],&v,4) != 0 || memcmp(&data[28],&v,4) != 0)
+		return false;
+	return true;
+}
+
 static size_t mp3_tagsize(const unsigned char *data, size_t length)
 {
 	size_t size;
@@ -104,6 +124,13 @@ static size_t mp3_tagsize(const unsigned char *data, size_t length)
 			size += 10;
 		for ( ; size < length && !data[size]; ++size)
 			;  /* Consume padding */
+		return size;
+	}
+
+	if (tag_is_apetag(data, length))
+	{
+		size = (data[15]<<24) | (data[14]<<16) | (data[13]<<8) | data[12];
+		size += 32;
 		return size;
 	}
 
@@ -495,16 +522,12 @@ static qboolean S_MP3_CodecOpenStream (snd_stream_t *stream)
 {
 	int err;
 
-#if 0 /*defined(CODECS_USE_ZONE)*/
-	stream->priv = Z_Malloc(sizeof(mp3_priv_t));
-#else
 	stream->priv = calloc(1, sizeof(mp3_priv_t));
 	if (!stream->priv)
 	{
 		Con_Printf("Insufficient memory for MP3 audio\n");
 		return false;
 	}
-#endif
 	err = mp3_startread(stream);
 	if (err != 0)
 	{
@@ -519,11 +542,7 @@ static qboolean S_MP3_CodecOpenStream (snd_stream_t *stream)
 	{
 		return true;
 	}
-#if 0 /*defined(CODECS_USE_ZONE)*/
-	Z_Free(stream->priv);
-#else
 	free(stream->priv);
-#endif
 	return false;
 }
 
@@ -536,11 +555,7 @@ static int S_MP3_CodecReadStream (snd_stream_t *stream, int bytes, void *buffer)
 static void S_MP3_CodecCloseStream (snd_stream_t *stream)
 {
 	mp3_stopread(stream);
-#if 0 /*defined(CODECS_USE_ZONE)*/
-	Z_Free(stream->priv);
-#else
 	free(stream->priv);
-#endif
 	S_CodecUtilClose(&stream);
 }
 
