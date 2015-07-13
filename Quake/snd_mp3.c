@@ -8,7 +8,7 @@
  * functions were adapted from the GPL-licensed libid3tag library, see at
  * http://www.underbit.com/products/mad/.  Adapted to Quake and Hexen II
  * game engines by O.Sezer :
- * Copyright (C) 2010-2013 O.Sezer <sezero@users.sourceforge.net>
+ * Copyright (C) 2010-2015 O.Sezer <sezero@users.sourceforge.net>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,16 +89,16 @@ static inline qboolean tag_is_id3v2(const unsigned char *data, size_t length)
 	return false;
 }
 
-static int mp3_tagsize(const unsigned char *data, size_t length)
+static size_t mp3_tagsize(const unsigned char *data, size_t length)
 {
+	size_t size;
+
 	if (tag_is_id3v1(data, length))
 		return 128;
 
 	if (tag_is_id3v2(data, length))
 	{
-		unsigned char flags;
-		unsigned int size;
-		flags = data[5];
+		unsigned char flags = data[5];
 		size = 10 + (data[6]<<21) + (data[7]<<14) + (data[8]<<7) + data[9];
 		if (flags & ID3_TAG_FLAG_FOOTERPRESENT)
 			size += 10;
