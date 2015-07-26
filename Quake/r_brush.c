@@ -248,7 +248,7 @@ void R_DrawSequentialPoly (msurface_t *s)
 	if (s->flags & SURF_DRAWTURB)
 	{
 		if (currententity->alpha == ENTALPHA_DEFAULT)
-			entalpha = CLAMP(0.0,r_wateralpha.value,1.0);
+			entalpha = CLAMP(0.0, GL_WaterAlphaForSurface(s), 1.0);
 
 		if (entalpha < 1)
 		{

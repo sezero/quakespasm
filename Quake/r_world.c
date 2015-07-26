@@ -638,6 +638,23 @@ void R_DrawTextureChains_TextureOnly (qmodel_t *model, entity_t *ent, texchain_t
 
 /*
 ================
+GL_WaterAlphaForEntitySurface -- ericw
+ 
+Returns the water alpha to use for the entity and surface combination.
+================
+*/
+float GL_WaterAlphaForEntitySurface (entity_t *ent, msurface_t *s)
+{
+	float entalpha;
+	if (ent == NULL || ent->alpha == ENTALPHA_DEFAULT)
+		entalpha = GL_WaterAlphaForSurface(s);
+	else
+		entalpha = ENTALPHA_DECODE(ent->alpha);
+	return entalpha;
+}
+
+/*
+================
 R_DrawTextureChains_Water -- johnfitz
 ================
 */
@@ -653,13 +670,6 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe) // ericw -- !r_drawworld_cheatsafe check moved to R_DrawWorld_Water ()
 		return;
 
-	if (ent == NULL || ent->alpha == ENTALPHA_DEFAULT)
-		entalpha = r_wateralpha.value;
-	else
-		entalpha = ENTALPHA_DECODE(ent->alpha);
-
-	R_BeginTransparentDrawing (entalpha);
-
 	if (r_oldwater.value)
 	{
 		for (i=0 ; i<model->numtextures ; i++)
@@ -668,11 +678,14 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 			if (!t || !t->texturechains[chain] || !(t->texturechains[chain]->flags & SURF_DRAWTURB))
 				continue;
 			bound = false;
+			entalpha = 1.0f;
 			for (s = t->texturechains[chain]; s; s = s->texturechain)
 				if (!s->culled)
 				{
 					if (!bound) //only bind once we are sure we need this texture
 					{
+						entalpha = GL_WaterAlphaForEntitySurface (ent, s);
+						R_BeginTransparentDrawing (entalpha);
 						GL_Bind (t->gltexture);
 						bound = true;
 					}
@@ -682,6 +695,7 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 						rs_brushpasses++;
 					}
 				}
+			R_EndTransparentDrawing (entalpha);
 		}
 	}
 	else
@@ -692,11 +706,14 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 			if (!t || !t->texturechains[chain] || !(t->texturechains[chain]->flags & SURF_DRAWTURB))
 				continue;
 			bound = false;
+			entalpha = 1.0f;
 			for (s = t->texturechains[chain]; s; s = s->texturechain)
 				if (!s->culled)
 				{
 					if (!bound) //only bind once we are sure we need this texture
 					{
+						entalpha = GL_WaterAlphaForEntitySurface (ent, s);
+						R_BeginTransparentDrawing (entalpha);
 						GL_Bind (t->warpimage);
 
 						if (model != cl.worldmodel)
@@ -712,10 +729,9 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 					DrawGLPoly (s->polys);
 					rs_brushpasses++;
 				}
+			R_EndTransparentDrawing (entalpha);
 		}
 	}
-
-	R_EndTransparentDrawing (entalpha);
 }
 
 /*

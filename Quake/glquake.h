@@ -132,6 +132,9 @@ extern	cvar_t	r_fullbright;
 extern	cvar_t	r_lightmap;
 extern	cvar_t	r_shadows;
 extern	cvar_t	r_wateralpha;
+extern	cvar_t	r_lavaalpha;
+extern	cvar_t	r_telealpha;
+extern	cvar_t	r_slimealpha;
 extern	cvar_t	r_dynamic;
 extern	cvar_t	r_novis;
 
@@ -296,6 +299,8 @@ typedef struct glsl_attrib_binding_s {
 	GLuint attrib;
 } glsl_attrib_binding_t;
 
+extern float	map_wateralpha, map_lavaalpha, map_telealpha, map_slimealpha; //ericw
+
 //johnfitz -- fog functions called from outside gl_fog.c
 void Fog_ParseServerMessage (void);
 float *Fog_GetColor (void);
@@ -382,6 +387,8 @@ void GL_ClearBufferBindings ();
 
 void GLSLGamma_DeleteTexture (void);
 void GLSLGamma_GammaCorrect (void);
+
+float GL_WaterAlphaForSurface (msurface_t *fa);
 
 #endif	/* __GLQUAKE_H */
 

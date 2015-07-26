@@ -110,6 +110,64 @@ static void R_Model_ExtraFlags_List_f (cvar_t *var)
 }
 
 /*
+====================
+R_SetWateralpha_f -- ericw
+====================
+*/
+static void R_SetWateralpha_f (cvar_t *var)
+{
+	map_wateralpha = var->value;
+}
+
+/*
+====================
+R_SetLavaalpha_f -- ericw
+====================
+*/
+static void R_SetLavaalpha_f (cvar_t *var)
+{
+	map_lavaalpha = var->value;
+}
+
+/*
+====================
+R_SetTelealpha_f -- ericw
+====================
+*/
+static void R_SetTelealpha_f (cvar_t *var)
+{
+	map_telealpha = var->value;
+}
+
+/*
+====================
+R_SetSlimealpha_f -- ericw
+====================
+*/
+static void R_SetSlimealpha_f (cvar_t *var)
+{
+	map_slimealpha = var->value;
+}
+
+/*
+====================
+GL_WaterAlphaForSurfface -- ericw
+====================
+*/
+float GL_WaterAlphaForSurface (msurface_t *fa)
+{
+	if (fa->flags & SURF_DRAWLAVA)
+		return map_lavaalpha > 0 ? map_lavaalpha : map_wateralpha;
+	else if (fa->flags & SURF_DRAWTELE)
+		return map_telealpha > 0 ? map_telealpha : map_wateralpha;
+	else if (fa->flags & SURF_DRAWSLIME)
+		return map_slimealpha > 0 ? map_slimealpha : map_wateralpha;
+	else
+		return map_wateralpha;
+}
+
+
+/*
 ===============
 R_Init
 ===============
@@ -128,6 +186,7 @@ void R_Init (void)
 	Cvar_RegisterVariable (&r_drawviewmodel);
 	Cvar_RegisterVariable (&r_shadows);
 	Cvar_RegisterVariable (&r_wateralpha);
+	Cvar_SetCallback (&r_wateralpha, R_SetWateralpha_f);
 	Cvar_RegisterVariable (&r_dynamic);
 	Cvar_RegisterVariable (&r_novis);
 	Cvar_SetCallback (&r_novis, R_VisChanged);
@@ -173,6 +232,12 @@ void R_Init (void)
 	//johnfitz
 
 	Cvar_RegisterVariable (&gl_zfix); // QuakeSpasm z-fighting fix
+	Cvar_RegisterVariable (&r_lavaalpha);
+	Cvar_RegisterVariable (&r_telealpha);
+	Cvar_RegisterVariable (&r_slimealpha);
+	Cvar_SetCallback (&r_lavaalpha, R_SetLavaalpha_f);
+	Cvar_SetCallback (&r_telealpha, R_SetTelealpha_f);
+	Cvar_SetCallback (&r_slimealpha, R_SetSlimealpha_f);
 
 	R_InitParticles ();
 	R_SetClearColor_f (&r_clearcolor); //johnfitz
@@ -256,6 +321,61 @@ void R_NewGame (void)
 }
 
 /*
+=============
+R_ParseWorldspawn
+
+called at map load
+=============
+*/
+static void R_ParseWorldspawn (void)
+{
+	char key[128], value[4096];
+	const char *data;
+
+	map_wateralpha = r_wateralpha.value;
+	map_lavaalpha = r_lavaalpha.value;
+	map_telealpha = r_telealpha.value;
+	map_slimealpha = r_slimealpha.value;
+
+	data = COM_Parse(cl.worldmodel->entities);
+	if (!data)
+		return; // error
+	if (com_token[0] != '{')
+		return; // error
+	while (1)
+	{
+		data = COM_Parse(data);
+		if (!data)
+			return; // error
+		if (com_token[0] == '}')
+			break; // end of worldspawn
+		if (com_token[0] == '_')
+			strcpy(key, com_token + 1);
+		else
+			strcpy(key, com_token);
+		while (key[strlen(key)-1] == ' ') // remove trailing spaces
+			key[strlen(key)-1] = 0;
+		data = COM_Parse(data);
+		if (!data)
+			return; // error
+		strcpy(value, com_token);
+
+		if (!strcmp("wateralpha", key))
+			map_wateralpha = atof(value);
+
+		if (!strcmp("lavaalpha", key))
+			map_lavaalpha = atof(value);
+
+		if (!strcmp("telealpha", key))
+			map_telealpha = atof(value);
+
+		if (!strcmp("slimealpha", key))
+			map_slimealpha = atof(value);
+	}
+}
+
+
+/*
 ===============
 R_NewMap
 ===============
@@ -284,6 +404,7 @@ void R_NewMap (void)
 
 	Sky_NewMap (); //johnfitz -- skybox in worldspawn
 	Fog_NewMap (); //johnfitz -- global fog in worldspawn
+	R_ParseWorldspawn (); //ericw -- wateralpha, lavaalpha, telealpha, slimealpha in worldspawn
 
 	load_subdivide_size = gl_subdivide_size.value; //johnfitz -- is this the right place to set this?
 }
