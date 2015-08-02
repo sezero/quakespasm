@@ -412,7 +412,7 @@ void R_SetupAliasFrame (aliashdr_t *paliashdr, int frame, lerpdata_t *lerpdata)
 
 	if ((frame >= paliashdr->numframes) || (frame < 0))
 	{
-		Con_DPrintf ("R_AliasSetupFrame: no such frame %d\n", frame);
+		Con_DPrintf ("R_AliasSetupFrame: no such frame %d for '%s'\n", frame, e->model->name);
 		frame = 0;
 	}
 
