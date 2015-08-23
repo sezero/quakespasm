@@ -165,9 +165,16 @@ void Cbuf_Execute (void)
 				break;
 		}
 
-
-		memcpy (line, text, i);
-		line[i] = 0;
+		if (i > (int)sizeof(line) - 1)
+		{
+			memcpy (line, text, sizeof(line) - 1);
+			line[sizeof(line) - 1] = 0;
+		}
+		else
+		{
+			memcpy (line, text, i);
+			line[i] = 0;
+		}
 
 // delete the text from the command buffer and move remaining commands down
 // this is necessary because commands (exec, alias) can insert data at the
