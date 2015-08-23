@@ -819,7 +819,7 @@ extern filelist_item_t	*demolist;
 
 typedef struct arg_completion_type_s
 {
-	char		*command;
+	const char		*command;
 	filelist_item_t	**filelist;
 } arg_completion_type_t;
 
