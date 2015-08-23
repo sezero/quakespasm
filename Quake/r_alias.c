@@ -36,8 +36,6 @@ float	r_avertexnormals[NUMVERTEXNORMALS][3] =
 #include "anorms.h"
 };
 
-vec3_t	shadevector;
-
 extern vec3_t	lightcolor; //johnfitz -- replaces "float shadelight" for lit support
 
 // precalculated dot products for quantized angles
@@ -51,6 +49,7 @@ extern	vec3_t			lightspot;
 
 float	*shadedots = r_avertexnormal_dots[0];
 vec3_t	shadevector;
+
 float	entalpha; //johnfitz
 
 qboolean	overbright; //johnfitz
