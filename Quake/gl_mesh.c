@@ -472,7 +472,7 @@ void GLMesh_LoadVertexBuffers (void)
 		if (!(m = cl.model_precache[j])) break;
 		if (m->type != mod_alias) continue;
 
-		hdr = Mod_Extradata (m);
+		hdr = (aliashdr_t *) Mod_Extradata (m);
 
 		// ericw -- RMQEngine stored these vbo*ofs values in aliashdr_t, but we must not
 		// mutate Mod_Extradata since it might be reloaded from disk, so I moved them to qmodel_t
@@ -513,7 +513,7 @@ void GLMesh_LoadVertexBuffers (void)
 		if (!(m = cl.model_precache[j])) break;
 		if (m->type != mod_alias) continue;
 
-		hdr = Mod_Extradata (m);
+		hdr = (aliashdr_t *) Mod_Extradata (m);
 		desc = (aliasmesh_t *) ((byte *) hdr + hdr->meshdesc);
 
 		//johnfitz -- padded skins
