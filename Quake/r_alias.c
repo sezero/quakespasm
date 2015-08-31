@@ -685,7 +685,7 @@ void R_DrawAliasModel (entity_t *e)
 	anim = (int)(cl.time*10) & 3;
 	if ((e->skinnum >= paliashdr->numskins) || (e->skinnum < 0))
 	{
-		Con_DPrintf ("R_DrawAliasModel: no such skin # %dn", e->skinnum);
+		Con_DPrintf ("R_DrawAliasModel: no such skin # %d for '%s'\n", e->skinnum, e->model->name);
 		tx = NULL; // NULL will give the checkerboard texture
 		fb = NULL;
 	}
