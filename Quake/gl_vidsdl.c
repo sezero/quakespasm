@@ -588,10 +588,6 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 		}
 		if (!draw_context)
 			Sys_Error ("Couldn't create window");
-
-		gl_context = SDL_GL_CreateContext (draw_context);
-		if (!gl_context)
-			Sys_Error ("Couldn't create GL context");
 	}
 
 	/* Ensure the window is not fullscreen */
@@ -617,6 +613,13 @@ static qboolean VID_SetMode (int width, int height, int bpp, qboolean fullscreen
 	}
 
 	SDL_ShowWindow (draw_context);
+
+	/* Create GL context if needed */
+	if (!gl_context) {
+		gl_context = SDL_GL_CreateContext(draw_context);
+		if (!gl_context)
+			Sys_Error("Couldn't create GL context");
+	}
 
 	gl_swap_control = true;
 	if (SDL_GL_SetSwapInterval ((vid_vsync.value) ? 1 : 0) == -1)
