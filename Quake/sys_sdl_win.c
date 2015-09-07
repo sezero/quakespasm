@@ -175,8 +175,8 @@ static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
 }
 
 typedef enum { dpi_unaware = 0, dpi_system_aware = 1, dpi_monitor_aware = 2 } dpi_awareness;
-typedef BOOL(*SetProcessDPIAwareFunc)();
-typedef HRESULT(*SetProcessDPIAwarenessFunc)(dpi_awareness value);
+typedef BOOL (WINAPI *SetProcessDPIAwareFunc)();
+typedef HRESULT (WINAPI *SetProcessDPIAwarenessFunc)(dpi_awareness value);
 
 static void Sys_SetDPIAware (void)
 {
