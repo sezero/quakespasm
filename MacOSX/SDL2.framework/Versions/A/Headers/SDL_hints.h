@@ -526,6 +526,14 @@ extern "C" {
 #define SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES    "SDL_VIDEO_MAC_FULLSCREEN_SPACES"
 
 /**
+*  \brief  When set don't force the SDL app to become a foreground process
+*
+*  This hint only applies to Mac OS X.
+*
+*/
+#define SDL_HINT_MAC_BACKGROUND_APP    "SDL_MAC_BACKGROUND_APP"
+    
+/**
  * \brief Android APK expansion main file version. Should be a string number like "1", "2" etc.
  */
 #define SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION "SDL_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION"
@@ -584,6 +592,15 @@ extern "C" {
  *   "1"       - SDL will not install a signal handler at all.
  */
 #define SDL_HINT_NO_SIGNAL_HANDLERS   "SDL_NO_SIGNAL_HANDLERS"
+
+/**
+ *  \brief Tell SDL not to generate window-close events for Alt+F4 on Windows.
+ *
+ * The variable can be set to the following values:
+ *   "0"       - SDL will generate a window-close event when it sees Alt+F4.
+ *   "1"       - SDL will only do normal key handling for Alt+F4.
+ */
+#define SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4	"SDL_WINDOWS_NO_CLOSE_ON_ALT_F4"
 
 /**
  *  \brief  An enumeration of hint priorities
