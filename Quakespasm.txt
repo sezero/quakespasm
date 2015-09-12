@@ -254,6 +254,8 @@
      "trying to load ent", "bad chunk length", "meshing",
      "PR_AlocStringSlots: realloc'ing"
 
+  o  r_pos command shows player position, aka r_speeds + viewpos.
+
   6.1.5.  Code cleanup
 
   o  Clean up IDE project files to build on fresh systems.

@@ -62,6 +62,7 @@ cvar_t	r_norefresh = {"r_norefresh","0",CVAR_NONE};
 cvar_t	r_drawentities = {"r_drawentities","1",CVAR_NONE};
 cvar_t	r_drawviewmodel = {"r_drawviewmodel","1",CVAR_NONE};
 cvar_t	r_speeds = {"r_speeds","0",CVAR_NONE};
+cvar_t	r_pos = {"r_pos","0",CVAR_NONE};
 cvar_t	r_fullbright = {"r_fullbright","0",CVAR_NONE};
 cvar_t	r_lightmap = {"r_lightmap","0",CVAR_NONE};
 cvar_t	r_shadows = {"r_shadows","0",CVAR_ARCHIVE};
@@ -998,7 +999,15 @@ void R_RenderView (void)
 
 	//johnfitz -- modified r_speeds output
 	time2 = Sys_DoubleTime ();
-	if (r_speeds.value == 2)
+	if (r_pos.value)
+		Con_Printf ("x %i y %i z %i (pitch %i yaw %i roll %i)\n",
+			(int)cl_entities[cl.viewentity].origin[0],
+			(int)cl_entities[cl.viewentity].origin[1],
+			(int)cl_entities[cl.viewentity].origin[2],
+			(int)cl.viewangles[PITCH],
+			(int)cl.viewangles[YAW],
+			(int)cl.viewangles[ROLL]);
+	else if (r_speeds.value == 2)
 		Con_Printf ("%3i ms  %4i/%4i wpoly %4i/%4i epoly %3i lmap %4i/%4i sky %1.1f mtex\n",
 					(int)((time2-time1)*1000),
 					rs_brushpolys,

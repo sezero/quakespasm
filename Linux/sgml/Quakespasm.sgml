@@ -142,6 +142,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)
 <item> Silence "exceeded standard limit" messages unless developer cvar is >= 1.
 <item> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
+<item> r_pos command shows player position, aka r_speeds + viewpos.
 </itemize>
 
 <sect2> Code cleanup

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <HTML>
 <HEAD>
- <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.69">
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.66">
  <TITLE>QuakeSpasm</TITLE>
 </HEAD>
 <BODY>
@@ -110,7 +110,8 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 <LI>There is currently no CD Music volume support and SDL2 doesn't support CD audio. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
 <LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
 </LI>
-<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"</LI>
+<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"
+</LI>
 <LI>Use "<B>quakespasm -condebug</B>" to save console log to "qconsole.log". SDL2 builds no longer generate stdout.txt/stderr.txt.</LI>
 </UL>
 </P>
@@ -235,6 +236,7 @@ these patched libSDL binaries may help.
 <LI> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)</LI>
 <LI> Silence "exceeded standard limit" messages unless developer cvar is >= 1.</LI>
 <LI> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
+<LI> r_pos command shows player position, aka r_speeds + viewpos.</LI>
 </UL>
 </P>
 

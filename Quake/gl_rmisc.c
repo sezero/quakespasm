@@ -191,6 +191,7 @@ void R_Init (void)
 	Cvar_RegisterVariable (&r_novis);
 	Cvar_SetCallback (&r_novis, R_VisChanged);
 	Cvar_RegisterVariable (&r_speeds);
+	Cvar_RegisterVariable (&r_pos);
 
 	Cvar_RegisterVariable (&gl_finish);
 	Cvar_RegisterVariable (&gl_clear);
