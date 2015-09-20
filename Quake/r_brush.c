@@ -961,15 +961,26 @@ void GL_BuildLightmaps (void)
 
 GLuint gl_bmodel_vbo = 0;
 
+void GL_DeleteBModelVertexBuffer (void)
+{
+	if (!(gl_vbo_able && gl_mtexable && gl_max_texture_units >= 3))
+		return;
+
+	GL_DeleteBuffersFunc (1, &gl_bmodel_vbo);
+	gl_bmodel_vbo = 0;
+
+	GL_ClearBufferBindings ();
+}
+
 /*
 ==================
-GL_BuildVBOs
+GL_BuildBModelVertexBuffer
 
 Deletes gl_bmodel_vbo if it already exists, then rebuilds it with all
 surfaces from world + all brush models
 ==================
 */
-void GL_BuildVBOs (void)
+void GL_BuildBModelVertexBuffer (void)
 {
 	unsigned int	numverts, varray_bytes, varray_index;
 	int		i, j;

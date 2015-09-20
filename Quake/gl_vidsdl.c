@@ -737,14 +737,18 @@ static void VID_Restart (void)
 		return;
 	}
 	
-// ericw -- depending on platform / SDL version, after a video mode change we
-// can have a new context (all textures are already freed) or the same context
-// as before, in which case we need to delete the old textures to avoid a
-// memory leak.
+// ericw -- OS X, SDL1: textures, VBO's invalid after mode change
+//          OS X, SDL2: still valid after mode change
+// To handle both cases, delete all GL objects (textures, VBO, GLSL) now.
+// We must not interleave deleting the old objects with creating new ones, because
+// one of the new objects could be given the same ID as an invalid handle
+// which is later deleted.
 
 	TexMgr_DeleteTextureObjects ();
 	GLSLGamma_DeleteTexture ();
 	R_DeleteShaders ();
+	GL_DeleteBModelVertexBuffer ();
+	GLMesh_DeleteVertexBuffers ();
 
 //
 // set new mode
@@ -753,7 +757,7 @@ static void VID_Restart (void)
 
 	GL_Init ();
 	TexMgr_ReloadImages ();
-	GL_BuildVBOs ();
+	GL_BuildBModelVertexBuffer ();
 	GLMesh_LoadVertexBuffers ();
 	GL_SetupState ();
 

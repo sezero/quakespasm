@@ -85,9 +85,6 @@ static const GLint pose2VertexAttrIndex = 2;
 static const GLint pose2NormalAttrIndex = 3;
 static const GLint texCoordsAttrIndex = 4;
 
-extern GLuint r_meshvbo;
-extern GLuint r_meshindexesvbo;
-
 /*
 =============
 GLARB_GetXYZOffset
@@ -237,8 +234,8 @@ void GL_DrawAliasFrame_GLSL (aliashdr_t *paliashdr, lerpdata_t lerpdata, gltextu
 
 	GL_UseProgramFunc (r_alias_program);
 
-	GL_BindBuffer (GL_ARRAY_BUFFER, r_meshvbo);
-	GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, r_meshindexesvbo);
+	GL_BindBuffer (GL_ARRAY_BUFFER, currententity->model->meshvbo);
+	GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, currententity->model->meshindexesvbo);
 
 	GL_EnableVertexAttribArrayFunc (texCoordsAttrIndex);
 	GL_EnableVertexAttribArrayFunc (pose1VertexAttrIndex);

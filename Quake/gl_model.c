@@ -200,6 +200,9 @@ void Mod_ResetAll (void)
 	int		i;
 	qmodel_t	*mod;
 
+	//ericw -- free alias model VBOs
+	GLMesh_DeleteVertexBuffers ();
+	
 	for (i=0 , mod=mod_known ; i<mod_numknown ; i++, mod++)
 	{
 		if (!mod->needload) //otherwise Mod_ClearAll() did it already
