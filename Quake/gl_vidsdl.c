@@ -760,6 +760,7 @@ static void VID_Restart (void)
 	GL_BuildBModelVertexBuffer ();
 	GLMesh_LoadVertexBuffers ();
 	GL_SetupState ();
+	Fog_SetupState ();
 
 	//warpimages needs to be recalculated
 	TexMgr_RecalcWarpImageSize ();

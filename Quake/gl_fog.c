@@ -394,5 +394,17 @@ void Fog_Init (void)
 	fog_green = DEFAULT_GRAY;
 	fog_blue = DEFAULT_GRAY;
 
+	Fog_SetupState ();
+}
+
+/*
+=============
+Fog_SetupState
+ 
+ericw -- moved from Fog_Init, state that needs to be setup when a new context is created
+=============
+*/
+void Fog_SetupState (void)
+{
 	glFogi(GL_FOG_MODE, GL_EXP2);
 }

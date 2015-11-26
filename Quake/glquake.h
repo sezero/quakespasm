@@ -313,6 +313,7 @@ void Fog_StopAdditive (void);
 void Fog_SetupFrame (void);
 void Fog_NewMap (void);
 void Fog_Init (void);
+void Fog_SetupState (void);
 
 void R_NewGame (void);
 
