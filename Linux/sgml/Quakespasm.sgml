@@ -122,6 +122,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix a wrong alpha-sorting bug introduced in 0.90.1.
 <item> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
 <item> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
+<item> Fix for "flush" command not reloading mdl's from disk, introduced in 0.90.1.
 </itemize>
 
 <sect2> Visual improvements
@@ -133,7 +134,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <sect2> Interface improvements
 <itemize>
 <item> New r_pos command to show player position.
-<item> NaN detection in traceline now warns instead of error.
+<item> NaN detection in traceline with "developer 1" set now warns instead of errors.
 </itemize>
 
 <sect2> Code cleanup / Other

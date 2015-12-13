@@ -229,6 +229,9 @@
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 
+  o  Fix for "flush" command not reloading mdl's from disk, introduced in
+     0.90.1.
+
   6.1.2.  Visual improvements
 
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
@@ -244,7 +247,7 @@
 
   o  New r_pos command to show player position.
 
-  o  NaN detection in traceline now warns instead of error.
+  o  NaN detection in traceline with "developer 1" set now warns instead of errors.
 
   6.1.4.  Code cleanup / Other
 
