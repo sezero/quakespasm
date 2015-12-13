@@ -251,7 +251,7 @@ void GLSLGamma_GammaCorrect (void)
 	GL_UseProgramFunc (0);
 	
 // clear cached binding
-	GL_Bind (notexture);
+	GL_ClearBindings ();
 }
 
 /*

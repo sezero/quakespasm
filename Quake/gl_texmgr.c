@@ -1521,3 +1521,21 @@ static void GL_DeleteTexture (gltexture_t *texture)
 
 	texture->texnum = 0;
 }
+
+/*
+================
+GL_ClearBindings -- ericw
+ 
+Invalidates cached bindings, so the next GL_Bind calls for each TMU will
+make real glBindTexture calls.
+Call this after changing the binding outside of GL_Bind.
+================
+*/
+void GL_ClearBindings(void)
+{
+	int i;
+	for (i = 0; i < 3; i++)
+	{
+		currenttexture[i] = -1;
+	}
+}

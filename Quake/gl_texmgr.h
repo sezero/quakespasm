@@ -104,6 +104,7 @@ void GL_SelectTexture (GLenum target);
 void GL_DisableMultitexture (void); //selects texture unit 0
 void GL_EnableMultitexture (void); //selects texture unit 1
 void GL_Bind (gltexture_t *texture);
+void GL_ClearBindings (void);
 
 #endif	/* _GL_TEXMAN_H */
 
