@@ -41,17 +41,18 @@
 <H2><A NAME="toc6">6.</A> <A HREF="Quakespasm.html#s6">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.90.1</A>
-<LI><A NAME="toc6.2">6.2</A> <A HREF="Quakespasm.html#ss6.2">Changes in 0.90.0</A>
-<LI><A NAME="toc6.3">6.3</A> <A HREF="Quakespasm.html#ss6.3">Changes in 0.85.9</A>
-<LI><A NAME="toc6.4">6.4</A> <A HREF="Quakespasm.html#ss6.4">Changes in 0.85.8</A>
-<LI><A NAME="toc6.5">6.5</A> <A HREF="Quakespasm.html#ss6.5">Changes in 0.85.7</A>
-<LI><A NAME="toc6.6">6.6</A> <A HREF="Quakespasm.html#ss6.6">Changes in 0.85.6</A>
-<LI><A NAME="toc6.7">6.7</A> <A HREF="Quakespasm.html#ss6.7">Changes in 0.85.5</A>
-<LI><A NAME="toc6.8">6.8</A> <A HREF="Quakespasm.html#ss6.8">Changes in 0.85.4</A>
-<LI><A NAME="toc6.9">6.9</A> <A HREF="Quakespasm.html#ss6.9">Changes in 0.85.3</A>
-<LI><A NAME="toc6.10">6.10</A> <A HREF="Quakespasm.html#ss6.10">Changes in 0.85.2</A>
-<LI><A NAME="toc6.11">6.11</A> <A HREF="Quakespasm.html#ss6.11">Changes in 0.85.1</A>
+<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.91.1</A>
+<LI><A NAME="toc6.2">6.2</A> <A HREF="Quakespasm.html#ss6.2">Changes in 0.90.1</A>
+<LI><A NAME="toc6.3">6.3</A> <A HREF="Quakespasm.html#ss6.3">Changes in 0.90.0</A>
+<LI><A NAME="toc6.4">6.4</A> <A HREF="Quakespasm.html#ss6.4">Changes in 0.85.9</A>
+<LI><A NAME="toc6.5">6.5</A> <A HREF="Quakespasm.html#ss6.5">Changes in 0.85.8</A>
+<LI><A NAME="toc6.6">6.6</A> <A HREF="Quakespasm.html#ss6.6">Changes in 0.85.7</A>
+<LI><A NAME="toc6.7">6.7</A> <A HREF="Quakespasm.html#ss6.7">Changes in 0.85.6</A>
+<LI><A NAME="toc6.8">6.8</A> <A HREF="Quakespasm.html#ss6.8">Changes in 0.85.5</A>
+<LI><A NAME="toc6.9">6.9</A> <A HREF="Quakespasm.html#ss6.9">Changes in 0.85.4</A>
+<LI><A NAME="toc6.10">6.10</A> <A HREF="Quakespasm.html#ss6.10">Changes in 0.85.3</A>
+<LI><A NAME="toc6.11">6.11</A> <A HREF="Quakespasm.html#ss6.11">Changes in 0.85.2</A>
+<LI><A NAME="toc6.12">6.12</A> <A HREF="Quakespasm.html#ss6.12">Changes in 0.85.1</A>
 </UL>
 <P>
 <H2><A NAME="toc7">7.</A> <A HREF="Quakespasm.html#s7">Todo </A></H2>
@@ -187,7 +188,54 @@ these patched libSDL binaries may help.
 
 
 
-<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.90.1</A>
+<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.91.1</A>
+</H2>
+
+
+<H3>Bugfixes</H3>
+
+<P>
+<UL>
+<LI> Fix unwanted fog mode change upon video restart.</LI>
+<LI> Work around Intel 855 bug in status bar drawing with "r_oldwater 0" and "scr_sbaralpha 0".</LI>
+<LI> Fix an obscure GLSL bug where changing gamma would result in the screen turning to noise.</LI>
+<LI> Fix GLSL gamma causing the tiled screen border to turn white when "sizedown" is used.</LI>
+<LI> Fix an alias model VBO renderer bug where a model not precached during map start wouldn't be drawn.</LI>
+<LI> Fix the order of OpenGL context creation and window creation in SDL2 video.</LI>
+<LI> Fix a calling convention issue in windows DPI awareness function pointers.</LI>
+<LI> Fix a random texture recoloring after video mode change.</LI>
+<LI> Fix a wrong alpha-sorting bug introduced in 0.90.1.</LI>
+<LI> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).</LI>
+<LI> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).</LI>
+</UL>
+</P>
+
+<H3>Visual improvements</H3>
+
+<P>
+<UL>
+<LI> New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning specific liquid opacities (from DirectQ/RMQEngine, non-archived, default to 0), and new worldspawn keys _wateralpha, _lavaalpha, _slimealpha, _telealpha, _skyfog (unique to Quakespasm, similar to the behaviour of the "fog" worldspawn key).</LI>
+<LI> GLSL gamma is now supported on older hardware without NPOT extension.</LI>
+</UL>
+</P>
+
+<H3>Interface improvements</H3>
+
+<P>
+<UL>
+<LI> New r_pos command to show player position.</LI>
+<LI> NaN detection in traceline now warns instead of error.</LI>
+</UL>
+</P>
+
+<H3>Code cleanup / Other</H3>
+
+<P>
+<UL>
+<LI> Update third-party libraries.</LI>
+</UL>
+</P>
+<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.90.1</A>
 </H2>
 
 
@@ -236,7 +284,6 @@ these patched libSDL binaries may help.
 <LI> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)</LI>
 <LI> Silence "exceeded standard limit" messages unless developer cvar is >= 1.</LI>
 <LI> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
-<LI> r_pos command shows player position, aka r_speeds + viewpos.</LI>
 </UL>
 </P>
 
@@ -248,7 +295,7 @@ these patched libSDL binaries may help.
 <LI> Update 3rd-party libraries.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.90.0</A>
+<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">Changes in 0.90.0</A>
 </H2>
 
 <P>
@@ -293,7 +340,7 @@ these patched libSDL binaries may help.
 <LI> Other fixes and clean-ups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.3">6.3</A> <A HREF="#toc6.3">Changes in 0.85.9</A>
+<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">Changes in 0.85.9</A>
 </H2>
 
 <P>
@@ -317,7 +364,7 @@ these patched libSDL binaries may help.
 <LI> Several other minor fixes/cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.4">6.4</A> <A HREF="#toc6.4">Changes in 0.85.8</A>
+<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">Changes in 0.85.8</A>
 </H2>
 
 <P>
@@ -342,7 +389,7 @@ these patched libSDL binaries may help.
 <LI> Miscellaneous source code cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.5">6.5</A> <A HREF="#toc6.5">Changes in 0.85.7</A>
+<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">Changes in 0.85.7</A>
 </H2>
 
 <P>
@@ -360,7 +407,7 @@ these patched libSDL binaries may help.
 <LI> Several other small changes mostly invisible to the end-user</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.6">6.6</A> <A HREF="#toc6.6">Changes in 0.85.6</A>
+<H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.85.6</A>
 </H2>
 
 <P>
@@ -371,7 +418,7 @@ these patched libSDL binaries may help.
 <LI> Minor SDL video fixes.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.85.5</A>
+<H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.85.5</A>
 </H2>
 
 <P>
@@ -390,7 +437,7 @@ these patched libSDL binaries may help.
 <LI> Several code updates from uHexen2 project, several code cleanups.</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.85.4</A>
+<H2><A NAME="ss6.9">6.9</A> <A HREF="#toc6.9">Changes in 0.85.4</A>
 </H2>
 
 <P>
@@ -408,7 +455,7 @@ these patched libSDL binaries may help.
 <LI> Other minor sound and cdaudio updates</LI>
 </UL>
 </P>
-<H2><A NAME="ss6.9">6.9</A> <A HREF="#toc6.9">Changes in 0.85.3</A>
+<H2><A NAME="ss6.10">6.10</A> <A HREF="#toc6.10">Changes in 0.85.3</A>
 </H2>
 
 <P>
@@ -431,7 +478,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="ss6.10">6.10</A> <A HREF="#toc6.10">Changes in 0.85.2</A>
+<H2><A NAME="ss6.11">6.11</A> <A HREF="#toc6.11">Changes in 0.85.2</A>
 </H2>
 
 <P>
@@ -450,7 +497,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="ss6.11">6.11</A> <A HREF="#toc6.11">Changes in 0.85.1</A>
+<H2><A NAME="ss6.12">6.12</A> <A HREF="#toc6.12">Changes in 0.85.1</A>
 </H2>
 
 <P>
