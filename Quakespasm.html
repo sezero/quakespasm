@@ -12,7 +12,7 @@
 <PRE>
 </PRE>
 </P>
-<P><EM>Page last edited December 2015</EM></P>
+<P><EM>Page last edited: December 2015</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -205,9 +205,9 @@ these patched libSDL binaries may help.
 <LI> Fix a calling convention issue in windows DPI awareness function pointers.</LI>
 <LI> Fix a random texture recoloring after video mode change.</LI>
 <LI> Fix a wrong alpha-sorting bug introduced in 0.90.1.</LI>
+<LI> Fix "flush" command not reloading mdl's from disk (bug introduced in 0.90.1).</LI>
 <LI> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).</LI>
 <LI> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).</LI>
-<LI> Fix for "flush" command not reloading mdl's from disk, introduced in 0.90.1.</LI>
 </UL>
 </P>
 
@@ -247,7 +247,7 @@ these patched libSDL binaries may help.
 <LI> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).</LI>
 <LI> Fix texture memory leak when changing video modes with SDL2.</LI>
 <LI> Fix rare incorrect mdl lighting on 64-bit builds. 
-<A HREF="http://forums.inside3d.com/viewtopic.php?f=3&amp;t=5620">(details here.)</A></LI>
+<A HREF="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620">(details here.)</A></LI>
 <LI> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).</LI>
 <LI> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.</LI>
 <LI> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.</LI>
@@ -573,7 +573,7 @@ these patched libSDL binaries may help.
 <LI>
 <A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A></LI>
 <LI>
-<A HREF="http://forums.inside3d.com/viewforum.php?f=14">Inside 3D forums</A></LI>
+<A HREF="http://forums.insideqc.com">Inside3D forums</A></LI>
 </UL>
 </P>
 

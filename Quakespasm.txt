@@ -46,7 +46,7 @@
   ______________________________________________________________________
 
 
-  Page last edited December 2015
+  Page last edited: December 2015
 
 
   1.  About
@@ -225,12 +225,12 @@
 
   o  Fix a wrong alpha-sorting bug introduced in 0.90.1.
 
+  o  Fix "flush" command not reloading mdl's from disk (bug introduced
+     in 0.90.1).
+
   o  Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
-
-  o  Fix for "flush" command not reloading mdl's from disk, introduced in
-     0.90.1.
 
   6.1.2.  Visual improvements
 
@@ -247,7 +247,8 @@
 
   o  New r_pos command to show player position.
 
-  o  NaN detection in traceline with "developer 1" set now warns instead of errors.
+  o  NaN detection in traceline with "developer 1" set now warns instead
+     of errors.
 
   6.1.4.  Code cleanup / Other
 
@@ -264,7 +265,7 @@
   o  Fix texture memory leak when changing video modes with SDL2.
 
   o  Fix rare incorrect mdl lighting on 64-bit builds. (details here:
-     http://forums.inside3d.com/viewtopic.php?f=3&t=5620)
+     http://forums.insideqc.com/viewtopic.php?f=3&t=5620)
 
   o  Fix fullbrights turning black after "kill" command (bug introduced
      in 0.90.0).
@@ -769,4 +770,4 @@
   o  Func Quakespasm forum:
      http://www.celephais.net/board/view_thread.php?id=60452
 
-  o  Inside 3D forums: http://forums.inside3d.com/viewforum.php?f=14
+  o  Inside3D forums: http://forums.insideqc.com

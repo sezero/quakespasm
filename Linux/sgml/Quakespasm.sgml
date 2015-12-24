@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited December 2015</em>
+<em>Page last edited: December 2015</em>
 
 <sect> About <p>
 
@@ -120,9 +120,9 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix a calling convention issue in windows DPI awareness function pointers.
 <item> Fix a random texture recoloring after video mode change.
 <item> Fix a wrong alpha-sorting bug introduced in 0.90.1.
+<item> Fix "flush" command not reloading mdl's from disk (bug introduced in 0.90.1).
 <item> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
 <item> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
-<item> Fix for "flush" command not reloading mdl's from disk, introduced in 0.90.1.
 </itemize>
 
 <sect2> Visual improvements
@@ -148,7 +148,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <itemize>
 <item> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).
 <item> Fix texture memory leak when changing video modes with SDL2.
-<item> Fix rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.inside3d.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
+<item> Fix rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
 <item> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).
 <item> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.
 <item> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.
@@ -417,7 +417,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Downloads">
 <item><url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage">
 <item><url url="http://www.celephais.net/board/view_thread.php?id=60452" name="Func Quakespasm forum">
-<item><url url="http://forums.inside3d.com/viewforum.php?f=14" name="Inside 3D forums">
+<item><url url="http://forums.insideqc.com" name="Inside3D forums">
 </itemize>
 
 </article>
