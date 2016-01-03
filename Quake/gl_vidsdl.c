@@ -1649,7 +1649,13 @@ void	VID_Init (void)
 // new proc by S.A., called by alt-return key binding.
 void	VID_Toggle (void)
 {
-	static qboolean vid_toggle_works = true;
+	// disabling the fast path completely because SDL_SetWindowFullscreen was changing
+	// the window size on SDL2/WinXP and we weren't set up to handle it. --ericw
+	//
+	// TODO: Clear out the dead code, reinstate the fast path using SDL_SetWindowFullscreen
+	// inside VID_SetMode, check window size to fix WinXP issue. This will
+	// keep all the mode changing code in one place.
+	static qboolean vid_toggle_works = false;
 	qboolean toggleWorked;
 	Uint32 flags = 0;
 
