@@ -568,9 +568,11 @@ void TexMgr_RecalcWarpImageSize (void)
 	while (gl_warpimagesize > vid.height)
 		gl_warpimagesize >>= 1;
 
-	if (gl_warpimagesize == oldsize)
-		return;
-
+	// ericw -- removed early exit if (gl_warpimagesize == oldsize).
+	// after vid_restart TexMgr_ReloadImage reloads textures
+	// to tx->source_width/source_height, which might not match oldsize.
+	// fixes: https://sourceforge.net/p/quakespasm/bugs/13/
+	
 	//
 	// resize the textures in opengl
 	//
