@@ -37,8 +37,8 @@ typedef struct memblock_s
 	int	size;		// including the header and possibly tiny fragments
 	int	tag;		// a tag of 0 is a free block
 	int	id;		// should be ZONEID
-	struct	memblock_s	*next, *prev;
 	int	pad;		// pad to 64 bit boundary
+	struct	memblock_s	*next, *prev;
 } memblock_t;
 
 typedef struct
