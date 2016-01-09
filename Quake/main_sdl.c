@@ -87,11 +87,7 @@ static void Sys_InitSDL (void)
 	atexit(Sys_AtExit);
 }
 
-#if defined(_LP64) || defined(__LP64__) || defined(_WIN64)
-#define DEFAULT_MEMORY 0x4800000
-#else
-#define DEFAULT_MEMORY 0x4000000
-#endif
+#define DEFAULT_MEMORY (256 * 1024 * 1024) // ericw -- was 72MB (64-bit) / 64MB (32-bit)
 
 static quakeparms_t	parms;
 
