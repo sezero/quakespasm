@@ -260,7 +260,6 @@
 
   6.1.5.  Raised limits
 
-
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
 
@@ -269,6 +268,7 @@
   o  Default zone 4 MB (was 384 KB).
 
   o  Raised MAX_SFX to 1024 (was 512).
+
 
   6.2.  Changes in 0.90.1
 
