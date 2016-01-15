@@ -19,7 +19,7 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Project Downloads">
-<item><url url="http://quakespasm.ericwa.com/job/quakespasm/" name="Automatic Builds">
+<item><url url="http://quakespasm.ericwa.com/job/quakespasm-sdl2/" name="Automatic Builds">
 </itemize>
 
 
@@ -119,6 +119,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <item> Fix the order of OpenGL context creation and window creation in SDL2 video.
 <item> Fix a calling convention issue in windows DPI awareness function pointers.
 <item> Fix a random texture recoloring after video mode change.
+<item> Fix a liquid turning to garbage after several video mode changes and "r_oldwater 0".
 <item> Fix a wrong alpha-sorting bug introduced in 0.90.1.
 <item> Fix "flush" command not reloading mdl's from disk (bug introduced in 0.90.1).
 <item> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
@@ -140,6 +141,14 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <sect2> Code cleanup / Other
 <itemize>
 <item> Update third-party libraries.
+</itemize>
+
+<sect2> Raised limits
+<itemize>
+<item> Default max_edicts 8192 (was 2048) and no longer saved to config.cfg.
+<item> Default heapsize 256 MB (was 64 MB).
+<item> Default zone 4 MB (was 384 KB).
+<item> Raised MAX_SFX to 1024 (was 512).
 </itemize>
 </p>
 

@@ -21,6 +21,7 @@
         6.1.2 Visual improvements
         6.1.3 Interface improvements
         6.1.4 Code cleanup / Other
+        6.1.5 Raised limits
      6.2 Changes in 0.90.1
         6.2.1 Bugfixes
         6.2.2 Performance
@@ -64,7 +65,7 @@
 
   o  Project Downloads: http://quakespasm.sourceforge.net/download.htm
 
-  o  Automatic Builds: http://quakespasm.ericwa.com/job/quakespasm/
+  o  Automatic Builds: http://quakespasm.ericwa.com/job/quakespasm-sdl2/
 
 
   3.  Hints
@@ -223,6 +224,9 @@
 
   o  Fix a random texture recoloring after video mode change.
 
+  o  Fix a liquid turning to garbage after several video mode changes
+     and "r_oldwater 0".
+
   o  Fix a wrong alpha-sorting bug introduced in 0.90.1.
 
   o  Fix "flush" command not reloading mdl's from disk (bug introduced
@@ -254,6 +258,17 @@
 
   o  Update third-party libraries.
 
+  6.1.5.  Raised limits
+
+
+  o  Default max_edicts 8192 (was 2048) and no longer saved to
+     config.cfg.
+
+  o  Default heapsize 256 MB (was 64 MB).
+
+  o  Default zone 4 MB (was 384 KB).
+
+  o  Raised MAX_SFX to 1024 (was 512).
 
   6.2.  Changes in 0.90.1
 
