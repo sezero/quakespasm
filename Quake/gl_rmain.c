@@ -71,7 +71,7 @@ cvar_t	r_dynamic = {"r_dynamic","1",CVAR_ARCHIVE};
 cvar_t	r_novis = {"r_novis","0",CVAR_ARCHIVE};
 
 cvar_t	gl_finish = {"gl_finish","0",CVAR_NONE};
-cvar_t	gl_clear = {"gl_clear","0",CVAR_NONE};
+cvar_t	gl_clear = {"gl_clear","1",CVAR_NONE};
 cvar_t	gl_cull = {"gl_cull","1",CVAR_NONE};
 cvar_t	gl_smoothmodels = {"gl_smoothmodels","1",CVAR_NONE};
 cvar_t	gl_affinemodels = {"gl_affinemodels","0",CVAR_NONE};
