@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: December 2015</em>
+<em>Page last edited: January 2016</em>
 
 <sect> About <p>
 
@@ -60,7 +60,8 @@ Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 
 <sect> Compiling and Installation<p>
 <p>Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
-<p><em>To check-out the latest version of QuakeSpasm, use</em> <bf>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</bf></p>
+<p><em>To checkout the latest version of QuakeSpasm, do:</em>
+<bf>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</bf></p>
 
 <sect1> Linux/Unix <p>
 After extracting the source tarball, browse the Makefile and edit the music streaming options, then
@@ -109,6 +110,9 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <sect> Changes<p>
 
 <sect1> Changes in 0.91.1<p>
+</p>
+
+<sect1> Changes in 0.91.0<p>
 <sect2> Bugfixes
 <itemize>
 <item> Fix unwanted fog mode change upon video restart.
