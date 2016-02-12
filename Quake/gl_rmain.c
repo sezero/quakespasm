@@ -124,6 +124,7 @@ static int r_gamma_texture_width, r_gamma_texture_height;
 
 // uniforms used in gamma shader
 static GLuint gammaLoc;
+static GLuint contrastLoc;
 static GLuint textureLoc;
 
 /*
@@ -158,9 +159,11 @@ static void GLSLGamma_CreateShaders (void)
 		"\n"
 		"uniform sampler2D GammaTexture;\n"
 		"uniform float GammaValue;\n"
+		"uniform float ContrastValue;\n"
 		"\n"
 		"void main(void) {\n"
 		"	  vec4 frag = texture2D(GammaTexture, gl_TexCoord[0].xy);\n"
+		"	  frag.rgb = frag.rgb * ContrastValue;\n"
 		"	  gl_FragColor = vec4(pow(frag.rgb, vec3(GammaValue)), 1.0);\n"
 		"}\n";
 
@@ -171,6 +174,7 @@ static void GLSLGamma_CreateShaders (void)
 
 // get uniform locations
 	gammaLoc = GL_GetUniformLocation (&r_gamma_program, "GammaValue");
+	contrastLoc = GL_GetUniformLocation (&r_gamma_program, "ContrastValue");
 	textureLoc = GL_GetUniformLocation (&r_gamma_program, "GammaTexture");
 }
 
@@ -186,7 +190,7 @@ void GLSLGamma_GammaCorrect (void)
 	if (!gl_glsl_gamma_able)
 		return;
 
-	if (vid_gamma.value == 1)
+	if (vid_gamma.value == 1 && vid_contrast.value == 1)
 		return;
 
 // create render-to-texture texture if needed
@@ -227,6 +231,7 @@ void GLSLGamma_GammaCorrect (void)
 // draw the texture back to the framebuffer with a fragment shader
 	GL_UseProgramFunc (r_gamma_program);
 	GL_Uniform1fFunc (gammaLoc, vid_gamma.value);
+	GL_Uniform1fFunc (contrastLoc, q_min(2.0, q_max(1.0, vid_contrast.value)));
 	GL_Uniform1iFunc (textureLoc, 0); // use texture unit 0
 
 	glDisable (GL_ALPHA_TEST);

@@ -152,6 +152,7 @@ static cvar_t	vid_desktopfullscreen = {"vid_desktopfullscreen", "0", CVAR_ARCHIV
 //johnfitz
 
 cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
+cvar_t		vid_contrast = {"contrast", "1", CVAR_ARCHIVE}; //QuakeSpasm, MarkV
 
 //==========================================================================
 //
@@ -271,7 +272,7 @@ static void VID_Gamma_f (cvar_t *var)
 	for (i = 0; i < 256; i++)
 	{
 		vid_gamma_red[i] =
-			CLAMP(0, (int) (255 * pow((i + 0.5)/255.5, var->value) + 0.5), 255) << 8;
+			CLAMP(0, (int) ((255 * pow((i + 0.5)/255.5, vid_gamma.value) + 0.5) * vid_contrast.value), 255) << 8;
 		vid_gamma_green[i] = vid_gamma_red[i];
 		vid_gamma_blue[i] = vid_gamma_red[i];
 	}
@@ -287,7 +288,9 @@ VID_Gamma_Init -- call on init
 static void VID_Gamma_Init (void)
 {
 	Cvar_RegisterVariable (&vid_gamma);
+	Cvar_RegisterVariable (&vid_contrast);
 	Cvar_SetCallback (&vid_gamma, VID_Gamma_f);
+	Cvar_SetCallback (&vid_contrast, VID_Gamma_f);
 
 	if (gl_glsl_gamma_able)
 		return;
