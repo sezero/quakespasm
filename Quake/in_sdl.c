@@ -48,6 +48,21 @@ static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
 #include <IOKit/hidsystem/event_status_driver.h>
 #endif
 
+// SDL2 Game Controller cvars
+cvar_t	joy_deadzone = { "joy_deadzone", "0.2", CVAR_NONE };
+cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.001", CVAR_NONE };
+cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_NONE };
+cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_NONE };
+cvar_t	joy_invert = { "joy_invert", "0", CVAR_NONE };
+cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_NONE };
+cvar_t	joy_swapmovelook = { "joy_swapmovelook", "0", CVAR_NONE };
+cvar_t	joy_enable = { "joy_enable", "1", CVAR_NONE };
+
+#if defined(USE_SDL2)
+static SDL_JoystickID joy_active_instaceid = -1;
+static SDL_GameController *joy_active_controller = NULL;
+#endif
+
 static qboolean	no_mouse = false;
 
 static int buttonremap[] =
@@ -257,6 +272,63 @@ void IN_Deactivate (qboolean free_cursor)
 	IN_BeginIgnoringMouseEvents();
 }
 
+void IN_StartupJoystick (void)
+{
+#if defined(USE_SDL2)
+	int i;
+	int nummappings;
+	char controllerdb[MAX_OSPATH];
+	SDL_GameController *gamecontroller;
+	
+	if (COM_CheckParm("-nojoy"))
+		return;
+	
+	// Load additional SDL2 controller definitions from gamecontrollerdb.txt
+	q_snprintf (controllerdb, sizeof(controllerdb), "%s/gamecontrollerdb.txt", com_basedir);
+	nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
+	if (nummappings)
+		Con_Printf("%d mappings loaded from gamecontrollerdb.txt\n", nummappings);
+	
+	// Also try host_parms->userdir
+	if (host_parms->userdir != host_parms->basedir)
+	{
+		q_snprintf (controllerdb, sizeof(controllerdb), "%s/gamecontrollerdb.txt", host_parms->userdir);
+		nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
+		if (nummappings)
+			Con_Printf("%d mappings loaded from gamecontrollerdb.txt\n", nummappings);
+	}
+	
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == -1 )
+	{
+		Con_Printf("WARNING: Could not initialize SDL Game Controller\n");
+		return;
+	}
+
+	for (i = 0; i < SDL_NumJoysticks(); i++)
+	{
+		if ( SDL_IsGameController(i) )
+		{
+			gamecontroller = SDL_GameControllerOpen(i);
+			if (gamecontroller)
+			{
+				Con_Printf("detected controller: %s\n", SDL_GameControllerNameForIndex(i));
+				
+				joy_active_instaceid = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gamecontroller));
+				joy_active_controller = gamecontroller;
+				break;
+			}
+		}
+	}
+#endif
+}
+
+void IN_ShutdownJoystick (void)
+{
+#if defined(USE_SDL2)
+	SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
+#endif
+}
+
 void IN_Init (void)
 {
 	textmode = Key_TextEntry();
@@ -282,31 +354,328 @@ void IN_Init (void)
 	Cvar_RegisterVariable(&in_disablemacosxmouseaccel);
 #endif
 	Cvar_RegisterVariable(&in_debugkeys);
+	Cvar_RegisterVariable(&joy_sensitivity_yaw);
+	Cvar_RegisterVariable(&joy_sensitivity_pitch);
+	Cvar_RegisterVariable(&joy_deadzone);
+	Cvar_RegisterVariable(&joy_deadzone_trigger);
+	Cvar_RegisterVariable(&joy_invert);
+	Cvar_RegisterVariable(&joy_exponent);
+	Cvar_RegisterVariable(&joy_swapmovelook);
+	Cvar_RegisterVariable(&joy_enable);
 
 	IN_Activate();
+	IN_StartupJoystick();
 }
 
 void IN_Shutdown (void)
 {
 	IN_Deactivate(true);
-}
-
-void IN_Commands (void)
-{
-/* TODO: implement this for joystick support */
+	IN_ShutdownJoystick();
 }
 
 extern cvar_t cl_maxpitch; /* johnfitz -- variable pitch clamping */
 extern cvar_t cl_minpitch; /* johnfitz -- variable pitch clamping */
 
 
-void IN_MouseMove(int dx, int dy)
+void IN_MouseMotion(int dx, int dy)
 {
 	total_dx += dx;
 	total_dy += dy;
 }
 
-void IN_Move (usercmd_t *cmd)
+#if defined(USE_SDL2)
+typedef struct joyaxis_s
+{
+	float x;
+	float y;
+} joyaxis_t;
+
+typedef struct joy_buttonstate_s
+{
+	qboolean buttondown[SDL_CONTROLLER_BUTTON_MAX];
+} joybuttonstate_t;
+
+typedef struct axisstate_s
+{
+	float axisvalue[SDL_CONTROLLER_AXIS_MAX]; // normalized to +-1
+} joyaxisstate_t;
+
+static joybuttonstate_t joy_buttonstate;
+static joyaxisstate_t joy_axisstate;
+
+static double joy_buttontimer[SDL_CONTROLLER_BUTTON_MAX];
+static double joy_emulatedkeytimer[10];
+
+/*
+================
+IN_ApplyEasing
+
+assumes axis values are in [-1, 1]. Raises the axis values to the given exponent, keeping signs.
+================
+*/
+static joyaxis_t IN_ApplyEasing(joyaxis_t axis, float exponent)
+{
+	joyaxis_t result = {0};
+	float magnitude, eased_magnitude;
+	
+	magnitude = sqrtf( (axis.x * axis.x) + (axis.y * axis.y) );
+
+	if (magnitude > 1)
+		magnitude = 1;
+	
+	if (magnitude == 0)
+		return result;
+	
+	eased_magnitude = powf(magnitude, exponent);
+	
+	result.x = axis.x * (eased_magnitude / magnitude);
+	result.y = axis.y * (eased_magnitude / magnitude);
+	return result;
+}
+
+/*
+================
+IN_ApplyMoveEasing
+
+clamps coordinates to a square with coordinates +/- sqrt(2)/2, then scales them to +/- 1.
+This wastes a bit of stick range, but gives the diagonals coordinates of (+/-1,+/-1),
+so holding the stick on a diagonal gives the same speed boost as holding the forward and strafe keyboard keys.
+================
+*/
+static joyaxis_t IN_ApplyMoveEasing(joyaxis_t axis)
+{
+	joyaxis_t result = {0};
+	const float v = sqrtf(2.0f) / 2.0f;
+	
+	result.x = q_max(-v, q_min(v, axis.x));
+	result.y = q_max(-v, q_min(v, axis.y));
+	
+	result.x /= v;
+	result.y /= v;
+
+	return result;
+}
+
+
+/*
+================
+IN_ApplyDeadzone
+
+from https://github.com/jeremiah-sypult/Quakespasm-Rift
+and adapted from http://www.third-helix.com/2013/04/12/doing-thumbstick-dead-zones-right.html
+================
+*/
+static joyaxis_t IN_ApplyDeadzone(joyaxis_t axis, float deadzone)
+{
+	joyaxis_t result = {0};
+	float magnitude = sqrtf( (axis.x * axis.x) + (axis.y * axis.y) );
+	
+	if ( magnitude < deadzone ) {
+		result.x = result.y = 0.0f;
+	} else {
+		joyaxis_t normalized;
+		float gradient;
+		
+		if ( magnitude > 1.0f ) {
+			magnitude = 1.0f;
+		}
+		
+		normalized.x = axis.x / magnitude;
+		normalized.y = axis.y / magnitude;
+		gradient = ( (magnitude - deadzone) / (1.0f - deadzone) );
+		result.x = normalized.x * gradient;
+		result.y = normalized.y * gradient;
+	}
+	
+	return result;
+}
+
+/*
+================
+IN_KeyForControllerButton
+================
+*/
+static int IN_KeyForControllerButton(SDL_GameControllerButton button)
+{
+	switch (button)
+	{
+		case SDL_CONTROLLER_BUTTON_A: return K_ABUTTON;
+		case SDL_CONTROLLER_BUTTON_B: return K_BBUTTON;
+		case SDL_CONTROLLER_BUTTON_X: return K_XBUTTON;
+		case SDL_CONTROLLER_BUTTON_Y: return K_YBUTTON;
+		case SDL_CONTROLLER_BUTTON_BACK: return K_TAB;
+		case SDL_CONTROLLER_BUTTON_START: return K_ESCAPE;
+		case SDL_CONTROLLER_BUTTON_LEFTSTICK: return K_LTHUMB;
+		case SDL_CONTROLLER_BUTTON_RIGHTSTICK: return K_RTHUMB;
+		case SDL_CONTROLLER_BUTTON_LEFTSHOULDER: return K_LSHOULDER;
+		case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return K_RSHOULDER;
+		case SDL_CONTROLLER_BUTTON_DPAD_UP: return K_UPARROW;
+		case SDL_CONTROLLER_BUTTON_DPAD_DOWN: return K_DOWNARROW;
+		case SDL_CONTROLLER_BUTTON_DPAD_LEFT: return K_LEFTARROW;
+		case SDL_CONTROLLER_BUTTON_DPAD_RIGHT: return K_RIGHTARROW;
+		default: return 0;
+	}
+}
+
+/*
+================
+IN_JoyKeyEvent
+
+Sends a Key_Event if a unpressed -> pressed or pressed -> unpressed transition occurred,
+and generates key repeats if the button is held down.
+
+Adapted from DarkPlaces by lordhavoc
+================
+*/
+static void IN_JoyKeyEvent(qboolean wasdown, qboolean isdown, int key, double *timer)
+{
+	// we can't use `realtime` for key repeats because it is not monotomic
+	const double currenttime = Sys_DoubleTime();
+	
+	if (wasdown)
+	{
+		if (isdown)
+		{
+			if (currenttime >= *timer)
+			{
+				*timer = currenttime + 0.1;
+				Key_Event(key, true);
+			}
+		}
+		else
+		{
+			*timer = 0;
+			Key_Event(key, false);
+		}
+	}
+	else
+	{
+		if (isdown)
+		{
+			*timer = currenttime + 0.5;
+			Key_Event(key, true);
+		}
+	}
+}
+#endif
+
+/*
+================
+IN_Commands
+
+Emit key events for game controller buttons, including emulated buttons for analog sticks/triggers
+================
+*/
+void IN_Commands (void)
+{
+#if defined(USE_SDL2)
+	joyaxisstate_t newaxisstate;
+	int i;
+	const float stickthreshold = 0.9;
+	const float triggerthreshold = joy_deadzone_trigger.value;
+	
+	if (!joy_enable.value)
+		return;
+	
+	if (!joy_active_controller)
+		return;
+
+	// emit key events for controller buttons
+	for (i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++)
+	{
+		qboolean newstate = SDL_GameControllerGetButton(joy_active_controller, i);
+		qboolean oldstate = joy_buttonstate.buttondown[i];
+		
+		joy_buttonstate.buttondown[i] = newstate;
+		
+		// NOTE: This can cause a reentrant call of IN_Commands, via SCR_ModalMessage when confirming a new game.
+		IN_JoyKeyEvent(oldstate, newstate, IN_KeyForControllerButton(i), &joy_buttontimer[i]);
+	}
+	
+	for (i = 0; i < SDL_CONTROLLER_AXIS_MAX; i++)
+	{
+		newaxisstate.axisvalue[i] = SDL_GameControllerGetAxis(joy_active_controller, i) / 32768.0f;
+	}
+	
+	// emit emulated arrow keys so the analog sticks can be used in the menu
+	if (key_dest != key_game)
+	{
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX] < -stickthreshold, newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX] < -stickthreshold, K_LEFTARROW, &joy_emulatedkeytimer[0]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX] > stickthreshold,  newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX] > stickthreshold, K_RIGHTARROW, &joy_emulatedkeytimer[1]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY] < -stickthreshold, newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY] < -stickthreshold, K_UPARROW, &joy_emulatedkeytimer[2]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY] > stickthreshold,  newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY] > stickthreshold, K_DOWNARROW, &joy_emulatedkeytimer[3]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX] < -stickthreshold,newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX] < -stickthreshold, K_LEFTARROW, &joy_emulatedkeytimer[4]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX] > stickthreshold, newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX] > stickthreshold, K_RIGHTARROW, &joy_emulatedkeytimer[5]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY] < -stickthreshold,newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY] < -stickthreshold, K_UPARROW, &joy_emulatedkeytimer[6]);
+		IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY] > stickthreshold, newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY] > stickthreshold, K_DOWNARROW, &joy_emulatedkeytimer[7]);
+	}
+	
+	// emit emulated keys for the analog triggers
+	IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_TRIGGERLEFT] > triggerthreshold,  newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_TRIGGERLEFT] > triggerthreshold, K_LTRIGGER, &joy_emulatedkeytimer[8]);
+	IN_JoyKeyEvent(joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_TRIGGERRIGHT] > triggerthreshold, newaxisstate.axisvalue[SDL_CONTROLLER_AXIS_TRIGGERRIGHT] > triggerthreshold, K_RTRIGGER, &joy_emulatedkeytimer[9]);
+	
+	joy_axisstate = newaxisstate;
+#endif
+}
+
+/*
+================
+IN_JoyMove
+================
+*/
+void IN_JoyMove (usercmd_t *cmd)
+{
+#if defined(USE_SDL2)
+	float	speed;
+	joyaxis_t moveAxis, lookAxis;
+
+	if (!joy_enable.value)
+		return;
+	
+	if (!joy_active_controller)
+		return;
+	
+	moveAxis.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX];
+	moveAxis.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY];
+	lookAxis.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX];
+	lookAxis.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY];
+	
+	if (joy_swapmovelook.value)
+	{
+		joyaxis_t temp = moveAxis;
+		moveAxis = lookAxis;
+		lookAxis = temp;
+	}
+	
+	moveAxis = IN_ApplyDeadzone(moveAxis, joy_deadzone.value);
+	lookAxis = IN_ApplyDeadzone(lookAxis, joy_deadzone.value);
+
+	moveAxis = IN_ApplyMoveEasing(moveAxis);
+	lookAxis = IN_ApplyEasing(lookAxis, joy_exponent.value);
+	
+	if (in_speed.state & 1)
+		speed = cl_movespeedkey.value;
+	else
+		speed = 1;
+
+	cmd->sidemove += (cl_sidespeed.value * speed * moveAxis.x);
+	cmd->forwardmove -= (cl_forwardspeed.value * speed * moveAxis.y);
+
+	cl.viewangles[YAW] -= lookAxis.x * joy_sensitivity_yaw.value * host_frametime;
+	cl.viewangles[PITCH] += lookAxis.y * joy_sensitivity_pitch.value * (joy_invert.value ? -1.0 : 1.0) * host_frametime;
+
+	if (lookAxis.x != 0 || lookAxis.y != 0)
+		V_StopPitchDrift();
+
+	/* johnfitz -- variable pitch clamping */
+	if (cl.viewangles[PITCH] > cl_maxpitch.value)
+		cl.viewangles[PITCH] = cl_maxpitch.value;
+	if (cl.viewangles[PITCH] < cl_minpitch.value)
+		cl.viewangles[PITCH] = cl_minpitch.value;
+#endif
+}
+
+void IN_MouseMove(usercmd_t *cmd)
 {
 	int		dmx, dmy;
 
@@ -343,6 +712,12 @@ void IN_Move (usercmd_t *cmd)
 		else
 			cmd->forwardmove -= m_forward.value * dmy;
 	}
+}
+
+void IN_Move(usercmd_t *cmd)
+{
+	IN_JoyMove(cmd);
+	IN_MouseMove(cmd);
 }
 
 void IN_ClearStates (void)
@@ -682,9 +1057,41 @@ void IN_SendKeyEvents (void)
 #endif
 
 		case SDL_MOUSEMOTION:
-			IN_MouseMove(event.motion.xrel, event.motion.yrel);
+			IN_MouseMotion(event.motion.xrel, event.motion.yrel);
 			break;
 
+#if defined(USE_SDL2)
+		case SDL_CONTROLLERDEVICEADDED:
+			if (joy_active_instaceid == -1)
+			{
+				joy_active_controller = SDL_GameControllerOpen(event.cdevice.which);
+				if (joy_active_controller == NULL)
+					Con_DPrintf("Couldn't open game controller\n");
+				else
+				{
+					SDL_Joystick *joy;
+					joy = SDL_GameControllerGetJoystick(joy_active_controller);
+					joy_active_instaceid = SDL_JoystickInstanceID(joy);
+				}
+			}
+			else
+				Con_DPrintf("Ignoring SDL_CONTROLLERDEVICEADDED\n");
+			break;
+		case SDL_CONTROLLERDEVICEREMOVED:
+			if (joy_active_instaceid != -1 && event.cdevice.which == joy_active_instaceid)
+			{
+				SDL_GameControllerClose(joy_active_controller);
+				joy_active_controller = NULL;
+				joy_active_instaceid = -1;
+			}
+			else
+				Con_DPrintf("Ignoring SDL_CONTROLLERDEVICEREMOVED\n");
+			break;
+		case SDL_CONTROLLERDEVICEREMAPPED:
+			Con_DPrintf("Ignoring SDL_CONTROLLERDEVICEREMAPPED\n");
+			break;
+#endif
+				
 		case SDL_QUIT:
 			CL_Disconnect ();
 			Sys_Quit ();
