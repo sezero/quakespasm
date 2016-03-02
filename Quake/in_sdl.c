@@ -286,7 +286,7 @@ void IN_StartupJoystick (void)
 	// Load additional SDL2 controller definitions from gamecontrollerdb.txt
 	q_snprintf (controllerdb, sizeof(controllerdb), "%s/gamecontrollerdb.txt", com_basedir);
 	nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
-	if (nummappings)
+	if (nummappings > 0)
 		Con_Printf("%d mappings loaded from gamecontrollerdb.txt\n", nummappings);
 	
 	// Also try host_parms->userdir
@@ -294,7 +294,7 @@ void IN_StartupJoystick (void)
 	{
 		q_snprintf (controllerdb, sizeof(controllerdb), "%s/gamecontrollerdb.txt", host_parms->userdir);
 		nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
-		if (nummappings)
+		if (nummappings > 0)
 			Con_Printf("%d mappings loaded from gamecontrollerdb.txt\n", nummappings);
 	}
 	
