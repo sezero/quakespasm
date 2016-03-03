@@ -300,23 +300,33 @@ void IN_StartupJoystick (void)
 	
 	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == -1 )
 	{
-		Con_Printf("WARNING: Could not initialize SDL Game Controller\n");
+		Con_Warning("could not initialize SDL Game Controller\n");
 		return;
 	}
 
 	for (i = 0; i < SDL_NumJoysticks(); i++)
 	{
+		const char *joyname = SDL_JoystickNameForIndex(i);
 		if ( SDL_IsGameController(i) )
 		{
+			const char *controllername = SDL_GameControllerNameForIndex(i);
 			gamecontroller = SDL_GameControllerOpen(i);
 			if (gamecontroller)
 			{
-				Con_Printf("detected controller: %s\n", SDL_GameControllerNameForIndex(i));
+				Con_Printf("detected controller: %s\n", controllername != NULL ? controllername : "NULL");
 				
 				joy_active_instaceid = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gamecontroller));
 				joy_active_controller = gamecontroller;
 				break;
 			}
+			else
+			{
+				Con_Warning("failed to open controller: %s\n", controllername != NULL ? controllername : "NULL");
+			}
+		}
+		else
+		{
+			Con_Warning("joystick missing controller mappings: %s\n", joyname != NULL ? joyname : "NULL" );
 		}
 	}
 #endif
