@@ -283,6 +283,12 @@ void IN_StartupJoystick (void)
 	if (COM_CheckParm("-nojoy"))
 		return;
 	
+	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == -1 )
+	{
+		Con_Warning("could not initialize SDL Game Controller\n");
+		return;
+	}
+	
 	// Load additional SDL2 controller definitions from gamecontrollerdb.txt
 	q_snprintf (controllerdb, sizeof(controllerdb), "%s/gamecontrollerdb.txt", com_basedir);
 	nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
@@ -296,12 +302,6 @@ void IN_StartupJoystick (void)
 		nummappings = SDL_GameControllerAddMappingsFromFile(controllerdb);
 		if (nummappings > 0)
 			Con_Printf("%d mappings loaded from gamecontrollerdb.txt\n", nummappings);
-	}
-	
-	if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) == -1 )
-	{
-		Con_Warning("could not initialize SDL Game Controller\n");
-		return;
 	}
 
 	for (i = 0; i < SDL_NumJoysticks(); i++)
