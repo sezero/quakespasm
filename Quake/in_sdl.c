@@ -49,7 +49,7 @@ static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
 #endif
 
 // SDL2 Game Controller cvars
-cvar_t	joy_deadzone = { "joy_deadzone", "0.2", CVAR_NONE };
+cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_NONE };
 cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.001", CVAR_NONE };
 cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_NONE };
 cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_NONE };
@@ -418,20 +418,30 @@ static double joy_emulatedkeytimer[10];
 
 /*
 ================
-IN_ApplyEasing
+IN_AxisMagnitude
 
-assumes axis values are in [-1, 1]. Raises the axis values to the given exponent, keeping signs.
+Returns the vector length of the given joystick axis
 ================
 */
-static joyaxis_t IN_ApplyEasing(joyaxis_t axis, float exponent)
+static vec_t IN_AxisMagnitude(joyaxis_t axis)
+{
+	vec_t magnitude = sqrtf((axis.x * axis.x) + (axis.y * axis.y));
+	return magnitude;
+}
+
+/*
+================
+IN_ApplyLookEasing
+
+assumes axis values are in [-1, 1] and the vector magnitude has been clamped at 1.
+Raises the axis values to the given exponent, keeping signs.
+================
+*/
+static joyaxis_t IN_ApplyLookEasing(joyaxis_t axis, float exponent)
 {
 	joyaxis_t result = {0};
-	float magnitude, eased_magnitude;
-	
-	magnitude = sqrtf( (axis.x * axis.x) + (axis.y * axis.y) );
-
-	if (magnitude > 1)
-		magnitude = 1;
+	vec_t eased_magnitude;
+	vec_t magnitude = IN_AxisMagnitude(axis);
 	
 	if (magnitude == 0)
 		return result;
@@ -466,10 +476,15 @@ static joyaxis_t IN_ApplyMoveEasing(joyaxis_t axis)
 	return result;
 }
 
-
 /*
 ================
 IN_ApplyDeadzone
+
+in: raw joystick axis values converted to floats in +-1
+out: applies a circular deadzone and clamps the magnitude at 1
+     (my 360 controller is slightly non-circular and the stick travels further on the diagonals)
+
+deadzone is expected to satisfy 0 < deadzone < 1
 
 from https://github.com/jeremiah-sypult/Quakespasm-Rift
 and adapted from http://www.third-helix.com/2013/04/12/doing-thumbstick-dead-zones-right.html
@@ -478,23 +493,13 @@ and adapted from http://www.third-helix.com/2013/04/12/doing-thumbstick-dead-zon
 static joyaxis_t IN_ApplyDeadzone(joyaxis_t axis, float deadzone)
 {
 	joyaxis_t result = {0};
-	float magnitude = sqrtf( (axis.x * axis.x) + (axis.y * axis.y) );
+	vec_t magnitude = IN_AxisMagnitude(axis);
 	
-	if ( magnitude < deadzone ) {
-		result.x = result.y = 0.0f;
-	} else {
-		joyaxis_t normalized;
-		float gradient;
-		
-		if ( magnitude > 1.0f ) {
-			magnitude = 1.0f;
-		}
-		
-		normalized.x = axis.x / magnitude;
-		normalized.y = axis.y / magnitude;
-		gradient = ( (magnitude - deadzone) / (1.0f - deadzone) );
-		result.x = normalized.x * gradient;
-		result.y = normalized.y * gradient;
+	if ( magnitude > deadzone ) {
+		const vec_t new_magnitude = q_min(1.0, (magnitude - deadzone) / (1.0 - deadzone));
+		const vec_t scale = new_magnitude / magnitude;
+		result.x = axis.x * scale;
+		result.y = axis.y * scale;
 	}
 	
 	return result;
@@ -637,7 +642,8 @@ void IN_JoyMove (usercmd_t *cmd)
 {
 #if defined(USE_SDL2)
 	float	speed;
-	joyaxis_t moveAxis, lookAxis;
+	joyaxis_t moveRaw, moveDeadzone, moveEased;
+	joyaxis_t lookRaw, lookDeadzone, lookEased;
 
 	if (!joy_enable.value)
 		return;
@@ -645,36 +651,36 @@ void IN_JoyMove (usercmd_t *cmd)
 	if (!joy_active_controller)
 		return;
 	
-	moveAxis.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX];
-	moveAxis.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY];
-	lookAxis.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX];
-	lookAxis.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY];
+	moveRaw.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTX];
+	moveRaw.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_LEFTY];
+	lookRaw.x = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTX];
+	lookRaw.y = joy_axisstate.axisvalue[SDL_CONTROLLER_AXIS_RIGHTY];
 	
 	if (joy_swapmovelook.value)
 	{
-		joyaxis_t temp = moveAxis;
-		moveAxis = lookAxis;
-		lookAxis = temp;
+		joyaxis_t temp = moveRaw;
+		moveRaw = lookRaw;
+		lookRaw = temp;
 	}
 	
-	moveAxis = IN_ApplyDeadzone(moveAxis, joy_deadzone.value);
-	lookAxis = IN_ApplyDeadzone(lookAxis, joy_deadzone.value);
+	moveDeadzone = IN_ApplyDeadzone(moveRaw, joy_deadzone.value);
+	lookDeadzone = IN_ApplyDeadzone(lookRaw, joy_deadzone.value);
 
-	moveAxis = IN_ApplyMoveEasing(moveAxis);
-	lookAxis = IN_ApplyEasing(lookAxis, joy_exponent.value);
+	moveEased = IN_ApplyMoveEasing(moveDeadzone);
+	lookEased = IN_ApplyLookEasing(lookDeadzone, joy_exponent.value);
 	
 	if (in_speed.state & 1)
 		speed = cl_movespeedkey.value;
 	else
 		speed = 1;
 
-	cmd->sidemove += (cl_sidespeed.value * speed * moveAxis.x);
-	cmd->forwardmove -= (cl_forwardspeed.value * speed * moveAxis.y);
+	cmd->sidemove += (cl_sidespeed.value * speed * moveEased.x);
+	cmd->forwardmove -= (cl_forwardspeed.value * speed * moveEased.y);
 
-	cl.viewangles[YAW] -= lookAxis.x * joy_sensitivity_yaw.value * host_frametime;
-	cl.viewangles[PITCH] += lookAxis.y * joy_sensitivity_pitch.value * (joy_invert.value ? -1.0 : 1.0) * host_frametime;
+	cl.viewangles[YAW] -= lookEased.x * joy_sensitivity_yaw.value * host_frametime;
+	cl.viewangles[PITCH] += lookEased.y * joy_sensitivity_pitch.value * (joy_invert.value ? -1.0 : 1.0) * host_frametime;
 
-	if (lookAxis.x != 0 || lookAxis.y != 0)
+	if (lookEased.x != 0 || lookEased.y != 0)
 		V_StopPitchDrift();
 
 	/* johnfitz -- variable pitch clamping */
