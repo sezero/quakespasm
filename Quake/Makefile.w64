@@ -46,9 +46,9 @@ WINDRES = windres
 STRIP = strip
 
 CPUFLAGS=
-LDFLAGS =
+LDFLAGS = -m64 -mwindows
 DFLAGS ?=
-CFLAGS ?= -Wall -Wno-trigraphs
+CFLAGS ?= -m64 -Wall -Wno-trigraphs
 CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)

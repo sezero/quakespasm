@@ -48,9 +48,9 @@ STRIP = strip
 #CPUFLAGS= -mtune=i686
 #CPUFLAGS= -march=pentium4
 CPUFLAGS=
-LDFLAGS =
+LDFLAGS = -m32 -mwindows
 DFLAGS ?=
-CFLAGS ?= -Wall -Wno-trigraphs
+CFLAGS ?= -m32 -Wall -Wno-trigraphs
 CFLAGS += $(CPUFLAGS)
 
 ifneq ($(DEBUG),0)
