@@ -555,7 +555,7 @@ void R_DrawBrushModel (entity_t *e)
 		}
 	}
 
-    glPushMatrix ();
+	glPushMatrix ();
 	e->angles[0] = -e->angles[0];	// stupid quake bug
 	if (gl_zfix.value)
 	{
@@ -1154,6 +1154,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 
 	// add all the lightmaps
 		if (lightmap)
+		{
 			for (maps = 0 ; maps < MAXLIGHTMAPS && surf->styles[maps] != 255 ;
 				 maps++)
 			{
@@ -1169,6 +1170,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 				}
 				//johnfitz
 			}
+		}
 
 	// add all the dynamic lights
 		if (surf->dlightframe == r_framecount)
@@ -1203,9 +1205,9 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
 				}
-				if (r > 255) r = 255; *dest++ = r;
-				if (g > 255) g = 255; *dest++ = g;
-				if (b > 255) b = 255; *dest++ = b;
+				*dest++ = (r > 255)? 255 : r;
+				*dest++ = (g > 255)? 255 : g;
+				*dest++ = (b > 255)? 255 : b;
 				*dest++ = 255;
 			}
 		}
@@ -1229,9 +1231,9 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
 				}
-				if (b > 255) b = 255; *dest++ = b;
-				if (g > 255) g = 255; *dest++ = g;
-				if (r > 255) r = 255; *dest++ = r;
+				*dest++ = (b > 255)? 255 : b;
+				*dest++ = (g > 255)? 255 : g;
+				*dest++ = (r > 255)? 255 : r;
 				*dest++ = 255;
 			}
 		}

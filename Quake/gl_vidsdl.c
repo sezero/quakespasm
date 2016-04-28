@@ -495,9 +495,9 @@ VID_ValidMode
 static qboolean VID_ValidMode (int width, int height, int bpp, qboolean fullscreen)
 {
 // ignore width / height / bpp if vid_desktopfullscreen is enabled
-    if (fullscreen && vid_desktopfullscreen.value)
-        return true;
-    
+	if (fullscreen && vid_desktopfullscreen.value)
+		return true;
+
 	if (width < 320)
 		return false;
 
