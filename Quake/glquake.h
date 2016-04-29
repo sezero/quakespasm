@@ -30,6 +30,8 @@ void GL_Set2D (void);
 
 extern	int glx, gly, glwidth, glheight;
 
+#define	GL_UNUSED_TEXTURE	(~(GLuint)0)
+
 // r_local.h -- private refresh defs
 
 #define ALIAS_BASE_SIZE_RATIO		(1.0 / 11.0)

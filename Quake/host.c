@@ -221,7 +221,7 @@ void Host_Version_f (void)
 {
 	Con_Printf ("Quake Version %1.2f\n", VERSION);
 	Con_Printf ("QuakeSpasm Version %1.2f.%d\n", QUAKESPASM_VERSION, QUAKESPASM_VER_PATCH);
-	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
+	Con_Printf ("Exe: " __TIME__ " " __DATE__ "\n");
 }
 
 /* cvar callback functions : */
@@ -845,7 +845,7 @@ void Host_Init (void)
 	NET_Init ();
 	SV_Init ();
 
-	Con_Printf ("Exe: "__TIME__" "__DATE__"\n");
+	Con_Printf ("Exe: " __TIME__ " " __DATE__ "\n");
 	Con_Printf ("%4.1f megabyte heap\n", host_parms->memsize/ (1024*1024.0));
 
 	if (cls.state != ca_dedicated)

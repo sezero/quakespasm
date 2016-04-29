@@ -598,18 +598,18 @@ void IN_Commands (void)
 	// emit key events for controller buttons
 	for (i = 0; i < SDL_CONTROLLER_BUTTON_MAX; i++)
 	{
-		qboolean newstate = SDL_GameControllerGetButton(joy_active_controller, i);
+		qboolean newstate = SDL_GameControllerGetButton(joy_active_controller, (SDL_GameControllerButton)i);
 		qboolean oldstate = joy_buttonstate.buttondown[i];
 		
 		joy_buttonstate.buttondown[i] = newstate;
 		
 		// NOTE: This can cause a reentrant call of IN_Commands, via SCR_ModalMessage when confirming a new game.
-		IN_JoyKeyEvent(oldstate, newstate, IN_KeyForControllerButton(i), &joy_buttontimer[i]);
+		IN_JoyKeyEvent(oldstate, newstate, IN_KeyForControllerButton((SDL_GameControllerButton)i), &joy_buttontimer[i]);
 	}
 	
 	for (i = 0; i < SDL_CONTROLLER_AXIS_MAX; i++)
 	{
-		newaxisstate.axisvalue[i] = SDL_GameControllerGetAxis(joy_active_controller, i) / 32768.0f;
+		newaxisstate.axisvalue[i] = SDL_GameControllerGetAxis(joy_active_controller, (SDL_GameControllerAxis)i) / 32768.0f;
 	}
 	
 	// emit emulated arrow keys so the analog sticks can be used in the menu

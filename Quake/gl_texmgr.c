@@ -1439,7 +1439,7 @@ void TexMgr_ReloadNobrightImages (void)
 ================================================================================
 */
 
-static GLuint	currenttexture[3] = {-1, -1, -1}; // to avoid unnecessary texture sets
+static GLuint	currenttexture[3] = {GL_UNUSED_TEXTURE, GL_UNUSED_TEXTURE, GL_UNUSED_TEXTURE}; // to avoid unnecessary texture sets
 static GLenum	currenttarget = GL_TEXTURE0_ARB;
 qboolean	mtexenabled = false;
 
@@ -1517,9 +1517,9 @@ static void GL_DeleteTexture (gltexture_t *texture)
 {
 	glDeleteTextures (1, &texture->texnum);
 
-	if (texture->texnum == currenttexture[0]) currenttexture[0] = -1;
-    if (texture->texnum == currenttexture[1]) currenttexture[1] = -1;
-    if (texture->texnum == currenttexture[2]) currenttexture[2] = -1;
+	if (texture->texnum == currenttexture[0]) currenttexture[0] = GL_UNUSED_TEXTURE;
+	if (texture->texnum == currenttexture[1]) currenttexture[1] = GL_UNUSED_TEXTURE;
+	if (texture->texnum == currenttexture[2]) currenttexture[2] = GL_UNUSED_TEXTURE;
 
 	texture->texnum = 0;
 }
@@ -1538,6 +1538,6 @@ void GL_ClearBindings(void)
 	int i;
 	for (i = 0; i < 3; i++)
 	{
-		currenttexture[i] = -1;
+		currenttexture[i] = GL_UNUSED_TEXTURE;
 	}
 }
