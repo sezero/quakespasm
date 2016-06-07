@@ -641,6 +641,67 @@ void Host_Noclip_f (void)
 }
 
 /*
+====================
+Host_SetPos_f
+
+adapted from fteqw, originally by Alex Shadowalker
+====================
+*/
+void Host_SetPos_f(void)
+{
+	if (cmd_source == src_command)
+	{
+		Cmd_ForwardToServer ();
+		return;
+	}
+	
+	if (pr_global_struct->deathmatch)
+		return;
+	
+	if (Cmd_Argc() != 7 && Cmd_Argc() != 4)
+	{
+		SV_ClientPrintf("usage:\n");
+		SV_ClientPrintf("   setpos <x> <y> <z>\n");
+		SV_ClientPrintf("   setpos <x> <y> <z> <pitch> <yaw> <roll>\n");
+		SV_ClientPrintf("current values:\n");
+		SV_ClientPrintf("   %i %i %i %i %i %i\n",
+			(int)sv_player->v.origin[0],
+			(int)sv_player->v.origin[1],
+			(int)sv_player->v.origin[2],
+			(int)sv_player->v.v_angle[0],
+			(int)sv_player->v.v_angle[1],
+			(int)sv_player->v.v_angle[2]);
+		return;
+	}
+	
+	if (sv_player->v.movetype != MOVETYPE_NOCLIP)
+	{
+		noclip_anglehack = true;
+		sv_player->v.movetype = MOVETYPE_NOCLIP;
+		SV_ClientPrintf ("noclip ON\n");
+	}
+	
+	//make sure they're not going to whizz away from it
+	sv_player->v.velocity[0] = 0;
+	sv_player->v.velocity[1] = 0;
+	sv_player->v.velocity[2] = 0;
+	
+	sv_player->v.origin[0] = atof(Cmd_Argv(1));
+	sv_player->v.origin[1] = atof(Cmd_Argv(2));
+	sv_player->v.origin[2] = atof(Cmd_Argv(3));
+	
+	if (Cmd_Argc() == 7)
+	{
+		sv_player->v.angles[0] = atof(Cmd_Argv(4));
+		sv_player->v.angles[1] = atof(Cmd_Argv(5));
+		sv_player->v.angles[2] = atof(Cmd_Argv(6));
+		sv_player->v.fixangle = 1;
+	}
+	
+	SV_LinkEdict (sv_player, false);
+}
+
+/*
 ==================
 Host_Fly_f
 
@@ -2236,6 +2297,7 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("reconnect", Host_Reconnect_f);
 	Cmd_AddCommand ("name", Host_Name_f);
 	Cmd_AddCommand ("noclip", Host_Noclip_f);
+	Cmd_AddCommand ("setpos", Host_SetPos_f); //QuakeSpasm
 
 	Cmd_AddCommand ("say", Host_Say_f);
 	Cmd_AddCommand ("say_team", Host_Say_Team_f);

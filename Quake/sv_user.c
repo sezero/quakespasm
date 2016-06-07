@@ -543,6 +543,8 @@ nextmsg:
 					ret = 1;
 				else if (q_strncasecmp(s, "noclip", 6) == 0)
 					ret = 1;
+				else if (q_strncasecmp(s, "setpos", 6) == 0)
+					ret = 1;
 				else if (q_strncasecmp(s, "say", 3) == 0)
 					ret = 1;
 				else if (q_strncasecmp(s, "say_team", 8) == 0)
