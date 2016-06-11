@@ -31,9 +31,6 @@ extern	cvar_t	sv_stopspeed;
 
 static	vec3_t		forward, right, up;
 
-vec3_t	wishdir;
-float	wishspeed;
-
 // world
 float	*angles;
 float	*origin;
@@ -168,7 +165,7 @@ SV_Accelerate
 */
 cvar_t	sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY|CVAR_SERVERINFO};
 cvar_t	sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
-void SV_Accelerate (void)
+void SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {
 	int			i;
 	float		addspeed, accelspeed, currentspeed;
@@ -185,7 +182,7 @@ void SV_Accelerate (void)
 		velocity[i] += accelspeed*wishdir[i];
 }
 
-void SV_AirAccelerate (vec3_t wishveloc)
+void SV_AirAccelerate (float wishspeed, vec3_t wishveloc)
 {
 	int			i;
 	float		addspeed, wishspd, accelspeed, currentspeed;
@@ -229,8 +226,7 @@ void SV_WaterMove (void)
 {
 	int		i;
 	vec3_t	wishvel;
-	float	speed, newspeed, addspeed, accelspeed;
-	//float	wishspeed;
+	float	speed, newspeed, wishspeed, addspeed, accelspeed;
 
 //
 // user intentions
@@ -329,7 +325,8 @@ SV_AirMove
 void SV_AirMove (void)
 {
 	int			i;
-	vec3_t		wishvel;
+	vec3_t		wishvel, wishdir;
+	float		wishspeed;
 	float		fmove, smove;
 
 	AngleVectors (sv_player->v.angles, forward, right, up);
@@ -364,11 +361,11 @@ void SV_AirMove (void)
 	else if ( onground )
 	{
 		SV_UserFriction ();
-		SV_Accelerate ();
+		SV_Accelerate (wishspeed, wishdir);
 	}
 	else
 	{	// not on ground, so little effect on velocity
-		SV_AirAccelerate (wishvel);
+		SV_AirAccelerate (wishspeed, wishvel);
 	}
 }
 
