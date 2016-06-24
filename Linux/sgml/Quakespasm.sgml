@@ -110,6 +110,21 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <sect> Changes<p>
 
 <sect1> Changes in 0.92.0<p>
+<itemize>
+<item> SDL2 Game Controller support.
+<item> Contrast support with new "contrast" cvar, behaving the same as MarkV. It may be a useful alternative to the existing gamma control for laptops in a bright environment, etc. Raising contrast gives less of a gray/washed out look than raising gamma, but at a disadvantage: colors near white get clipped to white.
+<item> RMQ protocol (999) support, adapted from RMQEngine.
+<item> New "-protocol x" command line option. Accepted values for 'x' are 15 (NetQuake), 666 (FitzQuake, default), and 999 (RMQ).
+<item> New "setpos" console command.
+<item> New "vid_borderless" cvar for getting a borderless window.
+<item> Increased MAX_MAP_LEAFS from 65535 to 70000 and MAX_LIGHTMAPS from 256 to 512 in order to handle the oms3 map pack.
+<item> Server edicts are now allocated using malloc instead of allocating on the hunk.
+<item> gl_clear now defaults to 1.
+<item> Fix items falling out of the world on oms3.bsp on SSE builds.
+<item> Worked around an OSX 10.6 driver bug when using FSAA, which was leading to an unplayable HOM effect on the rest of the screen.
+<item> Fix wrong trace endpoint from the tracepos console command.
+<item> Updated some of the third-party libraries. Other fixes/clean-ups.
+</itemize>
 </p>
 
 <sect1> Changes in 0.91.0<p>

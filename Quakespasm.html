@@ -192,7 +192,23 @@ these patched libSDL binaries may help.
 <H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.92.0</A>
 </H2>
 
-
+<P>
+<UL>
+<LI> SDL2 Game Controller support.</LI>
+<LI> Contrast support with new "contrast" cvar, behaving the same as MarkV. It may be a useful alternative to the existing gamma control for laptops in a bright environment, etc. Raising contrast gives less of a gray/washed out look than raising gamma, but at a disadvantage: colors near white get clipped to white.</LI>
+<LI> RMQ protocol (999) support, adapted from RMQEngine.</LI>
+<LI> New "-protocol x" command line option. Accepted values for 'x' are 15 (NetQuake), 666 (FitzQuake, default), and 999 (RMQ).</LI>
+<LI> New "setpos" console command.</LI>
+<LI> New "vid_borderless" cvar for getting a borderless window.</LI>
+<LI> Increased MAX_MAP_LEAFS from 65535 to 70000 and MAX_LIGHTMAPS from 256 to 512 in order to handle the oms3 map pack.</LI>
+<LI> Server edicts are now allocated using malloc instead of allocating on the hunk.</LI>
+<LI> gl_clear now defaults to 1.</LI>
+<LI> Fix items falling out of the world on oms3.bsp on SSE builds.</LI>
+<LI> Worked around an OSX 10.6 driver bug when using FSAA, which was leading to an unplayable HOM effect on the rest of the screen.</LI>
+<LI> Fix wrong trace endpoint from the tracepos console command.</LI>
+<LI> Updated some of the third-party libraries. Other fixes/clean-ups.</LI>
+</UL>
+</P>
 <H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.91.0</A>
 </H2>
 
