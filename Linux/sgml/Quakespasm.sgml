@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: January 2016</em>
+<em>Page last edited: June 2016</em>
 
 <sect> About <p>
 
@@ -109,7 +109,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 </p>
 <sect> Changes<p>
 
-<sect1> Changes in 0.91.1<p>
+<sect1> Changes in 0.92.0<p>
 </p>
 
 <sect1> Changes in 0.91.0<p>

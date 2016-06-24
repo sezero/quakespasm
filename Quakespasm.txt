@@ -16,7 +16,7 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.91.1
+     6.1 Changes in 0.92.0
      6.2 Changes in 0.91.0
         6.2.1 Bugfixes
         6.2.2 Visual improvements
@@ -48,7 +48,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: January 2016
+  Page last edited: June 2016
 
 
   1.  About
@@ -199,7 +199,7 @@
   6.  Changes
 
 
-  6.1.  Changes in 0.91.1
+  6.1.  Changes in 0.92.0
 
 
   6.2.  Changes in 0.91.0
