@@ -56,7 +56,7 @@ void SV_Protocol_f (void)
 		{
 			sv_protocol = i;
 			if (sv.active)
-			Con_Printf ("changes will not take effect until the next level load.\n");
+				Con_Printf ("changes will not take effect until the next level load.\n");
 		}
 		break;
 	default:
@@ -73,6 +73,7 @@ SV_Init
 void SV_Init (void)
 {
 	int		i;
+	const char	*p;
 	extern	cvar_t	sv_maxvelocity;
 	extern	cvar_t	sv_gravity;
 	extern	cvar_t	sv_nostep;
@@ -106,6 +107,27 @@ void SV_Init (void)
 
 	for (i=0 ; i<MAX_MODELS ; i++)
 		sprintf (localmodels[i], "*%i", i);
+
+	i = COM_CheckParm ("-protocol");
+	if (i && i < com_argc - 1)
+		sv_protocol = atoi (com_argv[i + 1]);
+	switch (sv_protocol)
+	{
+	case PROTOCOL_NETQUAKE:
+		p = "NetQuake";
+		break;
+	case PROTOCOL_FITZQUAKE:
+		p = "FitzQuake";
+		break;
+	case PROTOCOL_RMQ:
+		p = "RMQ";
+		break;
+	default:
+		Sys_Error ("Bad protocol version request %i. Accepted values: %i, %i, %i.",
+				sv_protocol, PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE, PROTOCOL_RMQ);
+		p = "Unknown";
+	}
+	Sys_Printf ("Server using protocol %i (%s)\n", sv_protocol, p);
 }
 
 /*
