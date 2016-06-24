@@ -450,9 +450,9 @@ void SV_ReadClientMove (usercmd_t *move)
 	for (i=0 ; i<3 ; i++)
 		//johnfitz -- 16-bit angles for PROTOCOL_FITZQUAKE
 		if (sv.protocol == PROTOCOL_NETQUAKE)
-			angle[i] = MSG_ReadAngle ();
+			angle[i] = MSG_ReadAngle (sv.protocolflags);
 		else
-			angle[i] = MSG_ReadAngle16 ();
+			angle[i] = MSG_ReadAngle16 (sv.protocolflags);
 		//johnfitz
 
 	VectorCopy (angle, host_client->edict->v.v_angle);

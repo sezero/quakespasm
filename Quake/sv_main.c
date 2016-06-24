@@ -50,8 +50,8 @@ void SV_Protocol_f (void)
 		break;
 	case 2:
 		i = atoi(Cmd_Argv(1));
-		if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE)
-			Con_Printf ("sv_protocol must be %i or %i\n", PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE);
+		if (i != PROTOCOL_NETQUAKE && i != PROTOCOL_FITZQUAKE && i != PROTOCOL_RMQ)
+			Con_Printf ("sv_protocol must be %i or %i or %i\n", PROTOCOL_NETQUAKE, PROTOCOL_FITZQUAKE, PROTOCOL_RMQ);
 		else
 		{
 			sv_protocol = i;
@@ -130,9 +130,9 @@ void SV_StartParticle (vec3_t org, vec3_t dir, int color, int count)
 	if (sv.datagram.cursize > MAX_DATAGRAM-16)
 		return;
 	MSG_WriteByte (&sv.datagram, svc_particle);
-	MSG_WriteCoord (&sv.datagram, org[0]);
-	MSG_WriteCoord (&sv.datagram, org[1]);
-	MSG_WriteCoord (&sv.datagram, org[2]);
+	MSG_WriteCoord (&sv.datagram, org[0], sv.protocolflags);
+	MSG_WriteCoord (&sv.datagram, org[1], sv.protocolflags);
+	MSG_WriteCoord (&sv.datagram, org[2], sv.protocolflags);
 	for (i=0 ; i<3 ; i++)
 	{
 		v = dir[i]*16;
@@ -239,7 +239,7 @@ void SV_StartSound (edict_t *entity, int channel, const char *sample, int volume
 	//johnfitz
 
 	for (i = 0; i < 3; i++)
-		MSG_WriteCoord (&sv.datagram, entity->v.origin[i]+0.5*(entity->v.mins[i]+entity->v.maxs[i]));
+		MSG_WriteCoord (&sv.datagram, entity->v.origin[i]+0.5*(entity->v.mins[i]+entity->v.maxs[i]), sv.protocolflags);
 }
 
 /*
@@ -270,6 +270,13 @@ void SV_SendServerinfo (client_t *client)
 
 	MSG_WriteByte (&client->message, svc_serverinfo);
 	MSG_WriteLong (&client->message, sv.protocol); //johnfitz -- sv.protocol instead of PROTOCOL_VERSION
+	
+	if (sv.protocol == PROTOCOL_RMQ)
+	{
+		// mh - now send protocol flags so that the client knows the protocol features to expect
+		MSG_WriteLong (&client->message, sv.protocolflags);
+	}
+	
 	MSG_WriteByte (&client->message, svs.maxclients);
 
 	if (!coop.value && deathmatch.value)
@@ -673,17 +680,17 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 		if (bits & U_EFFECTS)
 			MSG_WriteByte (msg, ent->v.effects);
 		if (bits & U_ORIGIN1)
-			MSG_WriteCoord (msg, ent->v.origin[0]);
+			MSG_WriteCoord (msg, ent->v.origin[0], sv.protocolflags);
 		if (bits & U_ANGLE1)
-			MSG_WriteAngle(msg, ent->v.angles[0]);
+			MSG_WriteAngle(msg, ent->v.angles[0], sv.protocolflags);
 		if (bits & U_ORIGIN2)
-			MSG_WriteCoord (msg, ent->v.origin[1]);
+			MSG_WriteCoord (msg, ent->v.origin[1], sv.protocolflags);
 		if (bits & U_ANGLE2)
-			MSG_WriteAngle(msg, ent->v.angles[1]);
+			MSG_WriteAngle(msg, ent->v.angles[1], sv.protocolflags);
 		if (bits & U_ORIGIN3)
-			MSG_WriteCoord (msg, ent->v.origin[2]);
+			MSG_WriteCoord (msg, ent->v.origin[2], sv.protocolflags);
 		if (bits & U_ANGLE3)
-			MSG_WriteAngle(msg, ent->v.angles[2]);
+			MSG_WriteAngle(msg, ent->v.angles[2], sv.protocolflags);
 
 		//johnfitz -- PROTOCOL_FITZQUAKE
 		if (bits & U_ALPHA)
@@ -748,7 +755,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 		MSG_WriteByte (msg, ent->v.dmg_save);
 		MSG_WriteByte (msg, ent->v.dmg_take);
 		for (i=0 ; i<3 ; i++)
-			MSG_WriteCoord (msg, other->v.origin[i] + 0.5*(other->v.mins[i] + other->v.maxs[i]));
+			MSG_WriteCoord (msg, other->v.origin[i] + 0.5*(other->v.mins[i] + other->v.maxs[i]), sv.protocolflags );
 
 		ent->v.dmg_take = 0;
 		ent->v.dmg_save = 0;
@@ -764,7 +771,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	{
 		MSG_WriteByte (msg, svc_setangle);
 		for (i=0 ; i < 3 ; i++)
-			MSG_WriteAngle (msg, ent->v.angles[i] );
+			MSG_WriteAngle (msg, ent->v.angles[i], sv.protocolflags );
 		ent->v.fixangle = 0;
 	}
 
@@ -1208,8 +1215,8 @@ void SV_CreateBaseline (void)
 		MSG_WriteByte (&sv.signon, svent->baseline.skin);
 		for (i=0 ; i<3 ; i++)
 		{
-			MSG_WriteCoord(&sv.signon, svent->baseline.origin[i]);
-			MSG_WriteAngle(&sv.signon, svent->baseline.angles[i]);
+			MSG_WriteCoord(&sv.signon, svent->baseline.origin[i], sv.protocolflags);
+			MSG_WriteAngle(&sv.signon, svent->baseline.angles[i], sv.protocolflags);
 		}
 
 		//johnfitz -- PROTOCOL_FITZQUAKE
@@ -1325,6 +1332,14 @@ void SV_SpawnServer (const char *server)
 	q_strlcpy (sv.name, server, sizeof(sv.name));
 
 	sv.protocol = sv_protocol; // johnfitz
+	
+	if (sv.protocol == PROTOCOL_RMQ)
+	{
+		// set up the protocol flags used by this server
+		// (note - these could be cvar-ised so that server admins could choose the protocol features used by their servers)
+		sv.protocolflags = PRFL_INT32COORD | PRFL_SHORTANGLE;
+	}
+	else sv.protocolflags = 0;
 
 // load progs to get entity field count
 	PR_LoadProgs ();
