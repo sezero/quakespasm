@@ -1226,10 +1226,6 @@ void Host_Loadgame_f (void)
 		else
 		{	// parse an edict
 			ent = EDICT_NUM(entnum);
-			#if 0 /* EDICT_NUM() checks this already */
-			if (entnum >= sv.max_edicts)
-				Host_Error ("Loadgame: no free edicts (max_edicts is %i)", sv.max_edicts);
-			#endif
 			if (entnum < sv.num_edicts) {
 				ent->free = false;
 				memset (&ent->v, 0, progs->entityfields * 4);
