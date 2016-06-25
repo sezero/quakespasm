@@ -264,9 +264,9 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Quake/snd_modplug.c">
-		<Unit filename="../../Quake/snd_modplug.h" />
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../../Quake/snd_modplug.h" />
 		<Unit filename="../../Quake/snd_mp3.c">
 			<Option compilerVar="CC" />
 		</Unit>
