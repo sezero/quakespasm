@@ -49,14 +49,14 @@ static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
 #endif
 
 // SDL2 Game Controller cvars
-cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_NONE };
-cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.001", CVAR_NONE };
-cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_NONE };
-cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_NONE };
-cvar_t	joy_invert = { "joy_invert", "0", CVAR_NONE };
-cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_NONE };
-cvar_t	joy_swapmovelook = { "joy_swapmovelook", "0", CVAR_NONE };
-cvar_t	joy_enable = { "joy_enable", "1", CVAR_NONE };
+cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_ARCHIVE };
+cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.001", CVAR_ARCHIVE };
+cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_ARCHIVE };
+cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_ARCHIVE };
+cvar_t	joy_invert = { "joy_invert", "0", CVAR_ARCHIVE };
+cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_ARCHIVE };
+cvar_t	joy_swapmovelook = { "joy_swapmovelook", "0", CVAR_ARCHIVE };
+cvar_t	joy_enable = { "joy_enable", "1", CVAR_ARCHIVE };
 
 #if defined(USE_SDL2)
 static SDL_JoystickID joy_active_instaceid = -1;
