@@ -8,6 +8,9 @@
   2. Downloads
   3. Hints
      3.1 Music Playback
+     3.2 Controller Support
+        3.2.1 Cvars
+        3.2.2 Buttons
 
   4. Compiling and Installation
      4.1 Linux/Unix
@@ -119,6 +122,93 @@
 
   o  See Quakespasm-Music.txt for more details.
 
+  3.2.  Controller Support
+
+  The SDL2 variant of Quakespasm supports Xbox 360 style game
+  controllers.
+
+  The default configuration uses the left analog stick for movement and
+  the right for looking.
+
+  If your controller doesn't work you can try placing this file
+  <https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt>
+  in your Quake directory, it is a community-maintained database that
+  adds support for more controllers to SDL2.
+
+  3.2.1.  Cvars
+
+
+  o  joy_deadzone - Fraction of the stick travel to be deadzone, between
+     0 and 1. Default 0.2.
+
+  o  joy_deadzone_trigger - Fraction of trigger range required to
+     register a button press on the analog triggers, between 0 and 1.
+     Default 0.001.
+
+  o  joy_sensitivity_yaw/pitch - Max angular speed in degrees/second
+     when looking. Defaults are 300 for yaw (turning left/right) and 150
+     for pitch (up/down).
+
+  o  joy_exponent - For the look stick, the stick displacement (between
+     0 and 1) is raised to this power. Default is 3. A value of 1 would
+     give a linear relationship between stick displacement and fraction
+     of the maximum angular speed.
+
+  o  joy_invert - Set to 1 to invert the vertical axis of the look
+     stick.
+
+  o  joy_swapmovelook - Set to 1 to swap the left and right analog stick
+     functions. Default 0, move on the left stick, look on the right
+     stick.
+
+  o  joy_enable - Set to 0 to disable controller support. Default 1.
+
+  3.2.2.  Buttons
+
+  Some of the controller buttons are hardcoded to allow navigating the
+  menu:
+
+
+  o  Back - alias for TAB
+
+  o  Start - alias for ESC
+
+  o  DPad, analog sticks - mapped to arrow keys
+
+  o  A Button - alias for ENTER in menus
+
+  o  B Button - alias for ESC in menus
+
+  These buttons can be bound normally:
+
+
+  o  LTRIGGER - Left trigger
+
+  o  RTRIGGER - Right trigger
+
+  o  LSHOULDER - Left shoulder button
+
+  o  RSHOULDER - Right shoulder button
+
+  o  LTHUMB - Clicking the left thumbstick
+
+  o  RTHUMB - Clicking the right thumbstick
+
+  o  ABUTTON
+
+  o  BBUTTON
+
+  o  XBUTTON
+
+  o  YBUTTON
+
+     quakespasm.pak contains a default.cfg which has been updated to
+     give some default bindings. L/R shoulder buttons are bound to
+     weapon switching, and L/R triggers are jump and attack.
+
+  The controller support started as Jeremiah Sypult's implementation in
+  Quakespasm-Rift and also uses ideas and code from LordHavoc
+  (DarkPlaces).
 
   4.  Compiling and Installation
 
