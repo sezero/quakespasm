@@ -131,12 +131,11 @@
   the right for looking.
 
   If your controller doesn't work you can try placing this file
-  <https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt>
+  https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt
   in your Quake directory, it is a community-maintained database that
   adds support for more controllers to SDL2.
 
   3.2.1.  Cvars
-
 
   o  joy_deadzone - Fraction of the stick travel to be deadzone, between
      0 and 1. Default 0.2.
@@ -168,7 +167,6 @@
   Some of the controller buttons are hardcoded to allow navigating the
   menu:
 
-
   o  Back - alias for TAB
 
   o  Start - alias for ESC
@@ -180,7 +178,6 @@
   o  B Button - alias for ESC in menus
 
   These buttons can be bound normally:
-
 
   o  LTRIGGER - Left trigger
 
@@ -202,13 +199,14 @@
 
   o  YBUTTON
 
-     quakespasm.pak contains a default.cfg which has been updated to
-     give some default bindings. L/R shoulder buttons are bound to
-     weapon switching, and L/R triggers are jump and attack.
+  quakespasm.pak contains a default.cfg which has been updated to give
+  some default bindings. L/R shoulder buttons are bound to weapon
+  switching, and L/R triggers are jump and attack.
 
   The controller support started as Jeremiah Sypult's implementation in
   Quakespasm-Rift and also uses ideas and code from LordHavoc
   (DarkPlaces).
+
 
   4.  Compiling and Installation
 
