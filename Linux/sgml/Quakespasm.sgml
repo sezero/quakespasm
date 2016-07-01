@@ -4,16 +4,18 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: June 2016</em>
+<em>Page last edited: July 2016</em>
 
 <sect> About <p>
 
 <url url="http://quakespasm.sourceforge.net" name="QuakeSpasm">
-is a Quake 1 engine based on the SDL port of
-<url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
+is a modern, cross-platform, Quake 1 engine based on <url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
 </p><p>
-It includes support for 64 bit CPUs and custom music playback, and includes a new
+It includes support for 64 bit CPUs and custom music playback, a new
 sound driver, some graphical niceities, and numerous bug-fixes and other improvements.
+</p><p>
+Quakespasm utilizes either the SDL or SDL 2 frameworks, so choose which one works best for you.
+SDL is probably less buggy, but SDL 2 has nicer features and smoother mouse input - though no CD support.
 
 <sect> Downloads <p>
 
@@ -478,7 +480,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 <itemize>
 <item><url url="http://sourceforge.net/projects/quakespasm" name="QuakeSpasm Project page">
 <item><url url="http://sourceforge.net/p/quakespasm/bugs/?source=navbar" name="Bug reports">
-<item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan"> (project leader),  
+<item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan">,  
 <url url="mailto:gmail - dot - com - username - ewasylishen" name="Eric">,  
 <url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander">,  
 <url url="mailto:yahoo - dot - com - username - stevenaaus" name="Stevenaaus">
