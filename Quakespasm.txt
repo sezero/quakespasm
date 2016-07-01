@@ -4,6 +4,7 @@
 
   Table of Contents
 
+
   1. About
   2. Downloads
   3. Hints
@@ -48,34 +49,39 @@
   9. Contact
   10. Links
 
+
   ______________________________________________________________________
 
 
-  Page last edited: June 2016
-
+  Page last edited: July 2016
 
   1.  About
 
-  QuakeSpasm <http://quakespasm.sourceforge.net> is a Quake 1 engine
-  based on the SDL port of FitzQuake
+  QuakeSpasm <http://quakespasm.sourceforge.net> is a modern, cross-
+  platform, Quake 1 engine based on FitzQuake
   <http://www.celephais.net/fitzquake>.
 
-  It includes support for 64 bit CPUs and custom music playback, and
-  includes a new sound driver, some graphical niceities, and numerous
-  bug-fixes and other improvements.
+  It includes support for 64 bit CPUs and custom music playback, a new
+  sound driver, some graphical niceities, and numerous bug-fixes and
+  other improvements.
 
+  Quakespasm utilizes either the SDL or SDL 2 frameworks, so choose
+  which one works best for you.  SDL is probably less buggy, but SDL 2
+  has nicer features and smoother mouse input - though no CD support.
 
   2.  Downloads
 
-  o  Project Downloads: http://quakespasm.sourceforge.net/download.htm
 
-  o  Automatic Builds: http://quakespasm.ericwa.com/job/quakespasm-sdl2/
+  o  Project Downloads <http://quakespasm.sourceforge.net/download.htm>
 
+  o  Automatic Builds <http://quakespasm.ericwa.com/job/quakespasm-
+     sdl2/>
 
   3.  Hints
 
   Visit the FitzQuake homepage <http://www.celephais.net/fitzquake> for
   a full run-down of the engine's commands and variables.
+
 
   o  To disable some changes, use "quakespasm -fitz"
 
@@ -120,7 +126,7 @@
 
   o  Use the "-noextmusic" option to disable this feature.
 
-  o  See Quakespasm-Music.txt for more details.
+  o  See  <Quakespasm-Music.txt> for more details.
 
   3.2.  Controller Support
 
@@ -131,11 +137,12 @@
   the right for looking.
 
   If your controller doesn't work you can try placing this file
-  https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt
+  <https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt>
   in your Quake directory, it is a community-maintained database that
   adds support for more controllers to SDL2.
 
   3.2.1.  Cvars
+
 
   o  joy_deadzone - Fraction of the stick travel to be deadzone, between
      0 and 1. Default 0.2.
@@ -167,6 +174,7 @@
   Some of the controller buttons are hardcoded to allow navigating the
   menu:
 
+
   o  Back - alias for TAB
 
   o  Start - alias for ESC
@@ -178,6 +186,7 @@
   o  B Button - alias for ESC in menus
 
   These buttons can be bound normally:
+
 
   o  LTRIGGER - Left trigger
 
@@ -199,14 +208,13 @@
 
   o  YBUTTON
 
-  quakespasm.pak contains a default.cfg which has been updated to give
-  some default bindings. L/R shoulder buttons are bound to weapon
-  switching, and L/R triggers are jump and attack.
+     quakespasm.pak contains a default.cfg which has been updated to
+     give some default bindings. L/R shoulder buttons are bound to
+     weapon switching, and L/R triggers are jump and attack.
 
   The controller support started as Jeremiah Sypult's implementation in
   Quakespasm-Rift and also uses ideas and code from LordHavoc
   (DarkPlaces).
-
 
   4.  Compiling and Installation
 
@@ -214,8 +222,8 @@
   quakespasm.pak. This file should be placed alongside your quakespasm
   binary and id1 directory.
 
-  To checkout the latest version of QuakeSpasm, do:
-  svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
+  To checkout the latest version of QuakeSpasm, do: svn co
+  svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm
 
   4.1.  Linux/Unix
 
@@ -259,7 +267,6 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
-
   5.  Known Bugs
 
   Brightness issues should be fixed with GLSL gamma in 0.90.1, if your
@@ -271,10 +278,11 @@
   help.
 
   o  Gamma patched libSDL (i686-linux)
-     http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download
+     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download>
 
   o  Gamma patched libSDL (x86_64-linux)
-     http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download
+     <http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-
+     AMD64.tgz/download>
 
   The "game" command doesn't execute quake.rc in the new game directory
   being switched to. This means any custom key bindings in a mod's
@@ -283,11 +291,10 @@
   instead of using the game console command. Or, after running the game
   command, you can run "exec quake.rc" by yourself (YMMV).
 
-
   6.  Changes
 
-
   6.1.  Changes in 0.92.0
+
 
   o  SDL2 Game Controller support.
 
@@ -323,10 +330,10 @@
 
   o  Updated some of the third-party libraries. Other fixes/clean-ups.
 
-
   6.2.  Changes in 0.91.0
 
   6.2.1.  Bugfixes
+
 
   o  Fix unwanted fog mode change upon video restart.
 
@@ -364,6 +371,7 @@
 
   6.2.2.  Visual improvements
 
+
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
      specific liquid opacities (from DirectQ/RMQEngine, non-archived,
      default to 0), and new worldspawn keys _wateralpha, _lavaalpha,
@@ -375,6 +383,7 @@
 
   6.2.3.  Interface improvements
 
+
   o  New r_pos command to show player position.
 
   o  NaN detection in traceline with "developer 1" set now warns instead
@@ -382,9 +391,11 @@
 
   6.2.4.  Code cleanup / Other
 
+
   o  Update third-party libraries.
 
   6.2.5.  Raised limits
+
 
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
@@ -395,18 +406,18 @@
 
   o  Raised MAX_SFX to 1024 (was 512).
 
-
   6.3.  Changes in 0.90.1
 
   6.3.1.  Bugfixes
+
 
   o  Fix dynamic light artifact where changing lightmap are rendered one
      frame late (bug introduced in 0.90.0).
 
   o  Fix texture memory leak when changing video modes with SDL2.
 
-  o  Fix rare incorrect mdl lighting on 64-bit builds. (details here:
-     http://forums.insideqc.com/viewtopic.php?f=3&t=5620)
+  o  Fix rare incorrect mdl lighting on 64-bit builds. (details here.)
+     <http://forums.insideqc.com/viewtopic.php?f=3&t=5620>
 
   o  Fix fullbrights turning black after "kill" command (bug introduced
      in 0.90.0).
@@ -423,11 +434,13 @@
 
   6.3.2.  Performance
 
+
   o  Use multithreaded OpenGL on OS X for better performance.
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
   6.3.3.  Visual improvements
+
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -442,6 +455,7 @@
   o  r_noshadow_list cvar added (from MarkV.)
 
   6.3.4.  Interface improvements
+
 
   o  Support pausing demo playback with the "pause" command.
 
@@ -460,17 +474,18 @@
 
   6.3.5.  Code cleanup
 
+
   o  Clean up IDE project files to build on fresh systems.
 
   o  Update 3rd-party libraries.
 
-
   6.4.  Changes in 0.90.0
+
 
   o  Fix issues on Windows systems with DPI scaling.
 
-  o  Unix/Mac user directories support. Disabled by default,
-     'make DO_USERDIRS=1' to enable it.
+  o  Unix/Mac user directories support. Disabled by default, 'make
+     DO_USERDIRS=1' to enable it.
 
   o  SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.
 
@@ -516,7 +531,7 @@
 
   o  Music and sfx now mixed at 44100 Hz to avoid downsampling music.
      Low-pass filter applied to the sfx if -sndspeed is 11025 (the
-     default), to preserve the same sound quality as 0.85.9.  New
+     default), to preserve the same sound quality as 0.85.9. New
      -mixspeed option sets the rate for mixing sfx and music, and output
      to the OS (default 44100), setting it to 11025 reverts to 0.85.9
      behaviour. New snd_filterquality cvar, value can be between 1
@@ -572,8 +587,8 @@
 
   o  Other fixes and clean-ups.
 
-
   6.5.  Changes in 0.85.9
+
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -619,8 +634,8 @@
 
   o  Several other minor fixes/cleanups.
 
-
   6.6.  Changes in 0.85.8
+
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -666,8 +681,8 @@
 
   o  Miscellaneous source code cleanups.
 
-
   6.7.  Changes in 0.85.7
+
 
   o  Added support for cross-level demo playback
 
@@ -692,8 +707,8 @@
 
   o  Several other small changes mostly invisible to the end-user
 
-
   6.8.  Changes in 0.85.6
+
 
   o  More work for string buffer safety
 
@@ -705,8 +720,8 @@
 
   o  Minor SDL video fixes.
 
-
   6.9.  Changes in 0.85.5
+
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -736,8 +751,8 @@
 
   o  Several code updates from uHexen2 project, several code cleanups.
 
-
   6.10.  Changes in 0.85.4
+
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -764,8 +779,8 @@
 
   o  Other minor sound and cdaudio updates
 
-
   6.11.  Changes in 0.85.3
+
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -801,8 +816,8 @@
   o  Add a "-cd" option to let the CD Player work in dedicated mode, and
      some other CD tweaks.
 
-
   6.12.  Changes in 0.85.2
+
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -829,8 +844,8 @@
 
   o  Add OSX Makefile (tested?)
 
-
   6.13.  Changes in 0.85.1
+
 
   o  64 bit CPU support
 
@@ -867,48 +882,50 @@
   o  Changes to cvar persistence gl_flashblend (default 0), r_shadow,
      r_wateralpha, r_dynamic, r_novis
 
-
   7.  Todo
+
 
   o  Add uHexen2's first person camera (and menu item)
 
   o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
      volume controls and SDL2 doesn't support CD audio
 
-
   8.  Copyright
 
+
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
-     LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
+     LICENSE Version 2 <http://www.gnu.org/licenses/gpl-2.0.html>
 
   o  Quakespasm console background image by AAS, released under the
-     CREATIVE COMMONS PUBLIC LICENSE:
-     http://creativecommons.org/licenses/by/3.0/legalcode
-
+     CREATIVE COMMONS PUBLIC LICENSE
+     <http://creativecommons.org/licenses/by/3.0/legalcode>
 
   9.  Contact
 
-  o  QuakeSpasm Project page:
-     http://sourceforge.net/projects/quakespasm
 
-  o  Bug reports:
-     http://sourceforge.net/p/quakespasm/bugs/?source=navbar
+  o  QuakeSpasm Project page
+     <http://sourceforge.net/projects/quakespasm>
 
-  o  Ozkan <mailto:gmail - dot - com - username - sezeroz> (project
-     leader), Eric <mailto:gmail - dot - com - username - ewasylishen>,
-     Sander <mailto:gmail - dot - com - username - a.h.vandijk>,
-     Stevenaaus <mailto:yahoo - dot - com - username - stevenaaus>
+  o  Bug reports
+     <http://sourceforge.net/p/quakespasm/bugs/?source=navbar>
 
+  o  Ozkan <mailto:gmail - dot - com - username - sezeroz>, Eric
+     <mailto:gmail - dot - com - username - ewasylishen>, Sander
+     <mailto:gmail - dot - com - username - a.h.vandijk>, Stevenaaus
+     <mailto:yahoo - dot - com - username - stevenaaus>
 
   10.  Links
 
-  o  QuakeSpasm Homepage: http://quakespasm.sourceforge.net
 
-  o  Downloads: http://quakespasm.sourceforge.net/download.htm
+  o  QuakeSpasm Homepage <http://quakespasm.sourceforge.net>
 
-  o  FitzQuake Homepage: http://www.celephais.net/fitzquake
+  o  Downloads <http://quakespasm.sourceforge.net/download.htm>
 
-  o  Func Quakespasm forum:
-     http://www.celephais.net/board/view_thread.php?id=60452
+  o  FitzQuake Homepage <http://www.celephais.net/fitzquake>
 
-  o  Inside3D forums: http://forums.insideqc.com
+  o  Func Quakespasm forum
+     <http://www.celephais.net/board/view_thread.php?id=60452>
+
+  o  Inside3D forums <http://forums.insideqc.com>
+
+
