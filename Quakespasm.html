@@ -75,12 +75,12 @@
 
 <P>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
-is a modern, cross-platform, Quake 1 engine based on 
+is a modern, cross-platform Quake 1 engine based on 
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake</A>.</P>
 <P>It includes support for 64 bit CPUs and custom music playback, a new
 sound driver, some graphical niceities, and numerous bug-fixes and other improvements.</P>
-<P>Quakespasm utilizes either the SDL or SDL 2 frameworks, so choose which one works best for you.
-SDL is probably less buggy, but SDL 2 has nicer features and smoother mouse input - though no CD support.</P>
+<P>Quakespasm utilizes either the SDL or SDL2 frameworks, so choose which one works best for you.
+SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input - though no CD support.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
 
@@ -106,7 +106,7 @@ SDL is probably less buggy, but SDL 2 has nicer features and smoother mouse inpu
 </LI>
 <LI>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
 </LI>
-<LI>For different sound drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
+<LI>For different sound backend drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
 , where DRIVER may be alsa, dsp, pulse, esd ...
 </LI>
 <LI><B>Shift+Escape</B> draws the Console.</LI>
@@ -234,9 +234,9 @@ Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 a
 these patched libSDL binaries may help.
 <UL>
 <LI>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download">Gamma patched libSDL (i686-linux)</A></LI>
+<A HREF="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download">Gamma patched libSDL (i686-linux)</A></LI>
 <LI>
-<A HREF="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
+<A HREF="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
 </UL>
 </P>
 <P>The "game" command doesn't execute quake.rc in the new game directory being switched to. This means any custom key bindings in a mod's config.cfg or special settings in a quake.rc won't be loaded. The only workaround is launching the engine with the -game command-line switch instead of using the game console command. Or, after running the game command, you can run "exec quake.rc" by yourself (YMMV).</P>

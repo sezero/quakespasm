@@ -9,13 +9,13 @@
 <sect> About <p>
 
 <url url="http://quakespasm.sourceforge.net" name="QuakeSpasm">
-is a modern, cross-platform, Quake 1 engine based on <url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
+is a modern, cross-platform Quake 1 engine based on <url url="http://www.celephais.net/fitzquake" name="FitzQuake">.
 </p><p>
 It includes support for 64 bit CPUs and custom music playback, a new
 sound driver, some graphical niceities, and numerous bug-fixes and other improvements.
 </p><p>
-Quakespasm utilizes either the SDL or SDL 2 frameworks, so choose which one works best for you.
-SDL is probably less buggy, but SDL 2 has nicer features and smoother mouse input - though no CD support.
+Quakespasm utilizes either the SDL or SDL2 frameworks, so choose which one works best for you.
+SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input - though no CD support.
 
 <sect> Downloads <p>
 
@@ -34,7 +34,7 @@ SDL is probably less buggy, but SDL 2 has nicer features and smoother mouse inpu
 
 <item>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
 
-<item>For different sound drivers use "<bf>SDL_AUDIODRIVER=</bf><em>DRIVER</em><bf> ./quakespasm</bf>"
+<item>For different sound backend drivers use "<bf>SDL_AUDIODRIVER=</bf><em>DRIVER</em><bf> ./quakespasm</bf>"
 , where DRIVER may be alsa, dsp, pulse, esd ...
 
 <item><bf>Shift+Escape</bf> draws the Console.
@@ -147,9 +147,9 @@ Some versions of Xorg and SDL have brightness issues.
 Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
 these patched libSDL binaries may help.
 <itemize>
-    <item><url url="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download"
+    <item><url url="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download"
     name="Gamma patched libSDL (i686-linux)"></li>
-    <item><url url="http://sourceforge.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download"
+    <item><url url="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download"
     name="Gamma patched libSDL (x86_64-linux)">
 </itemize>
 <p>
