@@ -29,7 +29,6 @@
 #define FILENAMES_H
 
 #include <string.h>
-#include "compiler.h" /* for inline, etc */
 
 /* ---------------------- Windows, DOS, OS2: ---------------------- */
 #if defined(__MSDOS__) || defined(MSDOS) || defined(__DOS__)	|| \
