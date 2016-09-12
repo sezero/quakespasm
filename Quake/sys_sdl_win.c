@@ -319,9 +319,6 @@ void Sys_Error (const char *error, ...)
 		SDL_Delay (3000);	/* show the console 3 more seconds */
 	}
 
-// shut down QHOST hooks if necessary
-//	DeinitConProc ();
-
 	exit (1);
 }
 
