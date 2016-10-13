@@ -1118,7 +1118,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/codecs/lib",
 				);
-				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "QuakeSpasm-SDL2";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
@@ -1161,7 +1161,7 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/codecs/lib",
 				);
-				"MACOSX_DEPLOYMENT_TARGET[arch=i386]" = 10.5;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				OTHER_CFLAGS = "";
 				"OTHER_CFLAGS[arch=i386]" = (
 					"-arch",
