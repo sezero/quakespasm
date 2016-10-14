@@ -19,30 +19,31 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.92.1
-     6.2 Changes in 0.92.0
-     6.3 Changes in 0.91.0
-        6.3.1 Bugfixes
-        6.3.2 Visual improvements
-        6.3.3 Interface improvements
-        6.3.4 Code cleanup / Other
-        6.3.5 Raised limits
-     6.4 Changes in 0.90.1
+     6.1 Changes in 0.92.2
+     6.2 Changes in 0.92.1
+     6.3 Changes in 0.92.0
+     6.4 Changes in 0.91.0
         6.4.1 Bugfixes
-        6.4.2 Performance
-        6.4.3 Visual improvements
-        6.4.4 Interface improvements
-        6.4.5 Code cleanup
-     6.5 Changes in 0.90.0
-     6.6 Changes in 0.85.9
-     6.7 Changes in 0.85.8
-     6.8 Changes in 0.85.7
-     6.9 Changes in 0.85.6
-     6.10 Changes in 0.85.5
-     6.11 Changes in 0.85.4
-     6.12 Changes in 0.85.3
-     6.13 Changes in 0.85.2
-     6.14 Changes in 0.85.1
+        6.4.2 Visual improvements
+        6.4.3 Interface improvements
+        6.4.4 Code cleanup / Other
+        6.4.5 Raised limits
+     6.5 Changes in 0.90.1
+        6.5.1 Bugfixes
+        6.5.2 Performance
+        6.5.3 Visual improvements
+        6.5.4 Interface improvements
+        6.5.5 Code cleanup
+     6.6 Changes in 0.90.0
+     6.7 Changes in 0.85.9
+     6.8 Changes in 0.85.8
+     6.9 Changes in 0.85.7
+     6.10 Changes in 0.85.6
+     6.11 Changes in 0.85.5
+     6.12 Changes in 0.85.4
+     6.13 Changes in 0.85.3
+     6.14 Changes in 0.85.2
+     6.15 Changes in 0.85.1
 
   7. Todo
   8. Copyright
@@ -293,7 +294,14 @@
   6.  Changes
 
 
-  6.1.  Changes in 0.92.1
+  6.1.  Changes in 0.92.2
+
+  o
+
+  o  Updated some of the third-party libraries.
+
+
+  6.2.  Changes in 0.92.1
 
   o  Fixed large menu scale factors (was broken in 0.92.0).
 
@@ -302,7 +310,7 @@
   o  Updated some of the third-party libraries.
 
 
-  6.2.  Changes in 0.92.0
+  6.3.  Changes in 0.92.0
 
   o  SDL2 Game Controller support.
 
@@ -339,9 +347,9 @@
   o  Updated some of the third-party libraries. Other fixes/clean-ups.
 
 
-  6.3.  Changes in 0.91.0
+  6.4.  Changes in 0.91.0
 
-  6.3.1.  Bugfixes
+  6.4.1.  Bugfixes
 
   o  Fix unwanted fog mode change upon video restart.
 
@@ -377,7 +385,7 @@
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 
-  6.3.2.  Visual improvements
+  6.4.2.  Visual improvements
 
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
      specific liquid opacities (from DirectQ/RMQEngine, non-archived,
@@ -388,18 +396,18 @@
   o  GLSL gamma is now supported on older hardware without NPOT
      extension.
 
-  6.3.3.  Interface improvements
+  6.4.3.  Interface improvements
 
   o  New r_pos command to show player position.
 
   o  NaN detection in traceline with "developer 1" set now warns instead
      of errors.
 
-  6.3.4.  Code cleanup / Other
+  6.4.4.  Code cleanup / Other
 
   o  Update third-party libraries.
 
-  6.3.5.  Raised limits
+  6.4.5.  Raised limits
 
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
@@ -411,9 +419,9 @@
   o  Raised MAX_SFX to 1024 (was 512).
 
 
-  6.4.  Changes in 0.90.1
+  6.5.  Changes in 0.90.1
 
-  6.4.1.  Bugfixes
+  6.5.1.  Bugfixes
 
   o  Fix dynamic light artifact where changing lightmap are rendered one
      frame late (bug introduced in 0.90.0).
@@ -436,13 +444,13 @@
 
   o  Fix crash on out-of-bounds skin number.
 
-  6.4.2.  Performance
+  6.5.2.  Performance
 
   o  Use multithreaded OpenGL on OS X for better performance.
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
-  6.4.3.  Visual improvements
+  6.5.3.  Visual improvements
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -456,7 +464,7 @@
 
   o  r_noshadow_list cvar added (from MarkV.)
 
-  6.4.4.  Interface improvements
+  6.5.4.  Interface improvements
 
   o  Support pausing demo playback with the "pause" command.
 
@@ -473,14 +481,14 @@
      "trying to load ent", "bad chunk length", "meshing",
      "PR_AlocStringSlots: realloc'ing"
 
-  6.4.5.  Code cleanup
+  6.5.5.  Code cleanup
 
   o  Clean up IDE project files to build on fresh systems.
 
   o  Update 3rd-party libraries.
 
 
-  6.5.  Changes in 0.90.0
+  6.6.  Changes in 0.90.0
 
   o  Fix issues on Windows systems with DPI scaling.
 
@@ -588,7 +596,7 @@
   o  Other fixes and clean-ups.
 
 
-  6.6.  Changes in 0.85.9
+  6.7.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -635,7 +643,7 @@
   o  Several other minor fixes/cleanups.
 
 
-  6.7.  Changes in 0.85.8
+  6.8.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -682,7 +690,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  6.8.  Changes in 0.85.7
+  6.9.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -708,7 +716,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  6.9.  Changes in 0.85.6
+  6.10.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -721,7 +729,7 @@
   o  Minor SDL video fixes.
 
 
-  6.10.  Changes in 0.85.5
+  6.11.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -752,7 +760,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  6.11.  Changes in 0.85.4
+  6.12.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -780,7 +788,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  6.12.  Changes in 0.85.3
+  6.13.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -817,7 +825,7 @@
      some other CD tweaks.
 
 
-  6.13.  Changes in 0.85.2
+  6.14.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -845,7 +853,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  6.14.  Changes in 0.85.1
+  6.15.  Changes in 0.85.1
 
   o  64 bit CPU support
 

@@ -157,6 +157,13 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 </p>
 <sect> Changes<p>
 
+<sect1> Changes in 0.92.2<p>
+<itemize>
+<item> 
+<item> Updated some of the third-party libraries.
+</itemize>
+</p>
+
 <sect1> Changes in 0.92.1<p>
 <itemize>
 <item> Fixed large menu scale factors (was broken in 0.92.0).
