@@ -65,9 +65,10 @@ USE_RPATH=1
 endif
 ifeq ($(USE_SDL2),1)
 # sdl2 needs targetting 10.5+
+# as of v2.0.5, sdl2 targets 10.6+
 ifeq ($(MACH_TYPE),x86)
-CFLAGS  +=-mmacosx-version-min=10.5
-LDFLAGS +=-mmacosx-version-min=10.5
+CFLAGS  +=-mmacosx-version-min=10.6
+LDFLAGS +=-mmacosx-version-min=10.6 -Wl,-lbundle1.o
 USE_RPATH=1
 endif
 endif

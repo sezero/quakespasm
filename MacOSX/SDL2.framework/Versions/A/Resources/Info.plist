@@ -19,11 +19,11 @@
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.0.4</string>
+	<string>2.0.5</string>
 	<key>CFBundleSignature</key>
 	<string>SDLX</string>
 	<key>CFBundleVersion</key>
-	<string>2.0.4</string>
+	<string>2.0.5</string>
 	<key>DTCompiler</key>
 	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
