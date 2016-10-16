@@ -68,7 +68,7 @@ ifeq ($(USE_SDL2),1)
 # as of v2.0.5, sdl2 targets 10.6+
 ifeq ($(MACH_TYPE),x86)
 CFLAGS  +=-mmacosx-version-min=10.6
-LDFLAGS +=-mmacosx-version-min=10.6 -Wl,-lbundle1.o
+LDFLAGS +=-mmacosx-version-min=10.6
 USE_RPATH=1
 endif
 endif
