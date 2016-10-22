@@ -208,6 +208,16 @@
 		664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
 		664D990619CF6E16000D395C /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
 		664D990719CF6E33000D395C /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
+		66991C071DBAB4A600C373C0 /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
+		66991C081DBAB4A600C373C0 /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
+		66991C091DBAB4A600C373C0 /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
+		66991C0A1DBAB4A600C373C0 /* Quakespasm.html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C041DBAB47000C373C0 /* Quakespasm.html */; };
+		66991C0B1DBAB4A600C373C0 /* Quakespasm.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C051DBAB47000C373C0 /* Quakespasm.txt */; };
+		66991C0D1DBAB4B300C373C0 /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
+		66991C0E1DBAB4B300C373C0 /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
+		66991C0F1DBAB4B300C373C0 /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
+		66991C101DBAB4B300C373C0 /* Quakespasm.html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C041DBAB47000C373C0 /* Quakespasm.html */; };
+		66991C111DBAB4B300C373C0 /* Quakespasm.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C051DBAB47000C373C0 /* Quakespasm.txt */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
@@ -272,6 +282,34 @@
 				664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66991C001DBAB3F500C373C0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				66991C071DBAB4A600C373C0 /* quakespasm.pak in CopyFiles */,
+				66991C081DBAB4A600C373C0 /* LICENSE.txt in CopyFiles */,
+				66991C091DBAB4A600C373C0 /* Quakespasm-Music.txt in CopyFiles */,
+				66991C0A1DBAB4A600C373C0 /* Quakespasm.html in CopyFiles */,
+				66991C0B1DBAB4A600C373C0 /* Quakespasm.txt in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66991C0C1DBAB4AF00C373C0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+				66991C0D1DBAB4B300C373C0 /* quakespasm.pak in CopyFiles */,
+				66991C0E1DBAB4B300C373C0 /* LICENSE.txt in CopyFiles */,
+				66991C0F1DBAB4B300C373C0 /* Quakespasm-Music.txt in CopyFiles */,
+				66991C101DBAB4B300C373C0 /* Quakespasm.html in CopyFiles */,
+				66991C111DBAB4B300C373C0 /* Quakespasm.txt in CopyFiles */,
+			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -435,6 +473,11 @@
 		664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		664D98FB19CF6B78000D395C /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		664D990519CF6E16000D395C /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = SOURCE_ROOT; };
+		66991C021DBAB47000C373C0 /* LICENSE.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE.txt; path = ../LICENSE.txt; sourceTree = "<group>"; };
+		66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = "Quakespasm-Music.txt"; path = "../Quakespasm-Music.txt"; sourceTree = "<group>"; };
+		66991C041DBAB47000C373C0 /* Quakespasm.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Quakespasm.html; path = ../Quakespasm.html; sourceTree = "<group>"; };
+		66991C051DBAB47000C373C0 /* Quakespasm.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Quakespasm.txt; path = ../Quakespasm.txt; sourceTree = "<group>"; };
+		66991C061DBAB48000C373C0 /* quakespasm.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = quakespasm.pak; path = ../Quake/quakespasm.pak; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B021C20714A5FF7E003F18D6 /* cfgfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cfgfile.c; path = ../Quake/cfgfile.c; sourceTree = SOURCE_ROOT; };
@@ -529,6 +572,7 @@
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				66991C011DBAB43000C373C0 /* Release Archive Files */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
 			indentWidth = 4;
@@ -793,6 +837,18 @@
 			name = Headers;
 			sourceTree = "<group>";
 		};
+		66991C011DBAB43000C373C0 /* Release Archive Files */ = {
+			isa = PBXGroup;
+			children = (
+				66991C061DBAB48000C373C0 /* quakespasm.pak */,
+				66991C021DBAB47000C373C0 /* LICENSE.txt */,
+				66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */,
+				66991C041DBAB47000C373C0 /* Quakespasm.html */,
+				66991C051DBAB47000C373C0 /* Quakespasm.txt */,
+			);
+			name = "Release Archive Files";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -805,6 +861,7 @@
 				664D98DD19CF6B78000D395C /* Frameworks */,
 				664D98EB19CF6B78000D395C /* Copy Frameworks */,
 				664D98ED19CF6B78000D395C /* Copy Libraries */,
+				66991C001DBAB3F500C373C0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -825,6 +882,7 @@
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				002F39FD09D0883400EBEB88 /* Copy Frameworks */,
 				48692C131340A46800A0F098 /* Copy Libraries */,
+				66991C0C1DBAB4AF00C373C0 /* CopyFiles */,
 			);
 			buildRules = (
 			);
