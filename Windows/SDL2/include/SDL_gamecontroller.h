@@ -25,8 +25,8 @@
  *  Include file for SDL game controller event handling
  */
 
-#ifndef _SDL_gamecontroller_h
-#define _SDL_gamecontroller_h
+#ifndef SDL_gamecontroller_h_
+#define SDL_gamecontroller_h_
 
 #include "SDL_stdinc.h"
 #include "SDL_error.h"
@@ -51,7 +51,9 @@ extern "C" {
  *  SDL_Init(): SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS
  */
 
-/* The gamecontroller structure used to identify an SDL game controller */
+/**
+ * The gamecontroller structure used to identify an SDL game controller
+ */
 struct _SDL_GameController;
 typedef struct _SDL_GameController SDL_GameController;
 
@@ -132,6 +134,20 @@ extern DECLSPEC int SDLCALL SDL_GameControllerAddMappingsFromRW(SDL_RWops * rw, 
  * \return 1 if mapping is added, 0 if updated, -1 on error
  */
 extern DECLSPEC int SDLCALL SDL_GameControllerAddMapping(const char* mappingString);
+
+/**
+ *  Get the number of mappings installed
+ *
+ *  \return the number of mappings
+ */
+extern DECLSPEC int SDLCALL SDL_GameControllerNumMappings();
+
+/**
+ *  Get the mapping at a particular index.
+ *
+ *  \return the mapping string.  Must be freed with SDL_free().  Returns NULL if the index is out of range.
+ */
+extern DECLSPEC char * SDLCALL SDL_GameControllerMappingForIndex(int mapping_index);
 
 /**
  *  Get a mapping string for a GUID
@@ -335,6 +351,6 @@ extern DECLSPEC void SDLCALL SDL_GameControllerClose(SDL_GameController *gamecon
 #endif
 #include "close_code.h"
 
-#endif /* _SDL_gamecontroller_h */
+#endif /* SDL_gamecontroller_h_ */
 
 /* vi: set ts=4 sw=4 expandtab: */

@@ -20,8 +20,8 @@
   3. This notice may not be removed or altered from any source distribution.
 */
 
-#ifndef _SDL_config_h
-#define _SDL_config_h
+#ifndef SDL_config_h_
+#define SDL_config_h_
 
 /**
  *  \file SDL_config.h.in
@@ -174,6 +174,7 @@
 #define HAVE_PTHREAD_SETNAME_NP 1
 /* #undef HAVE_PTHREAD_SET_NAME_NP */
 /* #undef HAVE_SEM_TIMEDWAIT */
+/* #undef HAVE_GETAUXVAL */
 
 #else
 #define HAVE_STDARG_H 1
@@ -360,4 +361,7 @@
 /* Enable ime support */
 /* #undef SDL_USE_IME */
 
-#endif /* _SDL_config_h */
+/* Enable dynamic udev support */
+/* #undef SDL_UDEV_DYNAMIC */
+
+#endif /* SDL_config_h_ */
