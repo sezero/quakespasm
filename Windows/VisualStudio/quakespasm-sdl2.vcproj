@@ -586,6 +586,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_xmp.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\strlcat.c"
 				>
 			</File>
@@ -853,6 +857,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_wave.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_xmp.h"
 				>
 			</File>
 			<File
