@@ -1,7 +1,0 @@
-libmodplug - v0.8.8.5 release + git (2014-11-27) using sezero's fork
-at https://github.com/sezero/libmodplug/
-
-midi formats (*.abc, *.mid) and GUS patches (*.pat) loading disabled.
-wav format loading disabled.
-
-only the C-interface is exported in the dylibs, which is what we use.
