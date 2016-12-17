@@ -81,7 +81,7 @@ static int buttonremap[] =
 /* total accumulated mouse movement since last frame */
 static int	total_dx, total_dy = 0;
 
-static int IN_FilterMouseEvents (const SDL_Event *event)
+static int SDLCALL IN_FilterMouseEvents (const SDL_Event *event)
 {
 	switch (event->type)
 	{
@@ -95,13 +95,13 @@ static int IN_FilterMouseEvents (const SDL_Event *event)
 }
 
 #if defined(USE_SDL2)
-static int IN_SDL2_FilterMouseEvents (void *userdata, SDL_Event *event)
+static int SDLCALL IN_SDL2_FilterMouseEvents (void *userdata, SDL_Event *event)
 {
 	return IN_FilterMouseEvents (event);
 }
 #endif
 
-static void IN_BeginIgnoringMouseEvents()
+static void IN_BeginIgnoringMouseEvents(void)
 {
 #if defined(USE_SDL2)
 	SDL_EventFilter currentFilter = NULL;
@@ -116,7 +116,7 @@ static void IN_BeginIgnoringMouseEvents()
 #endif
 }
 
-static void IN_EndIgnoringMouseEvents()
+static void IN_EndIgnoringMouseEvents(void)
 {
 #if defined(USE_SDL2)
 	SDL_EventFilter currentFilter;
