@@ -1,7 +1,7 @@
 /* include/SDL_config.h.  Generated from SDL_config.h.in by configure.  */
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2016 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2017 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -84,6 +84,7 @@
 /* #undef HAVE_DBUS_DBUS_H */
 /* #undef HAVE_IBUS_IBUS_H */
 /* #undef HAVE_FCITX_FRONTEND_H */
+/* #undef HAVE_LIBSAMPLERATE_H */
 
 /* C library functions */
 #define HAVE_MALLOC 1
@@ -363,5 +364,8 @@
 
 /* Enable dynamic udev support */
 /* #undef SDL_UDEV_DYNAMIC */
+
+/* Enable dynamic libsamplerate support */
+/* #undef SDL_LIBSAMPLERATE_DYNAMIC */
 
 #endif /* SDL_config_h_ */
