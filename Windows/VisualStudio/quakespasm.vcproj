@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib wsock32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib wsock32.lib opengl32.lib winmm.lib SDL.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x86;..\SDL\lib"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -136,7 +136,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib wsock32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib wsock32.lib opengl32.lib winmm.lib SDL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x86;..\SDL\lib"
 				GenerateDebugInformation="true"
@@ -212,7 +212,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\codecs\x64;..\SDL\lib64"
 				IgnoreDefaultLibraryNames="msvcrt.lib"
@@ -288,7 +288,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib SDLmain.lib"
+				AdditionalDependencies="libvorbisfile.lib libvorbis.lib libopusfile.lib libopus.lib libFLAC.lib libogg.lib libmad.lib libmikmod.lib ws2_32.lib opengl32.lib winmm.lib SDL.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\codecs\x64;..\SDL\lib64"
 				GenerateDebugInformation="true"
@@ -631,6 +631,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\zone.c"
+				>
+			</File>
+			<File
+				RelativePath="..\SDL\SDL_win32_main.c"
 				>
 			</File>
 		</Filter>
