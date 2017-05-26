@@ -140,6 +140,7 @@ extern	cvar_t	r_telealpha;
 extern	cvar_t	r_slimealpha;
 extern	cvar_t	r_dynamic;
 extern	cvar_t	r_novis;
+extern	cvar_t	r_scale;
 
 extern	cvar_t	gl_clear;
 extern	cvar_t	gl_cull;
@@ -394,6 +395,8 @@ void GL_ClearBufferBindings ();
 
 void GLSLGamma_DeleteTexture (void);
 void GLSLGamma_GammaCorrect (void);
+
+void R_ScaleView_DeleteTexture (void);
 
 float GL_WaterAlphaForSurface (msurface_t *fa);
 

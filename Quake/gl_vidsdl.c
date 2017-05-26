@@ -756,6 +756,7 @@ static void VID_Restart (void)
 
 	TexMgr_DeleteTextureObjects ();
 	GLSLGamma_DeleteTexture ();
+	R_ScaleView_DeleteTexture ();
 	R_DeleteShaders ();
 	GL_DeleteBModelVertexBuffer ();
 	GLMesh_DeleteVertexBuffers ();

@@ -112,6 +112,8 @@ float	map_wateralpha, map_lavaalpha, map_telealpha, map_slimealpha;
 
 qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_drawworld_cheatsafe; //johnfitz
 
+cvar_t	r_scale = {"r_scale", "1", CVAR_ARCHIVE};
+
 //==============================================================================
 //
 // GLSL GAMMA CORRECTION
@@ -472,13 +474,16 @@ R_SetupGL
 */
 void R_SetupGL (void)
 {
+	int scale;
+
 	//johnfitz -- rewrote this section
 	glMatrixMode(GL_PROJECTION);
     glLoadIdentity ();
+	scale =  CLAMP(1, (int)r_scale.value, 4); // ericw -- see R_ScaleView
 	glViewport (glx + r_refdef.vrect.x,
 				gly + glheight - r_refdef.vrect.y - r_refdef.vrect.height,
-				r_refdef.vrect.width,
-				r_refdef.vrect.height);
+				r_refdef.vrect.width / scale,
+				r_refdef.vrect.height / scale);
 	//johnfitz
 
     GL_SetFrustum (r_fovx, r_fovy); //johnfitz -- use r_fov* vars
@@ -936,6 +941,113 @@ void R_RenderScene (void)
 	R_ShowBoundingBoxes (); //johnfitz
 }
 
+static GLuint r_scaleview_texture;
+static int r_scaleview_texture_width, r_scaleview_texture_height;
+
+/*
+=============
+R_ScaleView_DeleteTexture
+=============
+*/
+void R_ScaleView_DeleteTexture (void)
+{
+	glDeleteTextures (1, &r_scaleview_texture);
+	r_scaleview_texture = 0;
+}
+
+/*
+================
+R_ScaleView
+
+The r_scale cvar allows rendering the 3D view at 1/2, 1/3, or 1/4 resolution.
+This function scales the reduced resolution 3D view back up to fill 
+r_refdef.vrect. This is for emulating a low-resolution pixellated look,
+or possibly as a perforance boost on slow graphics cards.
+================
+*/
+void R_ScaleView (void)
+{
+	float smax, tmax;
+	int scale;
+	int srcx, srcy, srcw, srch;
+
+	// copied from R_SetupGL()
+	scale = CLAMP(1, (int)r_scale.value, 4);
+	srcx = glx + r_refdef.vrect.x;
+	srcy = gly + glheight - r_refdef.vrect.y - r_refdef.vrect.height;
+	srcw = r_refdef.vrect.width / scale;
+	srch = r_refdef.vrect.height / scale;
+
+	if (scale == 1)
+		return;
+
+	// make sure texture unit 0 is selected
+	GL_DisableMultitexture ();
+
+	// create (if needed) and bind the render-to-texture texture
+	if (!r_scaleview_texture)
+	{
+		glGenTextures (1, &r_scaleview_texture);
+
+		r_scaleview_texture_width = 0;
+		r_scaleview_texture_height = 0;
+	}
+	glBindTexture (GL_TEXTURE_2D, r_scaleview_texture);
+
+	// resize render-to-texture texture if needed
+	if (r_scaleview_texture_width < srcw
+		|| r_scaleview_texture_height < srch)
+	{
+		r_scaleview_texture_width = srcw;
+		r_scaleview_texture_height = srch;
+
+		if (!gl_texture_NPOT)
+		{
+			r_scaleview_texture_width = TexMgr_Pad(r_scaleview_texture_width);
+			r_scaleview_texture_height = TexMgr_Pad(r_scaleview_texture_height);
+		}
+
+		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, r_scaleview_texture_width, r_scaleview_texture_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
+
+	// copy the framebuffer to the texture
+	glBindTexture (GL_TEXTURE_2D, r_scaleview_texture);
+	glCopyTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, srcx, srcy, srcw, srch);
+
+	// draw the texture back to the framebuffer
+	glDisable (GL_ALPHA_TEST);
+	glDisable (GL_DEPTH_TEST);
+	glDisable (GL_CULL_FACE);
+	glDisable (GL_BLEND);
+
+	glViewport (srcx, srcy, r_refdef.vrect.width, r_refdef.vrect.height);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity ();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity ();
+
+	// correction factor if we lack NPOT textures, normally these are 1.0f
+	smax = srcw/(float)r_scaleview_texture_width;
+	tmax = srch/(float)r_scaleview_texture_height;
+
+	glBegin (GL_QUADS);
+	glTexCoord2f (0, 0);
+	glVertex2f (-1, -1);
+	glTexCoord2f (smax, 0);
+	glVertex2f (1, -1);
+	glTexCoord2f (smax, tmax);
+	glVertex2f (1, 1);
+	glTexCoord2f (0, tmax);
+	glVertex2f (-1, 1);
+	glEnd ();
+
+	// clear cached binding
+	GL_ClearBindings ();
+}
+
 /*
 ================
 R_RenderView
@@ -1001,6 +1113,8 @@ void R_RenderView (void)
 		R_RenderScene ();
 	}
 	//johnfitz
+
+	R_ScaleView ();
 
 	//johnfitz -- modified r_speeds output
 	time2 = Sys_DoubleTime ();
