@@ -575,10 +575,10 @@
 				66991C011DBAB43000C373C0 /* Release Archive Files */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
-			indentWidth = 4;
+			indentWidth = 8;
 			name = QuakeSpasm;
 			sourceTree = "<group>";
-			tabWidth = 4;
+			tabWidth = 8;
 			usesTabs = 1;
 		};
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
