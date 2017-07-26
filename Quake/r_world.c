@@ -29,7 +29,7 @@ extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater, r_oldskylea
 extern glpoly_t	*lightmap_polys[MAX_LIGHTMAPS];
 
 byte *SV_FatPVS (vec3_t org, qmodel_t *worldmodel);
-extern byte mod_novis[MAX_MAP_LEAFS/8];
+
 int vis_changed; //if true, force pvs to be refreshed
 
 //==============================================================================
@@ -96,7 +96,7 @@ void R_MarkSurfaces (void)
 
 	// choose vis data
 	if (r_novis.value || r_viewleaf->contents == CONTENTS_SOLID || r_viewleaf->contents == CONTENTS_SKY)
-		vis = &mod_novis[0];
+		vis = Mod_NoVisPVS (cl.worldmodel);
 	else if (nearwaterportal)
 		vis = SV_FatPVS (r_origin, cl.worldmodel);
 	else
