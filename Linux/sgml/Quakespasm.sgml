@@ -157,9 +157,9 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 </p>
 <sect> Changes<p>
 
-<sect1> Changes in 0.92.2<p>
+<sect1> Changes in 0.93.0<p>
 <itemize>
-<item> Raise MAX_MAP_LEAFS from 70000 to 80000 (for ad_sepulcher).
+<item> Drop the MAX_MAP_LEAFS limit and allocate vis on the heap.
 <item> Raise MAX_STATIC_ENTITIES from 512 to 4096.
 <item> Raise MAX_STACK_DEPTH from 32 to 64.
 <item> Raise command buffer size from 8K to 256K to support large configs.

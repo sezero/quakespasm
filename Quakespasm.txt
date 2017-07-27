@@ -19,7 +19,7 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.92.2
+     6.1 Changes in 0.93.0
      6.2 Changes in 0.92.1
      6.3 Changes in 0.92.0
      6.4 Changes in 0.91.0
@@ -53,7 +53,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: August 2016
+  Page last edited: July 2017
 
 
   1.  About
@@ -294,9 +294,46 @@
   6.  Changes
 
 
-  6.1.  Changes in 0.92.2
+  6.1.  Changes in 0.93.0
 
-  o
+  o  Drop the MAX_MAP_LEAFS limit and allocate vis on the heap.
+
+  o  Raise MAX_STATIC_ENTITIES from 512 to 4096.
+
+  o  Raise MAX_STACK_DEPTH from 32 to 64.
+
+  o  Raise command buffer size from 8K to 256K to support large configs.
+
+  o  Remove MAX_EFRAGS limit.
+
+  o  Remove "Loadgame buffer overflow" limit, which could happen when
+     loading DP or QSS saves.
+
+  o  Adjust "exceeds standard limit of" debug warnings to include the
+     actual QS limit.
+
+  o  Change "game" command to now exec quake.rc.
+
+  o  Change "games"/"mods" commands to list all subdirectories.
+
+  o  New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
+     1/3, or 1/4 resolution.
+
+  o  New "find"/"apropos" command, searches for commands/cvar names for
+     the given substring (from Spike).
+
+  o  New "randmap" command for loading a random map.
+
+  o  Fix macOS startup delay (avoid calling gethostbyname() for ".local"
+     hostnames).
+
+  o  Fix memory corruption in PF_lightstyle with out of bounds
+     lightstyles.
+
+  o  Fix crash in BoundPoly with polygons extending beyond +/-9999.
+
+  o  Fix QS window to stay on the current monitor when changing video
+     modes (SDL2 only).
 
   o  Updated some of the third-party libraries.
 
