@@ -296,7 +296,7 @@
 
   6.1.  Changes in 0.93.0
 
-  o  Drop the MAX_MAP_LEAFS limit and allocate vis on the heap.
+  o  Raise console buffer size to 1MB.
 
   o  Raise MAX_STATIC_ENTITIES from 512 to 4096.
 
@@ -304,7 +304,7 @@
 
   o  Raise command buffer size from 8K to 256K to support large configs.
 
-  o  Remove MAX_EFRAGS limit.
+  o  Remove MAX_EFRAGS and MAX_MAP_LEAFS limits.
 
   o  Remove "Loadgame buffer overflow" limit, which could happen when
      loading DP or QSS saves.
@@ -314,13 +314,13 @@
 
   o  Change "game" command to now exec quake.rc.
 
-  o  Change "games"/"mods" commands to list all subdirectories.
+  o  Change "games" / "mods" commands to list all subdirectories.
 
   o  New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
      1/3, or 1/4 resolution.
 
-  o  New "find"/"apropos" command, searches for commands/cvar names for
-     the given substring (from Spike).
+  o  New "find" / "apropos" command, searches for commands/cvar names
+     for the given substring (from Spike).
 
   o  New "randmap" command for loading a random map.
 
@@ -335,7 +335,7 @@
   o  Fix QS window to stay on the current monitor when changing video
      modes (SDL2 only).
 
-  o  Updated some of the third-party libraries.
+  o  Update the third-party libraries.
 
 
   6.2.  Changes in 0.92.1

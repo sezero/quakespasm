@@ -251,23 +251,23 @@ these patched libSDL binaries may help.
 
 <P>
 <UL>
-<LI> Drop the MAX_MAP_LEAFS limit and allocate vis on the heap.</LI>
+<LI> Raise console buffer size to 1MB.</LI>
 <LI> Raise MAX_STATIC_ENTITIES from 512 to 4096.</LI>
 <LI> Raise MAX_STACK_DEPTH from 32 to 64.</LI>
 <LI> Raise command buffer size from 8K to 256K to support large configs.</LI>
-<LI> Remove MAX_EFRAGS limit.</LI>
+<LI> Remove MAX_EFRAGS and MAX_MAP_LEAFS limits.</LI>
 <LI> Remove "Loadgame buffer overflow" limit, which could happen when loading DP or QSS saves.</LI>
 <LI> Adjust "exceeds standard limit of" debug warnings to include the actual QS limit.</LI>
 <LI> Change "game" command to now exec quake.rc.</LI>
-<LI> Change "games"/"mods" commands to list all subdirectories.</LI>
+<LI> Change "games" / "mods" commands to list all subdirectories.</LI>
 <LI> New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2, 1/3, or 1/4 resolution.</LI>
-<LI> New "find"/"apropos" command, searches for commands/cvar names for the given substring (from Spike).</LI>
+<LI> New "find" / "apropos" command, searches for commands/cvar names for the given substring (from Spike).</LI>
 <LI> New "randmap" command for loading a random map.</LI>
 <LI> Fix macOS startup delay (avoid calling gethostbyname() for ".local" hostnames).</LI>
 <LI> Fix memory corruption in PF_lightstyle with out of bounds lightstyles.</LI>
 <LI> Fix crash in BoundPoly with polygons extending beyond +/-9999.</LI>
 <LI> Fix QS window to stay on the current monitor when changing video modes (SDL2 only).</LI>
-<LI> Updated some of the third-party libraries.</LI>
+<LI> Update the third-party libraries.</LI>
 </UL>
 </P>
 <H2><A NAME="ss6.2">6.2</A> <A HREF="#toc6.2">Changes in 0.92.1</A>
