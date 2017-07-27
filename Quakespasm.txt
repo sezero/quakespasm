@@ -145,11 +145,11 @@
   3.2.1.  Cvars
 
   o  joy_deadzone - Fraction of the stick travel to be deadzone, between
-     0 and 1. Default 0.2.
+     0 and 1. Default 0.175.
 
   o  joy_deadzone_trigger - Fraction of trigger range required to
      register a button press on the analog triggers, between 0 and 1.
-     Default 0.001.
+     Default 0.2.
 
   o  joy_sensitivity_yaw/pitch - Max angular speed in degrees/second
      when looking. Defaults are 300 for yaw (turning left/right) and 150
@@ -295,6 +295,8 @@
 
 
   6.1.  Changes in 0.93.0
+
+  o  Raise default "joy_deadzone_trigger" cvar to 0.2.
 
   o  Raise console buffer size to 1MB.
 

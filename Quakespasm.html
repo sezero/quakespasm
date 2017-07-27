@@ -148,8 +148,8 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 
 <P>
 <UL>
-<LI>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.2.</LI>
-<LI>joy_deadzone_trigger - Fraction of trigger range required to register a button press on the analog triggers, between 0 and 1. Default 0.001.</LI>
+<LI>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.175.</LI>
+<LI>joy_deadzone_trigger - Fraction of trigger range required to register a button press on the analog triggers, between 0 and 1. Default 0.2.</LI>
 <LI>joy_sensitivity_yaw/pitch - Max angular speed in degrees/second when looking. Defaults are 300 for yaw (turning left/right) and 150 for pitch (up/down).</LI>
 <LI>joy_exponent - For the look stick, the stick displacement (between 0 and 1) is raised to this power. Default is 3. A value of 1 would give a linear relationship between stick displacement and fraction of the maximum angular speed.</LI>
 <LI>joy_invert - Set to 1 to invert the vertical axis of the look stick.</LI>
@@ -251,6 +251,7 @@ these patched libSDL binaries may help.
 
 <P>
 <UL>
+<LI> Raise default "joy_deadzone_trigger" cvar to 0.2.</LI>
 <LI> Raise console buffer size to 1MB.</LI>
 <LI> Raise MAX_STATIC_ENTITIES from 512 to 4096.</LI>
 <LI> Raise MAX_STACK_DEPTH from 32 to 64.</LI>

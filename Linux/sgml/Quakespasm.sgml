@@ -68,8 +68,8 @@ If your controller doesn't work you can try placing <url url="https://raw.github
 
 <sect2>Cvars<p>
 <itemize>
-<item>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.2.
-<item>joy_deadzone_trigger - Fraction of trigger range required to register a button press on the analog triggers, between 0 and 1. Default 0.001.
+<item>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.175.
+<item>joy_deadzone_trigger - Fraction of trigger range required to register a button press on the analog triggers, between 0 and 1. Default 0.2.
 <item>joy_sensitivity_yaw/pitch - Max angular speed in degrees/second when looking. Defaults are 300 for yaw (turning left/right) and 150 for pitch (up/down).
 <item>joy_exponent - For the look stick, the stick displacement (between 0 and 1) is raised to this power. Default is 3. A value of 1 would give a linear relationship between stick displacement and fraction of the maximum angular speed.
 <item>joy_invert - Set to 1 to invert the vertical axis of the look stick.
@@ -159,6 +159,7 @@ The "game" command doesn't execute quake.rc in the new game directory being swit
 
 <sect1> Changes in 0.93.0<p>
 <itemize>
+<item> Raise default "joy_deadzone_trigger" cvar to 0.2.
 <item> Raise console buffer size to 1MB.
 <item> Raise MAX_STATIC_ENTITIES from 512 to 4096.
 <item> Raise MAX_STACK_DEPTH from 32 to 64.
