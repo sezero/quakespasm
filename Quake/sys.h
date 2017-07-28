@@ -48,6 +48,10 @@ void Sys_mkdir (const char *path);
 FUNC_NORETURN void Sys_Quit (void);
 FUNC_NORETURN void Sys_Error (const char *error, ...) FUNC_PRINTF(1,2);
 // an error will cause the entire program to exit
+#ifdef __WATCOMC__
+#pragma aux Sys_Error aborts;
+#pragma aux Sys_Quit aborts;
+#endif
 
 void Sys_Printf (const char *fmt, ...) FUNC_PRINTF(1,2);
 // send text to the console

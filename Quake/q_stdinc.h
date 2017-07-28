@@ -184,6 +184,8 @@ typedef int	ssize_t;
 
 /*==========================================================================*/
 
+/* function attributes, etc */
+
 #if defined(__GNUC__)
 #define FUNC_PRINTF(x,y)	__attribute__((__format__(__printf__,x,y)))
 #else
@@ -208,6 +210,8 @@ typedef int	ssize_t;
 #define FUNC_NORETURN	__attribute__((__noreturn__))
 #elif defined(_MSC_VER) && (_MSC_VER >= 1200)
 #define FUNC_NORETURN		__declspec(noreturn)
+#elif defined(__WATCOMC__)
+#define FUNC_NORETURN /* use the 'aborts' aux pragma */
 #else
 #define FUNC_NORETURN
 #endif

@@ -21,8 +21,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#ifndef __QUAKEDEFS_H
-#define __QUAKEDEFS_H
+#ifndef QUAKEDEFS_H
+#define QUAKEDEFS_H
 
 // quakedef.h -- primary header for client
 
@@ -305,6 +305,10 @@ void Host_Shutdown(void);
 void Host_Callback_Notify (cvar_t *var);	/* callback function for CVAR_NOTIFY */
 FUNC_NORETURN void Host_Error (const char *error, ...) FUNC_PRINTF(1,2);
 FUNC_NORETURN void Host_EndGame (const char *message, ...) FUNC_PRINTF(1,2);
+#ifdef __WATCOMC__
+#pragma aux Host_Error aborts;
+#pragma aux Host_EndGame aborts;
+#endif
 void Host_Frame (float time);
 void Host_Quit_f (void);
 void Host_ClientCommands (const char *fmt, ...) FUNC_PRINTF(1,2);
@@ -325,5 +329,5 @@ extern qboolean		isDedicated;
 
 extern int		minimum_memory;
 
-#endif	/* __QUAKEDEFS_H */
+#endif	/* QUAKEDEFS_H */
 
