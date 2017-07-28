@@ -79,11 +79,11 @@ static GLuint fullbrightTexLoc;
 static GLuint useFullbrightTexLoc;
 static GLuint useOverbrightLoc;
 
-static const GLint pose1VertexAttrIndex = 0;
-static const GLint pose1NormalAttrIndex = 1;
-static const GLint pose2VertexAttrIndex = 2;
-static const GLint pose2NormalAttrIndex = 3;
-static const GLint texCoordsAttrIndex = 4;
+#define pose1VertexAttrIndex 0
+#define pose1NormalAttrIndex 1
+#define pose2VertexAttrIndex 2
+#define pose2NormalAttrIndex 3
+#define texCoordsAttrIndex 4
 
 /*
 =============
