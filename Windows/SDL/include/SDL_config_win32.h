@@ -27,7 +27,7 @@
 
 /* This is a set of defines to configure the SDL features */
 
-#if defined(__GNUC__) || defined(__DMC__)
+#if defined(__GNUC__) || defined(__DMC__) || defined(__WATCOMC__)
 #define HAVE_STDINT_H	1
 #elif defined(_MSC_VER)
 typedef signed __int8		int8_t;
