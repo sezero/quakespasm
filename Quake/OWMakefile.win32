@@ -1,6 +1,9 @@
 # makefile to build quakespasm.exe for Windows using Open Watcom:
 # wmake -f OWMakefile.win32
 
+### Enable/disable SDL2
+USE_SDL2=0
+
 ### Enable/disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=1
@@ -23,11 +26,18 @@ WINSOCK2= 0
 # build variables
 # ---------------------------
 
-CFLAGS  = -zq -wx -bm -bt=nt -5s -sg -otexan -fp5 -fpi87 -ei -j -zp8
+CFLAGS_BASE = -zq -wx -bm -bt=nt -5s -sg -otexan -fp5 -fpi87 -ei -j -zp8
+CFLAGS = $(CFLAGS_BASE)
 
+!ifneq USE_SDL2 1
 SDL_CFLAGS = -I../Windows/SDL/include
 # VC6 import library works with Watcom:
 SDL_LIBS = ../Windows/SDL/lib/SDL.lib
+!else
+SDL_CFLAGS = -I../Windows/SDL2/include
+SDL_LIBS = ../Windows/SDL2/watcom/SDL2.lib
+CFLAGS += -DUSE_SDL2
+!endif
 
 !ifeq WINSOCK2 1
 DEFWINSOCK =-D_USE_WINSOCK2
@@ -115,7 +125,9 @@ all: quakespasm.exe
 .c.obj:
 	wcc386 $(INCLUDES) $(CFLAGS) $(SDL_CFLAGS) -fo=$^@ $<
 SDL_win32_main.obj: ../Windows/SDL/SDL_win32_main.c
-	wcc386 $(CFLAGS) $(SDL_CFLAGS) -fo=$^@ $<
+	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -fo=$^@ $<
+SDL_windows_main.obj: ../Windows/SDL2/watcom/SDL_windows_main.c
+	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -I../Windows/SDL2/watcom -fo=$^@ $<
 quakespasm.res: ../Windows/QuakeSpasm.rc
 	wrc -q -r -bt=nt -I../Windows -fo=$^@ $<
 
@@ -140,7 +152,12 @@ SYSOBJ_INPUT = in_sdl.obj
 SYSOBJ_GL_VID= gl_vidsdl.obj
 SYSOBJ_NET = net_win.obj net_wins.obj net_wipx.obj
 SYSOBJ_SYS = pl_win.obj sys_sdl_win.obj
-SYSOBJ_MAIN= main_sdl.obj SDL_win32_main.obj
+SYSOBJ_MAIN= main_sdl.obj
+!ifeq USE_SDL2 1
+SYSOBJ_MAIN+= SDL_windows_main.obj
+!else
+SYSOBJ_MAIN+= SDL_win32_main.obj
+!endif
 SYSOBJ_RES = quakespasm.res
 
 GLOBJS = &
