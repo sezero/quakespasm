@@ -31,8 +31,7 @@ CFLAGS = $(CFLAGS_BASE)
 
 !ifneq USE_SDL2 1
 SDL_CFLAGS = -I../Windows/SDL/include
-# VC6 import library works with Watcom:
-SDL_LIBS = ../Windows/SDL/lib/SDL.lib
+SDL_LIBS = ../Windows/SDL/watcom/SDL.lib
 !else
 SDL_CFLAGS = -I../Windows/SDL2/include
 SDL_LIBS = ../Windows/SDL2/watcom/SDL2.lib
