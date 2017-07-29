@@ -124,10 +124,10 @@ all: quakespasm.exe
 
 .c.obj:
 	wcc386 $(INCLUDES) $(CFLAGS) $(SDL_CFLAGS) -fo=$^@ $<
-SDL_win32_main.obj: ../Windows/SDL/SDL_win32_main.c
+SDL_win32_main.obj: ../Windows/SDL/main/SDL_win32_main.c
 	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -fo=$^@ $<
-SDL_windows_main.obj: ../Windows/SDL2/watcom/SDL_windows_main.c
-	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -I../Windows/SDL2/watcom -fo=$^@ $<
+SDL_windows_main.obj: ../Windows/SDL2/main/SDL_windows_main.c
+	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -I../Windows/SDL2/main -fo=$^@ $<
 quakespasm.res: ../Windows/QuakeSpasm.rc
 	wrc -q -r -bt=nt -I../Windows -fo=$^@ $<
 

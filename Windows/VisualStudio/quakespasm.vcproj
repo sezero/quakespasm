@@ -630,7 +630,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\SDL\SDL_win32_main.c"
+				RelativePath="..\SDL\main\SDL_win32_main.c"
 				>
 			</File>
 		</Filter>
