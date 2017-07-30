@@ -1770,11 +1770,11 @@ void VID_SyncCvars (void)
 {
 	if (draw_context)
 	{
-        if (!VID_GetDesktopFullscreen())
-        {
-            Cvar_SetValueQuick (&vid_width, VID_GetCurrentWidth());
-            Cvar_SetValueQuick (&vid_height, VID_GetCurrentHeight());
-        }
+		if (!VID_GetDesktopFullscreen())
+		{
+			Cvar_SetValueQuick (&vid_width, VID_GetCurrentWidth());
+			Cvar_SetValueQuick (&vid_height, VID_GetCurrentHeight());
+		}
 		Cvar_SetValueQuick (&vid_bpp, VID_GetCurrentBPP());
 		Cvar_SetQuick (&vid_fullscreen, VID_GetFullscreen() ? "1" : "0");
 		// don't sync vid_desktopfullscreen, it's a user preference that
