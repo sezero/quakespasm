@@ -78,6 +78,7 @@ static GLuint texLoc;
 static GLuint fullbrightTexLoc;
 static GLuint useFullbrightTexLoc;
 static GLuint useOverbrightLoc;
+static GLuint useAlphaTestLoc;
 
 #define pose1VertexAttrIndex 0
 #define pose1NormalAttrIndex 1
@@ -170,9 +171,12 @@ void GLAlias_CreateShaders (void)
 		"uniform sampler2D FullbrightTex;\n"
 		"uniform bool UseFullbrightTex;\n"
 		"uniform bool UseOverbright;\n"
+		"uniform bool UseAlphaTest;\n"
 		"void main()\n"
 		"{\n"
 		"	vec4 result = texture2D(Tex, gl_TexCoord[0].xy);\n"
+		"	if (UseAlphaTest && (result.a < 0.666))\n"
+		"		discard;\n"
 		"	result *= gl_Color;\n"
 		"	if (UseOverbright)\n"
 		"		result.rgb *= 2.0;\n"
@@ -202,6 +206,7 @@ void GLAlias_CreateShaders (void)
 		fullbrightTexLoc = GL_GetUniformLocation (&r_alias_program, "FullbrightTex");
 		useFullbrightTexLoc = GL_GetUniformLocation (&r_alias_program, "UseFullbrightTex");
 		useOverbrightLoc = GL_GetUniformLocation (&r_alias_program, "UseOverbright");
+		useAlphaTestLoc = GL_GetUniformLocation (&r_alias_program, "UseAlphaTest");
 	}
 }
 
@@ -258,6 +263,7 @@ void GL_DrawAliasFrame_GLSL (aliashdr_t *paliashdr, lerpdata_t lerpdata, gltextu
 	GL_Uniform1iFunc (fullbrightTexLoc, 1);
 	GL_Uniform1iFunc (useFullbrightTexLoc, (fb != NULL) ? 1 : 0);
 	GL_Uniform1fFunc (useOverbrightLoc, overbright ? 1 : 0);
+	GL_Uniform1iFunc (useAlphaTestLoc, (currententity->model->flags & MF_HOLEY) ? 1 : 0);
 
 // set textures
 	GL_SelectTexture (GL_TEXTURE0);
@@ -621,6 +627,7 @@ void R_DrawAliasModel (entity_t *e)
 	int			i, anim;
 	gltexture_t	*tx, *fb;
 	lerpdata_t	lerpdata;
+	qboolean	alphatest = !!(e->model->flags & MF_HOLEY);
 
 	//
 	// setup pose/lerp data -- do it first so we don't miss updates due to culling
@@ -668,6 +675,8 @@ void R_DrawAliasModel (entity_t *e)
 		glDepthMask(GL_FALSE);
 		glEnable(GL_BLEND);
 	}
+	else if (alphatest)
+		glEnable (GL_ALPHA_TEST);
 
 	//
 	// set up lighting
@@ -880,6 +889,8 @@ cleanup:
 	glShadeModel (GL_FLAT);
 	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
+	if (alphatest)
+		glDisable (GL_ALPHA_TEST);
 	glColor3f(1,1,1);
 	glPopMatrix ();
 }
