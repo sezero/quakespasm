@@ -578,8 +578,10 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 	char		caption[50];
 	int		depthbits, stencilbits;
 	int		fsaa_obtained;
+#if defined(USE_SDL2)
 	int		previous_display;
-	
+#endif
+
 	// so Con_Printfs don't mess us up by forcing vid and snd updates
 	temp = scr_disabled_for_loading;
 	scr_disabled_for_loading = true;
@@ -1758,7 +1760,9 @@ void	VID_Toggle (void)
 	// keep all the mode changing code in one place.
 	static qboolean vid_toggle_works = false;
 	qboolean toggleWorked;
+#if defined(USE_SDL2)
 	Uint32 flags = 0;
+#endif
 
 	S_ClearBuffer ();
 
@@ -1777,8 +1781,7 @@ void	VID_Toggle (void)
 	}
 
 #if defined(USE_SDL2)
-	if (!VID_GetFullscreen())
-	{
+	if (!VID_GetFullscreen()) {
 		flags = vid_desktopfullscreen.value ? SDL_WINDOW_FULLSCREEN_DESKTOP : SDL_WINDOW_FULLSCREEN;
 	}
 
