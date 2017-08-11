@@ -53,7 +53,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: July 2017
+  Page last edited: Aug. 2017
 
 
   1.  About
@@ -318,6 +318,14 @@
 
   o  Change "games" / "mods" commands to list all subdirectories.
 
+  o  Restore vid_refreshrate from fitzquake-0.85 for SDL2 builds.
+
+  o  Alpha-masked model support. (MF_HOLEY: 0x4000).
+
+  o  Change default screenshot format to png. The 'screenshot' command
+     now supports optional format (tga, png or jpg) and quality (1-100)
+     arguments.
+
   o  New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
      1/3, or 1/4 resolution.
 
@@ -336,6 +344,8 @@
 
   o  Fix QS window to stay on the current monitor when changing video
      modes (SDL2 only).
+
+  o  Support for Open Watcom compiler.
 
   o  Update the third-party libraries.
 
