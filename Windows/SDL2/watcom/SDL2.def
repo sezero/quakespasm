@@ -296,6 +296,7 @@ SDL_JoystickGetAxisInitialState
 SDL_JoystickGetBall
 SDL_JoystickGetButton
 SDL_JoystickGetDeviceGUID
+SDL_JoystickGetDeviceInstanceID
 SDL_JoystickGetDeviceProduct
 SDL_JoystickGetDeviceProductVersion
 SDL_JoystickGetDeviceType
@@ -320,6 +321,7 @@ SDL_JoystickOpen
 SDL_JoystickUpdate
 SDL_LoadBMP_RW
 SDL_LoadDollarTemplates
+SDL_LoadFile_RW
 SDL_LoadFunction
 SDL_LoadObject
 SDL_LoadWAV_RW
@@ -580,6 +582,7 @@ SDL_uitoa
 SDL_ulltoa
 SDL_ultoa
 SDL_utf8strlcpy
+SDL_utf8strlen
 SDL_vsnprintf
 SDL_vsscanf
 SDL_wcslcat

@@ -56,6 +56,8 @@
 /* #undef HAVE_DSOUND_H */
 /* #undef HAVE_DXGI_H */
 /* #undef HAVE_XINPUT_H */
+/* #undef HAVE_XINPUT_GAMEPAD_EX */
+/* #undef HAVE_XINPUT_STATE_EX */
 
 /* Comment this if you want to build without any C library requirements */
 #define HAVE_LIBC 1
@@ -205,12 +207,14 @@
 /* Enable various audio drivers */
 /* #undef SDL_AUDIO_DRIVER_ALSA */
 /* #undef SDL_AUDIO_DRIVER_ALSA_DYNAMIC */
+/* #undef SDL_AUDIO_DRIVER_JACK */
+/* #undef SDL_AUDIO_DRIVER_JACK_DYNAMIC */
 /* #undef SDL_AUDIO_DRIVER_ARTS */
 /* #undef SDL_AUDIO_DRIVER_ARTS_DYNAMIC */
 /* #undef SDL_AUDIO_DRIVER_PULSEAUDIO */
 /* #undef SDL_AUDIO_DRIVER_PULSEAUDIO_DYNAMIC */
 /* #undef SDL_AUDIO_DRIVER_HAIKU */
-/* #undef SDL_AUDIO_DRIVER_BSD */
+/* #undef SDL_AUDIO_DRIVER_NETBSD */
 #define SDL_AUDIO_DRIVER_COREAUDIO 1
 #define SDL_AUDIO_DRIVER_DISK 1
 #define SDL_AUDIO_DRIVER_DUMMY 1
@@ -291,6 +295,9 @@
 /* #undef SDL_VIDEO_DRIVER_MIR_DYNAMIC_XKBCOMMON */
 /* #undef SDL_VIDEO_DRIVER_X11 */
 /* #undef SDL_VIDEO_DRIVER_RPI */
+/* #undef SDL_VIDEO_DRIVER_KMSDRM */
+/* #undef SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC */
+/* #undef SDL_VIDEO_DRIVER_KMSDRM_DYNAMIC_GBM */
 /* #undef SDL_VIDEO_DRIVER_ANDROID */
 /* #undef SDL_VIDEO_DRIVER_EMSCRIPTEN */
 /* #undef SDL_VIDEO_DRIVER_X11_DYNAMIC */
@@ -316,6 +323,7 @@
 /* #undef SDL_VIDEO_DRIVER_NACL */
 /* #undef SDL_VIDEO_DRIVER_VIVANTE */
 /* #undef SDL_VIDEO_DRIVER_VIVANTE_VDK */
+/* #undef SDL_VIDEO_DRIVER_QNX */
 
 /* #undef SDL_VIDEO_RENDER_D3D */
 /* #undef SDL_VIDEO_RENDER_D3D11 */
