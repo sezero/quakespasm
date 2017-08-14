@@ -67,8 +67,6 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 - (void)parseArguments:(NSString *)args {
     int i;
-    unichar c;
-    unichar p = ' ';
     NSMutableString *word = nil;
     NSMutableArray *words = [[NSMutableArray alloc] init];
     BOOL quoted = FALSE;
@@ -76,39 +74,39 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
     [quakeArgs removeAllObjects];
     
     for (i = 0; i < [args length]; i++) {
-    
-        c = [args characterAtIndex:i];
-        switch (c) {
-            case ' ':
-                if (!quoted) {
-                    // ignore whitespace
-                    if (p == ' ')
-                        break;
-                    
-                    if (word != nil) {
-                        [words addObject:word];
-                        [word release];
+        const unichar c = [args characterAtIndex:i];
 
-                        word = nil;
-                    }
-                }
-                break;
-            case '"':
-                quoted = !quoted;
-                break;
-            default:
-                if (p == ' ') {
-                    word = [[NSMutableString alloc] init];
-                }
-                [word appendFormat:@"%C", c];
-                break;
+        if (c == ' '  && !quoted) {
+            // complete the current word, if any.
+            if (word != nil) {
+                [words addObject:word];
+                [word release];
+                word = nil;
+            }
+            
+            // ignore the space
+            continue;
         }
-        p = c;
+        
+        if (c == '"') {
+            quoted = !quoted;
+            continue;
+        }
+        
+        // other characters just get inserted.
+        
+        // start a word if needed
+        if (word == nil) {
+            word = [[NSMutableString alloc] init];
+        }
+        [word appendFormat:@"%C", c];
     }
     
+    // complete the current word, if any
     if (word != nil) {
         [words addObject:word];
         [word release];
+        word = nil;
     }
     
     NSString *current;
