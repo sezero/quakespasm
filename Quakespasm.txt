@@ -283,13 +283,6 @@
   o  Gamma patched libSDL (x86_64-linux)
      http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download
 
-  The "game" command doesn't execute quake.rc in the new game directory
-  being switched to. This means any custom key bindings in a mod's
-  config.cfg or special settings in a quake.rc won't be loaded. The only
-  workaround is launching the engine with the -game command-line switch
-  instead of using the game console command. Or, after running the game
-  command, you can run "exec quake.rc" by yourself (YMMV).
-
 
   6.  Changes
 
