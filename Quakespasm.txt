@@ -329,6 +329,9 @@
   o  New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
      1/3, or 1/4 resolution.
 
+  o  New "r_viewmodel_quake" cvar. Set to 1 for WinQuake gun position
+     (from MarkV).
+
   o  New "find" / "apropos" command, searches for commands/cvar names
      for the given substring (from Spike).
 
