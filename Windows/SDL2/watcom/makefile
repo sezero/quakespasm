@@ -8,4 +8,4 @@ SDL2.exp: SDL2.def def2lbc.awk
 	awk -v cpu=386 -f def2lbc.awk SDL2.def > SDL2.exp
 
 SDL2.lib: SDL2.exp
-	wlib -q -b -n -pa -s -t -zld -ii -io SDL2.lib @SDL2.exp
+	wlib -q -b -n -c -pa -s -t -zld -ii -io SDL2.lib @SDL2.exp

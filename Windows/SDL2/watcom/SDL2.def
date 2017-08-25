@@ -27,6 +27,7 @@ SDL_ClearHints
 SDL_ClearQueuedAudio
 SDL_CloseAudio
 SDL_CloseAudioDevice
+SDL_ComposeCustomBlendMode
 SDL_CondBroadcast
 SDL_CondSignal
 SDL_CondWait
@@ -69,6 +70,7 @@ SDL_DestroyWindow
 SDL_DetachThread
 SDL_Direct3D9GetAdapterIndex
 SDL_DisableScreenSaver
+SDL_DuplicateSurface
 SDL_EnableScreenSaver
 SDL_EnclosePoints
 SDL_Error
@@ -585,6 +587,7 @@ SDL_utf8strlcpy
 SDL_utf8strlen
 SDL_vsnprintf
 SDL_vsscanf
+SDL_wcscmp
 SDL_wcslcat
 SDL_wcslcpy
 SDL_wcslen
