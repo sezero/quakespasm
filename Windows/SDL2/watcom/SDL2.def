@@ -502,6 +502,12 @@ SDL_UpperBlit
 SDL_UpperBlitScaled
 SDL_VideoInit
 SDL_VideoQuit
+SDL_Vulkan_CreateSurface
+SDL_Vulkan_GetDrawableSize
+SDL_Vulkan_GetInstanceExtensions
+SDL_Vulkan_GetVkGetInstanceProcAddr
+SDL_Vulkan_LoadLibrary
+SDL_Vulkan_UnloadLibrary
 SDL_WaitEvent
 SDL_WaitEventTimeout
 SDL_WaitThread
