@@ -552,15 +552,14 @@ choose safe warpimage size and resize existing warpimage textures
 */
 void TexMgr_RecalcWarpImageSize (void)
 {
-	int	mark, oldsize;
+//	int	oldsize = gl_warpimagesize;
+	int	mark;
 	gltexture_t *glt;
 	byte *dummy;
 
 	//
 	// find the new correct size
 	//
-	oldsize = gl_warpimagesize;
-
 	gl_warpimagesize = TexMgr_SafeTextureSize (512);
 
 	while (gl_warpimagesize > vid.width)
