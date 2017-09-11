@@ -199,7 +199,10 @@ SDL_iconv_string
 SDL_mutexP
 SDL_mutexV
 SDL_putenv
+SDL_revcpy
 SDL_snprintf
 SDL_strlcat
 SDL_strlcpy
+SDL_strtoll
+SDL_strtoull
 SDL_vsnprintf
