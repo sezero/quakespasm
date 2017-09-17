@@ -156,7 +156,7 @@ qboolean Image_WriteTGA (const char *name, byte *data, int width, int height, in
 	if (handle == -1)
 		return false;
 
-	Q_memset (&header, 0, TARGAHEADERSIZE);
+	Q_memset (header, 0, TARGAHEADERSIZE);
 	header[2] = 2; // uncompressed type
 	header[12] = width&255;
 	header[13] = width>>8;
@@ -176,7 +176,7 @@ qboolean Image_WriteTGA (const char *name, byte *data, int width, int height, in
 		data[i+2] = temp;
 	}
 
-	Sys_FileWrite (handle, &header, TARGAHEADERSIZE);
+	Sys_FileWrite (handle, header, TARGAHEADERSIZE);
 	Sys_FileWrite (handle, data, size);
 	Sys_FileClose (handle);
 

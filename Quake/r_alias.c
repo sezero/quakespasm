@@ -96,8 +96,7 @@ model and pose.
 */
 static void *GLARB_GetXYZOffset (aliashdr_t *hdr, int pose)
 {
-	meshxyz_t dummy;
-	int xyzoffs = ((char*)&dummy.xyz - (char*)&dummy);
+	const int xyzoffs = offsetof (meshxyz_t, xyz);
 	return (void *) (currententity->model->vboxyzofs + (hdr->numverts_vbo * pose * sizeof (meshxyz_t)) + xyzoffs);
 }
 
@@ -111,8 +110,7 @@ given model and pose.
 */
 static void *GLARB_GetNormalOffset (aliashdr_t *hdr, int pose)
 {
-	meshxyz_t dummy;
-	int normaloffs = ((char*)&dummy.normal - (char*)&dummy);
+	const int normaloffs = offsetof (meshxyz_t, normal);
 	return (void *)(currententity->model->vboxyzofs + (hdr->numverts_vbo * pose * sizeof (meshxyz_t)) + normaloffs);
 }
 
