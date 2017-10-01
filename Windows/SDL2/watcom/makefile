@@ -1,4 +1,4 @@
-# Open Watcom makefile to generate SDL.lib
+# Open Watcom makefile to generate SDL2.lib
 # def2lbc.awk (from OW source tree) requires 'awk'
 # run 'wmake'
 
