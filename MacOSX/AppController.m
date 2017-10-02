@@ -47,11 +47,14 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
 }
 
 - (id)init {
-    int i,j;
+    int i;
+#ifndef USE_SDL2
+    int j;
     int flags;
     int bpps[3] = {32, 24, 16};
     SDL_PixelFormat format;
     SDL_Rect **modes;
+#endif
     ScreenInfo *info;
 
     self = [super init];
