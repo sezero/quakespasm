@@ -175,6 +175,7 @@ these patched libSDL binaries may help.
 <item> New "r_viewmodel_quake" cvar. Set to 1 for WinQuake gun position (from MarkV).
 <item> New "find" / "apropos" command, searches for commands/cvar names for the given substring (from Spike).
 <item> New "randmap" command for loading a random map.
+<item> New "gl_cshiftpercent_contents", "gl_cshiftpercent_damage", "gl_cshiftpercent_bonus", "gl_cshiftpercent_powerup" cvars for tuning the strength of specic view blends.
 <item> Fix macOS startup delay (avoid calling gethostbyname() for ".local" hostnames).
 <item> Fix memory corruption in PF_lightstyle with out of bounds lightstyles.
 <item> Fix crash in BoundPoly with polygons extending beyond +/-9999.

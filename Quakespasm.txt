@@ -340,6 +340,10 @@
 
   o  New "randmap" command for loading a random map.
 
+  o  New "gl_cshiftpercent_contents", "gl_cshiftpercent_damage", 
+     "gl_cshiftpercent_bonus", "gl_cshiftpercent_powerup" cvars for 
+     tuning the strength of specic view blends.
+
   o  Fix macOS startup delay (avoid calling gethostbyname() for ".local"
      hostnames).
 
