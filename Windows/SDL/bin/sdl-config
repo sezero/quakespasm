@@ -43,7 +43,7 @@ while test $# -gt 0; do
       echo 1.2.15
       ;;
     --cflags)
-      echo -I${prefix}/include -D_GNU_SOURCE=1 -Dmain=SDL_main
+      echo -I${prefix}/include -Dmain=SDL_main
       ;;
     --libs)
       echo -L${exec_prefix}/lib${lib_suffix} -lmingw32 -lSDLmain -lSDL -mwindows
