@@ -19,6 +19,11 @@ SDL_AtomicTryLock
 SDL_AtomicUnlock
 SDL_AudioInit
 SDL_AudioQuit
+SDL_AudioStreamAvailable
+SDL_AudioStreamClear
+SDL_AudioStreamFlush
+SDL_AudioStreamGet
+SDL_AudioStreamPut
 SDL_BuildAudioCVT
 SDL_CalculateGammaRamp
 SDL_CaptureMouse
@@ -80,6 +85,7 @@ SDL_FillRects
 SDL_FilterEvents
 SDL_FlushEvent
 SDL_FlushEvents
+SDL_FreeAudioStream
 SDL_FreeCursor
 SDL_FreeFormat
 SDL_FreePalette
@@ -166,9 +172,11 @@ SDL_GetKeyFromScancode
 SDL_GetKeyName
 SDL_GetKeyboardFocus
 SDL_GetKeyboardState
+SDL_GetMemoryFunctions
 SDL_GetModState
 SDL_GetMouseFocus
 SDL_GetMouseState
+SDL_GetNumAllocations
 SDL_GetNumAudioDevices
 SDL_GetNumAudioDrivers
 SDL_GetNumDisplayModes
@@ -329,6 +337,7 @@ SDL_LoadObject
 SDL_LoadWAV_RW
 SDL_LockAudio
 SDL_LockAudioDevice
+SDL_LockJoysticks
 SDL_LockMutex
 SDL_LockSurface
 SDL_LockTexture
@@ -359,6 +368,7 @@ SDL_MinimizeWindow
 SDL_MixAudio
 SDL_MixAudioFormat
 SDL_MouseIsHaptic
+SDL_NewAudioStream
 SDL_NumHaptics
 SDL_NumJoysticks
 SDL_OpenAudio
@@ -437,6 +447,7 @@ SDL_SetEventFilter
 SDL_SetHint
 SDL_SetHintWithPriority
 SDL_SetMainReady
+SDL_SetMemoryFunctions
 SDL_SetModState
 SDL_SetPaletteColors
 SDL_SetPixelFormatPalette
@@ -490,6 +501,7 @@ SDL_UnionRect
 SDL_UnloadObject
 SDL_UnlockAudio
 SDL_UnlockAudioDevice
+SDL_UnlockJoysticks
 SDL_UnlockMutex
 SDL_UnlockSurface
 SDL_UnlockTexture
