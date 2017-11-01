@@ -795,17 +795,111 @@ void R_DrawLightmapChains (void)
 	}
 }
 
+static GLuint r_world_program;
+
+// uniforms used in vert shader
+
+// uniforms used in frag shader
+static GLuint texLoc;
+static GLuint LMTexLoc;
+static GLuint fullbrightTexLoc;
+static GLuint useFullbrightTexLoc;
+static GLuint useOverbrightLoc;
+static GLuint useAlphaTestLoc;
+static GLuint alphaLoc;
+
+#define vertAttrIndex 0
+#define texCoordsAttrIndex 1
+#define LMCoordsAttrIndex 2
+
+/*
+=============
+GLWorld_CreateShaders
+=============
+*/
+void GLWorld_CreateShaders (void)
+{
+	const glsl_attrib_binding_t bindings[] = {
+		{ "Vert", vertAttrIndex },
+		{ "TexCoords", texCoordsAttrIndex },
+		{ "LMCoords", LMCoordsAttrIndex }
+	};
+	
+	const GLchar *vertSource = \
+		"#version 110\n"
+		"\n"
+		"attribute vec3 Vert;\n"
+		"attribute vec2 TexCoords;\n"
+		"attribute vec2 LMCoords;\n"
+		"\n"
+		"void main()\n"
+		"{\n"
+		"	gl_TexCoord[0] = vec4(TexCoords, 0.0, 0.0);\n"
+		"	gl_TexCoord[1] = vec4(LMCoords, 0.0, 0.0);\n"
+		"	gl_Position = gl_ModelViewProjectionMatrix * vec4(Vert, 1.0);\n"
+		"	// fog\n"
+		"	vec3 ecPosition = vec3(gl_ModelViewMatrix * vec4(Vert, 1.0));\n"
+		"	gl_FogFragCoord = abs(ecPosition.z);\n"
+		"}\n";
+	
+	const GLchar *fragSource = \
+		"#version 110\n"
+		"\n"
+		"uniform sampler2D Tex;\n"
+		"uniform sampler2D LMTex;\n"
+		"uniform sampler2D FullbrightTex;\n"
+		"uniform bool UseFullbrightTex;\n"
+		"uniform bool UseOverbright;\n"
+		"uniform bool UseAlphaTest;\n"
+		"uniform float Alpha;\n"
+		"void main()\n"
+		"{\n"
+		"	vec4 result = texture2D(Tex, gl_TexCoord[0].xy);\n"
+		"	if (UseAlphaTest && (result.a < 0.666))\n"
+		"		discard;\n"
+		"	result *= texture2D(LMTex, gl_TexCoord[1].xy);\n"
+		"	if (UseOverbright)\n"
+		"		result.rgb *= 2.0;\n"
+		"	if (UseFullbrightTex)\n"
+		"		result += texture2D(FullbrightTex, gl_TexCoord[0].xy);\n"
+		"	result = clamp(result, 0.0, 1.0);\n"
+		"	// apply GL_EXP2 fog (from the orange book)\n"
+		"	float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n"
+		"	fog = clamp(fog, 0.0, 1.0);\n"
+		"	result = mix(gl_Fog.color, result, fog);\n"
+		"	result.a = Alpha;\n"
+		"	gl_FragColor = result;\n"
+		"}\n";
+	
+	if (!gl_glsl_alias_able)
+		return;
+	
+	r_world_program = GL_CreateProgram (vertSource, fragSource, sizeof(bindings)/sizeof(bindings[0]), bindings);
+	
+	if (r_world_program != 0)
+	{
+		// get uniform locations
+		texLoc = GL_GetUniformLocation (&r_world_program, "Tex");
+		LMTexLoc = GL_GetUniformLocation (&r_world_program, "LMTex");
+		fullbrightTexLoc = GL_GetUniformLocation (&r_world_program, "FullbrightTex");
+		useFullbrightTexLoc = GL_GetUniformLocation (&r_world_program, "UseFullbrightTex");
+		useOverbrightLoc = GL_GetUniformLocation (&r_world_program, "UseOverbright");
+		useAlphaTestLoc = GL_GetUniformLocation (&r_world_program, "UseAlphaTest");
+		alphaLoc = GL_GetUniformLocation (&r_world_program, "Alpha");
+	}
+}
+
 extern GLuint gl_bmodel_vbo;
 
 /*
 ================
-R_DrawTextureChains_Multitexture_VBO -- ericw
+R_DrawTextureChains_GLSL -- ericw
 
 Draw lightmapped surfaces with fulbrights in one pass, using VBO.
-Requires 3 TMUs, GL_COMBINE_EXT, and GL_ADD.
+Requires 3 TMUs, OpenGL 2.0
 ================
 */
-void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texchain_t chain)
+void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 {
 	int			i;
 	msurface_t	*s;
@@ -813,41 +907,40 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 	qboolean	bound;
 	int		lastlightmap;
 	gltexture_t	*fullbright = NULL;
+	float		entalpha;
+	
+	entalpha = (ent != NULL) ? ENTALPHA_DECODE(ent->alpha) : 1.0f;
+
+// enable blending / disable depth writes
+	if (entalpha < 1)
+	{
+		glDepthMask (GL_FALSE);
+		glEnable (GL_BLEND);
+	}
+	
+	GL_UseProgramFunc (r_world_program);
 	
 // Bind the buffers
 	GL_BindBuffer (GL_ARRAY_BUFFER, gl_bmodel_vbo);
 	GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0); // indices come from client memory!
 
-// Setup vertex array pointers
-	glVertexPointer (3, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0));
-	glEnableClientState (GL_VERTEX_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-
-// TMU 2 is for fullbrights; same texture coordinates as TMU 0
-	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
-	glTexCoordPointer (2, GL_FLOAT, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
-	glEnableClientState (GL_TEXTURE_COORD_ARRAY);
-
-// Setup TMU 1 (lightmap)
-	GL_SelectTexture (GL_TEXTURE1_ARB);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE_EXT);
-	glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB_EXT, GL_MODULATE);
-	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB_EXT, GL_PREVIOUS_EXT);
-	glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB_EXT, GL_TEXTURE);
-	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE_EXT, gl_overbright.value ? 2.0f : 1.0f);
-	glEnable(GL_TEXTURE_2D);
-
-// Setup TMU 2 (fullbrights)
-	GL_SelectTexture (GL_TEXTURE2_ARB);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_ADD);
-
+	GL_EnableVertexAttribArrayFunc (vertAttrIndex);
+	GL_EnableVertexAttribArrayFunc (texCoordsAttrIndex);
+	GL_EnableVertexAttribArrayFunc (LMCoordsAttrIndex);
+	
+	GL_VertexAttribPointerFunc (vertAttrIndex,      3, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0));
+	GL_VertexAttribPointerFunc (texCoordsAttrIndex, 2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
+	GL_VertexAttribPointerFunc (LMCoordsAttrIndex,  2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
+	
+// set uniforms
+	GL_Uniform1iFunc (texLoc, 0);
+	GL_Uniform1iFunc (LMTexLoc, 1);
+	GL_Uniform1iFunc (fullbrightTexLoc, 2);
+	GL_Uniform1iFunc (useFullbrightTexLoc, 0);
+	GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
+	GL_Uniform1iFunc (useAlphaTestLoc, 0);
+	GL_Uniform1fFunc (alphaLoc, entalpha);
+	
 	for (i=0 ; i<model->numtextures ; i++)
 	{
 		t = model->textures[i];
@@ -856,14 +949,15 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 			continue;
 
 	// Enable/disable TMU 2 (fullbrights)
-		GL_SelectTexture (GL_TEXTURE2_ARB);
+	// FIXME: Move below to where we bind GL_TEXTURE0
 		if (gl_fullbrights.value && (fullbright = R_TextureAnimation(t, ent != NULL ? ent->frame : 0)->fullbright))
 		{
-			glEnable(GL_TEXTURE_2D);
+			GL_SelectTexture (GL_TEXTURE2);
 			GL_Bind (fullbright);
+			GL_Uniform1iFunc (useFullbrightTexLoc, 1);
 		}
 		else
-			glDisable(GL_TEXTURE_2D);
+			GL_Uniform1iFunc (useFullbrightTexLoc, 0);
 
 		R_ClearBatch ();
 
@@ -874,11 +968,11 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 			{
 				if (!bound) //only bind once we are sure we need this texture
 				{
-					GL_SelectTexture (GL_TEXTURE0_ARB);
+					GL_SelectTexture (GL_TEXTURE0);
 					GL_Bind ((R_TextureAnimation(t, ent != NULL ? ent->frame : 0))->gltexture);
 					
 					if (t->texturechains[chain]->flags & SURF_DRAWFENCE)
-						glEnable (GL_ALPHA_TEST); // Flip alpha test back on
+						GL_Uniform1iFunc (useAlphaTestLoc, 1); // Flip alpha test back on
 										
 					bound = true;
 					lastlightmap = s->lightmaptexturenum;
@@ -887,7 +981,7 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 				if (s->lightmaptexturenum != lastlightmap)
 					R_FlushBatch ();
 
-				GL_SelectTexture (GL_TEXTURE1_ARB);
+				GL_SelectTexture (GL_TEXTURE1);
 				GL_Bind (lightmap_textures[s->lightmaptexturenum]);
 				lastlightmap = s->lightmaptexturenum;
 				R_BatchSurface (s);
@@ -898,32 +992,22 @@ void R_DrawTextureChains_Multitexture_VBO (qmodel_t *model, entity_t *ent, texch
 		R_FlushBatch ();
 
 		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)
-			glDisable (GL_ALPHA_TEST); // Flip alpha test back off
+			GL_Uniform1iFunc (useAlphaTestLoc, 0); // Flip alpha test back off
 	}
 	
-// Reset TMU states
-	GL_SelectTexture (GL_TEXTURE2_ARB);
-	glDisable (GL_TEXTURE_2D);
-			
-	GL_SelectTexture (GL_TEXTURE1_ARB);
-	glTexEnvf(GL_TEXTURE_ENV, GL_RGB_SCALE_EXT, 1.0f);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	glDisable (GL_TEXTURE_2D);
+	// clean up
+	GL_DisableVertexAttribArrayFunc (vertAttrIndex);
+	GL_DisableVertexAttribArrayFunc (texCoordsAttrIndex);
+	GL_DisableVertexAttribArrayFunc (LMCoordsAttrIndex);
 	
-	GL_SelectTexture (GL_TEXTURE0_ARB);
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
-
-// Disable client state
-	glDisableClientState (GL_VERTEX_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE0_ARB);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE1_ARB);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
-
-	GL_ClientActiveTextureFunc (GL_TEXTURE2_ARB);
-	glDisableClientState (GL_TEXTURE_COORD_ARRAY);
+	GL_UseProgramFunc (0);
+	GL_SelectTexture (GL_TEXTURE0);
+	
+	if (entalpha < 1)
+	{
+		glDepthMask (GL_TRUE);
+		glDisable (GL_BLEND);
+	}
 }
 
 /*
@@ -985,10 +1069,12 @@ void R_DrawTextureChains (qmodel_t *model, entity_t *ent, texchain_t chain)
 
 	R_DrawTextureChains_NoTexture (model, chain);
 
-	if (gl_vbo_able && gl_texture_env_combine && gl_texture_env_add && gl_mtexable && gl_max_texture_units >= 3)
+	// OpenGL 2 fast path
+	if (r_world_program != 0)
 	{
-		R_DrawTextureChains_Multitexture_VBO (model, ent, chain);
 		R_EndTransparentDrawing (entalpha);
+		
+		R_DrawTextureChains_GLSL (model, ent, chain);
 		return;
 	}
 
