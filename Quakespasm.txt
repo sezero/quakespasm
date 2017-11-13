@@ -315,6 +315,9 @@
 
   o  Alpha-masked model support. (MF_HOLEY: 0x4000).
 
+  o  Invalid skin index now draws skin 0 (WinQuake behaviour) instead of
+     blue checkerboard.
+
   o  Change default screenshot format to png. The 'screenshot' command
      now supports optional format (tga, png or jpg) and quality (1-100)
      arguments.
@@ -344,6 +347,9 @@
      "gl_cshiftpercent_bonus", "gl_cshiftpercent_powerup" cvars for 
      tuning the strength of specic view blends.
 
+  o GL2 renderer: use a GLSL shader for world faces. Fixes reports of
+    integrated+discrete GPU laptops having inconsistent fog rendering.
+
   o  Fix macOS startup delay (avoid calling gethostbyname() for ".local"
      hostnames).
 
@@ -357,6 +363,9 @@
 
   o  Fix possible freeze in SV_TouchLinks regardless of what QC does in
      the touch function.
+
+  o Fix for maps with empty strings for vector keys (e.g. "origin");
+    don't read uninitialized memory.
 
   o  Support for Open Watcom compiler.
 

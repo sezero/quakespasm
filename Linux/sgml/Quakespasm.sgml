@@ -168,6 +168,7 @@ these patched libSDL binaries may help.
 <item> Change "games" / "mods" commands to list all subdirectories.
 <item> Restore vid_refreshrate from fitzquake-0.85 for SDL2 builds.
 <item> Alpha-masked model support. (MF_HOLEY: 0x4000).
+<item> Invalid skin index now draws skin 0 (WinQuake behaviour) instead of blue checkerboard.
 <item> Change default screenshot format to png. The 'screenshot' command now supports optional format (tga, png or jpg) and quality (1-100) arguments.
 <item> Revert "always run" changes from 0.85.9; move the QuakeSpasm customizations to a new "cl_alwaysrun" cvar. Set to 1 to scale forward/side/up speed by "cl_movespeedkey" (usually 2), and make "speedkey" act as "slowkey".
 <item> Change "always run" menu option to offer "off" (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200), "vanilla" (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400) and "quakespasm" (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200).
@@ -176,11 +177,13 @@ these patched libSDL binaries may help.
 <item> New "find" / "apropos" command, searches for commands/cvar names for the given substring (from Spike).
 <item> New "randmap" command for loading a random map.
 <item> New "gl_cshiftpercent_contents", "gl_cshiftpercent_damage", "gl_cshiftpercent_bonus", "gl_cshiftpercent_powerup" cvars for tuning the strength of specic view blends.
+<item> GL2 renderer: use a GLSL shader for world faces. Fixes reports of integrated+discrete GPU laptops having inconsistent fog rendering.
 <item> Fix macOS startup delay (avoid calling gethostbyname() for ".local" hostnames).
 <item> Fix memory corruption in PF_lightstyle with out of bounds lightstyles.
 <item> Fix crash in BoundPoly with polygons extending beyond +/-9999.
 <item> Fix QS window to stay on the current monitor when changing video modes (SDL2 only).
 <item> Fix possible freeze in SV_TouchLinks regardless of what QC does in the touch function.
+<item> Fix for maps with empty strings for vector keys (e.g. "origin"); don't read uninitialized memory.
 <item> Support for Open Watcom compiler.
 <item> Update the third-party libraries.
 </itemize>
