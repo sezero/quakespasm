@@ -92,8 +92,8 @@ extern "C" {
 # else
 #  define OPUS_RESTRICT
 # endif
-#elif (defined(__GNUC__) && (__GNUC__ < 4))
-/* __restrict is broken with gcc < 4.0
+#elif (defined(__GNUC__) && !OPUS_GNUC_PREREQ(3,4))
+/* __restrict is broken with gcc < 3.4
    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=6392 */
 # define OPUS_RESTRICT
 #elif (!defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199901L) )
