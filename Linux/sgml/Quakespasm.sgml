@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: Nov. 2017</em>
+<em>Page last edited: Dec. 2017</em>
 
 <sect> About <p>
 
@@ -153,6 +153,12 @@ these patched libSDL binaries may help.
     name="Gamma patched libSDL (x86_64-linux)">
 </itemize>
 <sect> Changes<p>
+
+<sect1> Changes in 0.93.1<p>
+<itemize>
+<item> Fixed a fog regression which was introduced in 0.93.0.
+</itemize>
+</p>
 
 <sect1> Changes in 0.93.0<p>
 <itemize>
