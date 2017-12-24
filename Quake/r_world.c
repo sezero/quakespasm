@@ -832,14 +832,14 @@ void GLWorld_CreateShaders (void)
 		"attribute vec2 TexCoords;\n"
 		"attribute vec2 LMCoords;\n"
 		"\n"
-		"varying vec3 VertVarying;\n"
+		"varying float FogFragCoord;\n"
 		"\n"
 		"void main()\n"
 		"{\n"
 		"	gl_TexCoord[0] = vec4(TexCoords, 0.0, 0.0);\n"
 		"	gl_TexCoord[1] = vec4(LMCoords, 0.0, 0.0);\n"
 		"	gl_Position = gl_ModelViewProjectionMatrix * vec4(Vert, 1.0);\n"
-		"	VertVarying = Vert;\n"
+		"	FogFragCoord = gl_Position.w;\n"
 		"}\n";
 	
 	const GLchar *fragSource = \
@@ -853,7 +853,7 @@ void GLWorld_CreateShaders (void)
 		"uniform bool UseAlphaTest;\n"
 		"uniform float Alpha;\n"
 		"\n"
-		"varying vec3 VertVarying;\n"
+		"varying float FogFragCoord;\n"
 		"\n"
 		"void main()\n"
 		"{\n"
@@ -866,15 +866,10 @@ void GLWorld_CreateShaders (void)
 		"	if (UseFullbrightTex)\n"
 		"		result += texture2D(FullbrightTex, gl_TexCoord[0].xy);\n"
 		"	result = clamp(result, 0.0, 1.0);\n"
-		"	// apply GL_EXP2 fog (from the orange book)\n"
-		"	// needs to be done fully in the fragment shader to match fixed-function's quality\n"
-		"	// (visible on large polygons / large texture scales)\n"
-		"	vec3 ecPosition = vec3(gl_ModelViewMatrix * vec4(VertVarying, 1.0));\n"
-		"	float fogFragCoord = abs(ecPosition.z);\n"
-		"	float fog = exp(-gl_Fog.density * gl_Fog.density * fogFragCoord * fogFragCoord);\n"
+		"	float fog = exp(-gl_Fog.density * gl_Fog.density * FogFragCoord * FogFragCoord);\n"
 		"	fog = clamp(fog, 0.0, 1.0);\n"
 		"	result = mix(gl_Fog.color, result, fog);\n"
-		"	result.a = Alpha;\n"
+		"	result.a = Alpha;\n" // FIXME: This will make almost transparent things cut holes though heavy fog
 		"	gl_FragColor = result;\n"
 		"}\n";
 	

@@ -140,6 +140,9 @@ void GLAlias_CreateShaders (void)
 		"attribute vec3 Pose1Normal;\n"
 		"attribute vec4 Pose2Vert;\n"
 		"attribute vec3 Pose2Normal;\n"
+		"\n"
+		"varying float FogFragCoord;\n"
+		"\n"
 		"float r_avertexnormal_dot(vec3 vertexnormal) // from MH \n"
 		"{\n"
 		"        float dot = dot(vertexnormal, ShadeVector);\n"
@@ -152,14 +155,12 @@ void GLAlias_CreateShaders (void)
 		"void main()\n"
 		"{\n"
 		"	gl_TexCoord[0] = TexCoords;\n"
-		"	vec4 lerpedVert = mix(Pose1Vert, Pose2Vert, Blend);\n"
+		"	vec4 lerpedVert = mix(vec4(Pose1Vert.xyz, 1.0), vec4(Pose2Vert.xyz, 1.0), Blend);\n"
 		"	gl_Position = gl_ModelViewProjectionMatrix * lerpedVert;\n"
+		"	FogFragCoord = gl_Position.w;\n"
 		"	float dot1 = r_avertexnormal_dot(Pose1Normal);\n"
 		"	float dot2 = r_avertexnormal_dot(Pose2Normal);\n"
 		"	gl_FrontColor = LightColor * vec4(vec3(mix(dot1, dot2, Blend)), 1.0);\n"
-		"	// fog\n"
-		"	vec3 ecPosition = vec3(gl_ModelViewMatrix * lerpedVert);\n"
-		"	gl_FogFragCoord = abs(ecPosition.z);\n"
 		"}\n";
 
 	const GLchar *fragSource = \
@@ -170,6 +171,9 @@ void GLAlias_CreateShaders (void)
 		"uniform bool UseFullbrightTex;\n"
 		"uniform bool UseOverbright;\n"
 		"uniform bool UseAlphaTest;\n"
+		"\n"
+		"varying float FogFragCoord;\n"
+		"\n"
 		"void main()\n"
 		"{\n"
 		"	vec4 result = texture2D(Tex, gl_TexCoord[0].xy);\n"
@@ -181,11 +185,10 @@ void GLAlias_CreateShaders (void)
 		"	if (UseFullbrightTex)\n"
 		"		result += texture2D(FullbrightTex, gl_TexCoord[0].xy);\n"
 		"	result = clamp(result, 0.0, 1.0);\n"
-		"	// apply GL_EXP2 fog (from the orange book)\n"
-		"	float fog = exp(-gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord);\n"
+		"	float fog = exp(-gl_Fog.density * gl_Fog.density * FogFragCoord * FogFragCoord);\n"
 		"	fog = clamp(fog, 0.0, 1.0);\n"
 		"	result = mix(gl_Fog.color, result, fog);\n"
-		"	result.a = gl_Color.a;\n"
+		"	result.a = gl_Color.a;\n" // FIXME: This will make almost transparent things cut holes though heavy fog
 		"	gl_FragColor = result;\n"
 		"}\n";
 
