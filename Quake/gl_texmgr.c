@@ -246,6 +246,8 @@ static void TexMgr_Imagedump_f (void)
 		q_snprintf(tganame, sizeof(tganame), "imagedump/%s.tga", tempname);
 
 		GL_Bind (glt);
+		glPixelStorei (GL_PACK_ALIGNMENT, 1);/* for widths that aren't a multiple of 4 */
+
 		if (glt->flags & TEXPREF_ALPHA)
 		{
 			buffer = (byte *) malloc(glt->width*glt->height*4);
