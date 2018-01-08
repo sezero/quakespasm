@@ -54,7 +54,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: Dec. 2017
+  Page last edited: Jan. 2018
 
 
   1.  About
@@ -291,6 +291,7 @@
   6.1.  Changes in 0.93.1
 
   o  Fixed a fog regression which was introduced in 0.93.0.
+  o  Fixed a crash (buffer overflow) with invalid vis data.
 
 
   6.2.  Changes in 0.93.0

@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: Dec. 2017</em>
+<em>Page last edited: Jan. 2018</em>
 
 <sect> About <p>
 
@@ -157,6 +157,7 @@ these patched libSDL binaries may help.
 <sect1> Changes in 0.93.1<p>
 <itemize>
 <item> Fixed a fog regression which was introduced in 0.93.0.
+<item> Fixed a crash (buffer overflow) with invalid vis data.
 </itemize>
 </p>
 
