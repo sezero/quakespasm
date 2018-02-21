@@ -203,6 +203,7 @@ typedef struct
 	void	*membase;
 	int	memsize;
 	int	numcpus;
+	int	errstate;
 } quakeparms_t;
 
 #include "common.h"

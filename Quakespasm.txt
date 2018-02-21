@@ -295,6 +295,7 @@
   o  Fixed buttons crushing players in 64-bit builds.
   o  Change controller movement to use cubic easing by default; added
     "joy_exponent_move" cvar.
+  o  config.cfg is no longer written in case of a Sys_Error.
   o  Update the third-party libraries. Other fixes/cleanups.
 
 

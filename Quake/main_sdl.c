@@ -108,6 +108,8 @@ int main(int argc, char *argv[])
 	parms.argc = argc;
 	parms.argv = argv;
 
+	parms.errstate = 0;
+
 	COM_InitArgv(parms.argc, parms.argv);
 
 	isDedicated = (COM_CheckParm("-dedicated") != 0);
