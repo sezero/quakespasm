@@ -65,7 +65,7 @@ static void CDAudio_Eject(void)
 #ifdef __linux__
 	SDL_CDStop(cd_handle);	/* see CDAudio_Stop() */
 #endif
-	if (SDL_CDEject(cd_handle) == -1)
+	if (SDL_CDEject(cd_handle) < 0)
 		Con_Printf ("Unable to eject CD-ROM: %s\n", SDL_GetError ());
 }
 
@@ -119,7 +119,7 @@ int CDAudio_Play(byte track, qboolean looping)
 		CDAudio_Stop();
 	}
 
-	if (SDL_CDPlay(cd_handle, cd_handle->track[track-1].offset, cd_handle->track[track-1].length) == -1)
+	if (SDL_CDPlay(cd_handle, cd_handle->track[track-1].offset, cd_handle->track[track-1].length) < 0)
 	{
 		Con_Printf ("CDAudio_Play: Unable to play track %d: %s\n", track, SDL_GetError ());
 		return -1;
@@ -160,10 +160,10 @@ void CDAudio_Stop(void)
 	 * firmware versions running under a 2.6.27.25 kernel, and with a
 	 * Samsung DVD r/w drive running under 2.6.35.6 kernel.
 	 * Therefore, avoid dead stops if playback may be resumed shortly. */
-	if (SDL_CDPause(cd_handle) == -1)
+	if (SDL_CDPause(cd_handle) < 0)
 		Con_Printf ("CDAudio_Stop: Unable to stop CD-ROM (%s)\n", SDL_GetError());
 #else
-	if (SDL_CDStop(cd_handle) == -1)
+	if (SDL_CDStop(cd_handle) < 0)
 		Con_Printf ("CDAudio_Stop: Unable to stop CD-ROM (%s)\n", SDL_GetError());
 #endif
 
@@ -181,7 +181,7 @@ void CDAudio_Pause(void)
 	if (!playing)
 		return;
 
-	if (SDL_CDPause(cd_handle) == -1)
+	if (SDL_CDPause(cd_handle) < 0)
 		Con_Printf ("Unable to pause CD-ROM: %s\n", SDL_GetError());
 
 	wasPlaying = playing;
@@ -200,7 +200,7 @@ void CDAudio_Resume(void)
 	if (!wasPlaying)
 		return;
 
-	if (SDL_CDResume(cd_handle) == -1)
+	if (SDL_CDResume(cd_handle) < 0)
 		Con_Printf ("Unable to resume CD-ROM: %s\n", SDL_GetError());
 	playing = true;
 	endOfTrack += realtime - pausetime;
