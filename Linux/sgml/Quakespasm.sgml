@@ -161,6 +161,7 @@ these patched libSDL binaries may help.
 <item> Fixed buttons crushing players in 64-bit builds.
 <item> Change controller movement to use cubic easing by default; added "joy_exponent_move" cvar.
 <item> config.cfg is no longer written in case of a Sys_Error.
+<item> Fixed Opus encoded cd tracks not being recognized as ripped tracks.
 <item> Update the third-party libraries. Other fixes/cleanups.
 </itemize>
 </p>

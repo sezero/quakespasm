@@ -291,11 +291,18 @@
   6.1.  Changes in 0.93.1
 
   o  Fixed a fog regression which was introduced in 0.93.0.
+
   o  Fixed a crash (buffer overflow) with invalid vis data.
+
   o  Fixed buttons crushing players in 64-bit builds.
+
   o  Change controller movement to use cubic easing by default; added
     "joy_exponent_move" cvar.
+
   o  config.cfg is no longer written in case of a Sys_Error.
+
+  o  Fixed Opus encoded cd tracks not being recognized as ripped tracks.
+
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
