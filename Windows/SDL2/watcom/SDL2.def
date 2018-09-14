@@ -129,12 +129,14 @@ SDL_GameControllerGetStringForAxis
 SDL_GameControllerGetStringForButton
 SDL_GameControllerGetVendor
 SDL_GameControllerMapping
+SDL_GameControllerMappingForDeviceIndex
 SDL_GameControllerMappingForGUID
 SDL_GameControllerMappingForIndex
 SDL_GameControllerName
 SDL_GameControllerNameForIndex
 SDL_GameControllerNumMappings
 SDL_GameControllerOpen
+SDL_GameControllerRumble
 SDL_GameControllerUpdate
 SDL_GetAssertionHandler
 SDL_GetAssertionReport
@@ -160,6 +162,7 @@ SDL_GetDisplayBounds
 SDL_GetDisplayDPI
 SDL_GetDisplayMode
 SDL_GetDisplayName
+SDL_GetDisplayOrientation
 SDL_GetDisplayUsableBounds
 SDL_GetError
 SDL_GetEventFilter
@@ -274,6 +277,7 @@ SDL_HapticUpdateEffect
 SDL_Has3DNow
 SDL_HasAVX
 SDL_HasAVX2
+SDL_HasAVX512F
 SDL_HasAltiVec
 SDL_HasClipboardText
 SDL_HasEvent
@@ -297,6 +301,7 @@ SDL_IsGameController
 SDL_IsScreenKeyboardShown
 SDL_IsScreenSaverEnabled
 SDL_IsShapedWindow
+SDL_IsTablet
 SDL_IsTextInputActive
 SDL_JoystickClose
 SDL_JoystickCurrentPowerLevel
@@ -330,6 +335,7 @@ SDL_JoystickNumBalls
 SDL_JoystickNumButtons
 SDL_JoystickNumHats
 SDL_JoystickOpen
+SDL_JoystickRumble
 SDL_JoystickUpdate
 SDL_LoadBMP_RW
 SDL_LoadDollarTemplates
@@ -373,6 +379,7 @@ SDL_MouseIsHaptic
 SDL_NewAudioStream
 SDL_NumHaptics
 SDL_NumJoysticks
+SDL_NumSensors
 SDL_OpenAudio
 SDL_OpenAudioDevice
 SDL_PauseAudio
@@ -441,6 +448,19 @@ SDL_SemTryWait
 SDL_SemValue
 SDL_SemWait
 SDL_SemWaitTimeout
+SDL_SensorClose
+SDL_SensorFromInstanceID
+SDL_SensorGetData
+SDL_SensorGetDeviceInstanceID
+SDL_SensorGetDeviceName
+SDL_SensorGetDeviceNonPortableType
+SDL_SensorGetDeviceType
+SDL_SensorGetInstanceID
+SDL_SensorGetName
+SDL_SensorGetNonPortableType
+SDL_SensorGetType
+SDL_SensorOpen
+SDL_SensorUpdate
 SDL_SetAssertionHandler
 SDL_SetClipRect
 SDL_SetClipboardText
@@ -556,6 +576,8 @@ SDL_copysign
 SDL_copysignf
 SDL_cos
 SDL_cosf
+SDL_exp
+SDL_expf
 SDL_fabs
 SDL_fabsf
 SDL_floor
@@ -626,6 +648,7 @@ SDL_utf8strlen
 SDL_vsnprintf
 SDL_vsscanf
 SDL_wcscmp
+SDL_wcsdup
 SDL_wcslcat
 SDL_wcslcpy
 SDL_wcslen
