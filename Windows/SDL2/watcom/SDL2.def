@@ -280,6 +280,7 @@ SDL_HasAVX2
 SDL_HasAVX512F
 SDL_HasAltiVec
 SDL_HasClipboardText
+SDL_HasColorKey
 SDL_HasEvent
 SDL_HasEvents
 SDL_HasIntersection

@@ -277,6 +277,7 @@
 ++'_SDL_HasAVX512F'.'SDL2.DLL'..'SDL_HasAVX512F'
 ++'_SDL_HasAltiVec'.'SDL2.DLL'..'SDL_HasAltiVec'
 ++'_SDL_HasClipboardText'.'SDL2.DLL'..'SDL_HasClipboardText'
+++'_SDL_HasColorKey'.'SDL2.DLL'..'SDL_HasColorKey'
 ++'_SDL_HasEvent'.'SDL2.DLL'..'SDL_HasEvent'
 ++'_SDL_HasEvents'.'SDL2.DLL'..'SDL_HasEvents'
 ++'_SDL_HasIntersection'.'SDL2.DLL'..'SDL_HasIntersection'
