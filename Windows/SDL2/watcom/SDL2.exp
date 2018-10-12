@@ -54,6 +54,7 @@
 ++'_SDL_CreateTexture'.'SDL2.DLL'..'SDL_CreateTexture'
 ++'_SDL_CreateTextureFromSurface'.'SDL2.DLL'..'SDL_CreateTextureFromSurface'
 ++'_SDL_CreateThread'.'SDL2.DLL'..'SDL_CreateThread'
+++'_SDL_CreateThreadWithStackSize'.'SDL2.DLL'..'SDL_CreateThreadWithStackSize'
 ++'_SDL_CreateWindow'.'SDL2.DLL'..'SDL_CreateWindow'
 ++'_SDL_CreateWindowAndRenderer'.'SDL2.DLL'..'SDL_CreateWindowAndRenderer'
 ++'_SDL_CreateWindowFrom'.'SDL2.DLL'..'SDL_CreateWindowFrom'

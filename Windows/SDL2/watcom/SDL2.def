@@ -57,6 +57,7 @@ SDL_CreateSystemCursor
 SDL_CreateTexture
 SDL_CreateTextureFromSurface
 SDL_CreateThread
+SDL_CreateThreadWithStackSize
 SDL_CreateWindow
 SDL_CreateWindowAndRenderer
 SDL_CreateWindowFrom
