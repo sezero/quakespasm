@@ -124,6 +124,7 @@ SDL_GameControllerGetBindForButton
 SDL_GameControllerGetButton
 SDL_GameControllerGetButtonFromString
 SDL_GameControllerGetJoystick
+SDL_GameControllerGetPlayerIndex
 SDL_GameControllerGetProduct
 SDL_GameControllerGetProductVersion
 SDL_GameControllerGetStringForAxis
@@ -316,6 +317,7 @@ SDL_JoystickGetBall
 SDL_JoystickGetButton
 SDL_JoystickGetDeviceGUID
 SDL_JoystickGetDeviceInstanceID
+SDL_JoystickGetDevicePlayerIndex
 SDL_JoystickGetDeviceProduct
 SDL_JoystickGetDeviceProductVersion
 SDL_JoystickGetDeviceType
@@ -324,6 +326,7 @@ SDL_JoystickGetGUID
 SDL_JoystickGetGUIDFromString
 SDL_JoystickGetGUIDString
 SDL_JoystickGetHat
+SDL_JoystickGetPlayerIndex
 SDL_JoystickGetProduct
 SDL_JoystickGetProductVersion
 SDL_JoystickGetType
