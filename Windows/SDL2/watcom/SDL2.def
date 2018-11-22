@@ -1,4 +1,4 @@
-; lib /def:SDL2.def /out:SDL2.lib /machine:x86
+;; lib /def:SDL2.def /out:SDL2.lib /machine:x86
 LIBRARY SDL2.dll
 EXPORTS
 SDL_AddEventWatch
@@ -225,6 +225,7 @@ SDL_GetThreadID
 SDL_GetThreadName
 SDL_GetTicks
 SDL_GetTouchDevice
+SDL_GetTouchDeviceType
 SDL_GetTouchFinger
 SDL_GetVersion
 SDL_GetVideoDriver
@@ -417,14 +418,25 @@ SDL_RemoveTimer
 SDL_RenderClear
 SDL_RenderCopy
 SDL_RenderCopyEx
+SDL_RenderCopyExF
+SDL_RenderCopyF
 SDL_RenderDrawLine
+SDL_RenderDrawLineF
 SDL_RenderDrawLines
+SDL_RenderDrawLinesF
 SDL_RenderDrawPoint
+SDL_RenderDrawPointF
 SDL_RenderDrawPoints
+SDL_RenderDrawPointsF
 SDL_RenderDrawRect
+SDL_RenderDrawRectF
 SDL_RenderDrawRects
+SDL_RenderDrawRectsF
 SDL_RenderFillRect
+SDL_RenderFillRectF
 SDL_RenderFillRects
+SDL_RenderFillRectsF
+SDL_RenderFlush
 SDL_RenderGetClipRect
 SDL_RenderGetD3D9Device
 SDL_RenderGetIntegerScale
