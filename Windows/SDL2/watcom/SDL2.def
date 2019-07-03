@@ -345,6 +345,7 @@ SDL_JoystickRumble
 SDL_JoystickUpdate
 SDL_LoadBMP_RW
 SDL_LoadDollarTemplates
+SDL_LoadFile
 SDL_LoadFile_RW
 SDL_LoadFunction
 SDL_LoadObject
@@ -403,6 +404,12 @@ SDL_RWFromConstMem
 SDL_RWFromFP
 SDL_RWFromFile
 SDL_RWFromMem
+SDL_RWclose
+SDL_RWread
+SDL_RWseek
+SDL_RWsize
+SDL_RWtell
+SDL_RWwrite
 SDL_RaiseWindow
 SDL_ReadBE16
 SDL_ReadBE32
@@ -457,6 +464,9 @@ SDL_RenderTargetSupported
 SDL_ReportAssertion
 SDL_ResetAssertionReport
 SDL_RestoreWindow
+SDL_SIMDAlloc
+SDL_SIMDFree
+SDL_SIMDGetAlignment
 SDL_SaveAllDollarTemplates
 SDL_SaveBMP_RW
 SDL_SaveDollarTemplate
