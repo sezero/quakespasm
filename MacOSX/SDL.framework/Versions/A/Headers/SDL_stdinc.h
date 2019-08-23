@@ -505,13 +505,17 @@ extern DECLSPEC char* SDLCALL SDL_lltoa(Sint64 value, char *string, int radix);
 extern DECLSPEC char* SDLCALL SDL_ulltoa(Uint64 value, char *string, int radix);
 #endif
 
-#ifdef HAVE_STRTOLL
+#ifdef HAVE__STRTOI64
+#define SDL_strtoll    _strtoi64
+#elif defined(HAVE_STRTOLL)
 #define SDL_strtoll     strtoll
 #else
 extern DECLSPEC Sint64 SDLCALL SDL_strtoll(const char *string, char **endp, int base);
 #endif
 
-#ifdef HAVE_STRTOULL
+#ifdef HAVE__STRTOUI64
+#define SDL_strtoull    _strtoui64
+#elif defined(HAVE_STRTOULL)
 #define SDL_strtoull     strtoull
 #else
 extern DECLSPEC Uint64 SDLCALL SDL_strtoull(const char *string, char **endp, int base);
@@ -549,18 +553,18 @@ extern DECLSPEC int SDLCALL SDL_strcmp(const char *str1, const char *str2);
 extern DECLSPEC int SDLCALL SDL_strncmp(const char *str1, const char *str2, size_t maxlen);
 #endif
 
-#ifdef HAVE_STRCASECMP
-#define SDL_strcasecmp  strcasecmp
-#elif defined(HAVE__STRICMP)
+#if defined(HAVE__STRICMP)
 #define SDL_strcasecmp  _stricmp
+#elif defined(HAVE_STRCASECMP)
+#define SDL_strcasecmp  strcasecmp
 #else
 extern DECLSPEC int SDLCALL SDL_strcasecmp(const char *str1, const char *str2);
 #endif
 
-#ifdef HAVE_STRNCASECMP
-#define SDL_strncasecmp strncasecmp
-#elif defined(HAVE__STRNICMP)
+#if defined(HAVE__STRNICMP)
 #define SDL_strncasecmp _strnicmp
+#elif defined(HAVE_STRNCASECMP)
+#define SDL_strncasecmp strncasecmp
 #else
 extern DECLSPEC int SDLCALL SDL_strncasecmp(const char *str1, const char *str2, size_t maxlen);
 #endif
@@ -571,13 +575,13 @@ extern DECLSPEC int SDLCALL SDL_strncasecmp(const char *str1, const char *str2, 
 extern DECLSPEC int SDLCALL SDL_sscanf(const char *text, const char *fmt, ...);
 #endif
 
-#ifdef HAVE_SNPRINTF
+#if defined(HAVE_SNPRINTF) && !(defined(__WATCOMC__) || defined(_WIN32))
 #define SDL_snprintf    snprintf
 #else
 extern DECLSPEC int SDLCALL SDL_snprintf(char *text, size_t maxlen, const char *fmt, ...);
 #endif
 
-#ifdef HAVE_VSNPRINTF
+#if defined(HAVE_VSNPRINTF) && !(defined(__WATCOMC__) || defined(_WIN32))
 #define SDL_vsnprintf   vsnprintf
 #else
 extern DECLSPEC int SDLCALL SDL_vsnprintf(char *text, size_t maxlen, const char *fmt, va_list ap);
