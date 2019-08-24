@@ -376,6 +376,8 @@
 ++'_SDL_MaximizeWindow'.'SDL2.DLL'..'SDL_MaximizeWindow'
 ++'_SDL_MemoryBarrierAcquireFunction'.'SDL2.DLL'..'SDL_MemoryBarrierAcquireFunction'
 ++'_SDL_MemoryBarrierReleaseFunction'.'SDL2.DLL'..'SDL_MemoryBarrierReleaseFunction'
+++'_SDL_Metal_CreateView'.'SDL2.DLL'..'SDL_Metal_CreateView'
+++'_SDL_Metal_DestroyView'.'SDL2.DLL'..'SDL_Metal_DestroyView'
 ++'_SDL_MinimizeWindow'.'SDL2.DLL'..'SDL_MinimizeWindow'
 ++'_SDL_MixAudio'.'SDL2.DLL'..'SDL_MixAudio'
 ++'_SDL_MixAudioFormat'.'SDL2.DLL'..'SDL_MixAudioFormat'

@@ -1,4 +1,4 @@
-;; lib /def:SDL2.def /out:SDL2.lib /machine:x86
+; lib /def:SDL2.def /out:SDL2.lib /machine:x86
 LIBRARY SDL2.dll
 EXPORTS
 SDL_AddEventWatch
@@ -379,6 +379,8 @@ SDL_MasksToPixelFormatEnum
 SDL_MaximizeWindow
 SDL_MemoryBarrierAcquireFunction
 SDL_MemoryBarrierReleaseFunction
+SDL_Metal_CreateView
+SDL_Metal_DestroyView
 SDL_MinimizeWindow
 SDL_MixAudio
 SDL_MixAudioFormat
