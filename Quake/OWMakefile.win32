@@ -228,7 +228,7 @@ OBJS = strlcat.obj &
 
 # 1 MB stack size.
 quakespasm.exe: $(OBJS) quakespasm.res
-	wlink N $@ SYS NT_WIN OPTION STACK=0x100000 LIBR {$(LIBS)} F {$(OBJS)}
+	wlink N $@ SYS NT_WIN OPTION q OPTION STACK=0x100000 LIBR {$(LIBS)} F {$(OBJS)}
 	wrc -q $^*.res
 
 clean: .symbolic
