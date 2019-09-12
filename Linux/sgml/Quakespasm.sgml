@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: Feb. 2018</em>
+<em>Page last edited: Sep. 2019</em>
 
 <sect> About <p>
 
@@ -153,6 +153,16 @@ these patched libSDL binaries may help.
     name="Gamma patched libSDL (x86_64-linux)">
 </itemize>
 <sect> Changes<p>
+
+<sect1> Changes in 0.93.2<p>
+<itemize>
+<item> Lightmaps are now dynamically allocated (from QSS), and BLOCK_WIDTH/HEIGHT raised from 128 to 256.
+<item> Fixed several uncheked limits that would crash the Slayer's Testaments mod.
+<item> Raised MAXALIASTRIS from 2048 to 4096, so that the Slayer's Testaments mod works.
+<item> Fixed 'pants' and 'shirt' types so that those textures load correctly on platforms where char is unsigned by default (sf.net bug #28).
+<item> Update the third-party libraries. Other fixes/cleanups.
+</itemize>
+</p>
 
 <sect1> Changes in 0.93.1<p>
 <itemize>
