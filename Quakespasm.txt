@@ -1021,15 +1021,14 @@
   9.  Contact
 
   o  QuakeSpasm Project page:
-     http://sourceforge.net/projects/quakespasm
+     https://sourceforge.net/projects/quakespasm/
 
   o  Bug reports:
-     http://sourceforge.net/p/quakespasm/bugs/?source=navbar
+     https://sourceforge.net/p/quakespasm/bugs/
 
   o  Ozkan <mailto:gmail - dot - com - username - sezeroz>
      Eric <mailto:gmail - dot - com - username - ewasylishen>
      Sander <mailto:gmail - dot - com - username - a.h.vandijk>
-     Stevenaaus <mailto:yahoo - dot - com - username - stevenaaus>
 
 
   10.  Links
