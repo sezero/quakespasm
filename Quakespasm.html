@@ -232,7 +232,7 @@ Compile time options include
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Known Bugs </A></H2>
 
 <P>Brightness issues should be fixed with GLSL gamma in 0.90.1, if your system supports OpenGL 2. For reference on older systems:<BR>
- 
+
 Some versions of Xorg and SDL have brightness issues.<BR>
 Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
 these patched libSDL binaries may help.
@@ -253,9 +253,10 @@ these patched libSDL binaries may help.
 <P>
 <UL>
 <LI> Lightmaps are now dynamically allocated (from QSS), and BLOCK_WIDTH/HEIGHT raised from 128 to 256.</LI>
-<LI> Fixed several uncheked limits that would crash the Slayer's Testaments mod.</LI>
+<LI> Fixed several uncheked limits that would crash the Slayer's Testaments mod (sf.net bug #33).</LI>
 <LI> Raised MAXALIASTRIS from 2048 to 4096, so that the Slayer's Testaments mod works.</LI>
 <LI> Fixed 'pants' and 'shirt' types so that those textures load correctly on platforms where char is unsigned by default (sf.net bug #28).</LI>
+<LI> Windows audio: WASAPI-enabled SDL2 dlls function properly now.</LI>
 <LI> Update the third-party libraries. Other fixes/cleanups.</LI>
 </UL>
 </P>
