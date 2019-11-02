@@ -353,6 +353,7 @@
 ++'_SDL_LockMutex'.'SDL2.DLL'..'SDL_LockMutex'
 ++'_SDL_LockSurface'.'SDL2.DLL'..'SDL_LockSurface'
 ++'_SDL_LockTexture'.'SDL2.DLL'..'SDL_LockTexture'
+++'_SDL_LockTextureToSurface'.'SDL2.DLL'..'SDL_LockTextureToSurface'
 ++'_SDL_Log'.'SDL2.DLL'..'SDL_Log'
 ++'_SDL_LogCritical'.'SDL2.DLL'..'SDL_LogCritical'
 ++'_SDL_LogDebug'.'SDL2.DLL'..'SDL_LogDebug'

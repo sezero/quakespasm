@@ -356,6 +356,7 @@ SDL_LockJoysticks
 SDL_LockMutex
 SDL_LockSurface
 SDL_LockTexture
+SDL_LockTextureToSurface
 SDL_Log
 SDL_LogCritical
 SDL_LogDebug
