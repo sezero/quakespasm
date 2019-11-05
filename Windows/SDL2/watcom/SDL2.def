@@ -278,6 +278,7 @@ SDL_HapticStopEffect
 SDL_HapticUnpause
 SDL_HapticUpdateEffect
 SDL_Has3DNow
+SDL_HasARMSIMD
 SDL_HasAVX
 SDL_HasAVX2
 SDL_HasAVX512F

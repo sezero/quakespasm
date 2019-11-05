@@ -275,6 +275,7 @@
 ++'_SDL_HapticUnpause'.'SDL2.DLL'..'SDL_HapticUnpause'
 ++'_SDL_HapticUpdateEffect'.'SDL2.DLL'..'SDL_HapticUpdateEffect'
 ++'_SDL_Has3DNow'.'SDL2.DLL'..'SDL_Has3DNow'
+++'_SDL_HasARMSIMD'.'SDL2.DLL'..'SDL_HasARMSIMD'
 ++'_SDL_HasAVX'.'SDL2.DLL'..'SDL_HasAVX'
 ++'_SDL_HasAVX2'.'SDL2.DLL'..'SDL_HasAVX2'
 ++'_SDL_HasAVX512F'.'SDL2.DLL'..'SDL_HasAVX512F'
