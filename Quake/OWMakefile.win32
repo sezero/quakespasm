@@ -53,11 +53,11 @@ NET_LIBS   = $(LIBWINSOCK)
 CODEC_INC = -I../Windows/codecs/include
 LIBCODEC  = ../Windows/codecs/x86-watcom/
 !ifeq MP3LIB mad
-mp3_obj=snd_mp3.obj
+mp3_obj=snd_mp3
 lib_mp3dec=$(LIBCODEC)mad.lib
 !endif
 !ifeq MP3LIB mpg123
-mp3_obj=snd_mpg123.obj
+mp3_obj=snd_mpg123
 lib_mp3dec=$(LIBCODEC)mpg123.lib
 !endif
 !ifeq VORBISLIB vorbis
@@ -140,7 +140,8 @@ MUSIC_OBJS= bgmusic.obj &
 	snd_wave.obj &
 	snd_vorbis.obj &
 	snd_opus.obj &
-	$(mp3_obj) &
+	$(mp3_obj).obj &
+	snd_mp3tag.obj &
 	snd_mikmod.obj &
 	snd_xmp.obj &
 	snd_umx.obj

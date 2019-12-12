@@ -562,6 +562,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_mp3tag.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_opus.c"
 				>
 			</File>

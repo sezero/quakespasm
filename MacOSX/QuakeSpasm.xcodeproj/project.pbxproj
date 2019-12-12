@@ -105,6 +105,8 @@
 		48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
 		48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE585A0D3A82C8006BB491 /* QuakeArguments.m */; };
+		63D6EB3523A255900047028C /* snd_mp3tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 63D6EB3423A255900047028C /* snd_mp3tag.c */; };
+		63D6EB3623A255900047028C /* snd_mp3tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 63D6EB3423A255900047028C /* snd_mp3tag.c */; };
 		664D988A19CF6B78000D395C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		664D988B19CF6B78000D395C /* Launcher.nib in Resources */ = {isa = PBXBuildFile; fileRef = 48B9E7860D340B1E0001CACF /* Launcher.nib */; };
 		664D988C19CF6B78000D395C /* QuakeSpasm.icns in Resources */ = {isa = PBXBuildFile; fileRef = 484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */; };
@@ -470,6 +472,7 @@
 		48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvorbisfile.dylib; path = codecs/lib/libvorbisfile.dylib; sourceTree = "<group>"; };
 		48FE58590D3A82C8006BB491 /* QuakeArguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeArguments.h; sourceTree = "<group>"; };
 		48FE585A0D3A82C8006BB491 /* QuakeArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuakeArguments.m; sourceTree = "<group>"; };
+		63D6EB3423A255900047028C /* snd_mp3tag.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3tag.c; path = ../Quake/snd_mp3tag.c; sourceTree = SOURCE_ROOT; };
 		664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		664D98FB19CF6B78000D395C /* Info copy.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info copy.plist"; sourceTree = "<group>"; };
 		664D990519CF6E16000D395C /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SDL2.framework; sourceTree = SOURCE_ROOT; };
@@ -716,6 +719,7 @@
 				486577CA0D31A22A00E7920A /* snd_mix.c */,
 				483A78540D2EEAC300CB2E4C /* snd_sdl.c */,
 				4854B1B01340C646004C9F45 /* snd_mp3.c */,
+				63D6EB3423A255900047028C /* snd_mp3tag.c */,
 				4885A84A179740A0000EC703 /* snd_opus.c */,
 				483A78640D2EEAF000CB2E4C /* snd_mikmod.c */,
 				4818B0B012D5BA1A006DD66E /* snd_umx.c */,
@@ -1029,6 +1033,7 @@
 				664D98DA19CF6B78000D395C /* strlcpy.c in Sources */,
 				664D98DB19CF6B78000D395C /* snd_opus.c in Sources */,
 				664D98DC19CF6B78000D395C /* snd_flac.c in Sources */,
+				63D6EB3623A255900047028C /* snd_mp3tag.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1115,6 +1120,7 @@
 				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
 				4885A84C179740A0000EC703 /* snd_opus.c in Sources */,
 				48281301179C3F13004E1D61 /* snd_flac.c in Sources */,
+				63D6EB3523A255900047028C /* snd_mp3tag.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
