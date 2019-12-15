@@ -825,11 +825,16 @@ void GLWorld_CreateShaders (void)
 		{ "TexCoords", texCoordsAttrIndex },
 		{ "LMCoords", LMCoordsAttrIndex }
 	};
-	
+
+	// Driver bug workarounds:
+	// - "Intel(R) UHD Graphics 600" version "4.6.0 - Build 26.20.100.7263"
+	//    crashing on glUseProgram with `vec3 Vert` and
+	//    `gl_ModelViewProjectionMatrix * vec4(Vert, 1.0);`. Work around with
+	//    making Vert a vec4. (https://sourceforge.net/p/quakespasm/bugs/39/)
 	const GLchar *vertSource = \
 		"#version 110\n"
 		"\n"
-		"attribute vec3 Vert;\n"
+		"attribute vec4 Vert;\n"
 		"attribute vec2 TexCoords;\n"
 		"attribute vec2 LMCoords;\n"
 		"\n"
@@ -839,7 +844,7 @@ void GLWorld_CreateShaders (void)
 		"{\n"
 		"	gl_TexCoord[0] = vec4(TexCoords, 0.0, 0.0);\n"
 		"	gl_TexCoord[1] = vec4(LMCoords, 0.0, 0.0);\n"
-		"	gl_Position = gl_ModelViewProjectionMatrix * vec4(Vert, 1.0);\n"
+		"	gl_Position = gl_ModelViewProjectionMatrix * Vert;\n"
 		"	FogFragCoord = gl_Position.w;\n"
 		"}\n";
 	
