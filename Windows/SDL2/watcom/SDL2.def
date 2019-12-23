@@ -116,6 +116,7 @@ SDL_GameControllerAddMappingsFromRW
 SDL_GameControllerClose
 SDL_GameControllerEventState
 SDL_GameControllerFromInstanceID
+SDL_GameControllerFromPlayerIndex
 SDL_GameControllerGetAttached
 SDL_GameControllerGetAxis
 SDL_GameControllerGetAxisFromString
@@ -129,6 +130,7 @@ SDL_GameControllerGetProduct
 SDL_GameControllerGetProductVersion
 SDL_GameControllerGetStringForAxis
 SDL_GameControllerGetStringForButton
+SDL_GameControllerGetType
 SDL_GameControllerGetVendor
 SDL_GameControllerMapping
 SDL_GameControllerMappingForDeviceIndex
@@ -139,6 +141,8 @@ SDL_GameControllerNameForIndex
 SDL_GameControllerNumMappings
 SDL_GameControllerOpen
 SDL_GameControllerRumble
+SDL_GameControllerSetPlayerIndex
+SDL_GameControllerTypeForIndex
 SDL_GameControllerUpdate
 SDL_GetAssertionHandler
 SDL_GetAssertionReport
@@ -221,6 +225,7 @@ SDL_GetSystemRAM
 SDL_GetTextureAlphaMod
 SDL_GetTextureBlendMode
 SDL_GetTextureColorMod
+SDL_GetTextureScaleMode
 SDL_GetThreadID
 SDL_GetThreadName
 SDL_GetTicks
@@ -312,6 +317,7 @@ SDL_JoystickClose
 SDL_JoystickCurrentPowerLevel
 SDL_JoystickEventState
 SDL_JoystickFromInstanceID
+SDL_JoystickFromPlayerIndex
 SDL_JoystickGetAttached
 SDL_JoystickGetAxis
 SDL_JoystickGetAxisInitialState
@@ -343,6 +349,7 @@ SDL_JoystickNumButtons
 SDL_JoystickNumHats
 SDL_JoystickOpen
 SDL_JoystickRumble
+SDL_JoystickSetPlayerIndex
 SDL_JoystickUpdate
 SDL_LoadBMP_RW
 SDL_LoadDollarTemplates
@@ -519,6 +526,7 @@ SDL_SetTextInputRect
 SDL_SetTextureAlphaMod
 SDL_SetTextureBlendMode
 SDL_SetTextureColorMod
+SDL_SetTextureScaleMode
 SDL_SetThreadPriority
 SDL_SetWindowBordered
 SDL_SetWindowBrightness
@@ -662,6 +670,7 @@ SDL_strrchr
 SDL_strrev
 SDL_strstr
 SDL_strtod
+SDL_strtokr
 SDL_strtol
 SDL_strtoll
 SDL_strtoul
@@ -683,3 +692,5 @@ SDL_wcsdup
 SDL_wcslcat
 SDL_wcslcpy
 SDL_wcslen
+SDL_wcsncmp
+SDL_wcsstr
