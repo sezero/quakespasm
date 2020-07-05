@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: Sep. 2019</em>
+<em>Page last edited: July 2020</em>
 
 <sect> About <p>
 
@@ -109,7 +109,7 @@ The controller support started as Jeremiah Sypult's implementation in Quakespasm
 <sect> Compiling and Installation<p>
 <p>Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
 <p><em>To checkout the latest version of QuakeSpasm, do:</em>
-<bf>svn co svn://svn.code.sf.net/p/quakespasm/code/trunk/quakespasm</bf></p>
+<bf>git clone git://git.code.sf.net/p/quakespasm/quakespasm.git</bf></p>
 
 <sect1> Linux/Unix <p>
 After extracting the source tarball, browse the Makefile and edit the music streaming options, then
