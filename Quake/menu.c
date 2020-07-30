@@ -1444,7 +1444,7 @@ void M_Keys_Draw (void)
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
 // search for known bindings
-	for (i = top_bind; i < (int)NUMCOMMANDS; i++)
+	for (i = top_bind; i < top_bind + MAXONSCREENBINDS + 1; i++)
 	{
 		y = 48 + 8 * (i - top_bind);
 
