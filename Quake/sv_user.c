@@ -336,7 +336,10 @@ void SV_AirMove (void)
 
 // hack to not let you back into teleporter
 	if (sv.time < sv_player->v.teleport_time && fmove < 0)
+	{
 		fmove = 0;
+		sv_player->v.flags = (int)sv_player->v.flags & ~FL_ONELEVATOR;
+	}
 
 	for (i=0 ; i<3 ; i++)
 		wishvel[i] = forward[i]*fmove + right[i]*smove;
