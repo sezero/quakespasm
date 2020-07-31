@@ -827,8 +827,13 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	bits |= SU_ITEMS;
 
-	if ( (int)ent->v.flags & FL_ONGROUND)
+	if ((int)ent->v.flags & FL_ONGROUND)
 		bits |= SU_ONGROUND;
+	else
+		ent->v.flags = (int)ent->v.flags & ~FL_ONELEVATOR;
+
+	if ((int)ent->v.flags & FL_ONELEVATOR)
+		bits |= SU_ONELEVATOR;
 
 	if ( ent->v.waterlevel >= 2)
 		bits |= SU_INWATER;
