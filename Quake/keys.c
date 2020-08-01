@@ -957,12 +957,14 @@ void Key_Event (int key, qboolean down)
 // handle autorepeats and stray key up events
 	if (down)
 	{
+		qboolean consolewheel = (key == K_MWHEELUP || key == K_MWHEELDOWN) && key_dest == key_console;
+
 		if (keydown[key])
 		{
 			if (key_dest == key_game && !con_forcedup)
 				return; // ignore autorepeats in game mode
 		}
-		else if (key >= 200 && !keybindings[key])
+		else if (key >= 200 && !keybindings[key] && !consolewheel) //Ivory-- if mousewheel is being used in console and it is unbound do not spam warning messages
 			Con_Printf ("%s is unbound, hit F4 to set.\n", Key_KeynumToString(key));
 	}
 	else if (!keydown[key])
