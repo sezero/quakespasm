@@ -182,8 +182,9 @@ typedef struct
 
 	qboolean	paused;			// send over by server
 	qboolean	onground;
-	qboolean	onelevator;		//Ivory-- to fix stuttery view going up elevators
 	qboolean	inwater;
+
+	qboolean	nostepsmooth;	//Ivory-- to fix stuttery view going up elevators and slopes
 
 	int			intermission;	// don't change view angle, full screen, etc
 	int			completed_time;	// latched at intermission start

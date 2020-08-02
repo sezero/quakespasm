@@ -724,7 +724,7 @@ void CL_ParseClientdata (void)
 	}
 
 	cl.onground = (bits & SU_ONGROUND) != 0;
-	cl.onelevator = (bits & SU_ONELEVATOR) != 0;
+	cl.nostepsmooth = (bits & SU_NOSTEPSMOOTH) != 0;
 	cl.inwater = (bits & SU_INWATER) != 0;
 
 	if (bits & SU_WEAPONFRAME)

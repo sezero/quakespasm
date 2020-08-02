@@ -842,8 +842,8 @@ void V_CalcRefdef (void)
 //johnfitz
 
 // smooth out stair step ups
-// Ivory-- no smoothing going up an elevator to avoid stuttering
-	if (!noclip_anglehack && cl.onground && !cl.onelevator && ent->origin[2] > oldz) //johnfitz -- added exception for noclip
+// Ivory-- no smoothing going up elevators and slopes to avoid stuttering
+	if (!noclip_anglehack && cl.onground && !cl.nostepsmooth && ent->origin[2] > oldz) //johnfitz -- added exception for noclip
 	//FIXME: noclip_anglehack is set on the server, so in a nonlocal game this won't work.
 	{
 		float steptime, heightdif;

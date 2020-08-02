@@ -227,7 +227,6 @@ int ClipVelocity (vec3_t in, vec3_t normal, vec3_t out, float overbounce)
 	return blocked;
 }
 
-
 /*
 ============
 SV_FlyMove
@@ -307,7 +306,12 @@ int SV_FlyMove (edict_t *ent, float time, trace_t *steptrace)
 			blocked |= 2;		// step
 			if (steptrace)
 				*steptrace = trace;	// save for player extrafriction
+			ent->v.flags = (int)ent->v.flags & ~FL_NOSTEPSMOOTH;
 		}
+		else if (trace.plane.normal[2] < 1.f)
+			ent->v.flags = (int)ent->v.flags | FL_NOSTEPSMOOTH;
+		else
+			ent->v.flags = (int)ent->v.flags & ~FL_NOSTEPSMOOTH;
 
 //
 // run the impact function
@@ -517,14 +521,8 @@ void SV_PushMove (edict_t *pusher, float movetime)
 	// remove the onground flag for non-players
 		if (check->v.movetype != MOVETYPE_WALK)
 			check->v.flags = (int)check->v.flags & ~FL_ONGROUND;
-		else if(elevator)
-		{
-		//the pusher will stop the next think 
-			if(pusher->v.nextthink - pusher->v.ltime <= 0)
-				check->v.flags = (int)check->v.flags & ~FL_ONELEVATOR;
-			else
-				check->v.flags = (int)check->v.flags | FL_ONELEVATOR; //set onelevator flag
-		}
+		else if (elevator)
+			check->v.flags = (int)check->v.flags | FL_NOSTEPSMOOTH; //no step smoothing going up an elevator
 
 		VectorCopy (check->v.origin, entorig);
 		VectorCopy (check->v.origin, moved_from[num_moved]);
