@@ -833,8 +833,6 @@ void V_CalcRefdef (void)
 	view->frame = cl.stats[STAT_WEAPONFRAME];
 	view->colormap = vid.colormap;
 
-	Con_Printf("%d\n", view->colormap);
-
 //johnfitz -- v_gunkick
 	if (v_gunkick.value == 1) //original quake kick
 		VectorAdd (r_refdef.viewangles, cl.punchangle, r_refdef.viewangles);
