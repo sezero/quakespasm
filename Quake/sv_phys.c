@@ -227,7 +227,6 @@ int ClipVelocity (vec3_t in, vec3_t normal, vec3_t out, float overbounce)
 	return blocked;
 }
 
-
 /*
 ============
 SV_FlyMove
@@ -307,7 +306,12 @@ int SV_FlyMove (edict_t *ent, float time, trace_t *steptrace)
 			blocked |= 2;		// step
 			if (steptrace)
 				*steptrace = trace;	// save for player extrafriction
+			ent->v.flags = (int)ent->v.flags & ~FL_NOSTEPSMOOTH;
 		}
+		else if (trace.plane.normal[2] < 1.f)
+			ent->v.flags = (int)ent->v.flags | FL_NOSTEPSMOOTH;
+		else
+			ent->v.flags = (int)ent->v.flags & ~FL_NOSTEPSMOOTH;
 
 //
 // run the impact function
@@ -453,6 +457,7 @@ void SV_PushMove (edict_t *pusher, float movetime)
 	edict_t		**moved_edict; //johnfitz -- dynamically allocate
 	vec3_t		*moved_from; //johnfitz -- dynamically allocate
 	int			mark; //johnfitz
+	qboolean	elevator; //Ivory
 
 	if (!pusher->v.velocity[0] && !pusher->v.velocity[1] && !pusher->v.velocity[2])
 	{
@@ -469,7 +474,10 @@ void SV_PushMove (edict_t *pusher, float movetime)
 
 	VectorCopy (pusher->v.origin, pushorig);
 
-// move the pusher to it's final position
+//Mark this platform is an elevator if going up
+	elevator = move[2] > 0;
+
+// move the pusher to its final position
 
 	VectorAdd (pusher->v.origin, move, pusher->v.origin);
 	pusher->v.ltime += movetime;
@@ -513,6 +521,8 @@ void SV_PushMove (edict_t *pusher, float movetime)
 	// remove the onground flag for non-players
 		if (check->v.movetype != MOVETYPE_WALK)
 			check->v.flags = (int)check->v.flags & ~FL_ONGROUND;
+		else if (elevator)
+			check->v.flags = (int)check->v.flags | FL_NOSTEPSMOOTH; //no step smoothing going up an elevator
 
 		VectorCopy (check->v.origin, entorig);
 		VectorCopy (check->v.origin, moved_from[num_moved]);
@@ -590,12 +600,12 @@ void SV_Physics_Pusher (edict_t *ent)
 			movetime = 0;
 	}
 	else
+	{
 		movetime = host_frametime;
+	}
 
 	if (movetime)
-	{
-		SV_PushMove (ent, movetime);	// advances ent->v.ltime if not blocked
-	}
+		SV_PushMove(ent, movetime);	// advances ent->v.ltime if not blocked
 
 	if (thinktime > oldltime && thinktime <= ent->v.ltime)
 	{

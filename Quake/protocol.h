@@ -100,7 +100,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define SU_EXTEND2		(1<<23) // another byte to follow
 #define SU_WEAPONFRAME2	(1<<24) // 1 byte, this is .weaponframe & 0xFF00 (second byte)
 #define SU_WEAPONALPHA	(1<<25) // 1 byte, this is alpha for weaponmodel, uses ENTALPHA_ENCODE, not sent if ENTALPHA_DEFAULT
-#define SU_UNUSED26		(1<<26)
+#define SU_NOSTEPSMOOTH	(1<<26) // Ivory-- to fix stuttery view smoothing going up elevators and slopes
 #define SU_UNUSED27		(1<<27)
 #define SU_UNUSED28		(1<<28)
 #define SU_UNUSED29		(1<<29)

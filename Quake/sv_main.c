@@ -827,11 +827,14 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 
 	bits |= SU_ITEMS;
 
-	if ( (int)ent->v.flags & FL_ONGROUND)
+	if ((int)ent->v.flags & FL_ONGROUND)
 		bits |= SU_ONGROUND;
 
 	if ( ent->v.waterlevel >= 2)
 		bits |= SU_INWATER;
+
+	if ((int)ent->v.flags & FL_NOSTEPSMOOTH)
+		bits |= SU_NOSTEPSMOOTH;
 
 	for (i=0 ; i<3 ; i++)
 	{
