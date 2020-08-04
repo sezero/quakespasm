@@ -546,7 +546,7 @@ void R_SetupAliasLighting (entity_t	*e)
 	int			i;
 	int		quantizedangle;
 	float		radiansangle;
-
+	
 	R_LightPoint (e->origin);
 
 	//add dlights
@@ -594,13 +594,12 @@ void R_SetupAliasLighting (entity_t	*e)
 	}
 
 	//hack up the brightness when fullbrights but no overbrights (256)
-	if (gl_fullbrights.value && !gl_overbright_models.value)
-		if (e->model->flags & MOD_FBRIGHTHACK)
-		{
-			lightcolor[0] = 256.0f;
-			lightcolor[1] = 256.0f;
-			lightcolor[2] = 256.0f;
-		}
+	if (gl_fullbrights.value && !gl_overbright_models.value && (e->model->flags & MOD_FBRIGHTHACK))
+	{
+		lightcolor[0] = 256.0f;
+		lightcolor[1] = 256.0f;
+		lightcolor[2] = 256.0f;
+	}
 
 	quantizedangle = ((int)(e->angles[1] * (SHADEDOT_QUANT / 360.0))) & (SHADEDOT_QUANT - 1);
 
@@ -914,7 +913,7 @@ void GL_DrawAliasShadow (entity_t *e)
 								0,				1,				0,				0,
 								SHADOW_SKEW_X,	SHADOW_SKEW_Y,	SHADOW_VSCALE,	0,
 								0,				0,				SHADOW_HEIGHT,	1};
-	float		lheight, tempheight;
+	float		lheight = 0.f, tempheight;
 	int			blocked = 0;
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
@@ -964,6 +963,7 @@ void GL_DrawAliasShadow (entity_t *e)
 		return;
 
 // do the previous check anyway to see if it yields better results
+// better have a shadow cast somewhere it cannot be seen than midair
 	R_LightPoint(e->origin);
 	tempheight = currententity->origin[2] - lightspot[2];
 	if (tempheight > lheight)

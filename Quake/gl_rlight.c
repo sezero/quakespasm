@@ -375,9 +375,14 @@ loc0:
 R_LightPoint -- johnfitz -- replaced entire function for lit support via lordhavoc
 =============
 */
-int R_LightPoint (vec3_t p)
+#define LIGHT_CHECK_MAX_DISTANCE 8192.f
+#define MIN_LIGHT_SCALING_DISTANCE 360.f
+
+int R_LightPoint(vec3_t p)
 {
-	vec3_t		end;
+	vec3_t		end, endcolor;
+	int			i;
+	float		distance, scale = LIGHT_CHECK_MAX_DISTANCE;
 
 	if (!cl.worldmodel->lightdata)
 	{
@@ -385,13 +390,45 @@ int R_LightPoint (vec3_t p)
 		return 255;
 	}
 
-	end[0] = p[0];
-	end[1] = p[1];
-	end[2] = p[2] - 8192; //johnfitz -- was 2048
+	lightcolor[0] = lightcolor[1] = lightcolor[2] = endcolor[0] = endcolor[1] = endcolor[2] = 0;
 
-	lightcolor[0] = lightcolor[1] = lightcolor[2] = 0;
-	RecursiveLightPoint (lightcolor, cl.worldmodel->nodes, p, end);
-	return ((lightcolor[0] + lightcolor[1] + lightcolor[2]) * (1.0f / 3.0f));
+// Ivory-- asses entity luminosity based on the whole environment (not just the brush right below)
+//		   Check the closest surface and extract light color from that
+	for (i = -3; i <= 3; i++)
+	{
+		if (!i)
+			continue;
+
+	// this is equivalent to {0,0,-1} {0,-1,0} {-1,0,0} {0,0,1} {0,1,0} {1,0,0}
+		end[0] = fabs(1.f / i) == 1.f ? (int)(1 / i) : 0;
+		end[1] = fabs(2.f / i) == 1.f ? (int)(2 / i) : 0;
+		end[2] = fabs(3.f / i) == 1.f ? (int)(3 / i) : 0;
+		VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
+		VectorAdd(end, p, end);
+
+		RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
+
+		VectorSubtract(p, lightspot, end);
+		distance = VectorLength(end);
+		if (distance < scale)
+		{
+			VectorCopy(lightcolor, endcolor);
+			scale = distance;
+			if (scale < 200.f) break; //good enough
+		}
+	}
+
+// recover the saved lightcolor vector
+	VectorCopy(endcolor, lightcolor);
+// scale down lightning according to distance, divided by 0.8f to smooth out the transition
+	if (scale > MIN_LIGHT_SCALING_DISTANCE)
+	{
+		scale = (MIN_LIGHT_SCALING_DISTANCE / scale) * (1.f / 0.8f);
+		if (scale > 1.f) scale = 1.f;
+		VectorScale(lightcolor, (MIN_LIGHT_SCALING_DISTANCE / scale) * (1.f / 0.8f), lightcolor);
+	}
+// output results
+	return (lightcolor[0] + lightcolor[1] + lightcolor[2]) * (1.0f / 3.0f);
 }
 
 /*
