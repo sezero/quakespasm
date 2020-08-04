@@ -1336,29 +1336,41 @@ void M_Options_Key (int k)
 const char *bindnames[][2] =
 {
 	{"+attack",		"attack"},
-	{"impulse 10",		"next weapon"},
-	{"impulse 12",		"prev weapon"},
+	{"impulse 10",	"next weapon"},
+	{"impulse 12",	"prev weapon"},
 	{"+jump",		"jump / swim up"},
-	{"+forward",		"walk forward"},
+	{"+forward",	"walk forward"},
 	{"+back",		"backpedal"},
 	{"+left",		"turn left"},
 	{"+right",		"turn right"},
 	{"+speed",		"run"},
-	{"+moveleft",		"step left"},
-	{"+moveright",		"step right"},
+	{"+moveleft",	"step left"},
+	{"+moveright",	"step right"},
 	{"+strafe",		"sidestep"},
 	{"+lookup",		"look up"},
-	{"+lookdown",		"look down"},
-	{"centerview",		"center view"},
+	{"+lookdown",	"look down"},
+	{"centerview",	"center view"},
 	{"+mlook",		"mouse look"},
 	{"+klook",		"keyboard look"},
 	{"+moveup",		"swim up"},
-	{"+movedown",		"swim down"}
+	{"+movedown",	"swim down"},		//18
+	
+	//Ivory-- added weapon binds
+	{"impulse 1",	"Slot 1"},
+	{"impulse 2",	"Slot 2"},
+	{"impulse 3",	"Slot 3"},
+	{"impulse 4",	"Slot 4"},
+	{"impulse 5",	"Slot 5"},
+	{"impulse 6",	"Slot 6"},
+	{"impulse 7",	"Slot 7"},
+	{"impulse 8",	"Slot 8"}
 };
 
 #define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
+#define MAXONSCREENBINDS 18
 
 static int	keys_cursor;
+static int top_bind; //Ivory-- shifts the top drawn bind to scroll down the bind options
 static qboolean	bind_grab;
 
 void M_Menu_Keys_f (void)
@@ -1432,9 +1444,9 @@ void M_Keys_Draw (void)
 		M_Print (18, 32, "Enter to change, backspace to clear");
 
 // search for known bindings
-	for (i = 0; i < (int)NUMCOMMANDS; i++)
+	for (i = top_bind; i < top_bind + MAXONSCREENBINDS + 1; i++)
 	{
-		y = 48 + 8*i;
+		y = 48 + 8 * (i - top_bind);
 
 		M_Print (16, y, bindnames[i][1]);
 
@@ -1474,14 +1486,16 @@ void M_Keys_Draw (void)
 void M_Keys_Key (int k)
 {
 	char	cmd[80];
-	int		keys[3];
+	int		keys[3], shiftedkeycursor;
+
+	shiftedkeycursor = keys_cursor + top_bind;
 
 	if (bind_grab)
 	{	// defining a key
 		S_LocalSound ("misc/menu1.wav");
 		if ((k != K_ESCAPE) && (k != '`'))
 		{
-			sprintf (cmd, "bind \"%s\" \"%s\"\n", Key_KeynumToString (k), bindnames[keys_cursor][0]);
+			sprintf (cmd, "bind \"%s\" \"%s\"\n", Key_KeynumToString (k), bindnames[shiftedkeycursor][0]);
 			Cbuf_InsertText (cmd);
 		}
 
@@ -1500,26 +1514,35 @@ void M_Keys_Key (int k)
 	case K_LEFTARROW:
 	case K_UPARROW:
 		S_LocalSound ("misc/menu1.wav");
-		keys_cursor--;
+		if (keys_cursor - 1 < 0 && top_bind != 0)
+			top_bind--;
+		else
+			keys_cursor--;
 		if (keys_cursor < 0)
-			keys_cursor = NUMCOMMANDS-1;
+		{
+			keys_cursor = MAXONSCREENBINDS;
+			top_bind = (int)NUMCOMMANDS - MAXONSCREENBINDS - 1;
+		}
 		break;
 
 	case K_DOWNARROW:
 	case K_RIGHTARROW:
 		S_LocalSound ("misc/menu1.wav");
-		keys_cursor++;
-		if (keys_cursor >= (int)NUMCOMMANDS)
-			keys_cursor = 0;
+		if (keys_cursor + 1 <= MAXONSCREENBINDS)
+			keys_cursor++;
+		else
+			top_bind++;
+		if (top_bind > (int)NUMCOMMANDS - MAXONSCREENBINDS - 1)
+			keys_cursor = top_bind = 0;
 		break;
 
 	case K_ENTER:		// go into bind mode
 	case K_KP_ENTER:
 	case K_ABUTTON:
-		M_FindKeysForCommand (bindnames[keys_cursor][0], keys);
 		S_LocalSound ("misc/menu2.wav");
+		M_FindKeysForCommand(bindnames[shiftedkeycursor][0], keys);
 		if (keys[2] != -1)
-			M_UnbindCommand (bindnames[keys_cursor][0]);
+			M_UnbindCommand (bindnames[shiftedkeycursor][0]);
 		bind_grab = true;
 		IN_Activate(); // activate to allow mouse key binding
 		break;
@@ -1527,7 +1550,7 @@ void M_Keys_Key (int k)
 	case K_BACKSPACE:	// delete bindings
 	case K_DEL:
 		S_LocalSound ("misc/menu2.wav");
-		M_UnbindCommand (bindnames[keys_cursor][0]);
+		M_UnbindCommand (bindnames[shiftedkeycursor][0]);
 		break;
 	}
 }
