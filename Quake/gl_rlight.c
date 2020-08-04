@@ -393,3 +393,22 @@ int R_LightPoint (vec3_t p)
 	RecursiveLightPoint (lightcolor, cl.worldmodel->nodes, p, end);
 	return ((lightcolor[0] + lightcolor[1] + lightcolor[2]) * (1.0f / 3.0f));
 }
+
+/*
+=============
+R_LightPointCastShadows -- Ivory -- alternate R_LightPoint to better figure out where entity shadows should be cast
+=============
+*/
+
+int R_LightPointCastShadow (vec3_t p, vec3_t q)
+{
+	if (!cl.worldmodel->lightdata)
+	{
+		lightcolor[0] = lightcolor[1] = lightcolor[2] = 255;
+		return 255;
+	}
+
+	lightcolor[0] = lightcolor[1] = lightcolor[2] = 0;
+	RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, q);
+	return (lightcolor[0] + lightcolor[1] + lightcolor[2]) * (1.0f / 3.0f);
+}

@@ -914,9 +914,11 @@ void GL_DrawAliasShadow (entity_t *e)
 								0,				1,				0,				0,
 								SHADOW_SKEW_X,	SHADOW_SKEW_Y,	SHADOW_VSCALE,	0,
 								0,				0,				SHADOW_HEIGHT,	1};
-	float		lheight;
+	float		lheight, tempheight;
+	int			blocked = 0;
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
+	vec3_t		skewvec, projection;
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -930,8 +932,43 @@ void GL_DrawAliasShadow (entity_t *e)
 	paliashdr = (aliashdr_t *)Mod_Extradata (e->model);
 	R_SetupAliasFrame (paliashdr, e->frame, &lerpdata);
 	R_SetupEntityTransform (e, &lerpdata);
-	R_LightPoint (e->origin);
-	lheight = currententity->origin[2] - lightspot[2];
+
+//Ivory-- do the first shadow height calculations in the direction the shadow itself is projected.
+//		  Foz z value of course assume the hypothetic light doing the shadow cast is above the player origin
+//		  skewvec[2] = -1 seems to give the best results for our normalized projection vector.
+
+	skewvec[0] = SHADOW_SKEW_X;
+	skewvec[1] = SHADOW_SKEW_Y;
+	skewvec[2] = -1.f;
+	VectorNormalize(skewvec);
+	VectorScale(skewvec, 8192.f, skewvec); //8192.f is the value used in R_LightPoint
+	
+	for (int i = 0; i < 2; i++)
+	{
+		VectorCopy(e->origin, projection);
+		projection[2] += e->model->maxs[2] * i;
+		VectorAdd(projection, skewvec, projection);
+
+		R_LightPointCastShadow(e->origin, projection);
+		tempheight = currententity->origin[2] - lightspot[2];
+
+		if (tempheight <= 4.f)
+			blocked++;
+		if (tempheight > lheight)
+			lheight = tempheight;
+	}
+
+// If this is true twice it means shadow would be drawn into a wall
+// Only once it means there is just a step nearby
+	if (blocked == 2)
+		return;
+
+// do the previous check anyway to see if it yields better results
+	R_LightPoint(e->origin);
+	tempheight = currententity->origin[2] - lightspot[2];
+	if (tempheight > lheight)
+		lheight = tempheight;
+//Ivory
 
 // set up matrix
 	glPushMatrix ();
@@ -951,7 +988,7 @@ void GL_DrawAliasShadow (entity_t *e)
 	GL_DisableMultitexture ();
 	glDisable (GL_TEXTURE_2D);
 	shading = false;
-	glColor4f(0,0,0,entalpha * 0.5);
+	glColor4f(0,0,0,0.5);
 	GL_DrawAliasFrame (paliashdr, lerpdata);
 	glEnable (GL_TEXTURE_2D);
 	glDisable (GL_BLEND);

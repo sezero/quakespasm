@@ -373,6 +373,7 @@ void GLMesh_DeleteVertexBuffers (void);
 void R_RebuildAllLightmaps (void);
 
 int R_LightPoint (vec3_t p);
+int R_LightPointCastShadow(vec3_t p, vec3_t q);
 
 void GL_SubdivideSurface (msurface_t *fa);
 void R_BuildLightMap (msurface_t *surf, byte *dest, int stride);
