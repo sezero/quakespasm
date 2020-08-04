@@ -42,6 +42,7 @@ cvar_t	cl_rollangle = {"cl_rollangle", "2.0", CVAR_NONE};
 cvar_t	cl_bob = {"cl_bob","0.02", CVAR_NONE};
 cvar_t	cl_bobcycle = {"cl_bobcycle","0.6", CVAR_NONE};
 cvar_t	cl_bobup = {"cl_bobup","0.5", CVAR_NONE};
+cvar_t	cl_weaponbob = {"cl_weaponbob","0.02", CVAR_NONE};
 
 cvar_t	v_kicktime = {"v_kicktime", "0.5", CVAR_NONE};
 cvar_t	v_kickroll = {"v_kickroll", "0.6", CVAR_NONE};
@@ -125,14 +126,9 @@ float V_CalcBob (void)
 
 // bob is proportional to velocity in the xy plane
 // (don't count Z, or jumping messes it up)
-
-	bob = sqrt(cl.velocity[0]*cl.velocity[0] + cl.velocity[1]*cl.velocity[1]) * cl_bob.value;
+	bob = sqrt(cl.velocity[0]*cl.velocity[0] + cl.velocity[1]*cl.velocity[1]);
 //Con_Printf ("speed: %5.1f\n", VectorLength(cl.velocity));
 	bob = bob*0.3 + bob*0.7*sin(cycle);
-	if (bob > 4)
-		bob = 4;
-	else if (bob < -7)
-		bob = -7;
 	return bob;
 }
 
@@ -742,7 +738,7 @@ void V_CalcRefdef (void)
 	int			i;
 	vec3_t		forward, right, up;
 	vec3_t		angles;
-	float		bob;
+	float		bob, weaponbob;
 	static float oldz = 0;
 	static vec3_t punch = {0,0,0}; //johnfitz -- v_gunkick
 	float delta; //johnfitz -- v_gunkick
@@ -760,7 +756,17 @@ void V_CalcRefdef (void)
 	ent->angles[YAW] = cl.viewangles[YAW];	// the model should face the view dir
 	ent->angles[PITCH] = -cl.viewangles[PITCH];	// the model should face the view dir
 
-	bob = V_CalcBob ();
+// Ivory-- separate view and weapon bobbing for extra customization
+//		   ex. we can have weapon bobbing while view bob is 0
+	weaponbob = bob = V_CalcBob ();
+
+// adjust view bob according to the convar
+	bob *= cl_bob.value;
+	if (bob > 4)
+		bob = 4;
+	else if (bob < -7)
+		bob = -7;
+// Ivory
 
 // refresh position
 	VectorCopy (ent->origin, r_refdef.vieworg);
@@ -795,12 +801,19 @@ void V_CalcRefdef (void)
 
 	CalcGunAngle ();
 
-	VectorCopy (ent->origin, view->origin);
-	view->origin[2] += cl.viewheight;
+// Ivory-- adjust weaponbob value
+	VectorCopy (r_refdef.vieworg, view->origin);
 
-	for (i=0 ; i<3 ; i++)
-		view->origin[i] += forward[i]*bob*0.4;
-	view->origin[2] += bob;
+	weaponbob *= cl_weaponbob.value;
+	if (weaponbob > 4)
+		weaponbob = 4;
+	else if (weaponbob < -7)
+		weaponbob = -7;
+
+	for(i = 0; i < 2; i++)
+		view->origin[i] += forward[i] * weaponbob * 0.4;
+	view->origin[2] += forward[2] * bob * 0.4;
+// Ivory
 
 	//johnfitz -- removed all gun position fudging code (was used to keep gun from getting covered by sbar)
 	//MarkV -- restored this with r_viewmodel_quake cvar
@@ -819,6 +832,8 @@ void V_CalcRefdef (void)
 	view->model = cl.model_precache[cl.stats[STAT_WEAPON]];
 	view->frame = cl.stats[STAT_WEAPONFRAME];
 	view->colormap = vid.colormap;
+
+	Con_Printf("%d\n", view->colormap);
 
 //johnfitz -- v_gunkick
 	if (v_gunkick.value == 1) //original quake kick
@@ -939,6 +954,7 @@ void V_Init (void)
 	Cvar_RegisterVariable (&cl_bob);
 	Cvar_RegisterVariable (&cl_bobcycle);
 	Cvar_RegisterVariable (&cl_bobup);
+	Cvar_RegisterVariable (&cl_weaponbob);
 
 	Cvar_RegisterVariable (&v_kicktime);
 	Cvar_RegisterVariable (&v_kickroll);
