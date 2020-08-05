@@ -383,9 +383,9 @@ R_LightPoint -- johnfitz -- replaced entire function for lit support via lordhav
 
 int R_LightPoint(vec3_t p)
 {
-	vec3_t		endcolor, end, lightsource[3] = { LIGHT_CHECK_MAX_DISTANCE }, tempsource = { LIGHT_CHECK_MAX_DISTANCE };
+	vec3_t		endcolor, end, lightsource[2] = { LIGHT_CHECK_MAX_DISTANCE };
 	int			i, j;
-	float		lightdistance[2] = { LIGHT_CHECK_MAX_DISTANCE }, tempdistance = LIGHT_CHECK_MAX_DISTANCE;
+	float		lightdistance[2] = { LIGHT_CHECK_MAX_DISTANCE }, distance = LIGHT_CHECK_MAX_DISTANCE;
 
 	if (!cl.worldmodel->lightdata)
 	{
@@ -422,18 +422,19 @@ int R_LightPoint(vec3_t p)
 
 			// get point of impact and the player to surface vector
 			// to check traveled distance
-				TraceLine(p, end, tempsource);
-				VectorSubtract(tempsource, p, tempsource);
-				tempdistance = VectorLength(tempsource);
+				lightcolor[0] = lightcolor[1] = lightcolor[2] = 0.f;
+				RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
+				VectorSubtract(lightspot, p, end);
+				distance = VectorLength(end);
 
 			// if distance is lower than previous make it first "light source"
 			// and shift the hypothetical previous one
-				if (tempdistance < lightdistance[0])
+				if (distance < lightdistance[0])
 				{
 					VectorCopy(lightsource[0], lightsource[1]);
-					VectorCopy(end, lightsource[0]);
+					VectorCopy(lightcolor, lightsource[0]);
 					lightdistance[1] = lightdistance[0];
-					lightdistance[0] = tempdistance;
+					lightdistance[0] = distance;
 				}
 			}
 		}
@@ -445,14 +446,13 @@ int R_LightPoint(vec3_t p)
 		
 		for (i = 0; i < j; i++)
 		{
-			lightcolor[0] = lightcolor[1] = lightcolor[2] = 0.f;
-			RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, lightsource[i]);
+		// scale the light intensity depending on distance
 			if (lightdistance[i] > MIN_LIGHT_SCALING_DISTANCE / 0.8f)
 			{
 				lightdistance[i] = (MIN_LIGHT_SCALING_DISTANCE / lightdistance[i]) * (1.f / 0.8f);
-				VectorScale(lightcolor, lightdistance[i], lightcolor);
+				VectorScale(lightsource[i], lightdistance[i], lightsource[i]);
 			}
-			VectorAdd(endcolor, lightcolor, endcolor);
+			VectorAdd(endcolor, lightsource[i], endcolor);
 		}
 	//for two light sources get the average illumination
 		if (j == 2)
