@@ -381,7 +381,7 @@ R_LightPoint -- johnfitz -- replaced entire function for lit support via lordhav
 int R_LightPoint(vec3_t p)
 {
 	vec3_t		end, endcolor;
-	int			i;
+	int			i, j;
 	float		distance, scale = LIGHT_CHECK_MAX_DISTANCE;
 
 	if (!cl.worldmodel->lightdata)
@@ -392,29 +392,33 @@ int R_LightPoint(vec3_t p)
 
 	lightcolor[0] = lightcolor[1] = lightcolor[2] = endcolor[0] = endcolor[1] = endcolor[2] = 0;
 
+// Ivory-- first check how close is player to the ground, in case it is very close just use the vanilla check
+
 // Ivory-- asses entity luminosity based on the whole environment (not just the brush right below)
-//		   Check the closest surface and extract light color from that
-	for (i = -3; i <= 3; i++)
+//		   Check the closest surface and extract light color from that.
+//		   First 2 checks are below and above player, from testing it looks better this way.
+	for (i = 1; i < 4; i++)
 	{
-		if (!i)
-			continue;
-
-	// this is equivalent to {0,0,-1} {0,-1,0} {-1,0,0} {0,0,1} {0,1,0} {1,0,0}
-		end[0] = fabs(1.f / i) == 1.f ? (int)(1 / i) : 0;
-		end[1] = fabs(2.f / i) == 1.f ? (int)(2 / i) : 0;
-		end[2] = fabs(3.f / i) == 1.f ? (int)(3 / i) : 0;
-		VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
-		VectorAdd(end, p, end);
-
-		RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
-
-		VectorSubtract(p, lightspot, end);
-		distance = VectorLength(end);
-		if (distance < scale)
+		for (j = -1; j < 2; )
 		{
-			VectorCopy(lightcolor, endcolor);
-			scale = distance;
-			if (scale < 200.f) break; //good enough
+			end[0] = (3.f / i == 1.f ? (int)(3 / i) : 0) * j;
+			end[1] = (2.f / i == 1.f ? (int)(2 / i) : 0) * j;
+			end[2] = (1.f / i == 1.f ? (int)(1 / i) : 0) * j;
+			VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
+			VectorAdd(end, p, end);
+
+			RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
+
+			VectorSubtract(p, lightspot, end);
+			distance = VectorLength(end);
+			if (distance < scale)
+			{
+				VectorCopy(lightcolor, endcolor);
+				scale = distance;
+				if (scale < 80.f) break; //good enough
+			}
+			
+			j = 1;
 		}
 	}
 
