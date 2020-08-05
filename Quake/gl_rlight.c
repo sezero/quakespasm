@@ -26,6 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 int	r_dlightframecount;
 
 extern cvar_t r_flatlightstyles; //johnfitz
+extern cvar_t r_vanillaentitylight; //Ivory
 
 /*
 ==================
@@ -373,16 +374,18 @@ loc0:
 /*
 =============
 R_LightPoint -- johnfitz -- replaced entire function for lit support via lordhavoc
+				Ivory -- added an alternative entity light rendering (vanilla behavior with r_vanillaentitylight 1)
 =============
 */
-#define LIGHT_CHECK_MAX_DISTANCE 8192.f
-#define MIN_LIGHT_SCALING_DISTANCE 360.f
+#define LIGHT_CHECK_MAX_DISTANCE	 8192.f
+#define MIN_LIGHT_SCALING_DISTANCE	 360.f
+#define MAX_LIGHTS_RELATIVE_DISTANCE 510.f	// sqrt(2.f * MIN_LIGHT_SCALING_DISTANCE * MIN_LIGHT_SCALING_DISTANCE)
 
 int R_LightPoint(vec3_t p)
 {
-	vec3_t		end, endcolor;
+	vec3_t		endcolor, end, lightsource[3] = { LIGHT_CHECK_MAX_DISTANCE }, tempsource = { LIGHT_CHECK_MAX_DISTANCE };
 	int			i, j;
-	float		distance, scale = LIGHT_CHECK_MAX_DISTANCE;
+	float		lightdistance[2] = { LIGHT_CHECK_MAX_DISTANCE }, tempdistance = LIGHT_CHECK_MAX_DISTANCE;
 
 	if (!cl.worldmodel->lightdata)
 	{
@@ -390,47 +393,74 @@ int R_LightPoint(vec3_t p)
 		return 255;
 	}
 
-	lightcolor[0] = lightcolor[1] = lightcolor[2] = endcolor[0] = endcolor[1] = endcolor[2] = 0;
-
-// Ivory-- first check how close is player to the ground, in case it is very close just use the vanilla check
-
-// Ivory-- asses entity luminosity based on the whole environment (not just the brush right below)
-//		   Check the closest surface and extract light color from that.
-//		   First 2 checks are below and above player, from testing it looks better this way.
-	for (i = 1; i < 4; i++)
+	if (r_vanillaentitylight.value)
 	{
-		for (j = -1; j < 2; )
+		lightcolor[0] = lightcolor[1] = lightcolor[2] = 0.f;
+		end[0] = p[0];
+		end[1] = p[1];
+		end[2] = p[2] - LIGHT_CHECK_MAX_DISTANCE;
+		RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
+	}
+	else
+	{
+	// Ivory-- assess entity luminosity based on the whole environment (not just the brush right below).
+	//		   Get the two closest surfaces. Only use the closest one if it is significantly closer to
+	//		   to player than the other. Finally do RecursiveLightPoint() on the assigned vector(s).
+
+	// first pass, check for the closet surface(s), end vector values are {0,0,-1} {0,0,1} {0,1,0} {0,-1,0} {1,0,0} {-1,0,0} 
+		for (i = 1; i < 4; i++)
 		{
-			end[0] = (3.f / i == 1.f ? (int)(3 / i) : 0) * j;
-			end[1] = (2.f / i == 1.f ? (int)(2 / i) : 0) * j;
-			end[2] = (1.f / i == 1.f ? (int)(1 / i) : 0) * j;
-			VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
-			VectorAdd(end, p, end);
-
-			RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
-
-			VectorSubtract(p, lightspot, end);
-			distance = VectorLength(end);
-			if (distance < scale)
+			for (j = -1; j < 2; j++)
 			{
-				VectorCopy(lightcolor, endcolor);
-				scale = distance;
-				if (scale < 80.f) break; //good enough
+				if (!j) continue;
+
+				end[0] = (3.f / i == 1.f ? (int)(3 / i) : 0) * j;
+				end[1] = (2.f / i == 1.f ? (int)(2 / i) : 0) * j;
+				end[2] = (1.f / i == 1.f ? (int)(1 / i) : 0) * j;
+				VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
+				VectorAdd(end, p, end);
+
+			// get point of impact and the player to surface vector
+			// to check traveled distance
+				TraceLine(p, end, tempsource);
+				VectorSubtract(tempsource, p, tempsource);
+				tempdistance = VectorLength(tempsource);
+
+			// if distance is lower than previous make it first "light source"
+			// and shift the hypothetical previous one
+				if (tempdistance < lightdistance[0])
+				{
+					VectorCopy(lightsource[0], lightsource[1]);
+					VectorCopy(end, lightsource[0]);
+					lightdistance[1] = lightdistance[0];
+					lightdistance[0] = tempdistance;
+				}
 			}
-			
-			j = 1;
 		}
+
+	// now see if lightsource[0] and lightsource[1] are within reasonable
+	// distance from each other, if not just use the closest one
+		j = fabs(lightdistance[0] - lightdistance[1]) <= MAX_LIGHTS_RELATIVE_DISTANCE ? 2 : 1;
+		endcolor[0] = endcolor[1] = endcolor[2] = 0.f;
+		
+		for (i = 0; i < j; i++)
+		{
+			lightcolor[0] = lightcolor[1] = lightcolor[2] = 0.f;
+			RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, lightsource[i]);
+			if (lightdistance[i] > MIN_LIGHT_SCALING_DISTANCE / 0.8f)
+			{
+				lightdistance[i] = (MIN_LIGHT_SCALING_DISTANCE / lightdistance[i]) * (1.f / 0.8f);
+				VectorScale(lightcolor, lightdistance[i], lightcolor);
+			}
+			VectorAdd(endcolor, lightcolor, endcolor);
+		}
+	//for two light sources get the average illumination
+		if (j == 2)
+			VectorScale(endcolor, 0.5f, endcolor);
+
+		VectorCopy(endcolor, lightcolor);
 	}
 
-// recover the saved lightcolor vector
-	VectorCopy(endcolor, lightcolor);
-// scale down lightning according to distance, divided by 0.8f to smooth out the transition
-	if (scale > MIN_LIGHT_SCALING_DISTANCE)
-	{
-		scale = (MIN_LIGHT_SCALING_DISTANCE / scale) * (1.f / 0.8f);
-		if (scale > 1.f) scale = 1.f;
-		VectorScale(lightcolor, (MIN_LIGHT_SCALING_DISTANCE / scale) * (1.f / 0.8f), lightcolor);
-	}
 // output results
 	return (lightcolor[0] + lightcolor[1] + lightcolor[2]) * (1.0f / 3.0f);
 }

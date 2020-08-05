@@ -108,6 +108,8 @@ cvar_t	r_lavaalpha = {"r_lavaalpha","0",CVAR_NONE};
 cvar_t	r_telealpha = {"r_telealpha","0",CVAR_NONE};
 cvar_t	r_slimealpha = {"r_slimealpha","0",CVAR_NONE};
 
+cvar_t  r_vanillaentitylight = { "r_vanillaentitylight", "0", CVAR_NONE }; //Ivory
+
 float	map_wateralpha, map_lavaalpha, map_telealpha, map_slimealpha;
 
 qboolean r_drawflat_cheatsafe, r_fullbright_cheatsafe, r_lightmap_cheatsafe, r_drawworld_cheatsafe; //johnfitz
