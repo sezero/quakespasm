@@ -45,7 +45,8 @@ float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
 #include "anorm_dots.h"
 };
 
-extern	vec3_t			lightspot;
+extern	vec3_t		lightspot;
+extern	mplane_t	*lightplane; //Ivory -- get info about the surface on which the shadow is casted to orient it along the surface
 
 float	*shadedots = r_avertexnormal_dots[0];
 vec3_t	shadevector;
@@ -907,17 +908,18 @@ GL_DrawAliasShadow -- johnfitz -- rewritten
 TODO: orient shadow onto "lightplane" (a global mplane_t*)
 =============
 */
+
 void GL_DrawAliasShadow (entity_t *e)
 {
 	float	shadowmatrix[16] = {1,				0,				0,				0,
 								0,				1,				0,				0,
 								SHADOW_SKEW_X,	SHADOW_SKEW_Y,	SHADOW_VSCALE,	0,
 								0,				0,				SHADOW_HEIGHT,	1};
-	float		lheight = 0.f, tempheight;
-	int			blocked = 0;
+	float		lheight = 0.f, tempheight, dot;
+	int			i, wall = 0;
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
-	vec3_t		skewvec, projection;
+	vec3_t		skewvec, projection, normal = {0.f, 0.f, 0.f };
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -934,40 +936,87 @@ void GL_DrawAliasShadow (entity_t *e)
 
 //Ivory-- do the first shadow height calculations in the direction the shadow itself is projected.
 //		  Foz z value of course assume the hypothetic light doing the shadow cast is above the player origin
-//		  skewvec[2] = -1 seems to give the best results for our normalized projection vector.
-
+//		  skewvec[2] = -0.8f seems to give good enough results for our projection vector.
 	skewvec[0] = SHADOW_SKEW_X;
 	skewvec[1] = SHADOW_SKEW_Y;
-	skewvec[2] = -1.f;
+	skewvec[2] = -0.8f;
 	VectorNormalize(skewvec);
 	VectorScale(skewvec, 8192.f, skewvec); //8192.f is the value used in R_LightPoint
 	
-	for (int i = 0; i < 2; i++)
+	for (i = 0; i < 1; i++)
 	{
 		VectorCopy(e->origin, projection);
 		projection[2] += e->model->maxs[2] * i;
 		VectorAdd(projection, skewvec, projection);
 
-		R_LightPointCastShadow(e->origin, projection);
+		R_LightPointCastShadow (e->origin, projection);
 		tempheight = currententity->origin[2] - lightspot[2];
-
-		if (tempheight <= 4.f)
-			blocked++;
+		
+	// it's a wall if distance from origin is lower than radius and z of normal is 0
+		if (!lightplane->normal[2] && tempheight <= -e->model->mins[0])
+			wall++;
 		if (tempheight > lheight)
+		{
+			VectorCopy(lightplane->normal, normal);
 			lheight = tempheight;
+		}
 	}
 
-// If this is true twice it means shadow would be drawn into a wall
-// Only once it means there is just a step nearby
-	if (blocked == 2)
-		return;
+// Orient shadow on the surface it is being cast on
 
-// do the previous check anyway to see if it yields better results
-// better have a shadow cast somewhere it cannot be seen than midair
-	R_LightPoint(e->origin);
-	tempheight = currententity->origin[2] - lightspot[2];
-	if (tempheight > lheight)
-		lheight = tempheight;
+	if (wall == 2)
+	{
+// Cast onto a wall
+		skewvec[2] = 0.f;
+		VectorNormalize(skewvec);
+
+	// orient the angle of the shadow along the wall
+		shadowmatrix[4] = lightplane->normal[1];
+		shadowmatrix[5] = lightplane->normal[0];
+		shadowmatrix[6] = 0.f;
+
+	// vector straight up
+		shadowmatrix[8] = 0.f;
+		shadowmatrix[9] = 0.f;
+		shadowmatrix[10] = 1.f;
+
+	// origin of the shadow should be to the side of the entity
+	// in the direction shadow is being cast
+		VectorSubtract(lightspot, e->origin, lightspot);
+		shadowmatrix[12] = lightspot[0];
+		shadowmatrix[13] = lightspot[1];
+		shadowmatrix[14] = 0.f;
+	}
+	else
+	{
+	// Sometimes when using the skewed casting it happens that we create the same
+	// midair shadows we were trying to fix, so test the original shadow casting
+	// but use result only if it returns a vastly higher value than previous calculations.
+	// Better have a shadow cast somewhere we cannot see it than one in midair.
+		projection[0] = e->origin[0];
+		projection[1] = e->origin[1];
+		projection[2] = e->origin[2] - 8192.f;
+		R_LightPointCastShadow(e->origin, projection);
+		tempheight = currententity->origin[2] - lightspot[2];
+		if (tempheight > lheight + 64.f)
+		{
+			VectorCopy(lightplane->normal, normal);
+			lheight = tempheight;
+		}
+
+// Cast onto a sloped surface
+		if (normal[2] && normal[2] != 1.f)
+		{
+			skewvec[2] = 0.f;
+			VectorNormalize(skewvec);
+			dot = DotProduct(skewvec, lightplane->normal);
+			VectorScale(skewvec, 1.f - abs(dot), skewvec);
+
+			shadowmatrix[8] = skewvec[0];
+			shadowmatrix[9] = skewvec[1];
+			shadowmatrix[10] = - dot;
+		}
+	}
 //Ivory
 
 // set up matrix
@@ -976,9 +1025,9 @@ void GL_DrawAliasShadow (entity_t *e)
 	glTranslatef (0,0,-lheight);
 	glMultMatrixf (shadowmatrix);
 	glTranslatef (0,0,lheight);
-	glRotatef (lerpdata.angles[1],  0, 0, 1);
-	glRotatef (-lerpdata.angles[0],  0, 1, 0);
-	glRotatef (lerpdata.angles[2],  1, 0, 0);
+	glRotatef (lerpdata.angles[1], 0, 0, 1);
+	glRotatef (-lerpdata.angles[0], 0, 1, 0);
+	glRotatef (lerpdata.angles[2], 1, 0, 0);
 	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
 	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);
 
@@ -988,7 +1037,7 @@ void GL_DrawAliasShadow (entity_t *e)
 	GL_DisableMultitexture ();
 	glDisable (GL_TEXTURE_2D);
 	shading = false;
-	glColor4f(0,0,0,0.5);
+	glColor4f(0,0,0, entalpha * 0.5f);
 	GL_DrawAliasFrame (paliashdr, lerpdata);
 	glEnable (GL_TEXTURE_2D);
 	glDisable (GL_BLEND);
