@@ -377,15 +377,17 @@ R_LightPoint -- johnfitz -- replaced entire function for lit support via lordhav
 				Ivory -- added an alternative entity light rendering (vanilla behavior with r_vanillaentitylight 1)
 =============
 */
-#define LIGHT_CHECK_MAX_DISTANCE	 8192.f
 #define MIN_LIGHT_SCALING_DISTANCE	 360.f
 #define MAX_LIGHTS_RELATIVE_DISTANCE 510.f	// sqrt(2.f * MIN_LIGHT_SCALING_DISTANCE * MIN_LIGHT_SCALING_DISTANCE)
 
+typedef struct { vec3_t color; float distance; } lightsource_t;
+
 int R_LightPoint(vec3_t p)
 {
-	vec3_t		endcolor, end, lightsource[2] = { LIGHT_CHECK_MAX_DISTANCE };
-	int			i, j;
-	float		lightdistance[2] = { LIGHT_CHECK_MAX_DISTANCE }, distance = LIGHT_CHECK_MAX_DISTANCE;
+	vec3_t			end;
+	int				i, j;
+	float			distance;
+	lightsource_t	light[2];
 
 	if (!cl.worldmodel->lightdata)
 	{
@@ -398,7 +400,7 @@ int R_LightPoint(vec3_t p)
 		lightcolor[0] = lightcolor[1] = lightcolor[2] = 0.f;
 		end[0] = p[0];
 		end[1] = p[1];
-		end[2] = p[2] - LIGHT_CHECK_MAX_DISTANCE;
+		end[2] = p[2] - LIGHTPOINT_CAST_LENGTH;
 		RecursiveLightPoint(lightcolor, cl.worldmodel->nodes, p, end);
 	}
 	else
@@ -407,15 +409,22 @@ int R_LightPoint(vec3_t p)
 	//		   Get the two closest surfaces. Only use the closest one if it is significantly closer to
 	//		   to player than the other. Finally do RecursiveLightPoint() on the assigned vector(s).
 
+		for (i = 0; i < 2; i++)
+		{
+			for (j = 0; j < 3; j++)
+				light[i].color[j] = LIGHTPOINT_CAST_LENGTH;
+			light[i].distance = LIGHTPOINT_CAST_LENGTH;
+		}
+
 	// first pass, check for the closet surface(s), end vector values are {0,0,-1} {0,0,1} {0,1,0} {0,-1,0} {1,0,0} {-1,0,0} 
 		for (i = 1; i < 4; i++)
 		{
 			for (j = -1; j < 2; j += 2)
 			{
-				end[0] = (i == 3 ? 1.f : 0.f) * j;
-				end[1] = (i == 2 ? 1.f : 0.f) * j;
-				end[2] = (i == 1 ? 1.f : 0.f) * j;
-				VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
+				end[0] = (i == 3) * j;
+				end[1] = (i == 2) * j;
+				end[2] = (i == 1) * j;
+				VectorScale(end, LIGHTPOINT_CAST_LENGTH, end);
 				VectorAdd(end, p, end);
 
 			// get point of impact and the player to surface vector
@@ -426,37 +435,41 @@ int R_LightPoint(vec3_t p)
 				distance = VectorLength(end);
 
 			// if distance is lower than previous make it first "light source"
-			// and shift the hypothetical previous one
-				if (distance < lightdistance[0])
+			// and shift the hypothetical previous one, otherwise try the second spot
+				if (distance < light[0].distance)
 				{
-					VectorCopy(lightsource[0], lightsource[1]);
-					VectorCopy(lightcolor, lightsource[0]);
-					lightdistance[1] = lightdistance[0];
-					lightdistance[0] = distance;
+					VectorCopy(light[0].color, light[1].color);
+					VectorCopy(lightcolor, light[0].color);
+					light[1].distance = light[0].distance;
+					light[0].distance = distance;
+				}
+				else if (distance < light[1].distance)
+				{
+					VectorCopy(lightcolor, light[1].color);
+					light[1].distance = distance;
 				}
 			}
 		}
 
 	// now see if lightsource[0] and lightsource[1] are within reasonable
 	// distance from each other, if not just use the closest one
-		j = fabs(lightdistance[0] - lightdistance[1]) <= MAX_LIGHTS_RELATIVE_DISTANCE ? 2 : 1;
-		endcolor[0] = endcolor[1] = endcolor[2] = 0.f;
+		j = fabs(light[0].distance - light[1].distance) <= MAX_LIGHTS_RELATIVE_DISTANCE ? 2 : 1;
 		
 		for (i = 0; i < j; i++)
 		{
 		// scale the light intensity depending on distance
-			if (lightdistance[i] > MIN_LIGHT_SCALING_DISTANCE / 0.8f)
+			if (light[i].distance > MIN_LIGHT_SCALING_DISTANCE / 0.8f)
 			{
-				lightdistance[i] = (MIN_LIGHT_SCALING_DISTANCE / lightdistance[i]) * (1.f / 0.8f);
-				VectorScale(lightsource[i], lightdistance[i], lightsource[i]);
+				light[i].distance = (MIN_LIGHT_SCALING_DISTANCE / light[i].distance) * (1.f / 0.8f);
+				VectorScale(light[i].color, light[i].distance, light[i].color);
 			}
-			VectorAdd(endcolor, lightsource[i], endcolor);
+			if(i) VectorAdd(light[i].color, light[0].color, light[0].color);
 		}
 	//for two light sources get the average illumination
-		if (j == 2)
-			VectorScale(endcolor, 0.5f, endcolor);
+		if (j > 1)
+			VectorScale(light[0].color, 0.5f, light[0].color);
 
-		VectorCopy(endcolor, lightcolor);
+		VectorCopy(light[0].color, lightcolor);
 	}
 
 // output results

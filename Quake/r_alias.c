@@ -895,17 +895,16 @@ cleanup:
 }
 
 //johnfitz -- values for shadow matrix
-#define SHADOW_SKEW_X -0.7 //skew along x axis. -0.7 to mimic glquake shadows
-#define SHADOW_SKEW_Y 0 //skew along y axis. 0 to mimic glquake shadows
-#define SHADOW_VSCALE 0 //0=completely flat
-#define SHADOW_HEIGHT 0.1 //how far above the floor to render the shadow
+#define SHADOW_SKEW_X -0.7	//skew along x axis. -0.7 to mimic glquake shadows
+#define SHADOW_SKEW_Y 0		//skew along y axis. 0 to mimic glquake shadows
+#define SHADOW_VSCALE 0		//0=completely flat
+#define SHADOW_HEIGHT 0.1	//how far above the floor to render the shadow
 //johnfitz
 
 /*
 =============
 GL_DrawAliasShadow -- johnfitz -- rewritten
-
-TODO: orient shadow onto "lightplane" (a global mplane_t*)
+					  Ivory -- oriented shadows on lightplane
 =============
 */
 
@@ -915,11 +914,11 @@ void GL_DrawAliasShadow (entity_t *e)
 								0,				1,				0,				0,
 								SHADOW_SKEW_X,	SHADOW_SKEW_Y,	SHADOW_VSCALE,	0,
 								0,				0,				SHADOW_HEIGHT,	1};
-	float		lheight = 0.f, tempheight, dot;
+	float		lheight = -LIGHTPOINT_CAST_LENGTH, tempheight, dot;
 	int			i, wall = 0;
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
-	vec3_t		skewvec, projection, normal = {0.f, 0.f, 0.f };
+	vec3_t		skewvec, projection, normal = { 0.f, 0.f, 0.f };
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -936,44 +935,44 @@ void GL_DrawAliasShadow (entity_t *e)
 
 //Ivory-- do the first shadow height calculations in the direction the shadow itself is projected.
 //		  Foz z value of course assume the hypothetic light doing the shadow cast is above the player origin
-//		  skewvec[2] = -0.8f seems to give good enough results for our projection vector.
+//		  skewvec[2] = -1.f seems to give good enough results for our projection vector.
 	skewvec[0] = SHADOW_SKEW_X;
 	skewvec[1] = SHADOW_SKEW_Y;
-	skewvec[2] = -0.8f;
+	skewvec[2] = -1.f;
 	VectorNormalize(skewvec);
-	VectorScale(skewvec, 8192.f, skewvec); //8192.f is the value used in R_LightPoint
+	VectorScale(skewvec, LIGHTPOINT_CAST_LENGTH, skewvec);
 	
-	for (i = 0; i < 1; i++)
+	for (i = 1; i < 3; i++)
 	{
 		VectorCopy(e->origin, projection);
 		projection[2] += e->model->maxs[2] * i;
 		VectorAdd(projection, skewvec, projection);
-
 		R_LightPointCastShadow (e->origin, projection);
 		tempheight = currententity->origin[2] - lightspot[2];
-		
-	// it's a wall if distance from origin is lower than radius and z of normal is 0
-		if (!lightplane->normal[2] && tempheight <= -e->model->mins[0])
+
+	// it's a wall if distance from origin is equal to or lower than radius
+	// and z component of the normal is 0
+		lightspot[2] = e->origin[2];
+		VectorSubtract(lightspot, e->origin, projection);
+		if (!lightplane->normal[2] && VectorLength(projection) <= 16.f) // arbitrary value: player radius
 			wall++;
+
 		if (tempheight > lheight)
 		{
 			VectorCopy(lightplane->normal, normal);
 			lheight = tempheight;
 		}
 	}
-
+	
 // Orient shadow on the surface it is being cast on
 
 	if (wall == 2)
 	{
 // Cast onto a wall
-		skewvec[2] = 0.f;
-		VectorNormalize(skewvec);
 
 	// orient the angle of the shadow along the wall
-		shadowmatrix[4] = lightplane->normal[1];
-		shadowmatrix[5] = lightplane->normal[0];
-		shadowmatrix[6] = 0.f;
+		shadowmatrix[4] = normal[1];
+		shadowmatrix[5] = normal[0];
 
 	// vector straight up
 		shadowmatrix[8] = 0.f;
@@ -982,10 +981,8 @@ void GL_DrawAliasShadow (entity_t *e)
 
 	// origin of the shadow should be to the side of the entity
 	// in the direction shadow is being cast
-		VectorSubtract(lightspot, e->origin, lightspot);
-		shadowmatrix[12] = lightspot[0];
-		shadowmatrix[13] = lightspot[1];
-		shadowmatrix[14] = 0.f;
+		shadowmatrix[12] = projection[0];
+		shadowmatrix[13] = projection[1];
 	}
 	else
 	{
@@ -995,8 +992,8 @@ void GL_DrawAliasShadow (entity_t *e)
 	// Better have a shadow cast somewhere we cannot see it than one in midair.
 		projection[0] = e->origin[0];
 		projection[1] = e->origin[1];
-		projection[2] = e->origin[2] - 8192.f;
-		R_LightPointCastShadow(e->origin, projection);
+		projection[2] = e->origin[2] - LIGHTPOINT_CAST_LENGTH;
+		R_LightPointCastShadow (e->origin, projection);
 		tempheight = currententity->origin[2] - lightspot[2];
 		if (tempheight > lheight + 64.f)
 		{
@@ -1009,7 +1006,7 @@ void GL_DrawAliasShadow (entity_t *e)
 		{
 			skewvec[2] = 0.f;
 			VectorNormalize(skewvec);
-			dot = DotProduct(skewvec, lightplane->normal);
+			dot = DotProduct(skewvec, normal);
 			VectorScale(skewvec, 1.f - abs(dot), skewvec);
 
 			shadowmatrix[8] = skewvec[0];

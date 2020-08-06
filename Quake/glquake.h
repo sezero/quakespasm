@@ -372,6 +372,7 @@ void GLMesh_LoadVertexBuffers (void);
 void GLMesh_DeleteVertexBuffers (void);
 void R_RebuildAllLightmaps (void);
 
+#define LIGHTPOINT_CAST_LENGTH 8192.f
 int R_LightPoint (vec3_t p);
 int R_LightPointCastShadow(vec3_t p, vec3_t q);
 
