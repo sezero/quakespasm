@@ -410,13 +410,11 @@ int R_LightPoint(vec3_t p)
 	// first pass, check for the closet surface(s), end vector values are {0,0,-1} {0,0,1} {0,1,0} {0,-1,0} {1,0,0} {-1,0,0} 
 		for (i = 1; i < 4; i++)
 		{
-			for (j = -1; j < 2; j++)
+			for (j = -1; j < 2; j += 2)
 			{
-				if (!j) continue;
-
-				end[0] = (3.f / i == 1.f ? (int)(3 / i) : 0) * j;
-				end[1] = (2.f / i == 1.f ? (int)(2 / i) : 0) * j;
-				end[2] = (1.f / i == 1.f ? (int)(1 / i) : 0) * j;
+				end[0] = (i == 3 ? 1.f : 0.f) * j;
+				end[1] = (i == 2 ? 1.f : 0.f) * j;
+				end[2] = (i == 1 ? 1.f : 0.f) * j;
 				VectorScale(end, LIGHT_CHECK_MAX_DISTANCE, end);
 				VectorAdd(end, p, end);
 
