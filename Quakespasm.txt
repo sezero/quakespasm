@@ -25,11 +25,11 @@
      6.4 Changes in 0.92.1
      6.5 Changes in 0.92.0
      6.6 Changes in 0.91.0
-        6.5.1 Bugfixes
-        6.5.2 Visual improvements
-        6.5.3 Interface improvements
-        6.5.4 Code cleanup / Other
-        6.5.5 Raised limits
+        6.6.1 Bugfixes
+        6.6.2 Visual improvements
+        6.6.3 Interface improvements
+        6.6.4 Code cleanup / Other
+        6.6.5 Raised limits
      6.7 Changes in 0.90.1
         6.7.1 Bugfixes
         6.7.2 Performance
@@ -55,7 +55,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: July 2020
+  Page last edited: September 2020
 
 
   1.  About
@@ -68,16 +68,20 @@
   sound driver, some graphical niceities, and numerous bug-fixes and
   other improvements.
 
-  Quakespasm utilizes either the SDL or SDL2 frameworks, so choose
-  which one works best for you.  SDL is probably less buggy, but SDL2
-  has nicer features and smoother mouse input - though no CD support.
+  Quakespasm utilizes either the SDL or SDL2 frameworks, so choose which
+  one works best for you.  SDL is probably less buggy, but SDL2 has
+  nicer features and smoother mouse input - though no CD support.
 
 
   2.  Downloads
 
   o  Project Downloads: http://quakespasm.sourceforge.net/download.htm
 
-  o  Automatic Builds: http://quakespasm.ericwa.com/job/quakespasm-sdl2/
+  o  Latest code repository:
+     https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/
+
+  o  Automatic Builds (dead link):
+     http://quakespasm.ericwa.com/job/quakespasm-sdl2/
 
 
   3.  Hints
@@ -219,24 +223,23 @@
 
   4.  Compiling and Installation
 
+  See the Downloads section to get the sourcecode, then below for
+  platform specific instructions.  Quakespasm can also be built with the
+  cross-platform Codeblocks.
   Quakespasm's (optional) custom data is now stored in the file
   quakespasm.pak. This file should be placed alongside your quakespasm
   binary and id1 directory.
 
-  To checkout the latest version of QuakeSpasm, do:
-  git clone git://git.code.sf.net/p/quakespasm/quakespasm.git
-
   4.1.  Linux/Unix
 
-  After extracting the source tarball, browse the Makefile and edit the
-  music streaming options, then
+  After extracting the source tarball, "cd Quake" and edit the Makefile
+  for music options.
 
-  ______________________________________________________________________
-  make
-  cp quakespasm /usr/local/games/quake (for example)
-  ______________________________________________________________________
+  Streaming music playback requires "libmad" or "libmpg123" for MP3, and
+  "libogg" and "libvorbis" for OGG files.
 
-
+  Then type "make" to compile the program, and copy the "quakespasm"
+  binary (and "quakespasm.pak") to your Quake game directory.
   Compile time options include
 
   o  make DO_USERDIRS=1 to include user directories support
@@ -246,12 +249,6 @@
   o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
 
   o  make USE_SDL2=1 to compile against SDL2 instead of SDL-1.2
-
-  Streaming music playback requires "libmad" or "libmpg123" for MP3, and
-  "libogg" and "libvorbis" for OGG files.
-
-  The project can also be built with Codeblocks (project files
-  included).
 
   4.2.  Windows
 

@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: July 2020</em>
+<em>Page last edited: September 2020</em>
 
 <sect> About <p>
 
@@ -21,7 +21,8 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Project Downloads">
-<item><url url="http://quakespasm.ericwa.com/job/quakespasm-sdl2/" name="Automatic Builds">
+<item><url url="https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/" name="Latest code repository">
+<item><url url="http://quakespasm.ericwa.com/job/quakespasm-sdl2/" name="Automatic Builds (dead link)">
 </itemize>
 
 
@@ -107,16 +108,15 @@ quakespasm.pak contains a default.cfg which has been updated to give some defaul
 The controller support started as Jeremiah Sypult's implementation in Quakespasm-Rift and also uses ideas and code from LordHavoc (DarkPlaces).
 
 <sect> Compiling and Installation<p>
-<p>Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
-<p><em>To checkout the latest version of QuakeSpasm, do:</em>
-<bf>git clone git://git.code.sf.net/p/quakespasm/quakespasm.git</bf></p>
+<p>See the Downloads section to get the sourcecode, then below for platform specific instructions.
+Quakespasm can also be built with the cross-platform Codeblocks.
+<newline>
+Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
 
 <sect1> Linux/Unix <p>
-After extracting the source tarball, browse the Makefile and edit the music streaming options, then
-<code>
-make
-cp quakespasm /usr/local/games/quake (for example)
-</code>
+After extracting the source tarball, "cd Quake" and edit the Makefile for music options. 
+</p><p><em>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</em>
+</p><p>Then type "make" to compile the program, and copy the "quakespasm" binary (and "quakespasm.pak") to your Quake game directory.
 <newline>
 Compile time options include
 <itemize>
@@ -125,8 +125,6 @@ Compile time options include
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/SDL-CONFIG</em> for unusual SDL installations
 <item><bf>make USE_SDL2=1</bf> to compile against SDL2 instead of SDL-1.2
 </itemize>
-<p>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.
-<p>The project can also be built with Codeblocks (project files included).</p>
 
 <sect1> Windows <p>
 The QuakeSpasm developers cross-compile windows binaries using <url url="http://www.mingw.org" name="MinGW"> and <url url="http://mingw-w64.sf.net" name="Mingw-w64">.
