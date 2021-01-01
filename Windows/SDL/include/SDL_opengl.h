@@ -27,7 +27,9 @@
 #include "SDL_config.h"
 
 #ifdef __WIN32__
+#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
+#endif
 #ifndef NOMINMAX
 #define NOMINMAX	/* Don't defined min() and max() */
 #endif
@@ -35,6 +37,7 @@
 #endif
 #ifndef NO_SDL_GLEXT
 #define __glext_h_  /* Don't let gl.h include glext.h */
+#define __gl_glext_h_  /* Don't let gl.h include glext.h */
 #endif
 #if defined(__MACOSX__)
 #include <OpenGL/gl.h>	/* Header File For The OpenGL Library */
@@ -48,6 +51,7 @@
 #endif
 #ifndef NO_SDL_GLEXT
 #undef __glext_h_
+#undef __gl_glext_h_
 #endif
 
 /** @name GLext.h
@@ -57,8 +61,9 @@
  */
 /*@{*/
 #ifndef NO_SDL_GLEXT
-#if !defined(__glext_h_) && !defined(GL_GLEXT_LEGACY)
+#if !(defined(__glext_h_) || defined(__gl_glext_h_)) && !defined(GL_GLEXT_LEGACY)
 #define __glext_h_
+#define __gl_glext_h_
 
 #ifdef __cplusplus
 extern "C" {
@@ -6227,12 +6232,12 @@ typedef void (APIENTRYP PFNGLFINISHOBJECTAPPLEPROC) (GLenum object, GLint name);
 #ifdef GL_GLEXT_PROTOTYPES
 GLAPI void APIENTRY glBindVertexArrayAPPLE (GLuint);
 GLAPI void APIENTRY glDeleteVertexArraysAPPLE (GLsizei, const GLuint *);
-GLAPI void APIENTRY glGenVertexArraysAPPLE (GLsizei, const GLuint *);
+GLAPI void APIENTRY glGenVertexArraysAPPLE (GLsizei, GLuint *);
 GLAPI GLboolean APIENTRY glIsVertexArrayAPPLE (GLuint);
 #endif /* GL_GLEXT_PROTOTYPES */
 typedef void (APIENTRYP PFNGLBINDVERTEXARRAYAPPLEPROC) (GLuint array);
 typedef void (APIENTRYP PFNGLDELETEVERTEXARRAYSAPPLEPROC) (GLsizei n, const GLuint *arrays);
-typedef void (APIENTRYP PFNGLGENVERTEXARRAYSAPPLEPROC) (GLsizei n, const GLuint *arrays);
+typedef void (APIENTRYP PFNGLGENVERTEXARRAYSAPPLEPROC) (GLsizei n, GLuint *arrays);
 typedef GLboolean (APIENTRYP PFNGLISVERTEXARRAYAPPLEPROC) (GLuint array);
 #endif
 
@@ -6565,6 +6570,6 @@ typedef void (APIENTRYP PFNGLSTRINGMARKERGREMEDYPROC) (GLsizei len, const GLvoid
 }
 #endif
 
-#endif
+#endif /* GL_GLEXT_LEGACY */
 #endif /* NO_SDL_GLEXT */
 /*@}*/
