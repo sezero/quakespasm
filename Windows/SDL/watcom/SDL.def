@@ -82,8 +82,6 @@ SDL_GetVideoSurface
 SDL_GetWMInfo
 SDL_Has3DNow
 SDL_Has3DNowExt
-SDL_HasARMNEON
-SDL_HasARMSIMD
 SDL_HasAltiVec
 SDL_HasMMX
 SDL_HasMMXExt

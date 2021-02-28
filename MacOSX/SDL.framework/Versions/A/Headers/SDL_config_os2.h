@@ -70,8 +70,8 @@
 #define HAVE__STRREV 1
 #define HAVE__STRUPR 1
 #define HAVE__STRLWR 1
-#define HAVE_INDEX 1
-#define HAVE_RINDEX 1
+/* #undef HAVE_INDEX */
+/* #undef HAVE_RINDEX */
 #define HAVE_STRCHR 1
 #define HAVE_STRRCHR 1
 #define HAVE_STRSTR 1
@@ -119,10 +119,11 @@
 
 /* Enable various video drivers */
 #define SDL_VIDEO_DRIVER_DUMMY	1
-#define SDL_VIDEO_DRIVER_OS2FS	1
+#define SDL_VIDEO_DRIVER_OS2GROP	1
+/* #undef SDL_VIDEO_DRIVER_OS2FS */
 
 /* Enable OpenGL support */
-/* #undef SDL_VIDEO_OPENGL */				/* Nothing yet */
+/* #undef SDL_VIDEO_OPENGL */
 
 /* Enable assembly routines where available */
 #define SDL_ASSEMBLY_ROUTINES	1

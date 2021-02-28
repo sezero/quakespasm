@@ -136,9 +136,9 @@ static __inline__ Uint32 SDL_Swap32(Uint32 x)
 {
 	Uint32 result;
 
-	__asm__("rlwimi %0,%2,24,16,23" : "=&r" (result) : "0" (x>>24), "r" (x));
-	__asm__("rlwimi %0,%2,8,8,15"   : "=&r" (result) : "0" (result),    "r" (x));
-	__asm__("rlwimi %0,%2,24,0,7"   : "=&r" (result) : "0" (result),    "r" (x));
+	__asm__("rlwimi %0,%2,24,16,23" : "=&r" (result) : "0" (x>>24),  "r" (x));
+	__asm__("rlwimi %0,%2,8,8,15"   : "=&r" (result) : "0" (result), "r" (x));
+	__asm__("rlwimi %0,%2,24,0,7"   : "=&r" (result) : "0" (result), "r" (x));
 	return result;
 }
 #elif defined(__GNUC__) && defined(__aarch64__)
@@ -155,19 +155,10 @@ static __inline__ Uint32 SDL_Swap32(Uint32 x)
 }
 #elif defined(__WATCOMC__) && defined(__386__)
 extern _inline Uint32 SDL_Swap32(Uint32);
-#ifndef __SW_3 /* 486+ */
 #pragma aux SDL_Swap32 = \
 	"bswap eax"  \
 	parm   [eax] \
 	modify [eax];
-#else  /* 386-only */
-#pragma aux SDL_Swap32 = \
-	"xchg al, ah"  \
-	"ror  eax, 16" \
-	"xchg al, ah"  \
-	parm   [eax]   \
-	modify [eax];
-#endif
 #else
 static __inline__ Uint32 SDL_Swap32(Uint32 x) {
 	return SDL_static_cast(Uint32, ((x<<24)|((x<<8)&0x00FF0000)|((x>>8)&0x0000FF00)|(x>>24)));
@@ -179,14 +170,14 @@ static __inline__ Uint32 SDL_Swap32(Uint32 x) {
    !(__GNUC__ == 2 && __GNUC_MINOR__ <= 95 /* broken gcc version */)
 static __inline__ Uint64 SDL_Swap64(Uint64 x)
 {
-	union { 
+	union {
 		struct { Uint32 a,b; } s;
 		Uint64 u;
 	} v;
 	v.u = x;
-	__asm__("bswapl %0 ; bswapl %1 ; xchgl %0,%1" 
-	        : "=r" (v.s.a), "=r" (v.s.b) 
-	        : "0" (v.s.a), "1" (v.s.b));
+	__asm__("bswapl %0 ; bswapl %1 ; xchgl %0,%1"
+	        : "=r" (v.s.a), "=r" (v.s.b)
+	        : "0"  (v.s.a),  "1" (v.s.b));
 	return v.u;
 }
 #elif defined(__GNUC__) && defined(__x86_64__)
@@ -195,6 +186,14 @@ static __inline__ Uint64 SDL_Swap64(Uint64 x)
 	__asm__("bswapq %0" : "=r" (x) : "0" (x));
 	return x;
 }
+#elif defined(__WATCOMC__) && defined(__386__)
+extern _inline Uint64 SDL_Swap64(Uint64);
+#pragma aux SDL_Swap64 = \
+	"bswap eax"     \
+	"bswap edx"     \
+	"xchg eax,edx"  \
+	parm [eax edx]  \
+	modify [eax edx];
 #else
 static __inline__ Uint64 SDL_Swap64(Uint64 x)
 {

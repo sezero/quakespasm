@@ -79,8 +79,6 @@
 ++'_SDL_GetWMInfo'.'SDL.DLL'..'SDL_GetWMInfo'
 ++'_SDL_Has3DNow'.'SDL.DLL'..'SDL_Has3DNow'
 ++'_SDL_Has3DNowExt'.'SDL.DLL'..'SDL_Has3DNowExt'
-++'_SDL_HasARMNEON'.'SDL.DLL'..'SDL_HasARMNEON'
-++'_SDL_HasARMSIMD'.'SDL.DLL'..'SDL_HasARMSIMD'
 ++'_SDL_HasAltiVec'.'SDL.DLL'..'SDL_HasAltiVec'
 ++'_SDL_HasMMX'.'SDL.DLL'..'SDL_HasMMX'
 ++'_SDL_HasMMXExt'.'SDL.DLL'..'SDL_HasMMXExt'
