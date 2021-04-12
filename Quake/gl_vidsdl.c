@@ -1517,7 +1517,7 @@ static void VID_InitModelist (void)
 	int		bpps[] = {16, 24, 32}; // enumerate >8 bpp modes
 
 	originalnummodes = nummodes = 0;
-	format.palette = NULL;
+	memset(&format, 0, sizeof(format));
 
 	// enumerate fullscreen modes
 	flags = DEFAULT_SDL_FLAGS | SDL_FULLSCREEN;
