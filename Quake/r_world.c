@@ -52,10 +52,10 @@ void R_ClearTextureChains (qmodel_t *mod, texchain_t chain)
 	for (i=0 ; i<mod->numtextures ; i++)
 		if (mod->textures[i])
 			mod->textures[i]->texturechains[chain] = NULL;
-			
+
 	// clear lightmap chains
 	for (i=0 ; i<lightmap_count ; i++)
-		lightmap[i].polys = NULL;
+		lightmaps[i].polys = NULL;
 }
 
 /*
@@ -85,7 +85,7 @@ void R_MarkSurfaces (void)
 
 	// clear lightmap chains
 	for (i=0 ; i<lightmap_count ; i++)
-		lightmap[i].polys = NULL;
+		lightmaps[i].polys = NULL;
 
 	// check this leaf for water portals
 	// TODO: loop through all water surfs and use distance to leaf cullbox
@@ -139,7 +139,6 @@ void R_MarkSurfaces (void)
 			cl.worldmodel->textures[i]->texturechains[chain_world] = NULL;
 
 	// rebuild chains
-
 #if 1
 	//iterate through surfaces one node at a time to rebuild chains
 	//need to do it this way if we want to work with tyrann's skip removal tool
@@ -249,7 +248,7 @@ void R_BuildLightmapChains (qmodel_t *model, texchain_t chain)
 
 	// clear lightmap chains (already done in r_marksurfaces, but clearing them here to be safe becuase of r_stereo)
 	for (i=0 ; i<lightmap_count ; i++)
-		lightmap[i].polys = NULL;
+		lightmaps[i].polys = NULL;
 
 	// now rebuild them
 	for (i=0 ; i<model->numtextures ; i++)
@@ -497,10 +496,10 @@ static void R_BatchSurface (msurface_t *s)
 	int num_surf_indices;
 
 	num_surf_indices = R_NumTriangleIndicesForSurf (s);
-	
+
 	if (num_vbo_indices + num_surf_indices > MAX_BATCH_SIZE)
 		R_FlushBatch();
-	
+
 	R_TriangleIndicesForSurf (s, &vbo_indices[num_vbo_indices]);
 	num_vbo_indices += num_surf_indices;
 }
@@ -539,7 +538,7 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 					GL_EnableMultitexture(); // selects TEXTURE1
 					bound = true;
 				}
-				GL_Bind (lightmap[s->lightmaptexturenum].texture);
+				GL_Bind (lightmaps[s->lightmaptexturenum].texture);
 				glBegin(GL_POLYGON);
 				v = s->polys->verts[0];
 				for (j=0 ; j<s->polys->numverts ; j++, v+= VERTEXSIZE)
@@ -777,11 +776,11 @@ void R_DrawLightmapChains (void)
 
 	for (i=0 ; i<lightmap_count ; i++)
 	{
-		if (!lightmap[i].polys)
+		if (!lightmaps[i].polys)
 			continue;
 
-		GL_Bind (lightmap[i].texture);
-		for (p = lightmap[i].polys; p; p=p->chain)
+		GL_Bind (lightmaps[i].texture);
+		for (p = lightmaps[i].polys; p; p=p->chain)
 		{
 			glBegin (GL_POLYGON);
 			v = p->verts[0];
@@ -878,10 +877,10 @@ void GLWorld_CreateShaders (void)
 		"	result.a = Alpha;\n" // FIXME: This will make almost transparent things cut holes though heavy fog
 		"	gl_FragColor = result;\n"
 		"}\n";
-	
+
 	if (!gl_glsl_alias_able)
 		return;
-	
+
 	r_world_program = GL_CreateProgram (vertSource, fragSource, sizeof(bindings)/sizeof(bindings[0]), bindings);
 	
 	if (r_world_program != 0)
@@ -916,7 +915,7 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	int		lastlightmap;
 	gltexture_t	*fullbright = NULL;
 	float		entalpha;
-	
+
 	entalpha = (ent != NULL) ? ENTALPHA_DECODE(ent->alpha) : 1.0f;
 
 // enable blending / disable depth writes
@@ -925,9 +924,9 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 		glDepthMask (GL_FALSE);
 		glEnable (GL_BLEND);
 	}
-	
+
 	GL_UseProgramFunc (r_world_program);
-	
+
 // Bind the buffers
 	GL_BindBuffer (GL_ARRAY_BUFFER, gl_bmodel_vbo);
 	GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0); // indices come from client memory!
@@ -935,11 +934,11 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	GL_EnableVertexAttribArrayFunc (vertAttrIndex);
 	GL_EnableVertexAttribArrayFunc (texCoordsAttrIndex);
 	GL_EnableVertexAttribArrayFunc (LMCoordsAttrIndex);
-	
+
 	GL_VertexAttribPointerFunc (vertAttrIndex,      3, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0));
 	GL_VertexAttribPointerFunc (texCoordsAttrIndex, 2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
 	GL_VertexAttribPointerFunc (LMCoordsAttrIndex,  2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
-	
+
 // set uniforms
 	GL_Uniform1iFunc (texLoc, 0);
 	GL_Uniform1iFunc (LMTexLoc, 1);
@@ -948,7 +947,7 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
 	GL_Uniform1iFunc (useAlphaTestLoc, 0);
 	GL_Uniform1fFunc (alphaLoc, entalpha);
-	
+
 	for (i=0 ; i<model->numtextures ; i++)
 	{
 		t = model->textures[i];
@@ -990,7 +989,7 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 					R_FlushBatch ();
 
 				GL_SelectTexture (GL_TEXTURE1);
-				GL_Bind (lightmap[s->lightmaptexturenum].texture);
+				GL_Bind (lightmaps[s->lightmaptexturenum].texture);
 				lastlightmap = s->lightmaptexturenum;
 				R_BatchSurface (s);
 
@@ -1002,15 +1001,15 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 		if (bound && t->texturechains[chain]->flags & SURF_DRAWFENCE)
 			GL_Uniform1iFunc (useAlphaTestLoc, 0); // Flip alpha test back off
 	}
-	
+
 	// clean up
 	GL_DisableVertexAttribArrayFunc (vertAttrIndex);
 	GL_DisableVertexAttribArrayFunc (texCoordsAttrIndex);
 	GL_DisableVertexAttribArrayFunc (LMCoordsAttrIndex);
-	
+
 	GL_UseProgramFunc (0);
 	GL_SelectTexture (GL_TEXTURE0);
-	
+
 	if (entalpha < 1)
 	{
 		glDepthMask (GL_TRUE);
