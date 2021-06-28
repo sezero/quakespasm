@@ -70,6 +70,11 @@
 /* lets us know what version of Mac OS X we're compiling on */
 #include "AvailabilityMacros.h"
 #include "TargetConditionals.h"
+#ifdef __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunknown-warning-option"
+#pragma clang diagnostic ignored "-Wundef-prefix"
+#endif
 #if TARGET_OS_TV
 #undef __TVOS__
 #define __TVOS__ 1
@@ -87,6 +92,9 @@
 # error SDL for Mac OS X only supports deploying on 10.6 and above.
 #endif /* MAC_OS_X_VERSION_MIN_REQUIRED < 1060 */
 #endif /* TARGET_OS_IPHONE */
+#ifdef __clang__
+#pragma clang diagnostic pop
+#endif /**/
 #endif /* defined(__APPLE__) */
 
 #if defined(__NetBSD__)
