@@ -110,17 +110,21 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
     return screenModes;
 }
 
+#ifndef MAC_OS_X_VERSION_10_13
+#define NSControlStateValueOff NSOffState
+#define NSControlStateValueOn NSOnState
+#endif
 - (void)awakeFromNib {
     if ([arguments count] > 0) {
         [paramTextField setStringValue:[arguments description]];
         if ([arguments argument:@"-window"] != nil)
-            [fullscreenCheckBox setState:NSOffState];
+            [fullscreenCheckBox setState:NSControlStateValueOff];
     } else {
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [paramTextField setStringValue:[defaults stringForKey:FQPrefCommandLineKey]];
         
         BOOL fullscreen = [defaults boolForKey:FQPrefFullscreenKey];
-        [fullscreenCheckBox setState:fullscreen ? NSOnState : NSOffState];
+        [fullscreenCheckBox setState:fullscreen ? NSControlStateValueOn : NSControlStateValueOff];
         
         int screenModeIndex = [defaults integerForKey:FQPrefScreenModeKey];
         [screenModePopUp selectItemAtIndex:screenModeIndex];
@@ -160,7 +164,7 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
     
     [arguments removeArgument:@"-fullscreen"];
     [arguments removeArgument:@"-window"];
-    BOOL fullscreen = [fullscreenCheckBox state] == NSOnState;
+    BOOL fullscreen = [fullscreenCheckBox state] == NSControlStateValueOn;
     if (fullscreen)
         [arguments addArgument:@"-fullscreen"];
     else
@@ -186,7 +190,7 @@ NSString *FQPrefScreenModeKey = @"ScreenMode";
     // update the defaults
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[paramTextField stringValue] forKey:FQPrefCommandLineKey];
-    [defaults setObject:[NSNumber numberWithBool:[fullscreenCheckBox state] == NSOnState] forKey:FQPrefFullscreenKey];
+    [defaults setObject:[NSNumber numberWithBool:[fullscreenCheckBox state] == NSControlStateValueOn] forKey:FQPrefFullscreenKey];
     [defaults setObject:[NSNumber numberWithInt:index] forKey:FQPrefScreenModeKey];
     [defaults synchronize];
 

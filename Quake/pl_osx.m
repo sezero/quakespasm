@@ -42,6 +42,9 @@ void PL_VID_Shutdown (void)
 {
 }
 
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1060
+#define NSPasteboardTypeString NSStringPboardType
+#endif
 #define MAX_CLIPBOARDTXT	MAXCMDLINE	/* 256 */
 char *PL_GetClipboardData (void)
 {
@@ -49,8 +52,8 @@ char *PL_GetClipboardData (void)
     NSPasteboard* pasteboard	= [NSPasteboard generalPasteboard];
     NSArray* types		= [pasteboard types];
 
-    if ([types containsObject: NSStringPboardType]) {
-	NSString* clipboardString = [pasteboard stringForType: NSStringPboardType];
+    if ([types containsObject: NSPasteboardTypeString]) {
+	NSString* clipboardString = [pasteboard stringForType: NSPasteboardTypeString];
 	if (clipboardString != NULL && [clipboardString length] > 0) {
 		size_t sz = [clipboardString length] + 1;
 		sz = q_min(MAX_CLIPBOARDTXT, sz);
@@ -65,6 +68,9 @@ char *PL_GetClipboardData (void)
     return data;
 }
 
+#ifndef MAC_OS_X_VERSION_10_12
+#define NSAlertStyleCritical NSCriticalAlertStyle
+#endif
 void PL_ErrorDialog(const char *errorMsg)
 {
 #if (MAC_OS_X_VERSION_MIN_REQUIRED < 1040)	/* ppc builds targeting 10.3 and older */
@@ -72,6 +78,14 @@ void PL_ErrorDialog(const char *errorMsg)
 #else
     NSString* msg = [NSString stringWithCString:errorMsg encoding:NSASCIIStringEncoding];
 #endif
+#if MAC_OS_X_VERSION_MIN_REQUIRED < 1030
     NSRunCriticalAlertPanel (@"Quake Error", @"%@", @"OK", nil, nil, msg);
+#else
+    NSAlert *alert = [[[NSAlert alloc] init] autorelease];
+    alert.alertStyle = NSAlertStyleCritical;
+    alert.messageText = @"Quake Error";
+    alert.informativeText = msg;
+    [alert runModal];
+#endif
 }
 
