@@ -848,7 +848,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 		bits |= SU_ARMOR;
 
 //	if (ent->v.weapon)
-		bits |= SU_WEAPON;
+	  bits |= SU_WEAPON;
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (sv.protocol != PROTOCOL_NETQUAKE)
