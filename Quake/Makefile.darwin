@@ -106,6 +106,7 @@ endif
 ifeq ($(USE_SDL2),1)
 CFLAGS += -DUSE_SDL2
 endif
+CFLAGS += -DGL_SILENCE_DEPRECATION=1
 
 # not relying on sdl-config command and assuming
 # /Library/Frameworks/SDL.framework is available
