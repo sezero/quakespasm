@@ -79,6 +79,11 @@ CFLAGS  +=-mmacosx-version-min=10.6
 LDFLAGS +=-mmacosx-version-min=10.6 -Wl,-lbundle1.o
 USE_RPATH=1
 endif
+ifeq ($(MACH_TYPE),arm64)
+CFLAGS  +=-mmacosx-version-min=11.0
+LDFLAGS +=-mmacosx-version-min=11.0
+USE_RPATH=1
+endif
 CFLAGS += $(CPUFLAGS)
 ifeq ($(USE_RPATH),1)
 LDFLAGS+=-Wl,-rpath,@executable_path/../Frameworks
