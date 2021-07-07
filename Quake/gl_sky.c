@@ -550,8 +550,7 @@ void Sky_ProcessTextureChains (void)
 			continue;
 
 		for (s = t->texturechains[chain_world]; s; s = s->texturechain)
-			if (!s->culled)
-				Sky_ProcessPoly (s->polys);
+			Sky_ProcessPoly (s->polys);
 	}
 }
 
@@ -693,7 +692,7 @@ FIXME: eliminate cracks by adding an extra vert on tjuncs
 */
 void Sky_DrawSkyBox (void)
 {
-	int		i;
+	int i;
 
 	for (i=0 ; i<6 ; i++)
 	{
@@ -980,10 +979,10 @@ called once per frame before drawing anything else
 */
 void Sky_DrawSky (void)
 {
-	int				i;
+	int i;
 
 	//in these special render modes, the sky faces are handled in the normal world/brush renderer
-	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe )
+	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe)
 		return;
 
 	//
@@ -1020,7 +1019,7 @@ void Sky_DrawSky (void)
 		if (skybox_name[0])
 			Sky_DrawSkyBox ();
 		else
-			Sky_DrawSkyLayers();
+			Sky_DrawSkyLayers ();
 
 		glDepthMask(1);
 		glDepthFunc(GL_LEQUAL);
