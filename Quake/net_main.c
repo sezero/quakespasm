@@ -48,8 +48,8 @@ static int		slistLastShown;
 
 static void Slist_Send (void *);
 static void Slist_Poll (void *);
-static PollProcedure	slistSendProcedure = {NULL, 0.0, Slist_Send};
-static PollProcedure	slistPollProcedure = {NULL, 0.0, Slist_Poll};
+static PollProcedure	slistSendProcedure = {NULL, 0.0, Slist_Send, NULL};
+static PollProcedure	slistPollProcedure = {NULL, 0.0, Slist_Poll, NULL};
 
 sizebuf_t	net_message;
 int		net_activeconnections		= 0;
@@ -59,8 +59,8 @@ int		messagesReceived		= 0;
 int		unreliableMessagesSent		= 0;
 int		unreliableMessagesReceived	= 0;
 
-static	cvar_t	net_messagetimeout = {"net_messagetimeout","300",CVAR_NONE};
-cvar_t	hostname = {"hostname", "UNNAMED", CVAR_NONE};
+static	cvar_t	net_messagetimeout = {"net_messagetimeout","300",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t	hostname = {"hostname", "UNNAMED", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
 // these two macros are to make the code more readable
 #define sfunc	net_drivers[sock->driver]

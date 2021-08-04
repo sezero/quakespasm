@@ -26,7 +26,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 edict_t	*sv_player;
 
 extern	cvar_t	sv_friction;
-cvar_t	sv_edgefriction = {"edgefriction", "2", CVAR_NONE};
+cvar_t	sv_edgefriction = {"edgefriction", "2", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 extern	cvar_t	sv_stopspeed;
 
 static	vec3_t		forward, right, up;
@@ -40,8 +40,8 @@ qboolean	onground;
 
 usercmd_t	cmd;
 
-cvar_t	sv_idealpitchscale = {"sv_idealpitchscale","0.8",CVAR_NONE};
-cvar_t	sv_altnoclip = {"sv_altnoclip","1",CVAR_ARCHIVE}; //johnfitz
+cvar_t	sv_idealpitchscale = {"sv_idealpitchscale","0.8",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t	sv_altnoclip = {"sv_altnoclip","1",CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //johnfitz
 
 /*
 ===============
@@ -163,8 +163,8 @@ void SV_UserFriction (void)
 SV_Accelerate
 ==============
 */
-cvar_t	sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY|CVAR_SERVERINFO};
-cvar_t	sv_accelerate = {"sv_accelerate", "10", CVAR_NONE};
+cvar_t	sv_maxspeed = {"sv_maxspeed", "320", CVAR_NOTIFY|CVAR_SERVERINFO, 0.0f, NULL, NULL, NULL};
+cvar_t	sv_accelerate = {"sv_accelerate", "10", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 void SV_Accelerate (float wishspeed, const vec3_t wishdir)
 {
 	int			i;

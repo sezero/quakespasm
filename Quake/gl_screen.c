@@ -78,26 +78,26 @@ float		scr_con_current;
 float		scr_conlines;		// lines of console to display
 
 //johnfitz -- new cvars
-cvar_t		scr_menuscale = {"scr_menuscale", "1", CVAR_ARCHIVE};
-cvar_t		scr_sbarscale = {"scr_sbarscale", "1", CVAR_ARCHIVE};
-cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.75", CVAR_ARCHIVE};
-cvar_t		scr_conwidth = {"scr_conwidth", "0", CVAR_ARCHIVE};
-cvar_t		scr_conscale = {"scr_conscale", "1", CVAR_ARCHIVE};
-cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", CVAR_ARCHIVE};
-cvar_t		scr_showfps = {"scr_showfps", "0", CVAR_NONE};
-cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
+cvar_t		scr_menuscale = {"scr_menuscale", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_sbarscale = {"scr_sbarscale", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_sbaralpha = {"scr_sbaralpha", "0.75", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_conwidth = {"scr_conwidth", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_conscale = {"scr_conscale", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_crosshairscale = {"scr_crosshairscale", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_showfps = {"scr_showfps", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 //johnfitz
 
-cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
-cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
-cvar_t		scr_fov_adapt = {"fov_adapt","1",CVAR_ARCHIVE};
-cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE};
-cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE};
-cvar_t		scr_showram = {"showram","1",CVAR_NONE};
-cvar_t		scr_showturtle = {"showturtle","0",CVAR_NONE};
-cvar_t		scr_showpause = {"showpause","1",CVAR_NONE};
-cvar_t		scr_printspeed = {"scr_printspeed","8",CVAR_NONE};
-cvar_t		gl_triplebuffer = {"gl_triplebuffer", "1", CVAR_ARCHIVE};
+cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_fov = {"fov","90",CVAR_NONE, 0.0f, NULL, NULL, NULL};	// 10 - 170
+cvar_t		scr_fov_adapt = {"fov_adapt","1",CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_conspeed = {"scr_conspeed","500",CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_centertime = {"scr_centertime","2",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_showram = {"showram","1",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_showturtle = {"showturtle","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_showpause = {"showpause","1",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		scr_printspeed = {"scr_printspeed","8",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		gl_triplebuffer = {"gl_triplebuffer", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
 extern	cvar_t	crosshair;
 

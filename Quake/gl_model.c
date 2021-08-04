@@ -34,7 +34,7 @@ void Mod_LoadBrushModel (qmodel_t *mod, void *buffer);
 void Mod_LoadAliasModel (qmodel_t *mod, void *buffer);
 qmodel_t *Mod_LoadModel (qmodel_t *mod, qboolean crash);
 
-cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
+cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
 static byte	*mod_novis;
 static int	mod_novis_capacity;

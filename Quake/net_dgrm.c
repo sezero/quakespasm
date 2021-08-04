@@ -520,7 +520,7 @@ static int		testDriver;
 static sys_socket_t	testSocket;
 
 static void Test_Poll (void *);
-static PollProcedure	testPollProcedure = {NULL, 0.0, Test_Poll};
+static PollProcedure	testPollProcedure = {NULL, 0.0, Test_Poll, NULL};
 
 static void Test_Poll (void *unused)
 {
@@ -653,7 +653,7 @@ static int		test2Driver;
 static sys_socket_t	test2Socket;
 
 static void Test2_Poll (void *);
-static PollProcedure	test2PollProcedure = {NULL, 0.0, Test2_Poll};
+static PollProcedure	test2PollProcedure = {NULL, 0.0, Test2_Poll, NULL};
 
 static void Test2_Poll (void *unused)
 {

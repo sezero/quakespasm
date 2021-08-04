@@ -24,9 +24,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t r_drawflat;
 
-cvar_t r_oldwater = {"r_oldwater", "0", CVAR_ARCHIVE};
-cvar_t r_waterquality = {"r_waterquality", "8", CVAR_NONE};
-cvar_t r_waterwarp = {"r_waterwarp", "1", CVAR_NONE};
+cvar_t r_oldwater = {"r_oldwater", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t r_waterquality = {"r_waterquality", "8", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t r_waterwarp = {"r_waterwarp", "1", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
 int gl_warpimagesize;
 float load_subdivide_size; //johnfitz -- remember what subdivide_size value was when this map was loaded
@@ -49,7 +49,7 @@ extern	qmodel_t	*loadmodel;
 
 msurface_t	*warpface;
 
-cvar_t gl_subdivide_size = {"gl_subdivide_size", "128", CVAR_ARCHIVE};
+cvar_t gl_subdivide_size = {"gl_subdivide_size", "128", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
 void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
 {

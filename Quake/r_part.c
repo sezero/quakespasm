@@ -41,8 +41,8 @@ int			r_numparticles;
 gltexture_t *particletexture, *particletexture1, *particletexture2, *particletexture3, *particletexture4; //johnfitz
 float texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
 
-cvar_t	r_particles = {"r_particles","1", CVAR_ARCHIVE}; //johnfitz
-cvar_t	r_quadparticles = {"r_quadparticles","1", CVAR_ARCHIVE}; //johnfitz
+cvar_t	r_particles = {"r_particles","1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //johnfitz
+cvar_t	r_quadparticles = {"r_quadparticles","1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //johnfitz
 
 /*
 ===============

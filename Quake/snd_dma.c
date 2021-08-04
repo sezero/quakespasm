@@ -70,14 +70,14 @@ static sfx_t	*ambient_sfx[NUM_AMBIENTS];
 
 static qboolean	sound_started = false;
 
-cvar_t		bgmvolume = {"bgmvolume", "1", CVAR_ARCHIVE};
-cvar_t		sfxvolume = {"volume", "0.7", CVAR_ARCHIVE};
+cvar_t		bgmvolume = {"bgmvolume", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+cvar_t		sfxvolume = {"volume", "0.7", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
-cvar_t		precache = {"precache", "1", CVAR_NONE};
-cvar_t		loadas8bit = {"loadas8bit", "0", CVAR_NONE};
+cvar_t		precache = {"precache", "1", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		loadas8bit = {"loadas8bit", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-cvar_t		sndspeed = {"sndspeed", "11025", CVAR_NONE};
-cvar_t		snd_mixspeed = {"snd_mixspeed", "44100", CVAR_NONE};
+cvar_t		sndspeed = {"sndspeed", "11025", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t		snd_mixspeed = {"snd_mixspeed", "44100", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
 #if defined(_WIN32)
 #define SND_FILTERQUALITY_DEFAULT "5"
@@ -86,14 +86,14 @@ cvar_t		snd_mixspeed = {"snd_mixspeed", "44100", CVAR_NONE};
 #endif
 
 cvar_t		snd_filterquality = {"snd_filterquality", SND_FILTERQUALITY_DEFAULT,
-								 CVAR_NONE};
+								 CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-static	cvar_t	nosound = {"nosound", "0", CVAR_NONE};
-static	cvar_t	ambient_level = {"ambient_level", "0.3", CVAR_NONE};
-static	cvar_t	ambient_fade = {"ambient_fade", "100", CVAR_NONE};
-static	cvar_t	snd_noextraupdate = {"snd_noextraupdate", "0", CVAR_NONE};
-static	cvar_t	snd_show = {"snd_show", "0", CVAR_NONE};
-static	cvar_t	_snd_mixahead = {"_snd_mixahead", "0.1", CVAR_ARCHIVE};
+static	cvar_t	nosound = {"nosound", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+static	cvar_t	ambient_level = {"ambient_level", "0.3", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+static	cvar_t	ambient_fade = {"ambient_fade", "100", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+static	cvar_t	snd_noextraupdate = {"snd_noextraupdate", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+static	cvar_t	snd_show = {"snd_show", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
+static	cvar_t	_snd_mixahead = {"_snd_mixahead", "0.1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
 
 static void S_SoundInfo_f (void)

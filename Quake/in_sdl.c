@@ -34,7 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 static qboolean	textmode;
 
-static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
+static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
 #ifdef __APPLE__
 /* Mouse acceleration needs to be disabled on OS X */
@@ -49,15 +49,15 @@ static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
 #endif
 
 // SDL2 Game Controller cvars
-cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_ARCHIVE };
-cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.2", CVAR_ARCHIVE };
-cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_ARCHIVE };
-cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_ARCHIVE };
-cvar_t	joy_invert = { "joy_invert", "0", CVAR_ARCHIVE };
-cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_ARCHIVE };
-cvar_t	joy_exponent_move = { "joy_exponent_move", "3", CVAR_ARCHIVE };
-cvar_t	joy_swapmovelook = { "joy_swapmovelook", "0", CVAR_ARCHIVE };
-cvar_t	joy_enable = { "joy_enable", "1", CVAR_ARCHIVE };
+cvar_t	joy_deadzone = { "joy_deadzone", "0.175", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_deadzone_trigger = { "joy_deadzone_trigger", "0.2", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_sensitivity_yaw = { "joy_sensitivity_yaw", "300", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_sensitivity_pitch = { "joy_sensitivity_pitch", "150", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_invert = { "joy_invert", "0", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_exponent = { "joy_exponent", "3", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_exponent_move = { "joy_exponent_move", "3", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_swapmovelook = { "joy_swapmovelook", "0", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
+cvar_t	joy_enable = { "joy_enable", "1", CVAR_ARCHIVE , 0.0f, NULL, NULL, NULL};
 
 #if defined(USE_SDL2)
 static SDL_JoystickID joy_active_instaceid = -1;
@@ -131,7 +131,7 @@ static void IN_EndIgnoringMouseEvents(void)
 }
 
 #ifdef MACOS_X_ACCELERATION_HACK
-static cvar_t in_disablemacosxmouseaccel = {"in_disablemacosxmouseaccel", "1", CVAR_ARCHIVE};
+static cvar_t in_disablemacosxmouseaccel = {"in_disablemacosxmouseaccel", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 static double originalMouseSpeed = -1.0;
 
 static io_connect_t IN_GetIOHandle(void)

@@ -57,31 +57,31 @@ jmp_buf 	host_abortserver;
 
 byte		*host_colormap;
 
-cvar_t	host_framerate = {"host_framerate","0",CVAR_NONE};	// set for slow motion
-cvar_t	host_speeds = {"host_speeds","0",CVAR_NONE};			// set for running times
-cvar_t	host_maxfps = {"host_maxfps", "72", CVAR_ARCHIVE}; //johnfitz
-cvar_t	host_timescale = {"host_timescale", "0", CVAR_NONE}; //johnfitz
-cvar_t	max_edicts = {"max_edicts", "8192", CVAR_NONE}; //johnfitz //ericw -- changed from 2048 to 8192, removed CVAR_ARCHIVE
+cvar_t	host_framerate = {"host_framerate","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};	// set for slow motion
+cvar_t	host_speeds = {"host_speeds","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};			// set for running times
+cvar_t	host_maxfps = {"host_maxfps", "72", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //johnfitz
+cvar_t	host_timescale = {"host_timescale", "0", CVAR_NONE, 0.0f, NULL, NULL, NULL}; //johnfitz
+cvar_t	max_edicts = {"max_edicts", "8192", CVAR_NONE, 0.0f, NULL, NULL, NULL}; //johnfitz //ericw -- changed from 2048 to 8192, removed CVAR_ARCHIVE
 
-cvar_t	sys_ticrate = {"sys_ticrate","0.05",CVAR_NONE}; // dedicated server
-cvar_t	serverprofile = {"serverprofile","0",CVAR_NONE};
+cvar_t	sys_ticrate = {"sys_ticrate","0.05",CVAR_NONE, 0.0f, NULL, NULL, NULL}; // dedicated server
+cvar_t	serverprofile = {"serverprofile","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-cvar_t	fraglimit = {"fraglimit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
-cvar_t	timelimit = {"timelimit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
-cvar_t	teamplay = {"teamplay","0",CVAR_NOTIFY|CVAR_SERVERINFO};
-cvar_t	samelevel = {"samelevel","0",CVAR_NONE};
-cvar_t	noexit = {"noexit","0",CVAR_NOTIFY|CVAR_SERVERINFO};
-cvar_t	skill = {"skill","1",CVAR_NONE};			// 0 - 3
-cvar_t	deathmatch = {"deathmatch","0",CVAR_NONE};	// 0, 1, or 2
-cvar_t	coop = {"coop","0",CVAR_NONE};			// 0 or 1
+cvar_t	fraglimit = {"fraglimit","0",CVAR_NOTIFY|CVAR_SERVERINFO, 0.0f, NULL, NULL, NULL};
+cvar_t	timelimit = {"timelimit","0",CVAR_NOTIFY|CVAR_SERVERINFO, 0.0f, NULL, NULL, NULL};
+cvar_t	teamplay = {"teamplay","0",CVAR_NOTIFY|CVAR_SERVERINFO, 0.0f, NULL, NULL, NULL};
+cvar_t	samelevel = {"samelevel","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};
+cvar_t	noexit = {"noexit","0",CVAR_NOTIFY|CVAR_SERVERINFO, 0.0f, NULL, NULL, NULL};
+cvar_t	skill = {"skill","1",CVAR_NONE, 0.0f, NULL, NULL, NULL};			// 0 - 3
+cvar_t	deathmatch = {"deathmatch","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};	// 0, 1, or 2
+cvar_t	coop = {"coop","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};			// 0 or 1
 
-cvar_t	pausable = {"pausable","1",CVAR_NONE};
+cvar_t	pausable = {"pausable","1",CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-cvar_t	developer = {"developer","0",CVAR_NONE};
+cvar_t	developer = {"developer","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-cvar_t	temp1 = {"temp1","0",CVAR_NONE};
+cvar_t	temp1 = {"temp1","0",CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
-cvar_t devstats = {"devstats","0",CVAR_NONE}; //johnfitz -- track developer statistics that vary every frame
+cvar_t devstats = {"devstats","0",CVAR_NONE, 0.0f, NULL, NULL, NULL}; //johnfitz -- track developer statistics that vary every frame
 
 devstats_t dev_stats, dev_peakstats;
 overflowtimes_t dev_overflows; //this stores the last time overflow messages were displayed, not the last time overflows occured

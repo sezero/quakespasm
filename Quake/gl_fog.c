@@ -351,7 +351,7 @@ void Fog_StopAdditive (void)
 //
 //==============================================================================
 
-cvar_t r_vfog = {"r_vfog", "1", CVAR_NONE};
+cvar_t r_vfog = {"r_vfog", "1", CVAR_NONE, 0.0f, NULL, NULL, NULL};
 
 void Fog_DrawVFog (void){}
 void Fog_MarkModels (void){}

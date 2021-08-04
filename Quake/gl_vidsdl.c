@@ -146,19 +146,19 @@ QS_PFNGLUNIFORM4FPROC GL_Uniform4fFunc = NULL; //ericw
 //====================================
 
 //johnfitz -- new cvars
-static cvar_t	vid_fullscreen = {"vid_fullscreen", "0", CVAR_ARCHIVE};	// QuakeSpasm, was "1"
-static cvar_t	vid_width = {"vid_width", "800", CVAR_ARCHIVE};		// QuakeSpasm, was 640
-static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE};	// QuakeSpasm, was 480
-static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE};
-static cvar_t	vid_refreshrate = {"vid_refreshrate", "60", CVAR_ARCHIVE};
-static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE};
-static cvar_t	vid_fsaa = {"vid_fsaa", "0", CVAR_ARCHIVE}; // QuakeSpasm
-static cvar_t	vid_desktopfullscreen = {"vid_desktopfullscreen", "0", CVAR_ARCHIVE}; // QuakeSpasm
-static cvar_t	vid_borderless = {"vid_borderless", "0", CVAR_ARCHIVE}; // QuakeSpasm
+static cvar_t	vid_fullscreen = {"vid_fullscreen", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};	// QuakeSpasm, was "1"
+static cvar_t	vid_width = {"vid_width", "800", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};		// QuakeSpasm, was 640
+static cvar_t	vid_height = {"vid_height", "600", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};	// QuakeSpasm, was 480
+static cvar_t	vid_bpp = {"vid_bpp", "16", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+static cvar_t	vid_refreshrate = {"vid_refreshrate", "60", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+static cvar_t	vid_vsync = {"vid_vsync", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
+static cvar_t	vid_fsaa = {"vid_fsaa", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; // QuakeSpasm
+static cvar_t	vid_desktopfullscreen = {"vid_desktopfullscreen", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; // QuakeSpasm
+static cvar_t	vid_borderless = {"vid_borderless", "0", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; // QuakeSpasm
 //johnfitz
 
-cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE}; //johnfitz -- moved here from view.c
-cvar_t		vid_contrast = {"contrast", "1", CVAR_ARCHIVE}; //QuakeSpasm, MarkV
+cvar_t		vid_gamma = {"gamma", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //johnfitz -- moved here from view.c
+cvar_t		vid_contrast = {"contrast", "1", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL}; //QuakeSpasm, MarkV
 
 //==========================================================================
 //

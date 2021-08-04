@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 
 qboolean		isDedicated;
-cvar_t		sys_throttle = {"sys_throttle", "0.02", CVAR_ARCHIVE};
+cvar_t		sys_throttle = {"sys_throttle", "0.02", CVAR_ARCHIVE, 0.0f, NULL, NULL, NULL};
 
 #define	MAX_HANDLES		32	/* johnfitz -- was 10 */
 static FILE		*sys_handles[MAX_HANDLES];
