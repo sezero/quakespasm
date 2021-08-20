@@ -19,33 +19,34 @@
 
   5. Known Bugs
   6. Changes
-     6.1 Changes in 0.93.2
-     6.2 Changes in 0.93.1
-     6.3 Changes in 0.93.0
-     6.4 Changes in 0.92.1
-     6.5 Changes in 0.92.0
-     6.6 Changes in 0.91.0
-        6.6.1 Bugfixes
-        6.6.2 Visual improvements
-        6.6.3 Interface improvements
-        6.6.4 Code cleanup / Other
-        6.6.5 Raised limits
-     6.7 Changes in 0.90.1
+     6.1 Changes in 0.93.3
+     6.2 Changes in 0.93.2
+     6.3 Changes in 0.93.1
+     6.4 Changes in 0.93.0
+     6.5 Changes in 0.92.1
+     6.6 Changes in 0.92.0
+     6.7 Changes in 0.91.0
         6.7.1 Bugfixes
-        6.7.2 Performance
-        6.7.3 Visual improvements
-        6.7.4 Interface improvements
-        6.7.5 Code cleanup
-     6.8 Changes in 0.90.0
-     6.9 Changes in 0.85.9
-     6.10 Changes in 0.85.8
-     6.11 Changes in 0.85.7
-     6.12 Changes in 0.85.6
-     6.13 Changes in 0.85.5
-     6.14 Changes in 0.85.4
-     6.15 Changes in 0.85.3
-     6.16 Changes in 0.85.2
-     6.17 Changes in 0.85.1
+        6.7.2 Visual improvements
+        6.7.3 Interface improvements
+        6.7.4 Code cleanup / Other
+        6.7.5 Raised limits
+     6.8 Changes in 0.90.1
+        6.8.1 Bugfixes
+        6.8.2 Performance
+        6.8.3 Visual improvements
+        6.8.4 Interface improvements
+        6.8.5 Code cleanup
+     6.9 Changes in 0.90.0
+     6.10 Changes in 0.85.9
+     6.11 Changes in 0.85.8
+     6.12 Changes in 0.85.7
+     6.13 Changes in 0.85.6
+     6.14 Changes in 0.85.5
+     6.15 Changes in 0.85.4
+     6.16 Changes in 0.85.3
+     6.17 Changes in 0.85.2
+     6.18 Changes in 0.85.1
 
   7. Todo
   8. Copyright
@@ -55,7 +56,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: September 2020
+  Page last edited: August 2021
 
 
   1.  About
@@ -286,7 +287,39 @@
   6.  Changes
 
 
-  6.1.  Changes in 0.93.2
+  6.1.  Changes in 0.93.3
+
+  o  Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
+
+  o  Fixed buffer overflow with large char skybox names (sf.net bug/38)
+
+  o  Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)
+
+  o  OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
+
+  o  OpenGL: merged surface mark & cull optimizations from vkQuake.
+
+  o  Reject lit files if they're the wrong size (eg hipnotic/start.bsp
+     vs id1/start.lit or just a bsp that no longer has any coloured
+     lits, etc)
+
+  o  Save: remove CR/LFs from level name to avoids broken saves, e.g.
+     with autumn_sp map.
+
+  o  Music: improvements to mp3 tag detection / skipping.
+
+  o  Music: umx loader fix for malformed / crafted files.
+
+  o  New console command music_jump: Jump to given order in music, like
+     Unreal's music change - only for module (tracker) music.
+
+  o  Updated third-party libraries (music codecs, SDL, etc.) Other minor
+     fixes, tidy-ups and protability tweaks.
+
+  o  Source repository moved to git.
+
+
+  6.2.  Changes in 0.93.2
 
   o Lightmaps are now dynamically allocated (from QSS), and
     BLOCK_WIDTH/HEIGHT raised from 128 to 256.
@@ -306,7 +339,7 @@
   o Update the third-party libraries. Other fixes/cleanups.
 
 
-  6.2.  Changes in 0.93.1
+  6.3.  Changes in 0.93.1
 
   o  Fixed a fog regression which was introduced in 0.93.0.
 
@@ -324,7 +357,7 @@
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
-  6.3.  Changes in 0.93.0
+  6.4.  Changes in 0.93.0
 
   o  Raise default "joy_deadzone_trigger" cvar to 0.2.
 
@@ -409,7 +442,7 @@
   o  Update the third-party libraries.
 
 
-  6.4.  Changes in 0.92.1
+  6.5.  Changes in 0.92.1
 
   o  Fixed large menu scale factors (was broken in 0.92.0).
 
@@ -418,7 +451,7 @@
   o  Updated some of the third-party libraries.
 
 
-  6.5.  Changes in 0.92.0
+  6.6.  Changes in 0.92.0
 
   o  SDL2 Game Controller support.
 
@@ -455,9 +488,9 @@
   o  Updated some of the third-party libraries. Other fixes/clean-ups.
 
 
-  6.6.  Changes in 0.91.0
+  6.7.  Changes in 0.91.0
 
-  6.6.1.  Bugfixes
+  6.7.1.  Bugfixes
 
   o  Fix unwanted fog mode change upon video restart.
 
@@ -493,7 +526,7 @@
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 
-  6.6.2.  Visual improvements
+  6.7.2.  Visual improvements
 
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
      specific liquid opacities (from DirectQ/RMQEngine, non-archived,
@@ -504,18 +537,18 @@
   o  GLSL gamma is now supported on older hardware without NPOT
      extension.
 
-  6.6.3.  Interface improvements
+  6.7.3.  Interface improvements
 
   o  New r_pos command to show player position.
 
   o  NaN detection in traceline with "developer 1" set now warns instead
      of errors.
 
-  6.6.4.  Code cleanup / Other
+  6.7.4.  Code cleanup / Other
 
   o  Update third-party libraries.
 
-  6.6.5.  Raised limits
+  6.7.5.  Raised limits
 
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
@@ -527,9 +560,9 @@
   o  Raised MAX_SFX to 1024 (was 512).
 
 
-  6.7.  Changes in 0.90.1
+  6.8.  Changes in 0.90.1
 
-  6.7.1.  Bugfixes
+  6.8.1.  Bugfixes
 
   o  Fix dynamic light artifact where changing lightmap are rendered one
      frame late (bug introduced in 0.90.0).
@@ -552,13 +585,13 @@
 
   o  Fix crash on out-of-bounds skin number.
 
-  6.7.2.  Performance
+  6.8.2.  Performance
 
   o  Use multithreaded OpenGL on OS X for better performance.
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
-  6.7.3.  Visual improvements
+  6.8.3.  Visual improvements
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -572,7 +605,7 @@
 
   o  r_noshadow_list cvar added (from MarkV.)
 
-  6.7.4.  Interface improvements
+  6.8.4.  Interface improvements
 
   o  Support pausing demo playback with the "pause" command.
 
@@ -589,14 +622,14 @@
      "trying to load ent", "bad chunk length", "meshing",
      "PR_AlocStringSlots: realloc'ing"
 
-  6.7.5.  Code cleanup
+  6.8.5.  Code cleanup
 
   o  Clean up IDE project files to build on fresh systems.
 
   o  Update 3rd-party libraries.
 
 
-  6.8.  Changes in 0.90.0
+  6.9.  Changes in 0.90.0
 
   o  Fix issues on Windows systems with DPI scaling.
 
@@ -704,7 +737,7 @@
   o  Other fixes and clean-ups.
 
 
-  6.9.  Changes in 0.85.9
+  6.10.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -751,7 +784,7 @@
   o  Several other minor fixes/cleanups.
 
 
-  6.10.  Changes in 0.85.8
+  6.11.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -798,7 +831,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  6.11.  Changes in 0.85.7
+  6.12.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -824,7 +857,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  6.12.  Changes in 0.85.6
+  6.13.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -837,7 +870,7 @@
   o  Minor SDL video fixes.
 
 
-  6.13.  Changes in 0.85.5
+  6.14.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -868,7 +901,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  6.14.  Changes in 0.85.4
+  6.15.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -896,7 +929,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  6.15.  Changes in 0.85.3
+  6.16.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -933,7 +966,7 @@
      some other CD tweaks.
 
 
-  6.16.  Changes in 0.85.2
+  6.17.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -961,7 +994,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  6.17.  Changes in 0.85.1
+  6.18.  Changes in 0.85.1
 
   o  64 bit CPU support
 

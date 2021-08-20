@@ -4,7 +4,7 @@
 <toc>
 <verb></verb>
 
-<em>Page last edited: September 2020</em>
+<em>Page last edited: August 2021</em>
 
 <sect> About <p>
 
@@ -151,6 +151,23 @@ these patched libSDL binaries may help.
     name="Gamma patched libSDL (x86_64-linux)">
 </itemize>
 <sect> Changes<p>
+
+<sect1> Changes in 0.93.3<p>
+<itemize>
+<item> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
+<item> Fixed buffer overflow with large char skybox names (sf.net bug/38)
+<item> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)
+<item> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
+<item> OpenGL: merged surface mark & cull optimizations from vkQuake.
+<item> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)
+<item> Save: remove CR/LFs from level name to avoids broken saves, e.g. with autumn_sp map.
+<item> Music: improvements to mp3 tag detection / skipping.
+<item> Music: umx loader fix for malformed / crafted files.
+<item> New console command music_jump: Jump to given order in music, like Unreal's music change - only for module (tracker) music.
+<item> Updated third-party libraries (music codecs, SDL, etc.) Other minor fixes, tidy-ups and protability tweaks.
+<item> Source repository moved to git.
+</itemize>
+</p>
 
 <sect1> Changes in 0.93.2<p>
 <itemize>
