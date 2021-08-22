@@ -80,12 +80,17 @@ const char *svc_strings[] =
 	"svc_spawnbaseline2", //42			// support for large modelindex, large framenum, alpha, using flags
 	"svc_spawnstatic2", // 43			// support for large modelindex, large framenum, alpha, using flags
 	"svc_spawnstaticsound2", //	44		// [coord3] [short] samp [byte] vol [byte] aten
-	"", // 44
 	"", // 45
 	"", // 46
 	"", // 47
 	"", // 48
 	"", // 49
+	"", // 50
+	"", // 51
+	"svc_achievement", // 52 -- used by the 2021 rerelease
+	"", // 53
+	"", // 54
+	"", // 55
 //johnfitz
 };
 
