@@ -1663,6 +1663,15 @@ static void PF_changelevel (void)
 	Cbuf_AddText (va("changelevel %s\n",s));
 }
 
+/*
+==============
+PF_finalefinished -- used by 2021 release.
+==============
+*/
+static void PF_finalefinished (void)
+{
+}
+
 static void PF_Fixme (void)
 {
 	PR_RunError ("unimplemented builtin");
@@ -1757,7 +1766,10 @@ static builtin_t pr_builtin[] =
 	PF_precache_sound,	// precache_sound2 is different only for qcc
 	PF_precache_file,
 
-	PF_setspawnparms
+	PF_setspawnparms,
+
+	// 2021 release
+	PF_finalefinished,	// void() finaleFinished = #79
 };
 
 builtin_t *pr_builtins = pr_builtin;
