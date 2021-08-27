@@ -35,6 +35,7 @@ void Mod_LoadAliasModel (qmodel_t *mod, void *buffer);
 qmodel_t *Mod_LoadModel (qmodel_t *mod, qboolean crash);
 
 cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
+cvar_t	external_vis = {"external_vis", "1", CVAR_ARCHIVE};
 
 static byte	*mod_novis;
 static int	mod_novis_capacity;
@@ -57,6 +58,7 @@ Mod_Init
 void Mod_Init (void)
 {
 	Cvar_RegisterVariable (&gl_subdivide_size);
+	Cvar_RegisterVariable (&external_vis);
 	Cvar_RegisterVariable (&external_ents);
 
 	//johnfitz -- create notexture miptex
@@ -1969,6 +1971,101 @@ void Mod_BoundsFromClipNode (qmodel_t *mod, int hull, int nodenum)
 	Mod_BoundsFromClipNode (mod, hull, node->children[1]);
 }
 
+/* EXTERNAL VIS FILE SUPPORT:
+ */
+typedef struct vispatch_s
+{
+	char	mapname[32];
+	int	filelen;	// length of data after header (VIS+Leafs)
+} vispatch_t;
+#define VISPATCH_HEADER_LEN 36
+
+static FILE *Mod_FindVisibilityExternal(void)
+{
+	vispatch_t header;
+	char visfilename[MAX_QPATH];
+	const char* shortname;
+	unsigned int path_id;
+	FILE *f;
+	long pos;
+	size_t r;
+
+	q_snprintf(visfilename, sizeof(visfilename), "maps/%s.vis", loadname);
+	if (COM_FOpenFile(visfilename, &f, &path_id) < 0)
+	{
+		Con_DPrintf("%s not found, trying ", visfilename);
+		q_snprintf(visfilename, sizeof(visfilename), "%s.vis", COM_SkipPath(com_gamedir));
+		Con_DPrintf("%s\n", visfilename);
+		if (COM_FOpenFile(visfilename, &f, &path_id) < 0)
+		{
+			Con_DPrintf("external vis not found\n");
+			return NULL;
+		}
+	}
+	if (path_id < loadmodel->path_id)
+	{
+		fclose(f);
+		Con_DPrintf("ignored %s from a gamedir with lower priority\n", visfilename);
+		return NULL;
+	}
+
+	Con_DPrintf("Found external VIS %s\n", visfilename);
+
+	shortname = COM_SkipPath(loadmodel->name);
+	pos = 0;
+	while ((r = fread(&header, 1, VISPATCH_HEADER_LEN, f)) == VISPATCH_HEADER_LEN)
+	{
+		header.filelen = LittleLong(header.filelen);
+		if (header.filelen <= 0) {	/* bad entry -- don't trust the rest. */
+			fclose(f);
+			return NULL;
+		}
+		if (!q_strcasecmp(header.mapname, shortname))
+			break;
+		pos += header.filelen + VISPATCH_HEADER_LEN;
+		fseek(f, pos, SEEK_SET);
+	}
+	if (r != VISPATCH_HEADER_LEN) {
+		fclose(f);
+		Con_DPrintf("%s not found in %s\n", shortname, visfilename);
+		return NULL;
+	}
+
+	return f;
+}
+
+static byte *Mod_LoadVisibilityExternal(FILE* f)
+{
+	int	filelen;
+	byte*	visdata;
+
+	filelen = 0;
+	fread(&filelen, 1, 4, f);
+	filelen = LittleLong(filelen);
+	if (filelen <= 0) return NULL;
+	Con_DPrintf("...%d bytes visibility data\n", filelen);
+	visdata = (byte *) Hunk_AllocName(filelen, "EXT_VIS");
+	if (!fread(visdata, filelen, 1, f))
+		return NULL;
+	return visdata;
+}
+
+static void Mod_LoadLeafsExternal(FILE* f)
+{
+	int	filelen;
+	void*	in;
+
+	filelen = 0;
+	fread(&filelen, 1, 4, f);
+	filelen = LittleLong(filelen);
+	if (filelen <= 0) return;
+	Con_DPrintf("...%d bytes leaf data\n", filelen);
+	in = Hunk_AllocName(filelen, "EXT_LEAF");
+	if (!fread(in, filelen, 1, f))
+		return;
+	Mod_ProcessLeafs_S((dsleaf_t *)in, filelen);
+}
+
 /*
 =================
 Mod_LoadBrushModel
@@ -2021,8 +2118,33 @@ void Mod_LoadBrushModel (qmodel_t *mod, void *buffer)
 	Mod_LoadTexinfo (&header->lumps[LUMP_TEXINFO]);
 	Mod_LoadFaces (&header->lumps[LUMP_FACES], bsp2);
 	Mod_LoadMarksurfaces (&header->lumps[LUMP_MARKSURFACES], bsp2);
+
+	if (!bsp2 && external_vis.value && sv.modelname[0] && !q_strcasecmp(loadname, sv.name))
+	{
+		FILE* fvis;
+		Con_DPrintf("trying to open external vis file\n");
+		fvis = Mod_FindVisibilityExternal();
+		if (fvis) {
+			int mark = Hunk_LowMark();
+			loadmodel->leafs = NULL;
+			loadmodel->numleafs = 0;
+			Con_DPrintf("found valid external .vis file for map\n");
+			loadmodel->visdata = Mod_LoadVisibilityExternal(fvis);
+			if (loadmodel->visdata) {
+				Mod_LoadLeafsExternal(fvis);
+			}
+			fclose(fvis);
+			if (loadmodel->visdata && loadmodel->leafs && loadmodel->numleafs) {
+				goto visdone;
+			}
+			Hunk_FreeToLowMark(mark);
+			Con_DPrintf("External VIS data failed, using standard vis.\n");
+		}
+	}
+
 	Mod_LoadVisibility (&header->lumps[LUMP_VISIBILITY]);
 	Mod_LoadLeafs (&header->lumps[LUMP_LEAFS], bsp2);
+visdone:
 	Mod_LoadNodes (&header->lumps[LUMP_NODES], bsp2);
 	Mod_LoadClipnodes (&header->lumps[LUMP_CLIPNODES], bsp2);
 	Mod_LoadEntities (&header->lumps[LUMP_ENTITIES]);
