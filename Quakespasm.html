@@ -36,7 +36,7 @@
 <LI><A NAME="toc4.3">4.3</A> <A HREF="Quakespasm.html#ss4.3">Mac OS X </A>
 </UL>
 <P>
-<H2><A NAME="toc5">5.</A> <A HREF="Quakespasm.html#s5">Known Bugs </A></H2>
+<H2><A NAME="toc5">5.</A> <A HREF="Quakespasm.html#s5">Quake '2021 re-release' </A></H2>
 
 <P>
 <H2><A NAME="toc6">6.</A> <A HREF="Quakespasm.html#s6">Changes</A></H2>
@@ -62,21 +62,17 @@
 <LI><A NAME="toc6.18">6.18</A> <A HREF="Quakespasm.html#ss6.18">Changes in 0.85.1</A>
 </UL>
 <P>
-<H2><A NAME="toc7">7.</A> <A HREF="Quakespasm.html#s7">Todo </A></H2>
+<H2><A NAME="toc7">7.</A> <A HREF="Quakespasm.html#s7">Copyright </A></H2>
 
 <P>
-<H2><A NAME="toc8">8.</A> <A HREF="Quakespasm.html#s8">Copyright </A></H2>
+<H2><A NAME="toc8">8.</A> <A HREF="Quakespasm.html#s8">Contact </A></H2>
 
 <P>
-<H2><A NAME="toc9">9.</A> <A HREF="Quakespasm.html#s9">Contact </A></H2>
-
-<P>
-<H2><A NAME="toc10">10.</A> <A HREF="Quakespasm.html#s10">Links </A></H2>
-
+<H2><A NAME="toc9">9.</A> <A HREF="Quakespasm.html#s9">Links </A></H2>
 
 <HR>
-<H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
 
+<H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
 
 <P>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
@@ -88,7 +84,6 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input - though no CD support.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
-
 
 <P>
 <UL>
@@ -103,7 +98,6 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
-
 
 <P><EM>Visit the 
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM></P>
@@ -195,7 +189,6 @@ quakespasm.pak contains a default.cfg which has been updated to give some defaul
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
 
-
 <P>See the Downloads section to get the sourcecode, then below for platform specific instructions.
 Quakespasm can also be built with the cross-platform Codeblocks.<BR>
 Quakespasm's (optional) custom data is now stored in the file <B>quakespasm.pak</B>. This file should be placed alongside your quakespasm binary and <B>id1</B> directory.</P>
@@ -226,35 +219,34 @@ Compile time options include
 
 <P>A Quakespasm App (including program launcher and update framework) can be made using the <B>Xcode</B> template found in the MacOSX directory.</P>
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
-<H2><A NAME="s5">5.</A> <A HREF="#toc5">Known Bugs </A></H2>
+<H2><A NAME="s5">5.</A> <A HREF="#toc5">Quake '2021 re-release' </A></H2>
 
-<P>Brightness issues should be fixed with GLSL gamma in 0.90.1, if your system supports OpenGL 2. For reference on older systems:<BR>
- 
-Some versions of Xorg and SDL have brightness issues.<BR>
-Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
-these patched libSDL binaries may help.
+<P>QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release content:
 <UL>
-<LI>
-<A HREF="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download">Gamma patched libSDL (i686-linux)</A></LI>
-<LI>
-<A HREF="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download">Gamma patched libSDL (x86_64-linux)</A></LI>
+<LI> Copy the quakespasm exe to your rerelease installation.</LI>
+<LI> Note: Do not mix-and-match original and rerelease contents: results may be unpredictable.</LI>
+<LI> Extract the English localization file in the rerelease directory:<BR>
+<EM>unzip QuakeEX.kpf localization/loc_english.txt</EM><BR>
+Note: the extracted file should be in the 'rerelease/localization' directory, not 'rerelease'.</LI>
+<LI> Run quakespasm as you normally do.</LI>
 </UL>
 </P>
+
 <H2><A NAME="s6">6.</A> <A HREF="#toc6">Changes</A></H2>
-
-
 
 <H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.93.3</A>
 </H2>
 
 <P>
 <UL>
+<LI> Initial support for playing the 'Quake 2021 re-release' content.</LI>
 <LI> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)</LI>
 <LI> Fixed buffer overflow with large char skybox names (sf.net bug/38)</LI>
 <LI> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)</LI>
 <LI> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)</LI>
 <LI> OpenGL: merged surface mark &amp; cull optimizations from vkQuake.</LI>
 <LI> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)</LI>
+<LI> Support for external vis files.</LI>
 <LI> Save: remove CR/LFs from level name to avoids broken saves, e.g. with autumn_sp map.</LI>
 <LI> Music: improvements to mp3 tag detection / skipping.</LI>
 <LI> Music: umx loader fix for malformed / crafted files.</LI>
@@ -366,7 +358,6 @@ these patched libSDL binaries may help.
 <H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.91.0</A>
 </H2>
 
-
 <H3>Bugfixes</H3>
 
 <P>
@@ -425,7 +416,6 @@ these patched libSDL binaries may help.
 </P>
 <H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.90.1</A>
 </H2>
-
 
 <H3>Bugfixes</H3>
 
@@ -710,16 +700,7 @@ these patched libSDL binaries may help.
 </P>
 
 
-<H2><A NAME="s7">7.</A> <A HREF="#toc7">Todo </A></H2>
-
-<P>
-<UL>
-<LI>Add uHexen2's first person camera (and menu item)</LI>
-<LI>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls and SDL2 doesn't support CD audio</LI>
-</UL>
-</P>
-
-<H2><A NAME="s8">8.</A> <A HREF="#toc8">Copyright </A></H2>
+<H2><A NAME="s7">7.</A> <A HREF="#toc7">Copyright </A></H2>
 
 <P>
 <UL>
@@ -730,7 +711,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="s9">9.</A> <A HREF="#toc9">Contact </A></H2>
+<H2><A NAME="s8">8.</A> <A HREF="#toc8">Contact </A></H2>
 
 <P>
 <UL>
@@ -745,8 +726,7 @@ these patched libSDL binaries may help.
 </UL>
 </P>
 
-<H2><A NAME="s10">10.</A> <A HREF="#toc10">Links </A></H2>
-
+<H2><A NAME="s9">9.</A> <A HREF="#toc9">Links </A></H2>
 
 <P>
 <UL>

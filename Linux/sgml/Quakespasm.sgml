@@ -137,29 +137,29 @@ A Quakespasm App (including program launcher and update framework) can be made u
 Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
 
-<sect> Known Bugs <p>
-Brightness issues should be fixed with GLSL gamma in 0.90.1, if your system supports OpenGL 2. For reference on older systems:
-<newline> 
-Some versions of Xorg and SDL have brightness issues.
-<newline>
-Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have Xorg >= 7.5 and broken brightness,
-these patched libSDL binaries may help.
+<sect> Quake '2021 re-release' <p>
+QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release content:
 <itemize>
-    <item><url url="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download"
-    name="Gamma patched libSDL (i686-linux)"></li>
-    <item><url url="http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download"
-    name="Gamma patched libSDL (x86_64-linux)">
+    <item> Copy the quakespasm exe to your rerelease installation.
+    <item> Note: Do not mix-and-match original and rerelease contents: results may be unpredictable.
+    <item> Extract the English localization file in the rerelease directory:<newline>
+           <em>unzip QuakeEX.kpf localization/loc_english.txt</em><newline>
+           Note: the extracted file should be in the 'rerelease/localization' directory, not 'rerelease'.
+    <item> Run quakespasm as you normally do.
 </itemize>
+
 <sect> Changes<p>
 
 <sect1> Changes in 0.93.3<p>
 <itemize>
+<item> Initial support for playing the 'Quake 2021 re-release' content.
 <item> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
 <item> Fixed buffer overflow with large char skybox names (sf.net bug/38)
 <item> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)
 <item> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
 <item> OpenGL: merged surface mark & cull optimizations from vkQuake.
 <item> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)
+<item> Support for external vis files.
 <item> Save: remove CR/LFs from level name to avoids broken saves, e.g. with autumn_sp map.
 <item> Music: improvements to mp3 tag detection / skipping.
 <item> Music: umx loader fix for malformed / crafted files.
@@ -545,12 +545,6 @@ these patched libSDL binaries may help.
 <item>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis
 </itemize>
 
-
-<sect> Todo <p>
-<itemize>
-<item>Add uHexen2's first person camera (and menu item)
-<item>Native CD audio support (if desired). cd_sdl.c doesn't have proper volume controls and SDL2 doesn't support CD audio
-</itemize>
 
 <sect> Copyright <p>
 <itemize>

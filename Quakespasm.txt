@@ -17,7 +17,8 @@
      4.2 Windows
      4.3 Mac OS X
 
-  5. Known Bugs
+  5. Quake '2021 re-release'
+
   6. Changes
      6.1 Changes in 0.93.3
      6.2 Changes in 0.93.2
@@ -48,10 +49,9 @@
      6.17 Changes in 0.85.2
      6.18 Changes in 0.85.1
 
-  7. Todo
-  8. Copyright
-  9. Contact
-  10. Links
+  7. Copyright
+  8. Contact
+  9. Links
 
   ______________________________________________________________________
 
@@ -182,35 +182,22 @@
   menu:
 
   o  Back - alias for TAB
-
   o  Start - alias for ESC
-
   o  DPad, analog sticks - mapped to arrow keys
-
   o  A Button - alias for ENTER in menus
-
   o  B Button - alias for ESC in menus
 
   These buttons can be bound normally:
 
   o  LTRIGGER - Left trigger
-
   o  RTRIGGER - Right trigger
-
   o  LSHOULDER - Left shoulder button
-
   o  RSHOULDER - Right shoulder button
-
   o  LTHUMB - Clicking the left thumbstick
-
   o  RTHUMB - Clicking the right thumbstick
-
   o  ABUTTON
-
   o  BBUTTON
-
   o  XBUTTON
-
   o  YBUTTON
 
   quakespasm.pak contains a default.cfg which has been updated to give
@@ -267,27 +254,30 @@
   building from a console.
 
 
-  5.  Known Bugs
+  5.  Quake '2021 re-release'
 
-  Brightness issues should be fixed with GLSL gamma in 0.90.1, if your
-  system supports OpenGL 2. For reference on older systems:
+  QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release
+  content:
 
-  Some versions of Xorg and SDL have brightness issues.
-  Try setting "export SDL_VIDEO_X11_NODIRECTCOLOR=1", or if you have
-  Xorg >= 7.5 and broken brightness, these patched libSDL binaries may
-  help.
+  o  Copy the quakespasm exe to your rerelease installation.
 
-  o  Gamma patched libSDL (i686-linux)
-     http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched.tgz/download
+  o  Note: Do not mix-and-match original and rerelease contents: results
+     may be unpredictable.
 
-  o  Gamma patched libSDL (x86_64-linux)
-     http://sf.net/projects/quakespasm/files/Support%20Files/libSDL_gamma_patched-AMD64.tgz/download
+  o  Extract the English localization file in the rerelease directory:
+     unzip QuakeEX.kpf localization/loc_english.txt
+     Note: the extracted file should be in the 'rerelease/localization'
+     directory, not 'rerelease'.
+
+  o  Run quakespasm as you normally do.
 
 
   6.  Changes
 
 
   6.1.  Changes in 0.93.3
+
+  o  Initial support for playing the 'Quake 2021 re-release' content.
 
   o  Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
 
@@ -302,6 +292,8 @@
   o  Reject lit files if they're the wrong size (eg hipnotic/start.bsp
      vs id1/start.lit or just a bsp that no longer has any coloured
      lits, etc)
+
+  o  Support for external vis files.
 
   o  Save: remove CR/LFs from level name to avoids broken saves, e.g.
      with autumn_sp map.
@@ -1032,15 +1024,7 @@
      r_wateralpha, r_dynamic, r_novis
 
 
-  7.  Todo
-
-  o  Add uHexen2's first person camera (and menu item)
-
-  o  Native CD audio support (if desired). cd_sdl.c doesn't have proper
-     volume controls and SDL2 doesn't support CD audio
-
-
-  8.  Copyright
+  7.  Copyright
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
@@ -1050,7 +1034,7 @@
      http://creativecommons.org/licenses/by/3.0/legalcode
 
 
-  9.  Contact
+  8.  Contact
 
   o  QuakeSpasm Project page:
      https://sourceforge.net/projects/quakespasm/
@@ -1063,7 +1047,7 @@
      Sander <mailto:gmail - dot - com - username - a.h.vandijk>
 
 
-  10.  Links
+  9.  Links
 
   o  QuakeSpasm Homepage: http://quakespasm.sourceforge.net
 
