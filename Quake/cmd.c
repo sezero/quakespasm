@@ -249,6 +249,9 @@ void Cmd_StuffCmds_f (void)
 	Cbuf_InsertText (cmds);
 }
 
+/* id1/pak0.pak from 2021 re-release doesn't have a default.cfg
+ * embedding Quakespasm's customized default.cfg for that...  */
+#include "default_cfg.h"
 
 /*
 ===============
@@ -268,6 +271,9 @@ void Cmd_Exec_f (void)
 
 	mark = Hunk_LowMark ();
 	f = (char *)COM_LoadHunkFile (Cmd_Argv(1), NULL);
+	if (!f && !strcmp(Cmd_Argv(1), "default.cfg")) {
+		f = default_cfg;	/* see above.. */
+	}
 	if (!f)
 	{
 		Con_Printf ("couldn't exec %s\n",Cmd_Argv(1));
