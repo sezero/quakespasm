@@ -1726,10 +1726,17 @@ void	VID_Init (void)
 	vid.colormap = host_colormap;
 	vid.fullbright = 256 - LittleLong (*((int *)vid.colormap + 2048));
 
+#if !defined(USE_SDL2)
 	// set window icon
 	PL_SetWindowIcon();
+#endif
 
 	VID_SetMode (width, height, refreshrate, bpp, fullscreen);
+
+#if defined(USE_SDL2)
+	// set window icon
+	PL_SetWindowIcon();
+#endif
 
 	GL_Init ();
 	GL_SetupState ();
