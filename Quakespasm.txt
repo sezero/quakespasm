@@ -62,7 +62,7 @@
   1.  About
 
   QuakeSpasm <http://quakespasm.sourceforge.net> is a modern, cross-
-  platform Quake 1 engine based on FitzQuake
+  platform Quake engine based on FitzQuake
   <http://www.celephais.net/fitzquake>.
 
   It includes support for 64 bit CPUs and custom music playback, a new
@@ -261,13 +261,10 @@
 
   o  Copy the quakespasm exe to your rerelease installation.
 
-  o  Note: Do not mix-and-match original and rerelease contents: results
-     may be unpredictable.
-
-  o  Extract the English localization file in the rerelease directory:
+  o  Extract the localization folder from QuakeEX.kpf (which is actually
+     a zip file), and place it in the rerelease directory.  Linux (Unix)
+     users can do the following, for example:
      unzip QuakeEX.kpf localization/loc_english.txt
-     Note: the extracted file should be in the 'rerelease/localization'
-     directory, not 'rerelease'.
 
   o  Run quakespasm as you normally do.
 
@@ -277,7 +274,8 @@
 
   6.1.  Changes in 0.93.3
 
-  o  Initial support for playing the 'Quake 2021 re-release' content.
+  o  Initial support for playing the 'Quake 2021 re-release' content
+     (thanks to Andrei Drexler for bulk of the work.)
 
   o  Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
 
@@ -288,6 +286,8 @@
   o  OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
 
   o  OpenGL: merged surface mark & cull optimizations from vkQuake.
+
+  o  Changed 'model has a skin taller than 480' error into a warning
 
   o  Reject lit files if they're the wrong size (eg hipnotic/start.bsp
      vs id1/start.lit or just a bsp that no longer has any coloured
@@ -313,22 +313,22 @@
 
   6.2.  Changes in 0.93.2
 
-  o Lightmaps are now dynamically allocated (from QSS), and
-    BLOCK_WIDTH/HEIGHT raised from 128 to 256.
+  o  Lightmaps are now dynamically allocated (from QSS), and
+     BLOCK_WIDTH/HEIGHT raised from 128 to 256.
 
-  o Fixed several uncheked limits that would crash the Slayer's
-    Testaments mod (sf.net bug #33).
+  o  Fixed several uncheked limits that would crash the Slayer's
+     Testaments mod (sf.net bug #33).
 
-  o Raised MAXALIASTRIS from 2048 to 4096, so that the Slayer's
-    Testaments mod works.
+  o  Raised MAXALIASTRIS from 2048 to 4096, so that the Slayer's
+     Testaments mod works.
 
-  o Fixed 'pants' and 'shirt' types so that those textures load
-    correctly on platforms where char is unsigned by default
-    (sf.net bug #28).
+  o  Fixed 'pants' and 'shirt' types so that those textures load
+     correctly on platforms where char is unsigned by default
+     (sf.net bug #28).
 
-  o Windows audio: WASAPI-enabled SDL2 dlls function properly now.
+  o  Windows audio: WASAPI-enabled SDL2 dlls function properly now.
 
-  o Update the third-party libraries. Other fixes/cleanups.
+  o  Update the third-party libraries. Other fixes/cleanups.
 
 
   6.3.  Changes in 0.93.1

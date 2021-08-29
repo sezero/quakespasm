@@ -76,7 +76,7 @@
 
 <P>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
-is a modern, cross-platform Quake 1 engine based on 
+is a modern, cross-platform Quake engine based on 
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake</A>.</P>
 <P>It includes support for 64 bit CPUs and custom music playback, a new
 sound driver, some graphical niceities, and numerous bug-fixes and other improvements.</P>
@@ -183,8 +183,8 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 <LI>XBUTTON</LI>
 <LI>YBUTTON</LI>
 </UL>
-
-quakespasm.pak contains a default.cfg which has been updated to give some default bindings. L/R shoulder buttons are bound to weapon switching, and L/R triggers are jump and attack.</P>
+</P>
+<P>quakespasm.pak contains a default.cfg which has been updated to give some default bindings. L/R shoulder buttons are bound to weapon switching, and L/R triggers are jump and attack.</P>
 <P>The controller support started as Jeremiah Sypult's implementation in Quakespasm-Rift and also uses ideas and code from LordHavoc (DarkPlaces).</P>
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
@@ -224,10 +224,11 @@ Compile time options include
 <P>QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release content:
 <UL>
 <LI> Copy the quakespasm exe to your rerelease installation.</LI>
-<LI> Note: Do not mix-and-match original and rerelease contents: results may be unpredictable.</LI>
-<LI> Extract the English localization file in the rerelease directory:<BR>
-<EM>unzip QuakeEX.kpf localization/loc_english.txt</EM><BR>
-Note: the extracted file should be in the 'rerelease/localization' directory, not 'rerelease'.</LI>
+<LI> Extract the localization folder from QuakeEX.kpf (which is actually a zip file), and place it in the rerelease directory.  Linux (Unix) users can do the following, for example:<BR>
+<PRE>
+unzip QuakeEX.kpf localization/loc_english.txt
+</PRE>
+</LI>
 <LI> Run quakespasm as you normally do.</LI>
 </UL>
 </P>
@@ -239,12 +240,13 @@ Note: the extracted file should be in the 'rerelease/localization' directory, no
 
 <P>
 <UL>
-<LI> Initial support for playing the 'Quake 2021 re-release' content.</LI>
+<LI> Initial support for playing the 'Quake 2021 re-release' content (thanks to Andrei Drexler for bulk of the work.)</LI>
 <LI> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)</LI>
 <LI> Fixed buffer overflow with large char skybox names (sf.net bug/38)</LI>
 <LI> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)</LI>
 <LI> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)</LI>
 <LI> OpenGL: merged surface mark &amp; cull optimizations from vkQuake.</LI>
+<LI> Changed 'model has a skin taller than 480' error into a warning</LI>
 <LI> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)</LI>
 <LI> Support for external vis files.</LI>
 <LI> Save: remove CR/LFs from level name to avoids broken saves, e.g. with autumn_sp map.</LI>
