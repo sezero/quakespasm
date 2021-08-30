@@ -20,7 +20,7 @@
   5. Quake '2021 re-release'
 
   6. Changes
-     6.1 Changes in 0.93.3
+     6.1 Changes in 0.94.0
      6.2 Changes in 0.93.2
      6.3 Changes in 0.93.1
      6.4 Changes in 0.93.0
@@ -53,8 +53,8 @@
   8. Contact
   9. Links
 
-  ______________________________________________________________________
 
+  ______________________________________________________________________
 
   Page last edited: August 2021
 
@@ -80,9 +80,6 @@
 
   o  Latest code repository:
      https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/
-
-  o  Automatic Builds (dead link):
-     http://quakespasm.ericwa.com/job/quakespasm-sdl2/
 
 
   3.  Hints
@@ -110,10 +107,10 @@
      cd_bsd.c etc..
 
   o  In windows, alternative CD drives are accessible by
-    "quakespasm -cddev F" (for example)
+     "quakespasm -cddev F" (for example)
 
   o  Quakespasm allows loading new games (mods) on the fly with
-    "game GAMENAME {-quoth/hipnotic/rogue}"
+     "game GAMENAME {-quoth/hipnotic/rogue}"
 
   o  Use "quakespasm -condebug" to save console log to "qconsole.log".
      SDL2 builds no longer generate stdout.txt/stderr.txt.
@@ -234,14 +231,14 @@
 
   o  make DEBUG=1 for debugging
 
-  o  make SDL_CONFIG=/PATH/TO/SDL-CONFIG for unusual SDL installations
+  o  make SDL_CONFIG=/PATH/TO/sdl-config for unusual SDL installations
 
   o  make USE_SDL2=1 to compile against SDL2 instead of SDL-1.2
 
   4.2.  Windows
 
   The QuakeSpasm developers cross-compile windows binaries using MinGW
-  <http://www.mingw.org> and Mingw-w64 <http://mingw-w64.sf.net>.
+  <http://www.mingw.org> and MinGW-w64 <http://mingw-w64.sf.net>.
 
   The project can also be built using Visual Studio 2005 (or newer).
 
@@ -256,7 +253,7 @@
 
   5.  Quake '2021 re-release'
 
-  QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release
+  QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release
   content:
 
   o  Copy the quakespasm exe to your rerelease installation.
@@ -272,7 +269,7 @@
   6.  Changes
 
 
-  6.1.  Changes in 0.93.3
+  6.1.  Changes in 0.94.0
 
   o  Initial support for playing the 'Quake 2021 re-release' content
      (thanks to Andrei Drexler for bulk of the work.)
@@ -292,6 +289,10 @@
   o  Reject lit files if they're the wrong size (eg hipnotic/start.bsp
      vs id1/start.lit or just a bsp that no longer has any coloured
      lits, etc)
+
+  o  External ent files are now versioned using 4 digit crc of the
+     original map's ents, like e1m1@c49d.ent, which is much safer. The
+     old method (e.g. e1m1.ent) still works but isn't recommended.
 
   o  Support for external vis files.
 
@@ -323,7 +324,7 @@
      Testaments mod works.
 
   o  Fixed 'pants' and 'shirt' types so that those textures load
-     correctly on platforms where char is unsigned by default
+     correctly on platforms where char type is unsigned by default
      (sf.net bug #28).
 
   o  Windows audio: WASAPI-enabled SDL2 dlls function properly now.
@@ -340,7 +341,7 @@
   o  Fixed buttons crushing players in 64-bit builds.
 
   o  Change controller movement to use cubic easing by default; added
-    "joy_exponent_move" cvar.
+     "joy_exponent_move" cvar.
 
   o  config.cfg is no longer written in case of a Sys_Error.
 
@@ -389,10 +390,10 @@
      scale forward/side/up speed by "cl_movespeedkey" (usually 2), and
      to make "speedkey" act as "slowkey".
 
-  o  Change "always run" menu option to offer three choices:
-   - off        (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200)
-   - vanilla    (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400)
-   - quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
+  o  Change the "always run" menu option to offer three choices:
+     off        (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200)
+     vanilla    (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400)
+     quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 
   o  New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2,
      1/3, or 1/4 resolution.

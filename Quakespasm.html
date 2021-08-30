@@ -8,10 +8,6 @@
 <H1>QuakeSpasm</H1>
 
 <H2></H2>
-<P>
-<PRE>
-</PRE>
-</P>
 <P><EM>Page last edited: August 2021</EM></P>
 
 <P>
@@ -42,7 +38,7 @@
 <H2><A NAME="toc6">6.</A> <A HREF="Quakespasm.html#s6">Changes</A></H2>
 
 <UL>
-<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.93.3</A>
+<LI><A NAME="toc6.1">6.1</A> <A HREF="Quakespasm.html#ss6.1">Changes in 0.94.0</A>
 <LI><A NAME="toc6.2">6.2</A> <A HREF="Quakespasm.html#ss6.2">Changes in 0.93.2</A>
 <LI><A NAME="toc6.3">6.3</A> <A HREF="Quakespasm.html#ss6.3">Changes in 0.93.1</A>
 <LI><A NAME="toc6.4">6.4</A> <A HREF="Quakespasm.html#ss6.4">Changes in 0.93.0</A>
@@ -70,9 +66,10 @@
 <P>
 <H2><A NAME="toc9">9.</A> <A HREF="Quakespasm.html#s9">Links </A></H2>
 
-<HR>
 
+<HR>
 <H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
+
 
 <P>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
@@ -85,39 +82,36 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
 
+
 <P>
 <UL>
 <LI>
 <A HREF="http://quakespasm.sourceforge.net/download.htm">Project Downloads</A></LI>
 <LI>
 <A HREF="https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/">Latest code repository</A></LI>
-<LI>
-<A HREF="http://quakespasm.ericwa.com/job/quakespasm-sdl2/">Automatic Builds (dead link)</A></LI>
 </UL>
 </P>
 
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
 
+
 <P><EM>Visit the 
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM></P>
-<P>
+<A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM>
 <UL>
-<LI>To disable some changes, use "<B>quakespasm -fitz</B>"
-</LI>
-<LI>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
-</LI>
-<LI>For different sound backend drivers use "<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"
-, where DRIVER may be alsa, dsp, pulse, esd ...
-</LI>
+<LI>To disable some changes, use "<B>quakespasm -fitz</B>"</LI>
+<LI>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.</LI>
+<LI>For different sound backend drivers use :<BR>
+"<B>SDL_AUDIODRIVER=</B><EM>DRIVER</EM><B> ./quakespasm</B>"<BR>
+where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 <LI><B>Shift+Escape</B> draws the Console.</LI>
 <LI>From the console, use <B>UP</B> to browse the command line history and
 <B>TAB</B> to autocomplete command and map names.</LI>
 <LI>There is currently no CD Music volume support and SDL2 doesn't support CD audio. cd_sdl.c needs replacing with cd_linux.c, cd_bsd.c etc..</LI>
-<LI>In windows, alternative CD drives are accessible by "<B>quakespasm -cddev F</B>" (for example)
-</LI>
-<LI>Quakespasm allows loading new games (mods) on the fly with "<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"
-</LI>
+<LI>In windows, alternative CD drives are accessible by<BR>
+"<B>quakespasm -cddev F</B>" (for example)</LI>
+<LI>Quakespasm allows loading new games (mods) on the fly with<BR>
+"<B>game</B> <EM>GAMENAME {-quoth/hipnotic/rogue}</EM>"</LI>
 <LI>Use "<B>quakespasm -condebug</B>" to save console log to "qconsole.log". SDL2 builds no longer generate stdout.txt/stderr.txt.</LI>
 </UL>
 </P>
@@ -187,7 +181,9 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 <P>quakespasm.pak contains a default.cfg which has been updated to give some default bindings. L/R shoulder buttons are bound to weapon switching, and L/R triggers are jump and attack.</P>
 <P>The controller support started as Jeremiah Sypult's implementation in Quakespasm-Rift and also uses ideas and code from LordHavoc (DarkPlaces).</P>
 
+
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
+
 
 <P>See the Downloads section to get the sourcecode, then below for platform specific instructions.
 Quakespasm can also be built with the cross-platform Codeblocks.<BR>
@@ -202,7 +198,7 @@ Compile time options include
 <UL>
 <LI><B>make DO_USERDIRS=1</B> to include user directories support</LI>
 <LI><B>make DEBUG=1</B> for debugging</LI>
-<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/SDL-CONFIG</EM> for unusual SDL installations</LI>
+<LI><B>make SDL_CONFIG=</B><EM>/PATH/TO/sdl-config</EM> for unusual SDL installations</LI>
 <LI><B>make USE_SDL2=1</B> to compile against SDL2 instead of SDL-1.2</LI>
 </UL>
 </P>
@@ -212,7 +208,7 @@ Compile time options include
 
 <P>The QuakeSpasm developers cross-compile windows binaries using 
 <A HREF="http://www.mingw.org">MinGW</A> and 
-<A HREF="http://mingw-w64.sf.net">Mingw-w64</A>.</P>
+<A HREF="http://mingw-w64.sf.net">MinGW-w64</A>.</P>
 <P>The project can also be built using Visual Studio 2005 (or newer).</P>
 <H2><A NAME="ss4.3">4.3</A> <A HREF="#toc4.3">Mac OS X </A>
 </H2>
@@ -221,7 +217,7 @@ Compile time options include
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Quake '2021 re-release' </A></H2>
 
-<P>QuakeSpasm 0.93.3 has initial support for playing the 2021 re-release content:
+<P>QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content:
 <UL>
 <LI> Copy the quakespasm exe to your rerelease installation.</LI>
 <LI> Extract the localization folder from QuakeEX.kpf (which is actually a zip file), and place it in the rerelease directory.  Linux (Unix) users can do the following, for example:<BR>
@@ -233,9 +229,12 @@ unzip QuakeEX.kpf localization/loc_english.txt
 </UL>
 </P>
 
+
 <H2><A NAME="s6">6.</A> <A HREF="#toc6">Changes</A></H2>
 
-<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.93.3</A>
+
+
+<H2><A NAME="ss6.1">6.1</A> <A HREF="#toc6.1">Changes in 0.94.0</A>
 </H2>
 
 <P>
@@ -248,6 +247,7 @@ unzip QuakeEX.kpf localization/loc_english.txt
 <LI> OpenGL: merged surface mark &amp; cull optimizations from vkQuake.</LI>
 <LI> Changed 'model has a skin taller than 480' error into a warning</LI>
 <LI> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)</LI>
+<LI> External ent files are now versioned using 4 digit crc of the original map's ents, like e1m1@c49d.ent, which is much safer. The old method (e.g. e1m1.ent) still works but isn't recommended.</LI>
 <LI> Support for external vis files.</LI>
 <LI> Save: remove CR/LFs from level name to avoids broken saves, e.g. with autumn_sp map.</LI>
 <LI> Music: improvements to mp3 tag detection / skipping.</LI>
@@ -265,7 +265,7 @@ unzip QuakeEX.kpf localization/loc_english.txt
 <LI> Lightmaps are now dynamically allocated (from QSS), and BLOCK_WIDTH/HEIGHT raised from 128 to 256.</LI>
 <LI> Fixed several uncheked limits that would crash the Slayer's Testaments mod (sf.net bug #33).</LI>
 <LI> Raised MAXALIASTRIS from 2048 to 4096, so that the Slayer's Testaments mod works.</LI>
-<LI> Fixed 'pants' and 'shirt' types so that those textures load correctly on platforms where char is unsigned by default (sf.net bug #28).</LI>
+<LI> Fixed 'pants' and 'shirt' types so that those textures load correctly on platforms where char type is unsigned by default (sf.net bug #28).</LI>
 <LI> Windows audio: WASAPI-enabled SDL2 dlls function properly now.</LI>
 <LI> Update the third-party libraries. Other fixes/cleanups.</LI>
 </UL>
@@ -305,11 +305,11 @@ unzip QuakeEX.kpf localization/loc_english.txt
 <LI> Change default screenshot format to png. The 'screenshot' command now supports optional format (tga, png or jpg) and quality (1-100) arguments.</LI>
 <LI> Revert "always run" changes from 0.85.9 and move the QuakeSpasm customizations to a new "cl_alwaysrun" cvar: Set to 1 in order to scale forward/side/up speed by "cl_movespeedkey" (usually 2), and to make "speedkey" act as "slowkey".</LI>
 <LI> Change the "always run" menu option to offer three choices:
-<UL>
-<LI> off        (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200)</LI>
-<LI> vanilla    (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400)</LI>
-<LI> quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)</LI>
-</UL>
+<PRE>
+off        (cl_alwaysrun 0, cl_forwardspeed 200, cl_backspeed 200)
+vanilla    (cl_alwaysrun 0, cl_forwardspeed 400, cl_backspeed 400)
+quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
+</PRE>
 </LI>
 <LI> New "r_scale" cvar. Set to 2, 3, or 4 to render the view at 1/2, 1/3, or 1/4 resolution.</LI>
 <LI> New "r_viewmodel_quake" cvar. Set to 1 for WinQuake gun position (from MarkV).</LI>
@@ -359,6 +359,7 @@ unzip QuakeEX.kpf localization/loc_english.txt
 </P>
 <H2><A NAME="ss6.7">6.7</A> <A HREF="#toc6.7">Changes in 0.91.0</A>
 </H2>
+
 
 <H3>Bugfixes</H3>
 
@@ -418,6 +419,7 @@ unzip QuakeEX.kpf localization/loc_english.txt
 </P>
 <H2><A NAME="ss6.8">6.8</A> <A HREF="#toc6.8">Changes in 0.90.1</A>
 </H2>
+
 
 <H3>Bugfixes</H3>
 
@@ -481,7 +483,8 @@ unzip QuakeEX.kpf localization/loc_english.txt
 <P>
 <UL>
 <LI> Fix issues on Windows systems with DPI scaling.</LI>
-<LI> Unix/Mac user directories support. Disabled by default, 'make DO_USERDIRS=1' to enable it.</LI>
+<LI> Unix/Mac user directories support. Disabled by default,<BR>
+'make DO_USERDIRS=1' to enable it.</LI>
 <LI> SDL2 support. Disabled by default, 'make USE_SDL2=1' to enable it.</LI>
 <LI> Revised keyboard input code.</LI>
 <LI> Revised/improved the 'game' command, i.e. on-the-fly mod changing. It now accepts an optional second argument for mission packs or quoth support i.e. -hipnotic, -rogue, or -quoth. For example, for WarpSpasm: "game warp -quoth"</LI>
@@ -729,6 +732,7 @@ unzip QuakeEX.kpf localization/loc_english.txt
 </P>
 
 <H2><A NAME="s9">9.</A> <A HREF="#toc9">Links </A></H2>
+
 
 <P>
 <UL>
