@@ -284,6 +284,8 @@
 
   o  OpenGL: merged surface mark & cull optimizations from vkQuake.
 
+  o  Raised MAX_GLTEXTURES limit from 2048 to 4096 for now.
+
   o  Changed 'model has a skin taller than 480' error into a warning
 
   o  Reject lit files if they're the wrong size (eg hipnotic/start.bsp

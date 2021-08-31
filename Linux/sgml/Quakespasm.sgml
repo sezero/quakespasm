@@ -155,6 +155,7 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content:
 <item> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)
 <item> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
 <item> OpenGL: merged surface mark & cull optimizations from vkQuake.
+<item> Raised MAX_GLTEXTURES limit from 2048 to 4096 for now.
 <item> Changed 'model has a skin taller than 480' error into a warning
 <item> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)
 <item> External ent files are now versioned using 4 digit crc of the original map's ents, like e1m1@c49d.ent, which is much safer. The old method (e.g. e1m1.ent) still works but isn't recommended.

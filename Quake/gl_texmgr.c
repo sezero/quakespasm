@@ -33,7 +33,7 @@ static cvar_t	gl_max_size = {"gl_max_size", "0", CVAR_NONE};
 static cvar_t	gl_picmip = {"gl_picmip", "0", CVAR_NONE};
 static GLint	gl_hardware_maxsize;
 
-#define	MAX_GLTEXTURES	2048
+#define	MAX_GLTEXTURES	4096
 static int numgltextures;
 static gltexture_t	*active_gltextures, *free_gltextures;
 gltexture_t		*notexture, *nulltexture;
