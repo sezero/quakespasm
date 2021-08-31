@@ -2530,7 +2530,7 @@ void LOC_LoadFile (const char *file)
 	Con_Printf("\nLanguage initialization\n");
 
 	q_snprintf(path, sizeof(path), "%s/%s", com_basedir, file);
-	fp = fopen(path, "r");
+	fp = fopen(path, "rb");
 	if (!fp) goto fail;
 	fseek(fp, 0, SEEK_END);
 	i = ftell(fp);
