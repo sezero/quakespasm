@@ -206,6 +206,7 @@ OBJS = strlcat.obj &
 	wad.obj &
 	cmd.obj &
 	common.obj &
+	miniz.obj &
 	crc.obj &
 	cvar.obj &
 	cfgfile.obj &

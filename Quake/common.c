@@ -26,6 +26,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "q_ctype.h"
 #include <errno.h>
 
+#include "miniz.h"
+
 static char	*largv[MAX_NUM_ARGVS + 1];
 static char	argvdummy[] = " ";
 
@@ -2503,6 +2505,30 @@ unsigned COM_HashString (const char *str)
 	return hash;
 }
 
+static size_t mz_zip_file_read_func(void *opaque, mz_uint64 ofs, void *buf, size_t n)
+{
+	if (SDL_RWseek((SDL_RWops*)opaque, (Sint64)ofs, RW_SEEK_SET) < 0)
+		return 0;
+	#ifdef USE_SDL2
+	return SDL_RWread((SDL_RWops*)opaque, buf, 1, n);
+	#else
+	else {
+		int r = SDL_RWread((SDL_RWops*)opaque, buf, 1, n);
+		return (r < 0)? 0 : r;
+	}
+	#endif
+}
+
+#ifndef USE_SDL2 /* no SDL_RWsize in SDL-1.2 */
+static Sint32 SDLCALL SDL_RWsize(SDL_RWops *rw) {
+	Sint32 pos, size;
+	if ((pos=SDL_RWtell(rw))<0) return -1;
+	size = SDL_RWseek(rw, 0, RW_SEEK_END);
+	SDL_RWseek(rw, pos, RW_SEEK_SET);
+	return size;
+}
+#endif
+
 /*
 ================
 LOC_LoadFile
@@ -2511,9 +2537,13 @@ LOC_LoadFile
 void LOC_LoadFile (const char *file)
 {
 	char path[1024];
-	FILE *fp = NULL;
 	int i,lineno;
 	char *cursor;
+
+	SDL_RWops *rw = NULL;
+	Sint64 sz;
+	mz_zip_archive archive;
+	size_t size = 0;
 
 	// clear existing data
 	if (localization.text)
@@ -2529,22 +2559,41 @@ void LOC_LoadFile (const char *file)
 
 	Con_Printf("\nLanguage initialization\n");
 
+	memset(&archive, 0, sizeof(archive));
 	q_snprintf(path, sizeof(path), "%s/%s", com_basedir, file);
-	fp = fopen(path, "rb");
-	if (!fp) goto fail;
-	fseek(fp, 0, SEEK_END);
-	i = ftell(fp);
-	if (i <= 0) goto fail;
-	localization.text = (char *) calloc(1, i+1);
-	if (!localization.text)
+	rw = SDL_RWFromFile(path, "rb");
+	if (!rw)
 	{
-fail:		if (fp) fclose(fp);
-		Con_Printf("Couldn't load '%s'\nfrom '%s'\n", file, com_basedir);
-		return;
+		q_snprintf(path, sizeof(path), "%s/QuakeEX.kpf", com_basedir);
+		rw = SDL_RWFromFile(path, "rb");
+		if (!rw) goto fail;
+		sz = SDL_RWsize(rw);
+		if (sz <= 0) goto fail;
+		archive.m_pRead = mz_zip_file_read_func;
+		archive.m_pIO_opaque = rw;
+		if (!mz_zip_reader_init(&archive, sz, 0)) goto fail;
+		localization.text = (char *) mz_zip_reader_extract_file_to_heap(&archive, file, &size, 0);
+		if (!localization.text) goto fail;
+		mz_zip_reader_end(&archive);
+		SDL_RWclose(rw);
+		localization.text = (char *) realloc(localization.text, size+1);
+		localization.text[size] = 0;
 	}
-	fseek(fp, 0, SEEK_SET);
-	fread(localization.text, 1, i, fp);
-	fclose(fp);
+	else
+	{
+		sz = SDL_RWsize(rw);
+		if (sz <= 0) goto fail;
+		localization.text = (char *) calloc(1, sz+1);
+		if (!localization.text)
+		{
+fail:			mz_zip_reader_end(&archive);
+			if (rw) SDL_RWclose(rw);
+			Con_Printf("Couldn't load '%s'\nfrom '%s'\n", file, com_basedir);
+			return;
+		}
+		SDL_RWread(rw, localization.text, 1, sz);
+		SDL_RWclose(rw);
+	}
 
 	cursor = localization.text;
 

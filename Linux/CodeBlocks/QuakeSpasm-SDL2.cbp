@@ -174,6 +174,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../Quake/menu.h" />
+		<Unit filename="../../Quake/miniz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../../Quake/miniz.h" />
 		<Unit filename="../../Quake/modelgen.h" />
 		<Unit filename="../../Quake/net.h" />
 		<Unit filename="../../Quake/net_bsd.c">

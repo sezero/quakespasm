@@ -16,42 +16,41 @@
      4.1 Linux/Unix
      4.2 Windows
      4.3 Mac OS X
+     4.4 Quake '2021 re-release'
 
-  5. Quake '2021 re-release'
+  5. Changes
+     5.1 Changes in 0.94.0
+     5.2 Changes in 0.93.2
+     5.3 Changes in 0.93.1
+     5.4 Changes in 0.93.0
+     5.5 Changes in 0.92.1
+     5.6 Changes in 0.92.0
+     5.7 Changes in 0.91.0
+        5.7.1 Bugfixes
+        5.7.2 Visual improvements
+        5.7.3 Interface improvements
+        5.7.4 Code cleanup / Other
+        5.7.5 Raised limits
+     5.8 Changes in 0.90.1
+        5.8.1 Bugfixes
+        5.8.2 Performance
+        5.8.3 Visual improvements
+        5.8.4 Interface improvements
+        5.8.5 Code cleanup
+     5.9 Changes in 0.90.0
+     5.10 Changes in 0.85.9
+     5.11 Changes in 0.85.8
+     5.12 Changes in 0.85.7
+     5.13 Changes in 0.85.6
+     5.14 Changes in 0.85.5
+     5.15 Changes in 0.85.4
+     5.16 Changes in 0.85.3
+     5.17 Changes in 0.85.2
+     5.18 Changes in 0.85.1
 
-  6. Changes
-     6.1 Changes in 0.94.0
-     6.2 Changes in 0.93.2
-     6.3 Changes in 0.93.1
-     6.4 Changes in 0.93.0
-     6.5 Changes in 0.92.1
-     6.6 Changes in 0.92.0
-     6.7 Changes in 0.91.0
-        6.7.1 Bugfixes
-        6.7.2 Visual improvements
-        6.7.3 Interface improvements
-        6.7.4 Code cleanup / Other
-        6.7.5 Raised limits
-     6.8 Changes in 0.90.1
-        6.8.1 Bugfixes
-        6.8.2 Performance
-        6.8.3 Visual improvements
-        6.8.4 Interface improvements
-        6.8.5 Code cleanup
-     6.9 Changes in 0.90.0
-     6.10 Changes in 0.85.9
-     6.11 Changes in 0.85.8
-     6.12 Changes in 0.85.7
-     6.13 Changes in 0.85.6
-     6.14 Changes in 0.85.5
-     6.15 Changes in 0.85.4
-     6.16 Changes in 0.85.3
-     6.17 Changes in 0.85.2
-     6.18 Changes in 0.85.1
-
-  7. Copyright
-  8. Contact
-  9. Links
+  6. Copyright
+  7. Contact
+  8. Links
 
 
   ______________________________________________________________________
@@ -250,26 +249,17 @@
   Alternatively, have a look at Makefile.darwin for more instructions on
   building from a console.
 
-
-  5.  Quake '2021 re-release'
+  4.4.  Quake '2021 re-release'
 
   QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release
-  content:
-
-  o  Copy the quakespasm exe to your rerelease installation.
-
-  o  Extract the localization folder from QuakeEX.kpf (which is actually
-     a zip file), and place it in the rerelease directory.  Linux (Unix)
-     users can do the following, for example:
-     unzip QuakeEX.kpf localization/loc_english.txt
-
-  o  Run quakespasm as you normally do.
+  content: Copy the quakespasm binary to your rerelease installation and
+  run quakespasm as you normally do.
 
 
-  6.  Changes
+  5.  Changes
 
 
-  6.1.  Changes in 0.94.0
+  5.1.  Changes in 0.94.0
 
   o  Initial support for playing the 'Quake 2021 re-release' content
      (thanks to Andrei Drexler for bulk of the work.)
@@ -314,7 +304,7 @@
   o  Source repository moved to git.
 
 
-  6.2.  Changes in 0.93.2
+  5.2.  Changes in 0.93.2
 
   o  Lightmaps are now dynamically allocated (from QSS), and
      BLOCK_WIDTH/HEIGHT raised from 128 to 256.
@@ -334,7 +324,7 @@
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
-  6.3.  Changes in 0.93.1
+  5.3.  Changes in 0.93.1
 
   o  Fixed a fog regression which was introduced in 0.93.0.
 
@@ -352,7 +342,7 @@
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
-  6.4.  Changes in 0.93.0
+  5.4.  Changes in 0.93.0
 
   o  Raise default "joy_deadzone_trigger" cvar to 0.2.
 
@@ -437,7 +427,7 @@
   o  Update the third-party libraries.
 
 
-  6.5.  Changes in 0.92.1
+  5.5.  Changes in 0.92.1
 
   o  Fixed large menu scale factors (was broken in 0.92.0).
 
@@ -446,7 +436,7 @@
   o  Updated some of the third-party libraries.
 
 
-  6.6.  Changes in 0.92.0
+  5.6.  Changes in 0.92.0
 
   o  SDL2 Game Controller support.
 
@@ -483,9 +473,9 @@
   o  Updated some of the third-party libraries. Other fixes/clean-ups.
 
 
-  6.7.  Changes in 0.91.0
+  5.7.  Changes in 0.91.0
 
-  6.7.1.  Bugfixes
+  5.7.1.  Bugfixes
 
   o  Fix unwanted fog mode change upon video restart.
 
@@ -521,7 +511,7 @@
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 
-  6.7.2.  Visual improvements
+  5.7.2.  Visual improvements
 
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
      specific liquid opacities (from DirectQ/RMQEngine, non-archived,
@@ -532,18 +522,18 @@
   o  GLSL gamma is now supported on older hardware without NPOT
      extension.
 
-  6.7.3.  Interface improvements
+  5.7.3.  Interface improvements
 
   o  New r_pos command to show player position.
 
   o  NaN detection in traceline with "developer 1" set now warns instead
      of errors.
 
-  6.7.4.  Code cleanup / Other
+  5.7.4.  Code cleanup / Other
 
   o  Update third-party libraries.
 
-  6.7.5.  Raised limits
+  5.7.5.  Raised limits
 
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
@@ -555,9 +545,9 @@
   o  Raised MAX_SFX to 1024 (was 512).
 
 
-  6.8.  Changes in 0.90.1
+  5.8.  Changes in 0.90.1
 
-  6.8.1.  Bugfixes
+  5.8.1.  Bugfixes
 
   o  Fix dynamic light artifact where changing lightmap are rendered one
      frame late (bug introduced in 0.90.0).
@@ -580,13 +570,13 @@
 
   o  Fix crash on out-of-bounds skin number.
 
-  6.8.2.  Performance
+  5.8.2.  Performance
 
   o  Use multithreaded OpenGL on OS X for better performance.
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
-  6.8.3.  Visual improvements
+  5.8.3.  Visual improvements
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -600,7 +590,7 @@
 
   o  r_noshadow_list cvar added (from MarkV.)
 
-  6.8.4.  Interface improvements
+  5.8.4.  Interface improvements
 
   o  Support pausing demo playback with the "pause" command.
 
@@ -617,14 +607,14 @@
      "trying to load ent", "bad chunk length", "meshing",
      "PR_AlocStringSlots: realloc'ing"
 
-  6.8.5.  Code cleanup
+  5.8.5.  Code cleanup
 
   o  Clean up IDE project files to build on fresh systems.
 
   o  Update 3rd-party libraries.
 
 
-  6.9.  Changes in 0.90.0
+  5.9.  Changes in 0.90.0
 
   o  Fix issues on Windows systems with DPI scaling.
 
@@ -732,7 +722,7 @@
   o  Other fixes and clean-ups.
 
 
-  6.10.  Changes in 0.85.9
+  5.10.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -779,7 +769,7 @@
   o  Several other minor fixes/cleanups.
 
 
-  6.11.  Changes in 0.85.8
+  5.11.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -826,7 +816,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  6.12.  Changes in 0.85.7
+  5.12.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -852,7 +842,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  6.13.  Changes in 0.85.6
+  5.13.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -865,7 +855,7 @@
   o  Minor SDL video fixes.
 
 
-  6.14.  Changes in 0.85.5
+  5.14.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -896,7 +886,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  6.15.  Changes in 0.85.4
+  5.15.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -924,7 +914,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  6.16.  Changes in 0.85.3
+  5.16.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -961,7 +951,7 @@
      some other CD tweaks.
 
 
-  6.17.  Changes in 0.85.2
+  5.17.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -989,7 +979,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  6.18.  Changes in 0.85.1
+  5.18.  Changes in 0.85.1
 
   o  64 bit CPU support
 
@@ -1027,7 +1017,7 @@
      r_wateralpha, r_dynamic, r_novis
 
 
-  7.  Copyright
+  6.  Copyright
 
   o  Quake and Quakespasm are released under the GNU GENERAL PUBLIC
      LICENSE Version 2: http://www.gnu.org/licenses/gpl-2.0.html
@@ -1037,7 +1027,7 @@
      http://creativecommons.org/licenses/by/3.0/legalcode
 
 
-  8.  Contact
+  7.  Contact
 
   o  QuakeSpasm Project page:
      https://sourceforge.net/projects/quakespasm/
@@ -1050,7 +1040,7 @@
      Sander <mailto:gmail - dot - com - username - a.h.vandijk>
 
 
-  9.  Links
+  8.  Links
 
   o  QuakeSpasm Homepage: http://quakespasm.sourceforge.net
 

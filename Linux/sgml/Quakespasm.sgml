@@ -134,15 +134,8 @@ A Quakespasm App (including program launcher and update framework) can be made u
 Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
 
-
-<sect> Quake '2021 re-release' <p>
-QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content:
-<itemize>
-    <item> Copy the quakespasm exe to your rerelease installation.
-    <item> Extract the localization folder from QuakeEX.kpf (which is actually a zip file), and place it in the rerelease directory.  Linux (Unix) users can do the following, for example:<newline>
-           <verb>unzip QuakeEX.kpf localization/loc_english.txt</verb>
-    <item> Run quakespasm as you normally do.
-</itemize>
+<sect1> Quake '2021 re-release' <p>
+QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run quakespasm as you normally do.</p>
 
 
 <sect> Changes<p>
