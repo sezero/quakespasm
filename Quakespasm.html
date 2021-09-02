@@ -226,12 +226,13 @@ Compile time options include
 
 <P>
 <UL>
-<LI> Initial support for playing the 'Quake 2021 re-release' content (thanks to Andrei Drexler for bulk of the work.)</LI>
+<LI> Initial support for playing the 'Quake 2021 re-release' content (thanks to Andrei Drexler for bulk of the work, Guillaume Plourde for Q64 bsp format support.)</LI>
 <LI> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)</LI>
 <LI> Fixed buffer overflow with large char skybox names (sf.net bug/38)</LI>
 <LI> Fixed a missing MAXALIASFRAMES bounds check (sf.net bug/37)</LI>
 <LI> OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)</LI>
 <LI> OpenGL: merged surface mark &amp; cull optimizations from vkQuake.</LI>
+<LI> Compensate viewmodel distortion at fov &gt; 90 (based on code from Qrack, thanks to Andrei Drexler for the patch.)</LI>
 <LI> Raised MAX_GLTEXTURES limit from 2048 to 4096 for now.</LI>
 <LI> Changed 'model has a skin taller than 480' error into a warning</LI>
 <LI> Reject lit files if they're the wrong size (eg hipnotic/start.bsp vs id1/start.lit or just a bsp that no longer has any coloured lits, etc)</LI>
@@ -452,7 +453,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Support pausing demo playback with the "pause" command.</LI>
 <LI> Autocompletion for "game", "record", "playdemo".</LI>
 <LI> Experimental windowed fullscreen mode available with vid_desktopfullscreen 1 (only in SDL2 builds, takes effect upon entering fullscreen mode the next time.)</LI>
-<LI> Silence "exceeded standard limit" messages unless developer cvar is >= 1.</LI>
+<LI> Silence "exceeded standard limit" messages unless developer cvar is &gt;= 1.</LI>
 <LI> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
 </UL>
 </P>

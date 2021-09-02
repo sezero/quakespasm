@@ -262,7 +262,8 @@
   5.1.  Changes in 0.94.0
 
   o  Initial support for playing the 'Quake 2021 re-release' content
-     (thanks to Andrei Drexler for bulk of the work.)
+     (thanks to Andrei Drexler for bulk of the work, Guillaume Plourde
+     for Q64 bsp format support.)
 
   o  Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
 
@@ -273,6 +274,9 @@
   o  OpenGL: workaround Intel UHD 600 driver bug (sf.net bug/39)
 
   o  OpenGL: merged surface mark & cull optimizations from vkQuake.
+
+  o  Compensate viewmodel distortion at fov > 90 (based on code from
+     Qrack, thanks to Andrei Drexler for the patch.)
 
   o  Raised MAX_GLTEXTURES limit from 2048 to 4096 for now.
 
