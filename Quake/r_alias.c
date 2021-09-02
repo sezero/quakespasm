@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 extern cvar_t r_drawflat, gl_overbright_models, gl_fullbrights, r_lerpmodels, r_lerpmove; //johnfitz
+extern cvar_t scr_fov, cl_gun_fovscale;
 
 //up to 16 color translated skins
 gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz -- changed to an array of pointers
@@ -629,6 +630,7 @@ void R_DrawAliasModel (entity_t *e)
 	gltexture_t	*tx, *fb;
 	lerpdata_t	lerpdata;
 	qboolean	alphatest = !!(e->model->flags & MF_HOLEY);
+	float		fovscale = 1.0f;
 
 	//
 	// setup pose/lerp data -- do it first so we don't miss updates due to culling
@@ -646,10 +648,13 @@ void R_DrawAliasModel (entity_t *e)
 	//
 	// transform it
 	//
+	if (e == &cl.viewent && scr_fov.value > 90.f && cl_gun_fovscale.value)
+		fovscale = tan(scr_fov.value * (0.5f * M_PI / 180.f));
+
 	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin, lerpdata.angles);
-	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
-	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);
+	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1] * fovscale, paliashdr->scale_origin[2] * fovscale);
+	glScalef (paliashdr->scale[0], paliashdr->scale[1] * fovscale, paliashdr->scale[2] * fovscale);
 
 	//
 	// random stuff
