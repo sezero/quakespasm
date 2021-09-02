@@ -416,6 +416,26 @@ qboolean Mod_CheckFullbrights (byte *pixels, int count)
 
 /*
 =================
+Mod_CheckAnimTextureArrayQ64
+
+Quake64 bsp
+Check if we have any missing textures in the array
+=================
+*/
+qboolean Mod_CheckAnimTextureArrayQ64(texture_t *anims[], int numTex)
+{
+	int i;
+
+	for (i = 0; i < numTex; i++)
+	{
+		if (!anims[i])
+			return false;
+	}
+	return true;
+}
+
+/*
+=================
 Mod_LoadTextures
 =================
 */
@@ -436,6 +456,8 @@ void Mod_LoadTextures (lump_t *l)
 	byte		*data;
 	extern byte *hunk_base;
 //johnfitz
+
+	miptex64_t *mt64; //Quake64
 
 	//johnfitz -- don't return early if no textures; still need to create dummy texture
 	if (!l->filelen)
@@ -467,7 +489,11 @@ void Mod_LoadTextures (lump_t *l)
 			mt->offsets[j] = LittleLong (mt->offsets[j]);
 
 		if ( (mt->width & 15) || (mt->height & 15) )
-			Sys_Error ("Texture %s is not 16 aligned", mt->name);
+		{
+			if (loadmodel->bspversion != BSPVERSION_QUAKE64)
+				Sys_Error ("Texture %s is not 16 aligned", mt->name);
+		}
+
 		pixels = mt->width*mt->height/64*85;
 		tx = (texture_t *) Hunk_AllocName (sizeof(texture_t) +pixels, loadname );
 		loadmodel->textures[i] = tx;
@@ -488,11 +514,22 @@ void Mod_LoadTextures (lump_t *l)
 			Con_DPrintf("Texture %s extends past end of lump\n", mt->name);
 			pixels = q_max(0, (mod_base + l->fileofs + l->filelen) - (byte*)(mt+1));
 		}
-		memcpy ( tx+1, mt+1, pixels);
 
 		tx->update_warp = false; //johnfitz
 		tx->warpimage = NULL; //johnfitz
 		tx->fullbright = NULL; //johnfitz
+		tx->shift = 0;	// Q64 only
+
+		if (loadmodel->bspversion != BSPVERSION_QUAKE64)
+		{
+			memcpy ( tx+1, mt+1, pixels);
+		}
+		else
+		{ // Q64 bsp
+			mt64 = (miptex64_t *)mt;
+			tx->shift = LittleLong (mt64->shift);
+			memcpy ( tx+1, mt64+1, pixels);
+		}
 
 		//johnfitz -- lots of changes
 		if (!isDedicated) //no texture uploading for dedicated server
@@ -669,6 +706,9 @@ void Mod_LoadTextures (lump_t *l)
 				Sys_Error ("Bad animating texture %s", tx->name);
 		}
 
+		if (loadmodel->bspversion == BSPVERSION_QUAKE64 && !Mod_CheckAnimTextureArrayQ64(anims, maxanim))
+			continue; // Just pretend this is a normal texture
+
 #define	ANIM_CYCLE	2
 	// link them all together
 		for (j=0 ; j<maxanim ; j++)
@@ -707,7 +747,7 @@ void Mod_LoadLighting (lump_t *l)
 {
 	int i, mark;
 	byte *in, *out, *data;
-	byte d;
+	byte d, q64_b0, q64_b1;
 	char litfilename[MAX_OSPATH];
 	unsigned int path_id;
 
@@ -757,6 +797,29 @@ void Mod_LoadLighting (lump_t *l)
 	// LordHavoc: no .lit found, expand the white lighting data to color
 	if (!l->filelen)
 		return;
+
+	// Quake64 bsp lighmap data
+	if (loadmodel->bspversion == BSPVERSION_QUAKE64)
+	{
+		// RGB lightmap samples are packed in 16bits.
+		// RRRRR GGGGG BBBBBB
+
+		loadmodel->lightdata = (byte *) Hunk_AllocName ( (l->filelen / 2)*3, litfilename);
+		in = mod_base + l->fileofs;
+		out = loadmodel->lightdata;
+
+		for (i = 0;i < (l->filelen / 2) ;i++)
+		{
+			q64_b0 = *in++;
+			q64_b1 = *in++;
+
+			*out++ = q64_b0 & 0xf8;/* 0b11111000 */
+			*out++ = ((q64_b0 & 0x07) << 5) + ((q64_b1 & 0xc0) >> 5);/* 0b00000111, 0b11000000 */
+			*out++ = (q64_b1 & 0x3f) << 2;/* 0b00111111 */
+		}
+		return;
+	}
+
 	loadmodel->lightdata = (byte *) Hunk_AllocName ( l->filelen*3, litfilename);
 	in = loadmodel->lightdata + l->filelen*2; // place the file at the end, so it will not be overwritten until the very last write
 	out = loadmodel->lightdata;
@@ -1220,6 +1283,9 @@ void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 		Mod_CalcSurfaceBounds (out); //johnfitz -- for per-surface frustum culling
 
 	// lighting info
+		if (loadmodel->bspversion == BSPVERSION_QUAKE64)
+			lofs /= 2; // Q64 lightdata is 2 bytes per samples {Tone, color}?
+
 		if (lofs == -1)
 			out->samples = NULL;
 		else
@@ -2111,8 +2177,11 @@ void Mod_LoadBrushModel (qmodel_t *mod, void *buffer)
 	case BSP2VERSION_BSP2:
 		bsp2 = 2;	//sanitised revision
 		break;
+	case BSPVERSION_QUAKE64:
+		bsp2 = false;
+		break;
 	default:
-		Sys_Error ("Mod_LoadBrushModel: %s has wrong version number (%i should be %i)", mod->name, mod->bspversion, BSPVERSION);
+		Sys_Error ("Mod_LoadBrushModel: %s has unsupported version number (%i)", mod->name, mod->bspversion);
 		break;
 	}
 
@@ -2134,7 +2203,7 @@ void Mod_LoadBrushModel (qmodel_t *mod, void *buffer)
 	Mod_LoadFaces (&header->lumps[LUMP_FACES], bsp2);
 	Mod_LoadMarksurfaces (&header->lumps[LUMP_MARKSURFACES], bsp2);
 
-	if (!bsp2 && external_vis.value && sv.modelname[0] && !q_strcasecmp(loadname, sv.name))
+	if (mod->bspversion == BSPVERSION && external_vis.value && sv.modelname[0] && !q_strcasecmp(loadname, sv.name))
 	{
 		FILE* fvis;
 		Con_DPrintf("trying to open external vis file\n");
