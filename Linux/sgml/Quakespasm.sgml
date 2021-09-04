@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: August 2021</em>
+<em>Page last edited: Sep. 2021</em>
 
 <sect> About <p>
 
@@ -139,6 +139,12 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.1<p>
+<itemize>
+<item> Fix lightmap issues after vkQuake surface mark/cull optimizations merge (sf.net bug/50)
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.0<p>
 <itemize>
