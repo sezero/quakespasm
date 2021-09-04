@@ -3,7 +3,6 @@
 # To cross-compile on Linux hosts, see the build_cross_win32*.sh scripts.
 # "make DEBUG=1" to build a debug client.
 # "make SDL_CONFIG=/path/to/sdl-config" to override the locally included SDL versions.
-# "make WINSOCK2=0" to use the old WinSock 1.1 api (NOT RECOMMENDED)
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -33,7 +32,6 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 # ---------------------------
 
 DEBUG   ?= 0
-WINSOCK2?= 1
 
 # ---------------------------
 # build variables
@@ -46,7 +44,7 @@ WINDRES = windres
 STRIP = strip
 
 CPUFLAGS=
-LDFLAGS = -m64 -mwindows
+LDFLAGS = -m64 -mwindows -static-libgcc
 DFLAGS ?=
 CFLAGS ?= -m64 -Wall -Wno-trigraphs
 CFLAGS += $(CPUFLAGS)
@@ -79,13 +77,8 @@ endif
 SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
 SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
-ifeq ($(WINSOCK2),1)
 DEFWINSOCK :=-D_USE_WINSOCK2
 LIBWINSOCK := -lws2_32
-else
-DEFWINSOCK :=
-LIBWINSOCK := -lwsock32
-endif
 
 CFLAGS     += $(DEFWINSOCK)
 NET_LIBS   := $(LIBWINSOCK)

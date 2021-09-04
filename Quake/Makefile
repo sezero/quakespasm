@@ -48,10 +48,6 @@ LINKER = $(CC)
 STRIP ?= strip
 PKG_CONFIG ?= pkg-config
 
-#CPUFLAGS= -mtune=i686
-#CPUFLAGS= -march=pentium4
-#CPUFLAGS= -mtune=k8
-#CPUFLAGS= -march=atom
 CPUFLAGS=
 LDFLAGS =
 DFLAGS ?=
