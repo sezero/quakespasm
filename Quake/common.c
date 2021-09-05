@@ -2261,8 +2261,8 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		com_modified = true;
 		// don't load mission packs twice
 		if (COM_CheckParm ("-rogue") && !q_strcasecmp(p, "rogue")) p = NULL;
-		if (COM_CheckParm ("-hipnotic") && !q_strcasecmp(p, "hipnotic")) p = NULL;
-		if (COM_CheckParm ("-quoth") && !q_strcasecmp(p, "quoth")) p = NULL;
+		if (p && COM_CheckParm ("-hipnotic") && !q_strcasecmp(p, "hipnotic")) p = NULL;
+		if (p && COM_CheckParm ("-quoth") && !q_strcasecmp(p, "quoth")) p = NULL;
 		if (p != NULL) {
 			COM_AddGameDirectory (com_basedir, p);
 			// QuakeSpasm extension: treat '-game missionpack' as '-missionpack'
