@@ -1377,17 +1377,6 @@ void COM_InitArgv (int argc, char **argv)
 
 /*
 ================
-Test_f -- johnfitz
-================
-*/
-#ifdef _DEBUG
-static void FitzTest_f (void)
-{
-}
-#endif
-
-/*
-================
 COM_Init
 ================
 */
@@ -1434,9 +1423,6 @@ void COM_Init (void)
 
 	if (COM_CheckParm("-fitz"))
 		fitzmode = true;
-#ifdef _DEBUG
-	Cmd_AddCommand ("fitztest", FitzTest_f); //johnfitz
-#endif
 }
 
 
@@ -2265,7 +2251,6 @@ void COM_InitFilesystem (void) //johnfitz -- modified based on topaz's tutorial
 		COM_AddGameDirectory (com_basedir, "hipnotic");
 	if (COM_CheckParm ("-quoth"))
 		COM_AddGameDirectory (com_basedir, "quoth");
-
 
 	i = COM_CheckParm ("-game");
 	if (i && i < com_argc-1)
