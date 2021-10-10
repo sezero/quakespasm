@@ -1693,6 +1693,7 @@ PF_finalefinished -- used by 2021 release.
 */
 static void PF_finalefinished (void)
 {
+	G_FLOAT(OFS_RETURN) = 0;
 }
 
 static void PF_Fixme (void)
@@ -1792,7 +1793,7 @@ static builtin_t pr_builtin[] =
 	PF_setspawnparms,
 
 	// 2021 release
-	PF_finalefinished,	// void() finaleFinished = #79
+	PF_finalefinished,	// float() finaleFinished = #79
 };
 
 builtin_t *pr_builtins = pr_builtin;
