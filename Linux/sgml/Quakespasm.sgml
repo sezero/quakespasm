@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: Sep. 2021</em>
+<em>Page last edited: October 2021</em>
 
 <sect> About <p>
 
@@ -139,6 +139,15 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.2<p>
+<itemize>
+<item> 2021 rerelease: Support for playing the latest update.
+<item> 2021 rerelease: Fix pitch black models in lit areas in DOTM.
+<item> 2021 rerelease: Fix black candles in the DOTM start map.
+<item> 2021 rerelease: Look for QuakeEX.kpf under userdir, too.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.1<p>
 <itemize>
@@ -307,7 +316,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <itemize>
 <item> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).
 <item> Fix texture memory leak when changing video modes with SDL2.
-<item> Fix rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
+<item> Fix a rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
 <item> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).
 <item> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.
 <item> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.
