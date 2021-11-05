@@ -66,6 +66,8 @@ endif
 
 ifeq ($(USE_SDL2),1)
 CFLAGS += -DUSE_SDL2
+# for compatibility with old sdks
+CFLAGS += -DNO_WINSDKVER_H
 endif
 
 # default to our local SDL[2] for build
