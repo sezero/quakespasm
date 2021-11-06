@@ -38,7 +38,6 @@ SDL_LIBS = ../Windows/SDL/watcom/SDL.lib
 SDL_CFLAGS = -I../Windows/SDL2/include
 SDL_LIBS = ../Windows/SDL2/watcom/SDL2.lib
 CFLAGS += -DUSE_SDL2
-CFLAGS += -DNO_WINSDKVER_H
 !endif
 
 !ifeq WINSOCK2 1
@@ -129,7 +128,7 @@ all: quakespasm.exe
 SDL_win32_main.obj: ../Windows/SDL/main/SDL_win32_main.c
 	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -fo=$^@ $<
 SDL_windows_main.obj: ../Windows/SDL2/main/SDL_windows_main.c
-	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -DNO_WINSDKVER_H -I../Windows/SDL2/main -fo=$^@ $<
+	wcc386 $(CFLAGS_BASE) $(SDL_CFLAGS) -I../Windows/SDL2/main -fo=$^@ $<
 quakespasm.res: ../Windows/QuakeSpasm.rc
 	wrc -q -r -bt=nt -I../Windows -fo=$^@ $<
 

@@ -33,7 +33,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-DUSE_SDL2" />
-			<Add option="-DNO_WINSDKVER_H" />
 			<Add option="-DUSE_CODEC_MP3" />
 			<Add option="-DUSE_CODEC_VORBIS" />
 			<Add option="-DUSE_CODEC_WAVE" />
