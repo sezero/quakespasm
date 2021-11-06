@@ -1,0 +1,26 @@
+name: C/C++ CI for MacOS 11
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: macos-11
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: dependencies
+      run: brew install libglu sdl2
+    - name: make
+      run: make -f Makefile.darwin DO_USERDIRS=1 USE_SDL2=1
+      working-directory: ./quake
+    - name: archive binary
+      uses: actions/upload-artifact@v2
+      with: 
+        name: built
+        path: quake/quakespasm
+        retention-days: 60
