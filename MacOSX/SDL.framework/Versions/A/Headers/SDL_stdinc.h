@@ -532,7 +532,7 @@ extern DECLSPEC double SDLCALL SDL_strtod(const char *string, char **endp);
 #ifdef HAVE_ATOI
 #define SDL_atoi        atoi
 #else
-#define SDL_atoi(X)     SDL_strtol(X, NULL, 0)
+#define SDL_atoi(X)     SDL_strtol(X, NULL, 10)
 #endif
 
 #ifdef HAVE_ATOF
