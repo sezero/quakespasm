@@ -2833,13 +2833,12 @@ otherwise returns a negative value and leaves the pointer unchanged
 static int LOC_ParseArg (const char **pstr)
 {
 	int arg;
-	const char *start;
 	const char *str = *pstr;
 
 	// opening brace
 	if (*str != '{')
 		return -1;
-	start = ++str;
+	++str;
 
 	// optional index, defaulting to 0
 	arg = 0;
