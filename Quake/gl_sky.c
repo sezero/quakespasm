@@ -101,7 +101,7 @@ void Sky_LoadTexture (texture_t *mt)
 	static byte	back_data[128*128]; //FIXME: Hunk_Alloc
 	unsigned	*rgba;
 
-	src = (byte *)mt + mt->offsets[0];
+	src = (byte *)(mt + 1);
 
 // extract back layer and upload
 	for (i=0 ; i<128 ; i++)

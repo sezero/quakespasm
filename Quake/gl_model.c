@@ -489,18 +489,16 @@ void Mod_LoadTextures (lump_t *l)
 		if ( (mt->width & 15) || (mt->height & 15) )
 		{
 			if (loadmodel->bspversion != BSPVERSION_QUAKE64)
-				Sys_Error ("Texture %s is not 16 aligned", mt->name);
+				Con_Warning ("Texture %s (%d x %d) is not 16 aligned\n", mt->name, mt->width, mt->height);
 		}
 
-		pixels = mt->width*mt->height/64*85;
+		pixels = mt->width*mt->height; // only copy the first mip, the rest are auto-generated
 		tx = (texture_t *) Hunk_AllocName (sizeof(texture_t) +pixels, loadname );
 		loadmodel->textures[i] = tx;
 
 		memcpy (tx->name, mt->name, sizeof(tx->name));
 		tx->width = mt->width;
 		tx->height = mt->height;
-		for (j=0 ; j<MIPLEVELS ; j++)
-			tx->offsets[j] = mt->offsets[j] + sizeof(texture_t) - sizeof(miptex_t);
 		// the pixels immediately follow the structures
 
 		// ericw -- check for pixels extending past the end of the lump.
