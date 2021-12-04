@@ -101,6 +101,9 @@ void Sky_LoadTexture (texture_t *mt)
 	static byte	back_data[128*128]; //FIXME: Hunk_Alloc
 	unsigned	*rgba;
 
+	if (mt->width != 256 || mt->height != 128)
+		Sys_Error ("Sky texture %s has wrong size (%d x %d)", mt->name, mt->width, mt->height);
+
 	src = (byte *)(mt + 1);
 
 // extract back layer and upload
