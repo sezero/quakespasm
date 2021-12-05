@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: October 2021</em>
+<em>Page last edited: December 2021</em>
 
 <sect> About <p>
 
@@ -139,6 +139,14 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.3<p>
+<itemize>
+<item> Handle sky textures with non-standard sizes and warn about them (e.g. ad_tears)
+<item> Allow loading textures not aligned to 16 pixels and warn about them (eg. the horde2 map of Dimension of the Machine from 2021 rerelease update/2.)
+<item> Updated included SDL2 to latest version 2.0.18.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.2<p>
 <itemize>
