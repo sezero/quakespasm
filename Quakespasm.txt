@@ -262,7 +262,7 @@
   5.  Changes
 
 
-  5.1.  Changes in 0.94.2
+  5.1.  Changes in 0.94.3
 
   o  Handle sky textures with non-standard sizes and warn about them
      (e.g. ad_tears)
