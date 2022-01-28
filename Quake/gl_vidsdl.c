@@ -668,6 +668,7 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 	}
 
 	SDL_ShowWindow (draw_context);
+	SDL_RaiseWindow (draw_context);
 
 	/* Create GL context if needed */
 	if (!gl_context) {
