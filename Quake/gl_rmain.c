@@ -209,7 +209,7 @@ void GLSLGamma_GammaCorrect (void)
 			r_gamma_texture_width = TexMgr_Pad(r_gamma_texture_width);
 			r_gamma_texture_height = TexMgr_Pad(r_gamma_texture_height);
 		}
-	
+
 		glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA8, r_gamma_texture_width, r_gamma_texture_height, 0, GL_BGRA, GL_UNSIGNED_INT_8_8_8_8_REV, NULL);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -224,7 +224,7 @@ void GLSLGamma_GammaCorrect (void)
 			Sys_Error("GLSLGamma_CreateShaders failed");
 		}
 	}
-	
+
 // copy the framebuffer to the texture
 	GL_DisableMultitexture();
 	glBindTexture (GL_TEXTURE_2D, r_gamma_texture);
@@ -254,9 +254,9 @@ void GLSLGamma_GammaCorrect (void)
 	glTexCoord2f (0, tmax);
 	glVertex2f (-1, 1);
 	glEnd ();
-	
+
 	GL_UseProgramFunc (0);
-	
+
 // clear cached binding
 	GL_ClearBindings ();
 }
@@ -274,6 +274,7 @@ qboolean R_CullBox (vec3_t emins, vec3_t emaxs)
 	mplane_t *p;
 	byte signbits;
 	float vec[3];
+
 	for (i = 0;i < 4;i++)
 	{
 		p = frustum + i;
@@ -387,7 +388,6 @@ assumes side and forward are perpendicular, and normalized
 to turn away from side, use a negative angle
 ===============
 */
-#define DEG2RAD( a ) ( (a) * M_PI_DIV_180 )
 void TurnVector (vec3_t out, const vec3_t forward, const vec3_t side, float angle)
 {
 	float scale_forward, scale_side;
@@ -451,7 +451,7 @@ void R_SetupGL (void)
 
 	//johnfitz -- rewrote this section
 	glMatrixMode(GL_PROJECTION);
-    glLoadIdentity ();
+	glLoadIdentity ();
 	scale =  CLAMP(1, (int)r_scale.value, 4); // ericw -- see R_ScaleView
 	glViewport (glx + r_refdef.vrect.x,
 				gly + glheight - r_refdef.vrect.y - r_refdef.vrect.height,
@@ -459,19 +459,19 @@ void R_SetupGL (void)
 				r_refdef.vrect.height / scale);
 	//johnfitz
 
-    GL_SetFrustum (r_fovx, r_fovy); //johnfitz -- use r_fov* vars
+	GL_SetFrustum (r_fovx, r_fovy); //johnfitz -- use r_fov* vars
 
 //	glCullFace(GL_BACK); //johnfitz -- glquake used CCW with backwards culling -- let's do it right
 
 	glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity ();
+	glLoadIdentity ();
 
-    glRotatef (-90,  1, 0, 0);	    // put Z going up
-    glRotatef (90,  0, 0, 1);	    // put Z going up
-    glRotatef (-r_refdef.viewangles[2],  1, 0, 0);
-    glRotatef (-r_refdef.viewangles[0],  0, 1, 0);
-    glRotatef (-r_refdef.viewangles[1],  0, 0, 1);
-    glTranslatef (-r_refdef.vieworg[0],  -r_refdef.vieworg[1],  -r_refdef.vieworg[2]);
+	glRotatef (-90,  1, 0, 0);	    // put Z going up
+	glRotatef (90,  0, 0, 1);	    // put Z going up
+	glRotatef (-r_refdef.viewangles[2],  1, 0, 0);
+	glRotatef (-r_refdef.viewangles[0],  0, 1, 0);
+	glRotatef (-r_refdef.viewangles[1],  0, 0, 1);
+	glTranslatef (-r_refdef.vieworg[0],  -r_refdef.vieworg[1],  -r_refdef.vieworg[2]);
 
 	//
 	// set drawing parms

@@ -32,7 +32,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define M_PI		3.14159265358979323846	// matches value in gcc v2 math.h
 #endif
 
-#define M_PI_DIV_180 (M_PI / 180.0) //johnfitz
+#define M_PI_DIV_180	(M_PI / 180.0) //johnfitz
+#define DEG2RAD(a)		((a) * M_PI_DIV_180)
 
 struct mplane_s;
 
