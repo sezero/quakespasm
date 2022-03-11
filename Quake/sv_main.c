@@ -31,6 +31,7 @@ static char	localmodels[MAX_MODELS][8];	// inline model names for precache
 int		sv_protocol = PROTOCOL_FITZQUAKE; //johnfitz
 
 extern qboolean	pr_alpha_supported; //johnfitz
+extern int pr_effects_mask;
 
 //============================================================================
 
@@ -644,7 +645,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 		if (ent->baseline.frame != ent->v.frame)
 			bits |= U_FRAME;
 
-		if (ent->baseline.effects != ent->v.effects)
+		if ((ent->baseline.effects ^ (int)ent->v.effects) & pr_effects_mask)
 			bits |= U_EFFECTS;
 
 		if (ent->baseline.modelindex != ent->v.modelindex)
@@ -661,7 +662,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 		}
 
 		//don't send invisible entities unless they have effects
-		if (ent->alpha == ENTALPHA_ZERO && !ent->v.effects)
+		if (ent->alpha == ENTALPHA_ZERO && !((int)ent->v.effects & pr_effects_mask))
 			continue;
 		//johnfitz
 
@@ -713,7 +714,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 		if (bits & U_SKIN)
 			MSG_WriteByte (msg, ent->v.skin);
 		if (bits & U_EFFECTS)
-			MSG_WriteByte (msg, ent->v.effects);
+			MSG_WriteByte (msg, (int)ent->v.effects & pr_effects_mask);
 		if (bits & U_ORIGIN1)
 			MSG_WriteCoord (msg, ent->v.origin[0], sv.protocolflags);
 		if (bits & U_ANGLE1)
