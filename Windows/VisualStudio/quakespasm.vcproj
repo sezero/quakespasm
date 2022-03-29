@@ -562,12 +562,52 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\Quake\snd_modplug.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\Quake\snd_mp3.c"
 				>
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_mp3tag.c"
 				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_mpg123.c"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					ExcludedFromBuild="true"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+					/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_opus.c"
@@ -845,6 +885,10 @@
 			</File>
 			<File
 				RelativePath="..\..\Quake\snd_mikmod.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\Quake\snd_modplug.h"
 				>
 			</File>
 			<File

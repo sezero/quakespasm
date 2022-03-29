@@ -105,6 +105,8 @@
 		48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
 		48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE585A0D3A82C8006BB491 /* QuakeArguments.m */; };
+		6314786F27F1AEBD0023B20A /* snd_modplug.c in Sources */ = {isa = PBXBuildFile; fileRef = 6314786E27F1AEB20023B20A /* snd_modplug.c */; };
+		6314787127F1AEC00023B20A /* snd_modplug.c in Sources */ = {isa = PBXBuildFile; fileRef = 6314786E27F1AEB20023B20A /* snd_modplug.c */; };
 		6348AF8626EA45B900E036E2 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8426EA45B900E036E2 /* miniz.c */; };
 		6348AF8726EA45B900E036E2 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8426EA45B900E036E2 /* miniz.c */; };
 		6348AF9126EA46F500E036E2 /* snd_xmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8F26EA46F500E036E2 /* snd_xmp.c */; };
@@ -443,7 +445,7 @@
 		4846EB500D329BEB00A108DE /* platform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = platform.h; path = ../Quake/platform.h; sourceTree = SOURCE_ROOT; };
 		4847CD5E12057F94000B560F /* sys_sdl_unix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sys_sdl_unix.c; path = ../Quake/sys_sdl_unix.c; sourceTree = SOURCE_ROOT; };
 		484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = QuakeSpasm.icns; sourceTree = "<group>"; };
-		4854B1B01340C646004C9F45 /* snd_mp3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3.c; path = ../Quake/snd_mp3.c; sourceTree = SOURCE_ROOT; };
+		4854B1B01340C646004C9F45 /* snd_mp3.c */ = {isa = PBXFileReference; comments = "NOTE: snd_mp3.c and snd_mpg123.c are mutually exclusive - build only one."; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mp3.c; path = ../Quake/snd_mp3.c; sourceTree = SOURCE_ROOT; };
 		486577C80D31A22A00E7920A /* snd_dma.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_dma.c; path = ../Quake/snd_dma.c; sourceTree = SOURCE_ROOT; };
 		486577C90D31A22A00E7920A /* snd_mem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mem.c; path = ../Quake/snd_mem.c; sourceTree = SOURCE_ROOT; };
 		486577CA0D31A22A00E7920A /* snd_mix.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mix.c; path = ../Quake/snd_mix.c; sourceTree = SOURCE_ROOT; };
@@ -475,7 +477,9 @@
 		48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libvorbisfile.dylib; path = codecs/lib/libvorbisfile.dylib; sourceTree = "<group>"; };
 		48FE58590D3A82C8006BB491 /* QuakeArguments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuakeArguments.h; sourceTree = "<group>"; };
 		48FE585A0D3A82C8006BB491 /* QuakeArguments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuakeArguments.m; sourceTree = "<group>"; };
-		631F459F26EA4AF60054208C /* snd_mpg123.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mpg123.c; path = ../Quake/snd_mpg123.c; sourceTree = SOURCE_ROOT; };
+		6314786D27F1AE850023B20A /* snd_modplug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = snd_modplug.h; path = ../Quake/snd_modplug.h; sourceTree = SOURCE_ROOT; };
+		6314786E27F1AEB20023B20A /* snd_modplug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_modplug.c; path = ../Quake/snd_modplug.c; sourceTree = SOURCE_ROOT; };
+		631F459F26EA4AF60054208C /* snd_mpg123.c */ = {isa = PBXFileReference; comments = "NOTE: snd_mp3.c and snd_mpg123.c are mutually exclusive - build only one."; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = snd_mpg123.c; path = ../Quake/snd_mpg123.c; sourceTree = SOURCE_ROOT; };
 		6348AF7D26EA437E00E036E2 /* default_cfg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = default_cfg.h; path = ../Quake/default_cfg.h; sourceTree = SOURCE_ROOT; };
 		6348AF7E26EA438E00E036E2 /* arch_def.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = arch_def.h; path = ../Quake/arch_def.h; sourceTree = SOURCE_ROOT; };
 		6348AF7F26EA439C00E036E2 /* filenames.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = filenames.h; path = ../Quake/filenames.h; sourceTree = SOURCE_ROOT; };
@@ -745,6 +749,7 @@
 				63D6EB3423A255900047028C /* snd_mp3tag.c */,
 				4885A84A179740A0000EC703 /* snd_opus.c */,
 				483A78640D2EEAF000CB2E4C /* snd_mikmod.c */,
+				6314786E27F1AEB20023B20A /* snd_modplug.c */,
 				6348AF8F26EA46F500E036E2 /* snd_xmp.c */,
 				4818B0B012D5BA1A006DD66E /* snd_umx.c */,
 				4818B0B212D5BA1A006DD66E /* snd_vorbis.c */,
@@ -842,6 +847,7 @@
 				4818B0AD12D5B9ED006DD66E /* snd_codec.h */,
 				4818B0AF12D5BA1A006DD66E /* snd_codeci.h */,
 				6348AF8C26EA46B700E036E2 /* snd_mikmod.h */,
+				6314786D27F1AE850023B20A /* snd_modplug.h */,
 				6348AF9026EA46F500E036E2 /* snd_xmp.h */,
 				6348AF8D26EA46D300E036E2 /* snd_umx.h */,
 				48281300179C3F13004E1D61 /* snd_flac.h */,
@@ -1072,6 +1078,7 @@
 				63D6EB3623A255900047028C /* snd_mp3tag.c in Sources */,
 				6348AF8726EA45B900E036E2 /* miniz.c in Sources */,
 				6348AF9226EA46F500E036E2 /* snd_xmp.c in Sources */,
+				6314786F27F1AEBD0023B20A /* snd_modplug.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1161,6 +1168,7 @@
 				63D6EB3523A255900047028C /* snd_mp3tag.c in Sources */,
 				6348AF8626EA45B900E036E2 /* miniz.c in Sources */,
 				6348AF9126EA46F500E036E2 /* snd_xmp.c in Sources */,
+				6314787127F1AEC00023B20A /* snd_modplug.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,5 +1,5 @@
 # makefile to build quakespasm.exe for Windows using Open Watcom:
-# wmake -f OWMakefile.win32
+#   wmake -f Makefile.wat
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -10,9 +10,10 @@ USE_CODEC_FLAC=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=1
-# either mikmod or xmp
+# either xmp or mikmod (or modplug)
 USE_CODEC_MIKMOD=1
 USE_CODEC_XMP=0
+USE_CODEC_MODPLUG=0
 USE_CODEC_UMX=1
 
 # which library to use for mp3 decoding: mad or mpg123
@@ -102,6 +103,11 @@ CFLAGS+= -DUSE_CODEC_XMP
 CFLAGS+= -DXMP_NO_DLL
 CODECLIBS+= $(LIBCODEC)libxmp.lib
 !endif
+!ifeq USE_CODEC_MODPLUG 1
+CFLAGS+= -DUSE_CODEC_MODPLUG
+CFLAGS+= -DMODPLUG_STATIC
+CODECLIBS+= $(LIBCODEC)modplug.lib
+!endif
 !ifeq USE_CODEC_UMX 1
 CFLAGS+= -DUSE_CODEC_UMX
 !endif
@@ -145,6 +151,7 @@ MUSIC_OBJS= bgmusic.obj &
 	$(mp3_obj).obj &
 	snd_mp3tag.obj &
 	snd_mikmod.obj &
+	snd_modplug.obj &
 	snd_xmp.obj &
 	snd_umx.obj
 COMOBJ_SND = snd_dma.obj snd_mix.obj snd_mem.obj $(MUSIC_OBJS)
