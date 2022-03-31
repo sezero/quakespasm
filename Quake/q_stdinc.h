@@ -89,8 +89,14 @@
 /* Make sure the types really have the right
  * sizes: These macros are from SDL headers.
  */
-#define	COMPILE_TIME_ASSERT(name, x)	\
+#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+#define COMPILE_TIME_ASSERT(name, x) _Static_assert(x, #x)
+#elif defined(__cplusplus) && (__cplusplus >= 201103L)
+#define COMPILE_TIME_ASSERT(name, x)  static_assert(x, #x)
+#else /* universal, but may trigger -Wunused-local-typedefs */
+#define COMPILE_TIME_ASSERT(name, x) \
 	typedef int dummy_ ## name[(x) * 2 - 1]
+#endif
 
 COMPILE_TIME_ASSERT(char, sizeof(char) == 1);
 COMPILE_TIME_ASSERT(float, sizeof(float) == 4);
