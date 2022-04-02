@@ -382,8 +382,6 @@ play [demoname]
 void CL_PlayDemo_f (void)
 {
 	char	name[MAX_OSPATH];
-	int	i, c;
-	qboolean neg;
 
 	if (cmd_source != src_command)
 		return;
@@ -415,24 +413,7 @@ void CL_PlayDemo_f (void)
 // O.S.: if a space character e.g. 0x20 (' ') follows '\n',
 // fscanf skips that byte too and screws up further reads.
 //	fscanf (cls.demofile, "%i\n", &cls.forcetrack);
-	cls.forcetrack = 0;
-	c = 0; /* silence pesky compiler warnings */
-	neg = false;
-	// read a decimal integer possibly with a leading '-',
-	// followed by a '\n':
-	for (i = 0; i < 13; i++)
-	{
-		c = getc(cls.demofile);
-		if (c == '\n')
-			break;
-		if (c == '-') {
-			neg = true;
-			continue;
-		}
-		// check for multiple '-' or legal digits? meh...
-		cls.forcetrack = cls.forcetrack * 10 + (c - '0');
-	}
-	if (c != '\n')
+	if (fscanf (cls.demofile, "%i", &cls.forcetrack) != 1 || fgetc (cls.demofile) != '\n')
 	{
 		fclose (cls.demofile);
 		cls.demofile = NULL;
@@ -440,8 +421,6 @@ void CL_PlayDemo_f (void)
 		Con_Printf ("ERROR: demo \"%s\" is invalid\n", name);
 		return;
 	}
-	if (neg)
-		cls.forcetrack = -cls.forcetrack;
 
 	cls.demoplayback = true;
 	cls.demopaused = false;
