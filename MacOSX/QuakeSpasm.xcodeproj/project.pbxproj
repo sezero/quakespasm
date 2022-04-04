@@ -7,111 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
-		002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 002F39F909D0881F00EBEB88 /* SDL.framework */; };
-		002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 002F3A2C09D0888800EBEB88 /* SDLMain.m */; };
-		002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
-		32CA4F630368D1EE00C91783 /* snd_umx.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B012D5BA1A006DD66E /* snd_umx.c */; };
-		48134A1812102F400015BF15 /* net_bsd.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1412102F400015BF15 /* net_bsd.c */; };
-		48134A1912102F400015BF15 /* net_udp.c in Sources */ = {isa = PBXBuildFile; fileRef = 48134A1612102F400015BF15 /* net_udp.c */; };
-		4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0A112D5B9AE006DD66E /* bgmusic.c */; };
-		4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0AC12D5B9ED006DD66E /* snd_codec.c */; };
-		4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B212D5BA1A006DD66E /* snd_vorbis.c */; };
-		4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */ = {isa = PBXBuildFile; fileRef = 4818B0B412D5BA1A006DD66E /* snd_wave.c */; };
-		48243B140D33F01A00C29F8F /* main_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 48243B130D33F01A00C29F8F /* main_sdl.c */; };
-		482812FD179C3EF4004E1D61 /* libFLAC.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
-		482812FE179C3EFF004E1D61 /* libFLAC.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
-		48281301179C3F13004E1D61 /* snd_flac.c in Sources */ = {isa = PBXBuildFile; fileRef = 482812FF179C3F13004E1D61 /* snd_flac.c */; };
-		483A78230D2EEA5400CB2E4C /* chase.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78100D2EEA5400CB2E4C /* chase.c */; };
-		483A78240D2EEA5400CB2E4C /* cmd.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78110D2EEA5400CB2E4C /* cmd.c */; };
-		483A78250D2EEA5400CB2E4C /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78120D2EEA5400CB2E4C /* common.c */; };
-		483A78260D2EEA5400CB2E4C /* console.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78130D2EEA5400CB2E4C /* console.c */; };
-		483A78270D2EEA5400CB2E4C /* crc.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78140D2EEA5400CB2E4C /* crc.c */; };
-		483A78280D2EEA5400CB2E4C /* cvar.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78150D2EEA5400CB2E4C /* cvar.c */; };
-		483A78290D2EEA5400CB2E4C /* host_cmd.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78160D2EEA5400CB2E4C /* host_cmd.c */; };
-		483A782A0D2EEA5400CB2E4C /* host.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78170D2EEA5400CB2E4C /* host.c */; };
-		483A782B0D2EEA5400CB2E4C /* mathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78180D2EEA5400CB2E4C /* mathlib.c */; };
-		483A782C0D2EEA5400CB2E4C /* menu.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78190D2EEA5400CB2E4C /* menu.c */; };
-		483A782D0D2EEA5400CB2E4C /* pr_cmds.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A781A0D2EEA5400CB2E4C /* pr_cmds.c */; };
-		483A782E0D2EEA5400CB2E4C /* pr_edict.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A781B0D2EEA5400CB2E4C /* pr_edict.c */; };
-		483A782F0D2EEA5400CB2E4C /* pr_exec.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A781C0D2EEA5400CB2E4C /* pr_exec.c */; };
-		483A78300D2EEA5400CB2E4C /* sbar.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A781D0D2EEA5400CB2E4C /* sbar.c */; };
-		483A78320D2EEA5400CB2E4C /* view.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A781F0D2EEA5400CB2E4C /* view.c */; };
-		483A78330D2EEA5400CB2E4C /* wad.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78200D2EEA5400CB2E4C /* wad.c */; };
-		483A78340D2EEA5400CB2E4C /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78210D2EEA5400CB2E4C /* world.c */; };
-		483A78350D2EEA5400CB2E4C /* zone.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78220D2EEA5400CB2E4C /* zone.c */; };
-		483A78380D2EEA6D00CB2E4C /* in_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78360D2EEA6D00CB2E4C /* in_sdl.c */; };
-		483A78390D2EEA6D00CB2E4C /* keys.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78370D2EEA6D00CB2E4C /* keys.c */; };
-		483A78450D2EEAAB00CB2E4C /* cl_demo.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783A0D2EEAAB00CB2E4C /* cl_demo.c */; };
-		483A78460D2EEAAB00CB2E4C /* cl_input.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783B0D2EEAAB00CB2E4C /* cl_input.c */; };
-		483A78470D2EEAAB00CB2E4C /* cl_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783C0D2EEAAB00CB2E4C /* cl_main.c */; };
-		483A78480D2EEAAB00CB2E4C /* cl_parse.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783D0D2EEAAB00CB2E4C /* cl_parse.c */; };
-		483A78490D2EEAAB00CB2E4C /* cl_tent.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783E0D2EEAAB00CB2E4C /* cl_tent.c */; };
-		483A784A0D2EEAAB00CB2E4C /* net_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A783F0D2EEAAB00CB2E4C /* net_main.c */; };
-		483A784C0D2EEAAB00CB2E4C /* sv_main.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78410D2EEAAB00CB2E4C /* sv_main.c */; };
-		483A784D0D2EEAAB00CB2E4C /* sv_move.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78420D2EEAAB00CB2E4C /* sv_move.c */; };
-		483A784E0D2EEAAB00CB2E4C /* sv_phys.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78430D2EEAAB00CB2E4C /* sv_phys.c */; };
-		483A784F0D2EEAAB00CB2E4C /* sv_user.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78440D2EEAAB00CB2E4C /* sv_user.c */; };
-		483A78550D2EEAC300CB2E4C /* cd_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78500D2EEAC300CB2E4C /* cd_sdl.c */; };
-		483A78590D2EEAC300CB2E4C /* snd_sdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78540D2EEAC300CB2E4C /* snd_sdl.c */; };
-		483A786E0D2EEAF000CB2E4C /* gl_draw.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785A0D2EEAF000CB2E4C /* gl_draw.c */; };
-		483A786F0D2EEAF000CB2E4C /* gl_fog.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785B0D2EEAF000CB2E4C /* gl_fog.c */; };
-		483A78700D2EEAF000CB2E4C /* gl_mesh.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785C0D2EEAF000CB2E4C /* gl_mesh.c */; };
-		483A78710D2EEAF000CB2E4C /* gl_model.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785D0D2EEAF000CB2E4C /* gl_model.c */; };
-		483A78720D2EEAF000CB2E4C /* gl_refrag.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785E0D2EEAF000CB2E4C /* gl_refrag.c */; };
-		483A78730D2EEAF000CB2E4C /* gl_rlight.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A785F0D2EEAF000CB2E4C /* gl_rlight.c */; };
-		483A78740D2EEAF000CB2E4C /* gl_rmain.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78600D2EEAF000CB2E4C /* gl_rmain.c */; };
-		483A78750D2EEAF000CB2E4C /* gl_rmisc.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78610D2EEAF000CB2E4C /* gl_rmisc.c */; };
-		483A78760D2EEAF000CB2E4C /* gl_screen.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78620D2EEAF000CB2E4C /* gl_screen.c */; };
-		483A78770D2EEAF000CB2E4C /* gl_sky.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78630D2EEAF000CB2E4C /* gl_sky.c */; };
-		483A78780D2EEAF000CB2E4C /* snd_mikmod.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78640D2EEAF000CB2E4C /* snd_mikmod.c */; };
-		483A78790D2EEAF000CB2E4C /* gl_texmgr.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78650D2EEAF000CB2E4C /* gl_texmgr.c */; };
-		483A787A0D2EEAF000CB2E4C /* gl_vidsdl.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78660D2EEAF000CB2E4C /* gl_vidsdl.c */; };
-		483A787B0D2EEAF000CB2E4C /* gl_warp.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78670D2EEAF000CB2E4C /* gl_warp.c */; };
-		483A787C0D2EEAF000CB2E4C /* image.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78680D2EEAF000CB2E4C /* image.c */; };
-		483A787D0D2EEAF000CB2E4C /* r_alias.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A78690D2EEAF000CB2E4C /* r_alias.c */; };
-		483A787E0D2EEAF000CB2E4C /* r_brush.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A786A0D2EEAF000CB2E4C /* r_brush.c */; };
-		483A787F0D2EEAF000CB2E4C /* r_part.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A786B0D2EEAF000CB2E4C /* r_part.c */; };
-		483A78800D2EEAF000CB2E4C /* r_sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A786C0D2EEAF000CB2E4C /* r_sprite.c */; };
-		483A78810D2EEAF000CB2E4C /* r_world.c in Sources */ = {isa = PBXBuildFile; fileRef = 483A786D0D2EEAF000CB2E4C /* r_world.c */; };
-		4847CD5F12057F94000B560F /* sys_sdl_unix.c in Sources */ = {isa = PBXBuildFile; fileRef = 4847CD5E12057F94000B560F /* sys_sdl_unix.c */; };
-		484AA4B40D3FF6C0005D917A /* QuakeSpasm.icns in Resources */ = {isa = PBXBuildFile; fileRef = 484AA4B30D3FF6C0005D917A /* QuakeSpasm.icns */; };
-		4854B1B11340C646004C9F45 /* snd_mp3.c in Sources */ = {isa = PBXBuildFile; fileRef = 4854B1B01340C646004C9F45 /* snd_mp3.c */; };
-		486577CB0D31A22A00E7920A /* snd_dma.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577C80D31A22A00E7920A /* snd_dma.c */; };
-		486577CC0D31A22A00E7920A /* snd_mem.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577C90D31A22A00E7920A /* snd_mem.c */; };
-		486577CD0D31A22A00E7920A /* snd_mix.c in Sources */ = {isa = PBXBuildFile; fileRef = 486577CA0D31A22A00E7920A /* snd_mix.c */; };
-		48728D2D0D3004A80004D61B /* net_dgrm.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D280D3004A70004D61B /* net_dgrm.c */; };
-		48728D2E0D3004A80004D61B /* net_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = 48728D2A0D3004A80004D61B /* net_loop.c */; };
-		4885A84C179740A0000EC703 /* snd_opus.c in Sources */ = {isa = PBXBuildFile; fileRef = 4885A84A179740A0000EC703 /* snd_opus.c */; };
-		4885A84F179740CA000EC703 /* libopus.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; };
-		4885A850179740CA000EC703 /* libopusfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; };
-		4885A851179740D7000EC703 /* libopus.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; };
-		4885A852179740D7000EC703 /* libopusfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; };
-		48895DB90D4914A000849ABF /* pl_osx.m in Sources */ = {isa = PBXBuildFile; fileRef = 48895DB80D4914A000849ABF /* pl_osx.m */; };
-		489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 489D8D2E0D3A630D00AA4471 /* ScreenInfo.m */; };
-		48A7C1FC14AA34940011B754 /* strlcat.c in Sources */ = {isa = PBXBuildFile; fileRef = 48A7C1FA14AA34940011B754 /* strlcat.c */; };
-		48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */ = {isa = PBXBuildFile; fileRef = 48A7C1FB14AA34940011B754 /* strlcpy.c */; };
-		48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */ = {isa = PBXBuildFile; fileRef = 48B9E7860D340B1E0001CACF /* Launcher.nib */; };
-		48B9E7A70D340BEA0001CACF /* AppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7A60D340BEA0001CACF /* AppController.m */; };
-		48B9E7C00D340EA80001CACF /* SDLApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 48B9E7BF0D340EA80001CACF /* SDLApplication.m */; };
-		48C85E3B0D3AD10E00797678 /* QuakeArgument.m in Sources */ = {isa = PBXBuildFile; fileRef = 48C85E3A0D3AD10E00797678 /* QuakeArgument.m */; };
-		48E2EC7815FB500400B8D476 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
-		48E2EC7D15FB507A00B8D476 /* libmad.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7915FB507A00B8D476 /* libmad.dylib */; };
-		48E2EC7E15FB507A00B8D476 /* libogg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
-		48E2EC7F15FB507A00B8D476 /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
-		48E2EC8015FB507A00B8D476 /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		48E2EC8615FB516600B8D476 /* libmad.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7915FB507A00B8D476 /* libmad.dylib */; };
-		48E2EC8715FB516600B8D476 /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
-		48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
-		48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = 48FE585A0D3A82C8006BB491 /* QuakeArguments.m */; };
 		6314786F27F1AEBD0023B20A /* snd_modplug.c in Sources */ = {isa = PBXBuildFile; fileRef = 6314786E27F1AEB20023B20A /* snd_modplug.c */; };
-		6314787127F1AEC00023B20A /* snd_modplug.c in Sources */ = {isa = PBXBuildFile; fileRef = 6314786E27F1AEB20023B20A /* snd_modplug.c */; };
-		6348AF8626EA45B900E036E2 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8426EA45B900E036E2 /* miniz.c */; };
 		6348AF8726EA45B900E036E2 /* miniz.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8426EA45B900E036E2 /* miniz.c */; };
-		6348AF9126EA46F500E036E2 /* snd_xmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8F26EA46F500E036E2 /* snd_xmp.c */; };
 		6348AF9226EA46F500E036E2 /* snd_xmp.c in Sources */ = {isa = PBXBuildFile; fileRef = 6348AF8F26EA46F500E036E2 /* snd_xmp.c */; };
-		63D6EB3523A255900047028C /* snd_mp3tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 63D6EB3423A255900047028C /* snd_mp3tag.c */; };
 		63D6EB3623A255900047028C /* snd_mp3tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 63D6EB3423A255900047028C /* snd_mp3tag.c */; };
 		664D988A19CF6B78000D395C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		664D988B19CF6B78000D395C /* Launcher.nib in Resources */ = {isa = PBXBuildFile; fileRef = 48B9E7860D340B1E0001CACF /* Launcher.nib */; };
@@ -206,63 +104,24 @@
 		664D98E619CF6B78000D395C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
 		664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
-		664D98EE19CF6B78000D395C /* libFLAC.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; };
-		664D98EF19CF6B78000D395C /* libopus.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; };
-		664D98F019CF6B78000D395C /* libopusfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; };
-		664D98F119CF6B78000D395C /* libmad.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7915FB507A00B8D476 /* libmad.dylib */; };
-		664D98F219CF6B78000D395C /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
-		664D98F319CF6B78000D395C /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
-		664D98F419CF6B78000D395C /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		664D98EE19CF6B78000D395C /* libFLAC.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 482812FC179C3EF4004E1D61 /* libFLAC.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98EF19CF6B78000D395C /* libopus.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84D179740CA000EC703 /* libopus.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F019CF6B78000D395C /* libopusfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 4885A84E179740CA000EC703 /* libopusfile.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F119CF6B78000D395C /* libmad.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7915FB507A00B8D476 /* libmad.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F219CF6B78000D395C /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F319CF6B78000D395C /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F419CF6B78000D395C /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		664D990619CF6E16000D395C /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
-		664D990719CF6E33000D395C /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
+		664D990719CF6E33000D395C /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		66991C071DBAB4A600C373C0 /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
 		66991C081DBAB4A600C373C0 /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
 		66991C091DBAB4A600C373C0 /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
 		66991C0A1DBAB4A600C373C0 /* Quakespasm.html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C041DBAB47000C373C0 /* Quakespasm.html */; };
 		66991C0B1DBAB4A600C373C0 /* Quakespasm.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C051DBAB47000C373C0 /* Quakespasm.txt */; };
-		66991C0D1DBAB4B300C373C0 /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
-		66991C0E1DBAB4B300C373C0 /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
-		66991C0F1DBAB4B300C373C0 /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
-		66991C101DBAB4B300C373C0 /* Quakespasm.html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C041DBAB47000C373C0 /* Quakespasm.html */; };
-		66991C111DBAB4B300C373C0 /* Quakespasm.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C051DBAB47000C373C0 /* Quakespasm.txt */; };
-		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
-		A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
-		B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B021C20714A5FF7E003F18D6 /* cfgfile.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		002F39FD09D0883400EBEB88 /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				002F3A0009D0884600EBEB88 /* SDL.framework in Copy Frameworks */,
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		48692C131340A46800A0F098 /* Copy Libraries */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 6;
-			files = (
-				482812FE179C3EFF004E1D61 /* libFLAC.dylib in Copy Libraries */,
-				4885A851179740D7000EC703 /* libopus.dylib in Copy Libraries */,
-				4885A852179740D7000EC703 /* libopusfile.dylib in Copy Libraries */,
-				48E2EC8615FB516600B8D476 /* libmad.dylib in Copy Libraries */,
-				48E2EC8715FB516600B8D476 /* libogg.dylib in Copy Libraries */,
-				48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */,
-				48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */,
-				A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */,
-			);
-			name = "Copy Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		664D98EB19CF6B78000D395C /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -306,20 +165,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		66991C0C1DBAB4AF00C373C0 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 16;
-			files = (
-				66991C0D1DBAB4B300C373C0 /* quakespasm.pak in CopyFiles */,
-				66991C0E1DBAB4B300C373C0 /* LICENSE.txt in CopyFiles */,
-				66991C0F1DBAB4B300C373C0 /* Quakespasm-Music.txt in CopyFiles */,
-				66991C101DBAB4B300C373C0 /* Quakespasm.html in CopyFiles */,
-				66991C111DBAB4B300C373C0 /* Quakespasm.txt in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -327,10 +172,11 @@
 		002F3A2B09D0888800EBEB88 /* SDLMain.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = SDLMain.h; sourceTree = "<group>"; };
 		002F3A2C09D0888800EBEB88 /* SDLMain.m */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.objc; path = SDLMain.m; sourceTree = "<group>"; };
 		002F3C0009D093BD00EBEB88 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
-		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		2A8FDDDC27FB7ABF003062CA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2A8FDDDE27FB7AC3003062CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = Base; path = Base.lproj/Launcher.nib; sourceTree = "<group>"; };
 		48134A1412102F400015BF15 /* net_bsd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_bsd.c; path = ../Quake/net_bsd.c; sourceTree = SOURCE_ROOT; };
 		48134A1512102F400015BF15 /* net_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_defs.h; path = ../Quake/net_defs.h; sourceTree = SOURCE_ROOT; };
 		48134A1612102F400015BF15 /* net_udp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_udp.c; path = ../Quake/net_udp.c; sourceTree = SOURCE_ROOT; };
@@ -464,7 +310,6 @@
 		48A7C1F914AA34940011B754 /* strl_fn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strl_fn.h; path = ../Quake/strl_fn.h; sourceTree = "<group>"; };
 		48A7C1FA14AA34940011B754 /* strlcat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strlcat.c; path = ../Quake/strlcat.c; sourceTree = "<group>"; };
 		48A7C1FB14AA34940011B754 /* strlcpy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = strlcpy.c; path = ../Quake/strlcpy.c; sourceTree = "<group>"; };
-		48B9E7870D340B1E0001CACF /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/Launcher.nib; sourceTree = "<group>"; };
 		48B9E7A50D340BEA0001CACF /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppController.h; sourceTree = "<group>"; };
 		48B9E7A60D340BEA0001CACF /* AppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppController.m; sourceTree = "<group>"; };
 		48B9E7BE0D340EA80001CACF /* SDLApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDLApplication.h; sourceTree = "<group>"; };
@@ -506,7 +351,6 @@
 		66991C051DBAB47000C373C0 /* Quakespasm.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = Quakespasm.txt; path = ../Quakespasm.txt; sourceTree = "<group>"; };
 		66991C061DBAB48000C373C0 /* quakespasm.pak */ = {isa = PBXFileReference; lastKnownFileType = file; name = quakespasm.pak; path = ../Quake/quakespasm.pak; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D1107320486CEB800E47090 /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B021C20714A5FF7E003F18D6 /* cfgfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cfgfile.c; path = ../Quake/cfgfile.c; sourceTree = SOURCE_ROOT; };
 		B021C20814A5FF7E003F18D6 /* cfgfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cfgfile.h; path = ../Quake/cfgfile.h; sourceTree = SOURCE_ROOT; };
 		F5F5DE80017CB4370103A810 /* libmikmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmikmod.dylib; path = codecs/lib/libmikmod.dylib; sourceTree = "<group>"; };
@@ -529,25 +373,6 @@
 				664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */,
 				664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */,
 				664D990619CF6E16000D395C /* SDL2.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8D11072E0486CEB800E47090 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				482812FD179C3EF4004E1D61 /* libFLAC.dylib in Frameworks */,
-				4885A84F179740CA000EC703 /* libopus.dylib in Frameworks */,
-				4885A850179740CA000EC703 /* libopusfile.dylib in Frameworks */,
-				48E2EC7D15FB507A00B8D476 /* libmad.dylib in Frameworks */,
-				48E2EC7E15FB507A00B8D476 /* libogg.dylib in Frameworks */,
-				48E2EC7F15FB507A00B8D476 /* libvorbis.dylib in Frameworks */,
-				48E2EC8015FB507A00B8D476 /* libvorbisfile.dylib in Frameworks */,
-				A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */,
-				48E2EC7815FB500400B8D476 /* IOKit.framework in Frameworks */,
-				002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */,
-				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
-				002F3C0109D093BD00EBEB88 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -578,7 +403,6 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D1107320486CEB800E47090 /* QuakeSpasm.app */,
 				664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */,
 			);
 			name = Products;
@@ -919,50 +743,29 @@
 			productReference = 664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8D1107260486CEB800E47090 /* QuakeSpasm */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */;
-			buildPhases = (
-				8D1107290486CEB800E47090 /* Resources */,
-				8D11072C0486CEB800E47090 /* Sources */,
-				8D11072E0486CEB800E47090 /* Frameworks */,
-				002F39FD09D0883400EBEB88 /* Copy Frameworks */,
-				48692C131340A46800A0F098 /* Copy Libraries */,
-				66991C0C1DBAB4AF00C373C0 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = QuakeSpasm;
-			productInstallPath = "$(HOME)/Applications";
-			productName = QuakeSpasm;
-			productReference = 8D1107320486CEB800E47090 /* QuakeSpasm.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 1310;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "QuakeSpasm" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				en,
+				Base,
+				ja,
+				fr,
+				de,
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* QuakeSpasm */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8D1107260486CEB800E47090 /* QuakeSpasm */,
 				664D988819CF6B78000D395C /* QuakeSpasm-SDL2 */,
 			);
 		};
@@ -976,16 +779,6 @@
 				664D988A19CF6B78000D395C /* InfoPlist.strings in Resources */,
 				664D988B19CF6B78000D395C /* Launcher.nib in Resources */,
 				664D988C19CF6B78000D395C /* QuakeSpasm.icns in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8D1107290486CEB800E47090 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
-				48B9E7880D340B1E0001CACF /* Launcher.nib in Resources */,
-				484AA4B40D3FF6C0005D917A /* QuakeSpasm.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1082,103 +875,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8D11072C0486CEB800E47090 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				002F3A2E09D0888800EBEB88 /* SDLMain.m in Sources */,
-				483A78230D2EEA5400CB2E4C /* chase.c in Sources */,
-				483A78240D2EEA5400CB2E4C /* cmd.c in Sources */,
-				483A78250D2EEA5400CB2E4C /* common.c in Sources */,
-				483A78260D2EEA5400CB2E4C /* console.c in Sources */,
-				483A78270D2EEA5400CB2E4C /* crc.c in Sources */,
-				483A78280D2EEA5400CB2E4C /* cvar.c in Sources */,
-				483A78290D2EEA5400CB2E4C /* host_cmd.c in Sources */,
-				483A782A0D2EEA5400CB2E4C /* host.c in Sources */,
-				483A782B0D2EEA5400CB2E4C /* mathlib.c in Sources */,
-				483A782C0D2EEA5400CB2E4C /* menu.c in Sources */,
-				483A782D0D2EEA5400CB2E4C /* pr_cmds.c in Sources */,
-				483A782E0D2EEA5400CB2E4C /* pr_edict.c in Sources */,
-				483A782F0D2EEA5400CB2E4C /* pr_exec.c in Sources */,
-				483A78300D2EEA5400CB2E4C /* sbar.c in Sources */,
-				483A78320D2EEA5400CB2E4C /* view.c in Sources */,
-				483A78330D2EEA5400CB2E4C /* wad.c in Sources */,
-				483A78340D2EEA5400CB2E4C /* world.c in Sources */,
-				483A78350D2EEA5400CB2E4C /* zone.c in Sources */,
-				483A78380D2EEA6D00CB2E4C /* in_sdl.c in Sources */,
-				483A78390D2EEA6D00CB2E4C /* keys.c in Sources */,
-				483A78450D2EEAAB00CB2E4C /* cl_demo.c in Sources */,
-				483A78460D2EEAAB00CB2E4C /* cl_input.c in Sources */,
-				483A78470D2EEAAB00CB2E4C /* cl_main.c in Sources */,
-				483A78480D2EEAAB00CB2E4C /* cl_parse.c in Sources */,
-				483A78490D2EEAAB00CB2E4C /* cl_tent.c in Sources */,
-				483A784A0D2EEAAB00CB2E4C /* net_main.c in Sources */,
-				483A784C0D2EEAAB00CB2E4C /* sv_main.c in Sources */,
-				483A784D0D2EEAAB00CB2E4C /* sv_move.c in Sources */,
-				483A784E0D2EEAAB00CB2E4C /* sv_phys.c in Sources */,
-				483A784F0D2EEAAB00CB2E4C /* sv_user.c in Sources */,
-				483A78550D2EEAC300CB2E4C /* cd_sdl.c in Sources */,
-				483A78590D2EEAC300CB2E4C /* snd_sdl.c in Sources */,
-				483A786E0D2EEAF000CB2E4C /* gl_draw.c in Sources */,
-				483A786F0D2EEAF000CB2E4C /* gl_fog.c in Sources */,
-				483A78700D2EEAF000CB2E4C /* gl_mesh.c in Sources */,
-				483A78710D2EEAF000CB2E4C /* gl_model.c in Sources */,
-				483A78720D2EEAF000CB2E4C /* gl_refrag.c in Sources */,
-				483A78730D2EEAF000CB2E4C /* gl_rlight.c in Sources */,
-				483A78740D2EEAF000CB2E4C /* gl_rmain.c in Sources */,
-				483A78750D2EEAF000CB2E4C /* gl_rmisc.c in Sources */,
-				483A78760D2EEAF000CB2E4C /* gl_screen.c in Sources */,
-				483A78770D2EEAF000CB2E4C /* gl_sky.c in Sources */,
-				483A78790D2EEAF000CB2E4C /* gl_texmgr.c in Sources */,
-				483A787A0D2EEAF000CB2E4C /* gl_vidsdl.c in Sources */,
-				483A787B0D2EEAF000CB2E4C /* gl_warp.c in Sources */,
-				483A787C0D2EEAF000CB2E4C /* image.c in Sources */,
-				483A787D0D2EEAF000CB2E4C /* r_alias.c in Sources */,
-				483A787E0D2EEAF000CB2E4C /* r_brush.c in Sources */,
-				483A787F0D2EEAF000CB2E4C /* r_part.c in Sources */,
-				483A78800D2EEAF000CB2E4C /* r_sprite.c in Sources */,
-				483A78810D2EEAF000CB2E4C /* r_world.c in Sources */,
-				48728D2D0D3004A80004D61B /* net_dgrm.c in Sources */,
-				48728D2E0D3004A80004D61B /* net_loop.c in Sources */,
-				486577CB0D31A22A00E7920A /* snd_dma.c in Sources */,
-				486577CC0D31A22A00E7920A /* snd_mem.c in Sources */,
-				486577CD0D31A22A00E7920A /* snd_mix.c in Sources */,
-				48243B140D33F01A00C29F8F /* main_sdl.c in Sources */,
-				48B9E7A70D340BEA0001CACF /* AppController.m in Sources */,
-				48B9E7C00D340EA80001CACF /* SDLApplication.m in Sources */,
-				489D8D2F0D3A630D00AA4471 /* ScreenInfo.m in Sources */,
-				48FE585B0D3A82C8006BB491 /* QuakeArguments.m in Sources */,
-				48C85E3B0D3AD10E00797678 /* QuakeArgument.m in Sources */,
-				48895DB90D4914A000849ABF /* pl_osx.m in Sources */,
-				4847CD5F12057F94000B560F /* sys_sdl_unix.c in Sources */,
-				48134A1812102F400015BF15 /* net_bsd.c in Sources */,
-				48134A1912102F400015BF15 /* net_udp.c in Sources */,
-				4818B0A312D5B9AE006DD66E /* bgmusic.c in Sources */,
-				4818B0AE12D5B9ED006DD66E /* snd_codec.c in Sources */,
-				4818B0B712D5BA1A006DD66E /* snd_vorbis.c in Sources */,
-				4818B0B812D5BA1A006DD66E /* snd_wave.c in Sources */,
-				4854B1B11340C646004C9F45 /* snd_mp3.c in Sources */,
-				483A78780D2EEAF000CB2E4C /* snd_mikmod.c in Sources */,
-				32CA4F630368D1EE00C91783 /* snd_umx.c in Sources */,
-				B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */,
-				48A7C1FC14AA34940011B754 /* strlcat.c in Sources */,
-				48A7C1FD14AA34940011B754 /* strlcpy.c in Sources */,
-				4885A84C179740A0000EC703 /* snd_opus.c in Sources */,
-				48281301179C3F13004E1D61 /* snd_flac.c in Sources */,
-				63D6EB3523A255900047028C /* snd_mp3tag.c in Sources */,
-				6348AF8626EA45B900E036E2 /* miniz.c in Sources */,
-				6348AF9126EA46F500E036E2 /* snd_xmp.c in Sources */,
-				6314787127F1AEC00023B20A /* snd_modplug.c in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
 		089C165CFE840E0CC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				089C165DFE840E0CC02AAC07 /* English */,
+				2A8FDDDC27FB7ABF003062CA /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1186,7 +889,7 @@
 		48B9E7860D340B1E0001CACF /* Launcher.nib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				48B9E7870D340B1E0001CACF /* English */,
+				2A8FDDDE27FB7AC3003062CA /* Base */,
 			);
 			name = Launcher.nib;
 			sourceTree = "<group>";
@@ -1197,7 +900,9 @@
 		664D98F719CF6B78000D395C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1205,7 +910,6 @@
 				);
 				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1231,7 +935,9 @@
 					"$(SRCROOT)",
 					"$(SRCROOT)/codecs/lib",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.sf.quakespasm.QuakeSpasm;
 				PRODUCT_NAME = "QuakeSpasm-SDL2";
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = YES;
 			};
@@ -1240,10 +946,9 @@
 		664D98F819CF6B78000D395C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
@@ -1275,115 +980,10 @@
 					"$(SRCROOT)/codecs/lib",
 				);
 				OTHER_CFLAGS = "";
-				"OTHER_CFLAGS[arch=i386]" = (
-					"-arch",
-					i386,
-				);
 				OTHER_LDFLAGS = "";
-				"OTHER_LDFLAGS[arch=i386]" = (
-					"-arch",
-					i386,
-				);
-				"OTHER_LDFLAGS[arch=ppc]" = (
-					"-arch",
-					ppc,
-				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.sf.quakespasm.QuakeSpasm;
 				PRODUCT_NAME = "QuakeSpasm-SDL2";
-				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		C01FCF4B08A954540054247B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"GL_SILENCE_DEPRECATION=1",
-					USE_CODEC_MP3,
-					USE_CODEC_VORBIS,
-					USE_CODEC_WAVE,
-					USE_CODEC_FLAC,
-					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
-					USE_CODEC_UMX,
-					SDL_FRAMEWORK,
-				);
-				HEADER_SEARCH_PATHS = (
-					codecs/include,
-					"$(HEADER_SEARCH_PATHS)",
-				);
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/codecs/lib\"",
-				);
-				PRODUCT_NAME = QuakeSpasm;
-				WRAPPER_EXTENSION = app;
-				ZERO_LINK = YES;
-			};
-			name = Debug;
-		};
-		C01FCF4C08A954540054247B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
-				);
-				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)\"";
-				GCC_MODEL_TUNING = G5;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"GL_SILENCE_DEPRECATION=1",
-					USE_CODEC_MP3,
-					USE_CODEC_VORBIS,
-					USE_CODEC_WAVE,
-					USE_CODEC_FLAC,
-					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
-					USE_CODEC_UMX,
-					SDL_FRAMEWORK,
-				);
-				HEADER_SEARCH_PATHS = (
-					codecs/include,
-					"$(HEADER_SEARCH_PATHS)",
-				);
-				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)\"",
-					"\"$(SRCROOT)/codecs/lib\"",
-				);
-				OTHER_CFLAGS = "";
-				"OTHER_CFLAGS[arch=i386]" = (
-					"-arch",
-					i386,
-				);
-				"OTHER_CFLAGS[arch=ppc]" = (
-					"-arch",
-					ppc,
-				);
-				OTHER_LDFLAGS = "";
-				"OTHER_LDFLAGS[arch=i386]" = (
-					"-arch",
-					i386,
-				);
-				"OTHER_LDFLAGS[arch=ppc]" = (
-					"-arch",
-					ppc,
-				);
-				PRODUCT_NAME = QuakeSpasm;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -1391,21 +991,44 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					x86_64,
-					i386,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_MODEL_TUNING = G3;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"GL_SILENCE_DEPRECATION=1",
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					codecs/include,
@@ -1413,10 +1036,9 @@
 				);
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = NO;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
-				PREBINDING = NO;
 				SDKROOT = macosx;
 				"SDKROOT[arch=i386]" = macosx;
 				"SDKROOT[arch=ppc]" = macosx;
@@ -1429,14 +1051,35 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ARCHS = "$(ARCHS_STANDARD)";
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEPLOYMENT_POSTPROCESSING = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SRCROOT)",
 					"$(FRAMEWORK_SEARCH_PATHS)",
 				);
 				GCC_MODEL_TUNING = G3;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"GL_SILENCE_DEPRECATION=1",
 					USE_CODEC_MP3,
@@ -1449,7 +1092,11 @@
 					SDL_FRAMEWORK,
 				);
 				GCC_VERSION = "";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					codecs/include,
@@ -1457,7 +1104,7 @@
 				);
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 11.5;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
@@ -1471,7 +1118,6 @@
 					"-arch",
 					ppc,
 				);
-				PREBINDING = NO;
 				SDKROOT = macosx;
 				"SDKROOT[arch=i386]" = macosx;
 				"SDKROOT[arch=ppc]" = macosx;
@@ -1489,15 +1135,6 @@
 			buildConfigurations = (
 				664D98F719CF6B78000D395C /* Debug */,
 				664D98F819CF6B78000D395C /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "QuakeSpasm" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C01FCF4B08A954540054247B /* Debug */,
-				C01FCF4C08A954540054247B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
