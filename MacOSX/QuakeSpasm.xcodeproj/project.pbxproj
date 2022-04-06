@@ -1868,16 +1868,6 @@
 					"$(SRCROOT)/codecs/lib",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_CFLAGS = "";
-				"OTHER_CFLAGS[arch=i386]" = (
-					"-arch",
-					x86_64,
-				);
-				OTHER_LDFLAGS = "";
-				"OTHER_LDFLAGS[arch=i386]" = (
-					"-arch",
-					x86_64,
-				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				VALID_ARCHS = x86_64;
 				WRAPPER_EXTENSION = app;
