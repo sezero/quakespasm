@@ -641,7 +641,7 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
-		2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2-64.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-x64.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2-x64.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A57A34427FCC36A00E38B7E /* QuakeSpasm-SDL2-M1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "QuakeSpasm-SDL2-M1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48134A1412102F400015BF15 /* net_bsd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_bsd.c; path = ../Quake/net_bsd.c; sourceTree = SOURCE_ROOT; };
 		48134A1512102F400015BF15 /* net_defs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_defs.h; path = ../Quake/net_defs.h; sourceTree = SOURCE_ROOT; };
@@ -929,7 +929,7 @@
 			children = (
 				8D1107320486CEB800E47090 /* QuakeSpasm.app */,
 				664D98F919CF6B78000D395C /* QuakeSpasm-SDL2.app */,
-				2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-64.app */,
+				2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-x64.app */,
 				2A57A34427FCC36A00E38B7E /* QuakeSpasm-SDL2-M1.app */,
 			);
 			name = Products;
@@ -1248,9 +1248,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2A57A24E27FCC36000E38B7E /* QuakeSpasm-SDL2-64 */ = {
+		2A57A24E27FCC36000E38B7E /* QuakeSpasm-SDL2-x64 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2A57A2C527FCC36000E38B7E /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2-64" */;
+			buildConfigurationList = 2A57A2C527FCC36000E38B7E /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2-x64" */;
 			buildPhases = (
 				2A57A24F27FCC36000E38B7E /* Resources */,
 				2A57A25327FCC36000E38B7E /* Sources */,
@@ -1263,10 +1263,10 @@
 			);
 			dependencies = (
 			);
-			name = "QuakeSpasm-SDL2-64";
+			name = "QuakeSpasm-SDL2-x64";
 			productInstallPath = "$(HOME)/Applications";
 			productName = QuakeSpasm;
-			productReference = 2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-64.app */;
+			productReference = 2A57A2C827FCC36000E38B7E /* QuakeSpasm-SDL2-x64.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2A57A2CA27FCC36A00E38B7E /* QuakeSpasm-SDL2-M1 */ = {
@@ -1356,7 +1356,7 @@
 			targets = (
 				8D1107260486CEB800E47090 /* QuakeSpasm */,
 				664D988819CF6B78000D395C /* QuakeSpasm-SDL2 */,
-				2A57A24E27FCC36000E38B7E /* QuakeSpasm-SDL2-64 */,
+				2A57A24E27FCC36000E38B7E /* QuakeSpasm-SDL2-x64 */,
 				2A57A2CA27FCC36A00E38B7E /* QuakeSpasm-SDL2-M1 */,
 			);
 		};
@@ -2262,7 +2262,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2A57A2C527FCC36000E38B7E /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2-64" */ = {
+		2A57A2C527FCC36000E38B7E /* Build configuration list for PBXNativeTarget "QuakeSpasm-SDL2-x64" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2A57A2C627FCC36000E38B7E /* Debug */,
