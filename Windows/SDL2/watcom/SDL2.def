@@ -27,6 +27,7 @@ SDL_AudioStreamPut
 SDL_BuildAudioCVT
 SDL_CalculateGammaRamp
 SDL_CaptureMouse
+SDL_ClearComposition
 SDL_ClearError
 SDL_ClearHints
 SDL_ClearQueuedAudio
@@ -78,6 +79,7 @@ SDL_Direct3D9GetAdapterIndex
 SDL_DisableScreenSaver
 SDL_DuplicateSurface
 SDL_EnableScreenSaver
+SDL_EncloseFPoints
 SDL_EnclosePoints
 SDL_Error
 SDL_EventState
@@ -257,6 +259,7 @@ SDL_GetTicks64
 SDL_GetTouchDevice
 SDL_GetTouchDeviceType
 SDL_GetTouchFinger
+SDL_GetTouchName
 SDL_GetVersion
 SDL_GetVideoDriver
 SDL_GetWindowBordersSize
@@ -322,6 +325,7 @@ SDL_HasColorKey
 SDL_HasEvent
 SDL_HasEvents
 SDL_HasIntersection
+SDL_HasIntersectionF
 SDL_HasMMX
 SDL_HasNEON
 SDL_HasRDTSC
@@ -335,6 +339,8 @@ SDL_HasSurfaceRLE
 SDL_HideWindow
 SDL_Init
 SDL_InitSubSystem
+SDL_IntersectFRect
+SDL_IntersectFRectAndLine
 SDL_IntersectRect
 SDL_IntersectRectAndLine
 SDL_IsGameController
@@ -343,6 +349,7 @@ SDL_IsScreenSaverEnabled
 SDL_IsShapedWindow
 SDL_IsTablet
 SDL_IsTextInputActive
+SDL_IsTextInputShown
 SDL_JoystickAttachVirtual
 SDL_JoystickClose
 SDL_JoystickCurrentPowerLevel
@@ -520,6 +527,7 @@ SDL_RenderGetMetalCommandEncoder
 SDL_RenderGetMetalLayer
 SDL_RenderGetScale
 SDL_RenderGetViewport
+SDL_RenderGetWindow
 SDL_RenderIsClipEnabled
 SDL_RenderLogicalToWindow
 SDL_RenderPresent
@@ -629,6 +637,7 @@ SDL_TLSGet
 SDL_TLSSet
 SDL_ThreadID
 SDL_TryLockMutex
+SDL_UnionFRect
 SDL_UnionRect
 SDL_UnloadObject
 SDL_UnlockAudio
