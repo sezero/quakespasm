@@ -1077,65 +1077,55 @@ static int PR_FindSupportedEffects (void)
 ===============
 PR_PatchRereleaseBuiltins
 
+for 2021 re-release
 ===============
 */
+static const exbuiltin_t exbuiltins[] = {
+	/* Update-1 adds the following builtins with new ids. Patch them to use old indices.
+	 * (https://steamcommunity.com/games/2310/announcements/detail/2943653788150871156) */
+	{ "centerprint", -90, -73 },
+	{ "bprint", -91, -23 },
+	{ "sprint", -92, -24 },
+
+	/* Update-3 changes its unique builtins to be looked up by name instead of builtin
+	 * numbers, to avoid conflict with other engines. Patch them to use our indices.
+	 * (https://steamcommunity.com/games/2310/announcements/detail/3177861894960065435) */
+	{ "ex_centerprint", 0, -73 },
+	{ "ex_bprint", 0, -23 },
+	{ "ex_sprint", 0, -24 },
+	{ "ex_finaleFinished", 0, -79 },
+
+	{ "ex_localsound", 0, -80 },
+
+	{ "ex_draw_point", 0, -81 },
+	{ "ex_draw_line", 0, -82 },
+	{ "ex_draw_arrow", 0, -83 },
+	{ "ex_draw_ray", 0,  -84 },
+	{ "ex_draw_circle", 0, -85 },
+	{ "ex_draw_bounds", 0, -86 },
+	{ "ex_draw_worldtext", 0, -87 },
+	{ "ex_draw_sphere", 0, -88 },
+	{ "ex_draw_cylinder", 0, -89 },
+
+	{ "ex_CheckPlayerEXFlags", 0, -90 },
+	{ "ex_bot_movetopoint", 0, -91 },
+	{ "ex_bot_followentity", 0, -91 },
+	{ "ex_walkpathtogoal", 0,  -91 },
+
+	{ NULL, 0, 0 }			/* end-of-list. */
+};
+
 static void PR_PatchRereleaseBuiltins (void)
 {
+	const exbuiltin_t *ex = exbuiltins;
 	dfunction_t *f;
 
-/* Quake 2021 release update 1 adds bprint/sprint/centerprint builtins with new ids
- * (https://steamcommunity.com/games/2310/announcements/detail/2943653788150871156).
- * Patch them back to use the old indices: */
-	if ((f = ED_FindFunction ("centerprint")) != NULL && f->first_statement == -90)
-		f->first_statement = -73;
-	if ((f = ED_FindFunction ("bprint")) != NULL && f->first_statement == -91)
-		f->first_statement = -23;
-	if ((f = ED_FindFunction ("sprint")) != NULL && f->first_statement == -92)
-		f->first_statement = -24;
-
-/* Quake 2021 release update 3 changes rerelease-specific builtins to be looked up
-   by name rather than hardcoded builtin nums to avoid conflict with other engines.
- * (https://steamcommunity.com/games/2310/announcements/detail/3177861894960065435)
- * Patch them to use the indices: */
-	if ((f = ED_FindFunction ("ex_centerprint")) != NULL)
-		f->first_statement = -73;
-	if ((f = ED_FindFunction ("ex_bprint")) != NULL)
-		f->first_statement = -23;
-	if ((f = ED_FindFunction ("ex_sprint")) != NULL)
-		f->first_statement = -24;
-	if ((f = ED_FindFunction ("ex_finaleFinished")) != NULL)
-		f->first_statement = -79;
-
-	if ((f = ED_FindFunction ("ex_localsound")) != NULL)
-		f->first_statement = -80;
-
-	if ((f = ED_FindFunction ("ex_draw_point")) != NULL)
-		f->first_statement = -81;
-	if ((f = ED_FindFunction ("ex_draw_line")) != NULL)
-		f->first_statement = -82;
-	if ((f = ED_FindFunction ("ex_draw_arrow")) != NULL)
-		f->first_statement = -83;
-	if ((f = ED_FindFunction ("ex_draw_ray")) != NULL)
-		f->first_statement = -84;
-	if ((f = ED_FindFunction ("ex_draw_circle")) != NULL)
-		f->first_statement = -85;
-	if ((f = ED_FindFunction ("ex_draw_bounds")) != NULL)
-		f->first_statement = -86;
-	if ((f = ED_FindFunction ("ex_draw_worldtext")) != NULL)
-		f->first_statement = -87;
-	if ((f = ED_FindFunction ("ex_draw_sphere")) != NULL)
-		f->first_statement = -88;
-	if ((f = ED_FindFunction ("ex_draw_cylinder")) != NULL)
-		f->first_statement = -89;
-
-	if ((f = ED_FindFunction ("ex_CheckPlayerEXFlags")) != NULL)
-		f->first_statement = -90;
-	if ((f = ED_FindFunction ("ex_bot_movetopoint")) != NULL)
-		f->first_statement = -91;
-	if ((f = ED_FindFunction ("ex_bot_followentity")) != NULL)
-		f->first_statement = -91;
-	if ((f = ED_FindFunction ("ex_walkpathtogoal")) != NULL)
-		f->first_statement = -91;
+	for ( ; ex->name != NULL; ++ex)
+	{
+		f = ED_FindFunction (ex->name);
+		if (f && f->first_statement == ex->first_statement)
+			f->first_statement = ex->patch_statement;
+	}
 }
 
 
