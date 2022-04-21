@@ -1075,6 +1075,27 @@ static int PR_FindSupportedEffects (void)
 
 /*
 ===============
+PR_PatchRereleaseBuiltins
+
+Quake 2021 release update 1 adds bprint/sprint/centerprint builtins with new id's
+(see https://steamcommunity.com/games/2310/announcements/detail/2943653788150871156)
+This function patches them back to use the old indices
+===============
+*/
+static void PR_PatchRereleaseBuiltins (void)
+{
+	dfunction_t *f;
+	if ((f = ED_FindFunction ("centerprint")) != NULL && f->first_statement == -90)
+		f->first_statement = -73;
+	if ((f = ED_FindFunction ("bprint")) != NULL && f->first_statement == -91)
+		f->first_statement = -23;
+	if ((f = ED_FindFunction ("sprint")) != NULL && f->first_statement == -92)
+		f->first_statement = -24;
+}
+
+
+/*
+===============
 PR_LoadProgs
 ===============
 */
@@ -1178,6 +1199,7 @@ void PR_LoadProgs (void)
 	pr_edict_size += sizeof(void *) - 1;
 	pr_edict_size &= ~(sizeof(void *) - 1);
 
+	PR_PatchRereleaseBuiltins ();
 	pr_effects_mask = PR_FindSupportedEffects ();
 }
 
