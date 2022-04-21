@@ -96,6 +96,7 @@ const char *svc_strings[] =
 	"svc_backtolobby", // 55
 	"svc_localsound" // 56
 };
+#define	NUM_SVC_STRINGS	(sizeof(svc_strings) / sizeof(svc_strings[0]))
 
 qboolean warn_about_nehahra_protocol; //johnfitz
 
@@ -986,13 +987,15 @@ void CL_ParseServerMessage (void)
 			continue;
 		}
 
-		SHOWNET(svc_strings[cmd]);
+		if (cmd < (int)NUM_SVC_STRINGS) {
+			SHOWNET(svc_strings[cmd]);
+		}
 
 	// other commands
 		switch (cmd)
 		{
 		default:
-			Host_Error ("Illegible server message, previous was %s", svc_strings[lastcmd]); //johnfitz -- added svc_strings[lastcmd]
+			Host_Error ("Illegible server message %d (previous was %d)", cmd, lastcmd);
 			break;
 
 		case svc_nop:
