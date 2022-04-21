@@ -1705,6 +1705,10 @@ static void PF_finalefinished (void)
 {
 	G_FLOAT(OFS_RETURN) = 0;
 }
+static void PF_CheckPlayerEXFlags (void)
+{
+	G_FLOAT(OFS_RETURN) = 0;
+}
 
 static void PF_Fixme (void)
 {
@@ -1814,6 +1818,9 @@ static builtin_t pr_builtin[] =
 	PF_Fixme,		// void draw_worldtext (string s, vector origin, float size, float lifetime, float depthtest) = #87
 	PF_Fixme,		// void draw_sphere (vector origin, float radius, float colormap, float lifetime, float depthtest) = #88
 	PF_Fixme,		// void draw_cylinder (vector origin, float halfHeight, float radius, float colormap, float lifetime, float depthtest) = #89
+
+	PF_CheckPlayerEXFlags,
+	PF_Fixme,
 };
 
 builtin_t *pr_builtins = pr_builtin;

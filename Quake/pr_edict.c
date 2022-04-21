@@ -1077,20 +1077,65 @@ static int PR_FindSupportedEffects (void)
 ===============
 PR_PatchRereleaseBuiltins
 
-Quake 2021 release update 1 adds bprint/sprint/centerprint builtins with new id's
-(see https://steamcommunity.com/games/2310/announcements/detail/2943653788150871156)
-This function patches them back to use the old indices
 ===============
 */
 static void PR_PatchRereleaseBuiltins (void)
 {
 	dfunction_t *f;
+
+/* Quake 2021 release update 1 adds bprint/sprint/centerprint builtins with new ids
+ * (https://steamcommunity.com/games/2310/announcements/detail/2943653788150871156).
+ * Patch them back to use the old indices: */
 	if ((f = ED_FindFunction ("centerprint")) != NULL && f->first_statement == -90)
 		f->first_statement = -73;
 	if ((f = ED_FindFunction ("bprint")) != NULL && f->first_statement == -91)
 		f->first_statement = -23;
 	if ((f = ED_FindFunction ("sprint")) != NULL && f->first_statement == -92)
 		f->first_statement = -24;
+
+/* Quake 2021 release update 3 changes rerelease-specific builtins to be looked up
+   by name rather than hardcoded builtin nums to avoid conflict with other engines.
+ * (https://steamcommunity.com/games/2310/announcements/detail/3177861894960065435)
+ * Patch them to use the indices: */
+	if ((f = ED_FindFunction ("ex_centerprint")) != NULL)
+		f->first_statement = -73;
+	if ((f = ED_FindFunction ("ex_bprint")) != NULL)
+		f->first_statement = -23;
+	if ((f = ED_FindFunction ("ex_sprint")) != NULL)
+		f->first_statement = -24;
+	if ((f = ED_FindFunction ("ex_finaleFinished")) != NULL)
+		f->first_statement = -79;
+
+	if ((f = ED_FindFunction ("ex_localsound")) != NULL)
+		f->first_statement = -80;
+
+	if ((f = ED_FindFunction ("ex_draw_point")) != NULL)
+		f->first_statement = -81;
+	if ((f = ED_FindFunction ("ex_draw_line")) != NULL)
+		f->first_statement = -82;
+	if ((f = ED_FindFunction ("ex_draw_arrow")) != NULL)
+		f->first_statement = -83;
+	if ((f = ED_FindFunction ("ex_draw_ray")) != NULL)
+		f->first_statement = -84;
+	if ((f = ED_FindFunction ("ex_draw_circle")) != NULL)
+		f->first_statement = -85;
+	if ((f = ED_FindFunction ("ex_draw_bounds")) != NULL)
+		f->first_statement = -86;
+	if ((f = ED_FindFunction ("ex_draw_worldtext")) != NULL)
+		f->first_statement = -87;
+	if ((f = ED_FindFunction ("ex_draw_sphere")) != NULL)
+		f->first_statement = -88;
+	if ((f = ED_FindFunction ("ex_draw_cylinder")) != NULL)
+		f->first_statement = -89;
+
+	if ((f = ED_FindFunction ("ex_CheckPlayerEXFlags")) != NULL)
+		f->first_statement = -90;
+	if ((f = ED_FindFunction ("ex_bot_movetopoint")) != NULL)
+		f->first_statement = -91;
+	if ((f = ED_FindFunction ("ex_bot_followentity")) != NULL)
+		f->first_statement = -91;
+	if ((f = ED_FindFunction ("ex_walkpathtogoal")) != NULL)
+		f->first_statement = -91;
 }
 
 
