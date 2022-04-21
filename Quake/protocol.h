@@ -201,8 +201,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	svc_spawnstaticsound2	44	// [coord3] [short] samp [byte] vol [byte] aten
 //johnfitz
 
-// 2021 re-release server messages:  the list is from
+// 2021 re-release server messages - see:
 // https://steamcommunity.com/sharedfiles/filedetails/?id=2679459726
+#define svc_botchat		38
 #define svc_setviews		45
 #define svc_updateping		46
 #define svc_updatesocial	47
@@ -212,10 +213,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define svc_seq			51
 // Note: svc_achievement has same value as svcdp_effect!
 #define svc_achievement		52	// [string] id
-#define svc_chat		53	// Prints a message in the chat
-#define svc_levelcompleted	54	// Probably used for achievements
-#define svc_backtolobby		55	// Tells the client that they should go back to the lobby screen
-#define svc_localsound		56	// Plays a sound that is only heard by the client
+#define svc_chat		53
+#define svc_levelcompleted	54
+#define svc_backtolobby		55
+#define svc_localsound		56
 
 //
 // client to server
