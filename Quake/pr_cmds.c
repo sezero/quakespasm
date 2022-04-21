@@ -1689,7 +1689,7 @@ static void PF_changelevel (void)
 
 /*
 ==============
-PF_finalefinished -- used by 2021 release.
+for 2021 re-release:
 ==============
 */
 static void PF_finalefinished (void)
@@ -1699,6 +1699,10 @@ static void PF_finalefinished (void)
 static void PF_CheckPlayerEXFlags (void)
 {
 	G_FLOAT(OFS_RETURN) = 0;
+}
+static void PF_walkpathtogoal (void)
+{
+	G_FLOAT(OFS_RETURN) = 0; /* PATH_ERROR */
 }
 
 static void PF_Fixme (void)
@@ -1797,7 +1801,7 @@ static builtin_t pr_builtin[] =
 
 	PF_setspawnparms,
 
-	// 2021 release
+	// 2021 re-release
 	PF_finalefinished,	// float() finaleFinished = #79
 	PF_Fixme,		// void localsound (entity client, string sample) = #80
 	PF_Fixme,		// void draw_point (vector point, float colormap, float lifetime, float depthtest) = #81
@@ -1811,6 +1815,8 @@ static builtin_t pr_builtin[] =
 	PF_Fixme,		// void draw_cylinder (vector origin, float halfHeight, float radius, float colormap, float lifetime, float depthtest) = #89
 
 	PF_CheckPlayerEXFlags,
+	PF_walkpathtogoal,
+
 	PF_Fixme,
 };
 

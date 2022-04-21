@@ -1108,9 +1108,9 @@ static const exbuiltin_t exbuiltins[] = {
 	{ "ex_draw_cylinder", 0, -89 },
 
 	{ "ex_CheckPlayerEXFlags", 0, -90 },
-	{ "ex_bot_movetopoint", 0, -91 },
-	{ "ex_bot_followentity", 0, -91 },
 	{ "ex_walkpathtogoal", 0,  -91 },
+	{ "ex_bot_movetopoint", 0, -92 },
+	{ "ex_bot_followentity", 0, -92 },
 
 	{ NULL, 0, 0 }			/* end-of-list. */
 };
