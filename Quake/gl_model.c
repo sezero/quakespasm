@@ -1538,7 +1538,7 @@ void Mod_ProcessLeafs_S (dsleaf_t *in, int filelen)
 
 	//johnfitz
 	if (count > 32767)
-		Host_Error ("Mod_LoadLeafs: %i leafs exceeds limit of 32767.\n", count);
+		Host_Error ("Mod_LoadLeafs: %i leafs exceeds limit of 32767.", count);
 	//johnfitz
 
 	loadmodel->leafs = out;
@@ -2385,7 +2385,6 @@ void *Mod_LoadAliasGroup (void * pin,  maliasframedesc_t *frame)
 		frame->bboxmax.v[i] = pingroup->bboxmax.v[i];
 	}
 
-
 	pin_intervals = (daliasinterval_t *)(pingroup + 1);
 
 	frame->interval = LittleFloat (pin_intervals->interval);
@@ -2503,7 +2502,7 @@ void *Mod_LoadAllSkins (int numskins, daliasskintype_t *pskintype)
 	skin = (byte *)(pskintype + 1);
 
 	if (numskins < 1 || numskins > MAX_SKINS)
-		Sys_Error ("Mod_LoadAliasModel: Invalid # of skins: %d\n", numskins);
+		Sys_Error ("Mod_LoadAliasModel: Invalid # of skins: %d", numskins);
 
 	size = pheader->skinwidth * pheader->skinheight;
 
@@ -2777,7 +2776,7 @@ void Mod_LoadAliasModel (qmodel_t *mod, void *buffer)
 	pheader->numframes = LittleLong (pinmodel->numframes);
 	numframes = pheader->numframes;
 	if (numframes < 1)
-		Sys_Error ("Mod_LoadAliasModel: Invalid # of frames: %d\n", numframes);
+		Sys_Error ("Mod_LoadAliasModel: Invalid # of frames: %d", numframes);
 
 	pheader->size = LittleFloat (pinmodel->size) * ALIAS_BASE_SIZE_RATIO;
 	mod->synctype = (synctype_t) LittleLong (pinmodel->synctype);
@@ -2789,7 +2788,6 @@ void Mod_LoadAliasModel (qmodel_t *mod, void *buffer)
 		pheader->scale_origin[i] = LittleFloat (pinmodel->scale_origin[i]);
 		pheader->eyeposition[i] = LittleFloat (pinmodel->eyeposition[i]);
 	}
-
 
 //
 // load the skins
@@ -3017,7 +3015,7 @@ void Mod_LoadSpriteModel (qmodel_t *mod, void *buffer)
 // load the frames
 //
 	if (numframes < 1)
-		Sys_Error ("Mod_LoadSpriteModel: Invalid # of frames: %d\n", numframes);
+		Sys_Error ("Mod_LoadSpriteModel: Invalid # of frames: %d", numframes);
 
 	mod->numframes = numframes;
 

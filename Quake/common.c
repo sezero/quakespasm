@@ -969,7 +969,7 @@ void *SZ_GetSpace (sizebuf_t *buf, int length)
 			Sys_Error ("SZ_GetSpace: %i is > full buffer size", length);
 
 		buf->overflowed = true;
-		Con_Printf ("SZ_GetSpace: overflow");
+		Con_Printf ("SZ_GetSpace: overflow\n");
 		SZ_Clear (buf);
 	}
 

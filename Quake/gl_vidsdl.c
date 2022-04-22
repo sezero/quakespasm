@@ -365,12 +365,12 @@ static int VID_GetCurrentRefreshRate (void)
 #if defined(USE_SDL2)
 	SDL_DisplayMode mode;
 	int current_display;
-	
+
 	current_display = SDL_GetWindowDisplayIndex(draw_context);
-	
+
 	if (0 != SDL_GetCurrentDisplayMode(current_display, &mode))
 		return DEFAULT_REFRESHRATE;
-	
+
 	return mode.refresh_rate;
 #else
 	// SDL1.2 doesn't support refresh rates
@@ -511,7 +511,7 @@ static SDL_DisplayMode *VID_SDL2_GetDisplayMode(int width, int height, int refre
 	{
 		if (SDL_GetDisplayMode(0, i, &mode) != 0)
 			continue;
-		
+
 		if (mode.w == width && mode.h == height
 			&& SDL_BITSPERPIXEL(mode.format) == bpp
 			&& mode.refresh_rate == refreshrate)
@@ -617,7 +617,7 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 
 		if (vid_borderless.value)
 			flags |= SDL_WINDOW_BORDERLESS;
-		
+
 		draw_context = SDL_CreateWindow (caption, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 		if (!draw_context) { // scale back fsaa
 			SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 0);
@@ -688,7 +688,7 @@ static qboolean VID_SetMode (int width, int height, int refreshrate, int bpp, qb
 		flags |= SDL_FULLSCREEN;
 	if (vid_borderless.value)
 		flags |= SDL_NOFRAME;
-	
+
 	gl_swap_control = true;
 	if (SDL_GL_SetAttribute(SDL_GL_SWAP_CONTROL, (vid_vsync.value) ? 1 : 0) == -1)
 		gl_swap_control = false;
@@ -796,7 +796,7 @@ static void VID_Restart (void)
 				width, height, bpp, refreshrate, fullscreen? "fullscreen" : "windowed");
 		return;
 	}
-	
+
 // ericw -- OS X, SDL1: textures, VBO's invalid after mode change
 //          OS X, SDL2: still valid after mode change
 // To handle both cases, delete all GL objects (textures, VBO, GLSL) now.
@@ -1346,7 +1346,7 @@ static void GL_Init (void)
 
 	GLAlias_CreateShaders ();
 	GLWorld_CreateShaders ();
-	GL_ClearBufferBindings ();	
+	GL_ClearBufferBindings ();
 }
 
 /*
@@ -1605,7 +1605,7 @@ void	VID_Init (void)
 	Cvar_SetCallback (&vid_fsaa, VID_FSAA_f);
 	Cvar_SetCallback (&vid_desktopfullscreen, VID_Changed_f);
 	Cvar_SetCallback (&vid_borderless, VID_Changed_f);
-	
+
 	Cmd_AddCommand ("vid_unlock", VID_Unlock); //johnfitz
 	Cmd_AddCommand ("vid_restart", VID_Restart); //johnfitz
 	Cmd_AddCommand ("vid_test", VID_Test); //johnfitz
@@ -1687,7 +1687,7 @@ void	VID_Init (void)
 		p = COM_CheckParm("-refreshrate");
 		if (p && p < com_argc-1)
 			refreshrate = Q_atoi(com_argv[p+1]);
-		
+
 		p = COM_CheckParm("-bpp");
 		if (p && p < com_argc-1)
 			bpp = Q_atoi(com_argv[p+1]);
@@ -1976,46 +1976,46 @@ regenerates rate list based on current vid_width, vid_height and vid_bpp
 */
 static void VID_Menu_RebuildRateList (void)
 {
-	int i,j,r;
-	
-	vid_menu_numrates=0;
-	
-	for (i=0;i<nummodes;i++)
+	int i, j, r;
+
+	vid_menu_numrates = 0;
+
+	for (i = 0; i < nummodes; i++)
 	{
 		//rate list is limited to rates available with current width/height/bpp
 		if (modelist[i].width != vid_width.value ||
 		    modelist[i].height != vid_height.value ||
 		    modelist[i].bpp != vid_bpp.value)
 			continue;
-		
+
 		r = modelist[i].refreshrate;
-		
-		for (j=0;j<vid_menu_numrates;j++)
+
+		for (j = 0; j < vid_menu_numrates; j++)
 		{
 			if (vid_menu_rates[j] == r)
 				break;
 		}
-		
-		if (j==vid_menu_numrates)
+
+		if (j == vid_menu_numrates)
 		{
 			vid_menu_rates[j] = r;
 			vid_menu_numrates++;
 		}
 	}
-	
+
 	//if there are no valid fullscreen refreshrates for this width/height, just pick one
 	if (vid_menu_numrates == 0)
 	{
 		Cvar_SetValue ("vid_refreshrate",(float)modelist[0].refreshrate);
 		return;
 	}
-	
+
 	//if vid_refreshrate is not in the new list, change vid_refreshrate
-	for (i=0;i<vid_menu_numrates;i++)
+	for (i = 0; i < vid_menu_numrates; i++)
 		if (vid_menu_rates[i] == (int)(vid_refreshrate.value))
 			break;
-	
-	if (i==vid_menu_numrates)
+
+	if (i == vid_menu_numrates)
 		Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[0]);
 }
 
@@ -2106,26 +2106,26 @@ chooses next refresh rate in order, then updates vid_refreshrate cvar
 static void VID_Menu_ChooseNextRate (int dir)
 {
 	int i;
-	
-	for (i=0;i<vid_menu_numrates;i++)
+
+	for (i = 0; i < vid_menu_numrates; i++)
 	{
 		if (vid_menu_rates[i] == vid_refreshrate.value)
 			break;
 	}
-	
-	if (i==vid_menu_numrates) //can't find it in list
+
+	if (i == vid_menu_numrates) //can't find it in list
 	{
 		i = 0;
 	}
 	else
 	{
-		i+=dir;
-		if (i>=vid_menu_numrates)
+		i += dir;
+		if (i >= vid_menu_numrates)
 			i = 0;
-		else if (i<0)
+		else if (i < 0)
 			i = vid_menu_numrates-1;
 	}
-	
+
 	Cvar_SetValue ("vid_refreshrate",(float)vid_menu_rates[i]);
 }
 

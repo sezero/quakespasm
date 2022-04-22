@@ -53,8 +53,8 @@ sys_socket_t UDP_Init (void)
 	if (gethostname(buff, MAXHOSTNAMELEN) != 0)
 	{
 		err = SOCKETERRNO;
-		Con_SafePrintf("UDP_Init: gethostname failed (%s)\n",
-							socketerror(err));
+		Con_SafePrintf("UDP_Init: WARNING: gethostname failed (%s)\n",
+						socketerror(err));
 	}
 	else
 	{
@@ -72,8 +72,8 @@ sys_socket_t UDP_Init (void)
 #endif
 		if (!(local = gethostbyname(buff)))
 		{
-			Con_SafePrintf("UDP_Init: gethostbyname failed (%s)\n",
-							hstrerror(h_errno));
+			Con_SafePrintf("UDP_Init: WARNING: gethostbyname failed (%s)\n",
+						hstrerror(h_errno));
 		}
 		else if (local->h_addrtype != AF_INET)
 		{
@@ -349,8 +349,8 @@ const char *UDP_AddrToString (struct qsockaddr *addr)
 
 	haddr = ntohl(((struct sockaddr_in *)addr)->sin_addr.s_addr);
 	q_snprintf (buffer, sizeof(buffer), "%d.%d.%d.%d:%d", (haddr >> 24) & 0xff,
-			   (haddr >> 16) & 0xff, (haddr >> 8) & 0xff, haddr & 0xff,
-			    ntohs(((struct sockaddr_in *)addr)->sin_port));
+			  (haddr >> 16) & 0xff, (haddr >> 8) & 0xff, haddr & 0xff,
+			  ntohs(((struct sockaddr_in *)addr)->sin_port));
 	return buffer;
 }
 

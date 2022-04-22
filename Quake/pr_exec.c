@@ -293,7 +293,7 @@ static int PR_EnterFunction (dfunction_t *f)
 	// save off any locals that the new function steps on
 	c = f->locals;
 	if (localstack_used + c > LOCALSTACK_SIZE)
-		PR_RunError("PR_ExecuteProgram: locals stack overflow\n");
+		PR_RunError("PR_ExecuteProgram: locals stack overflow");
 
 	for (i = 0; i < c ; i++)
 		localstack[localstack_used + i] = ((int *)pr_globals)[f->parm_start + i];

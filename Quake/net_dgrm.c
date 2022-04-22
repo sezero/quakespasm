@@ -137,13 +137,13 @@ int Datagram_SendMessage (qsocket_t *sock, sizebuf_t *data)
 
 #ifdef DEBUG
 	if (data->cursize == 0)
-		Sys_Error("Datagram_SendMessage: zero length message\n");
+		Sys_Error("Datagram_SendMessage: zero length message");
 
 	if (data->cursize > NET_MAXMESSAGE)
-		Sys_Error("Datagram_SendMessage: message too big %u\n", data->cursize);
+		Sys_Error("Datagram_SendMessage: message too big: %u", data->cursize);
 
 	if (sock->canSend == false)
-		Sys_Error("SendMessage: called with canSend == false\n");
+		Sys_Error("SendMessage: called with canSend == false");
 #endif
 
 	Q_memcpy(sock->sendMessage, data->data, data->cursize);
@@ -263,10 +263,10 @@ int Datagram_SendUnreliableMessage (qsocket_t *sock, sizebuf_t *data)
 
 #ifdef DEBUG
 	if (data->cursize == 0)
-		Sys_Error("Datagram_SendUnreliableMessage: zero length message\n");
+		Sys_Error("Datagram_SendUnreliableMessage: zero length message");
 
 	if (data->cursize > MAX_DATAGRAM)
-		Sys_Error("Datagram_SendUnreliableMessage: message too big %u\n", data->cursize);
+		Sys_Error("Datagram_SendUnreliableMessage: message too big: %u", data->cursize);
 #endif
 
 	packetLen = NET_HEADERSIZE + data->cursize;
@@ -604,6 +604,7 @@ static void Test_f (void)
 				break;
 			}
 		}
+
 		if (n < hostCacheCount)
 			goto JustDoIt;
 	}
@@ -1049,9 +1050,8 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 
 	// allocate a QSocket
 	sock = NET_NewQSocket ();
-	if (sock == NULL)
+	if (sock == NULL)	// no room; try to let him know
 	{
-		// no room; try to let him know
 		SZ_Clear(&net_message);
 		// save space for the header, filled in later
 		MSG_WriteLong(&net_message, 0);

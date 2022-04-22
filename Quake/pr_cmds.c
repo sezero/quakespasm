@@ -91,7 +91,8 @@ static char *PF_VarString (int	first)
 	{
 		if (!dev_overflows.varstring || dev_overflows.varstring + CONSOLE_RESPAM_TIME < realtime)
 		{
-			Con_DWarning("PF_VarString: %i characters exceeds standard limit of 255 (max = %d).\n", (int) s, (int)(sizeof(out) - 1));
+			Con_DWarning("PF_VarString: %i characters exceeds standard limit of 255 (max = %d).\n",
+								(int) s, (int)(sizeof(out) - 1));
 			dev_overflows.varstring = realtime;
 		}
 	}
@@ -1689,7 +1690,7 @@ static void PF_changelevel (void)
 
 /*
 ==============
-for 2021 re-release:
+2021 re-release
 ==============
 */
 static void PF_finalefinished (void)

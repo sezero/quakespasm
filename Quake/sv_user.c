@@ -576,7 +576,7 @@ nextmsg:
 				break;
 
 			case clc_disconnect:
-//				Sys_Printf ("SV_ReadClientMessage: client disconnected\n");
+			//	Sys_Printf ("SV_ReadClientMessage: client disconnected\n");
 				return false;
 
 			case clc_move:

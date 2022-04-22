@@ -808,7 +808,6 @@ void	Cmd_ExecuteString (const char *text, cmd_source_t src)
 // check cvars
 	if (!Cvar_Command ())
 		Con_Printf ("Unknown command \"%s\"\n", Cmd_Argv(0));
-
 }
 
 
@@ -857,10 +856,10 @@ int Cmd_CheckParm (const char *parm)
 	int i;
 
 	if (!parm)
-		Sys_Error ("Cmd_CheckParm: NULL");
+		Sys_Error ("Cmd_CheckParm: null input\n");
 
 	for (i = 1; i < Cmd_Argc (); i++)
-		if (! q_strcasecmp (parm, Cmd_Argv (i)))
+		if ( !q_strcasecmp (parm, Cmd_Argv (i)) )
 			return i;
 
 	return 0;

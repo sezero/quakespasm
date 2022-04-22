@@ -75,8 +75,8 @@ sys_socket_t WIPX_Init (void)
 	if (gethostname(buff, MAXHOSTNAMELEN) != 0)
 	{
 		err = SOCKETERRNO;
-		Con_SafePrintf("WIPX_Init: gethostname failed (%s)\n",
-							socketerror(err));
+		Con_SafePrintf("WIPX_Init: WARNING: gethostname failed (%s)\n",
+						socketerror(err));
 	}
 	else
 	{

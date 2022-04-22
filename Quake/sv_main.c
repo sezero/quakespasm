@@ -229,15 +229,13 @@ void SV_StartSound (edict_t *entity, int channel, const char *sample, int volume
 	{
 		if (sv.protocol == PROTOCOL_NETQUAKE)
 			return; //don't send any info protocol can't support
-		else
-			field_mask |= SND_LARGEENTITY;
+		field_mask |= SND_LARGEENTITY;
 	}
 	if (sound_num >= 256 || channel >= 8)
 	{
 		if (sv.protocol == PROTOCOL_NETQUAKE)
 			return; //don't send any info protocol can't support
-		else
-			field_mask |= SND_LARGESOUND;
+		field_mask |= SND_LARGESOUND;
 	}
 	//johnfitz
 

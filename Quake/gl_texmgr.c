@@ -359,7 +359,7 @@ void TexMgr_FreeTexture (gltexture_t *kill)
 
 	if (in_reload_images)
 		return;
-	
+
 	if (kill == NULL)
 	{
 		Con_Printf ("TexMgr_FreeTexture: NULL texture\n");
@@ -1412,7 +1412,7 @@ void TexMgr_ReloadImages (void)
 		glGenTextures(1, &glt->texnum);
 		TexMgr_ReloadImage (glt, -1, -1);
 	}
-	
+
 	in_reload_images = false;
 }
 
@@ -1451,7 +1451,7 @@ void GL_SelectTexture (GLenum target)
 {
 	if (target == currenttarget)
 		return;
-		
+
 	GL_SelectTextureFunc(target);
 	currenttarget = target;
 }
@@ -1526,7 +1526,7 @@ static void GL_DeleteTexture (gltexture_t *texture)
 /*
 ================
 GL_ClearBindings -- ericw
- 
+
 Invalidates cached bindings, so the next GL_Bind calls for each TMU will
 make real glBindTexture calls.
 Call this after changing the binding outside of GL_Bind.

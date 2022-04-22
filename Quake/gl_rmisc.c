@@ -449,7 +449,7 @@ static qboolean GL_CheckShader (GLuint shader)
 
 		memset(infolog, 0, sizeof(infolog));
 		GL_GetShaderInfoLogFunc (shader, sizeof(infolog), NULL, infolog);
-		
+
 		Con_Warning ("GLSL program failed to compile: %s", infolog);
 
 		return false;
@@ -536,12 +536,12 @@ GLuint GL_CreateProgram (const GLchar *vertSource, const GLchar *fragSource, int
 	GL_DeleteShaderFunc (vertShader);
 	GL_AttachShaderFunc (program, fragShader);
 	GL_DeleteShaderFunc (fragShader);
-	
+
 	for (i = 0; i < numbindings; i++)
 	{
 		GL_BindAttribLocationFunc (program, bindings[i].attrib, bindings[i].name);
 	}
-	
+
 	GL_LinkProgramFunc (program);
 
 	if (!GL_CheckProgram (program))
