@@ -312,12 +312,12 @@ void SV_SendServerinfo (client_t *client)
 	MSG_WriteString (&client->message, PR_GetString(sv.edicts->v.message));
 
 	//johnfitz -- only send the first 256 model and sound precaches if protocol is 15
-	for (i=0,s = sv.model_precache+1 ; *s; s++,i++)
+	for (i = 1, s = sv.model_precache+1; *s; s++,i++)
 		if (sv.protocol != PROTOCOL_NETQUAKE || i < 256)
 			MSG_WriteString (&client->message, *s);
 	MSG_WriteByte (&client->message, 0);
 
-	for (i=0,s = sv.sound_precache+1 ; *s ; s++,i++)
+	for (i = 1, s = sv.sound_precache+1; *s; s++, i++)
 		if (sv.protocol != PROTOCOL_NETQUAKE || i < 256)
 			MSG_WriteString (&client->message, *s);
 	MSG_WriteByte (&client->message, 0);
