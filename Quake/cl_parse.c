@@ -196,6 +196,23 @@ void CL_ParseStartSoundPacket(void)
 
 /*
 ==================
+CL_ParseLocalSound - for 2021 rerelease
+==================
+*/
+void CL_ParseLocalSound(void)
+{
+	int field_mask, sound_num;
+
+	field_mask = MSG_ReadByte();
+	sound_num = (field_mask&SND_LARGESOUND) ? MSG_ReadShort() : MSG_ReadByte();
+	if (sound_num >= MAX_SOUNDS)
+		Host_Error ("CL_ParseLocalSound: %i > MAX_SOUNDS", sound_num);
+
+	S_LocalSound (cl.sound_precache[sound_num]->name);
+}
+
+/*
+==================
 CL_KeepaliveMessage
 
 When the client is taking a long time to load stuff, send keepalive messages
@@ -1257,6 +1274,9 @@ void CL_ParseServerMessage (void)
 		case svc_achievement:
 			str = MSG_ReadString();
 			Con_DPrintf("Ignoring svc_achievement (%s)\n", str);
+			break;
+		case svc_localsound:
+			CL_ParseLocalSound();
 			break;
 		}
 

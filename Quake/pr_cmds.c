@@ -1705,6 +1705,19 @@ static void PF_walkpathtogoal (void)
 {
 	G_FLOAT(OFS_RETURN) = 0; /* PATH_ERROR */
 }
+void PF_localsound (void)
+{
+	const char	*sample;
+	int		entnum;
+
+	entnum = G_EDICTNUM(OFS_PARM0);
+	sample = G_STRING(OFS_PARM1);
+	if (entnum < 1 || entnum > svs.maxclients) {
+		Con_Printf ("tried to localsound to a non-client\n");
+		return;
+	}
+	SV_LocalSound (&svs.clients[entnum-1], sample);
+}
 
 static void PF_Fixme (void)
 {
@@ -1804,7 +1817,7 @@ static builtin_t pr_builtin[] =
 
 	// 2021 re-release
 	PF_finalefinished,	// float() finaleFinished = #79
-	PF_Fixme,		// void localsound (entity client, string sample) = #80
+	PF_localsound,		// void localsound (entity client, string sample) = #80
 	PF_Fixme,		// void draw_point (vector point, float colormap, float lifetime, float depthtest) = #81
 	PF_Fixme,		// void draw_line (vector start, vector end, float colormap, float lifetime, float depthtest) = #82
 	PF_Fixme,		// void draw_arrow (vector start, vector end, float colormap, float size, float lifetime, float depthtest) = #83
