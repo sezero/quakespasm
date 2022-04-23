@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: December 2021</em>
+<em>Page last edited: April 2022.</em>
 
 <sect> About <p>
 
@@ -124,9 +124,9 @@ Compile time options include
 </itemize>
 
 <sect1> Windows <p>
-The QuakeSpasm developers cross-compile windows binaries using <url url="http://www.mingw.org" name="MinGW"> and <url url="http://mingw-w64.sf.net" name="MinGW-w64">.
+QuakeSpasm developers cross-compile windows binaries using <url url="http://mingw-w64.sf.net" name="MinGW-w64"> and <url url="https://mingw.osdn.io" name="MinGW">.
 
-The project can also be built using Visual Studio 2005 (or newer).</p>
+The project can also be built using Microsoft Visual Studio 2005 and newer versions.</p>
 
 <sect1> Mac OS X <p>
 A Quakespasm App (including program launcher and update framework) can be made using the <bf>Xcode</bf> template found in the MacOSX directory.
@@ -139,6 +139,26 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.4<p>
+<itemize>
+<item> Fixed getting stuck with loading plaque upon attempting to load a bad save from the menu
+<item> Fixed SZ_GetSpace server crashes, e.g. in ad_magna or ad_mountain
+<item> Fixed intermission camera angles during demo playback
+<item> Don't reset onground flag on every new server message
+<item> Re-enabled title demos by default (turn off with cl_startdemos 0)
+<item> Don't autoplay next demo after a timedemo
+<item> Fixed bad parsing of cdtrack in hipdemo1 from Scourge of Armagon
+<item> Fixed serverinfo off-by-one nummodels/numsounds for protocol 15
+<item> Support for Quake 2021 update 3
+<item> Implemented quad/pentagram dlights for Quake 2021 rerelease
+<item> Implemented 2021 rerelease localsound builtin & svc_localsound (56)
+<item> Several other improvements to Quake 2021 rerelease support
+<item> Several other small fixes and improvements all over the code
+<item> Updated third party code (SDL, lodepng, miniz, some of the codecs, etc.)
+<item> Thanks to Andrei Drexler, 'atsb' and 'temx' for their several patches.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.3<p>
 <itemize>
@@ -581,7 +601,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 
 <sect> Links <p>
-
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Downloads">

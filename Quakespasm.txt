@@ -19,37 +19,38 @@
      4.4 Quake '2021 re-release'
 
   5. Changes
-     5.1 Changes in 0.94.3
-     5.2 Changes in 0.94.2
-     5.3 Changes in 0.94.1
-     5.4 Changes in 0.94.0
-     5.5 Changes in 0.93.2
-     5.6 Changes in 0.93.1
-     5.7 Changes in 0.93.0
-     5.8 Changes in 0.92.1
-     5.9 Changes in 0.92.0
-     5.10 Changes in 0.91.0
-        5.10.1 Bugfixes
-        5.10.2 Visual improvements
-        5.10.3 Interface improvements
-        5.10.4 Code cleanup / Other
-        5.10.5 Raised limits
-     5.11 Changes in 0.90.1
+     5.1 Changes in 0.94.4
+     5.2 Changes in 0.94.3
+     5.3 Changes in 0.94.2
+     5.4 Changes in 0.94.1
+     5.5 Changes in 0.94.0
+     5.6 Changes in 0.93.2
+     5.7 Changes in 0.93.1
+     5.8 Changes in 0.93.0
+     5.9 Changes in 0.92.1
+     5.10 Changes in 0.92.0
+     5.11 Changes in 0.91.0
         5.11.1 Bugfixes
-        5.11.2 Performance
-        5.11.3 Visual improvements
-        5.11.4 Interface improvements
-        5.11.5 Code cleanup
-     5.12 Changes in 0.90.0
-     5.13 Changes in 0.85.9
-     5.14 Changes in 0.85.8
-     5.15 Changes in 0.85.7
-     5.16 Changes in 0.85.6
-     5.17 Changes in 0.85.5
-     5.18 Changes in 0.85.4
-     5.19 Changes in 0.85.3
-     5.20 Changes in 0.85.2
-     5.21 Changes in 0.85.1
+        5.11.2 Visual improvements
+        5.11.3 Interface improvements
+        5.11.4 Code cleanup / Other
+        5.11.5 Raised limits
+     5.12 Changes in 0.90.1
+        5.12.1 Bugfixes
+        5.12.2 Performance
+        5.12.3 Visual improvements
+        5.12.4 Interface improvements
+        5.12.5 Code cleanup
+     5.13 Changes in 0.90.0
+     5.14 Changes in 0.85.9
+     5.15 Changes in 0.85.8
+     5.16 Changes in 0.85.7
+     5.17 Changes in 0.85.6
+     5.18 Changes in 0.85.5
+     5.19 Changes in 0.85.4
+     5.20 Changes in 0.85.3
+     5.21 Changes in 0.85.2
+     5.22 Changes in 0.85.1
 
   6. Copyright
   7. Contact
@@ -58,7 +59,7 @@
 
   ______________________________________________________________________
 
-  Page last edited: December 2021
+  Page last edited: April 2022.
 
 
   1.  About
@@ -239,10 +240,11 @@
 
   4.2.  Windows
 
-  The QuakeSpasm developers cross-compile windows binaries using MinGW
-  <http://www.mingw.org> and MinGW-w64 <http://mingw-w64.sf.net>.
+  QuakeSpasm developers cross-compile windows binaries using MinGW-w64
+  <http://mingw-w64.sf.net> and MinGW <https://mingw.osdn.io>.
 
-  The project can also be built using Visual Studio 2005 (or newer).
+  The project can also be built using Microsoft Visual Studio 2005 and
+  newer versions.
 
   4.3.  Mac OS X
 
@@ -262,17 +264,55 @@
   5.  Changes
 
 
-  5.1.  Changes in 0.94.3
+  5.1.  Changes in 0.94.4
+
+  o  Fixed getting stuck with loading plaque upon attempting to load a
+     bad save from the menu
+
+  o  Fixed SZ_GetSpace server crashes, e.g. in ad_magna or ad_mountain
+
+  o  Fixed intermission camera angles during demo playback
+
+  o  Don't reset onground flag on every new server message
+
+  o  Re-enabled title demos by default (turn off with cl_startdemos 0)
+
+  o  Don't autoplay next demo after a timedemo
+
+  o  Fixed bad parsing of cdtrack in hipdemo1 from Scourge of Armagon
+
+  o  Fixed serverinfo off-by-one nummodels/numsounds for protocol 15
+
+  o  Support for Quake 2021 update 3
+
+  o  Implemented quad/pentagram dlights for Quake 2021 rerelease
+
+  o  Implemented 2021 rerelease localsound builtin & svc_localsound (56)
+
+  o  Several other improvements to Quake 2021 rerelease support
+
+  o  Several other small fixes and improvements all over the code
+
+  o  Updated third party code (SDL, lodepng, miniz, some of the codecs,
+     etc.)
+
+  o  Thanks to Andrei Drexler, 'atsb' and 'temx' for their several
+     patches.
+
+
+  5.2.  Changes in 0.94.3
 
   o  Handle sky textures with non-standard sizes and warn about them
      (e.g. ad_tears)
+
   o  Allow loading textures not aligned to 16 pixels and warn about them
      (eg. the horde2 map of Dimension of the Machine from 2021 rerelease
      update/2.)
+
   o  Updated included SDL2 to latest version 2.0.18.
 
 
-  5.2.  Changes in 0.94.2
+  5.3.  Changes in 0.94.2
 
   o  2021 rerelease: Support for playing the latest update.
 
@@ -283,13 +323,13 @@
   o  2021 rerelease: Look for QuakeEX.kpf under userdir, too.
 
 
-  5.3.  Changes in 0.94.1
+  5.4.  Changes in 0.94.1
 
   o  Fix lightmap issues after vkQuake surface mark/cull optimizations
      merge (sf.net bug/50)
 
 
-  5.4.  Changes in 0.94.0
+  5.5.  Changes in 0.94.0
 
   o  Initial support for playing the 'Quake 2021 re-release' content
      (thanks to Andrei Drexler for bulk of the work, Guillaume Plourde
@@ -338,7 +378,7 @@
   o  Source repository moved to git.
 
 
-  5.5.  Changes in 0.93.2
+  5.6.  Changes in 0.93.2
 
   o  Lightmaps are now dynamically allocated (from QSS), and
      BLOCK_WIDTH/HEIGHT raised from 128 to 256.
@@ -358,7 +398,7 @@
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
-  5.6.  Changes in 0.93.1
+  5.7.  Changes in 0.93.1
 
   o  Fixed a fog regression which was introduced in 0.93.0.
 
@@ -376,7 +416,7 @@
   o  Update the third-party libraries. Other fixes/cleanups.
 
 
-  5.7.  Changes in 0.93.0
+  5.8.  Changes in 0.93.0
 
   o  Raise default "joy_deadzone_trigger" cvar to 0.2.
 
@@ -461,7 +501,7 @@
   o  Update the third-party libraries.
 
 
-  5.8.  Changes in 0.92.1
+  5.9.  Changes in 0.92.1
 
   o  Fixed large menu scale factors (was broken in 0.92.0).
 
@@ -470,7 +510,7 @@
   o  Updated some of the third-party libraries.
 
 
-  5.9.  Changes in 0.92.0
+  5.10.  Changes in 0.92.0
 
   o  SDL2 Game Controller support.
 
@@ -507,9 +547,9 @@
   o  Updated some of the third-party libraries. Other fixes/clean-ups.
 
 
-  5.10.  Changes in 0.91.0
+  5.11.  Changes in 0.91.0
 
-  5.10.1.  Bugfixes
+  5.11.1.  Bugfixes
 
   o  Fix unwanted fog mode change upon video restart.
 
@@ -545,7 +585,7 @@
 
   o  Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 
-  5.10.2.  Visual improvements
+  5.11.2.  Visual improvements
 
   o  New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning
      specific liquid opacities (from DirectQ/RMQEngine, non-archived,
@@ -556,18 +596,18 @@
   o  GLSL gamma is now supported on older hardware without NPOT
      extension.
 
-  5.10.3.  Interface improvements
+  5.11.3.  Interface improvements
 
   o  New r_pos command to show player position.
 
   o  NaN detection in traceline with "developer 1" set now warns instead
      of errors.
 
-  5.10.4.  Code cleanup / Other
+  5.11.4.  Code cleanup / Other
 
   o  Update third-party libraries.
 
-  5.10.5.  Raised limits
+  5.11.5.  Raised limits
 
   o  Default max_edicts 8192 (was 2048) and no longer saved to
      config.cfg.
@@ -579,9 +619,9 @@
   o  Raised MAX_SFX to 1024 (was 512).
 
 
-  5.11.  Changes in 0.90.1
+  5.12.  Changes in 0.90.1
 
-  5.11.1.  Bugfixes
+  5.12.1.  Bugfixes
 
   o  Fix dynamic light artifact where changing lightmap are rendered one
      frame late (bug introduced in 0.90.0).
@@ -604,13 +644,13 @@
 
   o  Fix crash on out-of-bounds skin number.
 
-  5.11.2.  Performance
+  5.12.2.  Performance
 
   o  Use multithreaded OpenGL on OS X for better performance.
 
   o  New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 
-  5.11.3.  Visual improvements
+  5.12.3.  Visual improvements
 
   o  New gamma correction implementation using GLSL. Fixes all known
      gamma issues (affecting the full display, persisting after
@@ -624,7 +664,7 @@
 
   o  r_noshadow_list cvar added (from MarkV.)
 
-  5.11.4.  Interface improvements
+  5.12.4.  Interface improvements
 
   o  Support pausing demo playback with the "pause" command.
 
@@ -641,14 +681,14 @@
      "trying to load ent", "bad chunk length", "meshing",
      "PR_AlocStringSlots: realloc'ing"
 
-  5.11.5.  Code cleanup
+  5.12.5.  Code cleanup
 
   o  Clean up IDE project files to build on fresh systems.
 
   o  Update 3rd-party libraries.
 
 
-  5.12.  Changes in 0.90.0
+  5.13.  Changes in 0.90.0
 
   o  Fix issues on Windows systems with DPI scaling.
 
@@ -756,7 +796,7 @@
   o  Other fixes and clean-ups.
 
 
-  5.13.  Changes in 0.85.9
+  5.14.  Changes in 0.85.9
 
   o  Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 
@@ -803,7 +843,7 @@
   o  Several other minor fixes/cleanups.
 
 
-  5.14.  Changes in 0.85.8
+  5.15.  Changes in 0.85.8
 
   o  Made Quake shareware 1.00 and 1.01 versions to be recognized
      properly.
@@ -850,7 +890,7 @@
   o  Miscellaneous source code cleanups.
 
 
-  5.15.  Changes in 0.85.7
+  5.16.  Changes in 0.85.7
 
   o  Added support for cross-level demo playback
 
@@ -876,7 +916,7 @@
   o  Several other small changes mostly invisible to the end-user
 
 
-  5.16.  Changes in 0.85.6
+  5.17.  Changes in 0.85.6
 
   o  More work for string buffer safety
 
@@ -889,7 +929,7 @@
   o  Minor SDL video fixes.
 
 
-  5.17.  Changes in 0.85.5
+  5.18.  Changes in 0.85.5
 
   o  SDL input driver updated adding native keymap and dead key support
      to the console
@@ -920,7 +960,7 @@
   o  Several code updates from uHexen2 project, several code cleanups.
 
 
-  5.18.  Changes in 0.85.4
+  5.19.  Changes in 0.85.4
 
   o  Implement music (OGG, MP3, WAV) playback
 
@@ -948,7 +988,7 @@
   o  Other minor sound and cdaudio updates
 
 
-  5.19.  Changes in 0.85.3
+  5.20.  Changes in 0.85.3
 
   o  Fix the "-dedicated" option (thanks Oz) and add platform specific
      networking code (default) rather than SDL_net
@@ -985,7 +1025,7 @@
      some other CD tweaks.
 
 
-  5.20.  Changes in 0.85.2
+  5.21.  Changes in 0.85.2
 
   o  Replace the old "Screen size" slider with a "Scale" slider
 
@@ -1013,7 +1053,7 @@
   o  Add OSX Makefile (tested?)
 
 
-  5.21.  Changes in 0.85.1
+  5.22.  Changes in 0.85.1
 
   o  64 bit CPU support
 
