@@ -954,6 +954,41 @@ void CL_ParseStaticSound (int version) //johnfitz -- added argument
 }
 
 
+#if 0	/* for debugging. from fteqw. */
+static void CL_DumpPacket (void)
+{
+	int			i, pos;
+	unsigned char	*packet = net_message.data;
+
+	Con_Printf("CL_DumpPacket, BEGIN:\n");
+	pos = 0;
+	while (pos < net_message.cursize)
+	{
+		Con_Printf("%5i ", pos);
+		for (i = 0; i < 16; i++)
+		{
+			if (pos >= net_message.cursize)
+				Con_Printf(" X ");
+			else	Con_Printf("%2x ", packet[pos]);
+			pos++;
+		}
+		pos -= 16;
+		for (i = 0; i < 16; i++)
+		{
+			if (pos >= net_message.cursize)
+				Con_Printf("X");
+			else if (packet[pos] == 0)
+				Con_Printf(".");
+			else	Con_Printf("%c", packet[pos]);
+			pos++;
+		}
+		Con_Printf("\n");
+	}
+
+	Con_Printf("CL_DumpPacket, --- END ---\n");
+}
+#endif	/* CL_DumpPacket */
+
 #define SHOWNET(x) if(cl_shownet.value==2)Con_Printf ("%3i:%s\n", msg_readcount-1, x);
 
 /*
@@ -977,6 +1012,7 @@ void CL_ParseServerMessage (void)
 		Con_Printf ("------------------\n");
 
 //	cl.onground = false;	// unless the server says otherwise
+
 //
 // parse the message
 //
@@ -1012,6 +1048,7 @@ void CL_ParseServerMessage (void)
 		switch (cmd)
 		{
 		default:
+		//	CL_DumpPacket ();
 			Host_Error ("Illegible server message %d (previous was %s)", cmd, svc_strings[lastcmd]); //johnfitz -- added svc_strings[lastcmd]
 			break;
 
