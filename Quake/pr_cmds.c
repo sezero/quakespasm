@@ -1705,7 +1705,7 @@ static void PF_walkpathtogoal (void)
 {
 	G_FLOAT(OFS_RETURN) = 0; /* PATH_ERROR */
 }
-void PF_localsound (void)
+static void PF_localsound (void)
 {
 	const char	*sample;
 	int		entnum;
@@ -1834,6 +1834,5 @@ static builtin_t pr_builtin[] =
 	PF_Fixme,
 };
 
-builtin_t *pr_builtins = pr_builtin;
-int pr_numbuiltins = sizeof(pr_builtin)/sizeof(pr_builtin[0]);
-
+const builtin_t *pr_builtins = pr_builtin;
+const int pr_numbuiltins = sizeof(pr_builtin) / sizeof(pr_builtin[0]);
