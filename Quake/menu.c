@@ -1757,6 +1757,8 @@ void M_LanConfig_Draw (void)
 	basex = (320-p->width)/2;
 	M_DrawPic (basex, 4, p);
 
+	basex = 72; // Arcane Dimensions has an oversized gfx/p_multi.lmp (noticed by Andrei Drexler.)
+
 	if (StartingGame)
 		startJoin = "New Game";
 	else
