@@ -38,7 +38,7 @@
 			<Add option="-DUSE_CODEC_WAVE" />
 			<Add option="-DUSE_CODEC_FLAC" />
 			<Add option="-DUSE_CODEC_OPUS" />
-			<Add option="-DUSE_CODEC_MIKMOD" />
+			<Add option="-DUSE_CODEC_XMP" />
 			<Add option="-DUSE_CODEC_UMX" />
 			<Add directory="..\codecs\include" />
 			<Add directory="..\SDL2\include" />
@@ -54,7 +54,7 @@
 			<Add library="FLAC" />
 			<Add library="ogg" />
 			<Add library="mad" />
-			<Add library="mikmod" />
+			<Add library="xmp" />
 			<Add library="winmm" />
 			<Add library="opengl32" />
 			<Add library="wsock32" />

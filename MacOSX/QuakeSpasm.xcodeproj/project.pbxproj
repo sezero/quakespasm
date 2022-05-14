@@ -104,7 +104,7 @@
 		2A57A2AC27FCC36000E38B7E /* libogg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
 		2A57A2AD27FCC36000E38B7E /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		2A57A2AE27FCC36000E38B7E /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		2A57A2AF27FCC36000E38B7E /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		2A57A2AF27FCC36000E38B7E /* libxmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		2A57A2B027FCC36000E38B7E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
 		2A57A2B127FCC36000E38B7E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		2A57A2B227FCC36000E38B7E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
@@ -117,7 +117,7 @@
 		2A57A2BB27FCC36000E38B7E /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A2BC27FCC36000E38B7E /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A2BD27FCC36000E38B7E /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2A57A2BE27FCC36000E38B7E /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A57A2BE27FCC36000E38B7E /* libxmp.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A2C027FCC36000E38B7E /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
 		2A57A2C127FCC36000E38B7E /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
 		2A57A2C227FCC36000E38B7E /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
@@ -216,7 +216,7 @@
 		2A57A32827FCC36A00E38B7E /* libogg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
 		2A57A32927FCC36A00E38B7E /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		2A57A32A27FCC36A00E38B7E /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		2A57A32B27FCC36A00E38B7E /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		2A57A32B27FCC36A00E38B7E /* libxmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		2A57A32C27FCC36A00E38B7E /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
 		2A57A32D27FCC36A00E38B7E /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		2A57A32E27FCC36A00E38B7E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
@@ -229,7 +229,7 @@
 		2A57A33727FCC36A00E38B7E /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A33827FCC36A00E38B7E /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A33927FCC36A00E38B7E /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2A57A33A27FCC36A00E38B7E /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2A57A33A27FCC36A00E38B7E /* libxmp.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A57A33C27FCC36A00E38B7E /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
 		2A57A33D27FCC36A00E38B7E /* LICENSE.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C021DBAB47000C373C0 /* LICENSE.txt */; };
 		2A57A33E27FCC36A00E38B7E /* Quakespasm-Music.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C031DBAB47000C373C0 /* Quakespasm-Music.txt */; };
@@ -426,7 +426,7 @@
 		664D98E219CF6B78000D395C /* libogg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
 		664D98E319CF6B78000D395C /* libvorbis.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		664D98E419CF6B78000D395C /* libvorbisfile.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		664D98E519CF6B78000D395C /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		664D98E519CF6B78000D395C /* libxmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		664D98E619CF6B78000D395C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488EF23614B83A370021DD41 /* IOKit.framework */; };
 		664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 002F3C0009D093BD00EBEB88 /* OpenGL.framework */; };
@@ -437,7 +437,7 @@
 		664D98F219CF6B78000D395C /* libogg.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7A15FB507A00B8D476 /* libogg.dylib */; };
 		664D98F319CF6B78000D395C /* libvorbis.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */; };
 		664D98F419CF6B78000D395C /* libvorbisfile.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = 48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */; };
-		664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		664D98F519CF6B78000D395C /* libxmp.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		664D990619CF6E16000D395C /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
 		664D990719CF6E33000D395C /* SDL2.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 664D990519CF6E16000D395C /* SDL2.framework */; };
 		66991C071DBAB4A600C373C0 /* quakespasm.pak in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C061DBAB48000C373C0 /* quakespasm.pak */; };
@@ -452,8 +452,8 @@
 		66991C111DBAB4B300C373C0 /* Quakespasm.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 66991C051DBAB47000C373C0 /* Quakespasm.txt */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
-		A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		A4E3AF2A05D43FCC000F1B47 /* libxmp.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
+		A4E3AF6205D43FCC000F1B47 /* libxmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B021C20714A5FF7E003F18D6 /* cfgfile.c */; };
 /* End PBXBuildFile section */
 
@@ -493,7 +493,7 @@
 				2A57A2BB27FCC36000E38B7E /* libogg.dylib in Copy Libraries */,
 				2A57A2BC27FCC36000E38B7E /* libvorbis.dylib in Copy Libraries */,
 				2A57A2BD27FCC36000E38B7E /* libvorbisfile.dylib in Copy Libraries */,
-				2A57A2BE27FCC36000E38B7E /* libmikmod.dylib in Copy Libraries */,
+				2A57A2BE27FCC36000E38B7E /* libxmp.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,7 +536,7 @@
 				2A57A33727FCC36A00E38B7E /* libogg.dylib in Copy Libraries */,
 				2A57A33827FCC36A00E38B7E /* libvorbis.dylib in Copy Libraries */,
 				2A57A33927FCC36A00E38B7E /* libvorbisfile.dylib in Copy Libraries */,
-				2A57A33A27FCC36A00E38B7E /* libmikmod.dylib in Copy Libraries */,
+				2A57A33A27FCC36A00E38B7E /* libxmp.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,7 +568,7 @@
 				48E2EC8715FB516600B8D476 /* libogg.dylib in Copy Libraries */,
 				48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */,
 				48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */,
-				A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */,
+				A4E3AF2A05D43FCC000F1B47 /* libxmp.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -597,7 +597,7 @@
 				664D98F219CF6B78000D395C /* libogg.dylib in Copy Libraries */,
 				664D98F319CF6B78000D395C /* libvorbis.dylib in Copy Libraries */,
 				664D98F419CF6B78000D395C /* libvorbisfile.dylib in Copy Libraries */,
-				664D98F519CF6B78000D395C /* libmikmod.dylib in Copy Libraries */,
+				664D98F519CF6B78000D395C /* libxmp.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -820,7 +820,7 @@
 		8D1107320486CEB800E47090 /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B021C20714A5FF7E003F18D6 /* cfgfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cfgfile.c; path = ../Quake/cfgfile.c; sourceTree = SOURCE_ROOT; };
 		B021C20814A5FF7E003F18D6 /* cfgfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cfgfile.h; path = ../Quake/cfgfile.h; sourceTree = SOURCE_ROOT; };
-		F5F5DE80017CB4370103A810 /* libmikmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmikmod.dylib; path = codecs/lib/libmikmod.dylib; sourceTree = "<group>"; };
+		F5F5DE80017CB4370103A810 /* libxmp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxmp.dylib; path = codecs/lib/libxmp.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -835,7 +835,7 @@
 				2A57A2AC27FCC36000E38B7E /* libogg.dylib in Frameworks */,
 				2A57A2AD27FCC36000E38B7E /* libvorbis.dylib in Frameworks */,
 				2A57A2AE27FCC36000E38B7E /* libvorbisfile.dylib in Frameworks */,
-				2A57A2AF27FCC36000E38B7E /* libmikmod.dylib in Frameworks */,
+				2A57A2AF27FCC36000E38B7E /* libxmp.dylib in Frameworks */,
 				2A57A2B027FCC36000E38B7E /* IOKit.framework in Frameworks */,
 				2A57A2B127FCC36000E38B7E /* Cocoa.framework in Frameworks */,
 				2A57A2B227FCC36000E38B7E /* OpenGL.framework in Frameworks */,
@@ -854,7 +854,7 @@
 				2A57A32827FCC36A00E38B7E /* libogg.dylib in Frameworks */,
 				2A57A32927FCC36A00E38B7E /* libvorbis.dylib in Frameworks */,
 				2A57A32A27FCC36A00E38B7E /* libvorbisfile.dylib in Frameworks */,
-				2A57A32B27FCC36A00E38B7E /* libmikmod.dylib in Frameworks */,
+				2A57A32B27FCC36A00E38B7E /* libxmp.dylib in Frameworks */,
 				2A57A32C27FCC36A00E38B7E /* IOKit.framework in Frameworks */,
 				2A57A32D27FCC36A00E38B7E /* Cocoa.framework in Frameworks */,
 				2A57A32E27FCC36A00E38B7E /* OpenGL.framework in Frameworks */,
@@ -873,7 +873,7 @@
 				664D98E219CF6B78000D395C /* libogg.dylib in Frameworks */,
 				664D98E319CF6B78000D395C /* libvorbis.dylib in Frameworks */,
 				664D98E419CF6B78000D395C /* libvorbisfile.dylib in Frameworks */,
-				664D98E519CF6B78000D395C /* libmikmod.dylib in Frameworks */,
+				664D98E519CF6B78000D395C /* libxmp.dylib in Frameworks */,
 				664D98E619CF6B78000D395C /* IOKit.framework in Frameworks */,
 				664D98E919CF6B78000D395C /* Cocoa.framework in Frameworks */,
 				664D98EA19CF6B78000D395C /* OpenGL.framework in Frameworks */,
@@ -892,7 +892,7 @@
 				48E2EC7E15FB507A00B8D476 /* libogg.dylib in Frameworks */,
 				48E2EC7F15FB507A00B8D476 /* libvorbis.dylib in Frameworks */,
 				48E2EC8015FB507A00B8D476 /* libvorbisfile.dylib in Frameworks */,
-				A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */,
+				A4E3AF6205D43FCC000F1B47 /* libxmp.dylib in Frameworks */,
 				48E2EC7815FB500400B8D476 /* IOKit.framework in Frameworks */,
 				002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
@@ -945,7 +945,7 @@
 				48E2EC7A15FB507A00B8D476 /* libogg.dylib */,
 				48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */,
 				48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */,
-				F5F5DE80017CB4370103A810 /* libmikmod.dylib */,
+				F5F5DE80017CB4370103A810 /* libxmp.dylib */,
 				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1810,7 +1810,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -1852,7 +1852,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -1896,7 +1896,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -1938,7 +1938,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -1984,7 +1984,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -2027,7 +2027,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -2081,7 +2081,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -2118,7 +2118,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -2212,7 +2212,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);

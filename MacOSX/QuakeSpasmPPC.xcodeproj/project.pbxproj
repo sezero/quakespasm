@@ -111,8 +111,8 @@
 		63D6EB5F23A2563B0047028C /* snd_mp3tag.c in Sources */ = {isa = PBXBuildFile; fileRef = 63D6EB5E23A2563B0047028C /* snd_mp3tag.c */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
-		A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libmikmod.dylib */; };
+		A4E3AF2A05D43FCC000F1B47 /* libxmp.dylib in Copy Libraries */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
+		A4E3AF6205D43FCC000F1B47 /* libxmp.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = F5F5DE80017CB4370103A810 /* libxmp.dylib */; };
 		B021C20914A5FF7E003F18D6 /* cfgfile.c in Sources */ = {isa = PBXBuildFile; fileRef = B021C20714A5FF7E003F18D6 /* cfgfile.c */; };
 /* End PBXBuildFile section */
 
@@ -141,7 +141,7 @@
 				48E2EC8715FB516600B8D476 /* libogg.dylib in Copy Libraries */,
 				48E2EC8815FB516600B8D476 /* libvorbis.dylib in Copy Libraries */,
 				48E2EC8915FB516600B8D476 /* libvorbisfile.dylib in Copy Libraries */,
-				A4E3AF2A05D43FCC000F1B47 /* libmikmod.dylib in Copy Libraries */,
+				A4E3AF2A05D43FCC000F1B47 /* libxmp.dylib in Copy Libraries */,
 			);
 			name = "Copy Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -329,7 +329,7 @@
 		8D1107320486CEB800E47090 /* QuakeSpasm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuakeSpasm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B021C20714A5FF7E003F18D6 /* cfgfile.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cfgfile.c; path = ../Quake/cfgfile.c; sourceTree = SOURCE_ROOT; };
 		B021C20814A5FF7E003F18D6 /* cfgfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cfgfile.h; path = ../Quake/cfgfile.h; sourceTree = SOURCE_ROOT; };
-		F5F5DE80017CB4370103A810 /* libmikmod.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libmikmod.dylib; path = codecs/lib/libmikmod.dylib; sourceTree = "<group>"; };
+		F5F5DE80017CB4370103A810 /* libxmp.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxmp.dylib; path = codecs/lib/libxmp.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,7 +344,7 @@
 				48E2EC7E15FB507A00B8D476 /* libogg.dylib in Frameworks */,
 				48E2EC7F15FB507A00B8D476 /* libvorbis.dylib in Frameworks */,
 				48E2EC8015FB507A00B8D476 /* libvorbisfile.dylib in Frameworks */,
-				A4E3AF6205D43FCC000F1B47 /* libmikmod.dylib in Frameworks */,
+				A4E3AF6205D43FCC000F1B47 /* libxmp.dylib in Frameworks */,
 				48E2EC7815FB500400B8D476 /* IOKit.framework in Frameworks */,
 				002F39FA09D0881F00EBEB88 /* SDL.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
@@ -394,7 +394,7 @@
 				48E2EC7A15FB507A00B8D476 /* libogg.dylib */,
 				48E2EC7B15FB507A00B8D476 /* libvorbis.dylib */,
 				48E2EC7C15FB507A00B8D476 /* libvorbisfile.dylib */,
-				F5F5DE80017CB4370103A810 /* libmikmod.dylib */,
+				F5F5DE80017CB4370103A810 /* libxmp.dylib */,
 				48243B060D33ED0A00C29F8F /* MacOSX */,
 				483A77D80D2EE8C500CB2E4C /* Quake */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -878,7 +878,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -923,7 +923,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -972,7 +972,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
@@ -1017,7 +1017,7 @@
 					USE_CODEC_WAVE,
 					USE_CODEC_FLAC,
 					USE_CODEC_OPUS,
-					USE_CODEC_MIKMOD,
+					USE_CODEC_XMP,
 					USE_CODEC_UMX,
 					SDL_FRAMEWORK,
 				);
