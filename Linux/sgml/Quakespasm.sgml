@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: April 2022.</em>
+<em>Page last edited: May 2022.</em>
 
 <sect> About <p>
 
@@ -139,6 +139,12 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.5<p>
+<itemize>
+<item> Compatibility with new SDL2 versioning scheme.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.4<p>
 <itemize>
