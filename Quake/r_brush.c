@@ -234,8 +234,11 @@ void R_DrawSequentialPoly (msurface_t *s)
 	if (s->flags & SURF_DRAWTURB)
 	{
 		if (currententity->alpha == ENTALPHA_DEFAULT)
-			entalpha = CLAMP(0.0, GL_WaterAlphaForSurface(s), 1.0);
-
+		{
+			entalpha = GL_WaterAlphaForSurface(s);
+			if (entalpha > 1.0f) entalpha = 1.0f;
+			else if (entalpha < 0.0f) entalpha = 0.0f;
+		}
 		if (entalpha < 1)
 		{
 			glDepthMask(GL_FALSE);
