@@ -61,7 +61,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: May 2022.
+  Page last edited: June 2022.
 
 
   1.  About
@@ -269,6 +269,16 @@
   5.1.  Changes in 0.94.5
 
   o  Compatibility with new SDL2 versioning scheme.
+
+  o  Fixed a potential undefined behavior in R_DrawAliasModel.
+
+  o  Fixed parsing of the time argument of svc_fog server message. (it
+     has been broken for more than 20 years and has never seem to have
+     been used.)
+
+  o  Other small improvements elsewhere in the code.
+
+  o  Backported a few fixes to the bundled SDL2-2.0.22 version.
 
 
   5.2.  Changes in 0.94.4

@@ -8,7 +8,7 @@
 <H1>QuakeSpasm</H1>
 
 <H2></H2>
-<P><EM>Page last edited: May 2022.</EM></P>
+<P><EM>Page last edited: June 2022.</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About </A></H2>
@@ -72,8 +72,6 @@
 
 <HR>
 <H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
-
-
 <P>
 <A HREF="http://quakespasm.sourceforge.net">QuakeSpasm</A>
 is a modern, cross-platform Quake engine based on 
@@ -84,8 +82,6 @@ sound driver, some graphical niceities, and numerous bug-fixes and other improve
 SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input - though no CD support.</P>
 
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads </A></H2>
-
-
 <P>
 <UL>
 <LI>
@@ -95,10 +91,7 @@ SDL is probably less buggy, but SDL2 has nicer features and smoother mouse input
 </UL>
 </P>
 
-
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints </A></H2>
-
-
 <P><EM>Visit the 
 <A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM>
 <UL>
@@ -120,7 +113,6 @@ where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 </P>
 <H2><A NAME="ss3.1">3.1</A> <A HREF="#toc3.1">Music Playback</A>
 </H2>
-
 <P>Quakespasm can play various external music formats, including MP3, OGG and FLAC.
 <UL>
 <LI>Tracks should be named like "track02.ogg", "track03.ogg" ... (there is no track01) and placed into "Quake/id1/music".</LI>
@@ -134,14 +126,12 @@ where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 
 <H2><A NAME="ss3.2">3.2</A> <A HREF="#toc3.2">Controller Support</A>
 </H2>
-
 <P>The SDL2 variant of Quakespasm supports Xbox 360 style game controllers.</P>
 <P>The default configuration uses the left analog stick for movement and the right for looking.</P>
 <P>If your controller doesn't work you can try placing 
 <A HREF="https://raw.githubusercontent.com/gabomdq/SDL_GameControllerDB/master/gamecontrollerdb.txt">this file</A> in your Quake directory, it is a community-maintained database that adds support for more controllers to SDL2.</P>
 
 <H3>Cvars</H3>
-
 <P>
 <UL>
 <LI>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.175.</LI>
@@ -153,9 +143,7 @@ where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 <LI>joy_enable - Set to 0 to disable controller support. Default 1.</LI>
 </UL>
 </P>
-
 <H3>Buttons</H3>
-
 <P>Some of the controller buttons are hardcoded to allow navigating the menu:</P>
 <P>
 <UL>
@@ -186,7 +174,6 @@ where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
-
 
 <P>See the Downloads section to get the sourcecode, then below for platform specific instructions.
 Quakespasm can also be built with the cross-platform Codeblocks.<BR>
@@ -222,21 +209,24 @@ Compile time options include
 </H2>
 
 <P>QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run quakespasm as you normally do.</P>
+
+
 <H2><A NAME="s5">5.</A> <A HREF="#toc5">Changes</A></H2>
-
-
 
 <H2><A NAME="ss5.1">5.1</A> <A HREF="#toc5.1">Changes in 0.94.5</A>
 </H2>
-
 <P>
 <UL>
 <LI> Compatibility with new SDL2 versioning scheme.</LI>
+<LI> Fixed a potential undefined behavior in R_DrawAliasModel.</LI>
+<LI> Fixed parsing of the time argument of svc_fog server message. (it has been broken for more than 20 years and has never seem to have been used.)</LI>
+<LI> Other small improvements elsewhere in the code.</LI>
+<LI> Backported a few fixes to the bundled SDL2-2.0.22 version.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.2">5.2</A> <A HREF="#toc5.2">Changes in 0.94.4</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fixed getting stuck with loading plaque upon attempting to load a bad save from the menu</LI>
@@ -256,9 +246,9 @@ Compile time options include
 <LI> Thanks to Andrei Drexler, 'atsb' and 'temx' for their several patches.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.3">5.3</A> <A HREF="#toc5.3">Changes in 0.94.3</A>
 </H2>
-
 <P>
 <UL>
 <LI> Handle sky textures with non-standard sizes and warn about them (e.g. ad_tears)</LI>
@@ -266,9 +256,9 @@ Compile time options include
 <LI> Updated included SDL2 to latest version 2.0.18.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.4">5.4</A> <A HREF="#toc5.4">Changes in 0.94.2</A>
 </H2>
-
 <P>
 <UL>
 <LI> 2021 rerelease: Support for playing the latest update.</LI>
@@ -277,17 +267,17 @@ Compile time options include
 <LI> 2021 rerelease: Look for QuakeEX.kpf under userdir, too.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.5">5.5</A> <A HREF="#toc5.5">Changes in 0.94.1</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fix lightmap issues after vkQuake surface mark/cull optimizations merge (sf.net bug/50)</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.6">5.6</A> <A HREF="#toc5.6">Changes in 0.94.0</A>
 </H2>
-
 <P>
 <UL>
 <LI> Initial support for playing the 'Quake 2021 re-release' content (thanks to Andrei Drexler for bulk of the work, Guillaume Plourde for Q64 bsp format support.)</LI>
@@ -310,9 +300,9 @@ Compile time options include
 <LI> Source repository moved to git.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.7">5.7</A> <A HREF="#toc5.7">Changes in 0.93.2</A>
 </H2>
-
 <P>
 <UL>
 <LI> Lightmaps are now dynamically allocated (from QSS), and BLOCK_WIDTH/HEIGHT raised from 128 to 256.</LI>
@@ -323,9 +313,9 @@ Compile time options include
 <LI> Update the third-party libraries. Other fixes/cleanups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.8">5.8</A> <A HREF="#toc5.8">Changes in 0.93.1</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fixed a fog regression which was introduced in 0.93.0.</LI>
@@ -337,9 +327,9 @@ Compile time options include
 <LI> Update the third-party libraries. Other fixes/cleanups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.9">5.9</A> <A HREF="#toc5.9">Changes in 0.93.0</A>
 </H2>
-
 <P>
 <UL>
 <LI> Raise default "joy_deadzone_trigger" cvar to 0.2.</LI>
@@ -380,9 +370,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Update the third-party libraries.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.10">5.10</A> <A HREF="#toc5.10">Changes in 0.92.1</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fixed large menu scale factors (was broken in 0.92.0).</LI>
@@ -390,9 +380,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Updated some of the third-party libraries.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.11">5.11</A> <A HREF="#toc5.11">Changes in 0.92.0</A>
 </H2>
-
 <P>
 <UL>
 <LI> SDL2 Game Controller support.</LI>
@@ -410,12 +400,10 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Updated some of the third-party libraries. Other fixes/clean-ups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.12">5.12</A> <A HREF="#toc5.12">Changes in 0.91.0</A>
 </H2>
-
-
 <H3>Bugfixes</H3>
-
 <P>
 <UL>
 <LI> Fix unwanted fog mode change upon video restart.</LI>
@@ -433,35 +421,27 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).</LI>
 </UL>
 </P>
-
 <H3>Visual improvements</H3>
-
 <P>
 <UL>
 <LI> New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning specific liquid opacities (from DirectQ/RMQEngine, non-archived, default to 0), and new worldspawn keys _wateralpha, _lavaalpha, _slimealpha, _telealpha, _skyfog (unique to Quakespasm, similar to the behaviour of the "fog" worldspawn key).</LI>
 <LI> GLSL gamma is now supported on older hardware without NPOT extension.</LI>
 </UL>
 </P>
-
 <H3>Interface improvements</H3>
-
 <P>
 <UL>
 <LI> New r_pos command to show player position.</LI>
 <LI> NaN detection in traceline with "developer 1" set now warns instead of errors.</LI>
 </UL>
 </P>
-
 <H3>Code cleanup / Other</H3>
-
 <P>
 <UL>
 <LI> Update third-party libraries.</LI>
 </UL>
 </P>
-
 <H3>Raised limits</H3>
-
 <P>
 <UL>
 <LI> Default max_edicts 8192 (was 2048) and no longer saved to config.cfg.</LI>
@@ -470,12 +450,10 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Raised MAX_SFX to 1024 (was 512).</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.13">5.13</A> <A HREF="#toc5.13">Changes in 0.90.1</A>
 </H2>
-
-
 <H3>Bugfixes</H3>
-
 <P>
 <UL>
 <LI> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).</LI>
@@ -489,18 +467,14 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Fix crash on out-of-bounds skin number.</LI>
 </UL>
 </P>
-
 <H3>Performance</H3>
-
 <P>
 <UL>
 <LI> Use multithreaded OpenGL on OS X for better performance.</LI>
 <LI> New, faster mdl renderer using GLSL. Disable with "-noglslalias".</LI>
 </UL>
 </P>
-
 <H3>Visual improvements</H3>
-
 <P>
 <UL>
 <LI> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".</LI>
@@ -509,9 +483,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> r_noshadow_list cvar added (from MarkV.)</LI>
 </UL>
 </P>
-
 <H3>Interface improvements</H3>
-
 <P>
 <UL>
 <LI> Support pausing demo playback with the "pause" command.</LI>
@@ -521,18 +493,16 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"</LI>
 </UL>
 </P>
-
 <H3>Code cleanup</H3>
-
 <P>
 <UL>
 <LI> Clean up IDE project files to build on fresh systems.</LI>
 <LI> Update 3rd-party libraries.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.14">5.14</A> <A HREF="#toc5.14">Changes in 0.90.0</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fix issues on Windows systems with DPI scaling.</LI>
@@ -576,9 +546,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Other fixes and clean-ups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.15">5.15</A> <A HREF="#toc5.15">Changes in 0.85.9</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fixes for several undefined behaviors in C code (gcc-4.8 support.)</LI>
@@ -600,9 +570,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Several other minor fixes/cleanups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.16">5.16</A> <A HREF="#toc5.16">Changes in 0.85.8</A>
 </H2>
-
 <P>
 <UL>
 <LI> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.</LI>
@@ -625,9 +595,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Miscellaneous source code cleanups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.17">5.17</A> <A HREF="#toc5.17">Changes in 0.85.7</A>
 </H2>
-
 <P>
 <UL>
 <LI> Added support for cross-level demo playback</LI>
@@ -643,9 +613,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Several other small changes mostly invisible to the end-user</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.18">5.18</A> <A HREF="#toc5.18">Changes in 0.85.6</A>
 </H2>
-
 <P>
 <UL>
 <LI> More work for string buffer safety</LI>
@@ -654,9 +624,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Minor SDL video fixes.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.19">5.19</A> <A HREF="#toc5.19">Changes in 0.85.5</A>
 </H2>
-
 <P>
 <UL>
 <LI> SDL input driver updated adding native keymap and dead key support to the console</LI>
@@ -673,9 +643,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Several code updates from uHexen2 project, several code cleanups.</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.20">5.20</A> <A HREF="#toc5.20">Changes in 0.85.4</A>
 </H2>
-
 <P>
 <UL>
 <LI> Implement music (OGG, MP3, WAV) playback</LI>
@@ -691,9 +661,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Other minor sound and cdaudio updates</LI>
 </UL>
 </P>
+
 <H2><A NAME="ss5.21">5.21</A> <A HREF="#toc5.21">Changes in 0.85.3</A>
 </H2>
-
 <P>
 <UL>
 <LI> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) rather than SDL_net</LI>
@@ -716,7 +686,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 
 <H2><A NAME="ss5.22">5.22</A> <A HREF="#toc5.22">Changes in 0.85.2</A>
 </H2>
-
 <P>
 <UL>
 <LI> Replace the old "Screen size" slider with a "Scale" slider</LI>
@@ -735,7 +704,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 
 <H2><A NAME="ss5.23">5.23</A> <A HREF="#toc5.23">Changes in 0.85.1</A>
 </H2>
-
 <P>
 <UL>
 <LI>64 bit CPU support</LI>
@@ -759,7 +727,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 
 
 <H2><A NAME="s6">6.</A> <A HREF="#toc6">Copyright </A></H2>
-
 <P>
 <UL>
 <LI>Quake and Quakespasm are released under the 
@@ -770,7 +737,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </P>
 
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">Contact </A></H2>
-
 <P>
 <UL>
 <LI>
@@ -785,7 +751,6 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </P>
 
 <H2><A NAME="s8">8.</A> <A HREF="#toc8">Links </A></H2>
-
 <P>
 <UL>
 <LI>
