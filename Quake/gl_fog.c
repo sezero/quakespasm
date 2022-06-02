@@ -100,7 +100,8 @@ void Fog_ParseServerMessage (void)
 	red = MSG_ReadByte() / 255.0;
 	green = MSG_ReadByte() / 255.0;
 	blue = MSG_ReadByte() / 255.0;
-	time = q_max(0.0, MSG_ReadShort() / 100.0);
+	time = MSG_ReadShort() / 100.0;
+	if (time < 0.0f) time = 0.0f;
 
 	Fog_Update (density, red, green, blue, time);
 }
