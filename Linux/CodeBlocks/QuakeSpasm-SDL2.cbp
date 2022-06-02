@@ -39,13 +39,13 @@
 			<Add option="-DUSE_CODEC_WAVE" />
 		</Compiler>
 		<Linker>
-			<Add option="-lm" />
 			<Add option="`sdl2-config --libs`" />
 			<Add option="-lGL" />
 			<Add option="-lvorbisfile" />
 			<Add option="-lvorbis" />
 			<Add option="-logg" />
 			<Add option="-lmad" />
+			<Add option="-lm" />
 		</Linker>
 		<Unit filename="../../Quake/anorm_dots.h" />
 		<Unit filename="../../Quake/anorms.h" />
