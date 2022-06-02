@@ -1683,8 +1683,8 @@ qboolean M_Quit_TextEntry (void)
 
 void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 {
-	char	msg1[40];
-	char	msg2[] = "by Ozkan Sezer, Eric Wasylishen, others";/* msg2/msg3 are mostly [40] */
+	char	msg1[] = "QuakeSpasm " QUAKESPASM_VER_STRING;
+	char	msg2[] = "by Ozkan Sezer,Eric Wasylishen,others"; /* msg2/msg3 are [38] at most */
 	char	msg3[] = "Press y to quit";
 	int		boxlen;
 
@@ -1696,17 +1696,14 @@ void M_Quit_Draw (void) //johnfitz -- modified for new quit message
 		m_state = m_quit;
 	}
 
-	sprintf(msg1, "QuakeSpasm " QUAKESPASM_VER_STRING);
-
 	//okay, this is kind of fucked up.  M_DrawTextBox will always act as if
 	//width is even. Also, the width and lines values are for the interior of the box,
 	//but the x and y values include the border.
-	boxlen = q_max(strlen(msg1), q_max((sizeof(msg2)-1),(sizeof(msg3)-1))) + 1;
-	if (boxlen & 1) boxlen++;
+	boxlen = (q_max(sizeof(msg1), q_max(sizeof(msg2),sizeof(msg3))) + 1) & ~1;
 	M_DrawTextBox	(160-4*(boxlen+2), 76, boxlen, 4);
 
 	//now do the text
-	M_Print			(160-4*strlen(msg1), 88, msg1);
+	M_Print			(160-4*(sizeof(msg1)-1), 88, msg1);
 	M_Print			(160-4*(sizeof(msg2)-1), 96, msg2);
 	M_PrintWhite		(160-4*(sizeof(msg3)-1), 104, msg3);
 }
