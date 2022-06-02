@@ -39,6 +39,7 @@
 			<Add option="-DUSE_CODEC_WAVE" />
 		</Compiler>
 		<Linker>
+			<Add option="-lm" />
 			<Add option="`sdl2-config --libs`" />
 			<Add option="-lGL" />
 			<Add option="-lvorbisfile" />
