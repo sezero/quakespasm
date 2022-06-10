@@ -33,6 +33,8 @@ int		sv_protocol = PROTOCOL_FITZQUAKE; //johnfitz
 extern qboolean	pr_alpha_supported; //johnfitz
 extern int pr_effects_mask;
 
+extern cvar_t nomonsters;
+
 //============================================================================
 
 /*
@@ -1537,6 +1539,7 @@ void SV_SpawnServer (const char *server)
 
 	sv.state = ss_loading;
 	sv.paused = false;
+	sv.nomonsters = (nomonsters.value != 0.f);
 
 	sv.time = 1.0;
 

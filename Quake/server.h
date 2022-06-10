@@ -46,6 +46,7 @@ typedef struct
 
 	qboolean	paused;
 	qboolean	loadgame;			// handle connections specially
+	qboolean	nomonsters;			// server started with 'nomonsters' cvar active
 
 	double		time;
 
