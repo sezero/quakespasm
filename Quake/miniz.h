@@ -1,3 +1,6 @@
+#ifndef Q_MINIZ_H
+#define Q_MINIZ_H 1
+
 #ifndef MINIZ_EXPORT
 #define MINIZ_EXPORT
 #endif
@@ -114,8 +117,6 @@
      uses the 64-bit variants: fopen64(), stat64(), etc. Otherwise you won't be able to process large files
      (i.e. 32-bit stat() fails for me on files > 0x7FFFFFFF bytes).
 */
-#pragma once
-
 
 #if 1   /* QUAKESPASM-SPECIFIC CONFIG: */
 
@@ -721,3 +722,5 @@ MINIZ_EXPORT mz_bool mz_zip_end(mz_zip_archive *pZip);
 #endif
 
 #endif /* MINIZ_NO_ARCHIVE_APIS */
+
+#endif /* Q_MINIZ_H */
