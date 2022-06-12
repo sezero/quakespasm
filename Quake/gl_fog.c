@@ -132,15 +132,15 @@ void Fog_FogCommand_f (void)
 		Con_Printf("   \"blue\" is \"%f\"\n", fog_blue);
 		return;
 	case 2:
-		d = atof(Cmd_Argv(1));
+		d = Q_atof(Cmd_Argv(1));
 		t = 0.0f;
 		r = fog_red;
 		g = fog_green;
 		b = fog_blue;
 		break;
 	case 3: //TEST
-		d = atof(Cmd_Argv(1));
-		t = atof(Cmd_Argv(2));
+		d = Q_atof(Cmd_Argv(1));
+		t = Q_atof(Cmd_Argv(2));
 		r = fog_red;
 		g = fog_green;
 		b = fog_blue;
@@ -148,23 +148,23 @@ void Fog_FogCommand_f (void)
 	case 4:
 		d = fog_density;
 		t = 0.0f;
-		r = atof(Cmd_Argv(1));
-		g = atof(Cmd_Argv(2));
-		b = atof(Cmd_Argv(3));
+		r = Q_atof(Cmd_Argv(1));
+		g = Q_atof(Cmd_Argv(2));
+		b = Q_atof(Cmd_Argv(3));
 		break;
 	case 5:
-		d = atof(Cmd_Argv(1));
-		r = atof(Cmd_Argv(2));
-		g = atof(Cmd_Argv(3));
-		b = atof(Cmd_Argv(4));
+		d = Q_atof(Cmd_Argv(1));
+		r = Q_atof(Cmd_Argv(2));
+		g = Q_atof(Cmd_Argv(3));
+		b = Q_atof(Cmd_Argv(4));
 		t = 0.0f;
 		break;
 	case 6: //TEST
-		d = atof(Cmd_Argv(1));
-		r = atof(Cmd_Argv(2));
-		g = atof(Cmd_Argv(3));
-		b = atof(Cmd_Argv(4));
-		t = atof(Cmd_Argv(5));
+		d = Q_atof(Cmd_Argv(1));
+		r = Q_atof(Cmd_Argv(2));
+		g = Q_atof(Cmd_Argv(3));
+		b = Q_atof(Cmd_Argv(4));
+		t = Q_atof(Cmd_Argv(5));
 		break;
 	}
 
