@@ -307,7 +307,7 @@ static void SCR_CalcRefdef (void)
 
 	//johnfitz -- rewrote this section
 	size = scr_viewsize.value;
-	scale = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0);
+	scale = CLAMP (1.0f, scr_sbarscale.value, (float)glwidth / 320.0f);
 
 	if (size >= 120 || cl.intermission || scr_sbaralpha.value < 1) //johnfitz -- scr_sbaralpha.value
 		sb_lines = 0;
@@ -316,12 +316,12 @@ static void SCR_CalcRefdef (void)
 	else
 		sb_lines = 48 * scale;
 
-	size = q_min(scr_viewsize.value, 100) / 100;
+	size = q_min(scr_viewsize.value, 100.f) / 100;
 	//johnfitz
 
 	//johnfitz -- rewrote this section
-	r_refdef.vrect.width = q_max(glwidth * size, 96); //no smaller than 96, for icons
-	r_refdef.vrect.height = q_min(glheight * size, glheight - sb_lines); //make room for sbar
+	r_refdef.vrect.width = q_max(glwidth * size, 96.0f); //no smaller than 96, for icons
+	r_refdef.vrect.height = q_min((int)(glheight * size), glheight - sb_lines); //make room for sbar
 	r_refdef.vrect.x = (glwidth - r_refdef.vrect.width)/2;
 	r_refdef.vrect.y = (glheight - sb_lines - r_refdef.vrect.height)/2;
 	//johnfitz

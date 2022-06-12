@@ -95,8 +95,8 @@ char *PL_GetClipboardData (void)
 			 * such as an ip address, etc:  do chop the size
 			 * here, otherwise we may experience Z_Malloc()
 			 * failures and all other not-oh-so-fun stuff. */
-				size = q_min(MAX_CLIPBOARDTXT, size);
-				data = (char *) Z_Malloc(size);
+				size = q_min((size_t)(MAX_CLIPBOARDTXT), size);
+				data = (char *) Z_Malloc((int)size);
 				q_strlcpy (data, cliptext, size);
 				GlobalUnlock (hClipboardData);
 			}

@@ -679,7 +679,8 @@ int TexMgr_SafeTextureSize (int s)
 		p = TexMgr_Pad(p);
 		if (p < s) s = p;
 	}
-	s = q_min(gl_hardware_maxsize, s);
+	if (s > gl_hardware_maxsize)
+	    s = gl_hardware_maxsize;
 	return s;
 }
 

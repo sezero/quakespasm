@@ -559,13 +559,13 @@ void Draw_ConsoleBackground (void)
 	pic->width = vid.conwidth;
 	pic->height = vid.conheight;
 
-	alpha = (con_forcedup) ? 1.0 : scr_conalpha.value;
+	alpha = (con_forcedup) ? 1.0f : scr_conalpha.value;
 
 	GL_SetCanvas (CANVAS_CONSOLE); //in case this is called from weird places
 
-	if (alpha > 0.0)
+	if (alpha > 0.0f)
 	{
-		if (alpha < 1.0)
+		if (alpha < 1.0f)
 		{
 			glEnable (GL_BLEND);
 			glColor4f (1,1,1,alpha);
@@ -575,7 +575,7 @@ void Draw_ConsoleBackground (void)
 
 		Draw_Pic (0, 0, pic);
 
-		if (alpha < 1.0)
+		if (alpha < 1.0f)
 		{
 			glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 			glEnable (GL_ALPHA_TEST);
@@ -703,14 +703,14 @@ void GL_SetCanvas (canvastype newcanvas)
 		glViewport (glx, gly, glwidth, glheight);
 		break;
 	case CANVAS_MENU:
-		s = q_min((float)glwidth / 320.0, (float)glheight / 200.0);
-		s = CLAMP (1.0, scr_menuscale.value, s);
+		s = q_min((float)glwidth / 320.0f, (float)glheight / 200.0f);
+		s = CLAMP (1.0f, scr_menuscale.value, s);
 		// ericw -- doubled width to 640 to accommodate long keybindings
 		glOrtho (0, 640, 200, 0, -99999, 99999);
 		glViewport (glx + (glwidth - 320*s) / 2, gly + (glheight - 200*s) / 2, 640*s, 200*s);
 		break;
 	case CANVAS_SBAR:
-		s = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0);
+		s = CLAMP (1.0f, scr_sbarscale.value, (float)glwidth / 320.0f);
 		if (cl.gametype == GAME_DEATHMATCH)
 		{
 			glOrtho (0, glwidth / s, 48, 0, -99999, 99999);
@@ -727,7 +727,7 @@ void GL_SetCanvas (canvastype newcanvas)
 		glViewport (glx, gly+glheight-gl_warpimagesize, gl_warpimagesize, gl_warpimagesize);
 		break;
 	case CANVAS_CROSSHAIR: //0,0 is center of viewport
-		s = CLAMP (1.0, scr_crosshairscale.value, 10.0);
+		s = CLAMP (1.0f, scr_crosshairscale.value, 10.0f);
 		glOrtho (scr_vrect.width/-2/s, scr_vrect.width/2/s, scr_vrect.height/2/s, scr_vrect.height/-2/s, -99999, 99999);
 		glViewport (scr_vrect.x, glheight - scr_vrect.y - scr_vrect.height, scr_vrect.width & ~1, scr_vrect.height & ~1);
 		break;

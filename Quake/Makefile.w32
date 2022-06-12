@@ -50,8 +50,8 @@ CPUFLAGS=
 LDFLAGS = -m32 -mwindows -static-libgcc
 DFLAGS ?=
 CFLAGS ?= -m32 -Wall -Wno-trigraphs
+CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
-
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
 CFLAGS += -g
@@ -59,6 +59,7 @@ do_strip=
 else
 DFLAGS += -DNDEBUG
 CFLAGS += -O2
+#  -fno-asynchronous-unwind-tables
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
 cmd_strip=$(STRIP) $(1)
@@ -296,4 +297,3 @@ debug:
 
 clean:
 	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
-

@@ -577,7 +577,7 @@ qboolean Host_FilterTime (float time)
 	realtime += time;
 
 	//johnfitz -- max fps cvar
-	maxfps = CLAMP (10.0, host_maxfps.value, 1000.0);
+	maxfps = CLAMP (10.f, host_maxfps.value, 1000.f);
 	if (!cls.timedemo && realtime - oldrealtime < 1.0/maxfps)
 		return false; // framerate is too high
 	//johnfitz

@@ -1008,7 +1008,9 @@ static void Host_SavegameComment (char *text)
 	if (p1 != NULL) *p1 = 0;
 	if (p2 != NULL) *p2 = 0;
 
-	memcpy (text, cl.levelname, q_min(strlen(cl.levelname),22)); //johnfitz -- only copy 22 chars.
+	i = (int) strlen(cl.levelname);
+	if (i > 22) i = 22;
+	memcpy (text, cl.levelname, (size_t)i);
 	sprintf (kills,"kills:%3i/%3i", cl.stats[STAT_MONSTERS], cl.stats[STAT_TOTALMONSTERS]);
 	memcpy (text+22, kills, strlen(kills));
 // convert space to _ to make stdio happy

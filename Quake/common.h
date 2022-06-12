@@ -41,11 +41,76 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #undef	min
 #undef	max
+
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
+    (defined(__cplusplus) && (__cplusplus >= 201103L))
+#define GENERIC_TYPES(x, separator) \
+	x(int, i) separator \
+	x(unsigned int, u) separator \
+	x(long, l) separator \
+	x(unsigned long, ul) separator \
+	x(long long, ll) separator \
+	x(unsigned long long, ull) separator \
+	x(float, f) separator \
+	x(double, d)
+
+#define COMMA ,
+#define NO_COMMA
+
+#define IMPL_GENERIC_FUNCS(type, suffix) \
+static inline type q_min_##suffix (type a, type b) { \
+	return (a < b) ? a : b; \
+} \
+static inline type q_max_##suffix (type a, type b) { \
+	return (a > b) ? a : b; \
+} \
+static inline type clamp_##suffix (type minval, type val, type maxval) { \
+	return (val < minval) ? minval : ((val > maxval) ? maxval : val); \
+}
+
+GENERIC_TYPES (IMPL_GENERIC_FUNCS, NO_COMMA)
+
+#define SELECT_Q_MIN(type, suffix) type: q_min_##suffix
+#define q_min(a, b) _Generic((a) + (b), GENERIC_TYPES (SELECT_Q_MIN, COMMA))(a, b)
+
+#define SELECT_Q_MAX(type, suffix) type: q_max_##suffix
+#define q_max(a, b) _Generic((a) + (b), GENERIC_TYPES (SELECT_Q_MAX, COMMA))(a, b)
+
+#define SELECT_CLAMP(type, suffix) type: clamp_##suffix
+#define CLAMP(minval, val, maxval) _Generic((minval) + (val) + (maxval), \
+	GENERIC_TYPES (SELECT_CLAMP, COMMA))(minval, val, maxval)
+
+#elif defined(__GNUC__)
+/* min and max macros with type checking -- based on tyrquake. */
+#define q_max(a,b) ({           \
+    const __typeof(a) a_ = (a); \
+    const __typeof(b) b_ = (b); \
+    (void)(&a_ == &b_);         \
+    (a_ > b_) ? a_ : b_;        \
+})
+#define q_min(a,b) ({           \
+    const __typeof(a) a_ = (a); \
+    const __typeof(b) b_ = (b); \
+    (void)(&a_ == &b_);         \
+    (a_ < b_) ? a_ : b_;        \
+})
+#define CLAMP(_minval, x, _maxval) ({           \
+    const __typeof(x) x_ = (x);                 \
+    const __typeof(_minval) valmin_ = (_minval);\
+    const __typeof(_maxval) valmax_ = (_maxval);\
+    (void)(&x_ == &valmin_);                    \
+    (void)(&x_ == &valmax_);                    \
+    (x_ < valmin_) ? valmin_ :                  \
+    (x_ > valmax_) ? valmax_ : x_;              \
+})
+
+#else
 #define	q_min(a, b)	(((a) < (b)) ? (a) : (b))
 #define	q_max(a, b)	(((a) > (b)) ? (a) : (b))
 #define	CLAMP(_minval, x, _maxval)		\
 	((x) < (_minval) ? (_minval) :		\
 	 (x) > (_maxval) ? (_maxval) : (x))
+#endif
 
 typedef struct sizebuf_s
 {

@@ -53,6 +53,7 @@ CPUFLAGS=
 LDFLAGS =
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs
+CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
@@ -61,6 +62,7 @@ do_strip=
 else
 DFLAGS += -DNDEBUG
 CFLAGS += -O2
+#  -fno-asynchronous-unwind-tables
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
 cmd_strip=$(STRIP) $(1)

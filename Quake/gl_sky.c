@@ -800,7 +800,7 @@ void Sky_DrawSkyBox (void)
 			c = Fog_GetColor();
 			glEnable (GL_BLEND);
 			glDisable (GL_TEXTURE_2D);
-			glColor4f (c[0],c[1],c[2], CLAMP(0.0,skyfog,1.0));
+			glColor4f (c[0],c[1],c[2], CLAMP(0.0f,skyfog,1.0f));
 
 			glBegin (GL_QUADS);
 			Sky_EmitSkyBoxVertex (skymins[0][i], skymins[1][i], i);
@@ -951,7 +951,7 @@ void Sky_DrawFaceQuad (glpoly_t *p)
 		c = Fog_GetColor();
 		glEnable (GL_BLEND);
 		glDisable (GL_TEXTURE_2D);
-		glColor4f (c[0],c[1],c[2], CLAMP(0.0,skyfog,1.0));
+		glColor4f (c[0],c[1],c[2], CLAMP(0.0f,skyfog,1.0f));
 
 		glBegin (GL_QUADS);
 		for (i=0, v=p->verts[0] ; i<4 ; i++, v+=VERTEXSIZE)

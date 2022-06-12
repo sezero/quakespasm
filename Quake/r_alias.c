@@ -459,9 +459,9 @@ void R_SetupAliasFrame (aliashdr_t *paliashdr, int frame, lerpdata_t *lerpdata)
 	if (r_lerpmodels.value && !(e->model->flags & MOD_NOLERP && r_lerpmodels.value != 2))
 	{
 		if (e->lerpflags & LERP_FINISH && numposes == 1)
-			lerpdata->blend = CLAMP (0, (cl.time - e->lerpstart) / (e->lerpfinish - e->lerpstart), 1);
+			lerpdata->blend = CLAMP (0.0f, (float)(cl.time - e->lerpstart) / (e->lerpfinish - e->lerpstart), 1.0f);
 		else
-			lerpdata->blend = CLAMP (0, (cl.time - e->lerpstart) / e->lerptime, 1);
+			lerpdata->blend = CLAMP (0.0f, (float)(cl.time - e->lerpstart) / e->lerptime, 1.0f);
 		lerpdata->pose1 = e->previouspose;
 		lerpdata->pose2 = e->currentpose;
 	}
@@ -507,9 +507,9 @@ void R_SetupEntityTransform (entity_t *e, lerpdata_t *lerpdata)
 	if (r_lerpmove.value && e != &cl.viewent && e->lerpflags & LERP_MOVESTEP)
 	{
 		if (e->lerpflags & LERP_FINISH)
-			blend = CLAMP (0, (cl.time - e->movelerpstart) / (e->lerpfinish - e->movelerpstart), 1);
+			blend = CLAMP (0.0f, (float)(cl.time - e->movelerpstart) / (e->lerpfinish - e->movelerpstart), 1.0f);
 		else
-			blend = CLAMP (0, (cl.time - e->movelerpstart) / 0.1, 1);
+			blend = CLAMP (0.0f, (float)(cl.time - e->movelerpstart) / 0.1f, 1.0f);
 
 		//translation
 		VectorSubtract (e->currentorigin, e->previousorigin, d);

@@ -322,7 +322,7 @@ void Sbar_DrawScrollString (int x, int y, int width, const char *str)
 	float scale;
 	int len, ofs, left;
 
-	scale = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0);
+	scale = CLAMP (1.0f, scr_sbarscale.value, (float)glwidth / 320.0f);
 	left = x * scale;
 	if (cl.gametype != GAME_DEATHMATCH)
 		left += (((float)glwidth - 320.0 * scale) / 2);
@@ -1191,7 +1191,7 @@ void Sbar_MiniDeathmatchOverlay (void)
 	float	scale; //johnfitz
 	scoreboard_t	*s;
 
-	scale = CLAMP (1.0, scr_sbarscale.value, (float)glwidth / 320.0); //johnfitz
+	scale = CLAMP (1.0f, scr_sbarscale.value, (float)glwidth / 320.0f); //johnfitz
 
 	//MAX_SCOREBOARDNAME = 32, so total width for this overlay plus sbar is 632, but we can cut off some i guess
 	if (glwidth/scale < 512 || scr_viewsize.value >= 120) //johnfitz -- test should consider scr_sbarscale

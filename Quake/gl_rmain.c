@@ -233,7 +233,7 @@ void GLSLGamma_GammaCorrect (void)
 // draw the texture back to the framebuffer with a fragment shader
 	GL_UseProgramFunc (r_gamma_program);
 	GL_Uniform1fFunc (gammaLoc, vid_gamma.value);
-	GL_Uniform1fFunc (contrastLoc, q_min(2.0, q_max(1.0, vid_contrast.value)));
+	GL_Uniform1fFunc (contrastLoc, q_min(2.0f, q_max(1.0f, vid_contrast.value)));
 	GL_Uniform1iFunc (textureLoc, 0); // use texture unit 0
 
 	glDisable (GL_ALPHA_TEST);
@@ -662,7 +662,7 @@ R_EmitWirePoint -- johnfitz -- draws a wireframe cross shape for point entities
 */
 void R_EmitWirePoint (vec3_t origin)
 {
-	int size=8;
+	const int size = 8;
 
 	glBegin (GL_LINES);
 	glVertex3f (origin[0]-size, origin[1], origin[2]);

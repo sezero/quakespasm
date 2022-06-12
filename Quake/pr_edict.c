@@ -924,7 +924,7 @@ const char *ED_ParseEdict (const char *data, edict_t *ent)
 
 		//johnfitz -- hack to support .alpha even when progs.dat doesn't know about it
 		if (!strcmp(keyname, "alpha"))
-			ent->alpha = ENTALPHA_ENCODE(atof(com_token));
+			ent->alpha = ENTALPHA_ENCODE(Q_atof(com_token));
 		//johnfitz
 
 		key = ED_FindField (keyname);
