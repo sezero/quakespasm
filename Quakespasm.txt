@@ -270,6 +270,8 @@
 
   o  Compatibility with new SDL2 versioning scheme.
 
+  o  Revised min/max/clamp macros' usage.
+
   o  Fixed a potential undefined behavior in R_DrawAliasModel.
 
   o  Fixed parsing of the time argument of svc_fog server message. (it

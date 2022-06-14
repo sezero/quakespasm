@@ -143,6 +143,7 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 <sect1> Changes in 0.94.5<p>
 <itemize>
 <item> Compatibility with new SDL2 versioning scheme.
+<item> Revised min/max/clamp macros' usage.
 <item> Fixed a potential undefined behavior in R_DrawAliasModel.
 <item> Fixed parsing of the time argument of svc_fog server message. (it has been broken for more than 20 years and has never seem to have been used.)
 <item> Other small improvements elsewhere in the code.
