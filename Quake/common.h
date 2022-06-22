@@ -42,8 +42,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #undef	min
 #undef	max
 
-#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)) || \
-    (defined(__cplusplus) && (__cplusplus >= 201103L))
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L))
 #define GENERIC_TYPES(x, separator) \
 	x(int, i) separator \
 	x(unsigned int, u) separator \
