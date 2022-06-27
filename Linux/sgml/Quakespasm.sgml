@@ -139,6 +139,7 @@ QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: C
 <sect1> Changes in 0.94.6<p>
 <itemize>
 <item> Server protocol size check fixes for sounds and particles.
+<item> An invalid memory access fix in the jpg screenshot writer.
 <item> Backported a few fixes to the bundled SDL2-2.0.22 version.
 <item> Minor build fix for C++ compilers.
 </itemize>

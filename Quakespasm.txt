@@ -269,6 +269,8 @@
 
   o  Server protocol size check fixes for sounds and particles.
 
+  o  An invalid memory access fix in the jpg screenshot writer.
+
   o  Backported a few fixes to the bundled SDL2-2.0.22 version.
 
   o  Minor build fix for C++ compilers.
