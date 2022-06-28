@@ -49,7 +49,7 @@ STRIP = strip
 CPUFLAGS=
 LDFLAGS = -m32 -mwindows -static-libgcc
 DFLAGS ?=
-CFLAGS ?= -m32 -Wall -Wno-trigraphs
+CFLAGS ?= -m32 -Wall -Wno-trigraphs -MMD
 CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
@@ -59,7 +59,7 @@ do_strip=
 else
 DFLAGS += -DNDEBUG
 CFLAGS += -O2
-#  -fno-asynchronous-unwind-tables
+#CFLAGS += -fno-asynchronous-unwind-tables
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
 cmd_strip=$(STRIP) $(1)
@@ -175,25 +175,8 @@ COMMON_LIBS:= -lopengl32 -lwinmm
 LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
 
 # ---------------------------
-# targets
-# ---------------------------
-
-.PHONY:	clean debug release
-
-DEFAULT_TARGET := quakespasm.exe
-
-# ---------------------------
-# rules
-# ---------------------------
-
-%.o:	%.c
-	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
-%.res:	../Windows/%.rc
-	$(WINDRES) -I../Windows --output-format=coff --target=pe-i386 -o $@ $<
-
-# ----------------------------------------------------------------------------
 # objects
-# ----------------------------------------------------------------------------
+# ---------------------------
 
 MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
@@ -279,21 +262,31 @@ OBJS := strlcat.o \
 	sv_user.o \
 	world.o \
 	zone.o \
-	$(SYSOBJ_SYS) $(SYSOBJ_MAIN) $(SYSOBJ_RES)
+	$(SYSOBJ_SYS) $(SYSOBJ_MAIN)
 
-# ------------------------
-# MinGW build rules
-# ------------------------
+# ---------------------------
+# targets / rules
+# ---------------------------
 
-quakespasm.exe:	$(OBJS)
-	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
+.PHONY:	clean debug release
+
+DEFAULT_TARGET := quakespasm.exe
+all: $(DEFAULT_TARGET)
+
+%.o:	%.c
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
+%.res:	../Windows/%.rc
+	$(WINDRES) -I../Windows --output-format=coff --target=pe-i386 -o $@ $<
+
+quakespasm.exe: $(OBJS) $(SYSOBJ_RES)
+	$(LINKER) $(OBJS) $(SYSOBJ_RES) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
-
-image.o: lodepng.c lodepng.h stb_image_write.h
 
 release:	quakespasm.exe
 debug:
 	$(error Use "make DEBUG=1")
 
 clean:
-	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
+	$(RM) *.o *.d *.res $(DEFAULT_TARGET)
+
+sinclude $(OBJS:.o=.d)

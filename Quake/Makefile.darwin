@@ -49,12 +49,12 @@ CC ?= gcc
 LINKER = $(CC)
 LIPO ?= lipo
 
-STRIP ?= strip
+STRIP ?= strip -S
 
 CPUFLAGS=
 LDFLAGS =
 DFLAGS ?=
-CFLAGS ?= -Wall
+CFLAGS ?= -Wall -MMD
 # @rpath can be used when targeting 10.5+
 USE_RPATH=0
 # require 10.5 for 64 bit builds
@@ -96,7 +96,7 @@ do_strip=
 else
 DFLAGS += -DNDEBUG
 CFLAGS += -O2
-#  -fno-asynchronous-unwind-tables
+#CFLAGS += -fno-asynchronous-unwind-tables
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
 cmd_strip=$(STRIP) $(1)
@@ -216,27 +216,8 @@ COMMON_LIBS:= -Wl,-framework,IOKit -Wl,-framework,OpenGL
 LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
 
 # ---------------------------
-# targets
-# ---------------------------
-
-.PHONY:	clean debug release
-
-DEFAULT_TARGET := quakespasm
-
-# ---------------------------
-# rules
-# ---------------------------
-
-%.o:	%.c
-	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
-%.o:	%.m
-	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
-%.o:	../MacOSX/%.m
-	$(CC) $(DFLAGS) -c -I../MacOSX $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
-
-# ----------------------------------------------------------------------------
 # objects
-# ----------------------------------------------------------------------------
+# ---------------------------
 
 MUSIC_OBJS:= bgmusic.o \
 	snd_codec.o \
@@ -322,21 +303,34 @@ OBJS := strlcat.o \
 	sv_user.o \
 	world.o \
 	zone.o \
-	$(SYSOBJ_SYS) $(SYSOBJ_LAUNCHER) $(SYSOBJ_MAIN)
+	$(SYSOBJ_SYS) \
+	$(SYSOBJ_LAUNCHER) $(SYSOBJ_MAIN)
 
-# ------------------------
-# darwin build rules
-# ------------------------
+# ---------------------------
+# targets / rules
+# ---------------------------
+
+.PHONY:	clean debug release
+
+DEFAULT_TARGET := quakespasm
+all: $(DEFAULT_TARGET)
+
+%.o:	%.c
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
+%.o:	%.m
+	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
+%.o:	../MacOSX/%.m
+	$(CC) $(DFLAGS) -c -I../MacOSX $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
 
 quakespasm:	$(OBJS)
 	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
 	$(call do_strip,$@)
-
-image.o: lodepng.c lodepng.h stb_image_write.h
 
 release:	quakespasm
 debug:
 	$(error Use "make DEBUG=1")
 
 clean:
-	rm -f $(shell find . \( -name '*~' -o -name '#*#' -o -name '*.o' -o -name '*.res' -o -name $(DEFAULT_TARGET) \) -print)
+	$(RM) *.o *.d $(DEFAULT_TARGET)
+
+sinclude $(OBJS:.o=.d)
