@@ -271,7 +271,9 @@ void Cmd_Exec_f (void)
 
 	mark = Hunk_LowMark ();
 	f = (char *)COM_LoadHunkFile (Cmd_Argv(1), NULL);
-	if (!f && !strcmp(Cmd_Argv(1), "default.cfg")) {
+	if (!f && !strcmp(Cmd_Argv(1), "default.cfg"))
+	{
+		mark = -1;
 		f = default_cfg;	/* see above.. */
 	}
 	if (!f)
@@ -279,9 +281,11 @@ void Cmd_Exec_f (void)
 		Con_Printf ("couldn't exec %s\n",Cmd_Argv(1));
 		return;
 	}
-	Con_Printf ("execing %s\n",Cmd_Argv(1));
 
+	Con_Printf ("execing %s\n",Cmd_Argv(1));
 	Cbuf_InsertText (f);
+
+	if (mark < 0) return;
 	Hunk_FreeToLowMark (mark);
 }
 
