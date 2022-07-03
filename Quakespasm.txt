@@ -271,9 +271,13 @@
 
   o  An invalid memory access fix in the jpg screenshot writer.
 
+  o  Basic dependency tracking in Makefiles.
+
   o  Backported a few fixes to the bundled SDL2-2.0.22 version.
 
   o  Minor build fix for C++ compilers.
+
+  o  Other small improvements elsewhere in the code.
 
 
   5.2.  Changes in 0.94.5

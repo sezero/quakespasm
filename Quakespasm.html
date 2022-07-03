@@ -174,13 +174,12 @@ where DRIVER may be alsa, dsp, pulse, esd ...</LI>
 
 
 <H2><A NAME="s4">4.</A> <A HREF="#toc4">Compiling and Installation</A></H2>
-
 <P>See the Downloads section to get the sourcecode, then below for platform specific instructions.
 Quakespasm can also be built with the cross-platform Codeblocks.<BR>
 Quakespasm's (optional) custom data is now stored in the file <B>quakespasm.pak</B>. This file should be placed alongside your quakespasm binary and <B>id1</B> directory.</P>
+
 <H2><A NAME="ss4.1">4.1</A> <A HREF="#toc4.1">Linux/Unix </A>
 </H2>
-
 <P>After extracting the source tarball, "cd Quake" and edit the Makefile for music options. </P>
 <P><EM>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</EM></P>
 <P>Then type "make" to compile the program, and copy the "quakespasm" binary (and "quakespasm.pak") to your Quake game directory.<BR>
@@ -195,19 +194,18 @@ Compile time options include
 
 <H2><A NAME="ss4.2">4.2</A> <A HREF="#toc4.2">Windows </A>
 </H2>
-
 <P>QuakeSpasm developers cross-compile windows binaries using 
 <A HREF="http://mingw-w64.sf.net">MinGW-w64</A> and 
 <A HREF="https://mingw.osdn.io">MinGW</A>.</P>
 <P>The project can also be built using Microsoft Visual Studio 2005 and newer versions.</P>
+
 <H2><A NAME="ss4.3">4.3</A> <A HREF="#toc4.3">Mac OS X </A>
 </H2>
-
 <P>A Quakespasm App (including program launcher and update framework) can be made using the <B>Xcode</B> template found in the MacOSX directory.</P>
 <P>Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on building from a console.</P>
+
 <H2><A NAME="ss4.4">4.4</A> <A HREF="#toc4.4">Quake '2021 re-release' </A>
 </H2>
-
 <P>QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run quakespasm as you normally do.</P>
 
 
@@ -219,8 +217,10 @@ Compile time options include
 <UL>
 <LI> Server protocol size check fixes for sounds and particles.</LI>
 <LI> An invalid memory access fix in the jpg screenshot writer.</LI>
+<LI> Basic dependency tracking in Makefiles.</LI>
 <LI> Backported a few fixes to the bundled SDL2-2.0.22 version.</LI>
 <LI> Minor build fix for C++ compilers.</LI>
+<LI> Other small improvements elsewhere in the code.</LI>
 </UL>
 </P>
 
