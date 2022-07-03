@@ -87,6 +87,8 @@ int main(int argc, char *argv[])
 
 	Sys_Init();
 
+	Sys_Printf("Initializing QuakeSpasm v%s\n", QUAKESPASM_VER_STRING);
+
 	parms.memsize = DEFAULT_MEMORY;
 	if (COM_CheckParm("-heapsize"))
 	{
@@ -99,12 +101,6 @@ int main(int argc, char *argv[])
 
 	if (!parms.membase)
 		Sys_Error ("Not enough memory free; check disk space\n");
-
-	Sys_Printf("Quake %1.2f (c) id Software\n", VERSION);
-	Sys_Printf("GLQuake %1.2f (c) id Software\n", GLQUAKE_VERSION);
-	Sys_Printf("FitzQuake %1.2f (c) John Fitzgibbons\n", FITZQUAKE_VERSION);
-	Sys_Printf("FitzQuake SDL port (c) SleepwalkR, Baker\n");
-	Sys_Printf("QuakeSpasm " QUAKESPASM_VER_STRING " (c) Ozkan Sezer, Eric Wasylishen & others\n");
 
 	Sys_Printf("Host_Init\n");
 	Host_Init();
