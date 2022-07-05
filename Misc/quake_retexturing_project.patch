@@ -1,17 +1,17 @@
 diff --git a/Quake/gl_model.c b/Quake/gl_model.c
-index 94f0023..fdb8c4c 100644
+index d193051..783dc4d 100644
 --- a/Quake/gl_model.c
 +++ b/Quake/gl_model.c
-@@ -37,6 +37,8 @@ qmodel_t *Mod_LoadModel (qmodel_t *mod, qboolean crash);
- cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
- cvar_t	external_vis = {"external_vis", "1", CVAR_ARCHIVE};
+@@ -39,6 +39,8 @@ static void Mod_Print (void);
+ static cvar_t	external_ents = {"external_ents", "1", CVAR_ARCHIVE};
+ static cvar_t	external_vis = {"external_vis", "1", CVAR_ARCHIVE};
  
 +extern cvar_t	r_externaltexture_fix; //mk
 +
  static byte	*mod_novis;
  static int	mod_novis_capacity;
  
-@@ -534,6 +536,13 @@ void Mod_LoadTextures (lump_t *l)
+@@ -542,6 +544,13 @@ static void Mod_LoadTextures (lump_t *l)
  		{
  			if (!q_strncasecmp(tx->name,"sky",3)) //sky texture //also note -- was Q_strncmp, changed to match qbsp
  			{
@@ -23,9 +23,9 @@ index 94f0023..fdb8c4c 100644
 +					}
 +				}
  				if (loadmodel->bspversion == BSPVERSION_QUAKE64)
- 					Sky_LoadTextureQ64 (tx);
+ 					Sky_LoadTextureQ64 (loadmodel, tx);
  				else
-@@ -588,6 +597,50 @@ void Mod_LoadTextures (lump_t *l)
+@@ -596,6 +605,50 @@ static void Mod_LoadTextures (lump_t *l)
  				//external textures -- first look in "textures/mapname/" then look in "textures/"
  				mark = Hunk_LowMark ();
  				COM_StripExtension (loadmodel->name + 5, mapname, sizeof(mapname));
@@ -77,10 +77,10 @@ index 94f0023..fdb8c4c 100644
  				data = Image_LoadImage (filename, &fwidth, &fheight);
  				if (!data)
 diff --git a/Quake/gl_rmain.c b/Quake/gl_rmain.c
-index a41d8b1..b0020c5 100644
+index 332ab1e..783a9d6 100644
 --- a/Quake/gl_rmain.c
 +++ b/Quake/gl_rmain.c
-@@ -102,6 +102,8 @@ cvar_t	r_noshadow_list = {"r_noshadow_list", "progs/flame2.mdl,progs/flame.mdl,p
+@@ -99,6 +99,8 @@ cvar_t	r_noshadow_list = {"r_noshadow_list", "progs/flame2.mdl,progs/flame.mdl,p
  extern cvar_t	r_vfog;
  //johnfitz
  
@@ -90,7 +90,7 @@ index a41d8b1..b0020c5 100644
  
  cvar_t	r_lavaalpha = {"r_lavaalpha","0",CVAR_NONE};
 diff --git a/Quake/gl_rmisc.c b/Quake/gl_rmisc.c
-index dfdb84d..9c441bd 100644
+index dc3dff0..dbfe922 100644
 --- a/Quake/gl_rmisc.c
 +++ b/Quake/gl_rmisc.c
 @@ -47,6 +47,7 @@ extern cvar_t r_nolerp_list;
@@ -109,4 +109,3 @@ index dfdb84d..9c441bd 100644
  
  	Cvar_RegisterVariable (&gl_zfix); // QuakeSpasm z-fighting fix
  	Cvar_RegisterVariable (&r_lavaalpha);
-
