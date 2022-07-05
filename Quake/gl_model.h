@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#ifndef __MODEL__
-#define __MODEL__
+#ifndef GL_MODEL_H
+#define GL_MODEL_H
 
 #include "modelgen.h"
 #include "spritegn.h"
@@ -517,4 +517,4 @@ byte	*Mod_NoVisPVS (qmodel_t *model);
 
 void Mod_SetExtraFlags (qmodel_t *mod);
 
-#endif	// __MODEL__
+#endif	/* GL_MODEL_H */

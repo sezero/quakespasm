@@ -30,8 +30,6 @@ extern cvar_t	pausable;
 
 int	current_skill;
 
-void Mod_Print (void);
-
 /*
 ==================
 Host_Quit_f
@@ -2325,7 +2323,5 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("viewframe", Host_Viewframe_f);
 	Cmd_AddCommand ("viewnext", Host_Viewnext_f);
 	Cmd_AddCommand ("viewprev", Host_Viewprev_f);
-
-	Cmd_AddCommand ("mcache", Mod_Print);
 }
 

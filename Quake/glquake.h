@@ -108,6 +108,8 @@ extern	int		r_visframecount;	// ??? what difs?
 extern	int		r_framecount;
 extern	mplane_t	frustum[4];
 
+extern	texture_t	*r_notexture_mip, *r_notexture_mip2;
+
 //
 // view origin
 //
@@ -397,8 +399,8 @@ void Sky_Init (void);
 void Sky_ClearAll (void);
 void Sky_DrawSky (void);
 void Sky_NewMap (void);
-void Sky_LoadTexture (texture_t *mt);
-void Sky_LoadTextureQ64 (texture_t *mt);
+void Sky_LoadTexture (qmodel_t *m, texture_t *mt);
+void Sky_LoadTextureQ64 (qmodel_t *m, texture_t *mt);
 void Sky_LoadSkyBox (const char *name);
 
 void TexMgr_RecalcWarpImageSize (void);
