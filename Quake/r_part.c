@@ -575,7 +575,9 @@ void R_TeleportSplash (vec3_t org)
 	vec3_t		dir;
 
 	for (i=-16 ; i<16 ; i+=4)
+	{
 		for (j=-16 ; j<16 ; j+=4)
+		{
 			for (k=-24 ; k<32 ; k+=4)
 			{
 				if (!free_particles)
@@ -601,6 +603,8 @@ void R_TeleportSplash (vec3_t org)
 				vel = 50 + (rand()&63);
 				VectorScale (dir, vel, p->vel);
 			}
+		}
+	}
 }
 
 /*
@@ -890,8 +894,6 @@ void R_DrawParticles (void)
 			glTexCoord2f (0,0.5);
 			VectorMA (p->org, scale, right, p_right);
 			glVertex3fv (p_right);
-
-			rs_particles++; //johnfitz //FIXME: just use r_numparticles
 		}
 		glEnd ();
 	}
@@ -931,8 +933,6 @@ void R_DrawParticles (void)
 			glTexCoord2f (0,1);
 			VectorMA (p->org, scale, right, p_right);
 			glVertex3fv (p_right);
-
-			rs_particles++; //johnfitz //FIXME: just use r_numparticles
 		}
 		glEnd ();
 	}

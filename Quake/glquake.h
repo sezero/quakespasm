@@ -263,9 +263,8 @@ extern qboolean gl_texture_env_combine;
 extern qboolean gl_texture_env_add; // for GL_EXT_texture_env_add
 
 //johnfitz -- rendering statistics
-extern int rs_brushpolys, rs_aliaspolys, rs_skypolys, rs_particles, rs_fogpolys;
+extern int rs_brushpolys, rs_aliaspolys, rs_skypolys;
 extern int rs_dynamiclightmaps, rs_brushpasses, rs_aliaspasses, rs_skypasses;
-extern float rs_megatexels;
 
 //johnfitz -- track developer statistics that vary every frame
 extern cvar_t devstats;

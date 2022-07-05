@@ -34,9 +34,8 @@ int			r_framecount;		// used for dlight push checking
 mplane_t	frustum[4];
 
 //johnfitz -- rendering statistics
-int rs_brushpolys, rs_aliaspolys, rs_skypolys, rs_particles, rs_fogpolys;
+int rs_brushpolys, rs_aliaspolys, rs_skypolys;
 int rs_dynamiclightmaps, rs_brushpasses, rs_aliaspasses, rs_skypasses;
-float rs_megatexels;
 
 //
 // view origin
@@ -1043,7 +1042,7 @@ void R_RenderView (void)
 		time1 = Sys_DoubleTime ();
 
 		//johnfitz -- rendering statistics
-		rs_brushpolys = rs_aliaspolys = rs_skypolys = rs_particles = rs_fogpolys = rs_megatexels =
+		rs_brushpolys = rs_aliaspolys = rs_skypolys =
 		rs_dynamiclightmaps = rs_aliaspasses = rs_skypasses = rs_brushpasses = 0;
 	}
 	else if (gl_finish.value)
@@ -1093,12 +1092,12 @@ void R_RenderView (void)
 	time2 = Sys_DoubleTime ();
 	if (r_pos.value)
 		Con_Printf ("x %i y %i z %i (pitch %i yaw %i roll %i)\n",
-			(int)cl_entities[cl.viewentity].origin[0],
-			(int)cl_entities[cl.viewentity].origin[1],
-			(int)cl_entities[cl.viewentity].origin[2],
-			(int)cl.viewangles[PITCH],
-			(int)cl.viewangles[YAW],
-			(int)cl.viewangles[ROLL]);
+					(int)cl_entities[cl.viewentity].origin[0],
+					(int)cl_entities[cl.viewentity].origin[1],
+					(int)cl_entities[cl.viewentity].origin[2],
+					(int)cl.viewangles[PITCH],
+					(int)cl.viewangles[YAW],
+					(int)cl.viewangles[ROLL]);
 	else if (r_speeds.value == 2)
 		Con_Printf ("%3i ms  %4i/%4i wpoly %4i/%4i epoly %3i lmap %4i/%4i sky %1.1f mtex\n",
 					(int)((time2-time1)*1000),
