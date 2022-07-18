@@ -462,7 +462,7 @@ static void Mod_LoadTextures (lump_t *l)
 	int			nummiptex;
 	src_offset_t		offset;
 	int			mark, fwidth, fheight;
-	char		filename[MAX_OSPATH], filename2[MAX_OSPATH], mapname[MAX_OSPATH];
+	char		filename[MAX_OSPATH], mapname[MAX_OSPATH];
 	byte		*data;
 	extern byte *hunk_base;
 //johnfitz
@@ -607,6 +607,7 @@ static void Mod_LoadTextures (lump_t *l)
 				//now load whatever we found
 				if (data) //load external image
 				{
+					char filename2[MAX_OSPATH];
 					tx->gltexture = TexMgr_LoadImage (loadmodel, filename, fwidth, fheight,
 						SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP | extraflags );
 
@@ -622,7 +623,7 @@ static void Mod_LoadTextures (lump_t *l)
 
 					if (data)
 						tx->fullbright = TexMgr_LoadImage (loadmodel, filename2, fwidth, fheight,
-							SRC_RGBA, data, filename, 0, TEXPREF_MIPMAP | extraflags );
+							SRC_RGBA, data, filename2, 0, TEXPREF_MIPMAP | extraflags );
 				}
 				else //use the texture from the bsp file
 				{
