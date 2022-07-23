@@ -799,6 +799,7 @@ static inline int IN_SDL_KeysymToQuakeKey(SDLKey sym)
 	case SDLK_RCTRL: return K_CTRL;
 	case SDLK_LSHIFT: return K_SHIFT;
 	case SDLK_RSHIFT: return K_SHIFT;
+	case SDLK_CAPSLOCK: return K_CAPSLOCK;
 
 	case SDLK_F1: return K_F1;
 	case SDLK_F2: return K_F2;
@@ -925,6 +926,7 @@ static inline int IN_SDL2_ScancodeToQuakeKey(SDL_Scancode scancode)
 	case SDL_SCANCODE_RCTRL: return K_CTRL;
 	case SDL_SCANCODE_LSHIFT: return K_SHIFT;
 	case SDL_SCANCODE_RSHIFT: return K_SHIFT;
+	case SDL_SCANCODE_CAPSLOCK: return K_CAPSLOCK;
 
 	case SDL_SCANCODE_F1: return K_F1;
 	case SDL_SCANCODE_F2: return K_F2;
