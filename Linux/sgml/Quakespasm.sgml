@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: June 2022.</em>
+<em>Page last edited: July 2022.</em>
 
 <sect> About <p>
 
@@ -131,10 +131,19 @@ Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on 
 </p>
 
 <sect1> Quake '2021 re-release' <p>
-QuakeSpasm 0.94.0 has initial support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run quakespasm as you normally do.</p>
+QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run as you normally do.</p>
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.94.7<p>
+<itemize>
+<item> Fix console history buffer wrapping.
+<item> Fix wrong external texture use after vid_restart.
+<item> Update lodepng from mainstream git.
+<item> Miscellaneous source code cleanups.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.6<p>
 <itemize>
