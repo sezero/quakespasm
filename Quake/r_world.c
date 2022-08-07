@@ -412,7 +412,7 @@ void R_DrawTextureChains_Multitexture (qmodel_t *model, entity_t *ent, texchain_
 	{
 		t = model->textures[i];
 
-		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTILED | SURF_NOTEXTURE))
+		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTURB | SURF_DRAWTILED | SURF_NOTEXTURE))
 			continue;
 
 		bound = false;
@@ -541,6 +541,24 @@ float GL_WaterAlphaForEntitySurface (entity_t *ent, msurface_t *s)
 	return entalpha;
 }
 
+static GLuint r_world_program;
+extern GLuint gl_bmodel_vbo;
+
+// uniforms used in vert shader
+
+// uniforms used in frag shader
+static GLuint texLoc;
+static GLuint LMTexLoc;
+static GLuint fullbrightTexLoc;
+static GLuint useFullbrightTexLoc;
+static GLuint useOverbrightLoc;
+static GLuint useAlphaTestLoc;
+static GLuint alphaLoc;
+
+#define vertAttrIndex 0
+#define texCoordsAttrIndex 1
+#define LMCoordsAttrIndex 2
+
 /*
 ================
 R_DrawTextureChains_Water -- johnfitz
@@ -554,6 +572,7 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	glpoly_t	*p;
 	qboolean	bound;
 	float entalpha;
+	int		lastlightmap;
 
 	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe) // ericw -- !r_drawworld_cheatsafe check moved to R_DrawWorld_Water ()
 		return;
@@ -585,8 +604,90 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 			R_EndTransparentDrawing (entalpha);
 		}
 	}
+	else if (cl.worldmodel->haslitwater && r_litwater.value && r_world_program != 0)
+	{
+		GL_UseProgramFunc (r_world_program);
+
+		// Bind the buffers
+		GL_BindBuffer (GL_ARRAY_BUFFER, gl_bmodel_vbo);
+		GL_BindBuffer (GL_ELEMENT_ARRAY_BUFFER, 0);
+
+		GL_EnableVertexAttribArrayFunc (vertAttrIndex);
+		GL_EnableVertexAttribArrayFunc (texCoordsAttrIndex);
+		GL_EnableVertexAttribArrayFunc (LMCoordsAttrIndex);
+
+		GL_VertexAttribPointerFunc (vertAttrIndex,      3, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0));
+		GL_VertexAttribPointerFunc (texCoordsAttrIndex, 2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 3);
+		GL_VertexAttribPointerFunc (LMCoordsAttrIndex,  2, GL_FLOAT, GL_FALSE, VERTEXSIZE * sizeof(float), ((float *)0) + 5);
+
+		// Set uniforms
+		GL_Uniform1iFunc (texLoc, 0);
+		GL_Uniform1iFunc (LMTexLoc, 1);
+		GL_Uniform1iFunc (fullbrightTexLoc, 2);
+		GL_Uniform1iFunc (useFullbrightTexLoc, 0);
+		GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
+		GL_Uniform1iFunc (useAlphaTestLoc, 0);
+
+		for (i=0 ; i<model->numtextures ; i++)
+		{
+			t = model->textures[i];
+
+			if (!t || !t->texturechains[chain] || !(t->texturechains[chain]->flags & SURF_DRAWTURB))
+				continue;
+
+			bound = false;
+			entalpha = 1.0f;
+			lastlightmap = 0;
+			for (s = t->texturechains[chain]; s; s = s->texturechain)
+			{
+				if (!bound) //only bind once we are sure we need this texture
+				{
+					entalpha = GL_WaterAlphaForEntitySurface (ent, s);
+					if (entalpha < 1.0f)
+					{
+						GL_Uniform1fFunc (alphaLoc, entalpha);
+						R_BeginTransparentDrawing (entalpha);
+					}
+
+					GL_SelectTexture (GL_TEXTURE0);
+					GL_Bind (t->warpimage);
+
+					if (model != cl.worldmodel)
+					{
+						// ericw -- this is copied from R_DrawSequentialPoly.
+						// If the poly is not part of the world we have to
+						// set this flag
+						t->update_warp = true; // FIXME: one frame too late!
+					}
+
+					bound = true;
+					lastlightmap = s->lightmaptexturenum;
+				}
+
+				if (s->lightmaptexturenum != lastlightmap)
+					R_FlushBatch ();
+
+				GL_SelectTexture (GL_TEXTURE1);
+				GL_Bind (lightmaps[s->lightmaptexturenum].texture);
+				lastlightmap = s->lightmaptexturenum;
+				R_BatchSurface (s);
+
+				rs_brushpasses++;
+			}
+			R_FlushBatch ();
+			R_EndTransparentDrawing (entalpha);
+		}
+
+		// clean up
+		GL_DisableVertexAttribArrayFunc (vertAttrIndex);
+		GL_DisableVertexAttribArrayFunc (texCoordsAttrIndex);
+		GL_DisableVertexAttribArrayFunc (LMCoordsAttrIndex);
+		GL_UseProgramFunc (0);
+		GL_SelectTexture (GL_TEXTURE0);
+	}
 	else
 	{
+		// Unlit water
 		for (i=0 ; i<model->numtextures ; i++)
 		{
 			t = model->textures[i];
@@ -680,23 +781,6 @@ void R_DrawLightmapChains (void)
 	}
 }
 
-static GLuint r_world_program;
-
-// uniforms used in vert shader
-
-// uniforms used in frag shader
-static GLuint texLoc;
-static GLuint LMTexLoc;
-static GLuint fullbrightTexLoc;
-static GLuint useFullbrightTexLoc;
-static GLuint useOverbrightLoc;
-static GLuint useAlphaTestLoc;
-static GLuint alphaLoc;
-
-#define vertAttrIndex 0
-#define texCoordsAttrIndex 1
-#define LMCoordsAttrIndex 2
-
 /*
 =============
 GLWorld_CreateShaders
@@ -781,8 +865,6 @@ void GLWorld_CreateShaders (void)
 	}
 }
 
-extern GLuint gl_bmodel_vbo;
-
 /*
 ================
 R_DrawTextureChains_GLSL -- ericw
@@ -837,7 +919,7 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	{
 		t = model->textures[i];
 
-		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTILED | SURF_NOTEXTURE))
+		if (!t || !t->texturechains[chain] || t->texturechains[chain]->flags & (SURF_DRAWTURB | SURF_DRAWTILED | SURF_NOTEXTURE))
 			continue;
 
 	// Enable/disable TMU 2 (fullbrights)
@@ -861,7 +943,6 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 			{
 				GL_SelectTexture (GL_TEXTURE0);
 				GL_Bind ((R_TextureAnimation(t, ent != NULL ? ent->frame : 0))->gltexture);
-					
 				if (t->texturechains[chain]->flags & SURF_DRAWFENCE)
 					GL_Uniform1iFunc (useAlphaTestLoc, 1); // Flip alpha test back on
 										

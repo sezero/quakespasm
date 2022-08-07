@@ -784,6 +784,12 @@ void GL_CreateSurfaceLightmap (msurface_t *surf)
 	int		smax, tmax;
 	byte	*base;
 
+	if (surf->flags & SURF_DRAWTILED)
+	{
+		surf->lightmaptexturenum = -1;
+		return;
+	}
+
 	smax = (surf->extents[0]>>4)+1;
 	tmax = (surf->extents[1]>>4)+1;
 
@@ -803,7 +809,7 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 	int			i, lindex, lnumverts;
 	medge_t		*pedges, *r_pedge;
 	float		*vec;
-	float		s, t;
+	float		s, t, s0, t0, sdiv, tdiv;
 	glpoly_t	*poly;
 
 // reconstruct the polygon
@@ -817,6 +823,20 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 	poly->next = fa->polys;
 	fa->polys = poly;
 	poly->numverts = lnumverts;
+
+	if (fa->flags & SURF_DRAWTURB)
+	{
+		// match Mod_PolyForUnlitSurface
+		s0 = t0 = 0.f;
+		sdiv = tdiv = 128.f;
+	}
+	else
+	{
+		s0 = fa->texinfo->vecs[0][3];
+		t0 = fa->texinfo->vecs[1][3];
+		sdiv = fa->texinfo->texture->width;
+		tdiv = fa->texinfo->texture->height;
+	}
 
 	for (i=0 ; i<lnumverts ; i++)
 	{
@@ -832,11 +852,11 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 			r_pedge = &pedges[-lindex];
 			vec = r_pcurrentvertbase[r_pedge->v[1]].position;
 		}
-		s = DotProduct (vec, fa->texinfo->vecs[0]) + fa->texinfo->vecs[0][3];
-		s /= fa->texinfo->texture->width;
+		s = DotProduct (vec, fa->texinfo->vecs[0]) + s0;
+		s /= sdiv;
 
-		t = DotProduct (vec, fa->texinfo->vecs[1]) + fa->texinfo->vecs[1][3];
-		t /= fa->texinfo->texture->height;
+		t = DotProduct (vec, fa->texinfo->vecs[1]) + t0;
+		t /= tdiv;
 
 		VectorCopy (vec, poly->verts[i]);
 		poly->verts[i][3] = s;
@@ -871,6 +891,10 @@ void BuildSurfaceDisplayList (msurface_t *fa)
 	//johnfitz -- removed gl_keeptjunctions code
 
 	poly->numverts = lnumverts;
+
+	// support r_oldwater 1 on lit water
+	if (fa->flags & SURF_DRAWTURB)
+		GL_SubdivideSurface (fa);
 }
 
 /*
