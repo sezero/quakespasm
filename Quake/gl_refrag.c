@@ -182,14 +182,8 @@ void R_AddEfrags (entity_t *ent)
 	scalefactor = ENTSCALE_DECODE(ent->scale);
 	if (scalefactor != 1.0f)
 	{
-		vec3_t boundVec, scaledVec;
-		VectorCopy (entmodel->mins, boundVec);
-		VectorScale (boundVec, scalefactor, scaledVec);
-		VectorAdd (ent->origin, scaledVec, r_emins);
-
-		VectorCopy (entmodel->maxs, boundVec);
-		VectorScale (boundVec, scalefactor, scaledVec);
-		VectorAdd (ent->origin, scaledVec, r_emaxs);
+		VectorMA (ent->origin, scalefactor, entmodel->mins, r_emins);
+		VectorMA (ent->origin, scalefactor, entmodel->maxs, r_emaxs);
 	}
 	else
 	{
