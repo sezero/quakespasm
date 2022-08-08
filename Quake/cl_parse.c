@@ -622,6 +622,7 @@ void CL_ParseUpdate (int bits)
 		}
 		else
 			ent->alpha = ent->baseline.alpha;
+		ent->scale = ENTSCALE_DEFAULT;
 	}
 	//johnfitz
 
