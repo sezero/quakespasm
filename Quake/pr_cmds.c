@@ -1580,7 +1580,6 @@ static void PF_makestatic (void)
 	edict_t	*ent;
 	int		i;
 	int	bits = 0; //johnfitz -- PROTOCOL_FITZQUAKE
-	eval_t	*val;
 
 	ent = G_EDICT(OFS_PARM0);
 
@@ -1602,6 +1601,8 @@ static void PF_makestatic (void)
 	}
 	else
 	{
+		eval_t	*val;
+
 		if (SV_ModelIndex(PR_GetString(ent->v.model)) & 0xFF00)
 			bits |= B_LARGEMODEL;
 		if ((int)(ent->v.frame) & 0xFF00)

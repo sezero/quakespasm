@@ -294,7 +294,6 @@ R_CullModelForEntity -- johnfitz -- uses correct bounds based on rotation
 qboolean R_CullModelForEntity (entity_t *e)
 {
 	vec3_t mins, maxs, minbounds, maxbounds;
-	vec3_t scaledVec;
 	vec_t scalefactor;
 
 	if (e->angles[0] || e->angles[2]) //pitch or roll
@@ -317,6 +316,7 @@ qboolean R_CullModelForEntity (entity_t *e)
 	scalefactor = ENTSCALE_DECODE(e->scale);
 	if (scalefactor != 1.0f)
 	{
+		vec3_t scaledVec;
 		VectorScale (minbounds, scalefactor, scaledVec);
 		VectorAdd (e->origin, scaledVec, mins);
 		VectorScale (maxbounds, scalefactor, scaledVec);

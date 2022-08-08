@@ -169,8 +169,6 @@ R_AddEfrags
 void R_AddEfrags (entity_t *ent)
 {
 	qmodel_t	*entmodel;
-	int			i;
-	vec3_t boundVec, scaledVec;
 	vec_t scalefactor;
 
 	if (!ent->model)
@@ -184,6 +182,7 @@ void R_AddEfrags (entity_t *ent)
 	scalefactor = ENTSCALE_DECODE(ent->scale);
 	if (scalefactor != 1.0f)
 	{
+		vec3_t boundVec, scaledVec;
 		VectorCopy (entmodel->mins, boundVec);
 		VectorScale (boundVec, scalefactor, scaledVec);
 		VectorAdd (ent->origin, scaledVec, r_emins);
