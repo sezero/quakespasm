@@ -294,34 +294,21 @@ R_CullModelForEntity -- johnfitz -- uses correct bounds based on rotation
 qboolean R_CullModelForEntity (entity_t *e)
 {
 	vec3_t mins, maxs;
-	vec_t scalefactor, *minbounds, *maxbounds;
 
 	if (e->angles[0] || e->angles[2]) //pitch or roll
 	{
-		minbounds = e->model->rmins;
-		maxbounds = e->model->rmaxs;
+		VectorAdd (e->origin, e->model->rmins, mins);
+		VectorAdd (e->origin, e->model->rmaxs, maxs);
 	}
 	else if (e->angles[1]) //yaw
 	{
-		minbounds = e->model->ymins;
-		maxbounds = e->model->ymaxs;
+		VectorAdd (e->origin, e->model->ymins, mins);
+		VectorAdd (e->origin, e->model->ymaxs, maxs);
 	}
 	else //no rotation
 	{
-		minbounds = e->model->mins;
-		maxbounds = e->model->maxs;
-	}
-
-	scalefactor = ENTSCALE_DECODE(e->scale);
-	if (scalefactor != 1.0f)
-	{
-		VectorMA (e->origin, scalefactor, minbounds, mins);
-		VectorMA (e->origin, scalefactor, maxbounds, maxs);
-	}
-	else
-	{
-		VectorAdd (e->origin, minbounds, mins);
-		VectorAdd (e->origin, maxbounds, maxs);
+		VectorAdd (e->origin, e->model->mins, mins);
+		VectorAdd (e->origin, e->model->maxs, maxs);
 	}
 
 	return R_CullBox (mins, maxs);

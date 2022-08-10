@@ -586,9 +586,7 @@ void CL_ParseUpdate (int bits)
 		else
 			ent->alpha = ent->baseline.alpha;
 		if (bits & U_SCALE)
-			ent->scale = MSG_ReadByte();
-		else
-			ent->scale = ent->baseline.scale;
+			MSG_ReadByte(); // PROTOCOL_RMQ: currently ignored
 		if (bits & U_FRAME2)
 			ent->frame = (ent->frame & 0x00FF) | (MSG_ReadByte() << 8);
 		if (bits & U_MODEL2)
@@ -622,7 +620,6 @@ void CL_ParseUpdate (int bits)
 		}
 		else
 			ent->alpha = ent->baseline.alpha;
-		ent->scale = ENTSCALE_DEFAULT;
 	}
 	//johnfitz
 
@@ -684,7 +681,6 @@ void CL_ParseBaseline (entity_t *ent, int version) //johnfitz -- added argument
 	}
 
 	ent->baseline.alpha = (bits & B_ALPHA) ? MSG_ReadByte() : ENTALPHA_DEFAULT; //johnfitz -- PROTOCOL_FITZQUAKE
-	ent->baseline.scale = (bits & B_SCALE) ? MSG_ReadByte() : ENTSCALE_DEFAULT;
 }
 
 
@@ -924,7 +920,7 @@ void CL_ParseStatic (int version) //johnfitz -- added a parameter
 	ent->skinnum = ent->baseline.skin;
 	ent->effects = ent->baseline.effects;
 	ent->alpha = ent->baseline.alpha; //johnfitz -- alpha
-	ent->scale = ent->baseline.scale;
+
 	VectorCopy (ent->baseline.origin, ent->origin);
 	VectorCopy (ent->baseline.angles, ent->angles);
 	R_AddEfrags (ent);
