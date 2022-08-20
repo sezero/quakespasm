@@ -1601,8 +1601,6 @@ static void PF_makestatic (void)
 	}
 	else
 	{
-		eval_t	*val;
-
 		if (SV_ModelIndex(PR_GetString(ent->v.model)) & 0xFF00)
 			bits |= B_LARGEMODEL;
 		if ((int)(ent->v.frame) & 0xFF00)
@@ -1610,14 +1608,18 @@ static void PF_makestatic (void)
 		if (ent->alpha != ENTALPHA_DEFAULT)
 			bits |= B_ALPHA;
 
-		val = GetEdictFieldValue(ent, "scale");
-		if (val)
-			ent->scale = ENTSCALE_ENCODE(val->_float);
-		else
-			ent->scale = ENTSCALE_DEFAULT;
+		if (sv.protocol == PROTOCOL_RMQ)
+		{
+			eval_t* val;
+			val = GetEdictFieldValue(ent, "scale");
+			if (val)
+				ent->scale = ENTSCALE_ENCODE(val->_float);
+			else
+				ent->scale = ENTSCALE_DEFAULT;
 
-		if (ent->scale != ENTSCALE_DEFAULT)
-			bits |= B_SCALE;
+			if (ent->scale != ENTSCALE_DEFAULT)
+				bits |= B_SCALE;
+		}
 	}
 
 	if (bits)
