@@ -332,12 +332,15 @@ qboolean R_CullModelForEntity (entity_t *e)
 R_RotateForEntity -- johnfitz -- modified to take origin and angles instead of pointer to entity
 ===============
 */
-void R_RotateForEntity (vec3_t origin, vec3_t angles)
+void R_RotateForEntity (vec3_t origin, vec3_t angles, unsigned char scale)
 {
+	float scalefactor = ENTSCALE_DECODE(scale);
 	glTranslatef (origin[0],  origin[1],  origin[2]);
 	glRotatef (angles[1],  0, 0, 1);
 	glRotatef (-angles[0],  0, 1, 0);
 	glRotatef (angles[2],  1, 0, 0);
+	if (scalefactor != 1.0f)
+		glScalef(scalefactor, scalefactor, scalefactor);
 }
 
 /*
