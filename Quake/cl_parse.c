@@ -126,6 +126,7 @@ entity_t	*CL_EntityNum (int num)
 		{
 			cl_entities[cl.num_entities].colormap = vid.colormap;
 			cl_entities[cl.num_entities].lerpflags |= LERP_RESETMOVE|LERP_RESETANIM; //johnfitz
+			cl_entities[cl.num_entities].baseline.scale = ENTSCALE_DEFAULT;
 			cl.num_entities++;
 		}
 	}
@@ -622,7 +623,7 @@ void CL_ParseUpdate (int bits)
 		}
 		else
 			ent->alpha = ent->baseline.alpha;
-		ent->scale = ENTSCALE_DEFAULT;
+		ent->scale = ent->baseline.scale;
 	}
 	//johnfitz
 

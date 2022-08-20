@@ -1247,7 +1247,7 @@ void SV_CreateBaseline (void)
 			svent->baseline.colormap = 0;
 			svent->baseline.modelindex = SV_ModelIndex(PR_GetString(svent->v.model));
 			svent->baseline.alpha = svent->alpha; //johnfitz -- alpha support
-			svent->baseline.scale = svent->scale;
+			svent->baseline.scale = ENTSCALE_DEFAULT;
 		}
 
 		//johnfitz -- PROTOCOL_FITZQUAKE

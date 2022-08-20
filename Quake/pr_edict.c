@@ -131,6 +131,7 @@ edict_t *ED_Alloc (void)
 	sv.num_edicts++;
 	e = EDICT_NUM(i);
 	memset(e, 0, pr_edict_size); // ericw -- switched sv.edicts to malloc(), so we are accessing uninitialized memory and must fully zero it, not just ED_ClearEdict
+	e->baseline.scale = ENTSCALE_DEFAULT;
 
 	return e;
 }
@@ -159,6 +160,7 @@ void ED_Free (edict_t *ed)
 	ed->v.nextthink = -1;
 	ed->v.solid = 0;
 	ed->alpha = ENTALPHA_DEFAULT; //johnfitz -- reset alpha for next entity
+	ed->scale = ENTSCALE_DEFAULT;
 
 	ed->freetime = sv.time;
 }
