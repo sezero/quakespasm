@@ -79,6 +79,7 @@ typedef struct entity_s
 											//  not split
 
 	byte					alpha;			//johnfitz -- alpha
+	byte					scale;
 	byte					lerpflags;		//johnfitz -- lerping
 	float					lerpstart;		//johnfitz -- animation lerping
 	float					lerptime;		//johnfitz -- animation lerping

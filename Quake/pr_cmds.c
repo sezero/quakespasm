@@ -1601,12 +1601,23 @@ static void PF_makestatic (void)
 	}
 	else
 	{
+		eval_t	*val;
+
 		if (SV_ModelIndex(PR_GetString(ent->v.model)) & 0xFF00)
 			bits |= B_LARGEMODEL;
 		if ((int)(ent->v.frame) & 0xFF00)
 			bits |= B_LARGEFRAME;
 		if (ent->alpha != ENTALPHA_DEFAULT)
 			bits |= B_ALPHA;
+
+		val = GetEdictFieldValue(ent, "scale");
+		if (val)
+			ent->scale = ENTSCALE_ENCODE(val->_float);
+		else
+			ent->scale = ENTSCALE_DEFAULT;
+
+		if (ent->scale != ENTSCALE_DEFAULT)
+			bits |= B_SCALE;
 	}
 
 	if (bits)
@@ -1640,6 +1651,9 @@ static void PF_makestatic (void)
 	if (bits & B_ALPHA)
 		MSG_WriteByte (&sv.signon, ent->alpha);
 	//johnfitz
+
+	if (bits & B_SCALE)
+		MSG_WriteByte (&sv.signon, ent->scale);
 
 // throw the entity away now
 	ED_Free (ent);
