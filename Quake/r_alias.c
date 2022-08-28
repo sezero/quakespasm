@@ -547,14 +547,17 @@ void R_SetupAliasLighting (entity_t	*e)
 	int			i;
 	int		quantizedangle;
 	float		radiansangle;
-	vec3_t		lpos;
 
-	VectorCopy (e->origin, lpos);
-	// start the light trace from slightly above the origin
-	// this helps with models whose origin is below ground level, but are otherwise visible
-	// (e.g. some of the candles in the DOTM start map, which would otherwise appear black)
-	lpos[2] += e->model->maxs[2] * 0.5f;
-	R_LightPoint (lpos);
+	// if the initial trace is completely black, try again from above
+	// this helps with models whose origin is slightly below ground level
+	// (e.g. some of the candles in the DOTM start map)
+	if (!R_LightPoint (e->origin))
+	{
+		vec3_t lpos;
+		VectorCopy (e->origin, lpos);
+		lpos[2] += e->model->maxs[2] * 0.5f;
+		R_LightPoint (lpos);
+	}
 
 	//add dlights
 	for (i=0 ; i<MAX_DLIGHTS ; i++)
