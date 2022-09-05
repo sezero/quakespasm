@@ -1239,6 +1239,7 @@ static void Host_Loadgame_f (void)
 			}
 			else {
 				memset (ent, 0, pr_edict_size);
+				ent->baseline.scale = ENTSCALE_DEFAULT;
 			}
 			data = ED_ParseEdict (data, ent);
 
