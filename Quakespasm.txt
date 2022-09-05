@@ -212,7 +212,13 @@
   o  Add support for lit water (patch contributed by Josiah Jack, with
      fixes from Eric Wasylishen.)
 
+  o  Add model scale support -- requires protocol 999. (Original patch
+     contributed by Josiah Jack with fixes from temx and Andrei Drexler.
+     Thanks to Eric Wasylishen, MH and Spike for useful discussions.)
+
   o  Add sv_cheats cvar for 2021 rerelease (patch from Andrei Drexler).
+
+  o  Clear the startdemo list on game change (patch by Andrei Drexler).
 
   o  Try light trace from entity origin first (patch by Andrei Drexler).
 

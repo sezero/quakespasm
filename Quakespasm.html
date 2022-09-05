@@ -75,7 +75,6 @@
 <HR>
 <H2><A NAME="s1">1.</A> <A HREF="#toc1">About </A></H2>
 
-
 <P>QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.</P>
 <P>It includes support for 64 bit CPUs and custom music playback, a new
 sound driver, some graphical niceities, and numerous bug-fixes and other improvements.</P>
@@ -218,7 +217,9 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 <P>
 <UL>
 <LI> Add support for lit water (patch contributed by Josiah Jack, with fixes from Eric Wasylishen.)</LI>
+<LI> Add model scale support -- requires protocol 999. (Original patch contributed by Josiah Jack with fixes from temx and Andrei Drexler. Thanks to Eric Wasylishen, MH and Spike for useful discussions.)</LI>
 <LI> Add sv_cheats cvar for 2021 rerelease (patch from Andrei Drexler).</LI>
+<LI> Clear the startdemo list on game change (patch by Andrei Drexler).</LI>
 <LI> Try light trace from entity origin first (patch by Andrei Drexler).</LI>
 <LI> Backport a few fixes to the bundled SDL2-2.0.22 version.</LI>
 </UL>
