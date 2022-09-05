@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: July 2022.
+  Page last edited: September 2022.
 
 
   1.  About
@@ -206,6 +206,18 @@
 
 
   5.  Changes
+
+  Changes in 0.95.0:
+
+  o  Add support for lit water (patch contributed by Josiah Jack, with
+     fixes from Eric Wasylishen.)
+
+  o  Add sv_cheats cvar for 2021 rerelease (patch from Andrei Drexler).
+
+  o  Try light trace from entity origin first (patch by Andrei Drexler).
+
+  o  Backport a few fixes to the bundled SDL2-2.0.22 version.
+
 
   Changes in 0.94.7:
 

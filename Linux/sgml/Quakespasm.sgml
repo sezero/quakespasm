@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: July 2022.</em>
+<em>Page last edited: September 2022.</em>
 
 <sect> About <p>
 
@@ -135,6 +135,15 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect> Changes<p>
+
+<sect1> Changes in 0.95.0<p>
+<itemize>
+<item> Add support for lit water (patch contributed by Josiah Jack, with fixes from Eric Wasylishen.)
+<item> Add sv_cheats cvar for 2021 rerelease (patch from Andrei Drexler).
+<item> Try light trace from entity origin first (patch by Andrei Drexler).
+<item> Backport a few fixes to the bundled SDL2-2.0.22 version.
+</itemize>
+</p>
 
 <sect1> Changes in 0.94.7<p>
 <itemize>
