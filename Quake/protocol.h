@@ -262,7 +262,7 @@ typedef struct
 	unsigned char 	colormap;	//johnfitz -- was int
 	unsigned char 	skin;		//johnfitz -- was int
 	unsigned char	alpha;		//johnfitz -- added
-	unsigned char	scale;
+	unsigned char	scale;		//Quakespasm: for model scale support.
 	int		effects;
 } entity_state_t;
 
@@ -277,4 +277,3 @@ typedef struct
 } usercmd_t;
 
 #endif	/* _QUAKE_PROTOCOL_H */
-
