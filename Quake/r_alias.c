@@ -640,6 +640,7 @@ void R_DrawAliasModel (entity_t *e)
 	lerpdata_t	lerpdata;
 	qboolean	alphatest = !!(e->model->flags & MF_HOLEY);
 	float		fovscale = 1.0f;
+	float		scalefactor = 1.0f;
 
 	//
 	// setup pose/lerp data -- do it first so we don't miss updates due to culling
@@ -662,6 +663,11 @@ void R_DrawAliasModel (entity_t *e)
 
 	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin, lerpdata.angles);
+	scalefactor = ENTSCALE_DECODE(e->scale);
+	if (scalefactor != 1.0f)
+	{
+		glScalef (scalefactor, scalefactor, scalefactor);
+	}
 	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1] * fovscale, paliashdr->scale_origin[2] * fovscale);
 	glScalef (paliashdr->scale[0], paliashdr->scale[1] * fovscale, paliashdr->scale[2] * fovscale);
 
@@ -983,6 +989,7 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
+	float		scalefactor;
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -993,6 +1000,11 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 
 	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin,lerpdata.angles);
+	scalefactor = ENTSCALE_DECODE(e->scale);
+	if (scalefactor != 1.0f)
+	{
+		glScalef (scalefactor, scalefactor, scalefactor);
+	}
 	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
 	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);
 
