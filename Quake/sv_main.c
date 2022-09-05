@@ -641,7 +641,7 @@ void SV_WriteEntitiesToClient (edict_t	*clent, sizebuf_t *msg)
 
 		// johnfitz -- max size for protocol 15 is 18 bytes, not 16 as originally
 		// assumed here.  And, for protocol 85 the max size is actually 24 bytes.
-		// For float coords and angles the limit is 40. 
+		// For float coords and angles the limit is 40.
 		// FIXME: Use tighter limit according to protocol flags and send bits.
 		if (msg->cursize + 40 > msg->maxsize)
 		{
@@ -1248,6 +1248,13 @@ void SV_CreateBaseline (void)
 			svent->baseline.modelindex = SV_ModelIndex(PR_GetString(svent->v.model));
 			svent->baseline.alpha = svent->alpha; //johnfitz -- alpha support
 			svent->baseline.scale = ENTSCALE_DEFAULT;
+			if (sv.protocol == PROTOCOL_RMQ)
+			{
+				eval_t* val;
+				val = GetEdictFieldValue(svent, "scale");
+				if (val)
+					svent->baseline.scale = ENTSCALE_ENCODE(val->_float);
+			}
 		}
 
 		//johnfitz -- PROTOCOL_FITZQUAKE
