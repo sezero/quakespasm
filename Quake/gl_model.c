@@ -496,6 +496,12 @@ static void Mod_LoadTextures (lump_t *l)
 		for (j=0 ; j<MIPLEVELS ; j++)
 			mt->offsets[j] = LittleLong (mt->offsets[j]);
 
+		if (mt->width == 0 || mt->height == 0)
+		{
+			Con_Warning ("Zero sized texture %s in %s!\n", mt->name, loadmodel->name);
+			continue;
+		}
+
 		if ( (mt->width & 15) || (mt->height & 15) )
 		{
 			if (loadmodel->bspversion != BSPVERSION_QUAKE64)
