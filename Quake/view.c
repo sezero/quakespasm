@@ -547,9 +547,10 @@ void V_PolyBlend (void)
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity ();
 
-	glColor4fv (v_blend);
-
 	glBegin (GL_QUADS);
+
+	glColor4fv (v_blend); // inside glBegin / glEnd to workaround an AMD driver bug
+
 	glVertex2f (0,0);
 	glVertex2f (1, 0);
 	glVertex2f (1, 1);
