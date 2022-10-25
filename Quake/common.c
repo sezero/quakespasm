@@ -1604,7 +1604,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 	searchpath_t	*search;
 	char		netpath[MAX_OSPATH];
 	pack_t		*pak;
-	int		i, findtime;
+	int		i;
 
 	if (file && handle)
 		Sys_Error ("COM_FindFile: both handle and file set");
@@ -1656,8 +1656,7 @@ static int COM_FindFile (const char *filename, int *handle, FILE **file,
 			}
 
 			q_snprintf (netpath, sizeof(netpath), "%s/%s",search->filename, filename);
-			findtime = Sys_FileTime (netpath);
-			if (findtime == -1)
+			if (! (Sys_FileType(netpath) & FS_ENT_FILE))
 				continue;
 
 			if (path_id)

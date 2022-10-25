@@ -794,7 +794,7 @@ void SCR_ScreenShot_f (void)
 	{
 		q_snprintf (imagename, sizeof(imagename), "spasm%04i.%s", i, ext);	// "fitz%04i.tga"
 		q_snprintf (checkname, sizeof(checkname), "%s/%s", com_gamedir, imagename);
-		if (Sys_FileTime(checkname) == -1)
+		if (Sys_FileType(checkname) == FS_ENT_NONE)
 			break;	// file doesn't exist
 	}
 	if (i == 10000)

@@ -139,19 +139,19 @@ int Sys_FileWrite (int handle, const void *data, int count)
 	return fwrite (data, 1, count, sys_handles[handle]);
 }
 
-int Sys_FileTime (const char *path)
+#ifndef INVALID_FILE_ATTRIBUTES
+#define INVALID_FILE_ATTRIBUTES	((DWORD)-1)
+#endif
+int Sys_FileType (const char *path)
 {
-	FILE	*f;
+	DWORD result = GetFileAttributes(path);
 
-	f = fopen(path, "rb");
+	if (result == INVALID_FILE_ATTRIBUTES)
+		return FS_ENT_NONE;
+	if (result & FILE_ATTRIBUTE_DIRECTORY)
+		return FS_ENT_DIRECTORY;
 
-	if (f)
-	{
-		fclose(f);
-		return 1;
-	}
-
-	return -1;
+	return FS_ENT_FILE;
 }
 
 static char	cwd[1024];
