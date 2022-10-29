@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: September 2022.
+  Page last edited: October 2022.
 
 
   1.  About
@@ -149,8 +149,7 @@
   switching, and L/R triggers are jump and attack.
 
   The controller support started as Jeremiah Sypult's implementation in
-  Quakespasm-Rift and also uses ideas and code from LordHavoc
-  (DarkPlaces).
+  Quakespasm-Rift, and also uses ideas/code from LordHavoc's DarkPlaces.
 
 
   4.  Compiling and Installation
@@ -206,6 +205,20 @@
 
 
   5.  Changes
+
+  Changes in 0.95.1:
+
+  o  Fix screen flashes in some maps with AMD's new drivers (patch from
+     temx)
+
+  o  Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp
+     (patch from temx)
+
+  o  Fix possible file pointer leak in game load code (patch from temx)
+
+  o  Minor code cleanups. Updated third party code, e.g. SDL, music
+     codecs, etc.
+
 
   Changes in 0.95.0:
 

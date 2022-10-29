@@ -3,9 +3,9 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: September 2022.</em>
+<em>Page last edited: October 2022.</em>
 
-<sect> About <p>
+<sect>About<p>
 
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
 </p><p>
@@ -16,7 +16,7 @@ Quakespasm utilizes SDL-1.2 or SDL2 frameworks, choose one which works best for 
 SDL2 has nicer features, smoother mouse input and better support for newer operating systems,
 but no CD-ROM support.
 
-<sect> Downloads <p>
+<sect>Downloads<p>
 
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Project Downloads">
@@ -24,8 +24,7 @@ but no CD-ROM support.
 </itemize>
 
 
-<sect> Hints <p>
-
+<sect>Hints<p>
 <em>Visit the <url url="http://www.celephais.net/fitzquake" name="FitzQuake homepage"> for a full run-down of the engine's commands and variables.</em>
 <itemize>
 <item>To disable some changes, use "<bf>quakespasm -fitz</bf>"
@@ -101,16 +100,16 @@ These buttons can be bound normally:
 
 quakespasm.pak contains a default.cfg which has been updated to give some default bindings. L/R shoulder buttons are bound to weapon switching, and L/R triggers are jump and attack.
 <p>
-The controller support started as Jeremiah Sypult's implementation in Quakespasm-Rift and also uses ideas and code from LordHavoc (DarkPlaces).
+The controller support started as Jeremiah Sypult's implementation in Quakespasm-Rift, and also uses ideas/code from LordHavoc's DarkPlaces.
 
 
-<sect> Compiling and Installation<p>
+<sect>Compiling and Installation<p>
 <p>See the Downloads section to get the sourcecode, then below for platform specific instructions.
 Quakespasm can also be built with the cross-platform Codeblocks.
 <newline>
 Quakespasm's (optional) custom data is now stored in the file <bf>quakespasm.pak</bf>. This file should be placed alongside your quakespasm binary and <bf>id1</bf> directory.</p>
 
-<sect1> Linux/Unix <p>
+<sect1>Linux/Unix<p>
 After extracting the source tarball, "cd Quake" and edit the Makefile for music options. 
 </p><p><em>Streaming music playback requires "libmad" or "libmpg123" for MP3, and "libogg" and "libvorbis" for OGG files.</em>
 </p><p>Then type "make" to compile the program, and copy the "quakespasm" binary (and "quakespasm.pak") to your Quake game directory.
@@ -122,21 +121,30 @@ Compile time options include
 <item><bf>make SDL_CONFIG=</bf><em>/PATH/TO/sdl-config</em> for unusual SDL installations
 <item><bf>make USE_SDL2=1</bf> to compile against SDL2 instead of SDL-1.2
 </itemize>
-<sect1> Windows <p>
+<sect1>Windows<p>
 QuakeSpasm developers cross-compile windows binaries using <url url="http://mingw-w64.sf.net" name="MinGW-w64"> and <url url="https://mingw.osdn.io" name="MinGW">.
 The project can also be built using Microsoft Visual Studio 2005 and newer versions.</p>
-<sect1> Mac OS X <p>
+<sect1>Mac OS X<p>
 A Quakespasm App (including program launcher and update framework) can be made using the <bf>Xcode</bf> template found in the MacOSX directory.
 Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
 
-<sect1> Quake '2021 re-release' <p>
+<sect1>Quake '2021 re-release'<p>
 QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run as you normally do.</p>
 
 
-<sect> Changes<p>
+<sect>Changes<p>
 
-<sect1> Changes in 0.95.0<p>
+<sect1>Changes in 0.95.1<p>
+<itemize>
+<item> Fix screen flashes in some maps with AMD's new drivers (patch from temx)
+<item> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp (patch from temx)
+<item> Fix possible file pointer leak in game load code (patch from temx)
+<item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
+</itemize>
+</p>
+
+<sect1>Changes in 0.95.0<p>
 <itemize>
 <item> Add support for lit water (patch contributed by Josiah Jack, with fixes from Eric Wasylishen.)
 <item> Add model scale support -- requires protocol 999. (Original patch contributed by Josiah Jack with fixes from temx and Andrei Drexler. Thanks to Eric Wasylishen, MH and Spike for useful discussions.)
@@ -147,7 +155,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.7<p>
+<sect1>Changes in 0.94.7<p>
 <itemize>
 <item> Fix console history buffer wrapping.
 <item> Fix wrong external texture use after vid_restart.
@@ -156,7 +164,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.6<p>
+<sect1>Changes in 0.94.6<p>
 <itemize>
 <item> Server protocol size check fixes for sounds and particles.
 <item> An invalid memory access fix in the jpg screenshot writer.
@@ -167,7 +175,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.5<p>
+<sect1>Changes in 0.94.5<p>
 <itemize>
 <item> Compatibility with new SDL2 versioning scheme.
 <item> Revised min/max/clamp macros' usage.
@@ -178,7 +186,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.4<p>
+<sect1>Changes in 0.94.4<p>
 <itemize>
 <item> Fixed getting stuck with loading plaque upon attempting to load a bad save from the menu
 <item> Fixed SZ_GetSpace server crashes, e.g. in ad_magna or ad_mountain
@@ -198,7 +206,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.3<p>
+<sect1>Changes in 0.94.3<p>
 <itemize>
 <item> Handle sky textures with non-standard sizes and warn about them (e.g. ad_tears)
 <item> Allow loading textures not aligned to 16 pixels and warn about them (eg. the horde2 map of Dimension of the Machine from 2021 rerelease update/2.)
@@ -206,7 +214,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.2<p>
+<sect1>Changes in 0.94.2<p>
 <itemize>
 <item> 2021 rerelease: Support for playing the latest update.
 <item> 2021 rerelease: Fix pitch black models in lit areas in DOTM.
@@ -215,13 +223,13 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.1<p>
+<sect1>Changes in 0.94.1<p>
 <itemize>
 <item> Fix lightmap issues after vkQuake surface mark/cull optimizations merge (sf.net bug/50)
 </itemize>
 </p>
 
-<sect1> Changes in 0.94.0<p>
+<sect1>Changes in 0.94.0<p>
 <itemize>
 <item> Initial support for playing the 'Quake 2021 re-release' content (thanks to Andrei Drexler for bulk of the work, Guillaume Plourde for Q64 bsp format support.)
 <item> Fix rendering bug when cl_bobcycle was set to zero (sf.net bug/41)
@@ -244,7 +252,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.93.2<p>
+<sect1>Changes in 0.93.2<p>
 <itemize>
 <item> Lightmaps are now dynamically allocated (from QSS), and BLOCK_WIDTH/HEIGHT raised from 128 to 256.
 <item> Fixed several uncheked limits that would crash the Slayer's Testaments mod (sf.net bug #33).
@@ -255,7 +263,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.93.1<p>
+<sect1>Changes in 0.93.1<p>
 <itemize>
 <item> Fixed a fog regression which was introduced in 0.93.0.
 <item> Fixed a crash (buffer overflow) with invalid vis data.
@@ -267,7 +275,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 </itemize>
 </p>
 
-<sect1> Changes in 0.93.0<p>
+<sect1>Changes in 0.93.0<p>
 <itemize>
 <item> Raise default "joy_deadzone_trigger" cvar to 0.2.
 <item> Raise console buffer size to 1MB.
@@ -307,7 +315,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.92.1<p>
+<sect1>Changes in 0.92.1<p>
 <itemize>
 <item> Fixed large menu scale factors (was broken in 0.92.0).
 <item> Fixed PAUSE key (was broken in 0.92.0).
@@ -315,7 +323,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.92.0<p>
+<sect1>Changes in 0.92.0<p>
 <itemize>
 <item> SDL2 Game Controller support.
 <item> Contrast support with new "contrast" cvar, behaving the same as MarkV. It may be a useful alternative to the existing gamma control for laptops in a bright environment, etc. Raising contrast gives less of a gray/washed out look than raising gamma, but at a disadvantage: colors near white get clipped to white.
@@ -333,8 +341,8 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.91.0<p>
-<sect2> Bugfixes
+<sect1>Changes in 0.91.0<p>
+<sect2>Bugfixes
 <itemize>
 <item> Fix unwanted fog mode change upon video restart.
 <item> Work around Intel 855 bug in status bar drawing with "r_oldwater 0" and "scr_sbaralpha 0".
@@ -350,21 +358,21 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Prevent a possible buffer overflow in Cbuf_Execute (old Q1/Q2 bug).
 <item> Prevent a possible vulnerability in MSG_ReadString (old Q1/Q2 bug).
 </itemize>
-<sect2> Visual improvements
+<sect2>Visual improvements
 <itemize>
 <item> New cvars r_lavaalpha, r_slimealpha, r_telealpha for fine-tuning specific liquid opacities (from DirectQ/RMQEngine, non-archived, default to 0), and new worldspawn keys _wateralpha, _lavaalpha, _slimealpha, _telealpha, _skyfog (unique to Quakespasm, similar to the behaviour of the "fog" worldspawn key).
 <item> GLSL gamma is now supported on older hardware without NPOT extension.
 </itemize>
-<sect2> Interface improvements
+<sect2>Interface improvements
 <itemize>
 <item> New r_pos command to show player position.
 <item> NaN detection in traceline with "developer 1" set now warns instead of errors.
 </itemize>
-<sect2> Code cleanup / Other
+<sect2>Code cleanup / Other
 <itemize>
 <item> Update third-party libraries.
 </itemize>
-<sect2> Raised limits
+<sect2>Raised limits
 <itemize>
 <item> Default max_edicts 8192 (was 2048) and no longer saved to config.cfg.
 <item> Default heapsize 256 MB (was 64 MB).
@@ -373,8 +381,8 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.90.1<p>
-<sect2> Bugfixes
+<sect1>Changes in 0.90.1<p>
+<sect2>Bugfixes
 <itemize>
 <item> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).
 <item> Fix texture memory leak when changing video modes with SDL2.
@@ -385,19 +393,19 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Fix viewmodel not lerping on extended-limit maps.
 <item> Fix crash on out-of-bounds skin number.
 </itemize>
-<sect2> Performance
+<sect2>Performance
 <itemize>
 <item> Use multithreaded OpenGL on OS X for better performance.
 <item> New, faster mdl renderer using GLSL. Disable with "-noglslalias".
 </itemize>
-<sect2> Visual improvements
+<sect2>Visual improvements
 <itemize>
 <item> New gamma correction implementation using GLSL. Fixes all known gamma issues (affecting the full display, persisting after quitting, or darkening the screen on OS X). Disable with "-noglslgamma".
 <item> Use high-quality water by default (r_oldwater 0).
 <item> Shadows use stencil buffer to avoid overlapping artifacts (from MarkV.)
 <item> r_noshadow_list cvar added (from MarkV.)
 </itemize>
-<sect2> Interface improvements
+<sect2>Interface improvements
 <itemize>
 <item> Support pausing demo playback with the "pause" command.
 <item> Autocompletion for "game", "record", "playdemo".
@@ -405,14 +413,14 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Silence "exceeded standard limit" messages unless developer cvar is >= 1.
 <item> Some spam moved from developer 1 to 2: "can't find tga/lit/ent", "trying to load ent", "bad chunk length", "meshing", "PR_AlocStringSlots: realloc'ing"
 </itemize>
-<sect2> Code cleanup
+<sect2>Code cleanup
 <itemize>
 <item> Clean up IDE project files to build on fresh systems.
 <item> Update 3rd-party libraries.
 </itemize>
 </p>
 
-<sect1> Changes in 0.90.0<p>
+<sect1>Changes in 0.90.0<p>
 <itemize>
 <item> Fix issues on Windows systems with DPI scaling.</item>
 <item> Unix/Mac user directories support. Disabled by default,<newline>
@@ -456,7 +464,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.9<p>
+<sect1>Changes in 0.85.9<p>
 <itemize>
 <item> Fixes for several undefined behaviors in C code (gcc-4.8 support.)
 <item> Implemented Hor+ style field of view (FOV) scaling, useful for widescreen resolutions. Configured by new cvar fov_adapt: set it to 1 and your fov will be scaled automatically according to the resolution. Enabled by default.
@@ -478,7 +486,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.8<p>
+<sect1>Changes in 0.85.8<p>
 <itemize>
 <item> Made Quake shareware 1.00 and 1.01 versions to be recognized properly.
 <item> Fixed control-character handling in unicode mode. Keyboard input tweaks.
@@ -501,7 +509,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.7<p>
+<sect1>Changes in 0.85.7<p>
 <itemize>
 <item> Added support for cross-level demo playback
 <item> gl_texturemode is reimplemented as a cvar with a callback and the setting is automatically saved to the config
@@ -517,7 +525,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.6<p>
+<sect1>Changes in 0.85.6<p>
 <itemize>
 <item> More work for string buffer safety
 <item> Reverted v0.85.5 change of not allowing deathmatch and coop cvars to be set at the same time (was reported for possibility of causing compatibility issues with mods)
@@ -526,7 +534,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.5<p>
+<sect1>Changes in 0.85.5<p>
 <itemize>
 <item> SDL input driver updated adding native keymap and dead key support to the console
 <item> Fixed a crash in net play in maps with extended limits
@@ -543,7 +551,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.4<p>
+<sect1>Changes in 0.85.4<p>
 <itemize>
 <item> Implement music (OGG, MP3, WAV) playback
 <item> A better fix for the infamous SV_TouchLinks problem, no more hard lockups with maps such as "whiteroom"
@@ -559,7 +567,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 </itemize>
 </p>
 
-<sect1> Changes in 0.85.3<p>
+<sect1>Changes in 0.85.3<p>
 <itemize>
 <item> Fix the "-dedicated" option (thanks Oz) and add platform specific networking code (default) rather than SDL_net
 <item> Much needed OSX framework stuff from Kristian
@@ -578,7 +586,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Add a "-cd" option to let the CD Player work in dedicated mode, and some other CD tweaks.
 </itemize>
 
-<sect1> Changes in 0.85.2<p>
+<sect1>Changes in 0.85.2<p>
 <itemize>
 <item> Replace the old "Screen size" slider with a "Scale" slider
 <item> Don't constantly open and close condebug log
@@ -593,7 +601,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Add OSX Makefile (tested?)
 </itemize>
 
-<sect1> Changes in 0.85.1<p>
+<sect1>Changes in 0.85.1<p>
 <itemize>
 <item>64 bit CPU support
 <item>Restructured SDL sound driver
@@ -613,14 +621,14 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis
 </itemize>
 
-<sect> Copyright <p>
+<sect>Copyright<p>
 <itemize>
 <item>Quake and Quakespasm are released under the <url url="http://www.gnu.org/licenses/gpl-2.0.html" name="GNU GENERAL PUBLIC LICENSE Version 2">
 <item>Quakespasm console background image by <bf>AAS</bf>, released under the
 <url url="http://creativecommons.org/licenses/by/3.0/legalcode" name="CREATIVE COMMONS PUBLIC LICENSE">
 </itemize>
 
-<sect> Contact <p>
+<sect>Contact<p>
 <itemize>
 <item><url url="https://sourceforge.net/projects/quakespasm/" name="QuakeSpasm Project page">
 <item><url url="https://sourceforge.net/p/quakespasm/bugs/" name="Bug reports">
@@ -629,7 +637,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander">
 </itemize>
 
-<sect> Links <p>
+<sect>Links<p>
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Downloads">
