@@ -573,9 +573,14 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	qboolean	bound;
 	float entalpha;
 	int		lastlightmap;
+	qboolean	has_lit_water;
+	qboolean	has_unlit_water;
 
 	if (r_drawflat_cheatsafe || r_lightmap_cheatsafe) // ericw -- !r_drawworld_cheatsafe check moved to R_DrawWorld_Water ()
 		return;
+
+	has_lit_water = false;
+	has_unlit_water = false;
 
 	if (r_oldwater.value)
 	{
@@ -606,6 +611,8 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	}
 	else if (cl.worldmodel->haslitwater && r_litwater.value && r_world_program != 0)
 	{
+		has_lit_water = true;
+
 		GL_UseProgramFunc (r_world_program);
 
 		// Bind the buffers
@@ -634,6 +641,12 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 
 			if (!t || !t->texturechains[chain] || !(t->texturechains[chain]->flags & SURF_DRAWTURB))
 				continue;
+
+			if (t->texturechains[chain]->texinfo->flags & TEX_SPECIAL)
+			{
+				has_unlit_water = true;
+				continue;
+			}
 
 			bound = false;
 			entalpha = 1.0f;
@@ -686,12 +699,17 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 		GL_SelectTexture (GL_TEXTURE0);
 	}
 	else
+		has_unlit_water = true;
+	
+	if (has_unlit_water)
 	{
 		// Unlit water
 		for (i=0 ; i<model->numtextures ; i++)
 		{
 			t = model->textures[i];
 			if (!t || !t->texturechains[chain] || !(t->texturechains[chain]->flags & SURF_DRAWTURB))
+				continue;
+			if (has_lit_water && !(t->texturechains[chain]->texinfo->flags & TEX_SPECIAL))
 				continue;
 			bound = false;
 			entalpha = 1.0f;
