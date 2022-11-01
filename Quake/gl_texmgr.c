@@ -1051,7 +1051,7 @@ static void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 	glTexImage2D (GL_TEXTURE_2D, 0, internalformat, glt->width, glt->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	// upload mipmaps
-	if (glt->flags & TEXPREF_MIPMAP)
+	if (glt->flags & TEXPREF_MIPMAP && !(glt->flags & TEXPREF_WARPIMAGE)) // warp image mipmaps are generated later
 	{
 		mipwidth = glt->width;
 		mipheight = glt->height;
