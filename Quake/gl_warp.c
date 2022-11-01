@@ -254,6 +254,8 @@ void R_UpdateWarpTextures (void)
 		//copy to texture
 		GL_Bind (tx->warpimage);
 		glCopyTexSubImage2D (GL_TEXTURE_2D, 0, 0, 0, glx, gly+glheight-gl_warpimagesize, gl_warpimagesize, gl_warpimagesize);
+		if (GL_GenerateMipmap)
+			GL_GenerateMipmap (GL_TEXTURE_2D);
 
 		tx->update_warp = false;
 	}

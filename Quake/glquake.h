@@ -208,6 +208,7 @@ typedef void (APIENTRYP QS_PFNGLUNIFORM1IPROC) (GLint location, GLint v0);
 typedef void (APIENTRYP QS_PFNGLUNIFORM1FPROC) (GLint location, GLfloat v0);
 typedef void (APIENTRYP QS_PFNGLUNIFORM3FPROC) (GLint location, GLfloat v0, GLfloat v1, GLfloat v2);
 typedef void (APIENTRYP QS_PFNGLUNIFORM4FPROC) (GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3);
+typedef void (APIENTRYP QS_PFNGENERATEMIPMAP) (GLenum type);
 
 extern QS_PFNGLCREATESHADERPROC GL_CreateShaderFunc;
 extern QS_PFNGLDELETESHADERPROC GL_DeleteShaderFunc;
@@ -236,6 +237,9 @@ extern	qboolean	gl_glsl_able;
 extern	qboolean	gl_glsl_gamma_able;
 extern	qboolean	gl_glsl_alias_able;
 // ericw --
+
+//mipmapped warp textures
+extern QS_PFNGENERATEMIPMAP GL_GenerateMipmap;
 
 //ericw -- NPOT texture support
 extern	qboolean	gl_texture_NPOT;
