@@ -208,6 +208,12 @@
 
   Changes in 0.95.1:
 
+  o  Allow mixing lit and unlit textures in the same map (patch from
+     temx)
+
+  o  Water texture mipmapping support -- fixes glistening effect on
+     distant water (patch from temx)
+
   o  Fix screen flashes in some maps with AMD's new drivers (patch from
      temx)
 

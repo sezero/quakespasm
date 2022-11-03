@@ -137,6 +137,8 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.95.1<p>
 <itemize>
+<item> Allow mixing lit and unlit textures in the same map (patch from temx)
+<item> Water texture mipmapping support -- fixes glistening effect on distant water (patch from temx)
 <item> Fix screen flashes in some maps with AMD's new drivers (patch from temx)
 <item> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp (patch from temx)
 <item> Fix possible file pointer leak in game load code (patch from temx)
