@@ -1274,7 +1274,7 @@ static void GL_CheckExtensions (void)
 	// glGenerateMipmap for warp textures
 	if (COM_CheckParm("-nowarpmipmaps"))
 		Con_Warning ("glGenerateMipmap disabled at command line\n");
-	else if ((GL_GenerateMipmap = SDL_GL_GetProcAddress("glGenerateMipmap")))
+	else if ((GL_GenerateMipmap = SDL_GL_GetProcAddress("glGenerateMipmap")) != NULL)
 		Con_Printf ("FOUND: glGenerateMipmap\n");
 	else
 		Con_Warning ("glGenerateMipmap not available, liquids won't have mipmaps\n");
