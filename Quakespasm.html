@@ -80,16 +80,15 @@ but no CD-ROM support.</P>
 <H2><A NAME="s2">2.</A> <A HREF="#toc2">Downloads</A></H2>
 <P>
 <UL>
-<LI>
-<A HREF="http://quakespasm.sourceforge.net/download.htm">Project Downloads</A></LI>
-<LI>
-<A HREF="https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/">Latest code repository</A></LI>
+<LI><A HREF="http://quakespasm.sourceforge.net/download.htm">Project Downloads</A></LI>
+<LI><A HREF="https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/">Latest code repository</A></LI>
+<LI><A HREF="https://github.com/sezero/quakespasm">Github mirror.</A></LI>
 </UL>
 </P>
 
 <H2><A NAME="s3">3.</A> <A HREF="#toc3">Hints</A></H2>
 <P><EM>Visit the 
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM>
+<A HREF="https://celephais.net/fitzquake/">FitzQuake homepage</A> for a full run-down of the engine's commands and variables.</EM>
 <UL>
 <LI>To disable some changes, use "<B>quakespasm -fitz</B>"</LI>
 <LI>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.</LI>
@@ -211,12 +210,13 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 </H2>
 <P>
 <UL>
-<LI> Allow mixing lit and unlit textures in the same map (patch from temx)</LI>
-<LI> Water texture mipmapping support -- fixes glistening effect on distant water (patch from temx)</LI>
-<LI> Fix screen flashes in some maps with AMD's new drivers (patch from temx)</LI>
-<LI> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp (patch from temx)</LI>
-<LI> Fix possible file pointer leak in game load code (patch from temx)</LI>
+<LI> Allow mixing lit and unlit textures in the same map.</LI>
+<LI> Water texture mipmapping support - fixes glistening effect on distant water.</LI>
+<LI> Fix screen flashes in some maps with AMD's new drivers.</LI>
+<LI> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp</LI>
+<LI> Fix possible file pointer leak in game load code.</LI>
 <LI> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.</LI>
+<LI> Thanks to 'temx' for his patches.</LI>
 </UL>
 </P>
 
@@ -504,7 +504,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).</LI>
 <LI> Fix texture memory leak when changing video modes with SDL2.</LI>
 <LI> Fix a rare incorrect mdl lighting on 64-bit builds. 
-<A HREF="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620">(details here.)</A></LI>
+<A HREF="https://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620">(details here.)</A></LI>
 <LI> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).</LI>
 <LI> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.</LI>
 <LI> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.</LI>
@@ -739,11 +739,10 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI> Fix mapname sorting</LI>
 <LI> Alias the "mods" command to "games"</LI>
 <LI> Block/Unblock sound upon focus loss/gain</LI>
-<LI> NAT fix (networking protocol fix)</LI>
+<LI> NAT (networking protocol) fix</LI>
 <LI> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000</LI>
 <LI> Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an old fitzquake-0.85 bug which used to cause segfaults depending on the compiler.</LI>
 <LI> Accept commandline options like "+connect ip:port"</LI>
-<LI> Add OSX Makefile (tested?)</LI>
 </UL>
 </P>
 
@@ -753,7 +752,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <UL>
 <LI>64 bit CPU support</LI>
 <LI>Restructured SDL sound driver</LI>
-<LI>Custom conback </LI>
+<LI>Custom conback</LI>
 <LI>Tweaked the command line completion and added a map/changelevel autocompletion function</LI>
 <LI>Alt+Enter toggles fullscreen</LI>
 <LI>Disable Draw_BeginDisc which causes core dumps when called excessively</LI>
@@ -764,9 +763,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <LI>Default to window mode</LI>
 <LI>Withdraw console when playing demos</LI>
 <LI>Don't play demos on program init</LI>
-<LI>Default Heapsize is 64meg</LI>
+<LI>Default heapsize is 64 MB.</LI>
 <LI>Changes to default console alpha, speed</LI>
-<LI>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis</LI>
+<LI>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis.</LI>
 </UL>
 </P>
 
@@ -784,30 +783,19 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <H2><A NAME="s7">7.</A> <A HREF="#toc7">Contact</A></H2>
 <P>
 <UL>
-<LI>
-<A HREF="https://sourceforge.net/projects/quakespasm/">QuakeSpasm Project page</A></LI>
-<LI>
-<A HREF="https://sourceforge.net/p/quakespasm/bugs/">Bug reports</A></LI>
-<LI>
-<A HREF="mailto:gmail - dot - com - username - sezeroz">Ozkan</A>,
-<A HREF="mailto:gmail - dot - com - username - ewasylishen">Eric</A>,
-<A HREF="mailto:gmail - dot - com - username - a.h.vandijk">Sander</A></LI>
+<LI><A HREF="https://sourceforge.net/projects/quakespasm/">QuakeSpasm Project page</A></LI>
+<LI><A HREF="https://sourceforge.net/p/quakespasm/bugs/">Bug reports</A></LI>
 </UL>
 </P>
 
 <H2><A NAME="s8">8.</A> <A HREF="#toc8">Links</A></H2>
 <P>
 <UL>
-<LI>
-<A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A></LI>
-<LI>
-<A HREF="http://quakespasm.sourceforge.net/download.htm">Downloads</A></LI>
-<LI>
-<A HREF="http://www.celephais.net/fitzquake">FitzQuake Homepage</A></LI>
-<LI>
-<A HREF="http://www.celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A></LI>
-<LI>
-<A HREF="http://forums.insideqc.com">Inside3D forums</A></LI>
+<LI><A HREF="http://quakespasm.sourceforge.net">QuakeSpasm Homepage</A></LI>
+<LI><A HREF="http://quakespasm.sourceforge.net/download.htm">Downloads</A></LI>
+<LI><A HREF="https://celephais.net/fitzquake/">FitzQuake Homepage</A></LI>
+<LI><A HREF="https://celephais.net/board/view_thread.php?id=60452">Func Quakespasm forum</A></LI>
+<LI><A HREF="https://forums.insideqc.com">Inside3D forums</A></LI>
 </UL>
 </P>
 

@@ -21,11 +21,12 @@ but no CD-ROM support.
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Project Downloads">
 <item><url url="https://sourceforge.net/p/quakespasm/quakespasm/ci/master/tree/" name="Latest code repository">
+<item><url url="https://github.com/sezero/quakespasm" name="Github mirror.">
 </itemize>
 
 
 <sect>Hints<p>
-<em>Visit the <url url="http://www.celephais.net/fitzquake" name="FitzQuake homepage"> for a full run-down of the engine's commands and variables.</em>
+<em>Visit the <url url="https://celephais.net/fitzquake/" name="FitzQuake homepage"> for a full run-down of the engine's commands and variables.</em>
 <itemize>
 <item>To disable some changes, use "<bf>quakespasm -fitz</bf>"
 <item>Quakespasm's custom data is stored in "quakespasm.pak". Install this file alongside your id1 directory to enable the custom console background and other minor features.
@@ -137,12 +138,13 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.95.1<p>
 <itemize>
-<item> Allow mixing lit and unlit textures in the same map (patch from temx)
-<item> Water texture mipmapping support -- fixes glistening effect on distant water (patch from temx)
-<item> Fix screen flashes in some maps with AMD's new drivers (patch from temx)
-<item> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp (patch from temx)
-<item> Fix possible file pointer leak in game load code (patch from temx)
+<item> Allow mixing lit and unlit textures in the same map.
+<item> Water texture mipmapping support - fixes glistening effect on distant water.
+<item> Fix screen flashes in some maps with AMD's new drivers.
+<item> Defend against zero-sized textures, e.g. __TB_empty in qbj_grue.bsp
+<item> Fix possible file pointer leak in game load code.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
+<item> Thanks to 'temx' for his patches.
 </itemize>
 </p>
 
@@ -388,7 +390,7 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <itemize>
 <item> Fix dynamic light artifact where changing lightmap are rendered one frame late (bug introduced in 0.90.0).
 <item> Fix texture memory leak when changing video modes with SDL2.
-<item> Fix a rare incorrect mdl lighting on 64-bit builds. <url url="http://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
+<item> Fix a rare incorrect mdl lighting on 64-bit builds. <url url="https://forums.insideqc.com/viewtopic.php?f=3&amp;t=5620" name="(details here.)">
 <item> Fix fullbrights turning black after "kill" command (bug introduced in 0.90.0).
 <item> Clear all fog values on map change to prevent colored fog carrying over to jam3_tronyn.bsp.
 <item> Allow loading saves with } character in quoted strings, fixes issue with retrojam1_skacky.bsp.
@@ -596,18 +598,17 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item> Fix mapname sorting
 <item> Alias the "mods" command to "games"
 <item> Block/Unblock sound upon focus loss/gain
-<item> NAT fix (networking protocol fix)
+<item> NAT (networking protocol) fix
 <item> SDLNet_ResolveHost bug-fix allowing connection to ports other than 26000
 <item> Bumped array size of sv_main.c::localmodels from 5 to 6 fixing an old fitzquake-0.85 bug which used to cause segfaults depending on the compiler.
 <item> Accept commandline options like "+connect ip:port"
-<item> Add OSX Makefile (tested?)
 </itemize>
 
 <sect1>Changes in 0.85.1<p>
 <itemize>
 <item>64 bit CPU support
 <item>Restructured SDL sound driver
-<item>Custom conback 
+<item>Custom conback
 <item>Tweaked the command line completion and added a map/changelevel autocompletion function
 <item>Alt+Enter toggles fullscreen
 <item>Disable Draw_BeginDisc which causes core dumps when called excessively
@@ -618,9 +619,9 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <item>Default to window mode
 <item>Withdraw console when playing demos
 <item>Don't play demos on program init
-<item>Default Heapsize is 64meg
+<item>Default heapsize is 64 MB.
 <item>Changes to default console alpha, speed
-<item>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis
+<item>Changes to cvar persistence gl_flashblend (default 0), r_shadow, r_wateralpha, r_dynamic, r_novis.
 </itemize>
 
 <sect>Copyright<p>
@@ -634,18 +635,15 @@ quakespasm (cl_alwaysrun 1, cl_forwardspeed 200, cl_backspeed 200)
 <itemize>
 <item><url url="https://sourceforge.net/projects/quakespasm/" name="QuakeSpasm Project page">
 <item><url url="https://sourceforge.net/p/quakespasm/bugs/" name="Bug reports">
-<item><url url="mailto:gmail - dot - com - username - sezeroz" name="Ozkan">,
-<url url="mailto:gmail - dot - com - username - ewasylishen" name="Eric">,
-<url url="mailto:gmail - dot - com - username - a.h.vandijk" name="Sander">
 </itemize>
 
 <sect>Links<p>
 <itemize>
 <item><url url="http://quakespasm.sourceforge.net" name="QuakeSpasm Homepage">
 <item><url url="http://quakespasm.sourceforge.net/download.htm" name="Downloads">
-<item><url url="http://www.celephais.net/fitzquake" name="FitzQuake Homepage">
-<item><url url="http://www.celephais.net/board/view_thread.php?id=60452" name="Func Quakespasm forum">
-<item><url url="http://forums.insideqc.com" name="Inside3D forums">
+<item><url url="https://celephais.net/fitzquake/" name="FitzQuake Homepage">
+<item><url url="https://celephais.net/board/view_thread.php?id=60452" name="Func Quakespasm forum">
+<item><url url="https://forums.insideqc.com" name="Inside3D forums">
 </itemize>
 
 </article>
