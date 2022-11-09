@@ -731,7 +731,7 @@ void R_ShowBoundingBoxes (void)
 	glDisable (GL_CULL_FACE);
 	glColor3f (1,1,1);
 
-	for (i=0, ed=NEXT_EDICT(sv.edicts) ; i<sv.num_edicts ; i++, ed=NEXT_EDICT(ed))
+	for (i=1, ed=NEXT_EDICT(sv.edicts) ; i<sv.num_edicts ; i++, ed=NEXT_EDICT(ed))
 	{
 		if (ed == sv_player)
 			continue; //don't draw player's own bbox
