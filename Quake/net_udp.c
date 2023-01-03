@@ -39,7 +39,7 @@ static in_addr_t	myAddr;
 
 sys_socket_t UDP_Init (void)
 {
-	int	err;
+	int	err, i;
 	char	*tst;
 	char	buff[MAXHOSTNAMELEN];
 	struct hostent		*local;
@@ -81,7 +81,25 @@ sys_socket_t UDP_Init (void)
 		}
 		else
 		{
-			myAddr = *(in_addr_t *)local->h_addr_list[0];
+			i = COM_CheckParm ("-ip");
+			if (i)
+			{
+				if (i < com_argc-1)
+				{
+					myAddr = inet_addr(com_argv[i + 1]);
+					if (myAddr == INADDR_NONE)
+						Sys_Error ("%s is not a valid IP address", com_argv[i + 1]);
+					strcpy(my_tcpip_address, com_argv[i + 1]);
+				}
+				else
+				{
+					Sys_Error ("NET_Init: you must specify an IP address after -ip");
+				}
+			}
+			else
+			{
+				myAddr = *(in_addr_t *)local->h_addr_list[0];
+			}
 		}
 	}
 
