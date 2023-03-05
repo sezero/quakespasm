@@ -468,29 +468,6 @@ static joyaxis_t IN_ApplyEasing(joyaxis_t axis, float exponent)
 
 /*
 ================
-IN_ApplyMoveEasing
-
-same as IN_ApplyEasing, but scales the output by sqrt(2).
-this gives diagonal stick inputs coordinates of (+/-1,+/-1).
-
-forward/back/left/right will return +/- 1.41; this shouldn't be a problem because
-you can pull back on the stick to go slower (and the final speed is clamped
-by sv_maxspeed).
-================
-*/
-static joyaxis_t IN_ApplyMoveEasing(joyaxis_t axis, float exponent)
-{
-	joyaxis_t result = IN_ApplyEasing(axis, exponent);
-	const float v = sqrtf(2.0f);
-	
-	result.x *= v;
-	result.y *= v;
-
-	return result;
-}
-
-/*
-================
 IN_ApplyDeadzone
 
 in: raw joystick axis values converted to floats in +-1
@@ -659,6 +636,7 @@ void IN_JoyMove (usercmd_t *cmd)
 	float	speed;
 	joyaxis_t moveRaw, moveDeadzone, moveEased;
 	joyaxis_t lookRaw, lookDeadzone, lookEased;
+	extern	cvar_t	sv_maxspeed;
 
 	if (!joy_enable.value)
 		return;
@@ -681,16 +659,21 @@ void IN_JoyMove (usercmd_t *cmd)
 	moveDeadzone = IN_ApplyDeadzone(moveRaw, joy_deadzone_move.value, joy_outer_threshold_move.value);
 	lookDeadzone = IN_ApplyDeadzone(lookRaw, joy_deadzone_look.value, joy_outer_threshold_look.value);
 
-	moveEased = IN_ApplyMoveEasing(moveDeadzone, joy_exponent_move.value);
+	moveEased = IN_ApplyEasing(moveDeadzone, joy_exponent_move.value);
 	lookEased = IN_ApplyEasing(lookDeadzone, joy_exponent.value);
-	
-	if ((in_speed.state & 1) ^ (cl_alwaysrun.value != 0.0))
-		speed = cl_movespeedkey.value;
-	else
-		speed = 1;
 
-	cmd->sidemove += (cl_sidespeed.value * speed * moveEased.x);
-	cmd->forwardmove -= (cl_forwardspeed.value * speed * moveEased.y);
+	if ((in_speed.state & 1) ^ (cl_alwaysrun.value != 0.0 || cl_forwardspeed.value >= sv_maxspeed.value))
+		// running
+		speed = sv_maxspeed.value;
+	else if (cl_forwardspeed.value >= sv_maxspeed.value)
+		// not running, with always run = vanilla
+		speed = q_min(sv_maxspeed.value, cl_forwardspeed.value / cl_movespeedkey.value);
+	else
+		// not running, with always run = off or quakespasm
+		speed = cl_forwardspeed.value;
+
+	cmd->sidemove += speed * moveEased.x;
+	cmd->forwardmove -= speed * moveEased.y;
 
 	cl.viewangles[YAW] -= lookEased.x * joy_sensitivity_yaw.value * host_frametime;
 	cl.viewangles[PITCH] += lookEased.y * joy_sensitivity_pitch.value * (joy_invert.value ? -1.0 : 1.0) * host_frametime;
