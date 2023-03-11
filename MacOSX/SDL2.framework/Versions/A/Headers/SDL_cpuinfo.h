@@ -90,6 +90,7 @@ _m_prefetch(void *__P)
 #      include <arm64intr.h>
 #      include <arm64_neon.h>
 #      define __ARM_NEON 1 /* Set __ARM_NEON so that it can be used elsewhere, at compile time */
+#      define __ARM_ARCH 8
 #    endif
 #  endif
 #endif
@@ -494,7 +495,7 @@ extern DECLSPEC size_t SDLCALL SDL_SIMDGetAlignment(void);
  *
  * \since This function is available since SDL 2.0.10.
  *
- * \sa SDL_SIMDAlignment
+ * \sa SDL_SIMDGetAlignment
  * \sa SDL_SIMDRealloc
  * \sa SDL_SIMDFree
  */
@@ -518,7 +519,7 @@ extern DECLSPEC void * SDLCALL SDL_SIMDAlloc(const size_t len);
  *
  * \since This function is available since SDL 2.0.14.
  *
- * \sa SDL_SIMDAlignment
+ * \sa SDL_SIMDGetAlignment
  * \sa SDL_SIMDAlloc
  * \sa SDL_SIMDFree
  */
