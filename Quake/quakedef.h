@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	MAX_EDICTS	32000		// johnfitz -- highest allowed value for max_edicts cvar
 						// ents past 8192 can't play sounds in the standard protocol
 #define	MAX_LIGHTSTYLES	64
-#define	MAX_MODELS	2048		// johnfitz -- was 256
+#define	MAX_MODELS	4096		// johnfitz -- was 256
 #define	MAX_SOUNDS	2048		// johnfitz -- was 256
 
 #define	SAVEGAME_COMMENT_LENGTH	39
