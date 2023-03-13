@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: October 2022.
+  Page last edited: March 2023.
 
 
   1. About
@@ -98,30 +98,42 @@
 
   Controller Support - Cvars:
 
-  -  joy_deadzone - Fraction of the stick travel to be deadzone, between
-     0 and 1. Default 0.175.
+  -  joy_deadzone_look - Fraction of look stick travel to be deadzone,
+     between 0 and 1. Default is 0.175.
+
+  -  joy_deadzone_move - Same as above, but for the move stick. Default
+     is 0.175.
 
   -  joy_deadzone_trigger - Fraction of trigger range required to
      register a button press on the analog triggers, between 0 and 1.
      Default 0.2.
 
+  -  joy_outer_threshold_look - Outer deadzone for the look stick,
+     between 0 and 1. Default 0.02.
+
+  -  joy_outer_threshold_move - Outer deadzone for the move stick,
+     between 0 and 1. Default 0.02.
+
   -  joy_sensitivity_yaw/pitch - Max angular speed in degrees/second
-     when looking. Defaults are 300 for yaw (turning left/right) and 150
+     when looking. Defaults are 240 for yaw (turning left/right) and 130
      for pitch (up/down).
 
   -  joy_exponent - For the look stick, the stick displacement (between
-     0 and 1) is raised to this power. Default is 3. A value of 1 would
+     0 and 1) is raised to this power. Default is 2. A value of 1 would
      give a linear relationship between stick displacement and fraction
      of the maximum angular speed.
+
+  -  joy_exponent_move - Same as joy_exponent but for the move stick.
+     Default is 2.
 
   -  joy_invert - Set to 1 to invert the vertical axis of the look
      stick.
 
   -  joy_swapmovelook - Set to 1 to swap the left and right analog stick
-     functions. Default 0, move on the left stick, look on the right
+     functions. Default is 0, move on the left stick, look on the right
      stick.
 
-  -  joy_enable - Set to 0 to disable controller support. Default 1.
+  -  joy_enable - Set to 0 to disable controller support. Default is 1.
 
   Controller Support - Buttons:
 
@@ -208,6 +220,22 @@
 
 
   5. Changes
+
+  Changes in 0.96.0:
+
+  -  Adjustments to joystick defaults, behaviour (patch by Chris Cowan).
+     See the "Controller support / Cvars" section above.
+
+  -  Fix for a mouse grabbing issue on macOS.
+
+  -  Add missing support for -ip command line option on unix / macOS.
+
+  -  Minor code cleanups. Updated third party code, e.g. SDL, music
+     codecs, etc.
+
+  -  Thanks to Andrei Drexler, Chris Cowan and Maciej Olędzki for their
+     patches.
+
 
   Changes in 0.95.1:
 
