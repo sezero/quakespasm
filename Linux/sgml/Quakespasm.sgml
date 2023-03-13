@@ -64,10 +64,14 @@ If your controller doesn't work you can try placing <url url="https://raw.github
 
 <sect2>Cvars<p>
 <itemize>
-<item>joy_deadzone - Fraction of the stick travel to be deadzone, between 0 and 1. Default 0.175.
+<item>joy_deadzone_look - Fraction of the look stick travel to be deadzone, between 0 and 1. Default 0.175.
+<item>joy_deadzone_move - Same as above, for the move stick. Default 0.175.
 <item>joy_deadzone_trigger - Fraction of trigger range required to register a button press on the analog triggers, between 0 and 1. Default 0.2.
-<item>joy_sensitivity_yaw/pitch - Max angular speed in degrees/second when looking. Defaults are 300 for yaw (turning left/right) and 150 for pitch (up/down).
-<item>joy_exponent - For the look stick, the stick displacement (between 0 and 1) is raised to this power. Default is 3. A value of 1 would give a linear relationship between stick displacement and fraction of the maximum angular speed.
+<item>joy_outer_threshold_look - Outer deadzone for the look stick, between 0 and 1. Default 0.02.
+<item>joy_outer_threshold_move - Outer deadzone for the move stick, between 0 and 1. Default 0.02.
+<item>joy_sensitivity_yaw/pitch - Max angular speed in degrees/second when looking. Defaults are 240 for yaw (turning left/right) and 130 for pitch (up/down).
+<item>joy_exponent - For the look stick, the stick displacement (between 0 and 1) is raised to this power. Default is 2. A value of 1 would give a linear relationship between stick displacement and fraction of the maximum angular speed.
+<item>joy_exponent_move - Same as joy_exponent but for the move stick. Default 2.
 <item>joy_invert - Set to 1 to invert the vertical axis of the look stick.
 <item>joy_swapmovelook - Set to 1 to swap the left and right analog stick functions. Default 0, move on the left stick, look on the right stick.
 <item>joy_enable - Set to 0 to disable controller support. Default 1.
@@ -135,6 +139,12 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect>Changes<p>
+
+<sect1>Changes in master<p>
+<itemize>
+<item> <url url="https://github.com/sezero/quakespasm/pull/51" name="Adjustments"> to joystick defaults, behaviour (patch by Macil).
+</itemize>
+</p>
 
 <sect1>Changes in 0.95.1<p>
 <itemize>
