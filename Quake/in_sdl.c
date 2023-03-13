@@ -1059,7 +1059,8 @@ void IN_SendKeyEvents (void)
 			key = IN_SDL_KeysymToQuakeKey(event.key.keysym.sym);
 #endif
 
-			Key_Event (key, down);
+		// also pass along the underlying keycode using the proper current layout for Y/N prompts.
+			Key_EventWithKeycode (key, down, event.key.keysym.sym);
 
 #if !defined(USE_SDL2)
 			if (down && (event.key.keysym.unicode & ~0x7F) == 0)
