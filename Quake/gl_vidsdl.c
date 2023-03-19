@@ -1394,12 +1394,14 @@ void	VID_Shutdown (void)
 	if (vid_initialized)
 	{
 		VID_Gamma_Shutdown (); //johnfitz
-
+#if defined(USE_SDL2)
+		SDL_GL_DeleteContext(gl_context);
+		gl_context = NULL;
+		SDL_DestroyWindow(draw_context);
+#endif
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		draw_context = NULL;
-#if defined(USE_SDL2)
-		gl_context = NULL;
-#endif
+		
 		PL_VID_Shutdown();
 	}
 }
