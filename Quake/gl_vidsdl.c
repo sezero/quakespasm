@@ -1177,7 +1177,7 @@ static void GL_CheckExtensions (void)
 	{
 		Con_Warning ("texture_non_power_of_two not supported\n");
 	}
-	
+
 	// GLSL
 	//
 	if (COM_CheckParm("-noglsl"))
@@ -1274,10 +1274,14 @@ static void GL_CheckExtensions (void)
 	// glGenerateMipmap for warp textures
 	if (COM_CheckParm("-nowarpmipmaps"))
 		Con_Warning ("glGenerateMipmap disabled at command line\n");
-	else if ((GL_GenerateMipmap = SDL_GL_GetProcAddress("glGenerateMipmap")) != NULL)
-		Con_Printf ("FOUND: glGenerateMipmap\n");
 	else
-		Con_Warning ("glGenerateMipmap not available, liquids won't have mipmaps\n");
+	{
+		GL_GenerateMipmap = (QS_PFNGENERATEMIPMAP) SDL_GL_GetProcAddress("glGenerateMipmap");
+		if (GL_GenerateMipmap != NULL)
+			Con_Printf ("FOUND: glGenerateMipmap\n");
+		else
+			Con_Warning ("glGenerateMipmap not available, liquids won't have mipmaps\n");
+	}
 }
 
 /*
@@ -1401,7 +1405,6 @@ void	VID_Shutdown (void)
 #endif
 		SDL_QuitSubSystem(SDL_INIT_VIDEO);
 		draw_context = NULL;
-		
 		PL_VID_Shutdown();
 	}
 }
