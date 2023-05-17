@@ -383,7 +383,7 @@ void PR_ExecuteProgram (func_t fnum)
     {
 	st++;	/* next statement */
 
-	if (++profile > 100000)
+	if (++profile > 0x1000000) /* was 100000 */
 	{
 		pr_xstatement = st - pr_statements;
 		PR_RunError("runaway loop error");
@@ -651,4 +651,3 @@ void PR_ExecuteProgram (func_t fnum)
 #undef OPA
 #undef OPB
 #undef OPC
-
