@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: March 2023.</em>
+<em>Page last edited: May 2023.</em>
 
 <sect>About<p>
 
@@ -144,6 +144,12 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> <url url="https://github.com/sezero/quakespasm/pull/51" name="Adjustments"> to joystick defaults, behaviour (patch by Chris Cowan). See the "Controller support / Cvars" section above.
 <item> Fix for a mouse grabbing issue on macOS.
 <item> Add missing support for <em>-ip</em> command line option on unix / macOS.
+<item> Bump the progs execution runaway loop limit to 16M.
+<item> Bump the MAXALIASFRAMES limit to 1024.
+<item> Increase chase cam target trace distance to allow for chasecam to function in large open maps (useful e.g. for the func_vehicle mod.)
+<item> Fix on-screen keyboard showing up suddenly on Steam Deck when starting a map.
+<item> Fix a memory leak when exiting game in SDL2 builds.
+<item> Fix console animation with scr_conspeed <= 0.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
 <item> Thanks to Andrei Drexler, Chris Cowan and Maciej Olędzki for their patches.
 </itemize>

@@ -8,7 +8,7 @@
 <H1>QuakeSpasm</H1>
 
 <H2></H2>
-<P><EM>Page last edited: March 2023.</EM></P>
+<P><EM>Page last edited: May 2023.</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About</A></H2>
@@ -219,6 +219,12 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 <LI> <A HREF="https://github.com/sezero/quakespasm/pull/51">Adjustments</A> to joystick defaults, behaviour (patch by Chris Cowan). See the <A HREF="Quakespasm.html#ss3.2">"Controller support / Cvars"</A> section above.</LI>
 <LI> Fix for a mouse grabbing issue on macOS.</LI>
 <LI> Add missing support for <EM>-ip</EM> command line option on unix / macOS.</LI>
+<LI> Bump the progs execution runaway loop limit to 16M.</LI>
+<LI> Bump the MAXALIASFRAMES limit to 1024.</LI>
+<LI> Increase chase cam target trace distance to allow for chasecam to function in large open maps (useful e.g. for the func_vehicle mod.)</LI>
+<LI> Fix on-screen keyboard showing up suddenly on Steam Deck when starting a map.</LI>
+<LI> Fix a memory leak when exiting game in SDL2 builds.</LI>
+<LI> Fix console animation with scr_conspeed &lt;= 0.</LI>
 <LI> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.</LI>
 <LI> Thanks to Andrei Drexler, Chris Cowan and Maciej Olędzki for their patches.</LI>
 </UL>
