@@ -1,5 +1,5 @@
 # makefile to build quakespasm.exe for Windows using Open Watcom:
-#   wmake -f Makefile.wat
+# wmake -f Makefile.wat
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -100,7 +100,7 @@ CODECLIBS+= $(LIBCODEC)mikmod.lib
 !endif
 !ifeq USE_CODEC_XMP 1
 CFLAGS+= -DUSE_CODEC_XMP
-CFLAGS+= -DXMP_NO_DLL
+CFLAGS+= -DLIBXMP_STATIC
 CODECLIBS+= $(LIBCODEC)libxmp.lib
 !endif
 !ifeq USE_CODEC_MODPLUG 1
