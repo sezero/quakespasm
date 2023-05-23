@@ -10,6 +10,9 @@ DO_USERDIRS=0
 ### Enable/Disable SDL2
 USE_SDL2=0
 
+### Do we need to link the math library?
+LINK_M=1
+
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=0
@@ -109,6 +112,8 @@ SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(HOST_OS),sunos)
 NET_LIBS   :=-lsocket -lnsl -lresolv
+else ifdef HAIKU_OS
+NET_LIBS   :=-lnetwork
 else
 NET_LIBS   :=
 endif
@@ -180,7 +185,11 @@ ifeq ($(USE_CODEC_UMX),1)
 CFLAGS+= -DUSE_CODEC_UMX
 endif
 
-COMMON_LIBS:= -lm -lGL
+COMMON_LIBS:= -lGL
+
+ifeq ($(LINK_M),1)
+COMMON_LIBS += -lm
+endif
 
 LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
 
