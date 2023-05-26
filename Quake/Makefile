@@ -304,11 +304,8 @@ clean:
 
 ifeq ($(HOST_OS),haiku)
 QS_DATA_DIR=$(shell finddir B_USER_NONPACKAGED_DATA_DIRECTORY)/QuakeSpasm/
-QS_APP_DIR=$(shell finddir B_APPS_DIRECTORY)/QuakeSpasm/
 install:	quakespasm
-	mkdir -p $(QS_APP_DIR)
 	mkdir -p $(QS_DATA_DIR)
-	cp quakespasm $(QS_APP_DIR)
 	cp quakespasm.pak $(QS_DATA_DIR)
 else
 install:	quakespasm
