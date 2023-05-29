@@ -10,9 +10,6 @@ DO_USERDIRS=0
 ### Enable/Disable SDL2
 USE_SDL2=0
 
-### Do we need to link the math library?
-LINK_M=1
-
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=0
@@ -38,7 +35,7 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 
 # ---------------------------
 
-HOST_OS := $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
+HOST_OS = $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 
 DEBUG   ?= 0
 
@@ -112,7 +109,7 @@ SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
 
 ifeq ($(HOST_OS),sunos)
 NET_LIBS   :=-lsocket -lnsl -lresolv
-else ifdef HAIKU_OS
+else ifeq ($(HOST_OS),haiku)
 NET_LIBS   :=-lnetwork
 else
 NET_LIBS   :=
@@ -185,10 +182,10 @@ ifeq ($(USE_CODEC_UMX),1)
 CFLAGS+= -DUSE_CODEC_UMX
 endif
 
+ifeq ($(HOST_OS),haiku)
 COMMON_LIBS:= -lGL
-
-ifeq ($(LINK_M),1)
-COMMON_LIBS += -lm
+else
+COMMON_LIBS:= -lGL -lm
 endif
 
 LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
@@ -305,7 +302,15 @@ debug:
 clean:
 	$(RM) *.o *.d $(DEFAULT_TARGET)
 
+ifeq ($(HOST_OS),haiku)
+QS_APP_DIR=$(shell finddir B_APPS_DIRECTORY)/QuakeSpasm/
+install:	quakespasm
+	mkdir -p $(QS_APP_DIR)
+	cp quakespasm $(QS_APP_DIR)
+	cp quakespasm.pak $(QS_APP_DIR)
+else
 install:	quakespasm
 	cp quakespasm /usr/local/games/quake
+endif
 
 sinclude $(OBJS:.o=.d)
