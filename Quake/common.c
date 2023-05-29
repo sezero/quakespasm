@@ -2052,11 +2052,33 @@ _add_path:
 		if (i != 0 || path_id != 1 || fitzmode)
 			qspak = NULL;
 		else {
+			#ifdef PLATFORM_HAIKU
+			qboolean old = com_modified;
+			const char *tmp = base;
+_add_quakespasm_pak:
+			/* check gamedir */
+			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", tmp);
+			qspak = COM_LoadPackFile (pakfile);
+			/* check host dirs */
+			if (!qspak) {
+				if (tmp == base) {
+					tmp = host_parms->basedir;
+					goto _add_quakespasm_pak;
+				}
+
+				if (tmp == host_parms->basedir) {
+					tmp = host_parms->userdir;
+					goto _add_quakespasm_pak;
+				}
+			}
+			com_modified = old;
+			#else
 			qboolean old = com_modified;
 			if (been_here) base = host_parms->userdir;
 			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
 			qspak = COM_LoadPackFile (pakfile);
 			com_modified = old;
+			#endif
 		}
 		if (pak) {
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
