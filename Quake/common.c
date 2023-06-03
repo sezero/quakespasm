@@ -28,6 +28,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "miniz.h"
 
+#include "arch_def.h"
+#ifdef PLATFORM_HAIKU 
+#include <FindDirectory.h>
+#include <fs_info.h>
+#endif
+
 static char	*largv[MAX_NUM_ARGVS + 1];
 static char	argvdummy[] = " ";
 
@@ -2052,11 +2058,28 @@ _add_path:
 		if (i != 0 || path_id != 1 || fitzmode)
 			qspak = NULL;
 		else {
+			#ifdef PLATFORM_HAIKU
+			qboolean old = com_modified;
+			dev_t volume = dev_for_path("/boot");
+			char buffer[B_PATH_NAME_LENGTH];
+			status_t result;
+
+			result = find_directory(B_SYSTEM_DATA_DIRECTORY, volume, false, buffer, sizeof(buffer));
+			if (result != B_OK)
+				Sys_Error ("Couldn't determine userspace directory");
+
+			q_snprintf (pakfile, sizeof(pakfile), "%s/QuakeSpasm/quakespasm.pak", buffer);
+
+			qspak = COM_LoadPackFile (pakfile);
+
+			com_modified = old;
+			#else
 			qboolean old = com_modified;
 			if (been_here) base = host_parms->userdir;
 			q_snprintf (pakfile, sizeof(pakfile), "%s/quakespasm.pak", base);
 			qspak = COM_LoadPackFile (pakfile);
 			com_modified = old;
+			#endif
 		}
 		if (pak) {
 			search = (searchpath_t *) Z_Malloc(sizeof(searchpath_t));
