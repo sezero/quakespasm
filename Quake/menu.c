@@ -529,7 +529,6 @@ void M_Load_Key (int k)
 		if (!loadable[load_cursor])
 			return;
 		m_state = m_none;
-		IN_Activate();
 		key_dest = key_game;
 
 	// Host_Loadgame_f can't bring up the loading plaque because too much

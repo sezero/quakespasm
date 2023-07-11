@@ -1265,6 +1265,9 @@ static void Host_Loadgame_f (void)
 		CL_EstablishConnection ("local");
 		Host_Reconnect_f ();
 	}
+
+	if (cls.state != ca_dedicated)
+		IN_Activate(); // moved to here from M_Load_Key()
 }
 
 //============================================================================
