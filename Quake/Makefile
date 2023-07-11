@@ -37,7 +37,7 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 
 HOST_OS = $(shell uname|sed -e s/_.*//|tr '[:upper:]' '[:lower:]')
 
-DEBUG   ?= 0
+DEBUG ?= 0
 
 # ---------------------------
 # build variables
@@ -50,7 +50,7 @@ STRIP ?= strip
 PKG_CONFIG ?= pkg-config
 
 CPUFLAGS=
-LDFLAGS =
+LDFLAGS?=
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs -MMD
 CFLAGS += $(call check_gcc,-std=gnu11,)
@@ -75,26 +75,6 @@ ifeq ($(DO_USERDIRS),1)
 CFLAGS += -DDO_USERDIRS=1
 endif
 
-### X11BASE only gets used if its in an unusual place
-
-X11DIRS := /usr/X11R7 /usr/local/X11R7 /usr/X11R6 /usr/local/X11R6
-X11BASE_GUESS := $(shell \
-	if [ -e /usr/include/X11/Xlib.h ] && \
-		[ -e /usr/lib/libX11.a ]; then exit 0; fi; \
-	if [ -e /usr/local/include/X11/Xlib.h ] && \
-		[ -e /usr/local/lib/libX11.a ]; then exit 0; fi; \
-	for DIR in $(X11DIRS); do \
-            if [ -e $$DIR/include/X11/Xlib.h ] && \
-		[ -e $$DIR/lib/libX11.a ]; then echo $$DIR; break; fi; \
-	done )
-
-X11BASE	?= $(X11BASE_GUESS)
-
-ifneq ($(X11BASE),)
-LDFLAGS+= -L$(X11BASE)/lib
-CFLAGS += -I$(X11BASE)/include
-endif
-
 ifeq ($(USE_SDL2),1)
 CFLAGS += -DUSE_SDL2
 endif
@@ -104,15 +84,15 @@ SDL_CONFIG ?= sdl2-config
 else
 SDL_CONFIG ?= sdl-config
 endif
-SDL_CFLAGS := $(shell $(SDL_CONFIG) --cflags)
-SDL_LIBS   := $(shell $(SDL_CONFIG) --libs)
+SDL_CFLAGS = $(shell $(SDL_CONFIG) --cflags)
+SDL_LIBS   = $(shell $(SDL_CONFIG) --libs)
 
+NET_LIBS   =
 ifeq ($(HOST_OS),sunos)
-NET_LIBS   :=-lsocket -lnsl -lresolv
-else ifeq ($(HOST_OS),haiku)
-NET_LIBS   :=-lnetwork
-else
-NET_LIBS   :=
+NET_LIBS   =-lsocket -lnsl -lresolv
+endif
+ifeq ($(HOST_OS),haiku)
+NET_LIBS   =-lnetwork
 endif
 
 ifneq ($(VORBISLIB),vorbis)
@@ -142,7 +122,7 @@ cpp_vorbisdec=-DVORBIS_USE_TREMOR
 lib_vorbisdec=-lvorbisidec -logg
 endif
 
-CODECLIBS  :=
+CODECLIBS  =
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
@@ -183,18 +163,18 @@ CFLAGS+= -DUSE_CODEC_UMX
 endif
 
 ifeq ($(HOST_OS),haiku)
-COMMON_LIBS:= -lGL
+COMMON_LIBS= -lGL
 else
-COMMON_LIBS:= -lGL -lm
+COMMON_LIBS= -lGL -lm
 endif
 
-LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
+LIBS = $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
 
 # ---------------------------
 # objects
 # ---------------------------
 
-MUSIC_OBJS:= bgmusic.o \
+MUSIC_OBJS= bgmusic.o \
 	snd_codec.o \
 	snd_flac.o \
 	snd_wave.o \
@@ -206,14 +186,14 @@ MUSIC_OBJS:= bgmusic.o \
 	snd_modplug.o \
 	snd_xmp.o \
 	snd_umx.o
-COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
-SYSOBJ_SND := snd_sdl.o
-SYSOBJ_CDA := cd_sdl.o
-SYSOBJ_INPUT := in_sdl.o
-SYSOBJ_GL_VID:= gl_vidsdl.o
-SYSOBJ_NET := net_bsd.o net_udp.o
-SYSOBJ_SYS := pl_linux.o sys_sdl_unix.o
-SYSOBJ_MAIN:= main_sdl.o
+COMOBJ_SND = snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
+SYSOBJ_SND = snd_sdl.o
+SYSOBJ_CDA = cd_sdl.o
+SYSOBJ_INPUT = in_sdl.o
+SYSOBJ_GL_VID= gl_vidsdl.o
+SYSOBJ_NET = net_bsd.o net_udp.o
+SYSOBJ_SYS = pl_linux.o sys_sdl_unix.o
+SYSOBJ_MAIN= main_sdl.o
 
 GLOBJS = \
 	gl_refrag.o \
@@ -236,7 +216,7 @@ GLOBJS = \
 	r_brush.o \
 	gl_model.o
 
-OBJS := strlcat.o \
+OBJS = strlcat.o \
 	strlcpy.o \
 	$(GLOBJS) \
 	$(SYSOBJ_INPUT) \
@@ -285,7 +265,7 @@ OBJS := strlcat.o \
 
 .PHONY:	clean debug release
 
-DEFAULT_TARGET := quakespasm
+DEFAULT_TARGET = quakespasm
 all: $(DEFAULT_TARGET)
 
 %.o:	%.c

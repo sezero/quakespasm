@@ -39,7 +39,7 @@ check_gcc = $(shell if echo | $(CC) $(1) -Werror -S -o /dev/null -xc - > /dev/nu
 
 MACH_TYPE= $(shell sh detect.sh arch)
 
-DEBUG   ?= 0
+DEBUG ?= 0
 
 # ---------------------------
 # build variables
@@ -52,7 +52,7 @@ LIPO ?= lipo
 STRIP ?= strip -S
 
 CPUFLAGS=
-LDFLAGS =
+LDFLAGS?=
 DFLAGS ?=
 CFLAGS ?= -Wall -MMD
 # @rpath can be used when targeting 10.5+
@@ -131,7 +131,7 @@ SDL_CFLAGS+=-F$(SDL_FRAMEWORK_PATH)
 endif
 SDL_LIBS  +=-Wl,-framework,$(SDL_FRAMEWORK_NAME) -Wl,-framework,Cocoa
 
-NET_LIBS   :=
+NET_LIBS   =
 
 ifneq ($(VORBISLIB),vorbis)
 ifneq ($(VORBISLIB),tremor)
@@ -160,7 +160,7 @@ cpp_vorbisdec=-DVORBIS_USE_TREMOR
 lib_vorbisdec=-lvorbisidec -logg
 endif
 
-CODECLIBS  :=
+CODECLIBS  =
 ifeq ($(USE_CODEC_WAVE),1)
 CFLAGS+= -DUSE_CODEC_WAVE
 endif
@@ -211,15 +211,15 @@ CFLAGS+= -DUSE_CODEC_UMX
 endif
 CFLAGS+= $(CODEC_INC)
 
-COMMON_LIBS:= -Wl,-framework,IOKit -Wl,-framework,OpenGL
+COMMON_LIBS= -Wl,-framework,IOKit -Wl,-framework,OpenGL
 
-LIBS := $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
+LIBS = $(COMMON_LIBS) $(NET_LIBS) $(CODEC_LINK) $(CODECLIBS)
 
 # ---------------------------
 # objects
 # ---------------------------
 
-MUSIC_OBJS:= bgmusic.o \
+MUSIC_OBJS= bgmusic.o \
 	snd_codec.o \
 	snd_flac.o \
 	snd_wave.o \
@@ -231,15 +231,15 @@ MUSIC_OBJS:= bgmusic.o \
 	snd_modplug.o \
 	snd_xmp.o \
 	snd_umx.o
-COMOBJ_SND := snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
-SYSOBJ_SND := snd_sdl.o
-SYSOBJ_CDA := cd_sdl.o
-SYSOBJ_INPUT := in_sdl.o
-SYSOBJ_GL_VID:= gl_vidsdl.o
-SYSOBJ_NET := net_bsd.o net_udp.o
-SYSOBJ_LAUNCHER := AppController.o QuakeArgument.o QuakeArguments.o ScreenInfo.o SDLApplication.o
-SYSOBJ_SYS := pl_osx.o sys_sdl_unix.o
-SYSOBJ_MAIN:= main_sdl.o SDLMain.o
+COMOBJ_SND = snd_dma.o snd_mix.o snd_mem.o $(MUSIC_OBJS)
+SYSOBJ_SND = snd_sdl.o
+SYSOBJ_CDA = cd_sdl.o
+SYSOBJ_INPUT = in_sdl.o
+SYSOBJ_GL_VID= gl_vidsdl.o
+SYSOBJ_NET = net_bsd.o net_udp.o
+SYSOBJ_LAUNCHER = AppController.o QuakeArgument.o QuakeArguments.o ScreenInfo.o SDLApplication.o
+SYSOBJ_SYS = pl_osx.o sys_sdl_unix.o
+SYSOBJ_MAIN= main_sdl.o SDLMain.o
 
 GLOBJS = \
 	gl_refrag.o \
@@ -262,7 +262,7 @@ GLOBJS = \
 	r_brush.o \
 	gl_model.o
 
-OBJS := strlcat.o \
+OBJS = strlcat.o \
 	strlcpy.o \
 	$(GLOBJS) \
 	$(SYSOBJ_INPUT) \
@@ -312,7 +312,7 @@ OBJS := strlcat.o \
 
 .PHONY:	clean debug release
 
-DEFAULT_TARGET := quakespasm
+DEFAULT_TARGET = quakespasm
 all: $(DEFAULT_TARGET)
 
 %.o:	%.c
