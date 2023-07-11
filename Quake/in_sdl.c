@@ -32,6 +32,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #endif
 
+static qboolean windowhasfocus = true;	//just in case sdl fails to tell us...
 static qboolean	textmode;
 
 static cvar_t in_debugkeys = {"in_debugkeys", "0", CVAR_NONE};
@@ -406,6 +407,8 @@ extern cvar_t cl_minpitch; /* johnfitz -- variable pitch clamping */
 
 void IN_MouseMotion(int dx, int dy)
 {
+	if (!windowhasfocus)
+		dx = dy = 0;	//don't change view angles etc while unfocused.
 	total_dx += dx;
 	total_dy += dy;
 }
@@ -1014,17 +1017,30 @@ void IN_SendKeyEvents (void)
 #if defined(USE_SDL2)
 		case SDL_WINDOWEVENT:
 			if (event.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+			{
+				windowhasfocus = true;
 				S_UnblockSound();
+			}
 			else if (event.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+			{
+				windowhasfocus = false;
 				S_BlockSound();
+			}
 			break;
 #else
 		case SDL_ACTIVEEVENT:
 			if (event.active.state & (SDL_APPINPUTFOCUS|SDL_APPACTIVE))
 			{
 				if (event.active.gain)
+				{
+					windowhasfocus = true;
 					S_UnblockSound();
-				else	S_BlockSound();
+				}
+				else
+				{
+					windowhasfocus = false;
+					S_BlockSound();
+				}
 			}
 			break;
 #endif
