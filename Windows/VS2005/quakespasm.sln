@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm", "quakespasm.vcxproj", "{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}"
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm", "quakespasm.vcproj", "{C0F747A3-D796-4EC0-BF2A-53722CAA3B6A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm-sdl2", "quakespasm-sdl2.vcxproj", "{AE77266F-0A23-4F08-A491-369DE664B273}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "quakespasm-sdl2", "quakespasm-sdl2.vcproj", "{AE77266F-0A23-4F08-A491-369DE664B273}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,8 +32,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {783CC3FE-3AF2-4FAF-923D-4F0B90244E88}
 	EndGlobalSection
 EndGlobal
