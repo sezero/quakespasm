@@ -1,0 +1,25 @@
+name: macOS CI
+
+on: [push, pull_request]
+
+jobs:
+  build-mac-os:
+    name: Build macOS
+    runs-on: macos-12
+    strategy:
+      fail-fast: false
+      matrix:
+        architecture: [x64, M1]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build ${{ matrix.architecture }}
+      shell: bash
+      run: |
+        set -o pipefail
+        xcodebuild \
+          -project MacOSX/QuakeSpasm.xcodeproj \
+          -configuration Release \
+          -target QuakeSpasm-SDL2-${{ matrix.architecture }} \
+        | xcpretty

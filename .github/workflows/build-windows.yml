@@ -1,0 +1,24 @@
+name: Windows CI
+
+on: [push, pull_request]
+
+jobs:
+  build-windows:
+    name: Build Windows
+    runs-on: windows-2022
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [x64, Win32]
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build ${{ matrix.platform }}
+      run: |
+        $vsroot = (Get-VisualStudioInstance).InstallationPath
+        $devenv = join-path $vsroot "Common7\IDE\devenv.com"
+        $solution = "Windows/VisualStudio/quakespasm.sln"
+        & $devenv $solution /Upgrade
+        & $devenv $solution /Build "Release|${{ matrix.platform }}"
+        if (-not $?) { throw "Build failed" }
