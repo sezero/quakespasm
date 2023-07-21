@@ -78,6 +78,7 @@ typedef struct entity_s
 											//  that splits bmodel, or NULL if
 											//  not split
 
+	unsigned char			vcolormap;		//polo - used for corpse shirt + pants colors
 	byte					alpha;			//johnfitz -- alpha
 	byte					scale;
 	byte					lerpflags;		//johnfitz -- lerping

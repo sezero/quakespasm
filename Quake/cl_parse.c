@@ -515,6 +515,7 @@ void CL_ParseUpdate (int bits)
 		i = MSG_ReadByte();
 	else
 		i = ent->baseline.colormap;
+	ent->vcolormap = i;
 	if (!i)
 		ent->colormap = vid.colormap;
 	else
