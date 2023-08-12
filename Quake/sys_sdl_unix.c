@@ -53,6 +53,7 @@ cvar_t		sys_throttle = {"sys_throttle", "0.02", CVAR_ARCHIVE};
 
 #define	MAX_HANDLES		32	/* johnfitz -- was 10 */
 static FILE		*sys_handles[MAX_HANDLES];
+static qboolean		stdinIsATTY;	/* from ioquake3 source */
 
 
 static int findhandle (void)
@@ -374,6 +375,12 @@ static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
 
 void Sys_Init (void)
 {
+	const char* term = getenv("TERM");
+	stdinIsATTY = isatty(STDIN_FILENO) &&
+			!(term && (!strcmp(term, "raw") || !strcmp(term, "dumb")));
+	if (!stdinIsATTY)
+		Sys_Printf("Terminal input not available.\n");
+
 	memset (cwd, 0, sizeof(cwd));
 	Sys_GetBasedir(host_parms->argv[0], cwd, sizeof(cwd));
 	host_parms->basedir = cwd;
@@ -460,7 +467,7 @@ const char *Sys_ConsoleInput (void)
 	fd_set		set;
 	struct timeval	timeout;
 
-	if (con_eof)
+	if (!stdinIsATTY || con_eof)
 		return NULL;
 
 	FD_ZERO (&set);
