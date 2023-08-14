@@ -1251,6 +1251,10 @@ static void Host_Loadgame_f (void)
 		entnum++;
 	}
 
+	// Free edicts allocated during map loading but no longer used after restoring saved game state
+	for (i = entnum; i < sv.num_edicts; i++)
+		ED_Free(EDICT_NUM(i));
+
 	sv.num_edicts = entnum;
 	sv.time = time;
 
