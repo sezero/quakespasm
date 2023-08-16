@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: May 2023.
+  Page last edited: August 2023.
 
 
   1. About
@@ -232,23 +232,59 @@
 
   -  Bump the progs execution runaway loop limit to 16M.
 
+  -  Add signon buffer fragmentation to fix SZ_GetSpace errors on
+     certain maps when using protocol 999.
+
+  -  Increased MAX_DATAGRAM to 64000 to overcome packet overflows.
+
   -  Bump the MAXALIASFRAMES limit to 1024.
+
+  -  Increased default value of gl_farclip to 65536.
 
   -  Increase chase cam target trace distance to allow for chasecam to
      function in large open maps (useful e.g. for the func_vehicle mod.)
 
+  -  Raised default maximum number of particles to 16384. Using the
+     -particles cmdline option it can be set up to 32768.
+
   -  Fix on-screen keyboard showing up suddenly on Steam Deck when
      starting a map.
 
+  -  Fix viewmodel interpolation with >10Hz animations.
+
   -  Fix a memory leak when exiting game in SDL2 builds.
 
+  -  Fix possible crash when handling clipboard data on macOS.
+
+  -  Fix a potential crash after loading of saved game.
+
+  -  Fix possible out-of-bound reads when handling progs type sizes.
+
+  -  Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
+
+  -  No relative motions when the window is not focused.
+
+  -  Status bar and intermission screen tweaks.
+
+  -  Properly display monster counts > 3 digits.
+
   -  Fix console animation with scr_conspeed <= 0.
+
+  -  Fix mouselook not working upon game quickload during a demo play.
+
+  -  Haiku operating system support.
+
+  -  Fix console when server is run noninteractively with stdin
+     redirected from /dev/null.
+
+  -  Updated Visual Studio project files.
 
   -  Minor code cleanups. Updated third party code, e.g. SDL, music
      codecs, etc.
 
-  -  Thanks to Andrei Drexler, Chris Cowan and Maciej Olędzki for their
-     patches.
+  -  Thanks to Andrei Drexler, Alexey Lysiuk, Boris I. Bendovsky,
+     Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL
+     and Shpoike for their patches.
 
 
   Changes in 0.95.1:

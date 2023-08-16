@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: May 2023.</em>
+<em>Page last edited: August 2023.</em>
 
 <sect>About<p>
 
@@ -144,14 +144,30 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> <url url="https://github.com/sezero/quakespasm/pull/51" name="Adjustments"> to joystick defaults, behaviour (patch by Chris Cowan). See the "Controller support / Cvars" section above.
 <item> Fix for a mouse grabbing issue on macOS.
 <item> Add missing support for <em>-ip</em> command line option on unix / macOS.
+<item> Add signon buffer fragmentation to fix SZ_GetSpace errors on certain maps when using protocol 999.
+<item> Increased MAX_DATAGRAM to 64000 to overcome packet overflows.
 <item> Bump the progs execution runaway loop limit to 16M.
 <item> Bump the MAXALIASFRAMES limit to 1024.
+<item> Increased default value of gl_farclip to 65536.
 <item> Increase chase cam target trace distance to allow for chasecam to function in large open maps (useful e.g. for the func_vehicle mod.)
+<item> Raised default maximum number of particles to 16384. Using the -particles cmdline option it can be set up to 32768.
 <item> Fix on-screen keyboard showing up suddenly on Steam Deck when starting a map.
+<item> Fix viewmodel interpolation with >10Hz animations.
 <item> Fix a memory leak when exiting game in SDL2 builds.
+<item> Fix possible crash when handling clipboard data on macOS.
+<item> Fix a potential crash after loading of saved game.
+<item> Fix possible out-of-bound reads when handling progs type sizes.
+<item> Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
+<item> No relative motions when the window is not focused.
+<item> Status bar and intermission screen tweaks.
+<item> Properly display monster counts > 3 digits.
 <item> Fix console animation with scr_conspeed <= 0.
+<item> Fix mouselook not working upon game quickload during a demo play.
+<item> Haiku operating system support.
+<item> Fix console when server is run noninteractively with stdin redirected from /dev/null.
+<item> Updated Visual Studio project files.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
-<item> Thanks to Andrei Drexler, Chris Cowan and Maciej Olędzki for their patches.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL and Shpoike for their patches.
 </itemize>
 </p>
 
