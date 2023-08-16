@@ -23,10 +23,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-#define MAX_PARTICLES			2048	// default max # of particles at one
-										//  time
+#define ABSOLUTE_MAX_PARTICLES	32768		// default max # of particles at one time
 #define ABSOLUTE_MIN_PARTICLES	512		// no fewer than this no matter what's
 										//  on the command line
+#define DEFAULT_NUM_PARTICLES	16384
 
 int		ramp1[8] = {0x6f, 0x6d, 0x6b, 0x69, 0x67, 0x65, 0x63, 0x61};
 int		ramp2[8] = {0x6f, 0x6e, 0x6d, 0x6c, 0x6b, 0x6a, 0x68, 0x66};
@@ -152,15 +152,17 @@ void R_InitParticles (void)
 
 	i = COM_CheckParm ("-particles");
 
-	if (i)
+	if (i && i < com_argc - 1)
 	{
-		r_numparticles = (int)(Q_atoi(com_argv[i+1]));
+		r_numparticles = atoi(com_argv[i + 1]);
 		if (r_numparticles < ABSOLUTE_MIN_PARTICLES)
 			r_numparticles = ABSOLUTE_MIN_PARTICLES;
+		else if (r_numparticles > ABSOLUTE_MAX_PARTICLES)
+			r_numparticles = ABSOLUTE_MAX_PARTICLES;
 	}
 	else
 	{
-		r_numparticles = MAX_PARTICLES;
+		r_numparticles = DEFAULT_NUM_PARTICLES;
 	}
 
 	particles = (particle_t *)
