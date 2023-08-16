@@ -609,27 +609,29 @@ static void PF_ambientsound (void)
 	}
 	//johnfitz
 
+	SV_ReserveSignonSpace (17);
+
 // add an svc_spawnambient command to the level signon packet
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (large)
-		MSG_WriteByte (&sv.signon,svc_spawnstaticsound2);
+		MSG_WriteByte (sv.signon,svc_spawnstaticsound2);
 	else
-		MSG_WriteByte (&sv.signon,svc_spawnstaticsound);
+		MSG_WriteByte (sv.signon,svc_spawnstaticsound);
 	//johnfitz
 
 	for (i = 0; i < 3; i++)
-		MSG_WriteCoord(&sv.signon, pos[i], sv.protocolflags);
+		MSG_WriteCoord(sv.signon, pos[i], sv.protocolflags);
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (large)
-		MSG_WriteShort(&sv.signon, soundnum);
+		MSG_WriteShort(sv.signon, soundnum);
 	else
-		MSG_WriteByte (&sv.signon, soundnum);
+		MSG_WriteByte (sv.signon, soundnum);
 	//johnfitz
 
-	MSG_WriteByte (&sv.signon, vol*255);
-	MSG_WriteByte (&sv.signon, attenuation*64);
+	MSG_WriteByte (sv.signon, vol*255);
+	MSG_WriteByte (sv.signon, attenuation*64);
 
 }
 
@@ -1523,7 +1525,7 @@ static sizebuf_t *WriteDest (void)
 		return &sv.reliable_datagram;
 
 	case MSG_INIT:
-		return &sv.signon;
+		return sv.signon;
 
 	default:
 		PR_RunError ("WriteDest: bad destination");
@@ -1622,40 +1624,42 @@ static void PF_makestatic (void)
 		}
 	}
 
+	SV_ReserveSignonSpace (33);
+
 	if (bits)
 	{
-		MSG_WriteByte (&sv.signon, svc_spawnstatic2);
-		MSG_WriteByte (&sv.signon, bits);
+		MSG_WriteByte (sv.signon, svc_spawnstatic2);
+		MSG_WriteByte (sv.signon, bits);
 	}
 	else
-		MSG_WriteByte (&sv.signon, svc_spawnstatic);
+		MSG_WriteByte (sv.signon, svc_spawnstatic);
 
 	if (bits & B_LARGEMODEL)
-		MSG_WriteShort (&sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
+		MSG_WriteShort (sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
 	else
-		MSG_WriteByte (&sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
+		MSG_WriteByte (sv.signon, SV_ModelIndex(PR_GetString(ent->v.model)));
 
 	if (bits & B_LARGEFRAME)
-		MSG_WriteShort (&sv.signon, ent->v.frame);
+		MSG_WriteShort (sv.signon, ent->v.frame);
 	else
-		MSG_WriteByte (&sv.signon, ent->v.frame);
+		MSG_WriteByte (sv.signon, ent->v.frame);
 	//johnfitz
 
-	MSG_WriteByte (&sv.signon, ent->v.colormap);
-	MSG_WriteByte (&sv.signon, ent->v.skin);
+	MSG_WriteByte (sv.signon, ent->v.colormap);
+	MSG_WriteByte (sv.signon, ent->v.skin);
 	for (i = 0; i < 3; i++)
 	{
-		MSG_WriteCoord(&sv.signon, ent->v.origin[i], sv.protocolflags);
-		MSG_WriteAngle(&sv.signon, ent->v.angles[i], sv.protocolflags);
+		MSG_WriteCoord(sv.signon, ent->v.origin[i], sv.protocolflags);
+		MSG_WriteAngle(sv.signon, ent->v.angles[i], sv.protocolflags);
 	}
 
 	//johnfitz -- PROTOCOL_FITZQUAKE
 	if (bits & B_ALPHA)
-		MSG_WriteByte (&sv.signon, ent->alpha);
+		MSG_WriteByte (sv.signon, ent->alpha);
 	//johnfitz
 
 	if (bits & B_SCALE)
-		MSG_WriteByte (&sv.signon, ent->scale);
+		MSG_WriteByte (sv.signon, ent->scale);
 
 // throw the entity away now
 	ED_Free (ent);

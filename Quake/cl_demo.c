@@ -37,8 +37,20 @@ read from the demo file.
 */
 
 // from ProQuake: space to fill out the demo header for record at any time
-static byte	demo_head[3][MAX_MSGLEN];
-static int	demo_head_size[2];
+static byte		*demo_head;
+static int		*demo_head_sizes;
+
+/*
+==============
+CL_ClearSignons
+==============
+*/
+void CL_ClearSignons (void)
+{
+	VEC_CLEAR (demo_head);
+	VEC_CLEAR (demo_head_sizes);
+	cls.signon = 0;
+}
 
 /*
 ==============
@@ -170,8 +182,8 @@ int CL_GetMessage (void)
 	{
 	// record messages before full connection, so that a
 	// demo record can happen after connection is done
-		memcpy(demo_head[cls.signon], net_message.data, net_message.cursize);
-		demo_head_size[cls.signon] = net_message.cursize;
+		Vec_Append ((void**)&demo_head, 1, net_message.data, net_message.cursize);
+		VEC_PUSH (demo_head_sizes, net_message.cursize);
 	}
 
 	return r;
@@ -302,18 +314,22 @@ void CL_Record_f (void)
 	// from ProQuake: initialize the demo file if we're already connected
 	if (c == 2 && cls.state == ca_connected)
 	{
+		static byte tmpbuf[NET_MAXMESSAGE];
 		byte *data = net_message.data;
 		int cursize = net_message.cursize;
-		int i;
+		int maxsize = net_message.maxsize;
+		int i, count;
 
-		for (i = 0; i < 2; i++)
+		net_message.data = demo_head;
+		for (i = 0, count = VEC_SIZE (demo_head_sizes); i < count; i++)
 		{
-			net_message.data = demo_head[i];
-			net_message.cursize = demo_head_size[i];
-			CL_WriteDemoMessage();
+			net_message.cursize = demo_head_sizes[i];
+			CL_WriteDemoMessage ();
+			net_message.data += net_message.cursize;
 		}
 
-		net_message.data = demo_head[2];
+		net_message.data = tmpbuf;
+		net_message.maxsize = sizeof (tmpbuf);
 		SZ_Clear (&net_message);
 
 		// current names, colors, and frag counts
@@ -368,6 +384,7 @@ void CL_Record_f (void)
 		// restore net_message
 		net_message.data = data;
 		net_message.cursize = cursize;
+		net_message.maxsize = maxsize;
 	}
 }
 

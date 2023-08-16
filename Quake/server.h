@@ -36,6 +36,8 @@ typedef struct
 
 //=============================================================================
 
+#define MAX_SIGNON_BUFFERS 256
+
 typedef enum {ss_loading, ss_active} server_state_t;
 
 typedef struct
@@ -70,8 +72,9 @@ typedef struct
 	sizebuf_t	reliable_datagram;	// copied to all clients at end of frame
 	byte		reliable_datagram_buf[MAX_DATAGRAM];
 
-	sizebuf_t	signon;
-	byte		signon_buf[MAX_MSGLEN-2]; //johnfitz -- was 8192, now uses MAX_MSGLEN
+	sizebuf_t	*signon;
+	int			num_signon_buffers;
+	sizebuf_t	*signon_buffers[MAX_SIGNON_BUFFERS];
 
 	unsigned	protocol; //johnfitz
 	unsigned	protocolflags;
@@ -81,12 +84,21 @@ typedef struct
 #define	NUM_PING_TIMES		16
 #define	NUM_SPAWN_PARMS		16
 
+enum sendsignon_e
+{
+	PRESPAWN_DONE,
+	PRESPAWN_FLUSH=1,
+	PRESPAWN_SIGNONBUFS,
+	PRESPAWN_SIGNONMSG,
+};
+
 typedef struct client_s
 {
 	qboolean		active;				// false = client is free
 	qboolean		spawned;			// false = don't send datagrams
 	qboolean		dropasap;			// has been told to go to another level
-	qboolean		sendsignon;			// only valid before spawned
+	enum sendsignon_e	sendsignon;			// only valid before spawned
+	int				signonidx;
 
 	double			last_message;		// reliable messages must be sent
 										// periodically
@@ -203,6 +215,7 @@ void SV_DropClient (qboolean crash);
 
 void SV_SendClientMessages (void);
 void SV_ClearDatagram (void);
+void SV_ReserveSignonSpace (int numbytes);
 
 int SV_ModelIndex (const char *name);
 

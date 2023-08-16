@@ -133,8 +133,8 @@ void CL_Disconnect (void)
 
 	cls.demoplayback = cls.timedemo = false;
 	cls.demopaused = false;
-	cls.signon = 0;
 	cl.intermission = 0;
+	CL_ClearSignons ();
 }
 
 void CL_Disconnect_f (void)
@@ -169,7 +169,7 @@ void CL_EstablishConnection (const char *host)
 
 	cls.demonum = -1;			// not in the demo loop now
 	cls.state = ca_connected;
-	cls.signon = 0;				// need all the signon messages before playing
+	CL_ClearSignons ();			// need all the signon messages before playing
 	MSG_WriteByte (&cls.message, clc_nop);	// NAT Fix from ProQuake
 }
 
