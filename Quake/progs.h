@@ -103,7 +103,7 @@ int NUM_FOR_EDICT(edict_t*);
 
 #define	NEXT_EDICT(e)		((edict_t *)( (byte *)e + pr_edict_size))
 
-#define	EDICT_TO_PROG(e)	((byte *)e - (byte *)sv.edicts)
+#define	EDICT_TO_PROG(e)	(int)((byte *)e - (byte *)sv.edicts)
 #define PROG_TO_EDICT(e)	((edict_t *)((byte *)sv.edicts + e))
 
 #define	G_FLOAT(o)		(pr_globals[o])
