@@ -223,8 +223,8 @@
 
   Changes in 0.96.0:
 
-  -  Adjustments to joystick defaults, behaviour (patch by Chris Cowan).
-     See the "Controller support / Cvars" section above.
+  -  Adjustments to joystick defaults and behaviour.  See the
+     "Controller support / Cvars" section above.
 
   -  Fix for a mouse grabbing issue on macOS.
 
@@ -262,6 +262,8 @@
 
   -  Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
 
+  -  Fix an issue with blending of lights.
+
   -  No relative motions when the window is not focused.
 
   -  Status bar and intermission screen tweaks.
@@ -282,9 +284,9 @@
   -  Minor code cleanups. Updated third party code, e.g. SDL, music
      codecs, etc.
 
-  -  Thanks to Andrei Drexler, Alexey Lysiuk, Boris I. Bendovsky,
-     Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL
-     and Shpoike for their patches.
+  -  Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I.
+     Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren,
+     OscarL and Shpoike for their patches.
 
 
   Changes in 0.95.1:

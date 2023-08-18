@@ -141,7 +141,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.96.0<p>
 <itemize>
-<item> <url url="https://github.com/sezero/quakespasm/pull/51" name="Adjustments"> to joystick defaults, behaviour (patch by Chris Cowan). See the "Controller support / Cvars" section above.
+<item> <url url="https://github.com/sezero/quakespasm/pull/51" name="Adjustments"> to joystick defaults and behaviour. See the "Controller support / Cvars" section above.
 <item> Fix for a mouse grabbing issue on macOS.
 <item> Add missing support for <em>-ip</em> command line option on unix / macOS.
 <item> Add signon buffer fragmentation to fix SZ_GetSpace errors on certain maps when using protocol 999.
@@ -158,6 +158,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix a potential crash after loading of saved game.
 <item> Fix possible out-of-bound reads when handling progs type sizes.
 <item> Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
+<item> Fix an issue with blending of lights.
 <item> No relative motions when the window is not focused.
 <item> Status bar and intermission screen tweaks.
 <item> Properly display monster counts > 3 digits.
@@ -167,7 +168,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix console when server is run noninteractively with stdin redirected from /dev/null.
 <item> Updated Visual Studio project files.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
-<item> Thanks to Andrei Drexler, Alexey Lysiuk, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL and Shpoike for their patches.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL and Shpoike for their patches.
 </itemize>
 </p>
 
