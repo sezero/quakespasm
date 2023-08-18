@@ -252,6 +252,12 @@ extern	qboolean	gl_texture_NPOT;
 #define OFFSET_SHOWTRIS -3
 void GL_PolygonOffset (int);
 
+//GL_EXT_packed_pixels
+#ifndef GL_UNSIGNED_INT_10_10_10_2
+#define GL_UNSIGNED_INT_10_10_10_2 0x8036
+#endif
+extern qboolean gl_packed_pixels;
+
 //johnfitz -- GL_EXT_texture_env_combine
 //the values for GL_ARB_ are identical
 #define GL_COMBINE_EXT		0x8570

@@ -853,6 +853,7 @@ void GLWorld_CreateShaders (void)
 		"	if (UseAlphaTest && (result.a < 0.666))\n"
 		"		discard;\n"
 		"	result *= texture2D(LMTex, gl_TexCoord[1].xy);\n"
+		"	result.rgb *= 4.0;\n"
 		"	if (UseOverbright)\n"
 		"		result.rgb *= 2.0;\n"
 		"	if (UseFullbrightTex)\n"
