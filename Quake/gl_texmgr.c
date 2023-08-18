@@ -1290,6 +1290,7 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 	if (glt->source_file[0] && glt->source_offset) {
 		//lump inside file
 		FILE *f;
+		int sz;
 		COM_FOpenFile(glt->source_file, &f, NULL);
 		if (!f) goto invalid;
 		fseek (f, glt->source_offset, SEEK_CUR);
@@ -1302,8 +1303,12 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 			size *= lightmap_bytes;
 		}
 		data = (byte *) Hunk_Alloc (size);
-		fread (data, 1, size, f);
+		sz = (int) fread (data, 1, size, f);
 		fclose (f);
+		if (sz != size) {
+			Hunk_FreeToLowMark(mark);
+			Host_Error("Read error for %s", glt->name);
+		}
 	}
 	else if (glt->source_file[0] && !glt->source_offset) {
 		data = Image_LoadImage (glt->source_file, (int *)&glt->source_width, (int *)&glt->source_height); //simple file
