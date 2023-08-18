@@ -470,7 +470,13 @@ void Con_DebugLog(const char *msg)
 	if (log_fd == -1)
 		return;
 
-	write(log_fd, msg, strlen(msg));
+	if (write(log_fd, msg, strlen(msg)) < 0)
+	{
+		close (log_fd);
+		log_fd = -1;
+		con_debuglog = false;
+		fprintf (stderr, "Error writing to log file\n");
+	}
 }
 
 

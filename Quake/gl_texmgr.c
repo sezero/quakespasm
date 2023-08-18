@@ -240,9 +240,9 @@ static void TexMgr_Imagedump_f (void)
 	for (glt = active_gltextures; glt; glt = glt->next)
 	{
 		q_strlcpy (tempname, glt->name, sizeof(tempname));
-		while ( (c = strchr(tempname, ':')) ) *c = '_';
-		while ( (c = strchr(tempname, '/')) ) *c = '_';
-		while ( (c = strchr(tempname, '*')) ) *c = '_';
+		while ((c = strchr(tempname, ':')) != NULL) *c = '_';
+		while ((c = strchr(tempname, '/')) != NULL) *c = '_';
+		while ((c = strchr(tempname, '*')) != NULL) *c = '_';
 		q_snprintf(tganame, sizeof(tganame), "imagedump/%s.tga", tempname);
 
 		GL_Bind (glt);
@@ -470,7 +470,8 @@ void TexMgr_LoadPalette (void)
 
 	mark = Hunk_LowMark ();
 	pal = (byte *) Hunk_Alloc (768);
-	fread (pal, 1, 768, f);
+	if (!fread(pal, 768, 1, f))
+		Sys_Error ("Failed reading gfx/palette.lmp");
 	fclose(f);
 
 	//standard palette, 255 is transparent
@@ -692,8 +693,7 @@ int TexMgr_PadConditional (int s)
 {
 	if (s < TexMgr_SafeTextureSize(s))
 		return TexMgr_Pad(s);
-	else
-		return s;
+	return s;
 }
 
 /*
@@ -1281,6 +1281,7 @@ void TexMgr_ReloadImage (gltexture_t *glt, int shirt, int pants)
 	byte	translation[256];
 	byte	*src, *dst, *data = NULL, *translated;
 	int	mark, size, i;
+
 //
 // get source data
 //

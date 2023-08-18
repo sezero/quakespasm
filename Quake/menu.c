@@ -436,10 +436,14 @@ void M_ScanSaves (void)
 		loadable[i] = false;
 		q_snprintf (name, sizeof(name), "%s/s%i.sav", com_gamedir, i);
 		f = fopen (name, "r");
-		if (!f)
+		if (!f) {
 			continue;
-		fscanf (f, "%i\n", &version);
-		fscanf (f, "%79s\n", name);
+		}
+		if (fscanf(f, "%i\n", &version) != 1 ||
+		    fscanf(f, "%79s\n", name)   != 1) {
+			fclose(f);
+			continue;
+		}
 		q_strlcpy (m_filenames[i], name, SAVEGAME_COMMENT_LENGTH+1);
 
 	// change _ back to space

@@ -126,7 +126,8 @@ static int CL_GetDemoMessage (void)
 	}
 
 // get the next message
-	fread (&net_message.cursize, 4, 1, cls.demofile);
+	if (! fread(&net_message.cursize, 4, 1, cls.demofile))
+		Sys_Error ("Demo read error");
 	VectorCopy (cl.mviewangles[0], cl.mviewangles[1]);
 	for (i = 0 ; i < 3 ; i++)
 	{

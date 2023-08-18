@@ -37,7 +37,8 @@ FGetLittleLong
 static int FGetLittleLong (FILE *f)
 {
 	int		v;
-	fread(&v, 1, sizeof(v), f);
+	if (!fread(&v, sizeof(v), 1, f))
+		return -1;
 	return LittleLong(v);
 }
 
@@ -49,7 +50,8 @@ FGetLittleShort
 static short FGetLittleShort(FILE *f)
 {
 	short	v;
-	fread(&v, 1, sizeof(v), f);
+	if (!fread(&v, sizeof(v), 1, f))
+		return -1;
 	return LittleShort(v);
 }
 
@@ -60,12 +62,11 @@ WAV_ReadChunkInfo
 */
 static int WAV_ReadChunkInfo(FILE *f, char *name)
 {
-	int len, r;
+	int len;
 
 	name[4] = 0;
 
-	r = fread(name, 1, 4, f);
-	if (r != 4)
+	if (!fread(name, 4, 1, f))
 		return -1;
 
 	len = FGetLittleLong(f);
@@ -224,7 +225,8 @@ int S_WAV_CodecReadStream(snd_stream_t *stream, int bytes, void *buffer)
 	if (bytes > remaining)
 		bytes = remaining;
 	stream->fh.pos += bytes;
-	fread(buffer, 1, bytes, stream->fh.file);
+	if (!fread(buffer, bytes, 1, stream->fh.file))
+		return -1;
 	if (stream->info.width == 2)
 	{
 		samples = bytes / 2;
