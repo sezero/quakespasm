@@ -1368,13 +1368,17 @@ static void COM_CheckRegistered (void)
 		return;
 	}
 
-	Sys_FileRead (h, check, sizeof(check));
+	i = Sys_FileRead (h, check, sizeof(check));
 	COM_CloseFile (h);
+	if (i != (int) sizeof(check))
+		goto corrupt;
 
 	for (i = 0; i < 128; i++)
 	{
 		if (pop[i] != (unsigned short)BigShort (check[i]))
+		{ corrupt:
 			Sys_Error ("Corrupted data file.");
+		}
 	}
 
 	for (i = 0; com_cmdline[i]; i++)
@@ -1843,7 +1847,7 @@ byte *COM_LoadFile (const char *path, int usehunk, unsigned int *path_id)
 	int		h;
 	byte	*buf;
 	char	base[32];
-	int		len;
+	int	len, nread;
 
 	buf = NULL;	// quiet compiler warning
 
@@ -1887,8 +1891,10 @@ byte *COM_LoadFile (const char *path, int usehunk, unsigned int *path_id)
 
 	((byte *)buf)[len] = 0;
 
-	Sys_FileRead (h, buf, len);
+	nread = Sys_FileRead (h, buf, len);
 	COM_CloseFile (h);
+	if (nread != len)
+		Sys_Error ("COM_LoadFile: Error reading %s", path);
 
 	return buf;
 }
@@ -2022,8 +2028,8 @@ static pack_t *COM_LoadPackFile (const char *packfile)
 	if (Sys_FileOpenRead (packfile, &packhandle) == -1)
 		return NULL;
 
-	Sys_FileRead (packhandle, (void *)&header, sizeof(header));
-	if (header.id[0] != 'P' || header.id[1] != 'A' || header.id[2] != 'C' || header.id[3] != 'K')
+	if (Sys_FileRead(packhandle, &header, sizeof(header)) != (int) sizeof(header) ||
+	    header.id[0] != 'P' || header.id[1] != 'A' || header.id[2] != 'C' || header.id[3] != 'K')
 		Sys_Error ("%s is not a packfile", packfile);
 
 	header.dirofs = LittleLong (header.dirofs);
@@ -2051,7 +2057,8 @@ static pack_t *COM_LoadPackFile (const char *packfile)
 	newfiles = (packfile_t *) Z_Malloc(numpackfiles * sizeof(packfile_t));
 
 	Sys_FileSeek (packhandle, header.dirofs);
-	Sys_FileRead (packhandle, (void *)info, header.dirlen);
+	if (Sys_FileRead(packhandle, info, header.dirlen) != header.dirlen)
+		Sys_Error ("Error reading %s", packfile);
 
 	// crc the directory to check for modifications
 	CRC_Init (&crc);
