@@ -364,9 +364,10 @@ Original code by MH from RMQEngine
 static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *aliasmodel, aliashdr_t *paliashdr)
 {
 	int i, j;
-	int maxverts_vbo;
+	int mark;
 	trivertx_t *verts;
 	unsigned short *indexes;
+	unsigned short *remap;
 	aliasmesh_t *desc;
 
 	if (!gl_glsl_alias_able)
@@ -380,59 +381,63 @@ static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *aliasmodel, aliashdr_t 
 			verts[i*paliashdr->numverts + j] = poseverts[i][j];
 
 	// there can never be more than this number of verts and we just put them all on the hunk
-	maxverts_vbo = pheader->numtris * 3;
-	desc = (aliasmesh_t *) Hunk_Alloc (sizeof (aliasmesh_t) * maxverts_vbo);
+	// (each vertex can be used twice, once with the original UVs and once with the seam adjustment)
+	desc = (aliasmesh_t *) Hunk_Alloc (sizeof (aliasmesh_t) * pheader->numverts * 2);
 
 	// there will always be this number of indexes
-	indexes = (unsigned short *) Hunk_Alloc (sizeof (unsigned short) * maxverts_vbo);
+	indexes = (unsigned short *) Hunk_Alloc (sizeof (unsigned short) * pheader->numtris * 3);
 
 	pheader->indexes = (intptr_t) indexes - (intptr_t) pheader;
 	pheader->meshdesc = (intptr_t) desc - (intptr_t) pheader;
 	pheader->numindexes = 0;
 	pheader->numverts_vbo = 0;
 
+	mark = Hunk_LowMark ();
+
+	// each pair of elements in the remap array corresponds to one source vertex
+	// each value is the final index + 1, or 0 if the corresponding vertex hasn't been emitted yet
+	remap = (unsigned short *) Hunk_Alloc (paliashdr->numverts * 2 * sizeof (remap[0]));
+
 	for (i = 0; i < pheader->numtris; i++)
 	{
 		for (j = 0; j < 3; j++)
 		{
-			int v;
-
 			// index into hdr->vertexes
 			unsigned short vertindex = triangles[i].vertindex[j];
 
-			// basic s/t coords
-			int s = stverts[vertindex].s;
-			int t = stverts[vertindex].t;
+			// index into remap table
+			int v = vertindex * 2;
 
-			// check for back side and adjust texcoord s
-			if (!triangles[i].facesfront && stverts[vertindex].onseam) s += pheader->skinwidth / 2;
+			// check for back side
+			if (!triangles[i].facesfront && stverts[vertindex].onseam)
+				v++;
 
-			// see does this vert already exist
-			for (v = 0; v < pheader->numverts_vbo; v++)
+			// emit new vertex if it doesn't already exist
+			if (!remap[v])
 			{
-				// it could use the same xyz but have different s and t
-				if (desc[v].vertindex == vertindex && (int) desc[v].st[0] == s && (int) desc[v].st[1] == t)
-				{
-					// exists; emit an index for it
-					indexes[pheader->numindexes++] = v;
+				// basic s/t coords
+				int s = stverts[vertindex].s;
+				int t = stverts[vertindex].t;
 
-					// no need to check any more
-					break;
-				}
-			}
-
-			if (v == pheader->numverts_vbo)
-			{
-				// doesn't exist; emit a new vert and index
-				indexes[pheader->numindexes++] = pheader->numverts_vbo;
+				// check for back side and adjust texcoord s
+				if (v & 1)
+					s += paliashdr->skinwidth / 2;
 
 				desc[pheader->numverts_vbo].vertindex = vertindex;
 				desc[pheader->numverts_vbo].st[0] = s;
-				desc[pheader->numverts_vbo++].st[1] = t;
+				desc[pheader->numverts_vbo].st[1] = t;
+
+				remap[v] = ++pheader->numverts_vbo;
 			}
+
+			// emit index
+			indexes[pheader->numindexes++] = remap[v] - 1;
 		}
 	}
-	
+
+	// free temporary data
+	Hunk_FreeToLowMark (mark);
+
 	// upload immediately
 	GLMesh_LoadVertexBuffer (aliasmodel, pheader);
 }
