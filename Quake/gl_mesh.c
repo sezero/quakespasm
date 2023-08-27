@@ -532,15 +532,15 @@ static void GLMesh_LoadVertexBuffer (qmodel_t *m, const aliashdr_t *hdr)
 		float hscale, vscale;
 
 		//johnfitz -- padded skins
-		hscale = (float)hdr->skinwidth/(float)TexMgr_PadConditional(hdr->skinwidth);
-		vscale = (float)hdr->skinheight/(float)TexMgr_PadConditional(hdr->skinheight);
+		hscale = 1.0f / (float)TexMgr_PadConditional(hdr->skinwidth);
+		vscale = 1.0f / (float)TexMgr_PadConditional(hdr->skinheight);
 		//johnfitz
 
 		st = (meshst_t *) (vbodata + m->vbostofs);
 		for (f = 0; f < hdr->numverts_vbo; f++)
 		{
-			st[f].st[0] = hscale * ((float) desc[f].st[0] + 0.5f) / (float) hdr->skinwidth;
-			st[f].st[1] = vscale * ((float) desc[f].st[1] + 0.5f) / (float) hdr->skinheight;
+			st[f].st[0] = hscale * ((float) desc[f].st[0] + 0.5f);
+			st[f].st[1] = vscale * ((float) desc[f].st[1] + 0.5f);
 		}
 	}
 
