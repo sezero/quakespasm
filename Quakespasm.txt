@@ -269,7 +269,9 @@
 
   -  Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
 
-  -  Fix an issue with blending of lights.
+  -  Fix an issue with blending of lights by using 10 bit depth for
+     lightmaps.  (GLSL mode only. Disable with "-nopackedpixels" if
+     necessarry.)
 
   -  No relative motions when the window is not focused.
 

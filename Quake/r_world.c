@@ -553,6 +553,7 @@ static GLuint fullbrightTexLoc;
 static GLuint useFullbrightTexLoc;
 static GLuint useOverbrightLoc;
 static GLuint useAlphaTestLoc;
+static GLuint usePackedPixelsLoc;
 static GLuint alphaLoc;
 
 #define vertAttrIndex 0
@@ -633,6 +634,7 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 		GL_Uniform1iFunc (fullbrightTexLoc, 2);
 		GL_Uniform1iFunc (useFullbrightTexLoc, 0);
 		GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
+		GL_Uniform1iFunc (usePackedPixelsLoc, gl_packed_pixels);
 		GL_Uniform1iFunc (useAlphaTestLoc, 0);
 
 		for (i=0 ; i<model->numtextures ; i++)
@@ -843,6 +845,7 @@ void GLWorld_CreateShaders (void)
 		"uniform bool UseFullbrightTex;\n"
 		"uniform bool UseOverbright;\n"
 		"uniform bool UseAlphaTest;\n"
+		"uniform bool UsePackedPixels;\n"
 		"uniform float Alpha;\n"
 		"\n"
 		"varying float FogFragCoord;\n"
@@ -853,7 +856,8 @@ void GLWorld_CreateShaders (void)
 		"	if (UseAlphaTest && (result.a < 0.666))\n"
 		"		discard;\n"
 		"	result *= texture2D(LMTex, gl_TexCoord[1].xy);\n"
-		"	result.rgb *= 4.0;\n"
+		"	if (UsePackedPixels)\n"
+		"	    result.rgb *= 4.0;\n"
 		"	if (UseOverbright)\n"
 		"		result.rgb *= 2.0;\n"
 		"	if (UseFullbrightTex)\n"
@@ -880,6 +884,7 @@ void GLWorld_CreateShaders (void)
 		useFullbrightTexLoc = GL_GetUniformLocation (&r_world_program, "UseFullbrightTex");
 		useOverbrightLoc = GL_GetUniformLocation (&r_world_program, "UseOverbright");
 		useAlphaTestLoc = GL_GetUniformLocation (&r_world_program, "UseAlphaTest");
+		usePackedPixelsLoc = GL_GetUniformLocation (&r_world_program, "UsePackedPixels");
 		alphaLoc = GL_GetUniformLocation (&r_world_program, "Alpha");
 	}
 }
@@ -932,6 +937,7 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	GL_Uniform1iFunc (useFullbrightTexLoc, 0);
 	GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
 	GL_Uniform1iFunc (useAlphaTestLoc, 0);
+	GL_Uniform1iFunc (usePackedPixelsLoc, gl_packed_pixels);
 	GL_Uniform1fFunc (alphaLoc, entalpha);
 
 	for (i=0 ; i<model->numtextures ; i++)

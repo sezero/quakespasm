@@ -1267,19 +1267,24 @@ static void GL_CheckExtensions (void)
 	else if (gl_glsl_able && gl_vbo_able && gl_max_texture_units >= 3)
 	{
 		gl_glsl_alias_able = true;
-		gl_packed_pixels = true;
 		Con_Printf("Enabled: GLSL alias model rendering\n");
-		Con_Printf("Enabled: EXT_packed_pixels\n");
 	}
 	else
 	{
 		Con_Warning ("GLSL alias model rendering not available, using Fitz renderer\n");
 	}
 
+	if (COM_CheckParm("-nopackedpixels"))
+		Con_Warning ("EXT_packed_pixels disabled at command line\n");
+	else if (gl_glsl_alias_able)
+	{
+		gl_packed_pixels = true;
+		Con_Printf("Enabled: EXT_packed_pixels\n");
+	}
 #if 0 /* Disabling for non-GLSL path, needs more surgery. See: https://github.com/sezero/quakespasm/issues/47#issuecomment-1681540278 */
 	// packed_pixels
 	//
-	if (!gl_packed_pixels)
+	else
 	{
 		if (GL_ParseExtensionList(gl_extensions, "GL_APPLE_packed_pixels"))
 		{
