@@ -32,33 +32,30 @@ ALIAS MODEL DISPLAY LIST GENERATION
 =================================================================
 */
 
-qmodel_t	*aliasmodel;
-aliashdr_t	*paliashdr;
-
-int		used[8192]; // qboolean
+static unsigned char	used[8192];
 
 // the command list holds counts and s/t values that are valid for
 // every frame
-int		commands[8192];
-int		numcommands;
+static int		commands[8192];
+static int		numcommands;
 
 // all frames will have their vertexes rearranged and expanded
 // so they are in the order expected by the command list
-int		vertexorder[8192];
-int		numorder;
+static int		vertexorder[8192];
+static int		numorder;
 
-int		allverts, alltris;
+static int		allverts, alltris;
 
-int		stripverts[128];
-int		striptris[128];
-int		stripcount;
+static int		stripverts[128];
+static int		striptris[128];
+static int		stripcount;
 
 /*
 ================
 StripLength
 ================
 */
-int	StripLength (int starttri, int startv)
+static int StripLength (int starttri, int startv)
 {
 	int			m1, m2;
 	int			j;
@@ -127,7 +124,7 @@ done:
 FanLength
 ===========
 */
-int	FanLength (int starttri, int startv)
+static int FanLength (int starttri, int startv)
 {
 	int		m1, m2;
 	int		j;
@@ -198,7 +195,7 @@ Generate a list of trifans or strips
 for the model, which holds for all frames
 ================
 */
-void BuildTris (void)
+static void BuildTris (void)
 {
 	int		i, j, k;
 	int		startv;
@@ -287,7 +284,7 @@ void BuildTris (void)
 	alltris += pheader->numtris;
 }
 
-static void GL_MakeAliasModelDisplayLists_VBO (void);
+static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *, aliashdr_t *);
 static void GLMesh_LoadVertexBuffer (qmodel_t *m, const aliashdr_t *hdr);
 
 /*
@@ -303,14 +300,12 @@ void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr)
 	float	hscale, vscale; //johnfitz -- padded skins
 	int		count; //johnfitz -- precompute texcoords for padded skins
 	int		*loadcmds; //johnfitz
+	aliashdr_t	*paliashdr = hdr;	// (aliashdr_t *)Mod_Extradata (m);
 
 	//johnfitz -- padded skins
 	hscale = (float)hdr->skinwidth/(float)TexMgr_PadConditional(hdr->skinwidth);
 	vscale = (float)hdr->skinheight/(float)TexMgr_PadConditional(hdr->skinheight);
 	//johnfitz
-
-	aliasmodel = m;
-	paliashdr = hdr;	// (aliashdr_t *)Mod_Extradata (m);
 
 //johnfitz -- generate meshes
 	Con_DPrintf2 ("meshing %s...\n",m->name);
@@ -350,7 +345,7 @@ void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr)
 			*verts++ = poseverts[i][vertexorder[j]];
 
 	// ericw
-	GL_MakeAliasModelDisplayLists_VBO ();
+	GL_MakeAliasModelDisplayLists_VBO (m, paliashdr);
 }
 
 unsigned int r_meshindexbuffer = 0;
@@ -366,7 +361,7 @@ is copied to Mod_Extradata.
 Original code by MH from RMQEngine
 ================
 */
-void GL_MakeAliasModelDisplayLists_VBO (void)
+static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *aliasmodel, aliashdr_t *paliashdr)
 {
 	int i, j;
 	int maxverts_vbo;
