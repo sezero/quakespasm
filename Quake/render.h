@@ -73,7 +73,6 @@ typedef struct entity_s
 	int						dlightbits;
 
 // FIXME: could turn these into a union
-	int						trivial_accept;
 	struct mnode_s			*topnode;		// for bmodels, first world node
 											//  that splits bmodel, or NULL if
 											//  not split
@@ -175,4 +174,3 @@ void D_InitCaches (void *buffer, int size);
 void R_SetVrect (vrect_t *pvrect, vrect_t *pvrectin, int lineadj);
 
 #endif	/* _QUAKE_RENDER_H */
-
