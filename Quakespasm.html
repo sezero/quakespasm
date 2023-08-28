@@ -7,7 +7,6 @@
 <BODY>
 <H1>QuakeSpasm</H1>
 
-<H2></H2>
 <P><EM>Page last edited: August 2023.</EM></P>
 
 <P>
@@ -219,10 +218,12 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 <LI> <A HREF="https://github.com/sezero/quakespasm/pull/51">Adjustments</A> to joystick defaults and behaviour. See the <A HREF="Quakespasm.html#ss3.2">"Controller support / Cvars"</A> section above.</LI>
 <LI> Fix for a mouse grabbing issue on macOS.</LI>
 <LI> Add missing support for <EM>-ip</EM> command line option on unix / macOS.</LI>
+<LI> Backport angled sprites code from FTEQW (spriteframetype: 2, must have 8 frames per group.)</LI>
 <LI> Bump the progs execution runaway loop limit to 16M.</LI>
 <LI> Add signon buffer fragmentation to fix SZ_GetSpace errors on certain maps when using protocol 999.</LI>
 <LI> Increased MAX_DATAGRAM to 64000 to overcome packet overflows.</LI>
 <LI> Bump the MAXALIASFRAMES limit to 1024.</LI>
+<LI> Fix arrays to have proper sizes in gl mesh code, reflecting MAXALIASTRIS and MAXALIASVERTS correctly. (fixes SIGSEGV in mj4m4/mj4m5.)</LI>
 <LI> Increased default value of gl_farclip to 65536.</LI>
 <LI> Increase chase cam target trace distance to allow for chasecam to function in large open maps (useful e.g. for the func_vehicle mod.)</LI>
 <LI> Raised default maximum number of particles to 16384. Using the -particles cmdline option it can be set up to 32768.</LI>
@@ -243,7 +244,7 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 <LI> Fix console when server is run noninteractively with stdin redirected from /dev/null.</LI>
 <LI> Updated Visual Studio project files.</LI>
 <LI> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.</LI>
-<LI> Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, erysdren, OscarL and Shpoike for their patches.</LI>
+<LI> Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, OscarL, Jaycie Ewald and Spike for patches.</LI>
 </UL>
 </P>
 
