@@ -1246,7 +1246,6 @@ static void GL_CheckExtensions (void)
 	{
 		Con_Warning ("OpenGL version < 2, GLSL not available\n");
 	}
-	
 	// GLSL gamma
 	//
 	if (COM_CheckParm("-noglslgamma"))
@@ -1260,9 +1259,8 @@ static void GL_CheckExtensions (void)
 	{
 		Con_Warning ("GLSL gamma not available, using hardware gamma\n");
 	}
-    
-    // GLSL alias model rendering
-    //
+	// GLSL alias model rendering
+	//
 	if (COM_CheckParm("-noglslalias"))
 		Con_Warning ("GLSL alias model rendering disabled at command line\n");
 	else if (gl_glsl_able && gl_vbo_able && gl_max_texture_units >= 3)
@@ -1275,6 +1273,8 @@ static void GL_CheckExtensions (void)
 		Con_Warning ("GLSL alias model rendering not available, using Fitz renderer\n");
 	}
 
+	// packed_pixels
+	//
 	if (COM_CheckParm("-nopackedpixels"))
 		Con_Warning ("EXT_packed_pixels disabled at command line\n");
 	else if (gl_glsl_alias_able)
@@ -1282,9 +1282,7 @@ static void GL_CheckExtensions (void)
 		gl_packed_pixels = true;
 		Con_Printf("Enabled: EXT_packed_pixels\n");
 	}
-#if 0 /* Disabling for non-GLSL path, needs more surgery. See: https://github.com/sezero/quakespasm/issues/47#issuecomment-1681540278 */
-	// packed_pixels
-	//
+	#if 0 /* Disabling for non-GLSL path, needs more surgery. */
 	else
 	{
 		if (GL_ParseExtensionList(gl_extensions, "GL_APPLE_packed_pixels"))
@@ -1302,16 +1300,25 @@ static void GL_CheckExtensions (void)
 			Con_Warning ("packed_pixels not supported\n");
 		}
 	}
-#endif
+	#endif
 
-	// NV_depth_clamp
+	// ARB_depth_clamp
 	//
 	if (COM_CheckParm("-nodepthclamp"))
 		Con_Warning ("depth_clamp disabled at command line\n");
+	else if (GL_ParseExtensionList(gl_extensions, "GL_ARB_depth_clamp"))
+	{
+		Con_Printf("FOUND: ARB_depth_clamp\n");
+		gl_nv_depth_clamp = true;
+	}
 	else if (GL_ParseExtensionList(gl_extensions, "GL_NV_depth_clamp"))
 	{
-		Con_Printf("FOUND: GL_NV_depth_clamp\n");
+		Con_Printf("FOUND: NV_depth_clamp\n");
 		gl_nv_depth_clamp = true;
+	}
+	else
+	{
+		Con_Warning ("depth_clamp not supported\n");
 	}
 
 	// glGenerateMipmap for warp textures
