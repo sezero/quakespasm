@@ -97,6 +97,7 @@ modestate_t	modestate = MS_UNINIT;
 qboolean	scr_skipupdate;
 
 qboolean gl_mtexable = false;
+qboolean gl_nv_depth_clamp = false;
 qboolean gl_packed_pixels = false;
 qboolean gl_texture_env_combine = false; //johnfitz
 qboolean gl_texture_env_add = false; //johnfitz
@@ -1303,6 +1304,16 @@ static void GL_CheckExtensions (void)
 	}
 #endif
 
+	// NV_depth_clamp
+	//
+	if (COM_CheckParm("-nodepthclamp"))
+		Con_Warning ("depth_clamp disabled at command line\n");
+	else if (GL_ParseExtensionList(gl_extensions, "GL_NV_depth_clamp"))
+	{
+		Con_Printf("FOUND: GL_NV_depth_clamp\n");
+		gl_nv_depth_clamp = true;
+	}
+
 	// glGenerateMipmap for warp textures
 	if (COM_CheckParm("-nowarpmipmaps"))
 		Con_Warning ("glGenerateMipmap disabled at command line\n");
@@ -1351,6 +1362,8 @@ static void GL_SetupState (void)
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glDepthRange (0, 1); //johnfitz -- moved here becuase gl_ztrick is gone.
 	glDepthFunc (GL_LEQUAL); //johnfitz -- moved here becuase gl_ztrick is gone.
+	if (gl_nv_depth_clamp)
+	    glEnable(GL_DEPTH_CLAMP_NV);
 }
 
 /*

@@ -273,6 +273,8 @@
      lightmaps.  (GLSL mode only. Disable with "-nopackedpixels" if
      necessarry.)
 
+  -  Enable the NV_depth_clamp extension, if found.
+
   -  No relative motions when the window is not focused.
 
   -  Status bar and intermission screen tweaks.
