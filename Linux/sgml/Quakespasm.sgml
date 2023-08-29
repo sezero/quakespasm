@@ -160,8 +160,8 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix a potential crash after loading of saved game.
 <item> Fix possible out-of-bound reads when handling progs type sizes.
 <item> Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
-<item> Fix an issue with blending of lights by using 10 bit depth for lightmaps. (GLSL mode only. Disable with "-nopackedpixels" if necessarry.)
-<item> Enable the NV_depth_clamp extension, if found.
+<item> Fix an issue with blending of lights by using 10 bit color depth for lightmaps. (GLSL mode only -- disable with "-nopackedpixels" if necessarry.)
+<item> Enable the depth_clamp opengl extension, if available (disable with "-nodepthclamp" if necessarry.)
 <item> No relative motions when the window is not focused.
 <item> Status bar and intermission screen tweaks.
 <item> Properly display monster counts > 3 digits.
