@@ -270,11 +270,11 @@
   -  Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
 
   -  Fix an issue with blending of lights by using 10 color bit depth
-     for lightmaps. (GLSL mode only -- disable with "-nopackedpixels"
-     if necessarry.)
+     for lightmaps. (GLSL mode only -- disable with "-nopackedpixels",
+     if necessary.)
 
   -  Enable the depth_clamp opengl extension if available (disable
-     with "-nodepthclamp" if necessarry.)
+     with "-nodepthclamp", if necessary.)
 
   -  No relative motions when the window is not focused.
 
