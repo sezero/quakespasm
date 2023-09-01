@@ -19,8 +19,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#ifndef _QUAKE_INPUT_H
-#define _QUAKE_INPUT_H
+#ifndef QUAKE_INPUT_H
+#define QUAKE_INPUT_H
 
 // input.h -- external (non-keyboard) input devices
 
@@ -48,10 +48,9 @@ void IN_ClearStates (void);
 // restores all button and position states to defaults
 
 // called when the app becomes active
-void IN_Activate ();
+void IN_Activate (void);
 
 // called when the app becomes inactive
 void IN_Deactivate (qboolean free_cursor);
 
-#endif	/* _QUAKE_INPUT_H */
-
+#endif

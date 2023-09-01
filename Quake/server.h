@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#ifndef _QUAKE_SERVER_H
-#define _QUAKE_SERVER_H
+#ifndef QUAKE_SERVER_H
+#define QUAKE_SERVER_H
 
 // server.h
 
@@ -240,8 +240,7 @@ void SV_MoveToGoal (void);
 
 void SV_CheckForNewClients (void);
 void SV_RunClients (void);
-void SV_SaveSpawnparms ();
+void SV_SaveSpawnparms (void);
 void SV_SpawnServer (const char *server);
 
-#endif	/* _QUAKE_SERVER_H */
-
+#endif	/* QUAKE_SERVER_H */

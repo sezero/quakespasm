@@ -24,8 +24,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-const int	gl_solid_format = 3;
-const int	gl_alpha_format = 4;
+static const int	gl_solid_format = 3;
+static const int	gl_alpha_format = 4;
 
 static cvar_t	gl_texturemode = {"gl_texturemode", "", CVAR_ARCHIVE};
 static cvar_t	gl_texture_anisotropy = {"gl_texture_anisotropy", "1", CVAR_ARCHIVE};
@@ -1054,7 +1054,7 @@ static void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 		mipwidth = glt->width;
 		mipheight = glt->height;
 
-		for (miplevel=1; mipwidth > 1 || mipheight > 1; miplevel++)
+		for (miplevel = 1; mipwidth > 1 || mipheight > 1; miplevel++)
 		{
 			if (mipwidth > 1)
 			{
@@ -1178,11 +1178,14 @@ TexMgr_LoadLightmap -- handles lightmap data
 */
 static void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
 {
-	const GLint internalfmt = gl_packed_pixels ? GL_RGB10_A2 : lightmap_bytes;
-	const GLenum type = gl_packed_pixels ? GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
+	const qboolean wide10bits = !!r_lightmapwide.value;
+	const GLenum type = wide10bits ? GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
+	const GLint internalfmt = wide10bits ? GL_RGB10_A2 : lightmap_bytes;
+
 	// upload it
 	GL_Bind (glt);
 	glTexImage2D (GL_TEXTURE_2D, 0, internalfmt, glt->width, glt->height, 0, gl_lightmap_format, type, data);
+
 	// set filter modes
 	TexMgr_SetFilterModes (glt);
 }

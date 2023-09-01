@@ -32,11 +32,12 @@ int		lightmap_bytes;
 
 #define MAX_SANITY_LIGHTMAPS (1u<<20)
 struct lightmap_s	*lightmaps;
-int					lightmap_count;
-int					last_lightmap_allocated;
-int					allocated[LMBLOCK_WIDTH];
+int		lightmap_count;
 
-unsigned	blocklights[LMBLOCK_WIDTH*LMBLOCK_HEIGHT*3]; //johnfitz -- was 18*18, added lit support (*3) and loosened surface extents maximum (LMBLOCK_WIDTH*LMBLOCK_HEIGHT)
+static int	allocated[LMBLOCK_WIDTH];
+static int	last_lightmap_allocated;
+
+static unsigned	blocklights[LMBLOCK_WIDTH*LMBLOCK_HEIGHT*3]; //johnfitz -- was 18*18, added lit support (*3) and loosened surface extents maximum (LMBLOCK_WIDTH*LMBLOCK_HEIGHT)
 
 
 /*
@@ -769,10 +770,8 @@ int AllocBlock (int w, int h, int *x, int *y)
 }
 
 
-mvertex_t	*r_pcurrentvertbase;
-qmodel_t	*currentmodel;
-
-int	nColinElim;
+static mvertex_t	*r_pcurrentvertbase;
+static  qmodel_t	*currentmodel;
 
 /*
 ========================
@@ -1165,6 +1164,9 @@ Combine and scale multiple lightmaps into the 8.8 format in blocklights
 */
 void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 {
+	const int overbright = !!gl_overbright.value;
+	const int wide10bits = !!r_lightmapwide.value;
+
 	int			smax, tmax;
 	unsigned		r, g, b;
 	int			i, j, size;
@@ -1226,7 +1228,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 		{
 			for (j=0 ; j<smax ; j++)
 			{
-				if (gl_overbright.value)
+				if (overbright)
 				{
 					r = *bl++ >> 8;
 					g = *bl++ >> 8;
@@ -1238,7 +1240,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
 				}
-				if (gl_packed_pixels)
+				if (wide10bits)
 				{
 					r = (r > 1023)? 1023 : r;
 					g = (g > 1023)? 1023 : g;
@@ -1263,7 +1265,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 		{
 			for (j=0 ; j<smax ; j++)
 			{
-				if (gl_overbright.value)
+				if (overbright)
 				{
 					r = *bl++ >> 8;
 					g = *bl++ >> 8;
@@ -1275,7 +1277,7 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
 				}
-				if (gl_packed_pixels)
+				if (wide10bits)
 				{
 					r = (r > 1023)? 1023 : r;
 					g = (g > 1023)? 1023 : g;
@@ -1307,7 +1309,9 @@ assumes lightmap texture is already bound
 */
 static void R_UploadLightmap(int lmap)
 {
-	const GLenum type = gl_packed_pixels ? GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
+	const int wide10bits = !!r_lightmapwide.value;
+	const GLenum type = wide10bits ?
+	    GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
 	struct lightmap_s *lm = &lightmaps[lmap];
 
 	if (!lm->modified)
@@ -1346,7 +1350,9 @@ R_RebuildAllLightmaps -- johnfitz -- called when gl_overbright gets toggled
 */
 void R_RebuildAllLightmaps (void)
 {
-	const GLenum type = gl_packed_pixels ? GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
+	const int wide10bits = !!r_lightmapwide.value;
+	const GLenum type = wide10bits ?
+	    GL_UNSIGNED_INT_10_10_10_2 : GL_UNSIGNED_BYTE;
 	int			i, j;
 	qmodel_t	*mod;
 	msurface_t	*fa;

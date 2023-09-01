@@ -28,18 +28,16 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 										//  on the command line
 #define DEFAULT_NUM_PARTICLES	16384
 
-int		ramp1[8] = {0x6f, 0x6d, 0x6b, 0x69, 0x67, 0x65, 0x63, 0x61};
-int		ramp2[8] = {0x6f, 0x6e, 0x6d, 0x6c, 0x6b, 0x6a, 0x68, 0x66};
-int		ramp3[8] = {0x6d, 0x6b, 6, 5, 4, 3};
+static int	ramp1[8] = {0x6f, 0x6d, 0x6b, 0x69, 0x67, 0x65, 0x63, 0x61};
+static int	ramp2[8] = {0x6f, 0x6e, 0x6d, 0x6c, 0x6b, 0x6a, 0x68, 0x66};
+static int	ramp3[8] = {0x6d, 0x6b, 6, 5, 4, 3};
 
-particle_t	*active_particles, *free_particles, *particles;
+static particle_t	*active_particles, *free_particles, *particles;
 
-vec3_t			r_pright, r_pup, r_ppn;
+static int	r_numparticles;
 
-int			r_numparticles;
-
-gltexture_t *particletexture, *particletexture1, *particletexture2, *particletexture3, *particletexture4; //johnfitz
-float texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
+static gltexture_t *particletexture, *particletexture1, *particletexture2, *particletexture3; //johnfitz
+static float texturescalefactor; //johnfitz -- compensate for apparent size of different particle textures
 
 cvar_t	r_particles = {"r_particles","1", CVAR_ARCHIVE}; //johnfitz
 cvar_t	r_quadparticles = {"r_quadparticles","1", CVAR_ARCHIVE}; //johnfitz
@@ -182,11 +180,8 @@ R_EntityParticles
 */
 #define NUMVERTEXNORMALS	162
 extern	float	r_avertexnormals[NUMVERTEXNORMALS][3];
-vec3_t	avelocities[NUMVERTEXNORMALS];
-float	beamlength = 16;
-vec3_t	avelocity = {23, 7, 3};
-float	partstep = 0.01;
-float	timescale = 0.01;
+static vec3_t	avelocities[NUMVERTEXNORMALS];
+static float	beamlength = 16;
 
 void R_EntityParticles (entity_t *ent)
 {

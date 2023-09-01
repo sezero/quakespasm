@@ -1211,28 +1211,28 @@ static void GL_CheckExtensions (void)
 		GL_Uniform4fFunc = (QS_PFNGLUNIFORM4FPROC) SDL_GL_GetProcAddress("glUniform4f");
 
 		if (GL_CreateShaderFunc &&
-			GL_DeleteShaderFunc &&
-			GL_DeleteProgramFunc &&
-			GL_ShaderSourceFunc &&
-			GL_CompileShaderFunc &&
-			GL_GetShaderivFunc &&
-			GL_GetShaderInfoLogFunc &&
-			GL_GetProgramivFunc &&
-			GL_GetProgramInfoLogFunc &&
-			GL_CreateProgramFunc &&
-			GL_AttachShaderFunc &&
-			GL_LinkProgramFunc &&
-			GL_BindAttribLocationFunc &&
-			GL_UseProgramFunc &&
-			GL_GetAttribLocationFunc &&
-			GL_VertexAttribPointerFunc &&
-			GL_EnableVertexAttribArrayFunc &&
-			GL_DisableVertexAttribArrayFunc &&
-			GL_GetUniformLocationFunc &&
-			GL_Uniform1iFunc &&
-			GL_Uniform1fFunc &&
-			GL_Uniform3fFunc &&
-			GL_Uniform4fFunc)
+		    GL_DeleteShaderFunc &&
+		    GL_DeleteProgramFunc &&
+		    GL_ShaderSourceFunc &&
+		    GL_CompileShaderFunc &&
+		    GL_GetShaderivFunc &&
+		    GL_GetShaderInfoLogFunc &&
+		    GL_GetProgramivFunc &&
+		    GL_GetProgramInfoLogFunc &&
+		    GL_CreateProgramFunc &&
+		    GL_AttachShaderFunc &&
+		    GL_LinkProgramFunc &&
+		    GL_BindAttribLocationFunc &&
+		    GL_UseProgramFunc &&
+		    GL_GetAttribLocationFunc &&
+		    GL_VertexAttribPointerFunc &&
+		    GL_EnableVertexAttribArrayFunc &&
+		    GL_DisableVertexAttribArrayFunc &&
+		    GL_GetUniformLocationFunc &&
+		    GL_Uniform1iFunc &&
+		    GL_Uniform1fFunc &&
+		    GL_Uniform3fFunc &&
+		    GL_Uniform4fFunc)
 		{
 			Con_Printf("FOUND: GLSL\n");
 			gl_glsl_able = true;
@@ -1283,22 +1283,19 @@ static void GL_CheckExtensions (void)
 		Con_Printf("Enabled: EXT_packed_pixels\n");
 	}
 	#if 0 /* Disabling for non-GLSL path, needs more surgery. */
+	else if (GL_ParseExtensionList(gl_extensions, "GL_APPLE_packed_pixels"))
+	{
+		Con_Printf("FOUND: APPLE_packed_pixels\n");
+		gl_packed_pixels = true;
+	}
+	else if (GL_ParseExtensionList(gl_extensions, "GL_EXT_packed_pixels"))
+	{
+		Con_Printf("FOUND: EXT_packed_pixels\n");
+		gl_packed_pixels = true;
+	}
 	else
 	{
-		if (GL_ParseExtensionList(gl_extensions, "GL_APPLE_packed_pixels"))
-		{
-			Con_Printf("FOUND: APPLE_packed_pixels\n");
-			gl_packed_pixels = true;
-		}
-		else if (GL_ParseExtensionList(gl_extensions, "GL_EXT_packed_pixels"))
-		{
-			Con_Printf("FOUND: EXT_packed_pixels\n");
-			gl_packed_pixels = true;
-		}
-		else
-		{
-			Con_Warning ("packed_pixels not supported\n");
-		}
+		Con_Warning ("packed_pixels not supported\n");
 	}
 	#endif
 
@@ -2415,4 +2412,3 @@ static void VID_Menu_f (void)
 	VID_Menu_RebuildBppList ();
 	VID_Menu_RebuildRateList ();
 }
-

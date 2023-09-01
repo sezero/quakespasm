@@ -123,9 +123,9 @@ static GLuint r_gamma_program;
 static int r_gamma_texture_width, r_gamma_texture_height;
 
 // uniforms used in gamma shader
-static GLuint gammaLoc;
-static GLuint contrastLoc;
-static GLuint textureLoc;
+static GLint  gammaLoc;
+static GLint  contrastLoc;
+static GLint  textureLoc;
 
 /*
 =============

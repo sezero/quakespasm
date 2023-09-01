@@ -31,9 +31,7 @@ extern cvar_t scr_fov, cl_gun_fovscale;
 gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz -- changed to an array of pointers
 
 #define NUMVERTEXNORMALS	162
-
-float	r_avertexnormals[NUMVERTEXNORMALS][3] =
-{
+float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
 #include "anorms.h"
 };
 
@@ -41,21 +39,20 @@ extern vec3_t	lightcolor; //johnfitz -- replaces "float shadelight" for lit supp
 
 // precalculated dot products for quantized angles
 #define SHADEDOT_QUANT 16
-float	r_avertexnormal_dots[SHADEDOT_QUANT][256] =
-{
+static float	r_avertexnormal_dots[SHADEDOT_QUANT][256] = {
 #include "anorm_dots.h"
 };
 
-extern	vec3_t			lightspot;
+extern	vec3_t	lightspot;
 
-float	*shadedots = r_avertexnormal_dots[0];
-vec3_t	shadevector;
+static float	*shadedots = r_avertexnormal_dots[0];
+static vec3_t	shadevector;
 
-float	entalpha; //johnfitz
+static float	entalpha; //johnfitz
 
-qboolean	overbright; //johnfitz
+static qboolean overbright; //johnfitz
 
-qboolean shading = true; //johnfitz -- if false, disable vertex shading for various reasons (fullbright, r_lightmap, showtris, etc)
+static qboolean shading = true; //johnfitz -- if false, disable vertex shading for various reasons (fullbright, r_lightmap, showtris, etc)
 
 //johnfitz -- struct for passing lerp information to drawing functions
 typedef struct {
@@ -70,16 +67,16 @@ typedef struct {
 static GLuint r_alias_program;
 
 // uniforms used in vert shader
-static GLuint blendLoc;
-static GLuint shadevectorLoc;
-static GLuint lightColorLoc;
+static GLint  blendLoc;
+static GLint  shadevectorLoc;
+static GLint  lightColorLoc;
 
 // uniforms used in frag shader
-static GLuint texLoc;
-static GLuint fullbrightTexLoc;
-static GLuint useFullbrightTexLoc;
-static GLuint useOverbrightLoc;
-static GLuint useAlphaTestLoc;
+static GLint  texLoc;
+static GLint  fullbrightTexLoc;
+static GLint  useFullbrightTexLoc;
+static GLint  useOverbrightLoc;
+static GLint  useAlphaTestLoc;
 
 #define pose1VertexAttrIndex 0
 #define pose1NormalAttrIndex 1
@@ -264,7 +261,7 @@ void GL_DrawAliasFrame_GLSL (aliashdr_t *paliashdr, lerpdata_t lerpdata, gltextu
 	GL_Uniform1iFunc (texLoc, 0);
 	GL_Uniform1iFunc (fullbrightTexLoc, 1);
 	GL_Uniform1iFunc (useFullbrightTexLoc, (fb != NULL) ? 1 : 0);
-	GL_Uniform1fFunc (useOverbrightLoc, overbright ? 1 : 0);
+	GL_Uniform1fFunc (useOverbrightLoc, overbright);
 	GL_Uniform1iFunc (useAlphaTestLoc, (currententity->model->flags & MF_HOLEY) ? 1 : 0);
 
 // set textures
@@ -674,7 +671,7 @@ void R_DrawAliasModel (entity_t *e)
 		glShadeModel (GL_SMOOTH);
 	if (gl_affinemodels.value)
 		glHint (GL_PERSPECTIVE_CORRECTION_HINT, GL_FASTEST);
-	overbright = gl_overbright_models.value;
+	overbright = !!gl_overbright_models.value;
 	shading = true;
 
 	//
@@ -1004,4 +1001,3 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 
 	glPopMatrix ();
 }
-

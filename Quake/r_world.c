@@ -25,6 +25,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "quakedef.h"
 
 extern cvar_t gl_fullbrights, r_drawflat, gl_overbright, r_oldwater, r_oldskyleaf, r_showtris; //johnfitz
+extern cvar_t r_lightmapwide;
 
 byte *SV_FatPVS (vec3_t org, qmodel_t *worldmodel);
 
@@ -36,7 +37,7 @@ byte *SV_FatPVS (vec3_t org, qmodel_t *worldmodel);
 
 /*
 ================
-R_ClearTextureChains -- ericw 
+R_ClearTextureChains -- ericw
 
 clears texture chains for all textures used by the given model, and also
 clears the lightmap chains
@@ -353,7 +354,7 @@ static unsigned int num_vbo_indices;
 R_ClearBatch
 ================
 */
-static void R_ClearBatch ()
+static void R_ClearBatch (void)
 {
 	num_vbo_indices = 0;
 }
@@ -365,7 +366,7 @@ R_FlushBatch
 Draw the current batch if non-empty and clears it, ready for more R_BatchSurface calls.
 ================
 */
-static void R_FlushBatch ()
+static void R_FlushBatch (void)
 {
 	if (num_vbo_indices > 0)
 	{
@@ -527,7 +528,7 @@ void R_DrawTextureChains_TextureOnly (qmodel_t *model, entity_t *ent, texchain_t
 /*
 ================
 GL_WaterAlphaForEntitySurface -- ericw
- 
+
 Returns the water alpha to use for the entity and surface combination.
 ================
 */
@@ -547,14 +548,14 @@ extern GLuint gl_bmodel_vbo;
 // uniforms used in vert shader
 
 // uniforms used in frag shader
-static GLuint texLoc;
-static GLuint LMTexLoc;
-static GLuint fullbrightTexLoc;
-static GLuint useFullbrightTexLoc;
-static GLuint useOverbrightLoc;
-static GLuint useAlphaTestLoc;
-static GLuint usePackedPixelsLoc;
-static GLuint alphaLoc;
+static GLint  texLoc;
+static GLint  LMTexLoc;
+static GLint  fullbrightTexLoc;
+static GLint  useFullbrightTexLoc;
+static GLint  useOverbrightLoc;
+static GLint  useAlphaTestLoc;
+static GLint  useLightmapWideLoc;
+static GLint  alphaLoc;
 
 #define vertAttrIndex 0
 #define texCoordsAttrIndex 1
@@ -612,6 +613,9 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	}
 	else if (cl.worldmodel->haslitwater && r_litwater.value && r_world_program != 0)
 	{
+		const int overbright = !!gl_overbright.value;
+		const int wide10bits = !!r_lightmapwide.value;
+
 		has_lit_water = true;
 
 		GL_UseProgramFunc (r_world_program);
@@ -633,9 +637,9 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 		GL_Uniform1iFunc (LMTexLoc, 1);
 		GL_Uniform1iFunc (fullbrightTexLoc, 2);
 		GL_Uniform1iFunc (useFullbrightTexLoc, 0);
-		GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
-		GL_Uniform1iFunc (usePackedPixelsLoc, gl_packed_pixels);
+		GL_Uniform1iFunc (useOverbrightLoc, overbright);
 		GL_Uniform1iFunc (useAlphaTestLoc, 0);
+		GL_Uniform1iFunc (useLightmapWideLoc, wide10bits);
 
 		for (i=0 ; i<model->numtextures ; i++)
 		{
@@ -702,7 +706,7 @@ void R_DrawTextureChains_Water (qmodel_t *model, entity_t *ent, texchain_t chain
 	}
 	else
 		has_unlit_water = true;
-	
+
 	if (has_unlit_water)
 	{
 		// Unlit water
@@ -845,7 +849,7 @@ void GLWorld_CreateShaders (void)
 		"uniform bool UseFullbrightTex;\n"
 		"uniform bool UseOverbright;\n"
 		"uniform bool UseAlphaTest;\n"
-		"uniform bool UsePackedPixels;\n"
+		"uniform bool UseLightmapWide;\n"
 		"uniform float Alpha;\n"
 		"\n"
 		"varying float FogFragCoord;\n"
@@ -856,7 +860,7 @@ void GLWorld_CreateShaders (void)
 		"	if (UseAlphaTest && (result.a < 0.666))\n"
 		"		discard;\n"
 		"	result *= texture2D(LMTex, gl_TexCoord[1].xy);\n"
-		"	if (UsePackedPixels)\n"
+		"	if (UseLightmapWide)\n"
 		"	    result.rgb *= 4.0;\n"
 		"	if (UseOverbright)\n"
 		"		result.rgb *= 2.0;\n"
@@ -884,7 +888,7 @@ void GLWorld_CreateShaders (void)
 		useFullbrightTexLoc = GL_GetUniformLocation (&r_world_program, "UseFullbrightTex");
 		useOverbrightLoc = GL_GetUniformLocation (&r_world_program, "UseOverbright");
 		useAlphaTestLoc = GL_GetUniformLocation (&r_world_program, "UseAlphaTest");
-		usePackedPixelsLoc = GL_GetUniformLocation (&r_world_program, "UsePackedPixels");
+		useLightmapWideLoc = GL_GetUniformLocation (&r_world_program, "UseLightmapWide");
 		alphaLoc = GL_GetUniformLocation (&r_world_program, "Alpha");
 	}
 }
@@ -899,15 +903,17 @@ Requires 3 TMUs, OpenGL 2.0
 */
 void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 {
+	const float	entalpha = (ent != NULL) ?
+			 ENTALPHA_DECODE(ent->alpha) : 1.0f;
+	const int	overbright = !!gl_overbright.value;
+	const int	wide10bits = !!r_lightmapwide.value;
+
 	int			i;
 	msurface_t	*s;
 	texture_t	*t;
 	qboolean	bound;
 	int		lastlightmap;
 	gltexture_t	*fullbright = NULL;
-	float		entalpha;
-
-	entalpha = (ent != NULL) ? ENTALPHA_DECODE(ent->alpha) : 1.0f;
 
 // enable blending / disable depth writes
 	if (entalpha < 1)
@@ -935,9 +941,9 @@ void R_DrawTextureChains_GLSL (qmodel_t *model, entity_t *ent, texchain_t chain)
 	GL_Uniform1iFunc (LMTexLoc, 1);
 	GL_Uniform1iFunc (fullbrightTexLoc, 2);
 	GL_Uniform1iFunc (useFullbrightTexLoc, 0);
-	GL_Uniform1iFunc (useOverbrightLoc, (int)gl_overbright.value);
+	GL_Uniform1iFunc (useOverbrightLoc, overbright);
 	GL_Uniform1iFunc (useAlphaTestLoc, 0);
-	GL_Uniform1iFunc (usePackedPixelsLoc, gl_packed_pixels);
+	GL_Uniform1iFunc (useLightmapWideLoc, wide10bits);
 	GL_Uniform1fFunc (alphaLoc, entalpha);
 
 	for (i=0 ; i<model->numtextures ; i++)

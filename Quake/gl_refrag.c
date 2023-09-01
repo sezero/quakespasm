@@ -23,10 +23,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-mnode_t	*r_pefragtopnode;
+static mnode_t	*r_pefragtopnode;
 
-
-//===========================================================================
 
 /*
 ===============================================================================
@@ -39,16 +37,16 @@ removed, so I trimmed out unused functionality and fields in efrag_t.
 Now, efrags are just a linked list for each leaf of the static
 entities that touch that leaf. The efrags are hunk-allocated so there is no
 fixed limit.
- 
+
 This is inspired by MH's tutorial, and code from RMQEngine.
 http://forums.insideqc.com/viewtopic.php?t=1930
- 
+
 ===============================================================================
 */
 
-vec3_t		r_emins, r_emaxs;
+static vec3_t		r_emins, r_emaxs;
 
-entity_t	*r_addent;
+static entity_t		*r_addent;
 
 
 #define EXTRA_EFRAGS	128
@@ -221,4 +219,3 @@ void R_StoreEfrags (efrag_t **ppefrag)
 		ppefrag = &pefrag->leafnext;
 	}
 }
-

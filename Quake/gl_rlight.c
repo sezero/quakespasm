@@ -23,7 +23,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
-int	r_dlightframecount;
+static int	r_dlightframecount;
 
 extern cvar_t r_flatlightstyles; //johnfitz
 
@@ -129,8 +129,7 @@ void R_RenderDlights (void)
 	if (!gl_flashblend.value)
 		return;
 
-	r_dlightframecount = r_framecount + 1;	// because the count hasn't
-											//  advanced yet for this frame
+	r_dlightframecount = r_framecount + 1;	// because the count hasn't advanced yet for this frame
 	glDepthMask (0);
 	glDisable (GL_TEXTURE_2D);
 	glShadeModel (GL_SMOOTH);
@@ -175,7 +174,6 @@ void R_MarkLights (dlight_t *light, int num, mnode_t *node)
 	int			i, j, s, t;
 
 start:
-
 	if (node->contents < 0)
 		return;
 
@@ -242,8 +240,7 @@ void R_PushDlights (void)
 	if (gl_flashblend.value)
 		return;
 
-	r_dlightframecount = r_framecount + 1;	// because the count hasn't
-											//  advanced yet for this frame
+	r_dlightframecount = r_framecount + 1;	// because the count hasn't advanced yet for this frame
 	l = cl_dlights;
 
 	for (i=0 ; i<MAX_DLIGHTS ; i++, l++)
