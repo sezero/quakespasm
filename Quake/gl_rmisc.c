@@ -60,7 +60,6 @@ GL_Overbright_f -- johnfitz
 */
 static void GL_Overbright_f (cvar_t *var)
 {
-	Cvar_SetROM ("r_lightmapwide", gl_packed_pixels ? "1" : "0");
 	R_RebuildAllLightmaps ();
 }
 
