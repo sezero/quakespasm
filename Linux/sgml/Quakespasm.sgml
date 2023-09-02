@@ -161,7 +161,6 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix possible out-of-bound reads when handling progs type sizes.
 <item> Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
 <item> Fix an issue with lights blending by using 10 bit color depth for lightmaps. (For GLSL mode only.) Disable with "-nopackedpixels", if necessary.
-<item> Enable depth_clamp opengl extension if available. Fixes issues with water surface when going in and out of water in ej3_aesop. Disable with "-nodepthclamp", if necessary.
 <item> No relative motions when the window is not focused.
 <item> Status bar and intermission screen tweaks.
 <item> Properly display monster counts > 3 digits.

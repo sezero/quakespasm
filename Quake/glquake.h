@@ -259,11 +259,7 @@ void GL_PolygonOffset (int);
 #define GL_UNSIGNED_INT_10_10_10_2 0x8036
 #endif
 extern qboolean gl_packed_pixels;
-//GL_NV_depth_clamp
-#ifndef GL_DEPTH_CLAMP_NV
-#define GL_DEPTH_CLAMP_NV          0x864F
-#endif
-extern qboolean gl_nv_depth_clamp;
+
 //johnfitz -- GL_EXT_texture_env_combine
 //the values for GL_ARB_ are identical
 #define GL_COMBINE_EXT		0x8570

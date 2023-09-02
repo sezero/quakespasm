@@ -273,10 +273,6 @@
      lightmaps. (For GLSL mode only.) Disable with "-nopackedpixels",
      if necessary.
 
-  -  Enable depth_clamp opengl extension if available. Fixes issues
-     with water surface when going in and out of water in ej3_aesop.
-     Disable with "-nodepthclamp", if necessary.
-
   -  No relative motions when the window is not focused.
 
   -  Status bar and intermission screen tweaks.
