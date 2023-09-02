@@ -1239,17 +1239,20 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					r = *bl++ >> 7;
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
-
-					// artifically clamp to 255 so gl_overbright 0 renders as expected in the wide10bits case
-					r = (r > 255) ? 255 : r;
-					g = (g > 255) ? 255 : g;
-					b = (b > 255) ? 255 : b;
+					if (wide10bits) {
+						// artifically clamp to 255 so gl_overbright 0 renders as expected in the wide10bits case
+						r = (r > 255) ? 255 : r;
+						g = (g > 255) ? 255 : g;
+						b = (b > 255) ? 255 : b;
+						goto loc0;
+					}
 				}
 				if (wide10bits)
 				{
 					r = (r > 1023)? 1023 : r;
 					g = (g > 1023)? 1023 : g;
 					b = (b > 1023)? 1023 : b;
+					loc0:
 					*(unsigned int*)dest = (r<<22) | (g<<12) | (b<<2) | 3;
 					dest += 4;
 				}
@@ -1281,17 +1284,20 @@ void R_BuildLightMap (msurface_t *surf, byte *dest, int stride)
 					r = *bl++ >> 7;
 					g = *bl++ >> 7;
 					b = *bl++ >> 7;
-
-					// artifically clamp to 255 so gl_overbright 0 renders as expected in the wide10bits case
-					r = (r > 255) ? 255 : r;
-					g = (g > 255) ? 255 : g;
-					b = (b > 255) ? 255 : b;
+					if (wide10bits) {
+						// artifically clamp to 255 so gl_overbright 0 renders as expected in the wide10bits case
+						r = (r > 255) ? 255 : r;
+						g = (g > 255) ? 255 : g;
+						b = (b > 255) ? 255 : b;
+						goto loc1;
+					}
 				}
 				if (wide10bits)
 				{
 					r = (r > 1023)? 1023 : r;
 					g = (g > 1023)? 1023 : g;
 					b = (b > 1023)? 1023 : b;
+					loc1:
 					*(unsigned int*)dest = (b<<22) | (g<<12) | (r<<2) | 3;
 					dest += 4;
 				}
