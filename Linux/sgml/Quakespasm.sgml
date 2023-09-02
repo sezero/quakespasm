@@ -152,11 +152,11 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix arrays to have proper sizes in gl mesh code, reflecting MAXALIASTRIS and MAXALIASVERTS correctly. (fixes SIGSEGV in mj4m4/mj4m5.)
 <item> Increased default value of gl_farclip to 65536.
 <item> Increase chase cam target trace distance to allow for chasecam to function in large open maps (useful e.g. for the func_vehicle mod.)
-<item> Raised default maximum number of particles to 16384. Using the -particles cmdline option it can be set up to 32768.
+<item> Raised default maximum number of particles to 16384 (can be set up to 32768 with -particles on the command line.)
 <item> Fix on-screen keyboard showing up suddenly on Steam Deck when starting a map.
 <item> Fix viewmodel interpolation with >10Hz animations.
 <item> Fix a memory leak when exiting game in SDL2 builds.
-<item> Fix possible crash when handling clipboard data on macOS.
+<item> Fix a possible crash when handling clipboard data on macOS.
 <item> Fix a potential crash after loading of saved game.
 <item> Fix possible out-of-bound reads when handling progs type sizes.
 <item> Fix Dutch angle VP_PARALLEL_UPRIGHT sprites.
@@ -170,7 +170,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Fix console when server is run noninteractively with stdin redirected from /dev/null.
 <item> Updated Visual Studio project files.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
-<item> Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, OscarL, Jaycie Ewald and Spike for patches.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I. Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, OscarL, Eric Wasylishen, Jaycie Ewald and Spike for patches.
 </itemize>
 </p>
 

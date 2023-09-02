@@ -251,8 +251,8 @@
   -  Increase chase cam target trace distance to allow for chasecam to
      function in large open maps (useful e.g. for the func_vehicle mod.)
 
-  -  Raised default maximum number of particles to 16384. Using the
-     -particles cmdline option it can be set up to 32768.
+  -  Raised default maximum number of particles to 16384 (can be set
+     up to 32768 with -particles on the command line.)
 
   -  Fix on-screen keyboard showing up suddenly on Steam Deck when
      starting a map.
@@ -261,7 +261,7 @@
 
   -  Fix a memory leak when exiting game in SDL2 builds.
 
-  -  Fix possible crash when handling clipboard data on macOS.
+  -  Fix a possible crash when handling clipboard data on macOS.
 
   -  Fix a potential crash after loading of saved game.
 
@@ -295,7 +295,7 @@
 
   -  Thanks to Andrei Drexler, Alexey Lysiuk, Andrey Budko, Boris I.
      Bendovsky, Chris Cowan, Maciej Olędzki, Simon McVittie, OscarL,
-     Jaycie Ewald and Spike for patches.
+     Eric Wasylishen, Jaycie Ewald and Spike for patches.
 
 
   Changes in 0.95.1:
