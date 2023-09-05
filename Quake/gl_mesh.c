@@ -44,8 +44,6 @@ static int		numcommands;
 static int		vertexorder[MAXALIASTRIS * 3];
 static int		numorder;
 
-static int		allverts, alltris;
-
 static int		stripverts[MAXALIASTRIS + 2];
 static int		striptris[MAXALIASTRIS];
 static int		stripcount;
@@ -279,9 +277,6 @@ static void BuildTris (void)
 	commands[numcommands++] = 0;		// end of list marker
 
 	Con_DPrintf2 ("%3i tri %3i vert %3i cmd\n", pheader->numtris, numorder, numcommands);
-
-	allverts += numorder;
-	alltris += pheader->numtris;
 }
 
 static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *, aliashdr_t *);
@@ -347,9 +342,6 @@ void GL_MakeAliasModelDisplayLists (qmodel_t *m, aliashdr_t *hdr)
 	// ericw
 	GL_MakeAliasModelDisplayLists_VBO (m, paliashdr);
 }
-
-unsigned int r_meshindexbuffer = 0;
-unsigned int r_meshvertexbuffer = 0;
 
 /*
 ================
