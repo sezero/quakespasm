@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: August 2023.</em>
+<em>Page last edited: September 2023.</em>
 
 <sect>About<p>
 
@@ -138,6 +138,13 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect>Changes<p>
+
+<sect1>Changes in 0.96.1<p>
+<itemize>
+<item> Fix demo recording as client-only after connection to server (was broken by signon changes in 0.96.0. Thanks to Jozsef Szalontai for issue report.)
+<item> Minor code cleanups.
+</itemize>
+</p>
 
 <sect1>Changes in 0.96.0<p>
 <itemize>

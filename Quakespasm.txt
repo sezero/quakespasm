@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: August 2023.
+  Page last edited: September 2023.
 
 
   1. About
@@ -220,6 +220,15 @@
 
 
   5. Changes
+
+  Changes in 0.96.1:
+
+  -  Fix demo recording as client-only after connection to server (was
+     broken by signon changes in 0.96.0. Thanks to Jozsef Szalontai for
+     issue report.)
+
+  -  Minor code cleanups.
+
 
   Changes in 0.96.0:
 
