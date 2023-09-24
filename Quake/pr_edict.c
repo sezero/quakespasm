@@ -55,7 +55,7 @@ int		type_size[8] = {
 	1	// sizeof(void *) / 4		// ev_pointer
 };
 
-#define	NUM_TYPE_SIZES	(int)(sizeof(type_size) / sizeof(type_size[0]))
+#define NUM_TYPE_SIZES (int)Q_COUNTOF(type_size)
 
 static ddef_t	*ED_FieldAtOfs (int ofs);
 static qboolean	ED_ParseEpair (void *base, ddef_t *key, const char *s);

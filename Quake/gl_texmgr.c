@@ -67,7 +67,7 @@ static glmode_t glmodes[] = {
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_NEAREST,	"GL_LINEAR_MIPMAP_NEAREST"},
 	{GL_LINEAR,  GL_LINEAR_MIPMAP_LINEAR,	"GL_LINEAR_MIPMAP_LINEAR"},
 };
-#define NUM_GLMODES (int)(sizeof(glmodes)/sizeof(glmodes[0]))
+#define NUM_GLMODES (int)Q_COUNTOF(glmodes)
 static int glmode_idx = NUM_GLMODES - 1; /* trilinear */
 
 /*
@@ -78,10 +78,8 @@ TexMgr_DescribeTextureModes_f -- report available texturemodes
 static void TexMgr_DescribeTextureModes_f (void)
 {
 	int i;
-
 	for (i = 0; i < NUM_GLMODES; i++)
 		Con_SafePrintf ("   %2i: %s\n", i + 1, glmodes[i].name);
-
 	Con_Printf ("%i modes\n", i);
 }
 

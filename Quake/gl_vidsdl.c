@@ -1572,7 +1572,7 @@ static void VID_InitModelist (void)
 
 	// enumerate fullscreen modes
 	flags = DEFAULT_SDL_FLAGS | SDL_FULLSCREEN;
-	for (i = 0; i < (int)(sizeof(bpps)/sizeof(bpps[0])); i++)
+	for (i = 0; i < (int)Q_COUNTOF(bpps); i++)
 	{
 		if (nummodes >= MAX_MODE_LIST)
 			break;

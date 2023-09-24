@@ -111,6 +111,9 @@ typedef enum {
 COMPILE_TIME_ASSERT(enum, sizeof(THE_DUMMY_ENUM) == sizeof(int));
 
 
+/* for array size: */
+#define Q_COUNTOF(x) (sizeof(x) / sizeof((x)[0]))
+
 /* Provide a substitute for offsetof() if we don't have one.
  * This variant works on most (but not *all*) systems...
  */
