@@ -227,6 +227,9 @@
      broken by signon changes in 0.96.0. Thanks to Jozsef Szalontai for
      issue report.)
 
+  -  Fix potential buffer overflow in COM_Parse(), e.g. with maps with
+     oversized 'wad' fields. (Thanks to Andrei Drexler.)
+
   -  Minor code cleanups.
 
 

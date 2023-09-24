@@ -217,6 +217,7 @@ Alternatively, have a look at <B>Makefile.darwin</B> for more instructions on bu
 <P>
 <UL>
 <LI> Fix demo recording as client-only after connection to server (was broken by signon changes in 0.96.0. Thanks to Jozsef Szalontai for issue report.)</LI>
+<LI> Fix potential buffer overflow in COM_Parse(), e.g. with maps with oversized 'wad' fields. (Thanks to Andrei Drexler.)</LI>
 <LI> Minor code cleanups.</LI>
 </UL>
 </P>

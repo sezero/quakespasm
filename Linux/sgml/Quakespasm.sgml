@@ -142,6 +142,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <sect1>Changes in 0.96.1<p>
 <itemize>
 <item> Fix demo recording as client-only after connection to server (was broken by signon changes in 0.96.0. Thanks to Jozsef Szalontai for issue report.)
+<item> Fix potential buffer overflow in COM_Parse(), e.g. with maps with oversized 'wad' fields. (Thanks to Andrei Drexler.)
 <item> Minor code cleanups.
 </itemize>
 </p>
