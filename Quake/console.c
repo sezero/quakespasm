@@ -831,8 +831,7 @@ static const arg_completion_type_t arg_completion_types[] =
 	{ "timedemo ", &demolist }
 };
 
-static const int num_arg_completion_types =
-	sizeof(arg_completion_types)/sizeof(arg_completion_types[0]);
+static const int num_arg_completion_types = Q_COUNTOF(arg_completion_types);
 
 /*
 ============

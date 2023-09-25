@@ -1359,7 +1359,7 @@ const char *bindnames[][2] =
 	{"+movedown",		"swim down"}
 };
 
-#define	NUMCOMMANDS	(sizeof(bindnames)/sizeof(bindnames[0]))
+#define	NUMCOMMANDS	Q_COUNTOF(bindnames)
 
 static int	keys_cursor;
 static qboolean	bind_grab;
@@ -2543,7 +2543,6 @@ void M_Menu_Credits_f (void)
 
 //=============================================================================
 /* Menu Subsystem */
-
 
 void M_Init (void)
 {

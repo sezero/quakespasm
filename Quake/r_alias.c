@@ -193,7 +193,7 @@ void GLAlias_CreateShaders (void)
 	if (!gl_glsl_alias_able)
 		return;
 
-	r_alias_program = GL_CreateProgram (vertSource, fragSource, sizeof(bindings)/sizeof(bindings[0]), bindings);
+	r_alias_program = GL_CreateProgram (vertSource, fragSource, Q_COUNTOF(bindings), bindings);
 
 	if (r_alias_program != 0)
 	{

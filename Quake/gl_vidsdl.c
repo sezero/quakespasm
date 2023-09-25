@@ -1636,7 +1636,7 @@ void	VID_Init (void)
 					 "vid_fsaa",
 					 "vid_desktopfullscreen",
 					 "vid_borderless"};
-#define num_readvars	( sizeof(read_vars)/sizeof(read_vars[0]) )
+#define num_readvars	Q_COUNTOF(read_vars)
 
 	Cvar_RegisterVariable (&vid_fullscreen); //johnfitz
 	Cvar_RegisterVariable (&vid_width); //johnfitz

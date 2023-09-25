@@ -557,7 +557,7 @@ GLuint GL_CreateProgram (const GLchar *vertSource, const GLchar *fragSource, int
 	}
 	else
 	{
-		if (gl_num_programs == (sizeof(gl_programs)/sizeof(GLuint)))
+		if (gl_num_programs == Q_COUNTOF(gl_programs))
 			Host_Error ("gl_programs overflow");
 
 		gl_programs[gl_num_programs] = program;

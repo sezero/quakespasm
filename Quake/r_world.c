@@ -881,7 +881,7 @@ void GLWorld_CreateShaders (void)
 	if (!gl_glsl_alias_able)
 		return;
 
-	r_world_program = GL_CreateProgram (vertSource, fragSource, sizeof(bindings)/sizeof(bindings[0]), bindings);
+	r_world_program = GL_CreateProgram (vertSource, fragSource, Q_COUNTOF(bindings), bindings);
 	
 	if (r_world_program != 0)
 	{
