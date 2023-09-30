@@ -434,9 +434,6 @@ static void GL_MakeAliasModelDisplayLists_VBO (qmodel_t *aliasmodel, aliashdr_t 
 	GLMesh_LoadVertexBuffer (aliasmodel, pheader);
 }
 
-#define NUMVERTEXNORMALS	 162
-extern	float	r_avertexnormals[NUMVERTEXNORMALS][3];
-
 /*
 ================
 GLMesh_LoadVertexBuffer
@@ -457,23 +454,23 @@ static void GLMesh_LoadVertexBuffer (qmodel_t *m, const aliashdr_t *hdr)
 
 	if (!gl_glsl_alias_able)
 		return;
-	
+
 // count the sizes we need
 	
 	// ericw -- RMQEngine stored these vbo*ofs values in aliashdr_t, but we must not
 	// mutate Mod_Extradata since it might be reloaded from disk, so I moved them to qmodel_t
 	// (test case: roman1.bsp from arwop, 64mb heap)
 	m->vboindexofs = 0;
-	
+
 	m->vboxyzofs = 0;
 	totalvbosize += (hdr->numposes * hdr->numverts_vbo * sizeof (meshxyz_t)); // ericw -- what RMQEngine called nummeshframes is called numposes in QuakeSpasm
-	
+
 	m->vbostofs = totalvbosize;
 	totalvbosize += (hdr->numverts_vbo * sizeof (meshst_t));
-	
+
 	if (!hdr->numindexes) return;
 	if (!totalvbosize) return;
-	
+
 // grab the pointers to data in the extradata
 
 	desc = (aliasmesh_t *) ((byte *) hdr + hdr->meshdesc);
@@ -563,7 +560,7 @@ void GLMesh_LoadVertexBuffers (void)
 
 	if (!gl_glsl_alias_able)
 		return;
-	
+
 	for (j = 1; j < MAX_MODELS; j++)
 	{
 		if (!(m = cl.model_precache[j])) break;
@@ -589,7 +586,7 @@ void GLMesh_DeleteVertexBuffers (void)
 	
 	if (!gl_glsl_alias_able)
 		return;
-	
+
 	for (j = 1; j < MAX_MODELS; j++)
 	{
 		if (!(m = cl.model_precache[j])) break;
@@ -601,6 +598,6 @@ void GLMesh_DeleteVertexBuffers (void)
 		GL_DeleteBuffersFunc (1, &m->meshindexesvbo);
 		m->meshindexesvbo = 0;
 	}
-	
+
 	GL_ClearBufferBindings ();
 }

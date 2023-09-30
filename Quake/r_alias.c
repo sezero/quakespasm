@@ -30,8 +30,7 @@ extern cvar_t scr_fov, cl_gun_fovscale;
 //up to 16 color translated skins
 gltexture_t *playertextures[MAX_SCOREBOARD]; //johnfitz -- changed to an array of pointers
 
-#define NUMVERTEXNORMALS	162
-float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
+const float	r_avertexnormals[NUMVERTEXNORMALS][3] = {
 #include "anorms.h"
 };
 
@@ -39,13 +38,13 @@ extern vec3_t	lightcolor; //johnfitz -- replaces "float shadelight" for lit supp
 
 // precalculated dot products for quantized angles
 #define SHADEDOT_QUANT 16
-static float	r_avertexnormal_dots[SHADEDOT_QUANT][256] = {
+static const float	r_avertexnormal_dots[SHADEDOT_QUANT][256] = {
 #include "anorm_dots.h"
 };
 
 extern	vec3_t	lightspot;
 
-static float	*shadedots = r_avertexnormal_dots[0];
+static const float	*shadedots = r_avertexnormal_dots[0];
 static vec3_t	shadevector;
 
 static float	entalpha; //johnfitz

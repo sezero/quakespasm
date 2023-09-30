@@ -260,7 +260,7 @@ Cmd_Exec_f
 */
 void Cmd_Exec_f (void)
 {
-	char	*f;
+	const char	*f;
 	int		mark;
 
 	if (Cmd_Argc () != 2)
@@ -270,7 +270,7 @@ void Cmd_Exec_f (void)
 	}
 
 	mark = Hunk_LowMark ();
-	f = (char *)COM_LoadHunkFile (Cmd_Argv(1), NULL);
+	f = (const char *)COM_LoadHunkFile (Cmd_Argv(1), NULL);
 	if (!f && !strcmp(Cmd_Argv(1), "default.cfg")) {
 		f = default_cfg;	/* see above.. */
 	}
