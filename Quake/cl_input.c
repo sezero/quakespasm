@@ -280,10 +280,10 @@ void CL_AdjustAngles (void)
 		cl.viewangles[PITCH] = cl_minpitch.value;
 	//johnfitz
 
-	if (cl.viewangles[ROLL] > 50)
-		cl.viewangles[ROLL] = 50;
-	if (cl.viewangles[ROLL] < -50)
-		cl.viewangles[ROLL] = -50;
+	if (cl.viewangles[ROLL] > 180)
+		cl.viewangles[ROLL] = 180;
+	if (cl.viewangles[ROLL] < -180)
+		cl.viewangles[ROLL] = -180;
 }
 
 /*
