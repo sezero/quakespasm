@@ -1137,9 +1137,10 @@ void M_AdjustSliders (int dir)
 }
 
 
-void M_DrawSlider (int x, int y, float range)
+void M_DrawSlider (int x, int y, float range, float value, const char *format)
 {
 	int	i;
+	char	buffer[5];
 
 	if (range < 0)
 		range = 0;
@@ -1150,6 +1151,8 @@ void M_DrawSlider (int x, int y, float range)
 		M_DrawCharacter (x + i*8, y, 129);
 	M_DrawCharacter (x+i*8, y, 130);
 	M_DrawCharacter (x + (SLIDER_RANGE-1)*8 * range, y, 131);
+	snprintf(buffer, 5, format, value);
+	M_Print (x + (SLIDER_RANGE + 1) * 8, y, buffer);
 }
 
 void M_DrawCheckbox (int x, int y, int on)
@@ -1187,42 +1190,42 @@ void M_Options_Draw (void)
 	M_Print (16, 32 + 8*OPT_SCALE,		"                 Scale");
 	l = (vid.width / 320.0) - 1;
 	r = l > 0 ? (scr_conscale.value - 1) / l : 0;
-	M_DrawSlider (220, 32 + 8*OPT_SCALE, r);
+	M_DrawSlider (220, 32 + 8*OPT_SCALE, r, scr_conscale.value, "%.1f");
 
 	// OPT_SCRSIZE:
 	M_Print (16, 32 + 8*OPT_SCRSIZE,	"           Screen size");
 	r = (scr_viewsize.value - 30) / (120 - 30);
-	M_DrawSlider (220, 32 + 8*OPT_SCRSIZE, r);
+	M_DrawSlider (220, 32 + 8*OPT_SCRSIZE, r, scr_viewsize.value, "%.0f");
 
 	// OPT_GAMMA:
 	M_Print (16, 32 + 8*OPT_GAMMA,		"            Brightness");
 	r = (1.0 - vid_gamma.value) / 0.5;
-	M_DrawSlider (220, 32 + 8*OPT_GAMMA, r);
+	M_DrawSlider (220, 32 + 8*OPT_GAMMA, r, vid_gamma.value, "%.2f");
 
 	// OPT_CONTRAST:
 	M_Print (16, 32 + 8*OPT_CONTRAST,	"              Contrast");
 	r = vid_contrast.value - 1.0;
-	M_DrawSlider (220, 32 + 8*OPT_CONTRAST, r);
+	M_DrawSlider (220, 32 + 8*OPT_CONTRAST, r, vid_contrast.value, "%.1f");
 	
 	// OPT_MOUSESPEED:
 	M_Print (16, 32 + 8*OPT_MOUSESPEED,	"           Mouse Speed");
 	r = (sensitivity.value - 1)/10;
-	M_DrawSlider (220, 32 + 8*OPT_MOUSESPEED, r);
+	M_DrawSlider (220, 32 + 8*OPT_MOUSESPEED, r, sensitivity.value, "%.1f");
 
 	// OPT_SBALPHA:
 	M_Print (16, 32 + 8*OPT_SBALPHA,	"       Statusbar alpha");
 	r = (1.0 - scr_sbaralpha.value) ; // scr_sbaralpha range is 1.0 to 0.0
-	M_DrawSlider (220, 32 + 8*OPT_SBALPHA, r);
+	M_DrawSlider (220, 32 + 8*OPT_SBALPHA, r, scr_sbaralpha.value, "%.2f");
 
 	// OPT_SNDVOL:
 	M_Print (16, 32 + 8*OPT_SNDVOL,		"          Sound Volume");
 	r = sfxvolume.value;
-	M_DrawSlider (220, 32 + 8*OPT_SNDVOL, r);
+	M_DrawSlider (220, 32 + 8*OPT_SNDVOL, r, sfxvolume.value, "%.1f");
 
 	// OPT_MUSICVOL:
 	M_Print (16, 32 + 8*OPT_MUSICVOL,	"          Music Volume");
 	r = bgmvolume.value;
-	M_DrawSlider (220, 32 + 8*OPT_MUSICVOL, r);
+	M_DrawSlider (220, 32 + 8*OPT_MUSICVOL, r, bgmvolume.value, "%.1f");
 
 	// OPT_MUSICEXT:
 	M_Print (16, 32 + 8*OPT_MUSICEXT,	"        External Music");
