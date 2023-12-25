@@ -2189,6 +2189,15 @@ static void COM_Game_f (void)
 			}
 		}
 
+		if (Sys_FileType(va("%s/%s", com_basedir, p)) != FS_ENT_DIRECTORY)
+		{
+			if (host_parms->userdir == host_parms->basedir || (Sys_FileType(va("%s/%s", host_parms->userdir, p)) != FS_ENT_DIRECTORY))
+			{
+				Con_Printf ("No such game directory \"%s\"\n", p);
+				return;
+			}
+		}
+
 		if (!q_strcasecmp(p, COM_SkipPath(com_gamedir))) //no change
 		{
 			if (com_searchpaths->path_id > 1) { //current game not id1
