@@ -234,6 +234,8 @@ cvar_t	cl_anglespeedkey = {"cl_anglespeedkey","1.5",CVAR_NONE};
 
 cvar_t	cl_alwaysrun = {"cl_alwaysrun","0",CVAR_ARCHIVE}; // QuakeSpasm -- new always run
 
+cvar_t	cl_maxroll = {"cl_maxroll", "180", CVAR_ARCHIVE}; //bmFbr -- variable Z roll clamping
+
 /*
 ================
 CL_AdjustAngles
@@ -280,10 +282,10 @@ void CL_AdjustAngles (void)
 		cl.viewangles[PITCH] = cl_minpitch.value;
 	//johnfitz
 
-	if (cl.viewangles[ROLL] > 180)
-		cl.viewangles[ROLL] = 180;
-	if (cl.viewangles[ROLL] < -180)
-		cl.viewangles[ROLL] = -180;
+	if (cl.viewangles[ROLL] > cl_maxroll.value)
+		cl.viewangles[ROLL] = cl_maxroll.value;
+	if (cl.viewangles[ROLL] < -cl_maxroll.value)
+		cl.viewangles[ROLL] = -cl_maxroll.value;
 }
 
 /*
