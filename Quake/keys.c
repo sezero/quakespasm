@@ -466,7 +466,13 @@ void Char_Console (int key)
 			workline[MAXCMDLINE - 2] = 0;
 			workline += key_linepos;
 			len = strlen(workline) + 1;
+			#if defined(__GNUC__) && (__GNUC__ > 7)
+			#pragma GCC diagnostic ignored "-Warray-bounds"
+			#endif
 			memmove (workline + 1, workline, len);
+			#if defined(__GNUC__) && (__GNUC__ > 7)
+			#pragma GCC diagnostic pop
+			#endif
 			*workline = key;
 		}
 		else
