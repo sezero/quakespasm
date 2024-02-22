@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop-application"/>
-<application>
-  <id type="desktop">net.sourceforge.quakespasm.Quakespasm</id>
+<component type="desktop-application">
+  <id>net.sourceforge.quakespasm.Quakespasm</id>
   <name>Quakespasm</name>
-  <developer_name>Quakespasm contributors</developer_name>
+  <developer id="quakespasm.sourceforge.net"><name>Quakespasm contributors</name></developer>
   <summary>A modern port of the original Quake engine</summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
   <url type="homepage">https://quakespasm.sourceforge.net/</url>
+  <launchable type="desktop-id">net.sourceforge.quakespasm.Quakespasm.desktop</launchable>
   <description>
     <p>Quakespasm is a *Nix friendly Quake Engine based on the SDL port of the popular FitzQuake.
       It includes some new features, important fixes, and aims for portability and 64 bit correctness.</p>
@@ -25,7 +25,7 @@
       </ul>
     <p>Quakespasm requires a copy of the Quake game data, at the least in the form of the shareware data file
       pak0.pak. In order to set this up, open (and if necessary create) the directory
-      ~/.var/app/net.sourceforge.quakespasm.Quakespasm/data on your computer and copy the id1 directory
+      <code>~/.var/app/net.sourceforge.quakespasm.Quakespasm/data</code> on your computer and copy the <code>id1</code> directory
       from a copy of Quake there. Quakespasm will notify you on startup if it cannot find or access the game data.</p>
   </description>
   <screenshots>
@@ -66,4 +66,4 @@
     <content_attribute id="violence-desecration">moderate</content_attribute>
   </content_rating>
   <update_contact>https://sourceforge.net/projects/quakespasm/support</update_contact>
-</application>
+</component>
