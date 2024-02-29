@@ -1,4 +1,4 @@
-name: Windows CI
+name: Windows MSVC CI
 
 on: [push, pull_request]
 
@@ -12,9 +12,9 @@ jobs:
         platform: [x64, Win32]
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
-    - uses: microsoft/setup-msbuild@v1
+    - uses: microsoft/setup-msbuild@v2
 
     - name: Build ${{ matrix.platform }}
       run: |

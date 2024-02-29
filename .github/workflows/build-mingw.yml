@@ -12,7 +12,6 @@ jobs:
         config:
           - target: win32
             package: i686-win32
-
           - target: win64
             package: x86-64
 
