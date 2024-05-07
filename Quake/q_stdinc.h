@@ -126,27 +126,23 @@ COMPILE_TIME_ASSERT(enum, sizeof(THE_DUMMY_ENUM) == sizeof(int));
 
 typedef unsigned char		byte;
 
+/* some structures have qboolean members and the x86 asm code expect
+ * those members to be 4 bytes long.  i.e.: qboolean must be 32 bits.  */
+typedef int	qboolean;
 #undef true
 #undef false
-#if defined(__cplusplus)
-/* some structures have qboolean members and the x86 asm code expect
- * those members to be 4 bytes long. therefore, qboolean must be 32
- * bits and it can NOT be binary compatible with the 8 bit C++ bool.  */
-typedef int	qboolean;
-COMPILE_TIME_ASSERT(falsehood, (0 == false));
-COMPILE_TIME_ASSERT(truth, (1  == true));
+#if !defined(__cplusplus)
+#if defined __STDC_VERSION__ && (__STDC_VERSION__ >= 199901L)
+#include <stdbool.h>
 #else
-#if defined __STDC_VERSION__ && __STDC_VERSION__ > 201710L
-typedef int	qboolean; /* C23: true/false are keywords. */
-#else
-typedef enum {
+enum {
 	false = 0,
 	true  = 1
-} qboolean;
+};
 #endif
+#endif /* */
 COMPILE_TIME_ASSERT(falsehood, ((1 != 1) == false));
 COMPILE_TIME_ASSERT(truth, ((1 == 1) == true));
-#endif
 COMPILE_TIME_ASSERT(qboolean, sizeof(qboolean) == 4);
 
 /*==========================================================================*/
