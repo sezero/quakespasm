@@ -26,8 +26,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef __QSTDINC_H
-#define __QSTDINC_H
+#ifndef QSTDINC_H
+#define QSTDINC_H
 
 #include <sys/types.h>
 #include <stddef.h>
@@ -136,10 +136,14 @@ typedef int	qboolean;
 COMPILE_TIME_ASSERT(falsehood, (0 == false));
 COMPILE_TIME_ASSERT(truth, (1  == true));
 #else
+#if defined __STDC_VERSION__ && __STDC_VERSION__ > 201710L
+typedef int	qboolean; /* C23: true/false are keywords. */
+#else
 typedef enum {
 	false = 0,
 	true  = 1
 } qboolean;
+#endif
 COMPILE_TIME_ASSERT(falsehood, ((1 != 1) == false));
 COMPILE_TIME_ASSERT(truth, ((1 == 1) == true));
 #endif
@@ -244,6 +248,4 @@ typedef ptrdiff_t	ssize_t;
 
 /*==========================================================================*/
 
-
-#endif	/* __QSTDINC_H */
-
+#endif	/* QSTDINC_H */
