@@ -214,6 +214,9 @@ void DrawWaterPoly (glpoly_t *p)
 R_UpdateWarpTextures -- johnfitz -- each frame, update warping textures
 =============
 */
+#ifdef __WATCOMC__ /* OW1.9 doesn't have floorf() */
+#define floorf(_val)		(float)floor((_val))
+#endif
 void R_UpdateWarpTextures (void)
 {
 	texture_t *tx;
@@ -223,7 +226,7 @@ void R_UpdateWarpTextures (void)
 	if (r_oldwater.value || cl.paused || r_drawflat_cheatsafe || r_lightmap_cheatsafe)
 		return;
 
-	warptess = 128.0/CLAMP (3.0, floor(r_waterquality.value), 64.0);
+	warptess = 128.0f/CLAMP (3.0f, floorf(r_waterquality.value), 64.0f);
 
 	for (i=0; i<cl.worldmodel->numtextures; i++)
 	{
