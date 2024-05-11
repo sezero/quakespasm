@@ -175,8 +175,10 @@
 #undef __WIN32__
 #define __WIN32__ 1
 #endif
-#if defined(__PSP__)
+#if defined(__PSP__) || defined(__psp__)
+#ifdef __PSP__
 #undef __PSP__
+#endif
 #define __PSP__ 1
 #endif
 
