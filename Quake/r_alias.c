@@ -981,6 +981,7 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 {
 	aliashdr_t	*paliashdr;
 	lerpdata_t	lerpdata;
+	float	fovscale = 1.0f;
 
 	if (R_CullModelForEntity(e))
 		return;
@@ -989,10 +990,13 @@ void R_DrawAliasModel_ShowTris (entity_t *e)
 	R_SetupAliasFrame (paliashdr, e->frame, &lerpdata);
 	R_SetupEntityTransform (e, &lerpdata);
 
+	if (e == &cl.viewent && scr_fov.value > 90.f && cl_gun_fovscale.value)
+		fovscale = tan(scr_fov.value * (0.5f * M_PI / 180.f));
+
 	glPushMatrix ();
 	R_RotateForEntity (lerpdata.origin,lerpdata.angles, e->scale);
-	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1], paliashdr->scale_origin[2]);
-	glScalef (paliashdr->scale[0], paliashdr->scale[1], paliashdr->scale[2]);
+	glTranslatef (paliashdr->scale_origin[0], paliashdr->scale_origin[1] * fovscale, paliashdr->scale_origin[2] * fovscale);
+	glScalef (paliashdr->scale[0], paliashdr->scale[1] * fovscale, paliashdr->scale[2] * fovscale);
 
 	shading = false;
 	glColor3f(1,1,1);
