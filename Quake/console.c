@@ -840,7 +840,7 @@ FindCompletion -- stevenaaus
 */
 const char *FindCompletion (const char *partial, filelist_item_t *filelist, int *nummatches_out)
 {
-	static char matched[32];
+	static char matched[40];
 	char *i_matched, *i_name;
 	filelist_item_t	*file;
 	int   init, match, plen;
