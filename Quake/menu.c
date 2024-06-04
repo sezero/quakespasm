@@ -1151,7 +1151,7 @@ void M_DrawSlider (int x, int y, float range, float value, const char *format)
 		M_DrawCharacter (x + i*8, y, 129);
 	M_DrawCharacter (x+i*8, y, 130);
 	M_DrawCharacter (x + (SLIDER_RANGE-1)*8 * range, y, 131);
-	snprintf(buffer, 5, format, value);
+	q_snprintf(buffer, 5, format, value);
 	M_Print (x + (SLIDER_RANGE + 1) * 8, y, buffer);
 }
 
