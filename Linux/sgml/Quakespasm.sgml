@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: September 2023.</em>
+<em>Page last edited: June 2024.</em>
 
 <sect>About<p>
 
@@ -138,6 +138,22 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect>Changes<p>
+
+<sect1>Changes in 0.96.2<p>
+<itemize>
+<item> Fix stack buffer overrun Mod_PolyForUnlitSurface: fixes crash when loading lim_daviddg.bsp from Liminal Spaces Jam.
+<item> Fix potential buffer overflow in progs global string functions.
+<item> Fix potential buffer overflow in Mod_LoadAliasFrame()
+<item> Optimize BoxOnPlaneSide()
+<item> Reserve enough space in PF_makestatic() for worst case scenarios.
+<item> Improve handling of huge entities in SV_FindTouchedLeafs()
+<item> Apply FOV gun scaling for r_showtris
+<item> Sliders with visible values in options menu.
+<item> Fix build in C23 mode.
+<item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Diordany van Hemert, and Jaime Moreira for patches.
+</itemize>
+</p>
 
 <sect1>Changes in 0.96.1<p>
 <itemize>
