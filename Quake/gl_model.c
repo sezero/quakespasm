@@ -1150,38 +1150,28 @@ TODO: merge this into BuildSurfaceDisplayList?
 */
 static void Mod_PolyForUnlitSurface (msurface_t *fa)
 {
-	vec3_t		verts[64];
-	int			numverts, i, lindex;
+	const int	numverts = fa->numedges;
+	int		i, lindex;
 	float		*vec;
 	glpoly_t	*poly;
 	float		texscale;
 
 	if (fa->flags & (SURF_DRAWTURB | SURF_DRAWSKY))
-		texscale = (1.0/128.0); //warp animation repeats every 128
+		texscale = (1.0f/128.0f); //warp animation repeats every 128
 	else
-		texscale = (1.0/32.0); //to match r_notexture_mip
+		texscale = (1.0f/32.0f); //to match r_notexture_mip
 
-	// convert edges back to a normal polygon
-	numverts = 0;
-	for (i=0 ; i<fa->numedges ; i++)
-	{
-		lindex = loadmodel->surfedges[fa->firstedge + i];
-
-		if (lindex > 0)
-			vec = loadmodel->vertexes[loadmodel->edges[lindex].v[0]].position;
-		else
-			vec = loadmodel->vertexes[loadmodel->edges[-lindex].v[1]].position;
-		VectorCopy (vec, verts[numverts]);
-		numverts++;
-	}
-
-	//create the poly
 	poly = (glpoly_t *) Hunk_Alloc (sizeof(glpoly_t) + (numverts-4) * VERTEXSIZE*sizeof(float));
 	poly->next = NULL;
 	fa->polys = poly;
 	poly->numverts = numverts;
-	for (i=0, vec=(float *)verts; i<numverts; i++, vec+= 3)
+	for (i=0; i<numverts; i++)
 	{
+		lindex = loadmodel->surfedges[fa->firstedge + i];
+		vec = (lindex > 0) ?
+			loadmodel->vertexes[loadmodel->edges[lindex].v[0]].position :
+			loadmodel->vertexes[loadmodel->edges[-lindex].v[1]].position;
+
 		VectorCopy (vec, poly->verts[i]);
 		poly->verts[i][3] = DotProduct(vec, fa->texinfo->vecs[0]) * texscale;
 		poly->verts[i][4] = DotProduct(vec, fa->texinfo->vecs[1]) * texscale;
