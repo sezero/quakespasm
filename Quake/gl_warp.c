@@ -44,11 +44,11 @@ static const float	turbsin[] = {
 //
 //==============================================================================
 
-msurface_t	*warpface;
+static msurface_t	*warpface;
 
 cvar_t gl_subdivide_size = {"gl_subdivide_size", "128", CVAR_ARCHIVE};
 
-void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
+static void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
 {
 	int		i, j;
 	float	*v;
@@ -66,7 +66,7 @@ void BoundPoly (int numverts, float *verts, vec3_t mins, vec3_t maxs)
 		}
 }
 
-void SubdividePolygon (int numverts, float *verts)
+static void SubdividePolygon (int numverts, float *verts)
 {
 	int		i, j, k;
 	vec3_t	mins, maxs;
@@ -80,7 +80,7 @@ void SubdividePolygon (int numverts, float *verts)
 	float	s, t;
 
 	if (numverts > 60)
-		Sys_Error ("numverts = %i", numverts);
+		Sys_Error ("SubdividePolygon: numverts = %i", numverts);
 
 	BoundPoly (numverts, verts, mins, maxs);
 
@@ -158,6 +158,9 @@ void GL_SubdivideSurface (msurface_t *fa)
 {
 	vec3_t	verts[64];
 	int		i;
+
+	if (fa->polys->numverts > 64)
+		Sys_Error ("GL_SubdivideSurface: numverts = %i", fa->polys->numverts);
 
 	warpface = fa;
 
