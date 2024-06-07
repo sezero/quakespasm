@@ -149,6 +149,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Improve handling of huge entities in SV_FindTouchedLeafs()
 <item> Apply FOV gun scaling for r_showtris
 <item> Sliders with visible values in options menu.
+<item> game command now refuses setting a non-existing game directory
 <item> Fix build in C23 mode.
 <item> Minor code cleanups. Updated third party code, e.g. SDL, music codecs, etc.
 <item> Thanks to Andrei Drexler, Alexey Lysiuk, Diordany van Hemert, and Jaime Moreira for patches.

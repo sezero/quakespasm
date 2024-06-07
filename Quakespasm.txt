@@ -240,6 +240,8 @@
 
   -  Sliders with visible values in options menu.
 
+  -  game command now refuses setting a non-existing game directory
+
   -  Fix build in C23 mode.
 
   -  Minor code cleanups. Updated third party code, e.g. SDL, music
