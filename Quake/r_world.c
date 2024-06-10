@@ -319,7 +319,7 @@ void R_DrawTextureChains_Glow (qmodel_t *model, entity_t *ent, texchain_t chain)
 //
 //==============================================================================
 
-static unsigned int R_NumTriangleIndicesForSurf (msurface_t *s)
+static int R_NumTriangleIndicesForSurf (msurface_t *s)
 {
 	return 3 * (s->numedges - 2);
 }
@@ -384,9 +384,13 @@ using VBOs.
 */
 static void R_BatchSurface (msurface_t *s)
 {
-	int num_surf_indices;
+	int num_surf_indices = R_NumTriangleIndicesForSurf (s);
 
-	num_surf_indices = R_NumTriangleIndicesForSurf (s);
+	if (num_surf_indices <= 0)
+	{
+	//	Con_DWarning ("bad numedges for surface\n");
+		return;
+	}
 
 	if (num_vbo_indices + num_surf_indices > MAX_BATCH_SIZE)
 		R_FlushBatch();

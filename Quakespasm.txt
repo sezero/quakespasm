@@ -236,6 +236,9 @@
 
   -  Improve handling of huge entities in SV_FindTouchedLeafs()
 
+  -  Warn about bad maps with only 1 or 2 edges per face (e.g.: mj4m?,
+     alk_dancing, ej3_bizz, rotj_entsoy...)
+
   -  Apply FOV gun scaling for r_showtris
 
   -  Sliders with visible values in options menu.

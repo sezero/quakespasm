@@ -1282,6 +1282,8 @@ static void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 		}
 
 		out->flags = 0;
+		if (out->numedges < 3)
+			Con_Warning("surfnum %d: bad numedges %d\n", surfnum, out->numedges);
 
 		if (side)
 			out->flags |= SURF_PLANEBACK;
