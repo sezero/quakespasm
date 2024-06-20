@@ -826,6 +826,8 @@ void CL_Init (void)
 	Cvar_RegisterVariable (&cl_maxpitch); //johnfitz -- variable pitch clamping
 	Cvar_RegisterVariable (&cl_minpitch); //johnfitz -- variable pitch clamping
 
+	Cvar_RegisterVariable (&cl_maxroll); //bmFbr -- variable Z roll clamping
+
 	Cvar_RegisterVariable (&cl_startdemos);
 
 	Cmd_AddCommand ("entities", CL_PrintEntities_f);
