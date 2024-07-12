@@ -91,5 +91,8 @@ char *PL_GetClipboardData (void)
 
 void PL_ErrorDialog (const char *errorMsg)
 {
+#if defined(USE_SDL2)
+	SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Quake Error", errorMsg, NULL);
+#endif
 }
 
