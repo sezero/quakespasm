@@ -1,0 +1,8 @@
+Windows/VisualStudio/.vs/
+Windows/VisualStudio/Build-*/
+Windows/VisualStudio/quakespasm.vcxproj.user
+Quake/*.o
+Quake/*.d
+Quake/*.res
+Quake/*.exe
+Quake/quakespasm
