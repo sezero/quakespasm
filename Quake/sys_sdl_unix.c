@@ -280,7 +280,7 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 	char *prefpath = SDL_GetPrefPath (NULL, SYS_USERDIR);
 	if (prefpath == NULL)
 		Sys_Error ("Couldn't determine userspace directory");
-	q_snprintf (dst, dstsize, "%s", basepath);
+	q_snprintf (dst, dstsize, "%s", prefpath);
 	SDL_free (prefpath);
 #else /* USE_SDL2 */
 	/* note - we're specifically not using XDG_CONFIG_HOME here so we can match
