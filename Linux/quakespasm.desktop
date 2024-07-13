@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=QuakeSpasm
+Comment=A modernised fork of the Quake engine
+Icon=quakespasm
+TryExec=quakespasm
+Exec=quakespasm
+Categories=Game;ActionGame;Shooter;
+Keywords=first;person;shooter;fps;3d;quake;

@@ -289,8 +289,20 @@ install:	quakespasm
 	cp quakespasm $(QS_APP_DIR)
 	cp quakespasm.pak $(QS_APP_DIR)
 else
+QS_BIN_DIR?=/usr/local/bin/
+QS_DATA_DIR?=/usr/local/share/
+QS_BASE_DIR?=$(QS_DATA_DIR)/games/quake/
+QS_APP_DIR?=$(QS_DATA_DIR)/applications/
+QS_ICON_DIR?=$(QS_DATA_DIR)/icons/hicolor/scalable/apps/
 install:	quakespasm
-	cp quakespasm /usr/local/games/quake
+	mkdir -p $(QS_BIN_DIR)
+	mkdir -p $(QS_BASE_DIR)
+	mkdir -p $(QS_APP_DIR)
+	mkdir -p $(QS_ICON_DIR)
+	cp quakespasm $(QS_BIN_DIR)
+	cp quakespasm.pak $(QS_BASE_DIR)
+	cp ../Linux/quakespasm.desktop $(QS_APP_DIR)
+	cp ../Misc/quakespasm.svg $(QS_ICON_DIR)
 endif
 
 sinclude $(OBJS:.o=.d)
