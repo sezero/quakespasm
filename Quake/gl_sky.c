@@ -32,23 +32,23 @@ float *Fog_GetColor(void);
 extern	int	rs_skypolys; // for r_speeds readout
 extern	int	rs_skypasses; // for r_speeds readout
 
-float	skyflatcolor[3];
-float	skymins[2][6], skymaxs[2][6];
+static float	skyflatcolor[3];
+static float	skymins[2][6], skymaxs[2][6];
 
-char	skybox_name[1024]; //name of current skybox, or "" if no skybox
+static char	skybox_name[1024]; //name of current skybox, or "" if no skybox
 
-gltexture_t	*skybox_textures[6];
-gltexture_t	*solidskytexture, *alphaskytexture;
+static gltexture_t	*skybox_textures[6];
+static gltexture_t	*solidskytexture, *alphaskytexture;
 
 extern cvar_t gl_farclip;
-cvar_t r_fastsky = {"r_fastsky", "0", CVAR_NONE};
-cvar_t r_sky_quality = {"r_sky_quality", "12", CVAR_NONE};
-cvar_t r_skyalpha = {"r_skyalpha", "1", CVAR_NONE};
-cvar_t r_skyfog = {"r_skyfog","0.5",CVAR_NONE};
+static cvar_t r_fastsky = {"r_fastsky", "0", CVAR_NONE};
+static cvar_t r_sky_quality = {"r_sky_quality", "12", CVAR_NONE};
+static cvar_t r_skyalpha = {"r_skyalpha", "1", CVAR_NONE};
+static cvar_t r_skyfog = {"r_skyfog","0.5",CVAR_NONE};
 
-int		skytexorder[6] = {0,2,1,3,4,5}; //for skybox
+static const int skytexorder[6] = {0,2,1,3,4,5}; //for skybox
 
-vec3_t	skyclip[6] = {
+static const vec3_t skyclip[6] = {
 	{1,1,0},
 	{1,-1,0},
 	{0,-1,1},
@@ -57,7 +57,7 @@ vec3_t	skyclip[6] = {
 	{-1,0,1}
 };
 
-int	st_to_vec[6][3] =
+static const int st_to_vec[6][3] =
 {
 	{3,-1,2},
 	{-3,1,2},
@@ -67,7 +67,7 @@ int	st_to_vec[6][3] =
 	{2,-1,-3}		// straight down
 };
 
-int	vec_to_st[6][3] =
+static const int vec_to_st[6][3] =
 {
 	{-2,3,1},
 	{2,3,-1},
@@ -77,7 +77,7 @@ int	vec_to_st[6][3] =
 	{-2,1,-3}
 };
 
-float	skyfog; // ericw
+static float	skyfog; // ericw
 
 //==============================================================================
 //
@@ -213,7 +213,7 @@ void Sky_LoadTextureQ64 (qmodel_t *mod, texture_t *mt)
 Sky_LoadSkyBox
 ==================
 */
-const char	*suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
+static const char *suf[6] = {"rt", "bk", "lf", "ft", "up", "dn"};
 void Sky_LoadSkyBox (const char *name)
 {
 	int		i, mark, width, height;
@@ -339,7 +339,6 @@ void Sky_NewMap (void)
 
 		if (!strcmp("skyfog", key))
 			skyfog = atof(value);
-
 #if 1 /* also accept non-standard keys */
 		else if (!strcmp("skyname", key)) //half-life
 			Sky_LoadSkyBox(value);
@@ -490,9 +489,9 @@ void Sky_ProjectPoly (int nump, vec3_t vecs)
 Sky_ClipPoly
 =================
 */
-void Sky_ClipPoly (int nump, vec3_t vecs, int stage)
+static void Sky_ClipPoly (int nump, vec3_t vecs, int stage)
 {
-	float	*norm;
+	const float	*norm;
 	float	*v;
 	qboolean	front, back;
 	float	d, e;
