@@ -1,5 +1,4 @@
-/*
- * q_stdinc.h - includes the minimum necessary stdc headers,
+/* q_stdinc.h - includes the minimum necessary stdc headers,
  *		defines common and / or missing types.
  *
  * NOTE:	for net stuff use net_sys.h,
@@ -86,14 +85,20 @@
 #define	Q_MININT	((int)0x80000000)
 #define	Q_MINLONG	((int)0x80000000)
 
-/* Make sure the types really have the right
- * sizes: These macros are from SDL headers.
- */
-#if defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
-#define COMPILE_TIME_ASSERT(name, x) _Static_assert(x, #x)
-#elif defined(__cplusplus) && (__cplusplus >= 201103L)
+#ifndef COMPILE_TIME_ASSERT
+#if defined(__cplusplus)
+/* Keep C++ case alone: Some versions of gcc will define __STDC_VERSION__ even when compiling in C++ mode. */
+#if (__cplusplus >= 201103L)
 #define COMPILE_TIME_ASSERT(name, x)  static_assert(x, #x)
-#else /* universal, but may trigger -Wunused-local-typedefs */
+#endif
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 202311L)
+#define COMPILE_TIME_ASSERT(name, x)  static_assert(x, #x)
+#elif defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 201112L)
+#define COMPILE_TIME_ASSERT(name, x) _Static_assert(x, #x)
+#endif
+#endif /**/
+#ifndef COMPILE_TIME_ASSERT
+/* universal, but may trigger -Wunused-local-typedefs */
 #define COMPILE_TIME_ASSERT(name, x) \
 	typedef int dummy_ ## name[(x) * 2 - 1]
 #endif
