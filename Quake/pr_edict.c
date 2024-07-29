@@ -44,7 +44,7 @@ int		pr_edict_size;		// in bytes
 
 unsigned short	pr_crc;
 
-int		type_size[8] = {
+const int	type_size[8] = {
 	1,					// ev_void
 	1,	// sizeof(string_t) / 4		// ev_string
 	1,					// ev_float
