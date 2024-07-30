@@ -44,7 +44,7 @@ int		pr_edict_size;		// in bytes
 
 unsigned short	pr_crc;
 
-const int	type_size[8] = {
+const int	type_size[NUM_TYPE_SIZES] = {
 	1,					// ev_void
 	1,	// sizeof(string_t) / 4		// ev_string
 	1,					// ev_float
@@ -54,8 +54,6 @@ const int	type_size[8] = {
 	1,	// sizeof(func_t) / 4		// ev_function
 	1	// sizeof(void *) / 4		// ev_pointer
 };
-
-#define NUM_TYPE_SIZES (int)Q_COUNTOF(type_size)
 
 static ddef_t	*ED_FieldAtOfs (int ofs);
 static qboolean	ED_ParseEpair (void *base, ddef_t *key, const char *s);
