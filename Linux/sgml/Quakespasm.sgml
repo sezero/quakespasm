@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: June 2024.</em>
+<em>Page last edited: July 2024.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -136,6 +136,16 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect>Changes<p>
+
+<sect1>Changes in 0.96.3<p>
+<itemize>
+<item> Fix potential infinite loop when playing sounds with loop start >= end (e.g. misc/forcefield.wav from Madfox's kaptlog.zip)
+<item> Fix possible overflow when resampling very big sounds (e.g. gram1.wav from the 'A day like no other' mod.)
+<item> Change Sky_ClipPoly to allocate on the heap in if MAX_CLIP_VERTS limit is reached (e.g. with lim_daviddg from Liminal Spaces Jam)
+<item> Minor code cleanups. Updates to third party code.
+<item> Thanks to Andrei Drexler, Vincent Sonnier, Alexey Lysiuk, and Jaycie Ewald for patches.
+</itemize>
+</p>
 
 <sect1>Changes in 0.96.2<p>
 <itemize>

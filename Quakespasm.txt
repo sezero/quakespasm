@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: June 2024.
+  Page last edited: July 2024.
 
 
   1. About
@@ -220,6 +220,23 @@
 
 
   5. Changes
+
+  Changes in 0.96.3:
+
+  -  Fix potential infinite loop when playing sounds with loop start >=
+     end (e.g. misc/forcefield.wav from Madfox's kaptlog.zip)
+
+  -  Fix possible overflow when resampling very big sounds (e.g.
+     gram1.wav from the 'A day like no other' mod.)
+
+  -  Change Sky_ClipPoly to allocate on the heap in if MAX_CLIP_VERTS
+     limit is reached (e.g. with lim_daviddg from Liminal Spaces Jam)
+
+  -  Minor code cleanups. Updates to third party code.
+
+  -  Thanks to Andrei Drexler, Vincent Sonnier, Alexey Lysiuk, and
+     Jaycie Ewald for patches.
+
 
   Changes in 0.96.2:
 
