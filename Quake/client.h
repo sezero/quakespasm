@@ -266,6 +266,7 @@ extern	cvar_t	m_side;
 
 extern	cvar_t	cl_startdemos;
 
+extern	cvar_t	cl_maxroll;
 
 #define	MAX_TEMP_ENTITIES	256		//johnfitz -- was 64
 #define	MAX_STATIC_ENTITIES	4096	//ericw -- was 512	//johnfitz -- was 128
