@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include <sys/time.h>
 #include <fcntl.h>
 #ifdef DO_USERDIRS
+#include <sys/stat.h>
 #include <pwd.h>
 #endif
 
@@ -240,22 +241,26 @@ static int Sys_NumCPUs (void)
 }
 #endif
 
-static char	cwd[MAX_OSPATH];
+static char basedir[MAX_OSPATH];
+static char userdir[MAX_OSPATH];
 #ifdef DO_USERDIRS
-static char	userdir[MAX_OSPATH];
-#ifdef PLATFORM_OSX
-#define SYS_USERDIR	"Library/Application Support/QuakeSpasm"
-#elif defined(PLATFORM_HAIKU)
-#define SYS_USERDIR	"QuakeSpasm"
-#else
-#define SYS_USERDIR	".quakespasm"
-#endif
-
 #ifdef PLATFORM_HAIKU
+#define SYS_USERDIR "QuakeSpasm"
 #include <FindDirectory.h>
 #include <fs_info.h>
-
 static void Sys_GetUserdir (char *dst, size_t dstsize)
+{
+	dev_t volume = dev_for_path("/boot");
+	char buffer[B_PATH_NAME_LENGTH];
+	status_t result;
+
+	result = find_directory(B_USER_SETTINGS_DIRECTORY, volume, false, buffer, sizeof(buffer));
+	if (result != B_OK)
+		Sys_Error ("Couldn't determine userspace directory");
+
+	q_snprintf (dst, dstsize, "%s/%s", buffer, SYS_USERDIR);
+}
+static void Sys_GetBasedir (char *dst, size_t dstsize)
 {
 	dev_t volume = dev_for_path("/boot");
 	char buffer[B_PATH_NAME_LENGTH];
@@ -267,111 +272,67 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 
 	q_snprintf (dst, dstsize, "%s/%s", buffer, SYS_USERDIR);
 }
-#else
+#else /* PLATFORM_HAIKU */
+#define SYS_USERDIR "quakespasm"
 static void Sys_GetUserdir (char *dst, size_t dstsize)
 {
-	size_t		n;
-	const char	*home_dir = NULL;
-	struct passwd	*pwent;
-
-	pwent = getpwuid( getuid() );
-	if (pwent == NULL)
-		perror("getpwuid");
-	else
-		home_dir = pwent->pw_dir;
-	if (home_dir == NULL)
-		home_dir = getenv("HOME");
-	if (home_dir == NULL)
+#ifdef USE_SDL2
+	char *prefpath = SDL_GetPrefPath (NULL, SYS_USERDIR);
+	if (prefpath == NULL)
 		Sys_Error ("Couldn't determine userspace directory");
-
-/* what would be a maximum path for a file in the user's directory...
- * $HOME/SYS_USERDIR/game_dir/dirname1/dirname2/dirname3/filename.ext
- * still fits in the MAX_OSPATH == 256 definition, but just in case :
- */
-	n = strlen(home_dir) + strlen(SYS_USERDIR) + 50;
-	if (n >= dstsize)
-		Sys_Error ("Insufficient array size for userspace directory");
-
-	q_snprintf (dst, dstsize, "%s/%s", home_dir, SYS_USERDIR);
-}
-#endif	/* PLATFORM_HAIKU */
-#endif	/* DO_USERDIRS */
-
-#ifdef PLATFORM_OSX
-static char *OSX_StripAppBundle (char *dir)
-{ /* based on the ioquake3 project at icculus.org. */
-	static char	osx_path[MAX_OSPATH];
-
-	q_strlcpy (osx_path, dir, sizeof(osx_path));
-	if (strcmp(basename(osx_path), "MacOS"))
-		return dir;
-	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
-	if (strcmp(basename(osx_path), "Contents"))
-		return dir;
-	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
-	if (!strstr(basename(osx_path), ".app"))
-		return dir;
-	q_strlcpy (osx_path, dirname(osx_path), sizeof(osx_path));
-	return osx_path;
-}
-
-static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
-{
-	char	*tmp;
-
-	if (realpath(argv0, dst) == NULL)
+	q_snprintf (dst, dstsize, "%s", prefpath);
+	SDL_free (prefpath);
+#else /* USE_SDL2 */
+	/* note - we're specifically not using XDG_CONFIG_HOME here so we can match
+	 * the behaviour of SDL_GetPrefPath()
+	 */
+	const char *env = getenv("XDG_DATA_HOME");
+	if (env)
 	{
-		perror("realpath");
-		if (getcwd(dst, dstsize - 1) == NULL)
-	_fail:		Sys_Error ("Couldn't determine current directory");
+		q_snprintf (dst, dstsize, "%s/%s", env, SYS_USERDIR);
 	}
 	else
 	{
-		/* strip off the binary name */
-		if (! (tmp = strdup (dst))) goto _fail;
-		q_strlcpy (dst, dirname(tmp), dstsize);
-		free (tmp);
+		/* $XDG_DATA_HOME failed, try getpwuid */
+		struct passwd *pw = getpwuid(getuid());
+		/* give up */
+		if (!pw)
+			Sys_Error ("Couldn't determine userspace directory");
+		env = pw->pw_dir;
+		q_snprintf (dst, dstsize, "%s/.local/share/%s", env, SYS_USERDIR);
 	}
-
-	tmp = OSX_StripAppBundle(dst);
-	if (tmp != dst)
-		q_strlcpy (dst, tmp, dstsize);
+#endif /* USE_SDL2 */
 }
-#else
-static void Sys_GetBasedir (char *argv0, char *dst, size_t dstsize)
+static void Sys_GetBasedir (char *dst, size_t dstsize)
 {
-	char	*tmp;
-
-	#ifdef PLATFORM_HAIKU
-	if (realpath(argv0, dst) == NULL)
+	const char *env = getenv("XDG_DATA_HOME");
+	if (env)
 	{
-		perror("realpath");
-		if (getcwd(dst, dstsize - 1) == NULL)
-	_fail:		Sys_Error ("Couldn't determine current directory");
+		/* user-defined quake dir */
+		q_snprintf (dst, dstsize, "%s/games/quake", env);
 	}
 	else
 	{
-		/* strip off the binary name */
-		if (! (tmp = strdup (dst))) goto _fail;
-		q_strlcpy (dst, dirname(tmp), dstsize);
-		free (tmp);
+		/* fall back to system quake dir */
+		q_snprintf (dst, dstsize, "%s", "/usr/local/share/games/quake");
 	}
-	#else
+}
+#endif /* PLATFORM_HAIKU */
+#else /* DO_USERDIRS */
+static void Sys_GetBasedir (char *dst, size_t dstsize)
+{
+#ifdef USE_SDL2
+	char *basepath = SDL_GetBasePath ();
+	if (basepath == NULL)
+		Sys_Error ("Couldn't determine base directory");
+	q_snprintf (dst, dstsize, "%s", basepath);
+	SDL_free (basepath);
+#else /* USE_SDL2 */
 	if (getcwd(dst, dstsize - 1) == NULL)
-		Sys_Error ("Couldn't determine current directory");
-
-	tmp = dst;
-	while (*tmp != 0)
-		tmp++;
-	while (*tmp == 0 && tmp != dst)
-	{
-		--tmp;
-		if (tmp != dst && *tmp == '/')
-			*tmp = 0;
-	}
-	#endif
+		Sys_Error ("Couldn't determine base directory");
+#endif /* USE_SDL2 */
 }
-#endif
+#endif /* DO_USERDIRS */
 
 void Sys_Init (void)
 {
@@ -381,17 +342,23 @@ void Sys_Init (void)
 	if (!stdinIsATTY)
 		Sys_Printf("Terminal input not available.\n");
 
-	memset (cwd, 0, sizeof(cwd));
-	Sys_GetBasedir(host_parms->argv[0], cwd, sizeof(cwd));
-	host_parms->basedir = cwd;
-#ifndef DO_USERDIRS
-	host_parms->userdir = host_parms->basedir; /* code elsewhere relies on this ! */
-#else
+	memset (basedir, 0, sizeof(basedir));
 	memset (userdir, 0, sizeof(userdir));
-	Sys_GetUserdir(userdir, sizeof(userdir));
-	Sys_mkdir (userdir);
-	host_parms->userdir = userdir;
+
+	Sys_GetBasedir (basedir, sizeof(basedir));
+
+#ifdef DO_USERDIRS
+	Sys_GetUserdir (userdir, sizeof(userdir));
+#else
+	Sys_GetBasedir (userdir, sizeof(userdir));
 #endif
+
+	host_parms->basedir = basedir;
+	host_parms->userdir = userdir;
+	Sys_mkdir (host_parms->basedir);
+	Sys_mkdir (host_parms->userdir);
+
+	Sys_Printf("Basedir: %s\nUserdir: %s\n", host_parms->basedir, host_parms->userdir);
 	host_parms->numcpus = Sys_NumCPUs ();
 	Sys_Printf("Detected %d CPUs.\n", host_parms->numcpus);
 }
