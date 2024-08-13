@@ -292,6 +292,7 @@ void Sky_ClearAll (void)
 		skybox_textures[i] = NULL;
 	solidskytexture = NULL;
 	alphaskytexture = NULL;
+	Cvar_SetQuick (&r_skyfog, r_skyfog.default_string);
 }
 
 /*
