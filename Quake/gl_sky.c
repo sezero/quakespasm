@@ -22,6 +22,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 //gl_sky.c
 
+#ifdef __WATCOMC__
+#include <malloc.h>  /* for alloca(). */
+#endif
 #include "quakedef.h"
 
 #define	MAX_CLIP_VERTS 64
