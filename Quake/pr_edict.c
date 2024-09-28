@@ -196,7 +196,7 @@ static ddef_t *ED_FieldAtOfs (int ofs)
 	ddef_t		*def;
 	int			i;
 
-	for (i = 0; i < progs->numfielddefs; i++)
+	for (i = 1; i < progs->numfielddefs; i++)
 	{
 		def = &pr_fielddefs[i];
 		if (def->ofs == ofs)
