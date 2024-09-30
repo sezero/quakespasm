@@ -69,6 +69,8 @@ static music_handler_t wanted_handlers[] =
 static music_handler_t *music_handlers = NULL;
 
 #define ANY_CODECTYPE	0xFFFFFFFF
+#define CDRIP_TYPES	(CODECTYPE_VORBIS | CODECTYPE_MP3 | CODECTYPE_FLAC | CODECTYPE_WAV | CODECTYPE_OPUS)
+#define CDRIPTYPE(x)	(((x) & CDRIP_TYPES) != 0)
 
 static snd_stream_t *bgmstream = NULL;
 
@@ -315,6 +317,8 @@ void BGM_PlayCDtrack (byte track, qboolean looping)
 	{
 		if (! handler->is_available)
 			goto _next;
+//		if (! CDRIPTYPE(handler->type))
+//			goto _next;
 		q_snprintf(tmp, sizeof(tmp), "%s/track%02d.%s",
 				MUSIC_DIRNAME, (int)track, handler->ext);
 		if (! COM_FileExists(tmp, &path_id))
