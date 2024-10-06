@@ -436,6 +436,7 @@ void SV_PushMove (edict_t *pusher, float movetime)
 	edict_t		*check, *block;
 	vec3_t		mins, maxs, move;
 	vec3_t		entorig, pushorig;
+	float		solid_backup;
 	int			num_moved;
 	edict_t		**moved_edict; //johnfitz -- dynamically allocate
 	vec3_t		*moved_from; //johnfitz -- dynamically allocate
@@ -507,9 +508,16 @@ void SV_PushMove (edict_t *pusher, float movetime)
 		num_moved++;
 
 		// try moving the contacted entity
-		pusher->v.solid = SOLID_NOT;
-		SV_PushEntity (check, move);
-		pusher->v.solid = SOLID_BSP;
+		// https://www.quake-info-pool.net/q1/qfix.htm#movetype_push
+		solid_backup = pusher->v.solid;
+		if (solid_backup == SOLID_BSP ||
+			solid_backup == SOLID_BBOX ||
+			solid_backup == SOLID_SLIDEBOX)
+		{
+			pusher->v.solid = SOLID_NOT;
+			SV_PushEntity (check, move);
+			pusher->v.solid = solid_backup;
+		}
 
 	// if it is still inside the pusher, block
 		block = SV_TestEntityPosition (check);
