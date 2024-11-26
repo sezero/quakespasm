@@ -1,11 +1,11 @@
-name: Windows MSVC CI
+name: Windows (MSVC)
 
 on: [push, pull_request]
 
 jobs:
   build-windows:
     name: Build Windows
-    runs-on: windows-2022
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
@@ -13,7 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-
     - uses: microsoft/setup-msbuild@v2
 
     - name: Build ${{ matrix.platform }}

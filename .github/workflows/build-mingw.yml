@@ -1,11 +1,11 @@
-name: MinGW CI
+name: Windows (MinGW)
 
 on: [push, pull_request]
 
 jobs:
   build-linux:
     name: Build MinGW
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:

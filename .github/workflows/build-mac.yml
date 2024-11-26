@@ -1,11 +1,11 @@
-name: macOS CI
+name: macOS
 
 on: [push, pull_request]
 
 jobs:
   build-mac-os:
     name: Build macOS
-    runs-on: macos-12
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:

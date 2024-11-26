@@ -1,11 +1,11 @@
-name: Linux CI
+name: Linux
 
 on: [push, pull_request]
 
 jobs:
   build-linux:
     name: Build Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
