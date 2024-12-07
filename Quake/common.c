@@ -294,6 +294,14 @@ char *q_strupr (char *str)
 	return str;
 }
 
+char *q_strdup (const char *str)
+{
+	size_t len = strlen (str) + 1;
+	char  *newstr = (char *)malloc (len);
+	memcpy (newstr, str, len);
+	return newstr;
+}
+
 /* platform dependant (v)snprintf function names: */
 #if defined(_WIN32)
 #define	snprintf_func		_snprintf
@@ -1138,7 +1146,7 @@ void COM_FileBase (const char *in, char *out, size_t outsize)
 	dot = NULL;
 	while (*s)
 	{
-		if (*s == '/')
+		if (*s == '/' || *s == '\\')
 			slash = s + 1;
 		if (*s == '.')
 			dot = s;
