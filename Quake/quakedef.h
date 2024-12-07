@@ -52,6 +52,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #define	GAMENAME	"id1"		// directory to look in by default
 
+#define BSP29_VALVE			// enable Half-Life map support
+
 #include "q_stdinc.h"
 
 // !!! if this is changed, it must be changed in d_ifacea.h too !!!
