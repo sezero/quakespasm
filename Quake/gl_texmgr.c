@@ -532,6 +532,80 @@ void TexMgr_LoadPalette (void)
 }
 
 /*
+=================
+TexMgr_LoadMiptexPalette -- convert a 24bit color palette to 32bit
+=================
+*/
+static void TexMgr_LoadMiptexPalette (byte *in, byte *out, int numcolors, unsigned flags)
+{
+	extern cvar_t gl_fullbrights;
+	int			  i, numnobright;
+
+	if (numcolors == 0)
+		return;
+
+	if (!(flags & (TEXPREF_FULLBRIGHT | TEXPREF_NOBRIGHT)))
+	{
+		for (i = 0; i < numcolors; i++)
+		{
+			*out++ = *in++;
+			*out++ = *in++;
+			*out++ = *in++;
+			*out++ = 255;
+		}
+	}
+	else
+	{
+		numnobright = q_min (224, numcolors);
+		if (flags & TEXPREF_NOBRIGHT)
+		{
+			// nobright palette
+			if (!gl_fullbrights.value)
+				numnobright = numcolors;
+			for (i = 0; i < numnobright; i++)
+			{
+				*out++ = *in++;
+				*out++ = *in++;
+				*out++ = *in++;
+				*out++ = 255;
+			}
+			// 224-255 are black (for additive blending)
+			for (i = numnobright; i < numcolors; i++)
+			{
+				*out++ = 0;
+				*out++ = 0;
+				*out++ = 0;
+				*out++ = 255;
+			}
+		}
+		else
+		{
+			// fullbright palette
+			// 0-223 are black (for additive blending)
+			for (i = 0; i < numnobright; i++)
+			{
+				*out++ = 0;
+				*out++ = 0;
+				*out++ = 0;
+				*out++ = 255;
+			}
+			in += numnobright * 3;
+			for (i = numnobright; i < numcolors; i++)
+			{
+				*out++ = *in++;
+				*out++ = *in++;
+				*out++ = *in++;
+				*out++ = 255;
+			}
+		}
+	}
+
+	// 255 is transparent
+	if (flags & TEXPREF_ALPHA)
+		out[-1] = 0;
+}
+
+/*
 ================
 TexMgr_NewGame
 ================
@@ -1077,12 +1151,11 @@ static void TexMgr_LoadImage32 (gltexture_t *glt, unsigned *data)
 TexMgr_LoadImage8 -- handles 8bit source data, then passes it to LoadImage32
 ================
 */
-static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
+static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data, unsigned int *usepal)
 {
 	extern cvar_t gl_fullbrights;
 	qboolean padw = false, padh = false;
-	byte padbyte;
-	unsigned int *usepal;
+	byte padbyte = 0;
 	int i;
 
 	// HACK HACK HACK -- taken from tomazquake
@@ -1107,31 +1180,34 @@ static void TexMgr_LoadImage8 (gltexture_t *glt, byte *data)
 	}
 
 	// choose palette and padbyte
-	if (glt->flags & TEXPREF_FULLBRIGHT)
+	if (!usepal)
 	{
-		if (glt->flags & TEXPREF_ALPHA)
-			usepal = d_8to24table_fbright_fence;
+		if (glt->flags & TEXPREF_FULLBRIGHT)
+		{
+			if (glt->flags & TEXPREF_ALPHA)
+				usepal = d_8to24table_fbright_fence;
+			else
+				usepal = d_8to24table_fbright;
+			padbyte = 0;
+		}
+		else if (glt->flags & TEXPREF_NOBRIGHT && gl_fullbrights.value)
+		{
+			if (glt->flags & TEXPREF_ALPHA)
+				usepal = d_8to24table_nobright_fence;
+			else
+				usepal = d_8to24table_nobright;
+			padbyte = 0;
+		}
+		else if (glt->flags & TEXPREF_CONCHARS)
+		{
+			usepal = d_8to24table_conchars;
+			padbyte = 0;
+		}
 		else
-			usepal = d_8to24table_fbright;
-		padbyte = 0;
-	}
-	else if (glt->flags & TEXPREF_NOBRIGHT && gl_fullbrights.value)
-	{
-		if (glt->flags & TEXPREF_ALPHA)
-			usepal = d_8to24table_nobright_fence;
-		else
-			usepal = d_8to24table_nobright;
-		padbyte = 0;
-	}
-	else if (glt->flags & TEXPREF_CONCHARS)
-	{
-		usepal = d_8to24table_conchars;
-		padbyte = 0;
-	}
-	else
-	{
-		usepal = d_8to24table;
-		padbyte = 255;
+		{
+			usepal = d_8to24table;
+			padbyte = 255;
+		}
 	}
 
 	// pad each dimention, but only if it's not going to be downsampled later
@@ -1190,6 +1266,26 @@ static void TexMgr_LoadLightmap (gltexture_t *glt, byte *data)
 
 /*
 ================
+TexMgr_LoadImage8Valve
+================
+*/
+static void TexMgr_LoadImage8Valve (gltexture_t *glt, byte *data)
+{
+	byte *in, *usepal;
+	unsigned short colors;
+
+	in = data + glt->source_width * glt->source_height;
+
+	memcpy (&colors, in, 2);
+	colors = LittleShort (colors);
+
+	usepal = (byte *)Hunk_Alloc (colors * 4);
+	TexMgr_LoadMiptexPalette (in + 2, usepal, colors, glt->flags);
+	TexMgr_LoadImage8 (glt, data, (unsigned *)usepal);
+}
+
+/*
+================
 TexMgr_LoadImage -- the one entry point for loading all textures
 ================
 */
@@ -1207,6 +1303,7 @@ gltexture_t *TexMgr_LoadImage (qmodel_t *owner, const char *name, int width, int
 	switch (format)
 	{
 	case SRC_INDEXED:
+	case SRC_INDEXED_PALETTE:
 		crc = CRC_Block(data, width * height);
 		break;
 	case SRC_LIGHTMAP:
@@ -1247,13 +1344,16 @@ gltexture_t *TexMgr_LoadImage (qmodel_t *owner, const char *name, int width, int
 	switch (glt->source_format)
 	{
 	case SRC_INDEXED:
-		TexMgr_LoadImage8 (glt, data);
+		TexMgr_LoadImage8 (glt, data, NULL);
 		break;
 	case SRC_LIGHTMAP:
 		TexMgr_LoadLightmap (glt, data);
 		break;
 	case SRC_RGBA:
 		TexMgr_LoadImage32 (glt, (unsigned *)data);
+		break;
+	case SRC_INDEXED_PALETTE:
+		TexMgr_LoadImage8Valve (glt, data);
 		break;
 	}
 
@@ -1384,13 +1484,16 @@ invalid:	Con_Printf ("TexMgr_ReloadImage: invalid source for %s\n", glt->name);
 	switch (glt->source_format)
 	{
 	case SRC_INDEXED:
-		TexMgr_LoadImage8 (glt, data);
+		TexMgr_LoadImage8 (glt, data, NULL);
 		break;
 	case SRC_LIGHTMAP:
 		TexMgr_LoadLightmap (glt, data);
 		break;
 	case SRC_RGBA:
 		TexMgr_LoadImage32 (glt, (unsigned *)data);
+		break;
+	case SRC_INDEXED_PALETTE:
+		TexMgr_LoadImage8Valve (glt, data);
 		break;
 	}
 

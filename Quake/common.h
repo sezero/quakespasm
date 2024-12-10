@@ -231,6 +231,9 @@ extern char *q_strcasestr(const char *haystack, const char *needle);
 extern char *q_strlwr (char *str);
 extern char *q_strupr (char *str);
 
+// strdup that calls malloc
+extern char *q_strdup (const char *str);
+
 /* snprintf, vsnprintf : always use our versions. */
 extern int q_snprintf (char *str, size_t size, const char *format, ...) FUNC_PRINTF(3,4);
 extern int q_vsnprintf(char *str, size_t size, const char *format, va_list args) FUNC_PRINTF(3,0);
