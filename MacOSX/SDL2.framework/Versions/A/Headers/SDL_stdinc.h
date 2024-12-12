@@ -253,8 +253,8 @@ typedef uint64_t Uint64;
 #ifndef SDL_PRIs64
 #if defined(__WIN32__)
 #define SDL_PRIs64 "I64d"
-#elif defined(PRIs64)
-#define SDL_PRIs64 PRIs64
+#elif defined(PRId64)
+#define SDL_PRIs64 PRId64
 #elif defined(__LP64__) && !defined(__APPLE__)
 #define SDL_PRIs64 "ld"
 #else
@@ -705,6 +705,14 @@ size_t strlcpy(char* dst, const char* src, size_t size);
 #ifndef HAVE_STRLCAT
 size_t strlcat(char* dst, const char* src, size_t size);
 #endif
+
+/* strdup is not ANSI but POSIX, and its prototype might be hidden... */
+char *strdup(const char *str);
+
+/* Starting LLVM 16, the analyser errors out if these functions do not have
+   their prototype defined (clang-diagnostic-implicit-function-declaration) */
+#include <stdlib.h>
+#include <string.h>
 
 #define SDL_malloc malloc
 #define SDL_calloc calloc
