@@ -251,15 +251,47 @@ static char	userdir[MAX_OSPATH];
 #define SYS_USERDIR	".quakespasm"
 #endif
 
+static qboolean Sys_GetUserdirArgs (int argc, char **argv, char *dst, size_t dstsize)
+{
+	int i = 1;
+	for (; i < argc - 1; ++i)
+	{
+		if (strcmp(argv[i], "-userdir") == 0)
+		{
+			char *p = dst;
+			const char * arg = argv[i + 1];
+			const int n = (int)strlen(arg);
+			if (n < 1) Sys_Error("Bad argument to -userdir");
+			if (q_strlcpy(dst, arg, dstsize) >= dstsize)
+				Sys_Error ("Insufficient array size for userspace directory");
+			if (dst[n - 1] == '/') dst[n - 1] = 0;
+			if (*p == '/') p++;
+			for (; *p; p++) {
+				const char c = *p;
+				if (c == '/') {
+					*p = 0;
+					Sys_mkdir (dst);
+					*p = c;
+				}
+			}
+			return true;
+		}
+	}
+	return false;
+}
+
 #ifdef PLATFORM_HAIKU
 #include <FindDirectory.h>
 #include <fs_info.h>
 
-static void Sys_GetUserdir (char *dst, size_t dstsize)
+static void Sys_GetUserdir (int argc, char **argv, char *dst, size_t dstsize)
 {
 	dev_t volume = dev_for_path("/boot");
 	char buffer[B_PATH_NAME_LENGTH];
 	status_t result;
+
+	if (Sys_GetUserdirArgs(argc, argv, dst, dstsize))
+		return;
 
 	result = find_directory(B_USER_NONPACKAGED_DATA_DIRECTORY, volume, false, buffer, sizeof(buffer));
 	if (result != B_OK)
@@ -268,11 +300,14 @@ static void Sys_GetUserdir (char *dst, size_t dstsize)
 	q_snprintf (dst, dstsize, "%s/%s", buffer, SYS_USERDIR);
 }
 #else
-static void Sys_GetUserdir (char *dst, size_t dstsize)
+static void Sys_GetUserdir (int argc, char **argv, char *dst, size_t dstsize)
 {
 	size_t		n;
 	const char	*home_dir = NULL;
 	struct passwd	*pwent;
+
+	if (Sys_GetUserdirArgs(argc, argv, dst, dstsize))
+		return;
 
 	pwent = getpwuid( getuid() );
 	if (pwent == NULL)
@@ -388,7 +423,7 @@ void Sys_Init (void)
 	host_parms->userdir = host_parms->basedir; /* code elsewhere relies on this ! */
 #else
 	memset (userdir, 0, sizeof(userdir));
-	Sys_GetUserdir(userdir, sizeof(userdir));
+	Sys_GetUserdir (host_parms->argc, host_parms->argv, userdir, sizeof(userdir));
 	Sys_mkdir (userdir);
 	host_parms->userdir = userdir;
 #endif
