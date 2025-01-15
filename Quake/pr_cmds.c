@@ -50,26 +50,6 @@ static char *PR_GetTempString (void)
 #define MAX_QEXTS	32
 static qext_t 	extensions[MAX_QEXTS];
 static int		extensions_ctr = 0;
-
-static const char * GetExtName(const char *name)
-{
-	static char realname[1024];
-
-#if defined(__linux__)
-	#if defined(__x86_64__)
-		q_snprintf (realname, sizeof(realname) - 1, "%s_x86_64.so", name);
-	#elif defined(__i386__)
-		q_snprintf (realname, sizeof(realname) - 1, "%s_x86.so", name);
-	#else
-		PR_RunError ("unsupported architecture for extension");
-	#endif
-#else
-	PR_RunError ("unsupported platform for extension");
-#endif
-
-	return realname;
-}
-
 /*
 ===============================================================================
 
@@ -1775,54 +1755,106 @@ static void PF_Fixme (void)
 	PR_RunError ("unimplemented builtin");
 }
 
-static qext_function LoadExtension (const char *path)
+/*
+==============
+qextension
+==============
+*/
+static const char * GetExtensionPath(const char *path)
 {
-	qext_function	func;
+	static char realpath[1024];
+
+#if defined(__linux__)
+	#if defined(__x86_64__)
+		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86_64.so", path);
+	#elif defined(__i386__)
+		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86.so", path );
+	#else
+		PR_RunError ("unsupported architecture for extension");
+	#endif
+#else
+	PR_RunError ("unsupported platform for extension");
+#endif
+
+	return realpath;
+}
+
+static void LoadExtensionFunctionsLinux (const char *path)
+{
 	unsigned int	path_id;
-	byte			*filedata;
 	int				fd;
-	int 			h, filelen;
-	void 			*mem;
+	byte			*filedata;
+	int				filelen;
+	int 			filehandle;
+	void 			*mappedmem;
 	void			*handle;
 	char			fdpath[256];
 
-	filelen = COM_OpenFile (path, &h, &path_id);
-	COM_CloseFile (h);
+	qext_fn_string	fn_str;
+	qext_fn_number	fn_num;
+	qext_fn_vector	fn_vec;
+	qext_fn_entity	fn_ent;
+
+	filelen = COM_OpenFile (path, &filehandle, &path_id);
+	COM_CloseFile (filehandle);
 
 	filedata = COM_LoadMallocFile (path, &path_id);
-	fd = shm_open("qext.so", O_CREAT | O_RDWR, 0600);
+	fd = shm_open ("qext.so", O_CREAT | O_RDWR, 0600);
 	if (fd < 0)
 		PR_RunError ("unable to create memory file");
 
-	ftruncate(fd, filelen);
+	ftruncate (fd, filelen);
 
-	mem = mmap(NULL, filelen, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-
-	snprintf(fdpath, sizeof(fdpath), "/proc/self/fd/%d", fd);
-	memcpy(mem, filedata, filelen);
+	mappedmem = mmap(NULL, filelen, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	q_snprintf (fdpath, sizeof(fdpath) - 1, "/proc/self/fd/%d", fd);
+	Q_memcpy (mappedmem, filedata, filelen);
 
 	handle = dlopen (fdpath, RTLD_NOW | RTLD_GLOBAL);
 	if (!handle)
 		PR_RunError ("unable to load %s", fdpath);
 
-	func = dlsym(handle, "qextension");
+	fn_str = dlsym (handle, "qextension_string");
+	fn_num = dlsym (handle, "qextension_number");
+	fn_vec = dlsym (handle, "qextension_vector");
+	fn_ent = dlsym (handle, "qextension_entity");
 
-	close(fd);
-	shm_unlink("qext.so");
+	close (fd);
+	shm_unlink ("qext.so");
 	free (filedata);
 
-	if (!func)
-		PR_RunError ("unable to find qextension in %s", path);
+	if (!fn_str)
+		PR_RunError ("unable to find qextension_string in %s", path);
 
-	return func;
+	if (!fn_num)
+		PR_RunError ("unable to find qextension_number in %s", path);
+
+	if (!fn_vec)
+		PR_RunError ("unable to find qextension_vector in %s", path);
+
+	if (!fn_ent)
+		PR_RunError ("unable to find qextension_entity in %s", path);
+
+
+	extensions[extensions_ctr].fn_str = fn_str;
+	extensions[extensions_ctr].fn_num = fn_num;
+	extensions[extensions_ctr].fn_vec = fn_vec;
+	extensions[extensions_ctr].fn_ent = fn_ent;
+}
+
+static void LoadExtensionFunctions (const char *path)
+{
+#if defined(__linux__)
+	LoadExtensionFunctionsLinux (path);
+#else
+	PR_RunError ("unsupported platform for extension");
+#endif
 }
 
 static void PF_OpenExtension (void)
 {
-	const char		*path, *realpath;
+	const char		*path;
+	const char		*realpath;
 	int 			ext_desc;
-	qext_function	func;
-
 
 	if (extensions_ctr >= MAX_QEXTS)
 		PR_RunError ("maximum number of extensions is reached");
@@ -1830,36 +1862,110 @@ static void PF_OpenExtension (void)
 	path = G_STRING(OFS_PARM0);
 	ext_desc = 0;
 
-	realpath = GetExtName (path);
-	func = LoadExtension (realpath);
-	
 	extensions[extensions_ctr].path = q_strdup(path);
-	extensions[extensions_ctr].function = func;
+	realpath = GetExtensionPath (path);
+	LoadExtensionFunctions (realpath);
 
 	ext_desc = extensions_ctr;
-	extensions_ctr++;
-
 	Con_DPrintf ("Extension %s is loaded as %d\n", path, ext_desc);
-	G_FLOAT(OFS_RETURN) = ext_desc;
+
+	extensions_ctr++;
+	G_INT(OFS_RETURN) = ext_desc;
 }
 
-static void PF_CallExtension (void)
+static void PF_CallExtensionString (void)
 {
 	int 		ext_desc;
-	const char	*str;
+	const char	*cmd, *arg;
+	const char	*ret;
 
-	ext_desc = G_FLOAT(OFS_PARM0);
-	str = G_STRING(OFS_PARM1);
+	ext_desc = G_INT(OFS_PARM0);
 
 	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
 		PR_RunError ("invalid extension descriptor");
 
-	if (!extensions[ext_desc].function)
+	if (!extensions[ext_desc].fn_str || !extensions[ext_desc].path)
 		PR_RunError ("extension is NULL");
 
-	extensions[ext_desc].function(str);
+	cmd = G_STRING(OFS_PARM1);
+	PR_CheckEmptyString (cmd);
+	arg = G_STRING(OFS_PARM2);
+	PR_CheckEmptyString (arg);
 
-	Con_DPrintf ("extension %d called with %s\n", ext_desc, str);
+	ret = extensions[ext_desc].fn_str(cmd, arg);
+
+	G_INT(OFS_RETURN) = PR_SetEngineString(ret);
+}
+
+static void PF_CallExtensionNumber (void)
+{
+	int 		ext_desc;
+	const char	*cmd;
+	float		arg, ret;
+
+	ext_desc = G_INT(OFS_PARM0);
+
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+		PR_RunError ("invalid extension descriptor");
+
+	if (!extensions[ext_desc].fn_num || !extensions[ext_desc].path)
+		PR_RunError ("extension is NULL");
+
+	cmd = G_STRING(OFS_PARM1);
+	PR_CheckEmptyString (cmd);
+	arg = G_FLOAT(OFS_PARM2);
+
+	ret = extensions[ext_desc].fn_num(cmd, arg);
+
+	G_FLOAT(OFS_RETURN) = ret;
+}
+
+static void PF_CallExtensionVector (void)
+{
+	int 		ext_desc;
+	const char	*cmd;
+	float		*arg;
+	float		ret;
+
+	ext_desc = G_INT(OFS_PARM0);
+
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+		PR_RunError ("invalid extension descriptor");
+
+	if (!extensions[ext_desc].fn_vec || !extensions[ext_desc].path)
+		PR_RunError ("extension is NULL");
+
+	cmd = G_STRING(OFS_PARM1);
+	PR_CheckEmptyString (cmd);
+	arg = G_VECTOR(OFS_PARM2);
+
+	ret = extensions[ext_desc].fn_vec(cmd, arg);
+
+	G_FLOAT(OFS_RETURN) = ret;
+}
+
+static void PF_CallExtensionEntity (void)
+{
+	int 		ext_desc;
+	const char	*cmd;
+	edict_t		*arg;
+	float		ret;
+
+	ext_desc = G_INT(OFS_PARM0);
+
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+		PR_RunError ("invalid extension descriptor");
+
+	if (!extensions[ext_desc].fn_ent || !extensions[ext_desc].path)
+		PR_RunError ("extension is NULL");
+
+	cmd = G_STRING(OFS_PARM1);
+	PR_CheckEmptyString (cmd);
+	arg = G_EDICT(OFS_PARM2);
+
+	ret = extensions[ext_desc].fn_ent(cmd, arg);
+
+	G_FLOAT(OFS_RETURN) = ret;
 }
 
 static builtin_t pr_builtin[] =
@@ -1970,8 +2076,11 @@ static builtin_t pr_builtin[] =
 
 	PF_Fixme,
 
-	PF_OpenExtension,	// float(string path) OpenExtension = #93
-	PF_CallExtension,	// void(float id, string cmd) CallExtension = #94
+	PF_OpenExtension,		// float(string path) OpenExtension = #93
+	PF_CallExtensionString,	// string(float id, string cmd) CallExtension = #94
+	PF_CallExtensionNumber,	// float(float id, string cmd, float arg) CallExtensionFloat               = #95;
+	PF_CallExtensionVector,	// float(float id, string cmd, vector arg) CallExtensionVector            = #96;
+	PF_CallExtensionEntity,	// float(float id, string cmd, entity arg) CallExtensionEntity            = #97;
 };
 
 const builtin_t *pr_builtins = pr_builtin;

@@ -151,10 +151,16 @@ void ED_PrintNum (int ent);
 
 eval_t *GetEdictFieldValue(edict_t *ed, const char *field);
 
-typedef void (*qext_function)(const char *s);
+typedef const char* (*qext_fn_string)(const char *cmd, const char *arg);
+typedef float (*qext_fn_number)(const char *cmd, float arg);
+typedef float (*qext_fn_vector)(const char *cmd, vec3_t arg);
+typedef float (*qext_fn_entity)(const char *cmd, edict_t *arg);
 typedef struct {
 	const char 		*path;
-	qext_function	function;
+	qext_fn_string	fn_str;
+	qext_fn_number	fn_num;
+	qext_fn_vector	fn_vec;
+	qext_fn_entity	fn_ent;
 } qext_t;
 
 #endif	/* QUAKE_PROGS_H */
