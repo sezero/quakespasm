@@ -151,4 +151,10 @@ void ED_PrintNum (int ent);
 
 eval_t *GetEdictFieldValue(edict_t *ed, const char *field);
 
+typedef void (*qext_function)(const char *s);
+typedef struct {
+	const char 		*path;
+	qext_function	function;
+} qext_t;
+
 #endif	/* QUAKE_PROGS_H */

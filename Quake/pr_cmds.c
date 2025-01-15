@@ -22,6 +22,14 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 
+#if defined(__linux__)
+#include <dlfcn.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 #define	STRINGTEMP_BUFFERS		16
 #define	STRINGTEMP_LENGTH		1024
 static	char	pr_string_temp[STRINGTEMP_BUFFERS][STRINGTEMP_LENGTH];
@@ -38,6 +46,29 @@ static char *PR_GetTempString (void)
 #define	MSG_ONE		1		// reliable to one (msg_entity)
 #define	MSG_ALL		2		// reliable to all
 #define	MSG_INIT	3		// write to the init string
+
+#define MAX_QEXTS	32
+static qext_t 	extensions[MAX_QEXTS];
+static int		extensions_ctr = 0;
+
+static const char * GetExtName(const char *name)
+{
+	static char realname[1024];
+
+#if defined(__linux__)
+	#if defined(__x86_64__)
+		q_snprintf (realname, sizeof(realname) - 1, "%s_x86_64.so", name);
+	#elif defined(__i386__)
+		q_snprintf (realname, sizeof(realname) - 1, "%s_x86.so", name);
+	#else
+		PR_RunError ("unsupported architecture for extension");
+	#endif
+#else
+	PR_RunError ("unsupported platform for extension");
+#endif
+
+	return realname;
+}
 
 /*
 ===============================================================================
@@ -1744,6 +1775,92 @@ static void PF_Fixme (void)
 	PR_RunError ("unimplemented builtin");
 }
 
+static qext_function LoadExtension (const char *path)
+{
+	qext_function	func;
+	unsigned int	path_id;
+	byte			*filedata;
+	int				fd;
+	int 			h, filelen;
+	void 			*mem;
+	void			*handle;
+	char			fdpath[256];
+
+	filelen = COM_OpenFile (path, &h, &path_id);
+	COM_CloseFile (h);
+
+	filedata = COM_LoadMallocFile (path, &path_id);
+	fd = shm_open("qext.so", O_CREAT | O_RDWR, 0600);
+	if (fd < 0)
+		PR_RunError ("unable to create memory file");
+
+	ftruncate(fd, filelen);
+
+	mem = mmap(NULL, filelen, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+
+	snprintf(fdpath, sizeof(fdpath), "/proc/self/fd/%d", fd);
+	memcpy(mem, filedata, filelen);
+
+	handle = dlopen (fdpath, RTLD_NOW | RTLD_GLOBAL);
+	if (!handle)
+		PR_RunError ("unable to load %s", fdpath);
+
+	func = dlsym(handle, "qextension");
+
+	close(fd);
+	shm_unlink("qext.so");
+	free (filedata);
+
+	if (!func)
+		PR_RunError ("unable to find qextension in %s", path);
+
+	return func;
+}
+
+static void PF_OpenExtension (void)
+{
+	const char		*path, *realpath;
+	int 			ext_desc;
+	qext_function	func;
+
+
+	if (extensions_ctr >= MAX_QEXTS)
+		PR_RunError ("maximum number of extensions is reached");
+
+	path = G_STRING(OFS_PARM0);
+	ext_desc = 0;
+
+	realpath = GetExtName (path);
+	func = LoadExtension (realpath);
+	
+	extensions[extensions_ctr].path = q_strdup(path);
+	extensions[extensions_ctr].function = func;
+
+	ext_desc = extensions_ctr;
+	extensions_ctr++;
+
+	Con_DPrintf ("Extension %s is loaded as %d\n", path, ext_desc);
+	G_FLOAT(OFS_RETURN) = ext_desc;
+}
+
+static void PF_CallExtension (void)
+{
+	int 		ext_desc;
+	const char	*str;
+
+	ext_desc = G_FLOAT(OFS_PARM0);
+	str = G_STRING(OFS_PARM1);
+
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+		PR_RunError ("invalid extension descriptor");
+
+	if (!extensions[ext_desc].function)
+		PR_RunError ("extension is NULL");
+
+	extensions[ext_desc].function(str);
+
+	Con_DPrintf ("extension %d called with %s\n", ext_desc, str);
+}
 
 static builtin_t pr_builtin[] =
 {
@@ -1852,6 +1969,9 @@ static builtin_t pr_builtin[] =
 	PF_walkpathtogoal,
 
 	PF_Fixme,
+
+	PF_OpenExtension,	// float(string path) OpenExtension = #93
+	PF_CallExtension,	// void(float id, string cmd) CallExtension = #94
 };
 
 const builtin_t *pr_builtins = pr_builtin;
