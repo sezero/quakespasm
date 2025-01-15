@@ -1760,7 +1760,7 @@ static void PF_Fixme (void)
 qextension
 ==============
 */
-static const char * GetExtensionPath(const char *path)
+static const char *GetExtensionPath (const char *path)
 {
 	static char realpath[1024];
 
@@ -1768,7 +1768,15 @@ static const char * GetExtensionPath(const char *path)
 	#if defined(__x86_64__)
 		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86_64.so", path);
 	#elif defined(__i386__)
-		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86.so", path );
+		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86.so", path);
+	#else
+		PR_RunError ("unsupported architecture for extension");
+	#endif
+#elif defined(WIN32)
+	#if defined(_WIN64)
+		q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86_64.dll", path);
+	#elif defined(_WIN32)
+        q_snprintf (realpath, sizeof(realpath) - 1, "%s_x86.dll", path);
 	#else
 		PR_RunError ("unsupported architecture for extension");
 	#endif
@@ -1779,6 +1787,7 @@ static const char * GetExtensionPath(const char *path)
 	return realpath;
 }
 
+#if defined(__linux__)
 static void LoadExtensionFunctionsLinux (const char *path)
 {
 	unsigned int	path_id;
@@ -1834,17 +1843,87 @@ static void LoadExtensionFunctionsLinux (const char *path)
 	if (!fn_ent)
 		PR_RunError ("unable to find qextension_entity in %s", path);
 
-
 	extensions[extensions_ctr].fn_str = fn_str;
 	extensions[extensions_ctr].fn_num = fn_num;
 	extensions[extensions_ctr].fn_vec = fn_vec;
 	extensions[extensions_ctr].fn_ent = fn_ent;
 }
+#elif defined(WIN32)
+static void LoadExtensionFunctionsWindows (const char* path)
+{
+    unsigned int path_id;
+    byte* filedata;
+    int filelen;
+    int filehandle;
+    char path_buffer[512];
+    char tmp_buffer[1024];
+    char base_name[64];
+    HINSTANCE libhandle;
+    DWORD ret;
+    FILE *fp;
+
+    qext_fn_string fn_str;
+    qext_fn_number fn_num;
+    qext_fn_vector fn_vec;
+    qext_fn_entity fn_ent;
+
+    filelen = COM_OpenFile (path, &filehandle, &path_id);
+    COM_CloseFile (filehandle);
+
+    filedata = COM_LoadMallocFile (path, &path_id);
+
+	// TODO(gmb): Not ideal, find a soultion to use filedata for LoadLibrary()
+    ret = GetTempPath (sizeof(path_buffer), path_buffer);
+    if (ret == 0)
+        PR_RunError ("unable to create temporary path");
+
+	COM_FileBase (path, base_name, sizeof(base_name));
+    q_snprintf (tmp_buffer, sizeof(tmp_buffer) - 1, "%s%s.dll", path_buffer, base_name);
+
+	fp = fopen (tmp_buffer, "wb");
+    if (!fp)
+		PR_RunError ("unable to create temporary file %s: %s", tmp_buffer, strerror (errno));
+
+	if (fwrite (filedata, 1, filelen, fp) != (size_t)filelen)
+        PR_RunError ("unable to write temporary file %s: %s", tmp_buffer, strerror (errno));
+
+	fclose(fp);
+    free(filedata);
+
+    libhandle = LoadLibrary (tmp_buffer);
+    if (!libhandle)
+        PR_RunError ("unable to load library %s: %d", tmp_buffer, GetLastError());
+
+	fn_str = (qext_fn_string)GetProcAddress (libhandle, "qextension_string");
+    fn_num = (qext_fn_number)GetProcAddress (libhandle, "qextension_number");
+    fn_vec = (qext_fn_vector)GetProcAddress (libhandle, "qextension_vector");
+    fn_ent = (qext_fn_entity)GetProcAddress (libhandle, "qextension_entity");
+
+    if (!fn_str)
+        PR_RunError ("unable to find qextension_string in %s", path);
+
+    if (!fn_num)
+        PR_RunError ("unable to find qextension_number in %s", path);
+
+    if (!fn_vec)
+        PR_RunError ("unable to find qextension_vector in %s", path);
+
+    if (!fn_ent)
+        PR_RunError ("unable to find qextension_entity in %s", path);
+
+    extensions[extensions_ctr].fn_str = fn_str;
+    extensions[extensions_ctr].fn_num = fn_num;
+    extensions[extensions_ctr].fn_vec = fn_vec;
+    extensions[extensions_ctr].fn_ent = fn_ent;
+}
+#endif
 
 static void LoadExtensionFunctions (const char *path)
 {
 #if defined(__linux__)
 	LoadExtensionFunctionsLinux (path);
+#elif defined(_WIN32) || defined(_WIN64)
+    LoadExtensionFunctionsWindows (path);
 #else
 	PR_RunError ("unsupported platform for extension");
 #endif
@@ -2077,10 +2156,10 @@ static builtin_t pr_builtin[] =
 	PF_Fixme,
 
 	PF_OpenExtension,		// float(string path) OpenExtension = #93
-	PF_CallExtensionString,	// string(float id, string cmd) CallExtension = #94
-	PF_CallExtensionNumber,	// float(float id, string cmd, float arg) CallExtensionFloat               = #95;
-	PF_CallExtensionVector,	// float(float id, string cmd, vector arg) CallExtensionVector            = #96;
-	PF_CallExtensionEntity,	// float(float id, string cmd, entity arg) CallExtensionEntity            = #97;
+	PF_CallExtensionString,	// string(float id, string cmd, string arg) CallExtensionString = #94
+	PF_CallExtensionNumber,	// float(float id, string cmd, float arg) CallExtensionFloat	= #95
+	PF_CallExtensionVector,	// float(float id, string cmd, vector arg) CallExtensionVector	= #96
+	PF_CallExtensionEntity,	// float(float id, string cmd, entity arg) CallExtensionEntity	= #97
 };
 
 const builtin_t *pr_builtins = pr_builtin;
