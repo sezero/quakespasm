@@ -1,0 +1,12 @@
+id1/
+hello/
+
+qsrc/progs.dat
+qsrc/files.dat
+qsrc/progdefs.h
+
+src/progdefs.h
+src/*.o
+
+*.so
+*.dll
