@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -shared -fPIC
+CFLAGS := -shared -fPIC -m64
 
 hello_x86_64.so: hello.c
 	$(CC) $(CFLAGS) $< -o $@

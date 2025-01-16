@@ -4,13 +4,15 @@ hello: qsrc src
 	mkdir -p hello
 	cp qsrc/progs.dat hello/progs.dat
 	cp src/hello_x86_64.so hello/hello_x86_64.so
+	cp src/hello_x86_64.dll hello/hello_x86_64.dll
 
 qsrc:
 	make -C qsrc
 
 src: qsrc
 	cp qsrc/progdefs.h src/progdefs.h
-	make -C src
+	cd src; make -f Makefile.linux64
+	cd src; make -f Makefile.w64
 
 clean:
 	rm -rf hello/*
