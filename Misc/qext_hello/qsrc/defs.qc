@@ -1,4 +1,37 @@
-// These lines CANNOT be altered/moved
+/*
+ * Example Quake Extension - definitions
+ *
+ * Copyright (C) 1996-1997 Id Software, Inc.
+ * Copyright (C) 2025 Tóth János <gomba007@gmail.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at
+ * your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *
+ * See the GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+
+ /*
+==============================================================================
+
+			SOURCE FOR GLOBALVARS_T C STRUCTURE
+
+==============================================================================
+*/
+
+//
+// system globals
+//
 entity self;
 entity other;
 entity world;
@@ -19,6 +52,9 @@ float found_secrets;                // number of secrets found
 float killed_monsters;              // number of monsters killed
 float parm1, parm2, parm3, parm4, parm5, parm6, parm7, parm8, parm9, parm10, parm11, parm12, parm13, parm14, parm15, parm16;
 
+//
+// global variables set by built in functions
+//
 vector v_forward, v_up, v_right;    // set by makevectors()
 
 float trace_allsolid;
@@ -32,6 +68,10 @@ float trace_inopen;
 float trace_inwater;
 
 entity msg_entity;                  // destination of single entity writes
+
+//
+// required prog functions
+//
 void() main;                        // only for testing
 void() StartFrame;
 void() PlayerPreThink;
@@ -43,6 +83,14 @@ void() ClientDisconnect;
 void() SetNewParms;                 // called when a client first connects to
 void() SetChangeParms;              // call to set parms for self so they can
 void end_sys_globals;               // flag for structure dumping
+
+/*
+==============================================================================
+
+			SOURCE FOR ENTVARS_T C STRUCTURE
+
+==============================================================================
+*/
 
 .float modelindex;                  // model index in the precached list
 .vector absmin, absmax;             // origin + mins / maxs
@@ -116,8 +164,11 @@ void end_sys_globals;               // flag for structure dumping
 
 void end_sys_fields;     // flag for structure dumping
 // End. Lines below this MAY be altered, to some extent
+//============================================================================
 
-// Built In functions
+//
+// builtin functions
+//
 void(vector ang) makevectors                                            = #1; // sets v_forward, etc globals
 void(entity e, vector o) setorigin                                      = #2;
 void(entity e, string m) setmodel                                       = #3; // set movetype and solid first
@@ -195,6 +246,14 @@ string(float id, string cmd, string arg) CallExtensionString = #94;
 float(float id, string cmd, float arg) CallExtensionNumber = #95;
 vector(float id, string cmd, vector arg) CallExtensionVector = #96;
 float(float id, string cmd, entity arg) CallExtensionEntity = #97;
+
+/*
+==============================================================================
+
+				VARS NOT REFERENCED BY C CODE
+
+==============================================================================
+*/
 
 //
 // constants

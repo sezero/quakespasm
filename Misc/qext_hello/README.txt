@@ -121,3 +121,5 @@
     qsrc/ contains the source code of the mod uses the qextension
 
   It requres gcc and gcc-mingw-w64 to compile on Linux.
+  It can be compiled using Visual Studio on Windows.
+  It requres qcc to compile progs.dat.
