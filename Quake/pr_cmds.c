@@ -1984,6 +1984,7 @@ static void PF_OpenExtension (void)
 	for (i = 0; i < MAX_QEXTS; ++i) {
 		if (qextensions[i].path && !Q_strcmp (qextensions[i].path, path)) {
 			Con_DPrintf ("Extension %s is already loaded\n", path);
+            G_INT(OFS_RETURN) = i;
 			return;
 		}
 	}
