@@ -102,8 +102,8 @@
 
   4. Installation
 
-  `+extensions 1` command line switch must be used to enable qextensions.
-  This command line switch must prelude `+map`.
+  The `extensions` cvar must be set to a non-zero value to enable qextensions.
+  If it is set through the command line `+extensions 1` must prelude `+map`.
 
   qextensions use the filesystem of Quake. They can be placed into the 
   game directory or embedded into a .PAK file, e.g.:
