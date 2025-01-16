@@ -38,7 +38,7 @@ void() PutClientInServer =
     dprint(str); dprint("\n");
 
     num = 10;
-    num = CallExtensionNumber(hello_ext, "hello", 10);
+    num = CallExtensionNumber(hello_ext, "hello", num);
     dprint(ftos(num)); dprint("\n");
 
     vec = CallExtensionVector(hello_ext, "hello", self.origin);

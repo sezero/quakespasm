@@ -5,6 +5,7 @@
 
 static char buffer[64];
 
+// do not remove this
 QEXTFNVER
 
 QEXTFN const char* qextension_string (const char *cmd, const char *arg)
