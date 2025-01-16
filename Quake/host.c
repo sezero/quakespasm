@@ -87,6 +87,8 @@ cvar_t	campaign = {"campaign","0",CVAR_NONE}; // for the 2021 rerelease
 cvar_t	horde = {"horde","0",CVAR_NONE}; // for the 2021 rerelease
 cvar_t	sv_cheats = {"sv_cheats","0",CVAR_NONE}; // for the 2021 rerelease
 
+cvar_t	extensions = {"extensions","0",CVAR_NONE};
+
 devstats_t dev_stats, dev_peakstats;
 overflowtimes_t dev_overflows; //this stores the last time overflow messages were displayed, not the last time overflows occured
 
@@ -292,6 +294,8 @@ void Host_InitLocal (void)
 	Cvar_RegisterVariable (&pausable);
 
 	Cvar_RegisterVariable (&temp1);
+
+	Cvar_RegisterVariable (&extensions);
 
 	Host_FindMaxClients ();
 }

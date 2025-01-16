@@ -28,6 +28,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 extern cvar_t	pausable;
 extern cvar_t	nomonsters;
+extern cvar_t	extensions;
 
 int	current_skill;
 

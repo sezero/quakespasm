@@ -21,5 +21,5 @@ clean:
 
 run: hello
 	quakespasm --args -nolauncher -basedir $(PWD) -game hello \
-		+map start +developer 1 \
+		+extensions 1 +developer 1 +map start \
 		-width 1024 -height 768 -bpp 32 -window -nosound

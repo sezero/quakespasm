@@ -48,8 +48,9 @@ static char *PR_GetTempString (void)
 #define	MSG_INIT	3		// write to the init string
 
 #define MAX_QEXTS	32
-static qext_t 	extensions[MAX_QEXTS];
-static int		extensions_ctr = 0;
+static qext_t   qextensions[MAX_QEXTS];
+static int      qextensions_ctr = 0;
+extern cvar_t   extensions;
 /*
 ===============================================================================
 
@@ -1838,7 +1839,7 @@ static void LoadExtensionFunctionsLinux (const char *path)
 	if (version != 1)
 		PR_RunError ("invalid qextension_version: %d", version);
 
-	extensions[extensions_ctr].version = version;
+	qextensions[qextensions_ctr].version = version;
 
 	fn_str = dlsym (handle, "qextension_string");
 	if (!fn_str)
@@ -1860,10 +1861,10 @@ static void LoadExtensionFunctionsLinux (const char *path)
 	shm_unlink (tmp_buffer);
 	free (filedata);
 
-	extensions[extensions_ctr].fn_str = fn_str;
-	extensions[extensions_ctr].fn_num = fn_num;
-	extensions[extensions_ctr].fn_vec = fn_vec;
-	extensions[extensions_ctr].fn_ent = fn_ent;
+	qextensions[qextensions_ctr].fn_str = fn_str;
+	qextensions[qextensions_ctr].fn_num = fn_num;
+	qextensions[qextensions_ctr].fn_vec = fn_vec;
+	qextensions[qextensions_ctr].fn_ent = fn_ent;
 }
 #elif defined(WIN32)
 static void LoadExtensionFunctionsWindows (const char* path)
@@ -1923,7 +1924,7 @@ static void LoadExtensionFunctionsWindows (const char* path)
 	if (version != 1)
 		PR_RunError ("invalid qextension_version: %d", version);
 
-	extensions[extensions_ctr].version = version;
+	qextensions[qextensions_ctr].version = version;
 
 	fn_str = (qext_fn_string)GetProcAddress (libhandle, "qextension_string");
 	if (!fn_str)
@@ -1941,10 +1942,10 @@ static void LoadExtensionFunctionsWindows (const char* path)
 	if (!fn_ent)
         PR_RunError ("unable to find qextension_entity in %s", path);
 
-    extensions[extensions_ctr].fn_str = fn_str;
-    extensions[extensions_ctr].fn_num = fn_num;
-    extensions[extensions_ctr].fn_vec = fn_vec;
-    extensions[extensions_ctr].fn_ent = fn_ent;
+    qextensions[qextensions_ctr].fn_str = fn_str;
+    qextensions[qextensions_ctr].fn_num = fn_num;
+    qextensions[qextensions_ctr].fn_vec = fn_vec;
+    qextensions[qextensions_ctr].fn_ent = fn_ent;
 }
 #endif
 
@@ -1965,27 +1966,30 @@ static void PF_OpenExtension (void)
 	const char		*realpath;
 	int 			ext_desc, i;
 
-	if (extensions_ctr >= MAX_QEXTS)
+	if (!extensions.value)
+		PR_RunError ("extensions are disabled");
+
+	if (qextensions_ctr >= MAX_QEXTS)
 		PR_RunError ("maximum number of extensions is reached");
 
 	path = G_STRING(OFS_PARM0);
 	ext_desc = 0;
 
 	for (i = 0; i < MAX_QEXTS; ++i) {
-		if (extensions[i].path && !Q_strcmp (extensions[i].path, path)) {
+		if (qextensions[i].path && !Q_strcmp (qextensions[i].path, path)) {
 			Con_DPrintf ("Extension %s is already loaded\n", path);
 			return;
 		}
 	}
 
-	extensions[extensions_ctr].path = q_strdup (path);
+	qextensions[qextensions_ctr].path = q_strdup (path);
 	realpath = GetExtensionPath (path);
 	LoadExtensionFunctions (realpath);
 
-	ext_desc = extensions_ctr;
+	ext_desc = qextensions_ctr;
 	Con_DPrintf ("Extension %s is loaded as %d\n", path, ext_desc);
 
-	extensions_ctr++;
+	qextensions_ctr++;
 	G_INT(OFS_RETURN) = ext_desc;
 }
 
@@ -1997,10 +2001,10 @@ static void PF_CallExtensionString (void)
 
 	ext_desc = G_INT(OFS_PARM0);
 
-	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS || ext_desc >= qextensions_ctr)
 		PR_RunError ("invalid extension descriptor");
 
-	if (!extensions[ext_desc].fn_str || !extensions[ext_desc].path)
+	if (!qextensions[ext_desc].fn_str || !qextensions[ext_desc].path)
 		PR_RunError ("extension is NULL");
 
 	cmd = G_STRING(OFS_PARM1);
@@ -2008,7 +2012,7 @@ static void PF_CallExtensionString (void)
 	arg = G_STRING(OFS_PARM2);
 	PR_CheckEmptyString (arg);
 
-	ret = extensions[ext_desc].fn_str(cmd, arg);
+	ret = qextensions[ext_desc].fn_str(cmd, arg);
 
 	G_INT(OFS_RETURN) = PR_SetEngineString(ret);
 }
@@ -2024,14 +2028,14 @@ static void PF_CallExtensionNumber (void)
 	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
 		PR_RunError ("invalid extension descriptor");
 
-	if (!extensions[ext_desc].fn_num || !extensions[ext_desc].path)
+	if (!qextensions[ext_desc].fn_num || !qextensions[ext_desc].path)
 		PR_RunError ("extension is NULL");
 
 	cmd = G_STRING(OFS_PARM1);
 	PR_CheckEmptyString (cmd);
 	arg = G_FLOAT(OFS_PARM2);
 
-	ret = extensions[ext_desc].fn_num(cmd, arg);
+	ret = qextensions[ext_desc].fn_num(cmd, arg);
 
 	G_FLOAT(OFS_RETURN) = ret;
 }
@@ -2048,14 +2052,14 @@ static void PF_CallExtensionVector (void)
 	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
 		PR_RunError ("invalid extension descriptor");
 
-	if (!extensions[ext_desc].fn_vec || !extensions[ext_desc].path)
+	if (!qextensions[ext_desc].fn_vec || !qextensions[ext_desc].path)
 		PR_RunError ("extension is NULL");
 
 	cmd = G_STRING(OFS_PARM1);
 	PR_CheckEmptyString (cmd);
 	arg = G_VECTOR(OFS_PARM2);
 
-	ret = extensions[ext_desc].fn_vec(cmd, arg);
+	ret = qextensions[ext_desc].fn_vec(cmd, arg);
 
 	VectorCopy (ret, G_VECTOR(OFS_RETURN));
 }
@@ -2072,14 +2076,14 @@ static void PF_CallExtensionEntity (void)
 	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
 		PR_RunError ("invalid extension descriptor");
 
-	if (!extensions[ext_desc].fn_ent || !extensions[ext_desc].path)
+	if (!qextensions[ext_desc].fn_ent || !qextensions[ext_desc].path)
 		PR_RunError ("extension is NULL");
 
 	cmd = G_STRING(OFS_PARM1);
 	PR_CheckEmptyString (cmd);
 	arg = G_EDICT(OFS_PARM2);
 
-	ret = extensions[ext_desc].fn_ent(cmd, arg);
+	ret = qextensions[ext_desc].fn_ent(cmd, arg);
 
 	G_FLOAT(OFS_RETURN) = ret;
 }

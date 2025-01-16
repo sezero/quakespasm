@@ -102,6 +102,9 @@
 
   4. Installation
 
+  `+extensions 1` command line switch must be used to enable qextensions.
+  This command line switch must prelude `+map`.
+
   qextensions use the filesystem of Quake. They can be placed into the 
   game directory or embedded into a .PAK file, e.g.:
 
@@ -111,6 +114,7 @@
 
     mymod/hello_x86_64.so -> OpenExtension("hello"); 
     (only if `-game mymod` was used)
+
 
   5. qext_hello
 
