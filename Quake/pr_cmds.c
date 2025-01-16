@@ -1810,6 +1810,9 @@ static void LoadExtensionFunctionsLinux (const char *path)
 	qext_fn_entity	fn_ent;
 
 	filelen = COM_OpenFile (path, &filehandle, &path_id);
+    if (filelen < 0)
+		PR_RunError ("unable to open %s", path);
+
 	COM_CloseFile (filehandle);
 
 	filedata = COM_LoadMallocFile (path, &path_id);
@@ -1888,6 +1891,9 @@ static void LoadExtensionFunctionsWindows (const char* path)
     qext_fn_entity fn_ent;
 
     filelen = COM_OpenFile (path, &filehandle, &path_id);
+    if (filelen < 0)
+        PR_RunError ("unable to open %s", path);
+
     COM_CloseFile (filehandle);
 
     filedata = COM_LoadMallocFile (path, &path_id);
@@ -1916,7 +1922,7 @@ static void LoadExtensionFunctionsWindows (const char* path)
     if (!libhandle)
         PR_RunError ("unable to load library %s: %d", tmp_buffer, GetLastError());
 
-	fn_ver = (qext_fn_string)GetProcAddress (libhandle, "qextension_version");
+	fn_ver = (qext_fn_version)GetProcAddress (libhandle, "qextension_version");
 	if (!fn_ver)
 		PR_RunError ("unable to find qextension_version in %s", path);
 
@@ -1987,7 +1993,7 @@ static void PF_OpenExtension (void)
 	LoadExtensionFunctions (realpath);
 
 	ext_desc = qextensions_ctr;
-	Con_DPrintf ("Extension %s is loaded as %d\n", path, ext_desc);
+    Con_DPrintf ("Extension %s (v%d) is loaded as %d\n", path, qextensions[qextensions_ctr].version, ext_desc);
 
 	qextensions_ctr++;
 	G_INT(OFS_RETURN) = ext_desc;
@@ -2025,7 +2031,7 @@ static void PF_CallExtensionNumber (void)
 
 	ext_desc = G_INT(OFS_PARM0);
 
-	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS || ext_desc >= qextensions_ctr)
 		PR_RunError ("invalid extension descriptor");
 
 	if (!qextensions[ext_desc].fn_num || !qextensions[ext_desc].path)
@@ -2049,7 +2055,7 @@ static void PF_CallExtensionVector (void)
 
 	ext_desc = G_INT(OFS_PARM0);
 
-	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS || ext_desc >= qextensions_ctr)
 		PR_RunError ("invalid extension descriptor");
 
 	if (!qextensions[ext_desc].fn_vec || !qextensions[ext_desc].path)
@@ -2073,7 +2079,7 @@ static void PF_CallExtensionEntity (void)
 
 	ext_desc = G_INT(OFS_PARM0);
 
-	if (ext_desc < 0 || ext_desc >= MAX_QEXTS)
+	if (ext_desc < 0 || ext_desc >= MAX_QEXTS || ext_desc >= qextensions_ctr)
 		PR_RunError ("invalid extension descriptor");
 
 	if (!qextensions[ext_desc].fn_ent || !qextensions[ext_desc].path)

@@ -10,3 +10,6 @@ src/*.o
 
 *.so
 *.dll
+*.obj
+*.exp
+*.lib

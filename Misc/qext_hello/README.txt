@@ -8,10 +8,14 @@
   Windows and Shared Object (SO) files on Linux. They allows external
   code to be executed within QC programs. 
   
-  In theory it works on macOS using the Dynamic Librariy (dylib), but I do 
-  not have a Mac to test with.
+  In theory it works on macOS using the Dynamic Librariy (dylib), but I
+  do not have a Mac to test with.
 
   2. Usage
+
+  The `extensions` cvar must be set to a non-zero value to enable 
+  qextensions. If it is set through the command line `+extensions 1`
+  must come before `+map`.
 
   In order to use qextensions the new built-in functions must be defined.
   This usually happens in `defs.qc`:
@@ -102,9 +106,6 @@
 
   4. Installation
 
-  The `extensions` cvar must be set to a non-zero value to enable qextensions.
-  If it is set through the command line `+extensions 1` must prelude `+map`.
-
   qextensions use the filesystem of Quake. They can be placed into the 
   game directory or embedded into a .PAK file, e.g.:
 
@@ -124,6 +125,32 @@
     src/  contains the source code of the qextension
     qsrc/ contains the source code of the mod uses the qextension
 
-  It requres gcc and gcc-mingw-w64 to compile on Linux.
-  It can be compiled using Visual Studio on Windows.
-  It requres qcc to compile progs.dat.
+  5.1. Building
+  
+  qcc is required to be in the $PATH/%PATH% in order to compile progs.dat.
+  
+  5.2. Linux
+  
+  gcc is required to compile the qextension. Simply type:
+  
+    make
+  
+  A Win64 version also can be compiled, it requires the gcc-mingw-w64 toolchain.
+  If it is not present remove the following line from Makefile.
+  
+    cd src; make -f Makefile.w64
+
+  5.3. Windows
+  
+  Open an `x64 Native Tools Command Prompt for VS X` ant type:
+  
+    build.bat
+  
+  5.4. Running
+  
+  To run the hello qextension copy the generated hello folder to the folder of
+  quakespasm (where id1 lives) then type:
+  
+    quakespasm --args -game hello +extensions 1 +developer 1 +map start
+  
+  If you see the outside of the start map the extension is working.
