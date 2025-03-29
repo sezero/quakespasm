@@ -65,6 +65,10 @@ CFLAGS += -O2
 #CFLAGS += -fno-asynchronous-unwind-tables
 CFLAGS += $(call check_gcc,-fweb,)
 CFLAGS += $(call check_gcc,-frename-registers,)
+ifeq ($(HOST_OS),darwin)
+CFLAGS += -arch x86_64
+LDFLAGS += -arch x86_64
+endif
 cmd_strip=$(STRIP) $(1)
 define do_strip
 	$(call cmd_strip,$(1));
@@ -164,6 +168,8 @@ endif
 
 ifeq ($(HOST_OS),haiku)
 COMMON_LIBS= -lGL
+else ifeq ($(HOST_OS),darwin)
+COMMON_LIBS= -framework OpenGL -framework IOKit -lm
 else
 COMMON_LIBS= -lGL -lm
 endif
