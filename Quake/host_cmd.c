@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "quakedef.h"
+#include "filenames.h"
 #ifndef _WIN32
 #include <dirent.h>
 #endif
@@ -58,7 +59,7 @@ void Host_Quit_f (void)
 FileList_Add
 ==================
 */
-static void FileList_Add (const char *name, filelist_item_t **list)
+static void FileList_Add (const char *name, filelist_item_t **list, unsigned int path_id)
 {
 	filelist_item_t	*item,*cursor,*prev;
 
@@ -71,6 +72,7 @@ static void FileList_Add (const char *name, filelist_item_t **list)
 
 	item = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
 	q_strlcpy (item->name, name, sizeof(item->name));
+	item->path_id = path_id;
 
 	// insert each entry in alphabetical order
 	if (*list == NULL ||
@@ -107,9 +109,9 @@ static void FileList_Clear (filelist_item_t **list)
 
 filelist_item_t	*extralevels;
 
-static void ExtraMaps_Add (const char *name)
+static void ExtraMaps_Add (const char *name, unsigned int path_id)
 {
-	FileList_Add(name, &extralevels);
+	FileList_Add(name, &extralevels, path_id);
 }
 
 void ExtraMaps_Init (void)
@@ -139,7 +141,7 @@ void ExtraMaps_Init (void)
 			do
 			{
 				COM_StripExtension(fdat.cFileName, mapname, sizeof(mapname));
-				ExtraMaps_Add (mapname);
+				ExtraMaps_Add (mapname, search->path_id);
 			} while (FindNextFile(fhnd, &fdat));
 			FindClose(fhnd);
 #else
@@ -152,7 +154,7 @@ void ExtraMaps_Init (void)
 				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "bsp") != 0)
 					continue;
 				COM_StripExtension(dir_t->d_name, mapname, sizeof(mapname));
-				ExtraMaps_Add (mapname);
+				ExtraMaps_Add (mapname, search->path_id);
 			}
 			closedir(dir_p);
 #endif
@@ -168,7 +170,7 @@ void ExtraMaps_Init (void)
 						if (pak->files[i].filelen > 32*1024)
 						{ // don't list files under 32k (ammo boxes etc)
 							COM_StripExtension(pak->files[i].name + 5, mapname, sizeof(mapname));
-							ExtraMaps_Add (mapname);
+							ExtraMaps_Add (mapname, search->path_id);
 						}
 					}
 				}
@@ -196,15 +198,42 @@ Host_Maps_f
 static void Host_Maps_f (void)
 {
 	int i;
+	unsigned int path_id = 0;
 	filelist_item_t	*level;
 
-	for (level = extralevels, i = 0; level; level = level->next, i++)
-		Con_SafePrintf ("   %s\n", level->name);
+	if (Cmd_Argc() > 1) {
+		// find path_id of the matching mod name:
+		const char *mod_name = Cmd_Argv(1);
+		searchpath_t *search = com_searchpaths;
+		for (; search; search = search->next) {
+			if (search->pack) continue;
+			else {
+				const char *ptr = FIND_LAST_DIRSEP(search->filename);
+				const char *dir_name = ptr != NULL ?
+						 ++ptr : search->filename;
+				if (q_strcasecmp(dir_name, mod_name) == 0) {
+					path_id = search->path_id;
+					break;
+				}
+			}
+		}
+		if (!path_id)
+			goto done;
+	}
 
+	for (level = extralevels, i = 0; level; level = level->next)
+	{
+		if (path_id && path_id != level->path_id)
+			continue;
+		++i;
+		Con_SafePrintf ("   %s\n", level->name);
+	}
 	if (i)
 		Con_SafePrintf ("%i map(s)\n", i);
-	else
+	else {
+	done:
 		Con_SafePrintf ("no maps found\n");
+	}
 }
 
 //==============================================================================
@@ -215,7 +244,7 @@ filelist_item_t	*modlist;
 
 static void Modlist_Add (const char *name)
 {
-	FileList_Add(name, &modlist);
+	FileList_Add(name, &modlist, 0);
 }
 
 #ifdef _WIN32
@@ -321,7 +350,7 @@ void DemoList_Init (void)
 			do
 			{
 				COM_StripExtension(fdat.cFileName, demname, sizeof(demname));
-				FileList_Add (demname, &demolist);
+				FileList_Add (demname, &demolist, search->path_id);
 			} while (FindNextFile(fhnd, &fdat));
 			FindClose(fhnd);
 #else
@@ -334,7 +363,7 @@ void DemoList_Init (void)
 				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "dem") != 0)
 					continue;
 				COM_StripExtension(dir_t->d_name, demname, sizeof(demname));
-				FileList_Add (demname, &demolist);
+				FileList_Add (demname, &demolist, search->path_id);
 			}
 			closedir(dir_p);
 #endif
@@ -348,7 +377,7 @@ void DemoList_Init (void)
 					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "dem"))
 					{
 						COM_StripExtension(pak->files[i].name, demname, sizeof(demname));
-						FileList_Add (demname, &demolist);
+						FileList_Add (demname, &demolist, search->path_id);
 					}
 				}
 			}

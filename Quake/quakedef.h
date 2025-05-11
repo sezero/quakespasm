@@ -293,6 +293,7 @@ extern	double		realtime;		// not bounded in any way, changed at
 typedef struct filelist_item_s
 {
 	char			name[32];
+	unsigned int		path_id;
 	struct filelist_item_s	*next;
 } filelist_item_t;
 
