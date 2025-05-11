@@ -212,8 +212,10 @@ static void ExtraMaps_List (const char* mod_name)
 				}
 			}
 		}
-		if (!path_id)
-			goto done;
+		if (!path_id) {
+			Con_SafePrintf ("game %s not loaded\n", mod_name);
+			return;
+		}
 	}
 
 	for (level = extralevels, i = 0; level; level = level->next)
@@ -225,10 +227,8 @@ static void ExtraMaps_List (const char* mod_name)
 	}
 	if (i)
 		Con_SafePrintf ("%i map(s)\n", i);
-	else {
-	done:
+	else
 		Con_SafePrintf ("no maps found\n");
-	}
 }
 
 /*
@@ -253,17 +253,7 @@ Host_Maps_Mod_f
 */
 static void Host_Maps_Mod_f(void)
 {
-	searchpath_t* search = com_searchpaths;
-	for (; search; search = search->next) {
-		if (search->pack) continue;
-		else {
-			const char* ptr = FIND_LAST_DIRSEP(search->filename);
-			const char* dir_name = ptr != NULL ?
-				++ptr : search->filename;
-			ExtraMaps_List(dir_name);
-			return;
-		}
-	}
+	ExtraMaps_List(COM_SkipPath(com_gamedir));
 }
 
 //==============================================================================
