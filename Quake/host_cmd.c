@@ -190,20 +190,15 @@ void ExtraMaps_NewGame (void)
 	ExtraMaps_Init ();
 }
 
-/*
-==================
-Host_Maps_f
-==================
-*/
-static void Host_Maps_f (void)
+static void ExtraMaps_List (const char* mod_name)
 {
 	int i;
 	unsigned int path_id = 0;
 	filelist_item_t	*level;
 
-	if (Cmd_Argc() > 1) {
+	if (mod_name) {
+		Con_SafePrintf("maps in search path from directory \"%s\":\n", mod_name);
 		// find path_id of the matching mod name:
-		const char *mod_name = Cmd_Argv(1);
 		searchpath_t *search = com_searchpaths;
 		for (; search; search = search->next) {
 			if (search->pack) continue;
@@ -233,6 +228,41 @@ static void Host_Maps_f (void)
 	else {
 	done:
 		Con_SafePrintf ("no maps found\n");
+	}
+}
+
+/*
+==================
+Host_Maps_f
+==================
+*/
+static void Host_Maps_f(void)
+{
+	if (Cmd_Argc() > 1) {
+		// filter to specific directory of search path
+		ExtraMaps_List(Cmd_Argv(1));
+	} else {
+		ExtraMaps_List(NULL);
+	}
+}
+
+/*
+==================
+Host_Maps_Mod_f
+==================
+*/
+static void Host_Maps_Mod_f(void)
+{
+	searchpath_t* search = com_searchpaths;
+	for (; search; search = search->next) {
+		if (search->pack) continue;
+		else {
+			const char* ptr = FIND_LAST_DIRSEP(search->filename);
+			const char* dir_name = ptr != NULL ?
+				++ptr : search->filename;
+			ExtraMaps_List(dir_name);
+			return;
+		}
 	}
 }
 
@@ -2332,6 +2362,7 @@ Host_InitCommands
 void Host_InitCommands (void)
 {
 	Cmd_AddCommand ("maps", Host_Maps_f); //johnfitz
+	Cmd_AddCommand ("maps_mod", Host_Maps_Mod_f);
 	Cmd_AddCommand ("mods", Host_Mods_f); //johnfitz
 	Cmd_AddCommand ("games", Host_Mods_f); // as an alias to "mods" -- S.A. / QuakeSpasm
 	Cmd_AddCommand ("mapname", Host_Mapname_f); //johnfitz
