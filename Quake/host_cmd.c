@@ -123,14 +123,9 @@ void ExtraMaps_Init (void)
 #endif
 	char		filestring[MAX_OSPATH];
 	char		mapname[32];
-	char		ignorepakdir[32];
 	searchpath_t	*search;
 	pack_t		*pak;
 	int		i;
-
-	// we don't want to list the maps in id1 pakfiles,
-	// because these are not "add-on" levels
-	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
 
 	for (search = com_searchpaths; search; search = search->next)
 	{
@@ -164,8 +159,8 @@ void ExtraMaps_Init (void)
 		}
 		else //pakfile
 		{
-			if (!strstr(search->pack->filename, ignorepakdir))
-			{ //don't list standard id maps
+			if (search->path_id != 1U) // don't list standard id maps: they aren't "add-on" levels
+			{
 				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
 					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "bsp"))
@@ -310,15 +305,10 @@ void DemoList_Init (void)
 #endif
 	char		filestring[MAX_OSPATH];
 	char		demname[32];
-	char		ignorepakdir[32];
 	searchpath_t	*search;
 	pack_t		*pak;
 	int		i;
 
-	// we don't want to list the demos in id1 pakfiles,
-	// because these are not "add-on" demos
-	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
-	
 	for (search = com_searchpaths; search; search = search->next)
 	{
 		if (*search->filename) //directory
@@ -351,8 +341,8 @@ void DemoList_Init (void)
 		}
 		else //pakfile
 		{
-			if (!strstr(search->pack->filename, ignorepakdir))
-			{ //don't list standard id demos
+			if (search->path_id != 1U) // don't list standard id demos: they aren't "add-on" demos
+			{
 				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
 					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "dem"))
