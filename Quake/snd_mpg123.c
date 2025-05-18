@@ -25,7 +25,6 @@
 #include "snd_mp3.h"
 #include <errno.h>
 
-#define MPG123_NO_LARGENAME
 #define MPG123_DEF_SSIZE_T  /* we do define ssize_t in our stdinc.h */
 #include <mpg123.h>
 
@@ -169,7 +168,7 @@ _fail:
 			    mpg123_close(priv->handle);
 			mpg123_delete(priv->handle);
 		}
-		Z_Free(stream->priv);
+		Z_Free(priv);
 	}
 	return false;
 }
