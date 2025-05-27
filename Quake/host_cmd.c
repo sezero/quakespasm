@@ -197,10 +197,10 @@ static void ExtraMaps_List (const char* mod_name)
 	filelist_item_t	*level;
 
 	if (mod_name) {
+		searchpath_t *search;
 		Con_SafePrintf("maps in search path from directory \"%s\":\n", mod_name);
 		// find path_id of the matching mod name:
-		searchpath_t *search = com_searchpaths;
-		for (; search; search = search->next) {
+		for (search = com_searchpaths; search; search = search->next) {
 			if (search->pack) continue;
 			else {
 				const char *ptr = FIND_LAST_DIRSEP(search->filename);
