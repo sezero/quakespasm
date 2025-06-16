@@ -221,7 +221,7 @@ static void TexMgr_Imagelist_f (void)
 TexMgr_Imagedump_f -- dump all current textures to TGA files
 ===============
 */
-#if !__EMSCRIPTEN__
+#ifndef __EMSCRIPTEN__
 static void TexMgr_Imagedump_f (void)
 {
 	char tganame[MAX_OSPATH], tempname[MAX_OSPATH], dirname[MAX_OSPATH];
@@ -698,7 +698,7 @@ void TexMgr_Init (void)
 	Cvar_SetCallback (&gl_texturemode, &TexMgr_TextureMode_f);
 	Cmd_AddCommand ("gl_describetexturemodes", &TexMgr_DescribeTextureModes_f);
 	Cmd_AddCommand ("imagelist", &TexMgr_Imagelist_f);
-#if !__EMSCRIPTEN__
+#ifndef __EMSCRIPTEN__
 	Cmd_AddCommand ("imagedump", &TexMgr_Imagedump_f);
 #endif
 	// poll max size from hardware
