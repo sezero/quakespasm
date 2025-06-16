@@ -227,8 +227,11 @@ typedef struct
 #include "platform.h"
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
 #if defined(USE_SDL2)
+#if __EMSCRIPTEN__
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
 #else
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
@@ -326,6 +329,8 @@ void DemoList_Init (void);
 
 void ExtraMaps_NewGame (void);
 void DemoList_Rebuild (void);
+
+void Host_SyncExternalFS (void);
 
 extern int		current_skill;	// skill level for currently loaded level (in case
 					//  the user changes the cvar while the level is

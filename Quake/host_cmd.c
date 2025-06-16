@@ -26,6 +26,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef _WIN32
 #include <dirent.h>
 #endif
+#if __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
 
 extern cvar_t	pausable;
 extern cvar_t	nomonsters;
@@ -1158,6 +1161,7 @@ static void Host_Savegame_f (void)
 		fflush (f);
 	}
 	fclose (f);
+	Host_SyncExternalFS();
 	Con_Printf ("done.\n");
 }
 
@@ -2397,3 +2401,10 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("viewprev", Host_Viewprev_f);
 }
 
+#if __EMSCRIPTEN__
+EM_ASYNC_JS(void, Host_SyncExternalFS, (void), {
+	 await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
+});
+#else
+void Host_SyncExternalFS (void) {}
+#endif

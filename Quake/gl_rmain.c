@@ -146,6 +146,32 @@ GLSLGamma_CreateShaders
 */
 static void GLSLGamma_CreateShaders (void)
 {
+#if __EMSCRIPTEN__
+	const GLchar *vertSource = \
+		"precision highp float;\n"
+		"attribute vec4 aVertexPosition;\n"
+		"attribute vec2 aTextureCoord;\n"
+		"varying highp vec2 vTextureCoord;\n"
+		"\n"
+		"void main(void) {\n"
+		"	gl_Position = aVertexPosition;\n"
+		"	vTextureCoord = aTextureCoord;\n"
+	"}\n";
+
+	const GLchar *fragSource = \
+		"precision highp float;\n"
+		"varying highp vec2 vTextureCoord;\n"
+		"\n"
+		"uniform sampler2D GammaTexture;\n"
+		"uniform float GammaValue;\n"
+		"uniform float ContrastValue;\n"
+		"\n"
+		"void main(void) {\n"
+		"	  vec4 frag = texture2D(GammaTexture, vTextureCoord);\n"
+		"	  frag.rgb = frag.rgb * ContrastValue;\n"
+		"	  gl_FragColor = vec4(pow(frag.rgb, vec3(GammaValue)), 1.0);\n"
+		"}\n";
+#else
 	const GLchar *vertSource = \
 		"#version 110\n"
 		"\n"
@@ -166,6 +192,7 @@ static void GLSLGamma_CreateShaders (void)
 		"	  frag.rgb = frag.rgb * ContrastValue;\n"
 		"	  gl_FragColor = vec4(pow(frag.rgb, vec3(GammaValue)), 1.0);\n"
 		"}\n";
+#endif
 
 	if (!gl_glsl_gamma_able)
 		return;
