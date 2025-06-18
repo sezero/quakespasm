@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: July 2024.</em>
+<em>Page last edited: June 2025.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -130,12 +130,35 @@ The project can also be built using Microsoft Visual Studio 2005 and newer versi
 A Quakespasm App (including program launcher and update framework) can be made using the <bf>Xcode</bf> template found in the MacOSX directory.
 Alternatively, have a look at <bf>Makefile.darwin</bf> for more instructions on building from a console.
 </p>
+<sect1>Escripten<p>
+Use <bf>Makefile.escripten</bf> to build. Build depends on third party library <url url="https://github.com/ptitSeb/gl4es" name="gl4es">.
+See <url url="https://github.com/ololoken/ems-runner-quakespasm"> for a launcher.
+</p>
 
 <sect1>Quake '2021 re-release'<p>
 QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the quakespasm binary to your rerelease installation and run as you normally do.</p>
 
 
 <sect>Changes<p>
+
+<sect1>Changes in 0.97.0<p>
+<itemize>
+<item> Valve BSP, WAD, and external texture support
+<item> The maps console command now takes an optional ModName, e.g.: maps ad or maps id1
+<item> New maps_mod console command to list maps only from the active mod
+<item> Add support for -userdir cmdline arg to override the hardcoded user directory
+<item> Reset r_skyfog between maps
+<item> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.
+<item> SV_Physics: fix entity cap check in the for loop to fix a 14-year-old bug.
+<item> Don't spawn monsters when starting map with nomonsters 1
+<item> Disable EXT_packed_pixels support on big endian systems
+<item> Allow any supported music type to be considered as cdrip
+<item> snd_mpg123 now uses 64 bit-only api if built against mpg123 >= 1.33.0
+<item> Initial escripten wasm port
+<item> Code cleanups, minor fixes, updates to third party code.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin, and Jesse Elliott for patches.
+</itemize>
+</p>
 
 <sect1>Changes in 0.96.3<p>
 <itemize>

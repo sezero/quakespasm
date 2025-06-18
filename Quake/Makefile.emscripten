@@ -1,8 +1,8 @@
 # GNU Makefile for QuakeSpasm WASM (Emscripten)
 # Contributed by Roman Turchin
 #
-# Build depends on external librarygl4es:
-# 	https://github.com/ptitSeb/gl4es
+# Build depends on external library gl4es:
+#	 https://github.com/ptitSeb/gl4es
 
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
