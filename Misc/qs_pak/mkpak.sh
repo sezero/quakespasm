@@ -39,7 +39,7 @@ assert_valid_file() {
 	then
 		error "$1: Permission denied"
 	fi
-	if test $(echo -n "$1" | wc -c) -gt 55
+	if test $(printf '%s' "$1" | wc -c) -gt 55
 	then
 		error "$1: Name too long"
 	fi
@@ -53,15 +53,11 @@ assert_valid_int32() {
 }
 
 octal() {
-	if test $1 -gt 7
-	then
-		octal $(expr $1 / 8)
-	fi
-	echo -n $(expr $1 % 8) 
+	printf '%o' $1
 }
 
 byte() {
-	echo -en \\0$(octal $1)
+	printf '%b' "\\0$(octal $1)"
 }
 
 little_endian_uint32() {
@@ -90,14 +86,14 @@ zero_padding() {
 }
 
 header() {
-	echo -n PACK
+	printf '%s' PACK
 	little_endian_int32 $1
 	little_endian_int32 $2
 }
 
 directory_entry() {
-	echo -n "$1"
-	zero_padding $(expr 56 - $(echo -n "$1" | wc -c))
+	printf '%s' "$1"
+	zero_padding $(expr 56 - $(printf '%s' "$1" | wc -c))
 	little_endian_int32 $2
 	little_endian_int32 $3
 }
