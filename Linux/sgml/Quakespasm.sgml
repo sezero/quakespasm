@@ -149,7 +149,6 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Add support for -userdir cmdline arg to override the hardcoded user directory.
 <item> Reset r_skyfog between maps.
 <item> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.
-<item> SV_Physics: fix entity cap check in the for loop to fix a 14-year-old bug.
 <item> Don't spawn monsters when starting map with nomonsters 1.
 <item> Disable EXT_packed_pixels support on big endian systems.
 <item> Allow any supported music type to be considered as cdrip.
