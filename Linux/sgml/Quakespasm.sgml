@@ -143,20 +143,20 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.97.0<p>
 <itemize>
-<item> Valve BSP, WAD, and external texture support
+<item> Valve BSP, WAD, and external texture support.
 <item> The maps console command now takes an optional ModName, e.g.: maps ad or maps id1
-<item> New maps_mod console command to list maps only from the active mod
-<item> Add support for -userdir cmdline arg to override the hardcoded user directory
-<item> Reset r_skyfog between maps
+<item> New maps_mod console command to list maps only from the active mod.
+<item> Add support for -userdir cmdline arg to override the hardcoded user directory.
+<item> Reset r_skyfog between maps.
 <item> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.
 <item> SV_Physics: fix entity cap check in the for loop to fix a 14-year-old bug.
-<item> Don't spawn monsters when starting map with nomonsters 1
-<item> Disable EXT_packed_pixels support on big endian systems
-<item> Allow any supported music type to be considered as cdrip
-<item> snd_mpg123 now uses 64 bit-only api if built against mpg123 >= 1.33.0
-<item> Initial escripten wasm port
+<item> Don't spawn monsters when starting map with nomonsters 1.
+<item> Disable EXT_packed_pixels support on big endian systems.
+<item> Allow any supported music type to be considered as cdrip.
+<item> snd_mpg123 now uses 64 bit-only libmpg123 api if built against mpg123 >= 1.33.0
+<item> Initial escripten wasm port.
 <item> Code cleanups, minor fixes, updates to third party code.
-<item> Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin, and Jesse Elliott for patches.
+<item> Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin, Jesse Elliott and Alexander Tsoy for patches.
 </itemize>
 </p>
 

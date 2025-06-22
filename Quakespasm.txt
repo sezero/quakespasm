@@ -229,17 +229,17 @@
 
   Changes in 0.97.0:
 
-  -  Valve BSP, WAD, and external texture support
+  -  Valve BSP, WAD, and external texture support.
 
   -  The maps console command now takes an optional ModName, e.g.:
     'maps ad'  or 'maps id1'
 
-  -  New maps_mod console command to list maps only from the active mod
+  -  New maps_mod console command to list maps only from the active mod.
 
   -  Add support for -userdir cmdline arg to override the hardcoded
-     user directory
+     user directory.
 
-  -  Reset r_skyfog between maps
+  -  Reset r_skyfog between maps.
 
   -  SV_PushMove: preserve pusher solid field instead of overwriting
      with SOLID_BSP.
@@ -247,21 +247,21 @@
   -  SV_Physics: fix entity cap check in the for loop to fix
      a 14-year-old bug.
 
-  -  Don't spawn monsters when starting map with nomonsters 1
+  -  Don't spawn monsters when starting map with nomonsters 1.
 
-  -  Disable EXT_packed_pixels support on big endian systems
+  -  Disable EXT_packed_pixels support on big endian systems.
 
-  -  Allow any supported music type to be considered as cdrip
+  -  Allow any supported music type to be considered as cdrip.
 
-  -  snd_mpg123 now uses 64 bit-only api if built against mpg123 >=
-     1.33.0
+  -  snd_mpg123 now uses 64 bit-only libmpg123 api if built against
+     mpg123 >= 1.33.0
 
-  -  Initial escripten wasm port
+  -  Initial escripten wasm port.
 
   -  Code cleanups, minor fixes, updates to third party code.
 
-  -  Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin, and
-     Jesse Elliott for patches.
+  -  Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin,
+     Jesse Elliott and Alexander Tsoy for patches.
 
 
   Changes in 0.96.3:
