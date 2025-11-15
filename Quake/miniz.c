@@ -2061,7 +2061,7 @@ void *mz_zip_reader_extract_file_to_heap(mz_zip_archive *pZip, const char *pFile
     {
         if (pSize)
             *pSize = 0;
-        return MZ_FALSE;
+        return NULL;
     }
     return mz_zip_reader_extract_to_heap(pZip, file_index, pSize, flags);
 }
