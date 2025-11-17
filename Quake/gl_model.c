@@ -1634,11 +1634,11 @@ static void Mod_LoadFaces (lump_t *l, qboolean bsp2)
 			}
 
 		// detect special liquid types
-			if (!strncmp (out->texinfo->texture->name, "*lava", 5))
+			if (!strncmp (out->texinfo->texture->name, "*lava", 5) || !strncmp (out->texinfo->texture->name, "!lava", 5))
 				out->flags |= SURF_DRAWLAVA;
-			else if (!strncmp (out->texinfo->texture->name, "*slime", 6))
+			else if (!strncmp (out->texinfo->texture->name, "*slime", 6) || !strncmp (out->texinfo->texture->name, "!slime", 6))
 				out->flags |= SURF_DRAWSLIME;
-			else if (!strncmp (out->texinfo->texture->name, "*tele", 5))
+			else if (!strncmp (out->texinfo->texture->name, "*tele", 5) || !strncmp (out->texinfo->texture->name, "!tele", 5))
 				out->flags |= SURF_DRAWTELE;
 			else out->flags |= SURF_DRAWWATER;
 
