@@ -483,7 +483,7 @@ static texture_t *Mod_LoadWadTexture (qmodel_t *mod, wad_t *wads, const char *na
 	// ensure we're dealing with a miptex
 	if (!info || (info->type != TYP_MIPTEX && (wad->id != WADID_VALVE || info->type != TYP_MIPTEX_PALETTE)))
 	{
-		Con_Warning ("Missing texture %s in %s!\n", name, mod->name);
+		Con_Warning ("Missing texture %s in WAD, using BSP.\n", name);
 		return NULL;
 	}
 
@@ -709,10 +709,13 @@ static void Mod_LoadTextures (lump_t *l)
 		if (from_wad)
 		{
 			tx = (texture_t *)Mod_LoadWadTexture (loadmodel, wads, mt->name, &pal, &pixels);
-			if (!tx)
-				continue;
-			loadmodel->textures[i] = tx;
-			goto _load_texture;
+			if (tx)
+			{
+				loadmodel->textures[i] = tx;
+				goto _load_texture;
+			}
+			// Mod_LoadWadTexture trust the .wad name in bsp, but its loading may
+			//  fail anyway, so try with regular internal .bsp texture loading as fallback:
 		}
 
 #ifdef BSP29_VALVE
