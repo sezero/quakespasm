@@ -4,10 +4,12 @@
  <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.65">
  <TITLE>QuakeSpasm</TITLE>
 </HEAD>
+
 <BODY>
+
 <H1>QuakeSpasm</H1>
 
-<P><EM>Page last edited: June 2025.</EM></P>
+<P><EM>Page last edited: February 2026.</EM></P>
 
 <P>
 <H2><A NAME="toc1">1.</A> <A HREF="Quakespasm.html#s1">About</A></H2>
@@ -232,6 +234,8 @@ See
 <LI> New maps_mod console command to list maps only from the active mod.</LI>
 <LI> Add support for -userdir cmdline arg to override the hardcoded user directory.</LI>
 <LI> Reset r_skyfog between maps.</LI>
+<LI> Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm from Quake Brutalist Jam 3.)</LI>
+<LI> Support for type 3 (uncompressed grayscale) TGA files (needed by qbj3_rabbit from Quake Brutalist Jam 3.)</LI>
 <LI> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.</LI>
 <LI> Don't spawn monsters when starting map with nomonsters 1.</LI>
 <LI> Disable EXT_packed_pixels support on big endian systems.</LI>
@@ -381,6 +385,7 @@ See
 <LI> Revised min/max/clamp macros' usage.</LI>
 <LI> Fixed a potential undefined behavior in R_DrawAliasModel.</LI>
 <LI> Fixed parsing of the time argument of svc_fog server message. (it has been broken for more than 20 years and has never seem to have been used.)</LI>
+<LI> image: support for type 1 (paletted) TGA files.</LI>
 <LI> Other small improvements elsewhere in the code.</LI>
 <LI> Backported a few fixes to the bundled SDL2-2.0.22 version.</LI>
 </UL>

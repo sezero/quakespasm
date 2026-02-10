@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: June 2025.
+  Page last edited: February 2026.
 
 
   1. About
@@ -241,6 +241,12 @@
 
   -  Reset r_skyfog between maps.
 
+  -  Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm
+     from Quake Brutalist Jam 3.)
+
+  -  Support for type 3 (uncompressed grayscale) TGA files (needed by
+     qbj3_rabbit from Quake Brutalist Jam 3.)
+
   -  SV_PushMove: preserve pusher solid field instead of overwriting
      with SOLID_BSP.
 
@@ -474,6 +480,8 @@
   -  Fixed parsing of the time argument of svc_fog server message. (it
      has been broken for more than 20 years and has never seem to have
      been used.)
+
+  -  image: support for type 1 (paletted) TGA files.
 
   -  Other small improvements elsewhere in the code.
 

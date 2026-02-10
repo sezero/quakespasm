@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: June 2025.</em>
+<em>Page last edited: February 2026.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -148,6 +148,8 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> New maps_mod console command to list maps only from the active mod.
 <item> Add support for -userdir cmdline arg to override the hardcoded user directory.
 <item> Reset r_skyfog between maps.
+<item> Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm from Quake Brutalist Jam 3.)
+<item> Support for type 3 (uncompressed grayscale) TGA files (needed by qbj3_rabbit from Quake Brutalist Jam 3.)
 <item> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.
 <item> Don't spawn monsters when starting map with nomonsters 1.
 <item> Disable EXT_packed_pixels support on big endian systems.
@@ -279,6 +281,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Revised min/max/clamp macros' usage.
 <item> Fixed a potential undefined behavior in R_DrawAliasModel.
 <item> Fixed parsing of the time argument of svc_fog server message. (it has been broken for more than 20 years and has never seem to have been used.)
+<item> image: support for type 1 (paletted) TGA files.
 <item> Other small improvements elsewhere in the code.
 <item> Backported a few fixes to the bundled SDL2-2.0.22 version.
 </itemize>
