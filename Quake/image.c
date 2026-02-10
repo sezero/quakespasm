@@ -218,11 +218,19 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 	}
 	else
 	{
-		if (targa_header.image_type!=2 && targa_header.image_type!=10)
-			Sys_Error ("Image_LoadTGA: %s is not a type 2 or type 10 targa (%i)", loadfilename, targa_header.image_type);
+		if (targa_header.image_type!=2 && targa_header.image_type!=3 && targa_header.image_type!=10)
+			Sys_Error("Image_LoadTGA: %s is not a type 2, 3, or 10 targa (%i)", loadfilename, targa_header.image_type);
 
-		if (targa_header.colormap_type !=0 || (targa_header.pixel_size!=32 && targa_header.pixel_size!=24))
-			Sys_Error ("Image_LoadTGA: %s is not a 24bit or 32bit targa", loadfilename);
+		if (targa_header.image_type == 3)
+		{
+			if (targa_header.colormap_type != 0 || targa_header.pixel_size != 8)
+				Sys_Error ("Image_LoadTGA: %s is not a 8bit grayscale targa", loadfilename);
+		}
+		else
+		{
+			if (targa_header.colormap_type !=0 || (targa_header.pixel_size!=32 && targa_header.pixel_size!=24))
+				Sys_Error ("Image_LoadTGA: %s is not a 24bit or 32bit targa", loadfilename);
+		}
 	}
 
 	columns = targa_header.width;
@@ -299,6 +307,24 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 					*pixbuf++ = alphabyte;
 					break;
 				}
+			}
+		}
+	}
+	else if (targa_header.image_type==3) // Uncompressed grayscale images
+	{
+		for(row=rows-1; row>=0; row--)
+		{
+			realrow = upside_down ? row : rows - 1 - row;
+			pixbuf = targa_rgba + realrow*columns*4;
+
+			for(column=0; column<columns; column++)
+			{
+				unsigned char gray = Buf_GetC(buf);
+
+				*pixbuf++ = gray; // R
+				*pixbuf++ = gray; // G
+				*pixbuf++ = gray; // B
+				*pixbuf++ = 255; // A
 			}
 		}
 	}
