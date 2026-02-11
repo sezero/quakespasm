@@ -252,10 +252,10 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 		//palette data comes first
 		for (i = 0; i < targa_header.colormap_length; i++)
 		{	//this palette data is bgr.
-			palette[i*3+2] = Buf_GetC(buf);
-			palette[i*3+1] = Buf_GetC(buf);
-			palette[i*3+0] = Buf_GetC(buf);
-			palette[i*3+3] = 255;
+			palette[i*4+2] = Buf_GetC(buf);
+			palette[i*4+1] = Buf_GetC(buf);
+			palette[i*4+0] = Buf_GetC(buf);
+			palette[i*4+3] = 255;
 		}
 		for (i = targa_header.colormap_length*4; i < sizeof(palette); i++)
 			palette[i] = 0;
@@ -267,10 +267,10 @@ byte *Image_LoadTGA (FILE *fin, int *width, int *height)
 			for(column=0; column<columns; column++)
 			{
 				i = Buf_GetC(buf);
-				*pixbuf++= palette[i*3+0];
-				*pixbuf++= palette[i*3+1];
-				*pixbuf++= palette[i*3+2];
-				*pixbuf++= palette[i*3+3];
+				*pixbuf++= palette[i*4+0];
+				*pixbuf++= palette[i*4+1];
+				*pixbuf++= palette[i*4+2];
+				*pixbuf++= palette[i*4+3];
 			}
 		}
 	}
