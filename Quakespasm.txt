@@ -247,8 +247,13 @@
   -  Support for type 3 (uncompressed grayscale) TGA files (needed by
      qbj3_rabbit from Quake Brutalist Jam 3.)
 
+  -  Fixes to type 1 (paletted) TGA files support.
+
   -  SV_PushMove: preserve pusher solid field instead of overwriting
      with SOLID_BSP.
+
+  -  Fix svc_clientdata weapon byte potentially not being written for
+     mission packs.
 
   -  Don't spawn monsters when starting map with nomonsters 1.
 
@@ -1338,3 +1343,4 @@
   -  Func Quakespasm forum:
      https://celephais.net/board/view_thread.php?id=60452
   -  Inside3D forums: https://forums.insideqc.com
+

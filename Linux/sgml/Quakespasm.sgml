@@ -150,7 +150,9 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Reset r_skyfog between maps.
 <item> Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm from Quake Brutalist Jam 3.)
 <item> Support for type 3 (uncompressed grayscale) TGA files (needed by qbj3_rabbit from Quake Brutalist Jam 3.)
+<item> Fixes to type 1 (paletted) TGA files support.
 <item> SV_PushMove: preserve pusher solid field instead of overwriting with SOLID_BSP.
+<item> Fix svc_clientdata weapon byte potentially not being written for mission packs.
 <item> Don't spawn monsters when starting map with nomonsters 1.
 <item> Disable EXT_packed_pixels support on big endian systems.
 <item> Allow any supported music type to be considered as cdrip.
