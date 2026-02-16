@@ -836,7 +836,6 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	edict_t	*other;
 	int		items;
 	eval_t	*val;
-	int		weapon;
 
 //
 // send a damage message
@@ -974,7 +973,7 @@ void SV_WriteClientdataToMessage (edict_t *ent, sizebuf_t *msg)
 	}
 	else
 	{
-		weapon = 0;
+		int weapon = 0;
 		for(i=0;i<32;i++)
 		{
 			if ( ((int)ent->v.weapon) & (1<<i) )
