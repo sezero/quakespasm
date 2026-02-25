@@ -7,6 +7,7 @@
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-only</project_license>
   <url type="homepage">https://quakespasm.sourceforge.net/</url>
+  <url type="vcs-browser">https://sourceforge.net/projects/quakespasm/</url>
   <launchable type="desktop-id">net.sourceforge.quakespasm.Quakespasm.desktop</launchable>
   <description>
     <p>Quakespasm is a *Nix friendly Quake Engine based on the SDL port of the popular FitzQuake.
