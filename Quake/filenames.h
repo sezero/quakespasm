@@ -147,17 +147,17 @@ static inline const char *FIND_LAST_DIRSEP (const char *_the_path) {
 static inline char *FIND_FIRST_DIRSEP(const char *_the_path) {
     char *p = (char *) strchr(_the_path, ':');
     if (p != NULL) return p;
-    return strchr(_the_path, '/');
+    return (char *) strchr(_the_path, '/');
 }
 static inline char *FIND_LAST_DIRSEP (const char *_the_path) {
     char *p = (char *) strrchr(_the_path, '/');
     if (p != NULL) return p;
-    return strchr(_the_path, ':');
+    return (char *) strchr(_the_path, ':');
 }
 #endif /* C++ */
 
 /* ---------------------- assumed UNIX-ish : ---------------------- */
-#else /**/
+#else /* */
 
 #define IS_DIR_SEPARATOR(c)	((c) == '/')
 #define DIR_SEPARATOR_CHAR	'/'
