@@ -2,8 +2,8 @@
 # Usage: "make -f Makefile.w32"
 # To cross-compile on Linux hosts, see the build_cross_win32*.sh scripts.
 # "make DEBUG=1" to build a debug client.
-# "make SDL_CONFIG=/path/to/sdl-config" to override the locally included SDL versions.
-# "make WINSOCK2=1" to use WinSock2 api instead of the old WinSock 1.1.
+# "make SDL_CONFIG=/path/to/sdl-config" to override the included SDL versions.
+# "make WINSOCK2=1" to use WinSock2 api instead of old WinSock 1.1.
 
 ### Enable/disable SDL2
 USE_SDL2=0
@@ -14,7 +14,7 @@ USE_CODEC_FLAC=1
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=1
-# either xmp or mikmod (or modplug)
+# either of xmp (preferred), mikmod or modplug
 USE_CODEC_MIKMOD=0
 USE_CODEC_XMP=1
 USE_CODEC_MODPLUG=0
@@ -22,7 +22,7 @@ USE_CODEC_UMX=1
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
-# which library to use for ogg decoding: vorbis or tremor
+# which library to use for ogg/vorbis decoding: vorbis or tremor
 VORBISLIB=vorbis
 
 # ---------------------------
@@ -50,7 +50,7 @@ CPUFLAGS=
 LDFLAGS?= -m32 -mwindows -static-libgcc
 DFLAGS ?=
 CFLAGS ?= -m32 -Wall -Wno-trigraphs -MMD
-CFLAGS += $(call check_gcc,-std=gnu11,)
+#CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG

@@ -16,7 +16,7 @@ USE_CODEC_FLAC=0
 USE_CODEC_MP3=1
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=0
-# either xmp or mikmod (or modplug)
+# either of xmp (preferred), mikmod or modplug
 USE_CODEC_MIKMOD=0
 USE_CODEC_XMP=0
 USE_CODEC_MODPLUG=0
@@ -24,7 +24,7 @@ USE_CODEC_UMX=0
 
 # which library to use for mp3 decoding: mad or mpg123
 MP3LIB=mad
-# which library to use for ogg decoding: vorbis or tremor
+# which library to use for ogg/vorbis decoding: vorbis or tremor
 VORBISLIB=vorbis
 
 # ---------------------------
@@ -53,7 +53,7 @@ CPUFLAGS=
 LDFLAGS?=
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs -MMD
-CFLAGS += $(call check_gcc,-std=gnu11,)
+#CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
 DFLAGS += -DDEBUG
