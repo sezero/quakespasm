@@ -134,16 +134,22 @@ typedef unsigned char		byte;
 /* some structures have qboolean members and the x86 asm code expect
  * those members to be 4 bytes long.  i.e.: qboolean must be 32 bits.  */
 typedef int	qboolean;
-#undef true
-#undef false
 #if !defined(__cplusplus)
-#if defined __STDC_VERSION__ && (__STDC_VERSION__ >= 199901L)
+/* include stdbool.h for C99 or better, or with GCC >= 3 which has a
+ * standarts-compliant header.  */
+#if (defined(__STDC_VERSION__) && (__STDC_VERSION__ >= 199901L)) || \
+    (defined(__GNUC__) && (__GNUC__ >= 3))                       || \
+    (defined(_MSC_VER) && (_MSC_VER >= 1910 /* VS2017 */))
 #include <stdbool.h>
+#elif !defined(__bool_true_false_are_defined)
+#define false 0
+#define true  1
+#if defined(__APPLE__) && (defined(__POWERPC__) || defined(__ppc__))
+#define bool  int
 #else
-enum {
-	false = 0,
-	true  = 1
-};
+#define bool  unsigned char
+#endif
+#define __bool_true_false_are_defined 1
 #endif
 #endif /* */
 COMPILE_TIME_ASSERT(falsehood, ((1 != 1) == false));

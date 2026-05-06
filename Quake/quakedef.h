@@ -36,8 +36,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	X11_VERSION		1.10
 
 #define	FITZQUAKE_VERSION	0.85	//johnfitz
-#define	QUAKESPASM_VERSION	0.96
-#define	QUAKESPASM_VER_PATCH	3	// helper to print a string like 0.94.7
+#define	QUAKESPASM_VERSION	0.97
+#define	QUAKESPASM_VER_PATCH	0	// helper to print a string like 0.94.7
 #ifndef	QUAKESPASM_VER_SUFFIX
 #define	QUAKESPASM_VER_SUFFIX		// optional version suffix string literal like "-beta1"
 #endif
@@ -94,7 +94,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define	MAX_EDICTS	32000		// johnfitz -- highest allowed value for max_edicts cvar
 						// ents past 8192 can't play sounds in the standard protocol
 #define	MAX_LIGHTSTYLES	64
-#define	MAX_MODELS	2048		// johnfitz -- was 256
+#define	MAX_MODELS	4096		// johnfitz -- was 256
 #define	MAX_SOUNDS	2048		// johnfitz -- was 256
 
 #define	SAVEGAME_COMMENT_LENGTH	39
@@ -225,18 +225,26 @@ typedef struct
 #include "server.h"
 
 #include "platform.h"
+
 #if defined(SDL_FRAMEWORK) || defined(NO_SDL_CONFIG)
 #if defined(USE_SDL2)
+#ifdef __EMSCRIPTEN__
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
 #include <SDL2/SDL.h>
+#ifndef __EMSCRIPTEN__
 #include <SDL2/SDL_opengl.h>
-#else
+#endif
+#else /* SDL-1.2: */
 #include <SDL/SDL.h>
 #include <SDL/SDL_opengl.h>
 #endif
-#else
+#else /**/
 #include "SDL.h"
 #include "SDL_opengl.h"
 #endif
+
 #ifndef APIENTRY
 #define	APIENTRY
 #endif
@@ -293,6 +301,7 @@ extern	double		realtime;		// not bounded in any way, changed at
 typedef struct filelist_item_s
 {
 	char			name[32];
+	unsigned int		path_id;
 	struct filelist_item_s	*next;
 } filelist_item_t;
 
@@ -325,6 +334,8 @@ void DemoList_Init (void);
 
 void ExtraMaps_NewGame (void);
 void DemoList_Rebuild (void);
+
+void Host_SyncExternalFS (void);
 
 extern int		current_skill;	// skill level for currently loaded level (in case
 					//  the user changes the cvar while the level is

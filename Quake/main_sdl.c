@@ -32,6 +32,9 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #include "SDL.h"
 #endif
 #include <stdio.h>
+#ifdef __EMSCRIPTEN__
+#include <gl4esinit.h>
+#endif
 
 static void Sys_AtExit (void)
 {
@@ -68,6 +71,9 @@ static quakeparms_t	parms;
 
 int main(int argc, char *argv[])
 {
+#ifdef __EMSCRIPTEN__
+	initialize_gl4es();
+#endif
 	int		t;
 	double		time, oldtime, newtime;
 

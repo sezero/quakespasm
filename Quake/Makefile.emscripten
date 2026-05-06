@@ -1,19 +1,14 @@
-# GNU Makefile for QuakeSpasm unix targets.
-# You need the SDL library fully installed.
-# "make DEBUG=1" to build a debug client.
-# "make SDL_CONFIG=/path/to/sdl-config" for unusual SDL installations.
-# "make DO_USERDIRS=1" to enable user directories support
-
-# Enable/Disable user directories support
-DO_USERDIRS=0
-
-### Enable/Disable SDL2
-USE_SDL2=0
+# GNU Makefile for QuakeSpasm WASM (Emscripten)
+# Contributed by Roman Turchin
+# Edit this makefile, if necessary, to suit your environment.
+#
+# Build depends on external library gl4es:
+#	 https://github.com/ptitSeb/gl4es
 
 ### Enable/Disable codecs for streaming music support
 USE_CODEC_WAVE=1
 USE_CODEC_FLAC=0
-USE_CODEC_MP3=1
+USE_CODEC_MP3=0
 USE_CODEC_VORBIS=1
 USE_CODEC_OPUS=0
 # either of xmp (preferred), mikmod or modplug
@@ -70,30 +65,15 @@ define do_strip
 	$(call cmd_strip,$(1));
 endef
 endif
-
-ifeq ($(DO_USERDIRS),1)
-CFLAGS += -DDO_USERDIRS=1
-endif
-
-ifeq ($(USE_SDL2),1)
-CFLAGS += -DUSE_SDL2
-endif
-
-ifeq ($(USE_SDL2),1)
-SDL_CONFIG ?= sdl2-config
-else
-SDL_CONFIG ?= sdl-config
-endif
-SDL_CFLAGS = $(shell $(SDL_CONFIG) --cflags)
-SDL_LIBS   = $(shell $(SDL_CONFIG) --libs)
-
-NET_LIBS   =
-ifeq ($(HOST_OS),sunos)
-NET_LIBS   =-lsocket -lnsl -lresolv
-endif
-ifeq ($(HOST_OS),haiku)
-NET_LIBS   =-lnetwork
-endif
+USE_FLAGS=-pthread --use-port=sdl2 --use-port=zlib --use-port=vorbis -O3
+CFLAGS+=$(USE_FLAGS) -I/src/deps/gl4es/include -DUSE_SDL2 -DSDL_FRAMEWORK
+LDFLAGS+= $(USE_FLAGS) -sFULL_ES2 /src/deps/gl4es/lib/libGL.a \
+	-sASYNCIFY -sASYNCIFY_STACK_SIZE=32768 -sSTACK_SIZE=512kb \
+	-sALLOW_MEMORY_GROWTH -sINITIAL_MEMORY=256mb -sMEMORY_GROWTH_LINEAR_STEP=64mb \
+	-sENVIRONMENT=web,worker -sPTHREAD_POOL_SIZE=4 -Wno-pthreads-mem-growth -sMODULARIZE \
+	-lidbfs.js -sCASE_INSENSITIVE_FS=1 \
+	-sEXPORT_ALL -sEXPORTED_RUNTIME_METHODS=callMain,addRunDependency,removeRunDependency \
+	-sEXIT_RUNTIME
 
 ifneq ($(VORBISLIB),vorbis)
 ifneq ($(VORBISLIB),tremor)
@@ -115,7 +95,7 @@ lib_mp3dec=-lmpg123
 endif
 ifeq ($(VORBISLIB),vorbis)
 cpp_vorbisdec=
-lib_vorbisdec=-lvorbisfile -lvorbis -logg
+#lib_vorbisdec=-lvorbisfile -lvorbis -logg
 endif
 ifeq ($(VORBISLIB),tremor)
 cpp_vorbisdec=-DVORBIS_USE_TREMOR
@@ -162,11 +142,7 @@ ifeq ($(USE_CODEC_UMX),1)
 CFLAGS+= -DUSE_CODEC_UMX
 endif
 
-ifeq ($(HOST_OS),haiku)
-COMMON_LIBS= -lGL
-else
 COMMON_LIBS= -lGL -lm
-endif
 
 LIBS = $(COMMON_LIBS) $(NET_LIBS) $(CODECLIBS)
 
@@ -272,25 +248,14 @@ all: $(DEFAULT_TARGET)
 	$(CC) $(DFLAGS) -c $(CFLAGS) $(SDL_CFLAGS) -o $@ $<
 
 quakespasm:	$(OBJS)
-	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@
-	$(call do_strip,$@)
+	$(LINKER) $(OBJS) $(LDFLAGS) $(LIBS) $(SDL_LIBS) -o $@.js
 
 release:	quakespasm
-debug:
-	$(error Use "make DEBUG=1")
 
 clean:
-	$(RM) *.o *.d $(DEFAULT_TARGET)
+	$(RM) *.o *.d $(DEFAULT_TARGET).js $(DEFAULT_TARGET).wasm
 
-ifeq ($(HOST_OS),haiku)
-QS_APP_DIR=$(shell finddir B_APPS_DIRECTORY)/QuakeSpasm/
 install:	quakespasm
-	mkdir -p $(QS_APP_DIR)
-	cp quakespasm $(QS_APP_DIR)
-	cp quakespasm.pak $(QS_APP_DIR)
-else
-install:	quakespasm
-	cp quakespasm /usr/local/games/quake
-endif
+	echo "not impletemented"
 
 sinclude $(OBJS:.o=.d)

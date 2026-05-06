@@ -22,8 +22,12 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 #include "quakedef.h"
+#include "filenames.h"
 #ifndef _WIN32
 #include <dirent.h>
+#endif
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
 #endif
 
 extern cvar_t	pausable;
@@ -58,7 +62,7 @@ void Host_Quit_f (void)
 FileList_Add
 ==================
 */
-static void FileList_Add (const char *name, filelist_item_t **list)
+static void FileList_Add (const char *name, filelist_item_t **list, unsigned int path_id)
 {
 	filelist_item_t	*item,*cursor,*prev;
 
@@ -71,6 +75,7 @@ static void FileList_Add (const char *name, filelist_item_t **list)
 
 	item = (filelist_item_t *) Z_Malloc(sizeof(filelist_item_t));
 	q_strlcpy (item->name, name, sizeof(item->name));
+	item->path_id = path_id;
 
 	// insert each entry in alphabetical order
 	if (*list == NULL ||
@@ -107,9 +112,9 @@ static void FileList_Clear (filelist_item_t **list)
 
 filelist_item_t	*extralevels;
 
-static void ExtraMaps_Add (const char *name)
+static void ExtraMaps_Add (const char *name, unsigned int path_id)
 {
-	FileList_Add(name, &extralevels);
+	FileList_Add(name, &extralevels, path_id);
 }
 
 void ExtraMaps_Init (void)
@@ -123,14 +128,9 @@ void ExtraMaps_Init (void)
 #endif
 	char		filestring[MAX_OSPATH];
 	char		mapname[32];
-	char		ignorepakdir[32];
 	searchpath_t	*search;
 	pack_t		*pak;
 	int		i;
-
-	// we don't want to list the maps in id1 pakfiles,
-	// because these are not "add-on" levels
-	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
 
 	for (search = com_searchpaths; search; search = search->next)
 	{
@@ -144,7 +144,7 @@ void ExtraMaps_Init (void)
 			do
 			{
 				COM_StripExtension(fdat.cFileName, mapname, sizeof(mapname));
-				ExtraMaps_Add (mapname);
+				ExtraMaps_Add (mapname, search->path_id);
 			} while (FindNextFile(fhnd, &fdat));
 			FindClose(fhnd);
 #else
@@ -157,15 +157,15 @@ void ExtraMaps_Init (void)
 				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "bsp") != 0)
 					continue;
 				COM_StripExtension(dir_t->d_name, mapname, sizeof(mapname));
-				ExtraMaps_Add (mapname);
+				ExtraMaps_Add (mapname, search->path_id);
 			}
 			closedir(dir_p);
 #endif
 		}
 		else //pakfile
 		{
-			if (!strstr(search->pack->filename, ignorepakdir))
-			{ //don't list standard id maps
+			if (search->path_id != 1U) // don't list standard id maps: they aren't "add-on" levels
+			{
 				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
 					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "bsp"))
@@ -173,7 +173,7 @@ void ExtraMaps_Init (void)
 						if (pak->files[i].filelen > 32*1024)
 						{ // don't list files under 32k (ammo boxes etc)
 							COM_StripExtension(pak->files[i].name + 5, mapname, sizeof(mapname));
-							ExtraMaps_Add (mapname);
+							ExtraMaps_Add (mapname, search->path_id);
 						}
 					}
 				}
@@ -193,23 +193,70 @@ void ExtraMaps_NewGame (void)
 	ExtraMaps_Init ();
 }
 
+static void ExtraMaps_List (const char* mod_name)
+{
+	int i;
+	unsigned int path_id = 0;
+	filelist_item_t	*level;
+
+	if (mod_name) {
+		searchpath_t *search;
+		Con_SafePrintf("maps in search path from directory \"%s\":\n", mod_name);
+		// find path_id of the matching mod name:
+		for (search = com_searchpaths; search; search = search->next) {
+			if (search->pack) continue;
+			else {
+				const char *ptr = FIND_LAST_DIRSEP(search->filename);
+				const char *dir_name = ptr != NULL ?
+						 ++ptr : search->filename;
+				if (q_strcasecmp(dir_name, mod_name) == 0) {
+					path_id = search->path_id;
+					break;
+				}
+			}
+		}
+		if (!path_id) {
+			Con_SafePrintf ("game %s not loaded\n", mod_name);
+			return;
+		}
+	}
+
+	for (level = extralevels, i = 0; level; level = level->next)
+	{
+		if (path_id && path_id != level->path_id)
+			continue;
+		++i;
+		Con_SafePrintf ("   %s\n", level->name);
+	}
+	if (i)
+		Con_SafePrintf ("%i map(s)\n", i);
+	else
+		Con_SafePrintf ("no maps found\n");
+}
+
 /*
 ==================
 Host_Maps_f
 ==================
 */
-static void Host_Maps_f (void)
+static void Host_Maps_f(void)
 {
-	int i;
-	filelist_item_t	*level;
+	if (Cmd_Argc() > 1) {
+		// filter to specific directory of search path
+		ExtraMaps_List(Cmd_Argv(1));
+	} else {
+		ExtraMaps_List(NULL);
+	}
+}
 
-	for (level = extralevels, i = 0; level; level = level->next, i++)
-		Con_SafePrintf ("   %s\n", level->name);
-
-	if (i)
-		Con_SafePrintf ("%i map(s)\n", i);
-	else
-		Con_SafePrintf ("no maps found\n");
+/*
+==================
+Host_Maps_Mod_f
+==================
+*/
+static void Host_Maps_Mod_f(void)
+{
+	ExtraMaps_List(COM_SkipPath(com_gamedir));
 }
 
 //==============================================================================
@@ -220,7 +267,7 @@ filelist_item_t	*modlist;
 
 static void Modlist_Add (const char *name)
 {
-	FileList_Add(name, &modlist);
+	FileList_Add(name, &modlist, 0);
 }
 
 #ifdef _WIN32
@@ -310,15 +357,10 @@ void DemoList_Init (void)
 #endif
 	char		filestring[MAX_OSPATH];
 	char		demname[32];
-	char		ignorepakdir[32];
 	searchpath_t	*search;
 	pack_t		*pak;
 	int		i;
 
-	// we don't want to list the demos in id1 pakfiles,
-	// because these are not "add-on" demos
-	q_snprintf (ignorepakdir, sizeof(ignorepakdir), "/%s/", GAMENAME);
-	
 	for (search = com_searchpaths; search; search = search->next)
 	{
 		if (*search->filename) //directory
@@ -331,7 +373,7 @@ void DemoList_Init (void)
 			do
 			{
 				COM_StripExtension(fdat.cFileName, demname, sizeof(demname));
-				FileList_Add (demname, &demolist);
+				FileList_Add (demname, &demolist, search->path_id);
 			} while (FindNextFile(fhnd, &fdat));
 			FindClose(fhnd);
 #else
@@ -344,21 +386,21 @@ void DemoList_Init (void)
 				if (q_strcasecmp(COM_FileGetExtension(dir_t->d_name), "dem") != 0)
 					continue;
 				COM_StripExtension(dir_t->d_name, demname, sizeof(demname));
-				FileList_Add (demname, &demolist);
+				FileList_Add (demname, &demolist, search->path_id);
 			}
 			closedir(dir_p);
 #endif
 		}
 		else //pakfile
 		{
-			if (!strstr(search->pack->filename, ignorepakdir))
-			{ //don't list standard id demos
+			if (search->path_id != 1U) // don't list standard id demos: they aren't "add-on" demos
+			{
 				for (i = 0, pak = search->pack; i < pak->numfiles; i++)
 				{
 					if (!strcmp(COM_FileGetExtension(pak->files[i].name), "dem"))
 					{
 						COM_StripExtension(pak->files[i].name, demname, sizeof(demname));
-						FileList_Add (demname, &demolist);
+						FileList_Add (demname, &demolist, search->path_id);
 					}
 				}
 			}
@@ -816,9 +858,10 @@ static void Host_Map_f (void)
 	svs.serverflags = 0;			// haven't completed an episode yet
 	q_strlcpy (name, Cmd_Argv(1), sizeof(name));
 	// remove (any) trailing ".bsp" from mapname -- S.A.
-	p = strstr(name, ".bsp");
-	if (p && p[4] == '\0')
-		*p = '\0';
+	p = strrchr(name, '.');
+	if (p != NULL)
+		if (strcmp(p, ".bsp") == 0)
+			*p = '\0';
 	SV_SpawnServer (name);
 	if (!sv.active)
 		return;
@@ -1119,6 +1162,7 @@ static void Host_Savegame_f (void)
 		fflush (f);
 	}
 	fclose (f);
+	Host_SyncExternalFS();
 	Con_Printf ("done.\n");
 }
 
@@ -2313,6 +2357,7 @@ Host_InitCommands
 void Host_InitCommands (void)
 {
 	Cmd_AddCommand ("maps", Host_Maps_f); //johnfitz
+	Cmd_AddCommand ("maps_mod", Host_Maps_Mod_f);
 	Cmd_AddCommand ("mods", Host_Mods_f); //johnfitz
 	Cmd_AddCommand ("games", Host_Mods_f); // as an alias to "mods" -- S.A. / QuakeSpasm
 	Cmd_AddCommand ("mapname", Host_Mapname_f); //johnfitz
@@ -2357,3 +2402,10 @@ void Host_InitCommands (void)
 	Cmd_AddCommand ("viewprev", Host_Viewprev_f);
 }
 
+#ifdef __EMSCRIPTEN__
+EM_ASYNC_JS(void, Host_SyncExternalFS, (void), {
+	 await new Promise((resolve, reject) => FS.syncfs(err => err ? reject(err) : resolve()))
+});
+#else
+void Host_SyncExternalFS (void) {}
+#endif
