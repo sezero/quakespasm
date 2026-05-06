@@ -448,6 +448,8 @@
 
   -  Update lodepng from mainstream git.
 
+  -  Add support for external RGBA textures in .png and .jpg format.
+
   -  Miscellaneous source code cleanups.
 
 

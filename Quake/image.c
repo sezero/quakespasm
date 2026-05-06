@@ -27,10 +27,13 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define STB_IMAGE_WRITE_STATIC
 #include "stb_image_write.h"
 
-#define LODEPNG_NO_COMPILE_DECODER
+#define STB_IMAGE_IMPLEMENTATION
+#define STBI_ONLY_JPEG
+#define STBI_NO_STDIO
+#include "stb_image.h"
+
 #define LODEPNG_NO_COMPILE_CPP
 #define LODEPNG_NO_COMPILE_ANCILLARY_CHUNKS
-#define LODEPNG_NO_COMPILE_ERROR_TEXT
 #include "lodepng.h"
 #include "lodepng.c"
 
@@ -78,6 +81,91 @@ returns a pointer to hunk allocated RGBA data
 TODO: search order: tga png jpg pcx lmp
 ============
 */
+static byte *Image_LoadJPG (FILE *fin, int *width, int *height)
+{
+	long filepos, filesize;
+	unsigned char *filedata;
+	unsigned char *pixels;
+
+	filepos = ftell(fin);
+	if (filepos == -1L)
+		return NULL;
+	if (fseek(fin, 0, SEEK_END) != 0)
+		return NULL;
+	filesize = ftell(fin);
+	if (filesize == -1L)
+		return NULL;
+	if (fseek(fin, filepos, SEEK_SET) != 0)
+		return NULL;
+
+	filedata = (unsigned char *)malloc(filesize);
+	if (!filedata)
+		return NULL;
+
+	if (fread(filedata, 1, filesize, fin) != (size_t)filesize)
+	{
+		free(filedata);
+		return NULL;
+	}
+
+	pixels = stbi_load_from_memory(filedata, (int)filesize, width, height, NULL, 4);
+	free(filedata);
+
+	if (!pixels)
+	{
+		Con_Printf("Image_LoadJPG: failed decoding %s: %s\n", loadfilename, stbi_failure_reason());
+		return NULL;
+	}
+
+	byte *out = (byte *)Hunk_Alloc((*width) * (*height) * 4);
+	memcpy(out, pixels, (*width) * (*height) * 4);
+	stbi_image_free(pixels);
+	return out;
+}
+
+static byte *Image_LoadPNG (FILE *fin, int *width, int *height)
+{
+	long filepos, filesize;
+	unsigned char *filedata;
+	unsigned char *pixels;
+	unsigned error;
+
+	filepos = ftell(fin);
+	if (filepos == -1L)
+		return NULL;
+	if (fseek(fin, 0, SEEK_END) != 0)
+		return NULL;
+	filesize = ftell(fin);
+	if (filesize == -1L)
+		return NULL;
+	if (fseek(fin, filepos, SEEK_SET) != 0)
+		return NULL;
+
+	filedata = (unsigned char *)malloc(filesize);
+	if (!filedata)
+		return NULL;
+
+	if (fread(filedata, 1, filesize, fin) != (size_t)filesize)
+	{
+		free(filedata);
+		return NULL;
+	}
+
+	error = lodepng_decode32(&pixels, (unsigned *)width, (unsigned *)height, filedata, (size_t)filesize);
+	free(filedata);
+
+	if (error)
+	{
+		Con_Printf("Image_LoadPNG: failed decoding %s: %s\n", loadfilename, lodepng_error_text(error));
+		return NULL;
+	}
+
+	byte *out = (byte *)Hunk_Alloc((*width) * (*height) * 4);
+	memcpy(out, pixels, (*width) * (*height) * 4);
+	free(pixels);
+	return out;
+}
+
 byte *Image_LoadImage (const char *name, int *width, int *height)
 {
 	FILE	*f;
@@ -86,6 +174,21 @@ byte *Image_LoadImage (const char *name, int *width, int *height)
 	COM_FOpenFile (loadfilename, &f, NULL);
 	if (f)
 		return Image_LoadTGA (f, width, height);
+
+	q_snprintf (loadfilename, sizeof(loadfilename), "%s.png", name);
+	COM_FOpenFile (loadfilename, &f, NULL);
+	if (f)
+		return Image_LoadPNG (f, width, height);
+
+	q_snprintf (loadfilename, sizeof(loadfilename), "%s.jpg", name);
+	COM_FOpenFile (loadfilename, &f, NULL);
+	if (f)
+		return Image_LoadJPG (f, width, height);
+
+	q_snprintf (loadfilename, sizeof(loadfilename), "%s.jpeg", name);
+	COM_FOpenFile (loadfilename, &f, NULL);
+	if (f)
+		return Image_LoadJPG (f, width, height);
 
 	q_snprintf (loadfilename, sizeof(loadfilename), "%s.pcx", name);
 	COM_FOpenFile (loadfilename, &f, NULL);
