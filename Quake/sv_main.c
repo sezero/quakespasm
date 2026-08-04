@@ -22,6 +22,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 // sv_main.c -- server main program
 
 #include "quakedef.h"
+#include "director_hook.h"
 
 server_t	sv;
 server_static_t	svs;
@@ -1464,6 +1465,11 @@ void SV_SpawnServer (const char *server)
 	static char	dummy[8] = { 0,0,0,0,0,0,0,0 };
 	edict_t		*ent;
 	int			i, signonsize;
+
+	// Must run first, before anything below clears sv/progs state -- this
+	// is the last point at which pr_global_struct/sv.time/player health
+	// still reflect the level that's ending.
+	Director_NewLevel (server);
 
 	// let's not have any servers with no name
 	if (hostname.string[0] == 0)

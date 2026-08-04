@@ -24,6 +24,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 #include "quakedef.h"
 #include "bgmusic.h"
+#include "director_hook.h"
 #include <setjmp.h>
 
 /*
@@ -690,6 +691,8 @@ void _Host_Frame (float time)
 // keep the random time dependent
 	rand ();
 
+	Director_Frame ();
+
 // decide the simulation time
 	if (!Host_FilterTime (time))
 		return;			// don't run too fast, or packets will flood out
@@ -885,6 +888,8 @@ void Host_Init (void)
 
 	host_initialized = true;
 	Con_Printf ("\n========= Quake Initialized =========\n\n");
+
+	Director_Init ();
 
 	if (cls.state != ca_dedicated)
 	{

@@ -53,6 +53,9 @@ CPUFLAGS=
 LDFLAGS?=
 DFLAGS ?=
 CFLAGS ?= -Wall -Wno-trigraphs -MMD
+# Director integration: quake_director.h lives in the main repo, not in
+# this vendored engine tree (Quake/ -> engine-director/ -> quake/ -> repo root).
+CFLAGS += -I../../../rust/include
 #CFLAGS += $(call check_gcc,-std=gnu11,)
 CFLAGS += $(CPUFLAGS)
 ifneq ($(DEBUG),0)
@@ -254,6 +257,8 @@ OBJS = strlcat.o \
 	sv_main.o \
 	sv_move.o \
 	sv_phys.o \
+	director_hook.o \
+	json.o \
 	sv_user.o \
 	world.o \
 	zone.o \
