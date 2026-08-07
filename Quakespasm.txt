@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: February 2026.
+  Page last edited: August 2026.
 
 
   1. About
@@ -228,6 +228,9 @@
   5. Changes
 
   Changes in 0.97.0:
+
+  -  Quake rerelease: Support for playing 2026 (30th aniversary) update:
+     Proper loading of localization file and word-wrapped centerprints.
 
   -  Valve BSP, WAD, and external texture support.
 

@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: February 2026.</em>
+<em>Page last edited: August 2026.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -143,6 +143,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.97.0<p>
 <itemize>
+<item> Quake rerelease: Support for playing 2026 (30th aniversary) update: Proper loading of localization file and word-wrapped centerprints.
 <item> Valve BSP, WAD, and external texture support.
 <item> The maps console command now takes an optional ModName, e.g.: maps ad or maps id1
 <item> New maps_mod console command to list maps only from the active mod.
