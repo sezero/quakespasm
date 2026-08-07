@@ -20,8 +20,8 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
 */
 
-#ifndef _Q_COMMON_H
-#define _Q_COMMON_H
+#ifndef Q_COMMON_H
+#define Q_COMMON_H
 
 // comndef.h  -- general definitions
 
@@ -252,6 +252,9 @@ typedef enum
 const char *COM_Parse (const char *data);
 const char *COM_ParseEx (const char *data, cpe_mode mode);
 
+int COM_WordLength (const char *text);
+int COM_AdvanceLineWrapped (const char **text, int maxchars);
+void COM_WordWrap (char *dst, const char *src, size_t dstsize, int maxcols);
 
 extern	int		com_argc;
 extern	char	**com_argv;
@@ -411,5 +414,4 @@ extern qboolean		standard_quake, rogue, hipnotic;
 extern qboolean		fitzmode;
 	/* if true, run in fitzquake mode disabling custom quakespasm hacks */
 
-#endif	/* _Q_COMMON_H */
-
+#endif	/* Q_COMMON_H */

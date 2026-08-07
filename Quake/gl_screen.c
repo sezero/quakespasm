@@ -146,7 +146,8 @@ for a few moments
 */
 void SCR_CenterPrint (const char *str) //update centerprint data
 {
-	strncpy (scr_centerstring, str, sizeof(scr_centerstring)-1);
+//	strncpy (scr_centerstring, str, sizeof(scr_centerstring)-1);
+	COM_WordWrap(scr_centerstring, str, sizeof(scr_centerstring), scr_usekfont.value ? 40 : 0);
 	scr_centertime_off = scr_centertime.value;
 	scr_centertime_start = cl.time;
 
