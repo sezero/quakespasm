@@ -2290,6 +2290,7 @@ static void COM_Game_f (void)
 		}
 
 		//clear out and reload appropriate data
+		LOC_Shutdown();
 		Cache_Flush ();
 		Mod_ResetAll();
 		Sky_ClearAll();
@@ -2305,6 +2306,7 @@ static void COM_Game_f (void)
 
 		Con_Printf("\"game\" changed to \"%s\"\n", COM_SkipPath(com_gamedir));
 
+		LOC_Init ();
 		VID_Lock ();
 		Cbuf_AddText ("exec quake.rc\n");
 		Cbuf_AddText ("vid_unlock\n");
@@ -2647,6 +2649,9 @@ void LOC_LoadFile (const char *file)
 
 	Con_Printf("\nLanguage initialization\n");
 
+	localization.text = (char *) COM_LoadMallocFile(file, NULL);
+	if (localization.text) goto loaded;
+
 	memset(&archive, 0, sizeof(archive));
 	q_snprintf(path, sizeof(path), "%s/%s", com_basedir, file);
 	rw = SDL_RWFromFile(path, "rb");
@@ -2694,7 +2699,7 @@ fail:			mz_zip_reader_end(&archive);
 		SDL_RWread(rw, localization.text, 1, sz);
 		SDL_RWclose(rw);
 	}
-
+loaded:
 	cursor = localization.text;
 
 	// skip BOM
@@ -2875,6 +2880,7 @@ void LOC_Shutdown(void)
 	free(localization.indices);
 	free(localization.entries);
 	free(localization.text);
+	memset(&localization, 0, sizeof(localization));
 }
 
 /*
