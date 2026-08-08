@@ -38,13 +38,19 @@
 #endif
 #if defined(__MACOSX__)
 #include <OpenGL/gl.h>  /* Header File For The OpenGL Library */
+#ifndef NO_SDL_GLU
 #include <OpenGL/glu.h> /* Header File For The GLU Library */
+#endif
 #elif defined(__MACOS__)
 #include <gl.h>         /* Header File For The OpenGL Library */
+#ifndef NO_SDL_GLU
 #include <glu.h>        /* Header File For The GLU Library */
+#endif
 #else
 #include <GL/gl.h>      /* Header File For The OpenGL Library */
+#ifndef NO_SDL_GLU
 #include <GL/glu.h>     /* Header File For The GLU Library */
+#endif
 #endif
 #ifndef NO_SDL_GLEXT
 #undef __glext_h_
