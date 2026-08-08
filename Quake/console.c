@@ -154,7 +154,7 @@ static void Con_Dump_f (void)
 	int		l, x;
 	const char	*line;
 	FILE	*f;
-	char	buffer[1024];
+	char	*buffer;
 	char	name[MAX_OSPATH];
 
 	q_snprintf (name, sizeof(name), "%s/condump.txt", com_gamedir);
@@ -163,6 +163,14 @@ static void Con_Dump_f (void)
 	if (!f)
 	{
 		Con_Printf ("ERROR: couldn't open file %s.\n", name);
+		return;
+	}
+
+	buffer = (char*) malloc(con_linewidth + 1);
+	if (!buffer)
+	{
+		fclose (f);
+		Con_Printf ("Con_Dump_f: Couldn't allocate memory\n");
 		return;
 	}
 
@@ -196,6 +204,7 @@ static void Con_Dump_f (void)
 		fprintf (f, "%s\n", buffer);
 	}
 
+	free (buffer);
 	fclose (f);
 	Con_Printf ("Dumped console text to %s.\n", name);
 }
