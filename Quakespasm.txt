@@ -267,6 +267,8 @@
   -  snd_mpg123 now uses 64 bit-only libmpg123 api if built against
      mpg123 >= 1.33.0
 
+  -  Increase default heap size to 384 MB
+
   -  Initial escripten wasm port.
 
   -  Code cleanups, minor fixes, updates to third party code.

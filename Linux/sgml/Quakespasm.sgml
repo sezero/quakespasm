@@ -158,6 +158,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> Disable EXT_packed_pixels support on big endian systems.
 <item> Allow any supported music type to be considered as cdrip.
 <item> snd_mpg123 now uses 64 bit-only libmpg123 api if built against mpg123 >= 1.33.0
+<item> Increase default heap size to 384 MB
 <item> Initial escripten wasm port.
 <item> Code cleanups, minor fixes, updates to third party code.
 <item> Thanks to Andrei Drexler, Alexey Lysiuk, Roman Turchin, Justin, Jesse Elliott and Alexander Tsoy for patches.
