@@ -1,0 +1,49 @@
+SV_Physics(): fix entity cap check in the for loop.
+
+Issue began with sv_freezenonclients patch added back in 0.85.5 fourteen
+years ago: svn r457, git commit 44ecfb19bbaa6f7ed5f95b14281405d9c60e3f54
+
+This patch fixes 'physics/lerp/timing issue' that was reported at:
+https://github.com/sezero/quakespasm/issues/124
+
+Unfortunately, fixing this reveals a dormant bug in Arcane Dimensions,
+where shooting monsters with 'Perforator' empowered with 'Nail Piercer'
+leading to the error 'ED_Alloc: no free edicts':
+	https://github.com/sezero/quakespasm/issues/128
+The issue may also present itself in mods based on AD, such as Halloween
+or Xmas jams.
+
+The Arcane Dimensions author is aware of the issue, but is not willing
+to fix it in existing versions.
+
+diff --git a/Quake/sv_phys.c b/Quake/sv_phys.c
+index a9fb3f3..a59d657 100644
+--- a/Quake/sv_phys.c
++++ b/Quake/sv_phys.c
+@@ -1170,6 +1170,7 @@ void SV_Physics (void)
+ {
+ 	int	i;
+ 	int	entity_cap; // For sv_freezenonclients 
++	int	*pentitycap;
+ 	edict_t	*ent;
+ 
+ // let the progs know that a new frame has started
+@@ -1186,12 +1187,14 @@ void SV_Physics (void)
+ 	ent = sv.edicts;
+ 
+ 	if (sv_freezenonclients.value)
++	{
+ 	  entity_cap = svs.maxclients + 1; // Only run physics on clients and the world
++	  pentitycap = &entity_cap;
++	}
+ 	else
+-	  entity_cap = sv.num_edicts;
++	  pentitycap = &sv.num_edicts;
+ 
+-	//for (i=0 ; i<sv.num_edicts ; i++, ent = NEXT_EDICT(ent))
+-	for (i=0 ; i<entity_cap ; i++, ent = NEXT_EDICT(ent))
++	for (i = 0; i < *pentitycap; ++i, ent = NEXT_EDICT(ent))
+ 	{
+ 		if (ent->free)
+ 			continue;
+
