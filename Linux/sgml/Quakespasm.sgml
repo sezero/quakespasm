@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: August 2026.</em>
+<em>Page last edited: October 2026.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -149,6 +149,7 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 <item> New maps_mod console command to list maps only from the active mod.
 <item> Add support for -userdir cmdline arg to override the hardcoded user directory.
 <item> Reset r_skyfog between maps.
+<item> Bump MAXALIASVERTS from 2000 to 2400 (needed by start map of the RoofTop Jam.)
 <item> Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm from Quake Brutalist Jam 3.)
 <item> Support for type 3 (uncompressed grayscale) TGA files (needed by qbj3_rabbit from Quake Brutalist Jam 3.)
 <item> Fixes to type 1 (paletted) TGA files support.

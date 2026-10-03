@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: August 2026.
+  Page last edited: October 2026.
 
 
   1. About
@@ -243,6 +243,9 @@
      user directory.
 
   -  Reset r_skyfog between maps.
+
+  -  Bump MAXALIASVERTS from 2000 to 2400 (needed by start map of the
+     RoofTop Jam.)
 
   -  Bump MAX_MODELS/MAX_MOD_KNOWN from 2048 to 4096 (needed by qbj3_hcm
      from Quake Brutalist Jam 3.)
