@@ -88,7 +88,7 @@ cvar_t		scr_showfps = {"scr_showfps", "0", CVAR_NONE};
 cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 //johnfitz
 cvar_t		scr_usekfont = {"scr_usekfont", "0", CVAR_NONE}; // 2021 re-release
-cvar_t      scr_showspeed = {"scr_showspeed", "0", CVAR_ARCHIVE};
+cvar_t		scr_showspeed = {"scr_showspeed", "0", CVAR_ARCHIVE};
 
 cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
 cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
@@ -528,11 +528,11 @@ void SCR_DrawSpeed (void)
 		squarespeed += cl.velocity[2]*cl.velocity[2];
 
 	if (squarespeed > 99980000)
-		sprintf(str, "woah");
+		sprintf (str, "woah");
 	else
-		sprintf(str, "%.0f", sqrt(squarespeed));
+		sprintf (str, "%.0f", sqrt(squarespeed));
 
-	len = strlen(str);
+	len = strlen (str);
 	GL_SetCanvas (CANVAS_CROSSHAIR);
 	Draw_Fill (len*-4-1, 8, len*8+2, 10, 0, 0.7);
 	Draw_String (len*-4, 8, str);
