@@ -157,6 +157,8 @@ typedef struct qsocket_s
 	struct qsockaddr	addr;
 	char		address[NET_NAMELEN];
 
+	unsigned int	portOrdinal;
+
 } qsocket_t;
 
 extern qsocket_t	*net_activeSockets;
