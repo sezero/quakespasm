@@ -315,10 +315,29 @@ int	Datagram_GetMessage (qsocket_t *sock)
 
 		if (sfunc.AddrCompare(&readaddr, &sock->addr) != 0)
 		{
-			Con_Printf("Forged packet received\n");
-			Con_Printf("Expected: %s\n", StrAddr (&sock->addr));
-			Con_Printf("Received: %s\n", StrAddr (&readaddr));
-			continue;
+			qboolean isforged = true;
+
+			if (sock->mightChangePort && readaddr.qsa_family == AF_INET && sock->addr.qsa_family == AF_INET)
+			{
+				// NAT can create an issue where the read port is unexpected
+				// when first connecting, so allow the read port to change on
+				// first use (don't allow a different IP though). don't remap
+				// yet though, as this might still be an invalid packet
+				in_addr_t	expectedAddr;
+				in_addr_t	actualAddr;
+				expectedAddr = ((struct sockaddr_in *)&sock->addr)->sin_addr.s_addr;
+				actualAddr = ((struct sockaddr_in *)&readaddr)->sin_addr.s_addr;
+				if (expectedAddr == actualAddr)
+					isforged = false;
+			}
+
+			if (isforged)
+			{
+				Con_Printf("Forged packet received\n");
+				Con_Printf("Expected: %s\n", StrAddr (&sock->addr));
+				Con_Printf("Received: %s\n", StrAddr (&readaddr));
+				continue;
+			}
 		}
 
 		if (length < NET_HEADERSIZE)
@@ -333,6 +352,12 @@ int	Datagram_GetMessage (qsocket_t *sock)
 
 		if (flags & NETFLAG_CTL)
 			continue;
+
+		if (sock->mightChangePort)
+		{
+			sock->addr = readaddr;
+			sock->mightChangePort = false;
+		}
 
 		sequence = BigLong(packetBuffer.sequence);
 		packetsReceived++;
@@ -1083,6 +1108,7 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	sock->socket = newsock;
 	sock->landriver = net_landriverlevel;
 	sock->addr = clientaddr;
+	sock->mightChangePort = true;
 	Q_strcpy(sock->address, dfunc.AddrToString(&clientaddr));
 
 	// send him back the info about the server connection he has been allocated

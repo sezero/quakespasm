@@ -137,6 +137,7 @@ typedef struct qsocket_s
 	qboolean	disconnected;
 	qboolean	canSend;
 	qboolean	sendNext;
+	qboolean	mightChangePort;
 
 	int		driver;
 	int		landriver;
