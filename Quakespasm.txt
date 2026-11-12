@@ -11,7 +11,7 @@
   QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
 
   It includes support for 64 bit CPUs and custom music playback, a new
-  sound driver, some graphical niceities, and numerous bug-fixes and
+  sound driver, some graphical niceties, and numerous bug-fixes and
   other improvements.
 
   Quakespasm utilizes SDL-1.2 or SDL2 frameworks, choose one which works
