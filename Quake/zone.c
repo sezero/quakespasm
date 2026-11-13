@@ -232,13 +232,26 @@ void *Z_Realloc(void *ptr, int size)
 	old_size -= (4 + (int)sizeof(memblock_t));	/* see Z_TagMalloc() */
 	old_ptr = ptr;
 
-	Z_Free (ptr);
 	ptr = Z_TagMalloc (size, 1);
-	if (!ptr)
-		Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
-
-	if (ptr != old_ptr)
-		memmove (ptr, old_ptr, q_min(old_size, size));
+	if (ptr)
+	{
+		memcpy (ptr, old_ptr, q_min(old_size, size));
+		Z_Free (old_ptr);
+	}
+	else
+	{
+		int keep_size = q_min(old_size, size);
+		void *keep = malloc (keep_size);
+		if (!keep)
+			Sys_Error ("Z_Realloc: failed to keep %i bytes", keep_size);
+		memcpy (keep, old_ptr, keep_size);
+		Z_Free (old_ptr);
+		ptr = Z_TagMalloc (size, 1);
+		if (!ptr)
+			Sys_Error ("Z_Realloc: failed on allocation of %i bytes", size);
+		memcpy (ptr, keep, keep_size);
+		free (keep);
+	}
 	if (old_size < size)
 		memset ((byte *)ptr + old_size, 0, size - old_size);
 
