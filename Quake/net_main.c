@@ -120,6 +120,7 @@ qsocket_t *NET_NewQSocket (void)
 	sock->receiveSequence = 0;
 	sock->unreliableReceiveSequence = 0;
 	sock->receiveMessageLength = 0;
+	sock->portOrdinal = -1;
 
 	return sock;
 }

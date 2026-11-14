@@ -55,6 +55,10 @@ static int myDriverLevel;
 extern qboolean m_return_onerror;
 extern char m_return_reason[32];
 
+static cvar_t net_predictableports = {"net_predictableports", "0", CVAR_ARCHIVE};
+static qboolean m_predictableports;
+static qboolean m_portords[MAX_SCOREBOARD];
+
 
 static char *StrAddr (struct qsockaddr *addr)
 {
@@ -790,6 +794,9 @@ int Datagram_Init (void)
 #endif
 	myDriverLevel = net_driverlevel;
 
+	Cvar_RegisterVariable (&net_predictableports);
+	m_predictableports = COM_CheckParm("-predictableports");
+
 	Cmd_AddCommand ("net_stats", NET_Stats_f);
 
 	if (safemode || COM_CheckParm("-nolan"))
@@ -839,6 +846,12 @@ void Datagram_Shutdown (void)
 
 void Datagram_Close (qsocket_t *sock)
 {
+	if (sock->portOrdinal != -1)
+	{
+		m_portords[sock->portOrdinal] = false;
+		sock->portOrdinal = -1;
+	}
+
 	sfunc.Close_Socket(sock->socket);
 }
 
@@ -867,6 +880,8 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	int			command;
 	int			control;
 	int			ret;
+	int			nextportord;
+	int			port;
 
 	acceptsock = dfunc.CheckNewConnections();
 	if (acceptsock == INVALID_SOCKET)
@@ -1064,7 +1079,27 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 	}
 
 	// allocate a network socket
-	newsock = dfunc.Open_Socket(0);
+	if (m_predictableports || net_predictableports.value)
+	{
+		for (nextportord = 0; nextportord < MAX_SCOREBOARD; nextportord++)
+		{
+			if (!m_portords[nextportord])
+			{
+				port = net_hostport + nextportord + 1;
+				// use random port if port is invalid due to high host port
+				if (port > 0xffff)
+					nextportord = MAX_SCOREBOARD;
+				break;
+			}
+		}
+	}
+	else
+		nextportord = MAX_SCOREBOARD;
+
+	if (nextportord == MAX_SCOREBOARD)
+		port = 0;
+	newsock = dfunc.Open_Socket(port);
+
 	if (newsock == INVALID_SOCKET)
 	{
 		NET_FreeQSocket(sock);
@@ -1077,6 +1112,12 @@ static qsocket_t *_Datagram_CheckNewConnections (void)
 		dfunc.Close_Socket(newsock);
 		NET_FreeQSocket(sock);
 		return NULL;
+	}
+
+	if (nextportord != MAX_SCOREBOARD)
+	{
+		sock->portOrdinal = nextportord;
+		m_portords[nextportord] = true;
 	}
 
 	// everything is allocated, just fill in the details
