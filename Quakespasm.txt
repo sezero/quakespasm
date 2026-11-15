@@ -227,6 +227,17 @@
 
   5. Changes
 
+  Changes in 0.97.1:
+
+  -  Replaced uses of Z_Realloc(), as it might corrupt the data it's
+     moving in rare cases.
+
+  -  Spelling fixes in documentation.
+
+  -  Thanks to David Harder for a patch, and Vittorio Romeo for realloc
+     issue report.
+
+
   Changes in 0.97.0:
 
   -  Quake rerelease: Support for playing 2026 (30th aniversary) update:

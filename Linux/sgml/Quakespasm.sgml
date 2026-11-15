@@ -3,7 +3,7 @@
 <title>QuakeSpasm
 <toc>
 
-<em>Page last edited: October 2026.</em>
+<em>Page last edited: November 2026.</em>
 
 <sect>About<p>
 QuakeSpasm is a modern cross-platform Quake engine based on FitzQuake.
@@ -140,6 +140,14 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 
 <sect>Changes<p>
+
+<sect1>Changes in 0.97.1<p>
+<itemize>
+<item> Replaced uses of Z_Realloc(), as it might corrupt the data it's moving in rare cases.
+<item> Spelling fixes in documentation.
+<item> Thanks to David Harder for a patch, and Vittorio Romeo for realloc issue report.
+</itemize>
+</p>
 
 <sect1>Changes in 0.97.0<p>
 <itemize>
