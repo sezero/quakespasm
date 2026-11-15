@@ -88,6 +88,7 @@ cvar_t		scr_showfps = {"scr_showfps", "0", CVAR_NONE};
 cvar_t		scr_clock = {"scr_clock", "0", CVAR_NONE};
 //johnfitz
 cvar_t		scr_usekfont = {"scr_usekfont", "0", CVAR_NONE}; // 2021 re-release
+cvar_t		scr_showspeed = {"scr_showspeed", "0", CVAR_ARCHIVE};
 
 cvar_t		scr_viewsize = {"viewsize","100", CVAR_ARCHIVE};
 cvar_t		scr_fov = {"fov","90",CVAR_NONE};	// 10 - 170
@@ -410,6 +411,7 @@ void SCR_Init (void)
 	Cvar_RegisterVariable (&scr_clock);
 	//johnfitz
 	Cvar_RegisterVariable (&scr_usekfont); // 2021 re-release
+	Cvar_RegisterVariable (&scr_showspeed);
 	Cvar_SetCallback (&scr_fov, SCR_Callback_refdef);
 	Cvar_SetCallback (&scr_fov_adapt, SCR_Callback_refdef);
 	Cvar_SetCallback (&scr_viewsize, SCR_Callback_refdef);
@@ -505,6 +507,35 @@ void SCR_DrawClock (void)
 	Draw_String (320 - (strlen(str)<<3), 200 - 8, str);
 
 	scr_tileclear_updates = 0;
+}
+
+/*
+==============
+SCR_DrawSpeed
+==============
+*/
+void SCR_DrawSpeed (void)
+{
+	char	str[5];
+	float	squarespeed;
+	unsigned long	len;
+
+	if (!scr_showspeed.value)
+		return;
+
+	squarespeed = cl.velocity[0]*cl.velocity[0]+cl.velocity[1]*cl.velocity[1];
+	if (scr_showspeed.value == 2)
+		squarespeed += cl.velocity[2]*cl.velocity[2];
+
+	if (squarespeed > 99980000)
+		sprintf (str, "woah");
+	else
+		sprintf (str, "%.0f", sqrt(squarespeed));
+
+	len = strlen (str);
+	GL_SetCanvas (CANVAS_CROSSHAIR);
+	Draw_Fill (len*-4-1, 8, len*8+2, 10, 0, 0.7);
+	Draw_String (len*-4, 8, str);
 }
 
 /*
@@ -1104,6 +1135,7 @@ void SCR_UpdateScreen (void)
 		SCR_DrawDevStats (); //johnfitz
 		SCR_DrawFPS (); //johnfitz
 		SCR_DrawClock (); //johnfitz
+		SCR_DrawSpeed ();
 		SCR_DrawConsole ();
 		M_Draw ();
 	}
