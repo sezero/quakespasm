@@ -1203,7 +1203,8 @@ void PR_LoadProgs (void)
 	pr_numknownstrings = 0;
 	pr_maxknownstrings = 0;
 	pr_stringssize = progs->numstrings;
-	free ((void *)pr_knownstrings);
+	if (pr_knownstrings)
+		Z_Free ((void *)pr_knownstrings);
 	pr_knownstrings = NULL;
 	PR_SetEngineString("");
 
@@ -1334,13 +1335,9 @@ int NUM_FOR_EDICT(edict_t *e)
 
 static void PR_AllocStringSlots (void)
 {
-	const int old_maxknownstrings = pr_maxknownstrings;
 	pr_maxknownstrings += PR_STRING_ALLOCSLOTS;
 	Con_DPrintf2("PR_AllocStringSlots: realloc'ing for %d slots\n", pr_maxknownstrings);
-	pr_knownstrings = (const char **) realloc ((void *)pr_knownstrings, pr_maxknownstrings * sizeof(char *));
-	if (!pr_knownstrings)
-		Sys_Error ("PR_AllocStringSlots failed for %d slots", pr_maxknownstrings);
-	memset(pr_knownstrings + old_maxknownstrings, 0, PR_STRING_ALLOCSLOTS * sizeof(char *));
+	pr_knownstrings = (const char **) Z_Realloc ((void *)pr_knownstrings, pr_maxknownstrings * sizeof(char *));
 }
 
 const char *PR_GetString (int num)
