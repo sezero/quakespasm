@@ -3,7 +3,7 @@
   ______________________________________________________________________
 
 
-  Page last edited: October 2026.
+  Page last edited: November 2026.
 
 
   1. About
@@ -229,13 +229,11 @@
 
   Changes in 0.97.1:
 
-  -  Replaced uses of Z_Realloc(), as it might corrupt the data it's
-     moving in rare cases.
+  -  Fix potential memory corruption in Z_Realloc
 
   -  Spelling fixes in documentation.
 
-  -  Thanks to David Harder for a patch, and Vittorio Romeo for realloc
-     issue report.
+  -  Thanks to Andrei Drexler and David Harder for patches.
 
 
   Changes in 0.97.0:

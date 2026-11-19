@@ -143,9 +143,9 @@ QuakeSpasm 0.94 has support for playing the 2021 re-release content: Copy the qu
 
 <sect1>Changes in 0.97.1<p>
 <itemize>
-<item> Replaced uses of Z_Realloc(), as it might corrupt the data it's moving in rare cases.
+<item> Fix potential memory corruption in Z_Realloc
 <item> Spelling fixes in documentation.
-<item> Thanks to David Harder for a patch, and Vittorio Romeo for realloc issue report.
+<item> Thanks to Andrei Drexler and David Harder for patches.
 </itemize>
 </p>
 
